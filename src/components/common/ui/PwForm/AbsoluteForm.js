@@ -16,7 +16,7 @@ class AbsoluteForm extends React.PureComponent {
   componentDidMount = () => {
     const { getForm, form } = this.props;
     getForm && getForm(form);
-  }
+  };
 
   renderView = (containerHeight, containerWidth, labelControllArr, data) => {
     return (
@@ -81,7 +81,8 @@ class AbsoluteForm extends React.PureComponent {
     containerHeight,
     containerWidth,
     labelControllArr,
-    data
+    data,
+    labelRequiredList
   ) => {
     return (
       <>
@@ -94,13 +95,21 @@ class AbsoluteForm extends React.PureComponent {
               data.find(i => {
                 return i.controlData.ColName === item.FrmColNameForCtrl;
               });
+            let required =
+              controlData &&
+              (controlData.controlData.ColIsNoNull ||
+                controlData.controlData.FrmIsNoNull);
+
+            if (!required && Array.isArray(labelRequiredList)) {
+              const result = labelRequiredList.includes(item.FrmText);
+              if (result) {
+                required = true;
+              }
+            }
             return (
               <label
                 class={classNames({
-                  required:
-                    controlData &&
-                    (controlData.controlData.ColIsNoNull ||
-                      controlData.controlData.FrmIsNoNull)
+                  required
                 })}
                 style={{
                   fontWeight: item.FrmFontBold * 500,
@@ -158,7 +167,7 @@ class AbsoluteForm extends React.PureComponent {
       onSingleChange,
       baseURL,
       uploadConfig,
-      mediaFieldBaseURL,
+      mediaFieldBaseURL
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -210,7 +219,8 @@ class AbsoluteForm extends React.PureComponent {
       enEditText,
       saveNeedConfirm,
       intl,
-      saveMode
+      saveMode,
+      labelRequiredList
     } = this.props;
     let { containerControlArr, labelControllArr } = data;
     const containerHeight =
@@ -240,7 +250,8 @@ class AbsoluteForm extends React.PureComponent {
               containerHeight,
               containerWidth,
               labelControllArr,
-              data
+              data,
+              labelRequiredList
             )}
         {saveMode === 'full' && (
           <div

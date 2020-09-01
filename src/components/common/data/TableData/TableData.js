@@ -1289,6 +1289,7 @@ class TableData extends React.Component {
       uploadConfig,
       mediaFieldBaseURL,
       beforeSaveConfig,
+      labelRequiredList,
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -1368,6 +1369,7 @@ class TableData extends React.Component {
       uploadConfig,
       mediaFieldBaseURL,
       beforeSaveConfig,
+      labelRequiredList,
     });
   };
 

@@ -43,7 +43,7 @@ class TreeRel extends React.Component {
       location: props.locationOfID,
       nameEn: props.nameEnOfID,
       dataNode: [],
-      lastSelected:{},
+      lastSelected: {},
     };
     //
     // this.state.url=props.url;
@@ -338,7 +338,7 @@ class TreeRel extends React.Component {
 
       var obj = this.state.dataNode[0];
       this.props.onSelect(obj);
-      this.setState({ lastSelected: this.refs.sideBg.children[0].children[0].children[1]});
+      this.setState({ lastSelected: this.refs.sideBg.children[0].children[0].children[1] });
 
 
     } catch (error) {
@@ -377,7 +377,7 @@ class TreeRel extends React.Component {
     }
     var i = 0;
     var obj;
-    var lst=this.state.lastSelected;
+    var lst = this.state.lastSelected;
     while (i < this.state.dataNode.length) {
       if (this.state.dataNode[i][this.state.ColumnOfID] == selectedKeys[0]) {
         obj = this.state.dataNode[i];
@@ -386,15 +386,18 @@ class TreeRel extends React.Component {
       i++;
     }
     var dom;
-    // 变魔术
-    if(obj){
+
+    if (obj) {
       this.props.onSelect(obj);
-        dom=this.state.lastSelected
-        dom.style.cssText=""
-      this.setState({lastSelected:lst.nativeEvent.path[1]});
-    }else{
-        dom=this.state.lastSelected
-        dom.style.cssText="background-color:#bae7ff;"
+      dom = this.state.lastSelected
+      dom.style.cssText = ""
+      if (lst.nativeEvent.path) {
+        this.setState({ lastSelected: lst.nativeEvent.path[1] });
+
+      }
+    } else {
+      dom = this.state.lastSelected
+      dom.style.cssText = "background-color:#bae7ff;"
     }
   };
   componentDidMount = () => {

@@ -340,12 +340,14 @@ class Department extends React.Component {
       return message.info('请选择一个卡片');
     }
     let record = {};
+    console.log(selectedNode)
     if (level === 'sub') {
       record[pidField] = selectedNode[idField];
       record.updateDate = selectedDate;
       record.orgSupCode = selectedNode.orgcode;
       record.orgSupNumber = selectedNode.orgNumber;
       record.C3_417654796647 = selectedNode.DEP_NAME;
+      record.C3_419448448137 = selectedNode.C3_419448448137;
 
       this.getFormData(record, createWindowName);
     } else if (level === 'bro') {
@@ -354,10 +356,44 @@ class Department extends React.Component {
       record.orgSupCode = selectedNode.orgSupCode;
       record.orgSupNumber = selectedNode.orgSupNumber;
       record.C3_417654796647 = selectedNode.C3_417654796647;
+      record.C3_419448448137 = selectedNode.C3_419448448137;
+
       this.getFormData(record, createWindowName);
     }
     this.setState({ addBroVisible: true, operation: 'add', record });
   };
+  //审核部门
+  handleShenhe = () => {
+    const { selectedNode, selectedDate } = this.state;
+    if (!selectedNode.REC_ID) {
+      return message.info('请选择一个卡片');
+    }
+    Modal.confirm({
+      title: '提示',
+      content: '确认审核？',
+      onOk: async () => {
+        try {
+          const { resid, baseURL } = this.props;
+          this.setState({ loading: true });
+          let httpParams = {};
+          // 使用传入的 baseURL
+          if (baseURL) {
+            httpParams.baseURL = baseURL;
+          }
+          const res = await http(httpParams).modifyRecords({
+            resid,
+            data: [{ REC_ID: selectedNode.REC_ID, C3_417731575935: 'N', shenhe: 'Y' }]
+          });
+          message.success('审核成功');
+          this.setState({ loading: false });
+        } catch (error) {
+          this.setState({ loading: false });
+          message.error(error.message);
+          console.log(error);
+        }
+      }
+    });
+  }
   // 节点作废
   handleVoid = () => {
     // const { pidField, idField, createWindowName } = this.props;
@@ -826,6 +862,16 @@ class Department extends React.Component {
                 className="department-chart_header_icon-button__icon"
               />
                   作废
+                </div>
+            <div
+              className="department-chart_header_icon-button"
+              onClick={() => this.handleShenhe()}
+            >
+              <Icon
+                type="audit"
+                className="department-chart_header_icon-button__icon"
+              />
+                  审核
                 </div>
             <div
               className="department-chart_header_icon-button"
