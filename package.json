@@ -63,6 +63,7 @@
     "hoist-non-react-statics": "^3.2.1",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "html2canvas": "^1.0.0-rc.5",
+    "ic-components": "^1.1.0",
     "identity-obj-proxy": "3.0.0",
     "immutable": "^4.0.0-rc.12",
     "jest": "23.6.0",
