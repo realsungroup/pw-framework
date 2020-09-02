@@ -1829,24 +1829,24 @@ window[614706766207] = {
   name: 'RelievePerson',
   title: '符合解除人员',
   props: {
-        baseURL:'http://10.108.2.66:9091',
-        downloadBaseURL:'http://10.108.2.66:80',
-  //   resid: 614709186509,
-  //   recordFormFormWidth: '90%',
-  //   hasBeBtns: false,
-  //   hasModify: false,
-  //   hasDelete: false,
-  //   hasAdd: false,
-  //   hasRowDelete: false,
-  //   hasRowModify: false,
-  //   hasRowView: true,
-  //   subtractH: 220,
-  //   height: 600,
-  //   recordFormType: 'drawer',
-  //   recordFormContainerProps: {
-  //     placement: 'right',
-  //     height: 600
-  //   }
+    baseURL: 'http://10.108.2.66:9091',
+    downloadBaseURL: 'http://10.108.2.66:80',
+    //   resid: 614709186509,
+    //   recordFormFormWidth: '90%',
+    //   hasBeBtns: false,
+    //   hasModify: false,
+    //   hasDelete: false,
+    //   hasAdd: false,
+    //   hasRowDelete: false,
+    //   hasRowModify: false,
+    //   hasRowView: true,
+    //   subtractH: 220,
+    //   height: 600,
+    //   recordFormType: 'drawer',
+    //   recordFormContainerProps: {
+    //     placement: 'right',
+    //     height: 600
+    //   }
   }
 };
 
@@ -4821,6 +4821,7 @@ window[642855273462] = {
       },
       formProps: {
         // height: 500
+        width: 1250
       },
       subtractH: 200
     },
@@ -4886,6 +4887,7 @@ window[642855719230] = {
       baseURL: 'http://10.108.2.66:1001/',
       downloadBaseURL: 'http://10.108.2.66:1000/',
       formProps: {
+        width: 1250
         // height: 500
       },
       advSearch: {
@@ -5026,9 +5028,9 @@ window[642855770350] = {
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    recordFormUseAbsolute:true,
+    recordFormUseAbsolute: true,
     // isUseFormDefine:false,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     // noWidthFields: 'C3_518381374532',
     backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
@@ -5038,6 +5040,7 @@ window[642855770350] = {
     advSearch: {
       isRequestFormData: false,
     },
+    labelRequiredList: ['Specify', 'Dept', 'Status', 'Pay Type', 'Job Grade Level', 'Relocation Eligible?', 'Incentive Eligible?', 'Budget Quarter', 'Dept. Code', 'Project Code', '1)', 'Name', 'KEY JOB DUTIES & RESPONSIBILITIES:', '% of Travel', 'SKILLS & QUALIFICATIONS:'],
     subtractH: 200
   }
 };
@@ -9066,7 +9069,7 @@ window[647005261709] = {
     isUseFormDefine: false,
     hasRowEdit: true,
     hasRowEditAdd: true,
-    isSetColumnWidth:false,
+    isSetColumnWidth: false,
     // noWidthFields: 'C3_433505203981',
     actionBarFixed: false,
     isWrap: true,
@@ -9588,7 +9591,7 @@ window[652189809837] = {
           isRequestFormData: false,
         },
       },
-      
+
 
     }
   }
