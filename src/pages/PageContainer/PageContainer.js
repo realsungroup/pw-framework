@@ -967,6 +967,9 @@ export default class PageContainer extends React.Component {
 
     this.setState(state);
     localStorage.setItem('desktopStyle', homeMode);
+    if (homeMode === 'WORKBENCH') {
+      this.fetchWaitingHandle();
+    }
   };
 
   getDesktopLockScreenRef = node => {
