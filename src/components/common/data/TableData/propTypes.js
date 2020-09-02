@@ -891,4 +891,10 @@ export const propTypes = {
    * 默认：-
    */
   labelRequiredList: PropTypes.array,
+
+  /**
+   * 对表格记录处理，返回新的表格记录数据：(records) => newReocrds;
+   * 默认：-
+   */
+  recordsMap: PropTypes.func,
 };
