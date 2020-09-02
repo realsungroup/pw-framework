@@ -4812,6 +4812,7 @@ window[642855273462] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
+      recordFormUseAbsolute: true,
       baseURL: 'http://10.108.2.66:1001/',
       downloadBaseURL: 'http://10.108.2.66:1000/',
       backendButtonPopConfirmProps: { placement: 'bottom' },
@@ -4881,6 +4882,7 @@ window[642855719230] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
+      recordFormUseAbsolute: true,
       baseURL: 'http://10.108.2.66:1001/',
       downloadBaseURL: 'http://10.108.2.66:1000/',
       formProps: {
