@@ -43,7 +43,8 @@ const {
   businessOptionalResIds,
   defaultOpenWindow,
   orgChartConfig,
-  reminderDataConfig
+  reminderDataConfig,
+  attendanceMonthChangeUrl
 } = window.pwConfig[process.env.NODE_ENV];
 
 const time = lockScreenWaitTime;
@@ -788,7 +789,7 @@ export default class PageContainer extends React.Component {
   handleAttendanceChange = async value => {
     this.setState({ currentAttendanceMonth: value });
     try {
-      await http().saveUserAttMonth({
+      await http({ baseURL: attendanceMonthChangeUrl }).saveUserAttMonth({
         yearmonth: value
       });
     } catch (err) {

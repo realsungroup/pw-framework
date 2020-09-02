@@ -742,7 +742,7 @@ class TableData extends React.Component {
 
     const state = {
       columns,
-      dataSource,
+      dataSource: this.props.recordsMap ? this.props.recordsMap(dataSource) : dataSource,
       components,
       pagination: {
         ...this.state.pagination,

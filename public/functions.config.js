@@ -7042,7 +7042,18 @@ window[642858230550] = {
     advSearch: {
       isRequestFormData: false,
     },
-    subtractH: 200
+    subtractH: 200,
+    recordsMap: (records) => {
+      records.forEach(record => {
+        Object.keys(record).forEach(key => {
+          const value = record[key];
+          if (/\d+\.\d+/.test(value)) {
+            record[key] = value.toFixed(3);
+          }
+        });
+      });
+      return records;
+    }
   }
 };
 window[642858239772] = {
