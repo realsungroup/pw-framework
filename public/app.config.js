@@ -13,6 +13,8 @@ window.pwConfig = {
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     //  baseURL:'http://hr.realsun.me:8081/',
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
+    // 切换考勤月份的基地址
+    attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
     fileDownloadConfig: {
       629462405981: {
         fileType: 'mdb'
@@ -221,7 +223,8 @@ window.pwConfig = {
     basename: '/',
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
-
+    // 切换考勤月份的基地址
+    attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
     fileDownloadConfig: {
       629462405981: {
         fileType: 'mdb'
