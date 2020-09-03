@@ -935,7 +935,7 @@ window[648297903478] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    height: '80vh',
+    height: '100vh',
     recordFormFormWidth: '90%',
     backendButtonPopConfirmProps: { placement: 'bottom' },
   } // 组件所接收的 props
@@ -5037,7 +5037,7 @@ window[642855770350] = {
     hasRowDelete: true,
     recordFormUseAbsolute: true,
     // isUseFormDefine:false,
-    isSetColumnWidth: false,
+    // isSetColumnWidth: false,
     // noWidthFields: 'C3_518381374532',
     backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
