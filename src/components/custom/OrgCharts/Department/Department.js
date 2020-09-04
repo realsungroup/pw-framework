@@ -361,6 +361,7 @@ class Department extends React.Component {
       this.getFormData(record, createWindowName);
     }
     this.setState({ addBroVisible: true, operation: 'add', record });
+
   };
   //审核部门
   handleShenhe = () => {
@@ -386,6 +387,10 @@ class Department extends React.Component {
           });
           message.success('审核成功');
           this.setState({ loading: false });
+          let _this = this
+          let timer = setImmediate(function () {
+            _this.handleRefresh();
+          }, 1000)
         } catch (error) {
           this.setState({ loading: false });
           message.error(error.message);
@@ -425,6 +430,10 @@ class Department extends React.Component {
           this.setState({ selectedNode: {}, breadcrumb: [] });
           message.success('作废成功');
           this.setState({ loading: false });
+          let _this = this
+          let timer = setImmediate(function () {
+            _this.handleRefresh();
+          }, 1000)
         } catch (error) {
           this.setState({ loading: false });
           message.error(error.message);
@@ -697,6 +706,7 @@ class Department extends React.Component {
    * 保存成功后的回调函数
    */
   afterSave = (operation, formData, record, form) => {
+
     const { pidField, idField } = this.props;
     this.closeBroModal();
     if (operation === 'add') {
@@ -707,7 +717,13 @@ class Department extends React.Component {
         pid: record[pidField],
         tags
       };
-      this.getData();
+      let _this = this
+      let timer = setImmediate(function () {
+        _this.setState({ selectedNode: node }, () => {
+          _this.getData();
+          _this.handleRefresh();
+        });
+      }, 1000);
       message.success('添加成功');
       // this.chart.addNode(node);
       // this._nodes.push(node);
@@ -718,10 +734,16 @@ class Department extends React.Component {
         pid: record[pidField],
         tags: [selected]
       };
+
+
+      let _this = this
+      let timer = setImmediate(function () {
+        _this.setState({ selectedNode: node }, () => {
+          _this.getData();
+          _this.handleRefresh();
+        });
+      }, 1000);
       message.success('修改成功');
-      this.setState({ selectedNode: node }, () => {
-        this.getData();
-      });
       // this.chart.updateNode(node);
     }
   };

@@ -935,7 +935,7 @@ window[648297903478] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    height: '80vh',
+    height: '100vh',
     recordFormFormWidth: '90%',
     backendButtonPopConfirmProps: { placement: 'bottom' },
   } // 组件所接收的 props
@@ -2652,6 +2652,8 @@ window[642853918132] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '排班定义', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 375292143375,
     mainTableProps: {
       actionBarWidth: 300,
@@ -2663,8 +2665,7 @@ window[642853918132] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       formProps: {
         // height: 500
       },
@@ -2805,6 +2806,8 @@ window[642854067180] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '年假台账', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 429955296972,
     mainTableProps: {
       actionBarWidth: 200,
@@ -2820,8 +2823,7 @@ window[642854067180] = {
       hasRowView: true,
       hasRowDelete: true,
       actionBarFixed: false,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       backendButtonPopConfirmProps: { placement: 'bottom' },
       formProps: {
         // height: 500
@@ -2938,6 +2940,8 @@ window[642854098292] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '哺乳假台账', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 435412554124,
     mainTableProps: {
       actionBarWidth: 200,
@@ -2953,8 +2957,7 @@ window[642854098292] = {
       hasRowEdit: true,
       hasRowEditAdd: true,
       actionBarFixed: false,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       formProps: {
         // height: 500
       },
@@ -3737,12 +3740,13 @@ window[642854660698] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '考勤日报处理', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 424363791882,
     mainTableProps: {
       actionBarWidth: 200,
       // baseURL: 'http://10.108.2.66:9091/',
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       hasAdd: false,
       hasBeBtns: true,
       hasModify: false,
@@ -4676,6 +4680,8 @@ window[642855176494] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '考勤审批流程信息', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 449439660450,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4688,8 +4694,7 @@ window[642855176494] = {
       hasRowView: true,
       hasRowDelete: true,
       backendButtonPopConfirmProps: { placement: 'bottom' },
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       formProps: {
         // height: 500
       },
@@ -4753,6 +4758,8 @@ window[642855262376] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '待审核招聘需求', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:1001/',
+    downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 518463420928,
     mainTableProps: {
       actionBarWidth: 400,
@@ -4769,8 +4776,7 @@ window[642855262376] = {
       // noWidthFields:'C3_518381536343',
       noWidthFieldsIndex: 1,
       recordFormUseAbsolute: true,
-      baseURL: 'http://10.108.2.66:1001/',
-      downloadBaseURL: 'http://10.108.2.66:1000/',
+
       backendButtonPopConfirmProps: { placement: 'bottom' },
       advSearch: {
         formName: 'defaultSearch'
@@ -4800,6 +4806,8 @@ window[642855273462] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '已审核招聘需求', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:1001/',
+    downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 519213761827,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4813,8 +4821,7 @@ window[642855273462] = {
       hasRowDelete: true,
       isUseFormDefine: false,
       recordFormUseAbsolute: true,
-      baseURL: 'http://10.108.2.66:1001/',
-      downloadBaseURL: 'http://10.108.2.66:1000/',
+
       backendButtonPopConfirmProps: { placement: 'bottom' },
       advSearch: {
         formName: 'defaultSearch'
@@ -4871,7 +4878,8 @@ window[642855719230] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '招聘需求管理', // 功能模块名称
   props: {
-
+    baseURL: 'http://10.108.2.66:1001/',
+    downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 518447767466,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4884,8 +4892,7 @@ window[642855719230] = {
       hasRowView: true,
       hasRowDelete: true,
       recordFormUseAbsolute: true,
-      baseURL: 'http://10.108.2.66:1001/',
-      downloadBaseURL: 'http://10.108.2.66:1000/',
+
       formProps: {
         width: 1250
         // height: 500
@@ -4951,6 +4958,8 @@ window[642855746711] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '待录用员工工资审批', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 621522035695,
     mainTableProps: {
       actionBarWidth: 200,
@@ -4963,8 +4972,6 @@ window[642855746711] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
       advSearch: {
         formName: 'defaultSearch'
       },
@@ -5030,7 +5037,7 @@ window[642855770350] = {
     hasRowDelete: true,
     recordFormUseAbsolute: true,
     // isUseFormDefine:false,
-    isSetColumnWidth: false,
+    // isSetColumnWidth: false,
     // noWidthFields: 'C3_518381374532',
     backendButtonPopConfirmProps: { placement: 'bottom' },
     formProps: {
@@ -5049,6 +5056,8 @@ window[642855780253] = {
   name: 'MainTableSubTables',
   title: '我的招聘审批', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:1001/',
+    downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 518442541615,
     mainTableProps: {
       actionBarWidth: 300,
@@ -5063,8 +5072,7 @@ window[642855780253] = {
       isUseFormDefine: false,
       // isSetColumnWidth:false,
       recordFormUseAbsolute: true,
-      baseURL: 'http://10.108.2.66:1001/',
-      downloadBaseURL: 'http://10.108.2.66:1000/',
+
       backendButtonPopConfirmProps: { placement: 'bottom' },
       advSearch: {
         formName: 'defaultSearch'
@@ -5098,6 +5106,8 @@ window[647714701722] = {
   name: 'MainTableSubTables',
   title: 'S1S2招聘审批', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 527744676333,
     mainTableProps: {
       actionBarWidth: 200,
@@ -5113,8 +5123,7 @@ window[647714701722] = {
       backendButtonPopConfirmProps: { placement: 'right' },
       // isSetColumnWidth:false,
       // noWidthFields:'C3_518986456839',
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       advSearch: {
         formName: 'defaultSearch'
       },
@@ -5228,6 +5237,8 @@ window[642856315965] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '财年授予定义', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 561571034816,
     mainTableProps: {
       actionBarWidth: 200,
@@ -5240,8 +5251,7 @@ window[642856315965] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       // isSetColumnWidth:false,
       noWidthFields: 'C3_561550586204',
       formProps: {
@@ -5713,7 +5723,9 @@ window[642856652519] = {
   name: 'MainTableSubTables', // 组件名称，
   title: 'DL工资审核', // 功能模块名称
   props: {
-    resid: 631902827113,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    resid: 631981611070,
     mainTableProps: {
       actionBarWidth: 250,
       hasAdd: true,
@@ -5725,10 +5737,9 @@ window[642856652519] = {
       hasRowView: true,
       hasRowDelete: true,
       addText: '新建审核',
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       // isSetColumnWidth:false,
-      noWidthFields: 'C3_631902905457',
+      // noWidthFields: 'C3_631902905457',
       backendButtonPopConfirmProps: { placement: 'bottom' },
       formProps: {
         // height: 500
@@ -5748,6 +5759,22 @@ window[642856652519] = {
         hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        advSearch: {
+          isRequestFormData: false,
+        },
+      },
+      631911796331: {
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        isSetColumnWidth: false,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
@@ -6119,6 +6146,8 @@ window[642856661616] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '工资审核', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 501177761232,
     mainTableProps: {
       actionBarWidth: 200,
@@ -6131,8 +6160,7 @@ window[642856661616] = {
       hasRowView: false,
       hasRowDelete: false,
       addText: '新建审核',
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       backendButtonPopConfirmProps: { placement: 'bottom' },
       formProps: {
         // height: 500
@@ -6482,6 +6510,7 @@ window[642856723891] = {
   props: {
     resid: 537461583719,
     baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     mainTableProps: {
       actionBarWidth: 300,
       hasAdd: true,
@@ -6495,7 +6524,6 @@ window[642856723891] = {
       hasRowDelete: false,
       // isSetColumnWidth:false,
       noWidthFields: 'C3_537453411556',
-      downloadBaseURL: 'http://10.108.2.66:80/',
       formProps: {
         // height: 500
       },
@@ -6623,6 +6651,8 @@ window[642856763791] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '保险基数表', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 244154194921,
     mainTableProps: {
       actionBarWidth: 200,
@@ -6634,8 +6664,7 @@ window[642856763791] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       formProps: {
         // height: 500
       },
@@ -6669,6 +6698,8 @@ window[642856772119] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '保险比例表', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 244153076250,
     mainTableProps: {
       actionBarWidth: 200,
@@ -6680,8 +6711,7 @@ window[642856772119] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       formProps: {
         // height: 500
       },
@@ -7405,6 +7435,8 @@ window[642858651331] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '个人财年评估表', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 467806334724,
     mainTableProps: {
       actionBarWidth: 200,
@@ -7417,8 +7449,7 @@ window[642858651331] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       formProps: {
         // height: 500
       },
@@ -9286,6 +9317,8 @@ window[647005718255] = {
   name: 'MainTableSubTables', // 组件名称，
   title: 'HR专员请假审批', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 513784214608,
     mainTableProps: {
       actionBarWidth: 300,
@@ -9298,8 +9331,7 @@ window[647005718255] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       mediaFieldBaseURL: 'http://wux-hr03/',
       formProps: {
         // height: 500
@@ -9327,6 +9359,8 @@ window[647005738876] = {
   name: 'MainTableSubTables', // 组件名称，
   title: 'HR专员请假已审批', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 516107915085,
     mainTableProps: {
       actionBarWidth: 300,
@@ -9339,8 +9373,7 @@ window[647005738876] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       mediaFieldBaseURL: 'http://wux-hr03/',
       formProps: {
         // height: 500
@@ -9459,6 +9492,7 @@ window[647032148938] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
+    isSetColumnWidth: false,
     noWidthFields: "C3_534182272208",
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
@@ -9497,6 +9531,8 @@ window[652189809837] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '考勤审核', // 功能模块名称
   props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 537117187059,
     mainTableProps: {
       actionBarWidth: 300,
@@ -9508,8 +9544,7 @@ window[652189809837] = {
       hasRowModify: true,
       hasRowView: true,
       hasRowDelete: true,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+
       formProps: {
         // height: 500
       },
