@@ -7,7 +7,11 @@ export const getRang = pagination => {
   const { pageSize, current, total } = pagination;
   rang.start = (current - 1) * pageSize + 1;
   if (isLastPage(total, current, pageSize)) {
-    rang.end = rang.start + (total % 10) - 1;
+    if (total <= pageSize) {
+      rang.end = total;
+    } else {
+      rang.end = rang.start + (total % 10) - 1;
+    }
   } else {
     rang.end = rang.start + pageSize - 1;
   }
