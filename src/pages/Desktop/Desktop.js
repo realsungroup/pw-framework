@@ -570,10 +570,11 @@ class Desktop extends React.Component {
       >
         <div className="desktop__folder-app-icon">
           {app.appIconUrl ? (
-            <img
+            <Img
               src={app.appIconUrl}
               alt={app.appIconUrl}
               style={{ display: 'inline-block', width: 48 }}
+              defaulting={folderPng}
             />
           ) : (
             <i
@@ -635,20 +636,21 @@ class Desktop extends React.Component {
                         <div className="desktop__folder-category-app-icon">
                           {app.appIconUrl ? (
                             this.state.forbidChange ? (
-                              <img
+                              <Img
                                 src={app.appIconUrl}
                                 alt={app.appIconUrl}
+                                defaulting={folderPng}
                                 style={{
                                   display: 'inline-block',
                                   height: 32,
                                   width: 'auto'
                                 }}
-                                onError={this.handleImageError}
+                                // onError={this.handleImageError}
                               />
                             ) : (
                               <div className="overlay">
                                 <div className="overlay-inner"></div>
-                                <img
+                                <Img
                                   src={app.appIconUrl}
                                   alt={app.appIconUrl}
                                   style={{
@@ -656,7 +658,8 @@ class Desktop extends React.Component {
                                     height: 32,
                                     width: 'auto'
                                   }}
-                                  onError={this.handleImageError}
+                                  defaulting={folderPng}
+                                  // onError={this.handleImageError}
                                 />
                               </div>
                             )

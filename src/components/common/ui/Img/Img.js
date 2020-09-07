@@ -24,7 +24,7 @@ function getDomain(url) {
   return result;
 }
 
-const replaceDomain = 'http://ngrok90.realsun.me'
+const replaceDomain = 'http://ngrok80.realsun.me'
 function Img(props) {
   const onError = function (e) {
     if (penetrate) {
