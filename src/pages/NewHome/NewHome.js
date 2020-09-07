@@ -443,12 +443,12 @@ class Home extends React.Component {
                 {waitingHandleFetching ? (
                   <Spin />
                 ) : (
-                  <WaitingHandle
-                    data={waitingHandleData}
-                    onItemClick={this.handleRemindItemClick}
-                    reminderDataConfig={reminderDataConfig}
-                  />
-                )}
+                    <WaitingHandle
+                      data={waitingHandleData}
+                      onItemClick={this.handleRemindItemClick}
+                      reminderDataConfig={reminderDataConfig}
+                    />
+                  )}
               </div>
             </div>
           </div>
@@ -478,12 +478,11 @@ class Home extends React.Component {
                     })}
                     onClick={this.handleSelectModule(module)}
                   >
-                    <img
-                      alt={module.typeName}
+                    <Img
                       className="new-home__module-icon"
-                      // src={module.apps.length && module.apps[0].BusinessIconUrl}
                       src={module.url}
-                      onError={this.handleImageError}
+                      alt={module.typeName}
+                      defaultImg={folderPng}
                     />
                     <span className="new-home__module-name">
                       {module.typeName}
@@ -525,16 +524,16 @@ class Home extends React.Component {
                                         defaultImg={folderPng}
                                       />
                                     ) : (
-                                      <div className="overlay">
-                                        <div className="overlay-inner"></div>
-                                        <Img
-                                          src={app.appIconUrl}
-                                          className="new-home-app-icon"
-                                          alt={app.appIconUrl}
-                                          defaultImg={folderPng}
-                                        />
-                                      </div>
-                                    )}
+                                        <div className="overlay">
+                                          <div className="overlay-inner"></div>
+                                          <Img
+                                            src={app.appIconUrl}
+                                            className="new-home-app-icon"
+                                            alt={app.appIconUrl}
+                                            defaultImg={folderPng}
+                                          />
+                                        </div>
+                                      )}
 
                                     <span className="new-home__module-category-app-title">
                                       {app.title}

@@ -20,7 +20,7 @@ window.pwConfig = {
         fileType: 'mdb'
       }
     },
-
+    penetrate: true,//是否穿透模式
     //各定制组件需用到的基地址
     customURLs: {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
@@ -230,7 +230,7 @@ window.pwConfig = {
         fileType: 'mdb'
       }
     },
-
+    penetrate: true,//是否穿透模式
     //各定制组件需用到的基地址
     customURLs: {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
