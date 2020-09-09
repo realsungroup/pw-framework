@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import folderPng from '../../Desktop/assets/folder.png'
 import RightBtns from './RightBtns';
 import classNames from 'classnames';
 import logoImg from '../../../assets/logo-26.png';
@@ -9,6 +10,7 @@ import { Drawer, Menu, Icon, Input, Badge, Popover, Select } from 'antd';
 import qs from 'qs';
 import { connect } from 'react-redux';
 import HeaderBtn from './HeaderBtn';
+import Img from 'Common/ui/Img';
 
 const SubMenu = Menu.SubMenu;
 const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
@@ -175,11 +177,12 @@ class PageHeader extends React.Component {
 
         <div className="page-header__client-logo">
           <Link to="/" style={{ display: 'block' }}>
-            <img
+            <Img
               src={logoImg}
               alt="logo"
               className="page-header__logo-img"
               style={{ height: 52 }}
+              defaultImg={folderPng}
             />
           </Link>
         </div>
@@ -308,21 +311,20 @@ const ActiveAppList = React.memo(
                 }}
               >
                 <div className="new-home__page-header__active-app__title">
-                  {app.appIconUrl && app.appIconUrlValidate ? (
+                  {app.appIconUrl &&  (
                     forbidChange ? (
-                      <img src={app.appIconUrl} className="new-home-app-icon" />
+                      <Img src={app.appIconUrl} className="new-home-app-icon" defaultImg={folderPng}/>
                     ) : (
                       <div className="overlay">
                         <div className="overlay-inner"></div>
-                        <img
+                        <Img
                           src={app.appIconUrl}
                           className="new-home-app-icon"
+                          defaultImg={folderPng}
                         />
                       </div>
                     )
-                  ) : (
-                    <Icon type="mail" className="new-home-app-icon-mail" />
-                  )}
+                  ) }
                   <span
                     className={
                       app.isActive

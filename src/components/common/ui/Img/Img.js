@@ -1,5 +1,7 @@
 import React from 'react';
 const penetrate = window.pwConfig[process.env.NODE_ENV].penetrate;
+const replaceDomain =
+  window.pwConfig[process.env.NODE_ENV].penetrateReplaceBaseURL;
 
 /**
  * 获取url对应的域名
@@ -24,12 +26,11 @@ function getDomain(url) {
   return result;
 }
 
-const replaceDomain = 'http://ngrok90.realsun.me'
 function Img(props) {
-  const onError = function (e) {
+  const onError = function(e) {
     if (penetrate) {
-      const domain = (getDomain(props.src));
-      e.target.src = props.src.replace(domain, replaceDomain)
+      const domain = getDomain(props.src);
+      e.target.src = props.src.replace(domain, replaceDomain);
     } else {
       e.target.src = props.defaultImg;
     }

@@ -5,7 +5,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://10.108.2.66:5002/', // 请求的基地址
+    baseURL: 'http://ngrok5002.realsun.me/', // 请求的基地址
     // baseURL: 'http://10.108.2.66:1000/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
@@ -20,7 +20,8 @@ window.pwConfig = {
         fileType: 'mdb'
       }
     },
-    penetrate: true,//是否穿透模式
+    penetrate: true, //是否穿透模式
+    penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
     //各定制组件需用到的基地址
     customURLs: {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
@@ -230,7 +231,8 @@ window.pwConfig = {
         fileType: 'mdb'
       }
     },
-    penetrate: true,//是否穿透模式
+    penetrate: true, //是否穿透模式
+    penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
     //各定制组件需用到的基地址
     customURLs: {
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
