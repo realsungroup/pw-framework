@@ -7449,7 +7449,7 @@ window[642858651331] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
-
+      customColumnWidth: { '年末新入职参评截止日期': 400 },
       formProps: {
         // height: 500
       },

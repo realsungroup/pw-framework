@@ -25,7 +25,7 @@ const dataURIToBlob = (dataURI, fileName, callback) => {
   callback(new Blob([arr]), fileName + '.png');
 };
 
-const callback = function(blob, fileName) {
+const callback = function (blob, fileName) {
   var a = document.createElement('a');
   a.setAttribute('download', fileName);
   a.href = URL.createObjectURL(blob);
@@ -232,7 +232,7 @@ class TotalStatical extends Component {
     }
   };
   // 导出图片的功能
-  handleExportImgBtnClick = async() => {
+  handleExportImgBtnClick = async () => {
     const { queryName } = this.state;
     // 下载图片
     this.refs.toPrint.classList.add('printMode');
@@ -256,7 +256,7 @@ class TotalStatical extends Component {
         }
       }
     );
-    
+
     await this.refs.toPrint.classList.remove('printMode');
   };
 
@@ -351,10 +351,10 @@ class TotalStatical extends Component {
         style: 'header'
       });
       let list = [];
-    
+
       item.answers.map(i => {
-        if(i.isAdopt=='Y'){
-          list.push( [{ text: i.write_content, style: 'tableRow' }]);
+        if (i.isAdopt == 'Y') {
+          list.push([{ text: i.write_content, style: 'tableRow' }]);
         }
       });
       answers.push({
@@ -435,7 +435,7 @@ class TotalStatical extends Component {
               {item.answers.map((answer, _index) => {
                 const isAdopt = answer.isAdopt === 'Y';
                 return (
-                  <li key={_index} className={!isAdopt?'total-statical__ubox__lee unAdoped':'total-statical__ubox__lee'}>
+                  <li key={_index} className={!isAdopt ? 'total-statical__ubox__lee unAdoped' : 'total-statical__ubox__lee'}>
                     <span style={{ flex: 1 }}>{answer.write_content}</span>
                     <span>
                       <Button

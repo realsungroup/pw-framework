@@ -2,7 +2,7 @@ import React from 'react';
 import PwForm from '../../ui/PwForm';
 import AbsoluteForm from '../../ui/PwForm/AbsoluteForm';
 
-import { message, Tabs, Spin } from 'antd';
+import { message, Tabs, Spin, Icon } from 'antd';
 import { dealFormData } from 'Util20/controls';
 import { getResid } from 'Util20/util';
 import { TableData } from '../../loadableCommon';
@@ -75,7 +75,8 @@ class FormData extends React.Component {
       defaultActiveKey: '-1',
       hasSubTables, // 是否有子表
       confirmLoading: false,
-      loading: false
+      loading: false,
+      windowEnlarge: false
     };
   }
 
@@ -736,28 +737,31 @@ class FormData extends React.Component {
     if (_useAbsolute) {
       return (
         <Spin spinning={loading}>
-          <AbsoluteForm
-            getForm={this.getForm}
-            data={data}
-            record={record}
-            {...formProps}
-            mode={mode}
-            {...otherProps}
-            onSave={this.handleSave}
-            onCancel={this.props.onCancel}
-            operation={operation}
-            beforeSaveFields={beforeSaveFields}
-            resid={resid}
-            dblinkname={dblinkname}
-            saveMode={saveMode}
-            onSingleChange={this.handleSingleChange}
-            uploadConfig={uploadConfig}
-            mediaFieldBaseURL={mediaFieldBaseURL}
-            baseURL={baseURL}
-            labelRequiredList={labelRequiredList}
-          />
-          {hasSubTables &&
-            this.renderSubTablesAbsolute(containerHeight, containerWidth)}
+          <div className={this.state.windowEnlarge ? 'enlarged-size' : 'normal-size'}>
+            {this.state.windowEnlarge ? <Icon type="fullscreen-exit" onClick={() => { this.setState({ windowEnlarge: false }); if (this.props.isExpand) { this.props.isExpand(false); }; }} /> : <Icon type="fullscreen" onClick={() => { this.setState({ windowEnlarge: true }); if (this.props.isExpand) { this.props.isExpand(true); }; }} />}
+            <AbsoluteForm
+              getForm={this.getForm}
+              data={data}
+              record={record}
+              {...formProps}
+              mode={mode}
+              {...otherProps}
+              onSave={this.handleSave}
+              onCancel={this.props.onCancel}
+              operation={operation}
+              beforeSaveFields={beforeSaveFields}
+              resid={resid}
+              dblinkname={dblinkname}
+              saveMode={saveMode}
+              onSingleChange={this.handleSingleChange}
+              uploadConfig={uploadConfig}
+              mediaFieldBaseURL={mediaFieldBaseURL}
+              baseURL={baseURL}
+              labelRequiredList={labelRequiredList}
+            />
+            {hasSubTables &&
+              this.renderSubTablesAbsolute(containerHeight, containerWidth)}
+          </div>
         </Spin>
       );
     }

@@ -151,11 +151,11 @@ class QueryTable extends Component {
   };
   componentDidMount() {
     const clipboard = new ClipboardJS('.copy');
-    clipboard.on('success', function(e) {
+    clipboard.on('success', function (e) {
       message.success('复制成功,可以到任意地方粘贴去啦~~~');
     });
 
-    clipboard.on('error', function(e) {
+    clipboard.on('error', function (e) {
       message.error('复制失败');
     });
   }
@@ -196,19 +196,19 @@ class QueryTable extends Component {
                       设计问卷
                     </Button>
                   ) : (
-                    <Link
-                      to={{
-                        pathname: '/fnmodule',
-                        search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=${item.query_id}`
-                      }}
-                      target="_self"
-                    >
-                      <Button className="stepBtn" type="primary">
-                        <Icon type="setting" />
+                      <Link
+                        to={{
+                          pathname: '/fnmodule',
+                          search: `?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=${item.query_id}`
+                        }}
+                        target="_self"
+                      >
+                        <Button className="stepBtn" type="primary">
+                          <Icon type="setting" />
                         设计问卷
                       </Button>
-                    </Link>
-                  )}
+                      </Link>
+                    )}
                   {this.renderButton(item)}
 
                   <Link
@@ -221,7 +221,7 @@ class QueryTable extends Component {
                     <Button
                       className="stepBtn"
                       type="primary"
-                      disabled={item.query_status === '草稿'}
+                    // disabled={item.query_status === '草稿' }
                     >
                       <Icon type="download" />
                       分析&下载
@@ -235,15 +235,15 @@ class QueryTable extends Component {
                       查看人员
                     </Button>
                   ) : (
-                    <Button
-                      onClick={() => {
-                        this.showSendModalList(item.query_id);
-                      }}
-                    >
-                      <Icon type="eye" />
+                      <Button
+                        onClick={() => {
+                          this.showSendModalList(item.query_id);
+                        }}
+                      >
+                        <Icon type="eye" />
                       查看人员
-                    </Button>
-                  )}
+                      </Button>
+                    )}
                   {item.gift == '1' ? (
                     <Button
                       onClick={() => {
@@ -254,11 +254,11 @@ class QueryTable extends Component {
                       获奖名单
                     </Button>
                   ) : (
-                    <Button disabled>
-                      <Icon type="star" style={{ color: '#f00' }} />
+                      <Button disabled>
+                        <Icon type="star" style={{ color: '#f00' }} />
                       获奖名单
-                    </Button>
-                  )}
+                      </Button>
+                    )}
                   <Button
                     onClick={() => {
                       onCopyQuery(item);

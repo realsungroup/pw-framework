@@ -12,7 +12,6 @@ import { message, Select } from 'antd';
 const { Option } = Select;
 const activeClasssName = 'performance-query_nav_item__active';
 const activeTargetItem = 'performance-query_item_nav_item__active';
-
 /**
  * 绩效查询
  * @author 邓铭
@@ -72,6 +71,7 @@ class PerformanceQuery extends React.Component {
     } catch (error) {
       message.error(error.message);
       console.log(error);
+
     }
   };
   handleNavChange = key => {
@@ -247,6 +247,7 @@ class PerformanceQuery extends React.Component {
                     person={person}
                     type="年中"
                     selectYear={selectYear}
+                    isExpand={(v) => this.props.isExpand(v)}
                   ></AdvantageShortcoming>
                 )}
               </div>
@@ -286,6 +287,7 @@ class PerformanceQuery extends React.Component {
                     person={person}
                     type="年末"
                     selectYear={selectYear}
+                    isExpand={(v) => this.props.isExpand(v)}
                   ></AdvantageShortcoming>
                 )}
               </div>

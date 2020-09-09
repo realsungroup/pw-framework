@@ -132,6 +132,7 @@ class AdvantageShortcoming extends React.Component {
               data={this.state.dataProp}
               record={this.state.advantageShortcoming}
               useAbsolute={true}
+              isExpand={(v) => this.props.isExpand(v)}
             />
           </Spin>
         </div>

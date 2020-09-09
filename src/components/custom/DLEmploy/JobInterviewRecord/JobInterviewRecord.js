@@ -17,7 +17,7 @@ class JobInterviewRecord extends React.Component {
   render() {
     return (
       <TableData
-        baseURL = {this.baseURL}
+        baseURL={this.baseURL}
         resid={617311643033}
         subtractH={520}
         hasBeBtns={true}
@@ -29,13 +29,13 @@ class JobInterviewRecord extends React.Component {
         hasDelete={false}
         hasRowModify={true}
         height="100%"
-        actionBarWidth ={450}
-        downloadBaseURL = {this.dlEmployDownloadURL}
+        actionBarWidth={450}
+        downloadBaseURL={this.dlEmployDownloadURL}
         columnsWidth={{
-          '面试时间':100,
-          '职位名称':80,
-          '当天可预约额度':90,
-          '已预约额度':75,
+          '面试时间': 100,
+          '职位名称': 80,
+          '当天可预约额度': 90,
+          '已预约额度': 75,
         }}
       >
       </TableData>

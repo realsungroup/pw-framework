@@ -24,7 +24,8 @@ class ComprehensiveQuery extends React.Component {
   state = {
     node: {}, //选中的人员信息
     isExpand: true, //左侧展开状态
-    currentTab: this.props.tabKey //当前的tab页
+    currentTab: this.props.tabKey, //当前的tab页
+    hideTree: false//隐藏树组件
   };
 
   constructor(props) {
@@ -46,7 +47,9 @@ class ComprehensiveQuery extends React.Component {
     this.setState({
       currentTab: activeKey
     });
-
+  isExpand = (val) => {
+    this.setState({ hideTree: val })
+  }
   renderTabPane = currentTab => {
     let page = null;
     switch (currentTab) {
@@ -57,7 +60,7 @@ class ComprehensiveQuery extends React.Component {
         page = <WorkInfo person={this.state.node} />;
         break;
       case 'performance':
-        page = <PerformanceQuery person={this.state.node} />;
+        page = <PerformanceQuery person={this.state.node} isExpand={(v) => this.isExpand(v)} />;
         break;
       case 'rating':
         page = <ViewRate person={this.state.node} />;
@@ -119,19 +122,22 @@ class ComprehensiveQuery extends React.Component {
             {this.renderTabPane(currentTab)}
           </div>
         </main>
-        <TreeRel
-          url="api/OrgChart/GetNodesData"
-          resid="609599795438"
-          ColumnOfID="C3_305737857578"
-          ColumnOfPID="C3_417993417686"
-          ProductIDs={this.UserCode}
-          autoExpandParent="true"
-          nameOfID="C3_227192484125"
-          locationOfID="C3_423229407315"
-          nameEnOfID="C3_227192496109"
-          onSelect={this.setSelect}
-          onShrinkChange={this.setShrink}
-        />
+        <div style={this.state.hideTree ? { 'display': 'none' } : {}}>
+          <TreeRel
+
+            url="api/OrgChart/GetNodesData"
+            resid="609599795438"
+            ColumnOfID="C3_305737857578"
+            ColumnOfPID="C3_417993417686"
+            ProductIDs={this.UserCode}
+            autoExpandParent="true"
+            nameOfID="C3_227192484125"
+            locationOfID="C3_423229407315"
+            nameEnOfID="C3_227192496109"
+            onSelect={this.setSelect}
+            onShrinkChange={this.setShrink}
+          />
+        </div>
       </div>
     );
   }

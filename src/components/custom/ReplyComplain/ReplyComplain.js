@@ -28,6 +28,9 @@ const subResid = 648055005558;
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.staffComBaseURL;
 
+const downloadURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.staffComDownloadURL;
+
 const userInfo = JSON.parse(getItem('userInfo'));
 
 /**
@@ -413,6 +416,7 @@ class ReplyComplain extends React.Component {
             <div className="reply-complain__untreated">
               <TableData
                 baseURL={baseURL}
+                download={this.downloadURL}
                 resid={residUntreated}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
@@ -646,8 +650,8 @@ class ReplyComplain extends React.Component {
                     );
                   })
                 ) : (
-                  <span>暂无图片</span>
-                )}
+                    <span>暂无图片</span>
+                  )}
               </div>
 
               <div className="videoProof">
@@ -666,8 +670,8 @@ class ReplyComplain extends React.Component {
                     );
                   })
                 ) : (
-                  <span style={{ textAlign: 'center' }}>暂无视频</span>
-                )}
+                    <span style={{ textAlign: 'center' }}>暂无视频</span>
+                  )}
               </div>
               <hr />
               <h3>负责部门信息</h3>
@@ -735,8 +739,8 @@ class ReplyComplain extends React.Component {
                     );
                   })
                 ) : (
-                  <span>暂无图片</span>
-                )}
+                    <span>暂无图片</span>
+                  )}
               </div>
 
               <div className="videoProof">
@@ -753,8 +757,8 @@ class ReplyComplain extends React.Component {
                     );
                   })
                 ) : (
-                  <span style={{ textAlign: 'center' }}>暂无视频</span>
-                )}
+                    <span style={{ textAlign: 'center' }}>暂无视频</span>
+                  )}
               </div>
               <hr />
 
