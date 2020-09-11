@@ -15,7 +15,7 @@ class PersonnelImport extends React.Component {
     SquareCardArr: [],
     val: null,
   };
-  
+
   render() {
     return (
       <div>
@@ -30,7 +30,7 @@ class PersonnelImport extends React.Component {
               TabsTitle: '人员信息导入',
               OutHeight: '91vh',
               recordFormFormWidth: '90%',
-              hasBeBtns: false,
+              hasBeBtns: true,
               hasModify: false,
               hasDelete: false,
               hasAdd: false,
@@ -41,14 +41,14 @@ class PersonnelImport extends React.Component {
               subtractH: 220,
               actionBarWidth: 220,
               recordFormType: 'modal',
-              isUseFormDefine:false,
+              isUseFormDefine: false,
               // isSetColumnWidth:false,
-              isWrap:true,
+              isWrap: true,
               formProps: {
                 height: 650
               },
-              advSearch:{
-                isRequestFormData:false,
+              advSearch: {
+                isRequestFormData: false,
               },
             },
             {
@@ -67,14 +67,14 @@ class PersonnelImport extends React.Component {
               hasRowView: true,
               subtractH: 220,
               actionBarWidth: 220,
-              isUseFormDefine:false,
+              isUseFormDefine: false,
               // isSetColumnWidth:false,
-              isWrap:true,
+              isWrap: true,
               formProps: {
                 height: 650
               },
-              advSearch:{
-                isRequestFormData:false,
+              advSearch: {
+                isRequestFormData: false,
               },
               recordFormType: 'modal',
             },
@@ -94,14 +94,14 @@ class PersonnelImport extends React.Component {
               hasRowView: true,
               subtractH: 220,
               actionBarWidth: 220,
-              isUseFormDefine:false,
+              isUseFormDefine: false,
               // isSetColumnWidth:false,
-              isWrap:true,
+              isWrap: true,
               formProps: {
                 height: 650
               },
-              advSearch:{
-                isRequestFormData:false,
+              advSearch: {
+                isRequestFormData: false,
               },
               recordFormType: 'modal',
             },

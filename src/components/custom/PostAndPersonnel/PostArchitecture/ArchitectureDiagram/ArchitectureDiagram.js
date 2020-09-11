@@ -277,7 +277,7 @@ class ArchitectureDiagram extends React.Component {
         return false;
       }
     });
-    this.chart.on('exportstart', function(sender, args) {
+    this.chart.on('exportstart', function (sender, args) {
       args.content += `
       <style type="text/css">
         .created > rect {
@@ -338,10 +338,10 @@ class ArchitectureDiagram extends React.Component {
     const newParentNode = this.chart.get(newNode.pid);
     const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${
       newParentNode[displayFileds.firstField]
-    } 下面吗？`;
+      } 下面吗？`;
     const enTip = `Are you sure you want to drag ${
       newNode[displayFileds.firstField]
-    } under ${newParentNode[displayFileds.firstField]}`;
+      } under ${newParentNode[displayFileds.firstField]}`;
     Modal.confirm({
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
       content: (
@@ -1068,7 +1068,18 @@ class ArchitectureDiagram extends React.Component {
       }
     });
   };
-
+  handleAddRoot = async () => {
+    const { pidField, idField, createWindowName } = this.props;
+    const { selectedNode, selectedDate } = this.state;
+    let record = {};
+    record[pidField] = 0;
+    record.updateDate = selectedDate;
+    record.orgSupCode = 0;
+    record.orgSupNumber = 0;
+    record.C3_417654796647 = 0;
+    this.getFormData(record, createWindowName);
+    this.setState({ addBroVisible: true, operation: 'add', record });
+  }
   handleRefresh = async () => {
     const { selectedNode } = this.state;
     await this.getData();
@@ -1187,8 +1198,19 @@ class ArchitectureDiagram extends React.Component {
                   />
                   添加同级
                 </div>
+                <div
+                  className="architecture-diagram_header_icon-button"
+                  onClick={() => this.handleAddRoot()}
+                >
+                  <Icon
+                    type="link"
+                    className="architecture-diagram_header_icon-button__icon"
+                  />
+                  添加根节点
+                </div>
               </>
             )}
+
             <div
               className="architecture-diagram_header_icon-button"
               onClick={this.handleModify}
@@ -1319,7 +1341,7 @@ class ArchitectureDiagram extends React.Component {
                 item[secondaryField] || item[secondaryField] >= 0
                   ? item[secondaryField]
                   : 'N/A'
-              })`}
+                })`}
             </Breadcrumb.Item>
           );
         })}
@@ -1657,14 +1679,14 @@ class ArchitectureDiagram extends React.Component {
                         })}
                       </div>
                     ) : (
-                      <div className="architecture-diagram_unselect-tip">
-                        <Alert
-                          message="尚未选中任何卡片！"
-                          type="info"
-                          showIcon
-                        />
-                      </div>
-                    )}
+                        <div className="architecture-diagram_unselect-tip">
+                          <Alert
+                            message="尚未选中任何卡片！"
+                            type="info"
+                            showIcon
+                          />
+                        </div>
+                      )}
                   </div>
                 )}
                 {!historyMin && (
@@ -1705,19 +1727,19 @@ class ArchitectureDiagram extends React.Component {
                             })}
                           </Timeline>
                         ) : (
-                          <div className="architecture-diagram_unselect-tip">
-                            <Alert message="无历史记录" type="info" showIcon />
-                          </div>
-                        )
+                            <div className="architecture-diagram_unselect-tip">
+                              <Alert message="无历史记录" type="info" showIcon />
+                            </div>
+                          )
                       ) : (
-                        <div className="architecture-diagram_unselect-tip">
-                          <Alert
-                            message="尚未选中任何卡片！"
-                            type="info"
-                            showIcon
-                          />
-                        </div>
-                      )}
+                          <div className="architecture-diagram_unselect-tip">
+                            <Alert
+                              message="尚未选中任何卡片！"
+                              type="info"
+                              showIcon
+                            />
+                          </div>
+                        )}
                     </div>
                   </div>
                 )}
