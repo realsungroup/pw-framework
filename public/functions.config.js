@@ -2260,7 +2260,7 @@ window[641990842014] = {
   props: {
     resid: '534530373089',
     replaceBaseUrl: 'http://10.108.2.66:5011/',
-    baseURL: 'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.21.41:6001',
   }
 };
 window[641992029202] = {
@@ -2269,7 +2269,7 @@ window[641992029202] = {
   props: {
     resid: '534530373089',
     replaceBaseUrl: 'http://10.108.2.66:5011/',
-    baseURL: 'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.21.41:6001',
 
   }
 };
@@ -2279,7 +2279,7 @@ window[641992076936] = {
   props: {
     resid: '534957565681',
     replaceBaseUrl: 'http://10.108.2.66:5011/',
-    baseURL: 'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.21.41:6001',
 
   }
 };
@@ -2289,7 +2289,7 @@ window[641992112255] = {
   props: {
     resid: '537391112338',
     replaceBaseUrl: 'http://10.108.2.66:5011/',
-    baseURL: 'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.21.41:6001',
 
   }
 };
@@ -2300,7 +2300,7 @@ window[641992135890] = {
   props: {
     resid: '537532977680',
     replaceBaseUrl: 'http://10.108.2.66:5011/',
-    baseURL: 'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.21.41:6001',
 
   }
 };
@@ -4758,7 +4758,7 @@ window[642855262376] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '待审核招聘需求', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:1001/',
+    baseURL: 'http://10.108.21.41:6001/',
     downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 518463420928,
     mainTableProps: {
@@ -4792,7 +4792,7 @@ window[642855262376] = {
         hasBeBtns: true,
         hasRowDelete: false,
         isSetColumnWidth: false,
-        baseURL: 'http://10.108.2.66:1001/',
+        baseURL: 'http://10.108.21.41:6001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
         advSearch: {
           isRequestFormData: false,
@@ -4806,7 +4806,7 @@ window[642855273462] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '已审核招聘需求', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:1001/',
+    baseURL: 'http://10.108.21.41:6001/',
     downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 519213761827,
     mainTableProps: {
@@ -4841,7 +4841,7 @@ window[642855273462] = {
         advSearch: {
           isRequestFormData: false,
         },
-        baseURL: 'http://10.108.2.66:1001/',
+        baseURL: 'http://10.108.21.41:6001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
       }
     }
@@ -4851,7 +4851,7 @@ window[642855707652] = {
   name: 'TableData', // 组件名称，
   title: '已拒绝招聘需求', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:1001/',
+    baseURL: 'http://10.108.21.41:6001/',
     downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 518448231083,
     actionBarWidth: 200,
@@ -4878,7 +4878,7 @@ window[642855719230] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '招聘需求管理', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:1001/',
+    baseURL: 'http://10.108.21.41:6001/',
     downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 518447767466,
     mainTableProps: {
@@ -4907,7 +4907,7 @@ window[642855719230] = {
         hasBeBtns: true,
         // isSetColumnWidth:false,
         noWidthFields: 'C3_522692208296',
-        baseURL: 'http://10.108.2.66:1001/',
+        baseURL: 'http://10.108.21.41:6001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
         advSearch: {
           isRequestFormData: false,
@@ -4917,7 +4917,7 @@ window[642855719230] = {
         hasBeBtns: true,
         // isUseFormDefine: false,   
         noWidthFields: 'C3_518436882584',
-        baseURL: 'http://10.108.2.66:1001/',
+        baseURL: 'http://10.108.21.41:6001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
         advSearch: {
           isRequestFormData: false,
@@ -4930,7 +4930,7 @@ window[642855734719] = {
   name: 'TableData', // 组件名称，
   title: '需总部审批', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:1001/',
+    baseURL: 'http://10.108.21.41:6001/',
     downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 578151493683,
     actionBarWidth: 200,
@@ -5023,7 +5023,7 @@ window[642855770350] = {
   name: 'TableData', // 组件名称，
   title: '我的招聘申请', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.21.41:6001',
     downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 518460953577,
     actionBarWidth: 300,
@@ -5056,7 +5056,7 @@ window[642855780253] = {
   name: 'MainTableSubTables',
   title: '我的招聘审批', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:1001/',
+    baseURL: 'http://10.108.21.41:6001/',
     downloadBaseURL: 'http://10.108.2.66:1000/',
     resid: 518442541615,
     mainTableProps: {
@@ -5091,7 +5091,7 @@ window[642855780253] = {
         hasRowDelete: false,
         // isSetColumnWidth:false,
         noWidthFields: 'C3_518436882584',
-        baseURL: 'http://10.108.2.66:1001/',
+        baseURL: 'http://10.108.21.41:6001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
         advSearch: {
           isRequestFormData: false,
@@ -8906,7 +8906,7 @@ window[645287046055] = {
   name: 'AchievementsGradeAppraising', // 组件名称，
   title: '绩效评级评优', // 功能模块名称
   props: {
-    tableDataBaseURL: 'http://10.108.2.66:1001/',
+    tableDataBaseURL: 'http://10.108.21.41:6001/',
     mangerConfig: {
       '12345': {
         //总经理
@@ -8915,7 +8915,7 @@ window[645287046055] = {
         iframeResid: 645286591505,
         replaceBaseUrl: 'http://10.108.2.66:1000',
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.21.41:6001/',
       },
       '169': {
         //总监
@@ -8924,7 +8924,7 @@ window[645287046055] = {
         iframeResid: 645288462780,
         replaceBaseUrl: 'http://10.108.2.66:1000',
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.21.41:6001/',
       }
     }
   }

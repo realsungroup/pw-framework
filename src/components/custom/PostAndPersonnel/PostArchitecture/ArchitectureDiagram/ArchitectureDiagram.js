@@ -445,6 +445,7 @@ class ArchitectureDiagram extends React.Component {
         selectedNode: newSelectedNode,
         treeData
       });
+      console.log(nodes)
       this.chart.load(nodes);
       this._nodes = [...this.chart.config.nodes];
       for (var i = 0; i < nodes.length; i++) {
