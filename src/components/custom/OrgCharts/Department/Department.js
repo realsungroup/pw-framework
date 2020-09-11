@@ -329,7 +329,18 @@ class Department extends React.Component {
       breadcrumb.unshift(selectedNode);
     }
   };
-
+  handleAddRoot = async () => {
+    const { pidField, idField, createWindowName } = this.props;
+    const { selectedNode, selectedDate } = this.state;
+    let record = {};
+    record[pidField] = 0;
+    record.updateDate = selectedDate;
+    record.orgSupCode = 0;
+    record.orgSupNumber = 0;
+    record.C3_417654796647 = 0;
+    this.getFormData(record, createWindowName);
+    this.setState({ addBroVisible: true, operation: 'add', record });
+  }
   /**
    * 添加节点
    */
@@ -340,7 +351,7 @@ class Department extends React.Component {
       return message.info('请选择一个卡片');
     }
     let record = {};
-    console.log(selectedNode)
+    console.log(selectedNode, pidField)
     if (level === 'sub') {
       record[pidField] = selectedNode[idField];
       record.updateDate = selectedDate;
@@ -872,9 +883,21 @@ class Department extends React.Component {
                   />
                   添加同级
                 </div>
-
+                <div
+                  className="department-chart_header_icon-button"
+                  onClick={() => this.handleAddRoot()}
+                >
+                  <Icon
+                    type="link"
+                    className="department-chart_header_icon-button__icon"
+                  />
+                  添加根节点
+                </div>
               </>
             )}
+
+
+
             <div
               className="department-chart_header_icon-button"
               onClick={() => this.handleVoid()}
@@ -885,6 +908,8 @@ class Department extends React.Component {
               />
                   作废
                 </div>
+
+
             <div
               className="department-chart_header_icon-button"
               onClick={() => this.handleShenhe()}
