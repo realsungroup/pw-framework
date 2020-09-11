@@ -158,8 +158,9 @@ export const getRules = controlData => {
     }
   }
 
-  // 日期 | 日期时间 | 长文字 | 下拉框 没有长度限制
+  // 小数 | 日期 | 日期时间 | 长文字 | 下拉框  没有长度限制
   if (
+    colType !== 2 &&
     colType !== 3 &&
     colType !== 4 &&
     colType !== 8 &&
