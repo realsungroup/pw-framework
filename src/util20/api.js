@@ -694,4 +694,13 @@ http.createApi('saveUserAttMonth', {
   url: '/api/Account/SaveUserAttMonth'
 });
 
+/**
+ * 获取表格数据（post 请求）
+ * 参数:{ resid, cmswhere, ... }；参数和 getTable 的参数一致
+ */
+http.createApi('getTablePost', {
+  method: 'post',
+  url: '/api/100/table/PostRetrieve'
+});
+
 export default http;

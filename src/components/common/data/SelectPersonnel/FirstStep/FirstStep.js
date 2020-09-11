@@ -723,7 +723,7 @@ export default class FirstStep extends React.Component {
     //   ','
     // )})`;
     let where = '';
-    const cName = this.props.personPrimaryKeyField;
+    const cName = `Convert(char,${this.props.personPrimaryKeyField})`;
     values.forEach((value, index) => {
       if (index !== values.length - 1) {
         where += `${cName} = '${value.toString().trim()}' or `;
@@ -751,7 +751,7 @@ export default class FirstStep extends React.Component {
     const where = this.getWhereBySheet(sheet1, excelColName);
     let res;
     try {
-      res = await http().getTable({
+      res = await http().getTablePost({
         resid: subResid,
         cmswhere: where,
         dblinkname

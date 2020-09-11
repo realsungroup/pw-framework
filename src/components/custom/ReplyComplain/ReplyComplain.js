@@ -416,7 +416,7 @@ class ReplyComplain extends React.Component {
             <div className="reply-complain__untreated">
               <TableData
                 baseURL={baseURL}
-                download={this.downloadURL}
+                download={downloadURL}
                 resid={residUntreated}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
