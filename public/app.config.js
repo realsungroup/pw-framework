@@ -36,16 +36,16 @@ window.pwConfig = {
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
       onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
-      headquartersBaseURL: 'http://.realsun.me:7071', //总部工作流管理-总部工作流
-      headquartersDownloadURL: 'http://ngrok9.realsun.me:7071', //总部工作流管理-总部工作流下载URl
+      headquartersBaseURL: 'http://10.108.21.41:6001', //总部工作流管理-总部工作流
+      headquartersDownloadURL: 'http://10.108.21.41:6000', //总部工作流管理-总部工作流下载URl
       WzBaseURL: 'http://ngrok8.realsun.me:7071', //物资管理
       WzDownloadURL: 'http://ngrok8.realsun.me:7071', //物资管理
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
-      AchievementsBaseURL: 'http://10.108.2.66:5002/', //绩效定制页面基地址
+      AchievementsBaseURL: 'http://10.108.21.41:6001/', //绩效定制页面基地址
       RBASchedulingBaseURL: 'http://10.108.21.41:2001', //RBA排班基地址
-      RBASchedulingDownloadBaseURL: 'http://ngrok10.realsun.me:7071', //RBA排班下载基地址
-      WuxiHr03BaseURL: 'http://ngrok14.realsun.me:7071', //80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL: 'http://ngrok13.realsun.me:7071', //80端口非定制组件下载基地址
+      RBASchedulingDownloadBaseURL: 'http://10.108.21.41:2000', //RBA排班下载基地址
+      WuxiHr03BaseURL: 'http://10.108.21.41:2001', //80端口非定制组件基地址
+      WuxiHr03DownloadBaseURL: 'http://10.108.21.41:2000', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
       importTemplateDownloadURL:

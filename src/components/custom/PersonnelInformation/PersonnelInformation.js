@@ -8,7 +8,7 @@ import './PersonnelInformation.less';
 const tabPaneStyle = { height: 'calc(100vh - 60px)' };
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureBaseURL;
-  const downloadBaseURL = window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureDownloadBaseURL;
+const downloadBaseURL = window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureDownloadBaseURL;
 /**
  * 人事信息
  */
@@ -95,7 +95,7 @@ class PersonnelInformation extends React.Component {
               hasGroup={role === 'manager' ? false : true}
               hasDepartmentFilter={role === 'manager' ? false : true}
               role={role}
-              rootId={134}
+              rootId={60867}
             />
           </TabPane>
         </Tabs>
