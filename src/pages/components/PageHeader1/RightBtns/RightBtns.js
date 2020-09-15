@@ -31,8 +31,15 @@ import ReactMarkdown from 'react-markdown';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import ReminderList from './ReminderList';
 import PersonCenter from '../../../PersonCenter';
+import AttendanceMonth from '../../AttendanceMonth';
+import { getGBEMClassName } from 'Util20/util';
+
+const hasAttendanceMonth =
+  window.pwConfig[process.env.NODE_ENV].hasAttendanceMonth;
 
 const FormItem = Form.Item;
+const prefix = 'right-btns';
+const c = getGBEMClassName(prefix);
 
 class RightBtns extends React.Component {
   constructor(props) {
@@ -57,7 +64,7 @@ class RightBtns extends React.Component {
     };
   }
 
-  componentDidMount = () => { };
+  componentDidMount = () => {};
 
   getDataAnalyseData = async () => {
     let res;
@@ -168,7 +175,7 @@ class RightBtns extends React.Component {
       this.props.form.getFieldValue('password2') !== undefined &&
       this.props.form.getFieldValue('password2') !== '' &&
       this.props.form.getFieldValue('password1') ===
-      this.props.form.getFieldValue('password2')
+        this.props.form.getFieldValue('password2')
     ) {
       try {
         const response = await changePassword(
@@ -356,7 +363,12 @@ class RightBtns extends React.Component {
       personCenterVisible
     } = this.state;
     const { getFieldDecorator } = this.props.form;
-    const { intl } = this.props;
+    const {
+      intl,
+      currentAttendanceMonth,
+      onAttendanceChange,
+      attendanceMonthList
+    } = this.props;
     return (
       <div className="new-home__right-btns">
         <HeaderBtn
@@ -365,6 +377,18 @@ class RightBtns extends React.Component {
           onClick={this.handleModifyPasswordBtnClick}
           tip={<FM id="RightBtns.ChangePassword" defaultMessage="修改密码" />}
         />
+
+        {hasAttendanceMonth && (
+          <div className={c('attendance-month-wrapper')}>
+            <Icon type="switcher" className={c('attendance-month-icon')} />
+            <AttendanceMonth
+              className={c('attendance-month')}
+              currentAttendanceMonth={currentAttendanceMonth}
+              onAttendanceChange={onAttendanceChange}
+              attendanceMonthList={attendanceMonthList}
+            ></AttendanceMonth>
+          </div>
+        )}
 
         <HeaderBtn
           className="right-btns__header-btn"
@@ -462,6 +486,7 @@ class RightBtns extends React.Component {
           onClick={this.handleAboutClick}
           tip={<FM id="RightBtns.About" defaultMessage="关于" />}
         />
+
         <Modal
           visible={aboutModalVisible}
           width={'500px'}

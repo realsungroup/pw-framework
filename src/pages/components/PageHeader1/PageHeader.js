@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import folderPng from '../../Desktop/assets/folder.png'
+import folderPng from '../../Desktop/assets/folder.png';
 import RightBtns from './RightBtns';
 import classNames from 'classnames';
 import logoImg from '../../../assets/logo-26.png';
@@ -11,6 +11,7 @@ import qs from 'qs';
 import { connect } from 'react-redux';
 import HeaderBtn from './HeaderBtn';
 import Img from 'Common/ui/Img';
+import AttendanceMonth from '../AttendanceMonth';
 
 const SubMenu = Menu.SubMenu;
 const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
@@ -159,22 +160,6 @@ class PageHeader extends React.Component {
             </div>
           </div>
         </div>
-
-        <div className="page-header__attendance-month">
-          <span className="page-header__attendance-title">考勤月份</span>
-          <Select
-            value={currentAttendanceMonth}
-            className="page-header__attendance-month-select"
-            onChange={onAttendanceChange}
-          >
-            {attendanceMonthList.map(attendanceMonth => (
-              <Option value={attendanceMonth.value} style={{ width: 100 }}>
-                {attendanceMonth.label}
-              </Option>
-            ))}
-          </Select>
-        </div>
-
         <div className="page-header__client-logo">
           <Link to="/" style={{ display: 'block' }}>
             <Img
@@ -254,7 +239,12 @@ class PageHeader extends React.Component {
           closable={false}
           width={300}
         >
-          <RightBtns onLockScreen={this.props.onLockScreen} />
+          <RightBtns
+            onLockScreen={this.props.onLockScreen}
+            currentAttendanceMonth={currentAttendanceMonth}
+            onAttendanceChange={onAttendanceChange}
+            attendanceMonthList={attendanceMonthList}
+          />
         </Drawer>
       </div>
     );
@@ -311,9 +301,13 @@ const ActiveAppList = React.memo(
                 }}
               >
                 <div className="new-home__page-header__active-app__title">
-                  {app.appIconUrl &&  (
-                    forbidChange ? (
-                      <Img src={app.appIconUrl} className="new-home-app-icon" defaultImg={folderPng}/>
+                  {app.appIconUrl &&
+                    (forbidChange ? (
+                      <Img
+                        src={app.appIconUrl}
+                        className="new-home-app-icon"
+                        defaultImg={folderPng}
+                      />
                     ) : (
                       <div className="overlay">
                         <div className="overlay-inner"></div>
@@ -323,8 +317,7 @@ const ActiveAppList = React.memo(
                           defaultImg={folderPng}
                         />
                       </div>
-                    )
-                  ) }
+                    ))}
                   <span
                     className={
                       app.isActive
