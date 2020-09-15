@@ -566,10 +566,10 @@ class IDLTransferHr extends Component {
     let n = 0;
     while (n < arr.length) {
       arr[n] = arr[n].substring(2, arr[n].length - 1);
-      if (arr[n] == "653477829853") {
+      if ((arr[n] == "653477829853") || arr[n] == ("653484751513") || arr[n] == ("653479674643")) {
         HRPreApprove = 'Y';
       }
-      if (arr[n] == "653477850557") {
+      if ((arr[n] == "653477850557") || (arr[n] == "653484767124") || (arr[n] == "653479693081")) {
         HCPreApprove = 'Y'
       }
       n++;
