@@ -216,7 +216,7 @@ class QueryTable extends Component {
                       pathname: '/fnmodule',
                       search: `?resid=问卷统计分析&recid=610653889243&type=问卷系统&title=问卷统计分析&questionnaireRecid=${item.REC_ID}`
                     }}
-                    target="_self"
+                    target="_blank"
                   >
                     <Button
                       className="stepBtn"

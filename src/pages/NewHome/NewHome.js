@@ -354,6 +354,7 @@ class Home extends React.Component {
 
   handleRemindItemClick = (resid, url) => {
     const { onOpenWindow } = this.props;
+    console.log(this.props, resid)
     const app = this.state.allApps.find(item => {
       return item.ResID == resid;
     });
