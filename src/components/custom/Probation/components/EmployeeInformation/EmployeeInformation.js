@@ -120,27 +120,27 @@ class EmployeeInformation extends React.Component {
     const { employeeInformation, roleName, editable } = this.props;
     let value = employeeInformation.instructor
       ? {
-          label: employeeInformation.instructor,
-          key: employeeInformation.instructorID
-        }
+        label: employeeInformation.instructor,
+        key: employeeInformation.instructorID
+      }
       : undefined;
     let valueSemi = employeeInformation.instructorDirectorId
       ? {
-          label: employeeInformation.instructorDirectorName,
-          key: employeeInformation.instructorDirectorId
-        }
+        label: employeeInformation.instructorDirectorName,
+        key: employeeInformation.instructorDirectorId
+      }
       : undefined;
-      let value2 = employeeInformation.C3_637084526216
+    let value2 = employeeInformation.C3_637084526216
       ? {
-          label: employeeInformation.C3_637084539039,
-          key: employeeInformation.C3_637084526216
-        }
+        label: employeeInformation.C3_637084539039,
+        key: employeeInformation.C3_637084526216
+      }
       : undefined;
     let valueSemi2 = employeeInformation.instructorDirectorId2
       ? {
-          label: employeeInformation.instructorDirectorName2,
-          key: employeeInformation.instructorDirectorId2
-        }
+        label: employeeInformation.instructorDirectorName2,
+        key: employeeInformation.instructorDirectorId2
+      }
       : undefined;
     let { fetching, data } = this.state;
     return (
@@ -170,8 +170,8 @@ class EmployeeInformation extends React.Component {
               </span>
               {employeeInformation.joinCompanyDate
                 ? moment(employeeInformation.joinCompanyDate).format(
-                    'YYYY-MM-DD'
-                  )
+                  'YYYY-MM-DD'
+                )
                 : 'UNKNOWN'}
             </Col>
           </Row>
@@ -275,8 +275,8 @@ class EmployeeInformation extends React.Component {
                   </span>
                 </div>
               ) : (
-                employeeInformation.instructor
-              )}
+                  employeeInformation.instructor
+                )}
             </Col>
             <Col span={12}>
               <span className="employee-imformation_lable">辅导员2/Mentor2:</span>
@@ -341,11 +341,11 @@ class EmployeeInformation extends React.Component {
                   </span>
                 </div>
               ) : (
-                employeeInformation.instructor
-              )}
+                  employeeInformation.C3_637084539039
+                )}
             </Col>
           </Row>
-          
+
         </Card>
       </div>
     );
