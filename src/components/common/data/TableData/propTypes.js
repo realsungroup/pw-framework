@@ -64,7 +64,7 @@ export const defaultProps = {
     validationFields: [],
     isUseTableFields: true,
     fields: [],
-    isRequestFormData: true,
+    isRequestFormData: true
   },
   hasRowSelection: false,
   importConfig: {
@@ -84,7 +84,7 @@ export const defaultProps = {
   successMessageComponent: 'message',
   isSetColumnWidth: true,
   isWrap: false,
-  backendButtonPopConfirmProps: {},
+  backendButtonPopConfirmProps: {}
 };
 
 export const propTypes = {
@@ -505,7 +505,7 @@ export const propTypes = {
      * 是否在高级搜索中请求表单控件渲染所需的数据（不请求的话，会使用外部传入的）
      * 默认：true
      */
-    isRequestFormData: PropTypes.bool,
+    isRequestFormData: PropTypes.bool
   }),
 
   /**
@@ -844,14 +844,14 @@ export const propTypes = {
    * 当选择列与第一列出现空隙时，可以设置某列没有宽度来修复
    * 默认：-
    */
-  noWidthFields: PropTypes.oneOfType([PropTypes.string, PropTypes.array,]),
+  noWidthFields: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 
   /**
    * 没有宽度的字段的索引，从 1 开始
    * 当选择列与第一列出现空隙时，可以设置某列没有宽度来修复。如： 1 表示第一列没有宽度；[1, 2] 表示第一列和第二列没有宽度
    * 默认：-
    */
-  noWidthFieldsIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.array,]),
+  noWidthFieldsIndex: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
 
   /**
    * 上传文件的配置
@@ -869,7 +869,7 @@ export const propTypes = {
     /**
      * 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
      */
-    url: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired
   }),
 
   /**
@@ -883,7 +883,7 @@ export const propTypes = {
    * 默认：-
    */
   beforeSaveConfig: PropTypes.shape({
-    operaction: PropTypes.oneOf(['add', 'modify']),
+    operaction: PropTypes.oneOf(['add', 'modify'])
   }),
 
   /**
@@ -897,4 +897,10 @@ export const propTypes = {
    * 默认：-
    */
   recordsMap: PropTypes.func,
+
+  /**
+   * 记录表单隐藏的字段（控件），数组元素为内部字段字符串。如 ["name", "age"]
+   * 默认：-
+   */
+  recordFormHideFields: PropTypes.array
 };
