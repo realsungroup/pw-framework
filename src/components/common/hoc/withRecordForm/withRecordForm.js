@@ -73,7 +73,8 @@ export function withRecordForm(options = {}) {
         uploadConfig,
         mediaFieldBaseURL,
         beforeSaveConfig,
-        labelRequiredList
+        labelRequiredList,
+        recordFormHideFields
       }) => {
         const FormDataProps = {
           data,
@@ -100,6 +101,7 @@ export function withRecordForm(options = {}) {
           mediaFieldBaseURL,
           beforeSaveConfig,
           labelRequiredList,
+          recordFormHideFields,
           ...formDataProps
         };
         const containerProps = {

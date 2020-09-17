@@ -6,12 +6,15 @@ import Control from '../Control';
 import { propTypes, defaultProps } from './propTypes';
 import { injectIntl } from 'react-intl';
 import './PwForm.less';
-import { getIntlVal } from 'Util20/util';
+import { getIntlVal, getGBEMClassName } from 'Util20/util';
 import classNames from 'classnames';
 
 const Fragment = React.Fragment;
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
+
+const prefix = 'pw-form';
+const c = getGBEMClassName(prefix);
 
 const getActiveKey = data => {
   const activeKey = [];
@@ -69,7 +72,7 @@ class PwForm extends React.Component {
   componentDidMount = () => {
     const { getForm, form } = this.props;
     getForm && getForm(form);
-  }
+  };
 
   handleCollapseChange = activeKey => {
     this.setState({ activeKey });
@@ -84,10 +87,10 @@ class PwForm extends React.Component {
           {colCount === 1 ? (
             data.map(dateItem => this.renderFormItem(dateItem))
           ) : (
-              <LzRowCols renderData={data} keyName="id" colCount={colCount}>
-                {dateItem => this.renderFormItem(dateItem)}
-              </LzRowCols>
-            )}
+            <LzRowCols renderData={data} keyName="id" colCount={colCount}>
+              {dateItem => this.renderFormItem(dateItem)}
+            </LzRowCols>
+          )}
         </Fragment>
       );
     }
@@ -132,6 +135,7 @@ class PwForm extends React.Component {
       baseURL,
       uploadConfig,
       mediaFieldBaseURL,
+      recordFormHideFields
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -151,6 +155,9 @@ class PwForm extends React.Component {
         label={label}
         labelCol={{ span: labelCol || 8 }}
         wrapperCol={{ span: wrapperCol || 16 }}
+        className={classNames({
+          [`${c('form-item--hide')}`]: Array.isArray(recordFormHideFields) && recordFormHideFields.includes(id)
+        })}
       >
         {getFieldDecorator(dataItem.id, options)(
           <Control
@@ -219,7 +226,7 @@ class PwForm extends React.Component {
       labelControllArr,
       baseURL,
       uploadConfig,
-      mediaFieldBaseURL,
+      mediaFieldBaseURL
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -333,7 +340,9 @@ class PwForm extends React.Component {
         style={{ width: _width, height: _height }}
       >
         {/* body */}
-        <Form className="pw-form__body" style={formBodyStyle}>{this.renderForm()}</Form>
+        <Form className="pw-form__body" style={formBodyStyle}>
+          {this.renderForm()}
+        </Form>
         {/* footer */}
         <PwFormFooter
           hasEdit={hasEdit}
