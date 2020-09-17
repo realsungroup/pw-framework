@@ -243,7 +243,7 @@ class SoleQuery extends Component {
         // };
         window.open(
           window.location.origin +
-            '?resid=615375286006&recid=615375314499&type=%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83&title=%E8%AF%BE%E7%A8%8B%E8%B5%84%E6%BA%90&success=true'
+          '?resid=615375286006&recid=615375314499&type=%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83&title=%E8%AF%BE%E7%A8%8B%E8%B5%84%E6%BA%90&success=true'
         );
         window.parent.close();
       }
@@ -331,6 +331,7 @@ class SoleQuery extends Component {
   renderGetSingleChoice(item, index) {
     return (
       <div className="choice" key={item.question_id}>
+        1151
         <div className="query-set__questionTopic">
           <span className="questionOrder">{index + 1}.</span>{' '}
           {item.question_must === '1' ? <span className="mark">*</span> : ''}
@@ -351,27 +352,27 @@ class SoleQuery extends Component {
                 <Radio value={option.option_id}>
                   {option.option_content}
                   {item.result === option.option_id &&
-                  option.option_write === '1' ? (
-                    <Input
-                      value={option.inputValue}
-                      onChange={e =>
-                        this.handleSingleInputChange(
-                          item.question_id,
-                          option.option_id,
-                          e.target.value
-                        )
-                      }
-                      style={{
-                        width: 200,
-                        height: 15,
-                        borderRadius: 0,
-                        border: 'none',
-                        borderBottom: '1px solid #000'
-                      }}
-                    />
-                  ) : (
-                    ''
-                  )}
+                    option.option_write === '1' ? (
+                      <Input
+                        value={option.inputValue}
+                        onChange={e =>
+                          this.handleSingleInputChange(
+                            item.question_id,
+                            option.option_id,
+                            e.target.value
+                          )
+                        }
+                        style={{
+                          width: 200,
+                          height: 15,
+                          borderRadius: 0,
+                          border: 'none',
+                          borderBottom: '1px solid #000'
+                        }}
+                      />
+                    ) : (
+                      ''
+                    )}
                 </Radio>
               </div>
             );
@@ -426,8 +427,8 @@ class SoleQuery extends Component {
                     }}
                   />
                 ) : (
-                  ''
-                )}
+                    ''
+                  )}
               </div>
             );
           })}
@@ -841,7 +842,7 @@ class SoleQuery extends Component {
               }}
               title="上传答案"
               showFields={['question_id', 'question_topic']}
-              // width='50%'
+            // width='50%'
             />
           ) : null}
           <Modal
@@ -866,8 +867,8 @@ class SoleQuery extends Component {
                   />
                 </p>
               ) : (
-                ''
-              )}
+                  ''
+                )}
             </div>
           </Modal>
         </div>

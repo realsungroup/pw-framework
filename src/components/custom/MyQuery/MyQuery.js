@@ -387,6 +387,7 @@ class MyQuery extends React.Component {
     return (
       <Spin spinning={loading}>
         <div className="query">
+
           <div className="query-top">
             <Link
               to={{

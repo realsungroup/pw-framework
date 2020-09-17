@@ -125,7 +125,7 @@ class ExamAnalyze extends React.Component {
 
   renderDepartment = () => {
     const { selectedDepartmentRecord } = this.state;
-    console.log("selectedDepartmentRecord",selectedDepartmentRecord)
+    console.log("selectedDepartmentRecord", selectedDepartmentRecord)
     if (selectedDepartmentRecord) {
       return selectedDepartmentRecord.deptname;
     }
@@ -237,14 +237,14 @@ class ExamAnalyze extends React.Component {
     const departmentArr = [],
       levelArr = [];
     resData.forEach(item => {
-      console.log("item",item)
+      console.log("item", item)
       const tempDepartment = departmentArr.find(
         depItem => depItem.id === item.dept
       );
       if (!tempDepartment) {
         departmentArr.push({
           name: item[departmentNameKey],
-          deptname:item[departmentName],
+          deptname: item[departmentName],
           id: item.dept
         });
       }
@@ -493,7 +493,7 @@ class ExamAnalyze extends React.Component {
                     this.getData(
                       null,
                       this.state.selectedLevelRecord &&
-                        this.state.selectedLevelRecord.C3_587136281870
+                      this.state.selectedLevelRecord.C3_587136281870
                     );
                   }}
                   style={{ marginLeft: 4 }}
@@ -518,7 +518,7 @@ class ExamAnalyze extends React.Component {
                     this.setState({ selectedLevelRecord: null });
                     this.getData(
                       this.state.selectedDepartmentRecord &&
-                        this.state.selectedDepartmentRecord.DEP_NAME,
+                      this.state.selectedDepartmentRecord.DEP_NAME,
                       null
                     );
                   }}

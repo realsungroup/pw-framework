@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './QuerySet.less';
+import { Link } from 'react-router-dom';
+
 import {
   Modal,
   Input,
@@ -11,7 +13,8 @@ import {
   Switch,
   message,
   Popconfirm,
-  Spin
+  Spin,
+  Icon
 } from 'antd';
 import moment from 'moment';
 import http from '../../../util20/api';
@@ -125,8 +128,8 @@ class QuerySet extends Component {
       giftStyle: '',
       loading: false,
       importQuestions: template,
-      isShowProgress:false,
-      taskList:[]
+      isShowProgress: false,
+      taskList: []
 
     };
   }
@@ -235,7 +238,7 @@ class QuerySet extends Component {
   };
   handleAddAloneOk = () => {
     const { activeQuestionType, questions, queryId } = this.state;
-    this.setState({ isShowProgress:true });
+    this.setState({ isShowProgress: true });
     let data;
     switch (activeQuestionType) {
       case '1': {
@@ -331,9 +334,9 @@ class QuerySet extends Component {
         break;
       }
     }
-    console.log('zz',data);
+    console.log('zz', data);
     this.setState({
-      taskList:data
+      taskList: data
     })
     // http()
     //       .saveRecordAndSubTables({
@@ -529,18 +532,18 @@ class QuerySet extends Component {
                       }
                     />
                   ) : (
-                    <Input
-                      value={option.value}
-                      placeholder="其他"
-                      onChange={e =>
-                        this.handleSingleOptionValueChange(
-                          e.target.value,
-                          index
-                        )
-                      }
-                      style={{ width: 800 }}
-                    />
-                  )}
+                      <Input
+                        value={option.value}
+                        placeholder="其他"
+                        onChange={e =>
+                          this.handleSingleOptionValueChange(
+                            e.target.value,
+                            index
+                          )
+                        }
+                        style={{ width: 800 }}
+                      />
+                    )}
                   <Button
                     icon="delet"
                     onClick={() => {
@@ -589,15 +592,15 @@ class QuerySet extends Component {
                     }
                   />
                 ) : (
-                  <Input
-                    value={option.value}
-                    onChange={e =>
-                      this.handleMultiOptionValueChange(e.target.value, index)
-                    }
-                    placeholder="其他"
-                    style={{ width: 800 }}
-                  />
-                )}
+                    <Input
+                      value={option.value}
+                      onChange={e =>
+                        this.handleMultiOptionValueChange(e.target.value, index)
+                      }
+                      placeholder="其他"
+                      style={{ width: 800 }}
+                    />
+                  )}
                 <Button
                   onClick={() => {
                     this.deleMultiOption(index, option.option_id);
@@ -656,14 +659,14 @@ class QuerySet extends Component {
     this.setState({ activeQuestionType: e.target.value });
   };
   handleDateChange = (date, dateStrings) => {
-    let dateValue = date.length?date:[null,null]
+    let dateValue = date.length ? date : [null, null]
     // console.log(dateStrings);
     console.log(dateValue);
     // console.log('选择的日期', dates[0]._d);
     this.setState({
       startDate: dateValue[0],
       endDate: dateValue[1]
-    },()=>console.log(this.state));
+    }, () => console.log(this.state));
   };
   handlequerSetNameChange = e => {
     // console.log(e.target.value);
@@ -679,7 +682,7 @@ class QuerySet extends Component {
   };
   //获取指定问卷试题
   getThisQueryQuestions = queryId => {
-    
+
     this.setState({ loading: true });
     // console.log('问卷试题表中问卷Id', queryId);
     http()
@@ -697,7 +700,7 @@ class QuerySet extends Component {
       })
       .catch(err => {
         console.error(err);
-        this.setState({loading:false})
+        this.setState({ loading: false })
         message.error('queryset获取问卷试题', err.message);
       });
   };
@@ -988,18 +991,18 @@ class QuerySet extends Component {
                     {option.option_content}
                   </Radio>
                 ) : (
-                  <Radio value={option.option_content}>
-                    {option.option_content}{' '}
-                    <Input
-                      className="WriteInut"
-                      style={{
-                        borderRadius: 0,
-                        border: 'none',
-                        borderBottom: '1px solid #000'
-                      }}
-                    />
-                  </Radio>
-                )}
+                    <Radio value={option.option_content}>
+                      {option.option_content}{' '}
+                      <Input
+                        className="WriteInut"
+                        style={{
+                          borderRadius: 0,
+                          border: 'none',
+                          borderBottom: '1px solid #000'
+                        }}
+                      />
+                    </Radio>
+                  )}
               </div>
             );
           })}
@@ -1090,22 +1093,22 @@ class QuerySet extends Component {
                     {option.option_content}
                   </Checkbox>
                 ) : (
-                  <Checkbox
-                    value={option.option_content}
-                    style={{ marginTop: 15 }}
-                  >
-                    {option.option_content}
-                    <Input
-                      className="WriteInut"
-                      style={{
-                        borderRadius: 0,
-                        border: 'none',
-                        borderBottom: '1px solid #000',
-                        width: 150
-                      }}
-                    />
-                  </Checkbox>
-                )}
+                    <Checkbox
+                      value={option.option_content}
+                      style={{ marginTop: 15 }}
+                    >
+                      {option.option_content}
+                      <Input
+                        className="WriteInut"
+                        style={{
+                          borderRadius: 0,
+                          border: 'none',
+                          borderBottom: '1px solid #000',
+                          width: 150
+                        }}
+                      />
+                    </Checkbox>
+                  )}
               </div>
             );
           })}
@@ -1207,10 +1210,10 @@ class QuerySet extends Component {
           >
             复制
           </Button>
-            <Button size="small" icon="delete" onClick={()=>{this.delCurrentQuestion(item.question_id);}}>
-              删除
+          <Button size="small" icon="delete" onClick={() => { this.delCurrentQuestion(item.question_id); }}>
+            删除
             </Button>
-         
+
           <Button
             size="small"
             icon="arrow-up"
@@ -1544,7 +1547,7 @@ class QuerySet extends Component {
     );
   }
   //点击编辑模态框中的保存
-  handleEditModalSave = async() => {
+  handleEditModalSave = async () => {
     const { currentQuestion } = this.state;
     this.setState({ loading: true });
     // console.log('当前更新的问题', currentQuestion);
@@ -1590,7 +1593,7 @@ class QuerySet extends Component {
     // console.log('编辑后的数据', terminal);
 
     // 向后端发送请求
-    await  http()
+    await http()
       .saveRecordAndSubTables({
         data: terminal
       })
@@ -1680,7 +1683,7 @@ class QuerySet extends Component {
         })
         .catch(err => {
           console.error('添加错误原因', err);
-          this.setState({loading:false})
+          this.setState({ loading: false })
           message.error('queryset导入失败', err.message);
         });
     }
@@ -1740,12 +1743,12 @@ class QuerySet extends Component {
     window.location.href = `/fnmodule?resid=607189885707&recid=608296075283&type=%E5%89%8D%E7%AB%AF%E5%8A%9F%E8%83%BD%E5%85%A5%E5%8F%A3&title=%E9%97%AE%E5%8D%B7%E9%A6%96%E9%A1%B5`;
   };
   // 添加成功后的额函数
-  handleShowProgress=()=>{
-    const {queryId} = this.state;
-  this.setState({
-    isShowProgress:false,
-  });
-  this.getThisQueryQuestions(queryId);
+  handleShowProgress = () => {
+    const { queryId } = this.state;
+    this.setState({
+      isShowProgress: false,
+    });
+    this.getThisQueryQuestions(queryId);
   }
   render() {
     const {
@@ -1763,17 +1766,26 @@ class QuerySet extends Component {
       <Spin spinning={loading}>
         {' '}
         <div className="queryset">
+          <Link
+            to={{
+              pathname: '/fnmodule',
+              search: `resid=607189885707&recid=643225485805&type=问卷系统&title=问卷首页`
+            }}
+            target="_self"
+          >
+            <div className='back2history'><Icon type='left' /> 返回</div>
+          </Link>
           <div className="queryHeader" onClick={this.showModal}>
             {queryId == '' ? (
               <h1>点击添加问卷名称和说明</h1>
             ) : (
-              <div>
-                <h1>{query.query_name}</h1>
-                <p className="query-set__description">
-                  {query.query_description}
-                </p>
-              </div>
-            )}
+                <div>
+                  <h1>{query.query_name}</h1>
+                  <p className="query-set__description">
+                    {query.query_description}
+                  </p>
+                </div>
+              )}
           </div>
           {this.renderGetAllQuestions()}
           <Modal
@@ -1820,10 +1832,10 @@ class QuerySet extends Component {
               <label className="query-set__setTitle">时间设置</label>
               <div>
                 <RangePicker
-                  value={this.state.startDate&&this.state.endDate? [
+                  value={this.state.startDate && this.state.endDate ? [
                     moment(this.state.startDate, dateFormat),
                     moment(this.state.endDate, dateFormat)
-                  ]:[null,null]}
+                  ] : [null, null]}
                   // showTime
                   onChange={this.handleDateChange}
                   dateRender={current => {
@@ -1861,41 +1873,41 @@ class QuerySet extends Component {
                       {this.state.giftStyle == '概率' ? (
                         <Input style={{ width: 60, height: 20 }} disabled />
                       ) : (
-                        <Input
-                          style={{ width: 60, height: 20 }}
-                          onChange={this.handleGiftCountChange}
-                          value={this.state.giftCount}
-                        />
-                      )}
+                          <Input
+                            style={{ width: 60, height: 20 }}
+                            onChange={this.handleGiftCountChange}
+                            value={this.state.giftCount}
+                          />
+                        )}
                       <span className="prasetip">份</span>
                     </Radio>
                   </RadioGroup>
                 </div>
               ) : (
-                ''
-              )}
+                  ''
+                )}
             </div>
           </Modal>
           <div className="addStyle">
             {queryId == '' ? (
               <Button disabled>导入添加题目</Button>
             ) : (
-              <Button onClick={this.showTempleteModal}>导入添加题目</Button>
-            )}
+                <Button onClick={this.showTempleteModal}>导入添加题目</Button>
+              )}
 
             {queryId == '' ? (
               ''
             ) : (
-              <Button onClick={this.toMyQuery} type="primary">
-                完成
-              </Button>
-            )}
+                <Button onClick={this.toMyQuery} type="primary">
+                  完成
+                </Button>
+              )}
 
             {queryId == '' ? (
               <Button disabled>单独添加题目</Button>
             ) : (
-              <Button onClick={this.addSingle}>单独添加题目</Button>
-            )}
+                <Button onClick={this.addSingle}>单独添加题目</Button>
+              )}
           </div>
           <Modal
             title="单独添加"
@@ -1918,23 +1930,23 @@ class QuerySet extends Component {
             {this.state.activeQuestionType == '3' ? (
               ''
             ) : (
-              <div className="addchoice">
-                <Button
-                  icon="plus"
-                  type="primary"
-                  onClick={this.addChoiceContent}
-                >
-                  添加选项
+                <div className="addchoice">
+                  <Button
+                    icon="plus"
+                    type="primary"
+                    onClick={this.addChoiceContent}
+                  >
+                    添加选项
                 </Button>
-                <Button
-                  icon="plus"
-                  type="primary"
-                  onClick={this.addChoiceCanWrite}
-                >
-                  添加可填写选项
+                  <Button
+                    icon="plus"
+                    type="primary"
+                    onClick={this.addChoiceCanWrite}
+                  >
+                    添加可填写选项
                 </Button>
-              </div>
-            )}
+                </div>
+              )}
           </Modal>
           {/* 当前点击问题的Modal */}
           <Modal
@@ -1959,32 +1971,32 @@ class QuerySet extends Component {
             {this.state.currentQuestion.question_type == '问答题' ? (
               ''
             ) : (
-              <div className="addchoice">
-                <Button
-                  icon="plus"
-                  type="primary"
-                  onClick={() => {
-                    this.addCurrentQuestionOption(
-                      this.state.currentQuestion.question_type,
-                      this.state.currentQuestion.question_id
-                    );
-                  }}
-                >
-                  添加选项
+                <div className="addchoice">
+                  <Button
+                    icon="plus"
+                    type="primary"
+                    onClick={() => {
+                      this.addCurrentQuestionOption(
+                        this.state.currentQuestion.question_type,
+                        this.state.currentQuestion.question_id
+                      );
+                    }}
+                  >
+                    添加选项
                 </Button>
-                <Button
-                  icon="plus"
-                  type="primary"
-                  onClick={() => {
-                    this.addCurrentQuestionWiteOption(
-                      this.state.currentQuestion.question_id
-                    );
-                  }}
-                >
-                  添加可填写选项
+                  <Button
+                    icon="plus"
+                    type="primary"
+                    onClick={() => {
+                      this.addCurrentQuestionWiteOption(
+                        this.state.currentQuestion.question_id
+                      );
+                    }}
+                  >
+                    添加可填写选项
                 </Button>
-              </div>
-            )}
+                </div>
+              )}
           </Modal>
           {/* 导入模板模态窗 */}
           <Modal
@@ -2019,10 +2031,10 @@ class QuerySet extends Component {
             <PlanProgress
               onFinished={this.handleShowProgress}
               struct='200'
-              options={{data:this.state.taskList}}
+              options={{ data: this.state.taskList }}
               title="上传答案"
-              // showFields={['C3_609622263470','C3_609845305680',]}
-              // width='50%'
+            // showFields={['C3_609622263470','C3_609845305680',]}
+            // width='50%'
             />
           ) : null}
         </div>
