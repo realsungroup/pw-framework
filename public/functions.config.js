@@ -966,6 +966,7 @@ window[606242031630] = {
     formProps: {
       height: 500
     },
+    subtractH: 200,
     recordFormFormWidth: '40%',
     recordFormType: 'drawer',
     recordFormContainerProps: {
