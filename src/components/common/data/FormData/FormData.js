@@ -712,7 +712,8 @@ class FormData extends React.Component {
       mediaFieldBaseURL,
       labelRequiredList,
       recordFormHideFields,
-      recordFormHideLables
+      recordFormHideLables,
+      extraButtons
     } = this.props;
     const { hasSubTables, confirmLoading, loading } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
@@ -762,6 +763,7 @@ class FormData extends React.Component {
               labelRequiredList={labelRequiredList}
               recordFormHideFields={recordFormHideFields}
               recordFormHideLables={recordFormHideLables}
+              extraButtons={extraButtons}
             />
             {hasSubTables &&
               this.renderSubTablesAbsolute(containerHeight, containerWidth)}
@@ -807,6 +809,7 @@ class FormData extends React.Component {
                 mediaFieldBaseURL={mediaFieldBaseURL}
                 confirmLoading={confirmLoading}
                 recordFormHideFields={recordFormHideFields}
+                extraButtons={extraButtons}
               />
             </div>
           )}
