@@ -523,7 +523,7 @@ class ProbationForms extends React.Component {
           return Modal.info({
             title: '提示',
             content: '没有试用期信息。',
-            onOk: () => {}
+            onOk: () => { }
           });
         }
         let probationObjectives = data[viewableTable.objectiveResid].filter(
@@ -1093,7 +1093,7 @@ class ProbationForms extends React.Component {
           console.log(error);
         }
       },
-      onCancel() {}
+      onCancel() { }
     });
   };
 
@@ -1106,10 +1106,18 @@ class ProbationForms extends React.Component {
     }
     this.setState({ loading: true });
     try {
-      await http().modifyRecords({
+      const res = await http().modifyRecords({
         resid: resid5,
         data: [data]
       });
+      const _data = [...this.state.onTheJobTraining]
+      const index = _data.findIndex(item => {
+        return item.REC_ID === data.REC_ID
+      })
+      console.log(index)
+      _data[index] = res.data[0]
+      console.log(_data)
+      this.setState({ onTheJobTraining: _data })
       message.success('已邀请');
     } catch (error) {
       message.error(error.message);
@@ -1245,22 +1253,22 @@ class ProbationForms extends React.Component {
                         保存
                       </Button>
                       {roleName === 'HR' &&
-                      this.state.flagHitBack == true &&
-                      this.state.flagAlreadyHit == 0 ? (
-                        <span>
-                          <Button
-                            style={{ marginRight: '8px' }}
-                            onClick={this.agreeApply}
-                          >
-                            同意自定义辅导员
+                        this.state.flagHitBack == true &&
+                        this.state.flagAlreadyHit == 0 ? (
+                          <span>
+                            <Button
+                              style={{ marginRight: '8px' }}
+                              onClick={this.agreeApply}
+                            >
+                              同意自定义辅导员
                           </Button>
-                          <Button onClick={this.disagreeApply} type="danger">
-                            驳回自定义辅导员
+                            <Button onClick={this.disagreeApply} type="danger">
+                              驳回自定义辅导员
                           </Button>
-                        </span>
-                      ) : (
-                        ''
-                      )}
+                          </span>
+                        ) : (
+                          ''
+                        )}
                       {
                         <span style={{ color: 'red' }}>
                           {this.state.flagAlreadyHit == 2
@@ -1357,7 +1365,7 @@ class ProbationForms extends React.Component {
                 style={{ width: 300 }}
                 placeholder="请选择课程"
                 optionFilterProp="children"
-                onSearch={val => {}}
+                onSearch={val => { }}
                 filterOption={(input, option) =>
                   option.props.children
                     .toLowerCase()
@@ -1412,7 +1420,7 @@ class ProbationForms extends React.Component {
                 style={{ width: 300 }}
                 placeholder="请选择课程"
                 optionFilterProp="children"
-                onSearch={val => {}}
+                onSearch={val => { }}
                 value={this.state.modifyInternalCourseData.course}
                 filterOption={(input, option) =>
                   option.props.children
