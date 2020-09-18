@@ -899,8 +899,14 @@ export const propTypes = {
   recordsMap: PropTypes.func,
 
   /**
-   * 记录表单隐藏的字段（控件），数组元素为内部字段字符串。如 ["name", "age"]
+   * 记录表单（如果是绝对定位的表单，需要配置 recordFormHideLables 来隐藏 label）隐藏的字段（控件），数组元素为内部字段字符串。如 ["name", "age"]
    * 默认：-
    */
-  recordFormHideFields: PropTypes.array
+  recordFormHideFields: PropTypes.array,
+
+  /**
+   * 记录表单隐藏的 label（绝对定位的记录表单需要配置），数组元素为 label 名称。如 ["姓名", "年龄"]
+   * 默认：-
+   */
+  recordFormHideLables: PropTypes.array
 };

@@ -2727,7 +2727,7 @@ class LzTable extends React.Component {
     try {
       const params = {};
       if (this.props.baseURL) {
-        params.baseURL = baseURL;
+        params.baseURL = this.props.baseURL;
       }
       res = await http(params).modifyRecords({
         resid: 590863325025,

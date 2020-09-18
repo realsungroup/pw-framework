@@ -84,6 +84,7 @@ class AbsoluteForm extends React.PureComponent {
     data,
     labelRequiredList
   ) => {
+    const { recordFormHideLables } = this.props;
     return (
       <>
         {/* label */}
@@ -109,7 +110,8 @@ class AbsoluteForm extends React.PureComponent {
             return (
               <label
                 class={classNames({
-                  required
+                  required,
+                  'absolute-form__label--hide': recordFormHideLables && recordFormHideLables.includes(item.FrmText)
                 })}
                 style={{
                   fontWeight: item.FrmFontBold * 500,
@@ -167,7 +169,9 @@ class AbsoluteForm extends React.PureComponent {
       onSingleChange,
       baseURL,
       uploadConfig,
-      mediaFieldBaseURL
+      mediaFieldBaseURL,
+      recordFormHideFields,
+      recordFormHideLables
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -177,7 +181,9 @@ class AbsoluteForm extends React.PureComponent {
     const hasBeforeSave =
       !!beforeSaveFields && beforeSaveFields.indexOf(dataItem.id) !== -1;
     return (
-      <FormItem key={id}>
+      <FormItem key={id} className={classNames({
+        'absolute-form__form-item--hide': recordFormHideFields && recordFormHideFields.includes(dataItem.id)
+      })}>
         {getFieldDecorator(dataItem.id, options)(
           <Control
             dataItem={dataItem}
