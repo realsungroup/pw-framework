@@ -220,7 +220,8 @@ class AbsoluteForm extends React.PureComponent {
       saveNeedConfirm,
       intl,
       saveMode,
-      labelRequiredList
+      labelRequiredList,
+      extraButtons
     } = this.props;
     let { containerControlArr, labelControllArr } = data;
     const containerHeight =
@@ -241,18 +242,18 @@ class AbsoluteForm extends React.PureComponent {
       >
         {operation === 'view'
           ? this.renderView(
-              containerHeight,
-              containerWidth,
-              labelControllArr,
-              data
-            )
+            containerHeight,
+            containerWidth,
+            labelControllArr,
+            data
+          )
           : this.renderAddOrModify(
-              containerHeight,
-              containerWidth,
-              labelControllArr,
-              data,
-              labelRequiredList
-            )}
+            containerHeight,
+            containerWidth,
+            labelControllArr,
+            data,
+            labelRequiredList
+          )}
         {saveMode === 'full' && (
           <div
             style={{
@@ -275,6 +276,7 @@ class AbsoluteForm extends React.PureComponent {
               cancelText={getIntlVal(intl.locale, enCancelText, cancelText)}
               editText={getIntlVal(intl.locale, enEditText, editText)}
               saveNeedConfirm={saveNeedConfirm}
+              extraButtons={extraButtons}
             />
           </div>
         )}

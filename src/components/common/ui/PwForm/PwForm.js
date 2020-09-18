@@ -87,10 +87,10 @@ class PwForm extends React.Component {
           {colCount === 1 ? (
             data.map(dateItem => this.renderFormItem(dateItem))
           ) : (
-            <LzRowCols renderData={data} keyName="id" colCount={colCount}>
-              {dateItem => this.renderFormItem(dateItem)}
-            </LzRowCols>
-          )}
+              <LzRowCols renderData={data} keyName="id" colCount={colCount}>
+                {dateItem => this.renderFormItem(dateItem)}
+              </LzRowCols>
+            )}
         </Fragment>
       );
     }
@@ -308,7 +308,8 @@ class PwForm extends React.Component {
       saveOpenText,
       enSaveOpenText,
       saveConfirmTip,
-      confirmLoading
+      confirmLoading,
+      extraButtons
     } = this.props;
     const { intl } = this.props;
 
@@ -362,6 +363,7 @@ class PwForm extends React.Component {
           onReopenSave={onReopenSave}
           saveConfirmTip={saveConfirmTip}
           confirmLoading={confirmLoading}
+          extraButtons={extraButtons}
         />
       </div>
     );
