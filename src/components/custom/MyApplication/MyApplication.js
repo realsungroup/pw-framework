@@ -68,7 +68,7 @@ class MyApplication extends Component {
                     hasRowDelete: false,
                     // isSetColumnWidth:false,
                     noWidthFields: 'C3_518436882584',
-                    baseURL: 'http://10.108.21.41:6001/',
+                    baseURL: 'http://10.108.11.36:6001/',
                     downloadBaseURL: 'http://10.108.21.41:6000/',
                     advSearch: {
                       isRequestFormData: false,

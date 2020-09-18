@@ -19,7 +19,8 @@ import './NewHome.less';
 const {
   businessOptionalResIds,
   reminderDataConfig,
-  themeColor
+  themeColor,
+  waitingHandleBaseURL
 } = window.pwConfig[process.env.NODE_ENV];
 
 function validateImage(pathImg) {
@@ -361,7 +362,7 @@ class Home extends React.Component {
     if (app) {
       onOpenWindow([{ app, typeName: app.BusinessNode }]);
     } else {
-      window.open(url);
+      window.open(waitingHandleBaseURL + url);
     }
   };
 

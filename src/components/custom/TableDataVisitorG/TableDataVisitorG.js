@@ -13,7 +13,7 @@ class TableDataVisitorG extends React.Component {
     record: null,
     readOnly: true
   };
-  btnStartRead = params => {};
+  btnStartRead = params => { };
   componentDidMount = () => {
     socket.emit("startRead");
     let card;
@@ -28,7 +28,7 @@ class TableDataVisitorG extends React.Component {
             resid: 605719206028,
             cmswhere: `C3_605719242955 = ${card.cardno}`
           });
-          if (res.data.length>0) {
+          if (res.data.length > 0) {
             message.success("查询成功！");
             await this.setState({
               record: res.data
@@ -37,7 +37,7 @@ class TableDataVisitorG extends React.Component {
           } else {
             message.error("查无此人！");
           }
-        } catch (error) {}
+        } catch (error) { }
       }
     });
     //   'card message', function(msg){//接收读卡信息
@@ -67,45 +67,45 @@ class TableDataVisitorG extends React.Component {
       data.map(item => {
         switch (item.label) {
           case '登记证件号码':
-          item.initialValue = record[0].C3_605719242955;
+            item.initialValue = record[0].C3_605719242955;
             break;
-              case '访问地区类型':
-              item.initialValue = record[0].C3_605719242641;
-                break;
-                case '登记证件类型':
-                item.initialValue = record[0].C3_605719242802;
-                  break;
-                  case '访客姓名':
-                  item.initialValue = record[0].C3_605719242294;
-                    break;
-                    case '访客类型':
-                    item.initialValue = record[0].C3_605719242479;
-                      break;
-                      case '访客单位':
-                      item.initialValue = record[0].C3_605719242129;
-                        break;
-                        case '访问事由':
-                            item.initialValue = record[0].C3_606843168661;
-                            break;
-                            case '申请人工号':
-                                item.initialValue = record[0].C3_612530130740;
-                                break;
-                                case '申请人姓名':
-                                  item.initialValue = record[0].C3_612530147136;
-                                  break;
-                                    case '申请人二级部门':
-                                       item.initialValue = record[0].C3_612530193173;
-                                       break;
-                                          case '备注':
-                                            item.initialValue = record[0].C3_605719245575;
-                                            break;
-                                  
+          case '访问地区类型':
+            item.initialValue = record[0].C3_605719242641;
+            break;
+          case '登记证件类型':
+            item.initialValue = record[0].C3_605719242802;
+            break;
+          case '访客姓名':
+            item.initialValue = record[0].C3_605719242294;
+            break;
+          case '访客类型':
+            item.initialValue = record[0].C3_605719242479;
+            break;
+          case '访客单位':
+            item.initialValue = record[0].C3_605719242129;
+            break;
+          case '访问事由':
+            item.initialValue = record[0].C3_606843168661;
+            break;
+          case '申请人工号':
+            item.initialValue = record[0].C3_612530130740;
+            break;
+          case '申请人姓名':
+            item.initialValue = record[0].C3_612530147136;
+            break;
+          case '申请人二级部门':
+            item.initialValue = record[0].C3_612530193173;
+            break;
+          case '备注':
+            item.initialValue = record[0].C3_605719245575;
+            break;
+
         }
         // if (item.label === "登记证件号码" && record) {
         //   item.initialValue = record[0].C3_608392189420;
         //   // console.log("item.initialValue", item.initialValue);
         // }
-        
+
       });
       // let records = record[0];
       // records.C3_606071247109 = records.C3_608392189420
@@ -120,25 +120,26 @@ class TableDataVisitorG extends React.Component {
       operation: "add",
       recordFormFormWidth: "50%",
       recordFormTabsWidth: "50%",
-      onSuccess: ()=> {
+      onSuccess: () => {
         this.setState({
-          record:null
+          record: null
         })
         message.success("保存成功！")
         this.props.closeRecordForm()
       },
       onCancel: () => {
         this.setState({
-          record:null
+          record: null
         })
-        this.props.closeRecordForm()} 
-        ,
+        this.props.closeRecordForm()
+      }
+      ,
       recordFormContainerProps: {
         height: 600,
         placement: "bottom",
         onClose: () => {
           this.setState({
-            record:null
+            record: null
           })
           this.props.closeRecordForm()
         }
@@ -151,7 +152,7 @@ class TableDataVisitorG extends React.Component {
         {
           subTableName: "物品信息",
           subResid: 606413909447,
-          height:600,
+          height: 600,
           tableProps: {
             hasAdd: true,
             hasModify: false,
@@ -182,7 +183,7 @@ class TableDataVisitorG extends React.Component {
     return (
       <div
         className="table-data-wrap"
-        style={{ height: "calc(100vh - 220px)" }}
+        style={{ height: "100vh" }}
       >
         <TableData
           {...this.props}
@@ -233,7 +234,7 @@ class TableDataVisitorG extends React.Component {
           </Form.Item>
           <Form.Item label="身份证号">
             {getFieldDecorator("cardno", {
-              initialValue: [record && record[0] &&  record[0].C3_605719242955],
+              initialValue: [record && record[0] && record[0].C3_605719242955],
               rules: [
                 {
                   required: true,
@@ -242,10 +243,10 @@ class TableDataVisitorG extends React.Component {
               ]
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
-          
+
           <Form.Item label="访客类型">
             {getFieldDecorator("visiterType", {
-              initialValue: [record && record[0] &&  record[0].C3_605719242479],
+              initialValue: [record && record[0] && record[0].C3_605719242479],
               rules: [
                 {
                   required: true,
@@ -256,7 +257,7 @@ class TableDataVisitorG extends React.Component {
           </Form.Item>
           <Form.Item label="单位">
             {getFieldDecorator("componey", {
-              initialValue: [record && record[0] &&  record[0].C3_605719242129],
+              initialValue: [record && record[0] && record[0].C3_605719242129],
               rules: [
                 {
                   required: true,
@@ -268,19 +269,7 @@ class TableDataVisitorG extends React.Component {
 
           <Form.Item label="事由">
             {getFieldDecorator("reason", {
-              initialValue: [record && record[0] &&  record[0].C3_606843168661],
-              rules: [
-                {
-                  required: true,
-                  message: "Please input your password!"
-                }
-              ]
-            })(<Input type="text" readOnly={readOnly} />)}
-          </Form.Item>
-          
-          <Form.Item label="地区">
-            {getFieldDecorator("area", {
-              initialValue: [record && record[0] &&  record[0].C3_605719242641],
+              initialValue: [record && record[0] && record[0].C3_606843168661],
               rules: [
                 {
                   required: true,
@@ -290,10 +279,9 @@ class TableDataVisitorG extends React.Component {
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
 
-          
-          <Form.Item label="申请人">
-            {getFieldDecorator("applyName", {
-              initialValue: [record && record[0] &&  record[0].C3_612530147136],
+          <Form.Item label="地区">
+            {getFieldDecorator("area", {
+              initialValue: [record && record[0] && record[0].C3_605719242641],
               rules: [
                 {
                   required: true,
@@ -302,7 +290,20 @@ class TableDataVisitorG extends React.Component {
               ]
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
-          
+
+
+          <Form.Item label="申请人">
+            {getFieldDecorator("applyName", {
+              initialValue: [record && record[0] && record[0].C3_612530147136],
+              rules: [
+                {
+                  required: true,
+                  message: "Please input your password!"
+                }
+              ]
+            })(<Input type="text" readOnly={readOnly} />)}
+          </Form.Item>
+
           {/* </div> */}
 
           {/* <div style={{width:"40%"}}>

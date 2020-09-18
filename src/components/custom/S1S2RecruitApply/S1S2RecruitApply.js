@@ -24,9 +24,9 @@ class S1S2RecruitApply extends React.Component {
     return (
       <div>
         <Tabs
-         defaultActiveKey="1"
-         style={{ width: '100%', backgroundColor: '#fff',height:"100%" }}
-         >
+          defaultActiveKey="1"
+          style={{ width: '100%', backgroundColor: '#fff', height: "100%" }}
+        >
           <TabPane
             tab="申请中"
             key={1}
@@ -50,8 +50,8 @@ class S1S2RecruitApply extends React.Component {
                 actionBarWidth: 220,
                 recordFormType: 'modal',
                 isUseFormDefine: false,
-                height:'calc(100vh - 60px)',
-                // isSetColumnWidth:false,
+                height: 'calc(100vh - 60px)',
+                isSetColumnWidth: true,
                 // noWidthFields: 'C3_518986364887',
                 isWrap: true,
                 formProps: { height: 650 },
@@ -98,15 +98,15 @@ class S1S2RecruitApply extends React.Component {
                 hasAdd: false,
                 subtractH: 200,
                 actionBarWidth: 220,
-                isUseFormDefine:false,
+                isUseFormDefine: false,
                 // isSetColumnWidth:false,
-                height:'calc(100vh - 60px)',
-                isWrap:true,
+                height: 'calc(100vh - 60px)',
+                isWrap: true,
                 formProps: {
                   height: 650
                 },
-                advSearch:{
-                  isRequestFormData:false,
+                advSearch: {
+                  isRequestFormData: false,
                 },
                 recordFormType: 'modal',
               }}
@@ -149,15 +149,15 @@ class S1S2RecruitApply extends React.Component {
                 hasAdd: false,
                 subtractH: 200,
                 actionBarWidth: 220,
-                isUseFormDefine:false,
-                height:'calc(100vh - 60px)',
+                isUseFormDefine: false,
+                height: 'calc(100vh - 60px)',
                 // isSetColumnWidth:false,
-                isWrap:true,
+                isWrap: true,
                 formProps: {
                   height: 650
                 },
-                advSearch:{
-                  isRequestFormData:false,
+                advSearch: {
+                  isRequestFormData: false,
                 },
                 recordFormType: 'modal',
               }}
@@ -203,15 +203,15 @@ class S1S2RecruitApply extends React.Component {
                 hasRowView: true,
                 subtractH: 200,
                 actionBarWidth: 220,
-                isUseFormDefine:false,
-                height:'calc(100vh - 60px)',
+                isUseFormDefine: false,
+                height: 'calc(100vh - 60px)',
                 // isSetColumnWidth:false,
-                isWrap:true,
+                isWrap: true,
                 formProps: {
                   height: 650
                 },
-                advSearch:{
-                  isRequestFormData:false,
+                advSearch: {
+                  isRequestFormData: false,
                 },
                 recordFormType: 'modal',
               }}

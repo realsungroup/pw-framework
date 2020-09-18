@@ -81,7 +81,7 @@ const PwFormFooter = React.memo(
           }
         })()}
         <div>
-          {extraButtons}
+          {(typeof extraButtons === 'function') && extraButtons(form)}
         </div>
       </div>
     );
