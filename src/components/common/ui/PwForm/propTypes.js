@@ -200,4 +200,10 @@ export const propTypes = {
    * 默认：-
    */
   getForm: PropTypes.func,
+
+  /**
+   * 记录表单隐藏的字段（控件），数组元素为内部字段字符串。如 ["name", "age"]
+   * 默认：-
+   */
+  recordFormHideFields: PropTypes.array
 };

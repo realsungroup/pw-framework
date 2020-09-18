@@ -1,6 +1,8 @@
 import React from 'react';
 import { TableData } from '../../../common/loadableCommon';
-import { Button, Modal, message, Spin, Table, Progress } from 'antd';
+import { Button, Modal, message, Spin, Table, Progress, Icon } from 'antd';
+import { Link } from 'react-router-dom';
+
 import './QuestionnaireStatisticAnalysis.less';
 import qs from 'qs';
 import http from 'Util20/api';
@@ -72,7 +74,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
       dataSource: [], // 表格数据
       barOption: {}, // 柱状图 options
       pieOption: {}, // 饼图 options
-      modalMode: '' ,// 模态窗模式：'question' 显示选择的题目；'department' 显示选择的部门；'level' 显示选择的级别
+      modalMode: '',// 模态窗模式：'question' 显示选择的题目；'department' 显示选择的部门；'level' 显示选择的级别
       selectedDepartmentRecord: null, // 选择的部门记录
       selectedLevelRecord: null, // 选择的级别记录
       levelArr: [],
@@ -177,7 +179,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
         resid: 613413052304,
         cmswhere: `query_id = '${
           this.state.hostrecid
-        }' and question_id = '${qeustionId}'`
+          }' and question_id = '${qeustionId}'`
       });
     } catch (err) {
       return console.error(err.message);
@@ -234,7 +236,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
   };
 
   handleSelectDepartment = async record => {
-    console.log("records",record)
+    console.log("records", record)
     this.setState(
       {
         selectedDepartment: { ...record },
@@ -251,7 +253,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
           this.setState({ loading: false });
           return message.info('请选择题目');
         }
-        console.log("selectedDepartment.dept",selectedDepartment.name)
+        console.log("selectedDepartment.dept", selectedDepartment.name)
         this.getStatisticsData(
           selectedQuestion.question_id,
           selectedDepartment && selectedDepartment.name,
@@ -293,16 +295,16 @@ class QuestionnaireStatisticAnalysis extends React.Component {
 
     const departmentArr = [],
       levelArr = [];
-      console.log("resData",resData)
+    console.log("resData", resData)
     resData.forEach(item => {
-      console.log("item",item)
+      console.log("item", item)
       const tempDepartment = departmentArr.find(
         depItem => depItem.id === item.dept
       );
       if (!tempDepartment) {
         departmentArr.push({
           name: item[departmentNameKey],
-          deptname:item[departmentName],
+          deptname: item[departmentName],
           id: item.dept
         });
       }
@@ -571,18 +573,18 @@ class QuestionnaireStatisticAnalysis extends React.Component {
   ];
 
   renderModalContent = () => {
-  const { modalMode, departmentArr, levelArr,hostrecid } = this.state;
-  if (modalMode === 'department') {
-    console.log("部门信息")
-    return (
-      <Table
-        dataSource={departmentArr}
-        columns={this.departmentTableColumns}
-      />
-    );
-  } else if (modalMode === 'level') {
-    return <Table dataSource={levelArr} columns={this.levelTableColumns} />;
-  }else if(modalMode === 'question' && hostrecid){
+    const { modalMode, departmentArr, levelArr, hostrecid } = this.state;
+    if (modalMode === 'department') {
+      console.log("部门信息")
+      return (
+        <Table
+          dataSource={departmentArr}
+          columns={this.departmentTableColumns}
+        />
+      );
+    } else if (modalMode === 'level') {
+      return <Table dataSource={levelArr} columns={this.levelTableColumns} />;
+    } else if (modalMode === 'question' && hostrecid) {
       return (
         <TableData
           resid={608822905547}
@@ -616,10 +618,10 @@ class QuestionnaireStatisticAnalysis extends React.Component {
           ]}
         />
       );
+    }
   }
-}
   // renderModalContent = () => {
-    
+
   //   const { modalMode, hostrecid } = this.state;
   //   if (modalMode === 'question' && hostrecid) {
   //     return (
@@ -733,6 +735,16 @@ class QuestionnaireStatisticAnalysis extends React.Component {
     return (
       <Spin spinning={loading}>
         <div className="questionnaire-statistic-analysis">
+          <Link
+            to={{
+              pathname: '/fnmodule',
+              search: `resid=607189885707&recid=643225485805&type=问卷系统&title=问卷首页`
+            }}
+            target="_self"
+          >
+            <div className='back2history'><Icon type='left' /> 返回</div>
+          </Link>
+
           <h2>筛选</h2>
           <div className="questionnaire-statistic-analysis__condition">
             <div className="questionnaire-statistic-analysis__question">

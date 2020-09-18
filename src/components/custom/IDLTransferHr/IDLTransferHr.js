@@ -19,7 +19,7 @@ const { Option } = Select;
 
 const attr = [
   '部门名',
-  '职务名',
+  '岗位名',
   '级别',
   '主管',
   '项目代码',
@@ -528,35 +528,70 @@ class IDLTransferHr extends Component {
   }
 
   // 获取权限地点
-  getRight = async () => {
+  // getRight = async () => {
 
+  //   var usercode = localStorage.getItem('userInfo');
+  //   var usrChara = JSON.parse(usercode)
+  //   var userCode = usrChara.UserInfo.EMP_USERCODE;
+  //   var res;
+  //   try {
+  //     res = await http().getTable({
+  //       resid: 637687733184,
+  //       cmswhere: `id = ${userCode}`
+  //     });
+  //     if (res.data[0]) {
+  //       this.setState({ right: res.data[0] })
+
+  //     }
+  //     if (res.data[0].HCPreApprove == 'N') {
+  //       this.setState({ cms: `hrPreAprrove = 'waiting' and C3_653481734712 = '${res.data[0].location}'` });
+  //     } else {
+  //       this.setState({ cms: `headcount = 'waiting' and C3_653481734712 = '${res.data[0].location}'` });
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
+  getRightGroup = () => {
     var usercode = localStorage.getItem('userInfo');
     var usrChara = JSON.parse(usercode)
-    var userCode = usrChara.UserInfo.EMP_USERCODE;
-    var res;
-    try {
-      res = await http().getTable({
-        resid: 637687733184,
-        cmswhere: `id = ${userCode}`
-      });
-      if (res.data[0]) {
-        this.setState({ right: res.data[0] })
-
+    var string = usrChara.UserInfo.GroupList;
+    let id = usrChara.UserInfo.EMP_USERCODE;
+    let jobid = usrChara.UserInfo.EMP_ID;
+    string = string.substring(1, string.length - 1);
+    let arr = string.split(',');
+    let HCPreApprove = 'N';
+    let HRPreApprove = 'N';
+    let location = usrChara.EnterpriseCode;
+    let n = 0;
+    while (n < arr.length) {
+      arr[n] = arr[n].substring(2, arr[n].length - 1);
+      if ((arr[n] == "653477829853") || arr[n] == ("653484751513") || arr[n] == ("653479674643")) {
+        HRPreApprove = 'Y';
       }
-      if (res.data[0].HCPreApprove == 'N') {
-        this.setState({ cms: `hrPreAprrove = 'waiting' and locationCompany = '${res.data[0].location}'` });
-      } else {
-        this.setState({ cms: `headcount = 'waiting' and locationCompany = '${res.data[0].location}'` });
+      if ((arr[n] == "653477850557") || (arr[n] == "653484767124") || (arr[n] == "653479693081")) {
+        HCPreApprove = 'Y'
       }
-    } catch (e) {
-      console.log(e);
+      n++;
     }
+    let obj = {
+      location: location,
+      id: id,
+      jobid: jobid,
+      HCPreApprove: HCPreApprove,
+      HRPreApprove: HRPreApprove
+    };//权限
+    if (HCPreApprove == 'N') {
+      this.setState({ cms: `hrPreAprrove = 'waiting' and C3_653481734712 = '${location}'` });
+    } else {
+      this.setState({ cms: `headcount = 'waiting' and C3_653481734712 = '${location}'` });
+    }
+    this.setState({ right: obj });
   }
   componentWillMount() {
-    this.getRight();
+    this.getRightGroup();
   }
   componentDidMount() {
-
     this.getHCList();
   }
   render() {
@@ -565,19 +600,19 @@ class IDLTransferHr extends Component {
         <sider>
           <ul>
             {this.state.right.HCPreApprove == 'Y' ? <>
-              <li className={this.state.cms == `headcount = 'waiting' and locationCompany = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `headcount = 'waiting' and locationCompany = '${this.state.right.location}'` }) }}>HC未审批</li>
-              <li className={this.state.cms == `headcount = 'Y' and locationCompany = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `headcount = 'Y' and locationCompany = '${this.state.right.location}'` }) }}>HC已通过</li>
-              <li className={this.state.cms == `headcount = 'N' and locationCompany = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `headcount = 'N' and locationCompany = '${this.state.right.location}'` }) }}>HC未通过</li>
+              <li className={this.state.cms == `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'` }) }}>HC未审批</li>
+              <li className={this.state.cms == `headcount = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `headcount = 'Y' and C3_653481734712 = '${this.state.right.location}'` }) }}>HC已通过</li>
+              <li className={this.state.cms == `headcount = 'N' and C3_653481734712 = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `headcount = 'N' and C3_653481734712 = '${this.state.right.location}'` }) }}>HC未通过</li>
 
             </> : null}
             {this.state.right.HRPreApprove == 'Y' ? <>
-              <li className={this.state.cms == `hrPreAprrove = 'waiting' and locationCompany = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `hrPreAprrove = 'waiting' and locationCompany = '${this.state.right.location}'` }) }}>HR预审未审批</li>
-              <li className={this.state.cms == `hrPreAprrove = 'Y' and locationCompany = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `hrPreAprrove = 'Y' and locationCompany = '${this.state.right.location}'` }) }}>HR预审已通过</li>
-              <li className={this.state.cms == `hrPreAprrove = 'N' and locationCompany = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `hrPreAprrove = 'N' and locationCompany = '${this.state.right.location}'` }) }}>HR预审未通过</li>
+              <li className={this.state.cms == `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` }) }}>HR预审未审批</li>
+              <li className={this.state.cms == `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'` }) }}>HR预审已通过</li>
+              <li className={this.state.cms == `hrPreAprrove = 'N' and C3_653481734712 = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `hrPreAprrove = 'N' and C3_653481734712 = '${this.state.right.location}'` }) }}>HR预审未通过</li>
 
-              <li className={this.state.cms == `locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? 'cur' : ''} onClick={() => { this.setState({ cms: `locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` }) }}>HR终审未审批</li>
-              <li className={this.state.cms == `hrEndApprove = 'Y' and locationCompany = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `hrEndApprove = 'Y' and locationCompany = '${this.state.right.location}'` }) }}>HR终审已通过</li>
-              <li className={this.state.cms == `hrEndApprove = 'N' and locationCompany = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `hrEndApprove = 'N' and locationCompany = '${this.state.right.location}'` }) }}>HR终审未通过</li>
+              <li className={this.state.cms == `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? 'cur' : ''} onClick={() => { this.setState({ cms: `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` }) }}>HR终审未审批</li>
+              <li className={this.state.cms == `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` }) }}>HR终审已通过</li>
+              <li className={this.state.cms == `hrEndApprove = 'N' and C3_653481734712 = '${this.state.right.location}'` ? 'cur' : ''} onClick={() => { this.setState({ cms: `hrEndApprove = 'N' and C3_653481734712 = '${this.state.right.location}'` }) }}>HR终审未通过</li>
 
             </> : null}
 
@@ -740,7 +775,7 @@ class IDLTransferHr extends Component {
               <>
                 <Button onClick={() => { this.setState({ conUnpass: false }) }}>取消</Button>
                 {
-                  this.state.cms == `locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ?
+                  this.state.cms == `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ?
                     <Button type='primary' onClick={() => { this.approve('N', true) }}>确认</Button>
                     : <Button type='primary' onClick={() => { this.approve('N') }}>确认</Button>
 
@@ -792,13 +827,13 @@ class IDLTransferHr extends Component {
           <Modal
             width={'90vw'}
             visible={this.state.visible}
-            footer={this.state.cms == `headcount = 'waiting' and locationCompany = '${this.state.right.location}'` ? (<Button type='primary' onClick={() => this.setState({ visibleHC: true })}>填写HC审批信息</Button>) : ((this.state.cms == `hrPreAprrove = 'waiting' and locationCompany = '${this.state.right.location}'`) || (this.state.cms == `locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`) ?
+            footer={this.state.cms == `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (<Button type='primary' onClick={() => this.setState({ visibleHC: true })}>填写HC审批信息</Button>) : ((this.state.cms == `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`) || (this.state.cms == `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`) ?
               (this.state.stream.length == 0 ? '审批流计算中，不可预审。请耐心等待...' :
                 <>
                   <Button type='danger' loading={this.state.loading} style={{ marginLeft: '8px' }} onClick={() => { this.setState({ conUnpass: true }) }}>不通过审核</Button>
 
                   {
-                    this.state.cms == `locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ?
+                    this.state.cms == `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ?
                       (this.state.toCheckFront.effortDate ? (<Button type='primary' style={{ padding: '0 8px' }} onClick={() => { this.approve('Y', true) }}>保存并通过审核</Button>) : ' 请先填写生效日期和岗位代码'
 
                       )
@@ -819,7 +854,7 @@ class IDLTransferHr extends Component {
                   })}
                 </Steps>}
                 <div style={{ clear: 'both' }}></div>
-                {((this.state.cms == `hrPreAprrove = 'waiting' and locationCompany = '${this.state.right.location}'`) && (this.state.stream.length > 0)) ? <Button onClick={() => { this.setState({ commandVisible: true }) }} style={{ marginTop: 8 }}>变更审批流</Button> : null}
+                {((this.state.cms == `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`) && (this.state.stream.length > 0)) ? <Button onClick={() => { this.setState({ commandVisible: true }) }} style={{ marginTop: 8 }}>变更审批流</Button> : null}
                 <div className='showContent' style={{ marginTop: 24, width: '100%', marginLeft: '0' }}>
 
                   <b>生效时间：</b><DatePicker
@@ -837,14 +872,14 @@ class IDLTransferHr extends Component {
                   <b>变动原因：</b>
                   <span>{this.state.toCheckFront.changeReason}</span>
                   <br />
-                  {this.state.cms == `hrEndApprove = 'Y' and locationCompany = '${this.state.right.location}'` ?
+                  {this.state.cms == `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ?
                     <>
                       <b>岗位代码：</b>
                       <span>{this.state.toCheckFront.jobId}</span>
                       <br />
                     </>
                     : null}
-                  {this.state.cms == `locationCompany = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? <>
+                  {this.state.cms == `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? <>
                     <b>岗位代码：</b>
                     <span>{this.state.toCheckFront.jobId ? this.state.toCheckFront.jobId : <b style={{ color: '#f5222d' }}>请选择岗位</b>}</span>
                     <Button size='small' icon='search' onClick={() => { this.setState({ showJob: true }) }}>
@@ -865,7 +900,7 @@ class IDLTransferHr extends Component {
                         <ul style={{ padding: '0' }}>
                           <li> <b>姓名: </b>{this.state.toCheckFront.person}</li>
                           <li ><b>部门名: </b>{this.state.toCheckFront.depart === this.state.toCheck[0] ? this.state.toCheckFront.depart : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.depart + ' => ' + this.state.toCheck[0]}</b>}</li>
-                          <li ><b>职务名: </b>{this.state.toCheckFront.jobName === this.state.toCheck[1] ? this.state.toCheckFront.jobName : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.jobName + ' => ' + this.state.toCheck[1]}</b>}</li>
+                          <li ><b>岗位名: </b>{this.state.toCheckFront.jobName === this.state.toCheck[1] ? this.state.toCheckFront.jobName : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.jobName + ' => ' + this.state.toCheck[1]}</b>}</li>
                           <li><b>级别: </b>{this.state.toCheckFront.level === this.state.toCheck[2] ? this.state.toCheckFront.level : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.level + ' => ' + this.state.toCheck[2]}</b>}</li>
                           <li><b>主管: </b>{this.state.toCheckFront.driectorName === this.state.toCheck[3] ? this.state.toCheckFront.driectorName : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.driectorName + ' => ' + this.state.toCheck[3]}</b>}</li>
                           <li ><b>项目代码: </b>{this.state.toCheckFront.proj_code === this.state.toCheck[4] ? this.state.toCheckFront.proj_code : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.proj_code + ' => ' + this.state.toCheck[4]}</b>}</li>
@@ -929,7 +964,7 @@ class IDLTransferHr extends Component {
                     hasRowSelection={true}
                     actionBarExtra={({ dataSource, selectedRowKeys }) => {
                       return (
-                        this.state.cms == `hrPreAprrove = 'waiting' and locationCompany = '${this.state.right.location}'` ?
+                        this.state.cms == `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ?
                           <Button type='primary' disabled={!(selectedRowKeys.length > 0)} style={{ padding: '0 8px' }} onClick={() => { this.approveGroup(dataSource, selectedRowKeys) }}>审批</Button>
 
                           : null

@@ -4,7 +4,8 @@ import './SelectPersonFirst.less';
 import SelectPersonSecond from '../SelectPersonSecond';
 import http from '../../../util20/api';
 import qs from 'qs';
-import { message, Modal, Spin,} from 'antd';
+import { message, Modal, Spin, Icon } from 'antd';
+import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
 class SelectPersonFirst extends Component {
@@ -32,7 +33,7 @@ class SelectPersonFirst extends Component {
       title: '提示！',
       content: '点击确定就发邮件了，确认发送吗？',
       onOk: () => {
-        this.setState({loading:true})
+        this.setState({ loading: true })
         let dataSub = [];
         console.log('点击提交', queryID);
         let objcommon = {
@@ -55,7 +56,7 @@ class SelectPersonFirst extends Component {
           .then(res => {
             message.info('发送成功啦，可以到查看人员去看发送了哪些人');
             console.log(res);
-            this.setState({loading:false})
+            this.setState({ loading: false })
             Modal.success({
               title: '发送成功',
               content: '可以到首页去查看发送了哪些人',
@@ -66,7 +67,7 @@ class SelectPersonFirst extends Component {
           })
           .catch(err => {
             console.error(err);
-            this.setState({loading:false})
+            this.setState({ loading: false })
           });
         http()
           .modifyRecords({
@@ -103,59 +104,68 @@ class SelectPersonFirst extends Component {
   render() {
     return (
       <Spin spinning={this.state.loading}>
-      <div className="fisrtStepSelected">
-        <SelectPersonnel
-          radioGroupConfig={[
-            {
-              type: 'list',
-              title: '按级别添加',
-              resid: 449335746776,
-              nameField: 'C3_587136281870'
-            },
-            {
-              type: 'tree',
-              title: '按部门添加',
-              resid: 466282405067,
-              nameField: 'DEP_NAME',
-              idField: 'DEP_ID',
-              pidField: 'DEP_PID'
-            },
-            {
-              type: 'search',
-              title: '输入关键词搜索'
-            },
-            {
-              type: 'file',
-              title: '请选择要上传的文件'
-            }
-          ]}
-          subResid={609599795438}
-          personFields={[
-            '',
-            'C3_227192472953',
-            'C3_227192484125',
-            'C3_227212499515'
-          ]}
-          personPrimaryKeyField="C3_227192472953"
-          secondFilterInputPlaceholder="输入关键词搜索"
-          stepList={[
-            {
-              stepTitle: '验证',
-              renderContent: current => {
-                return (
-                  <SelectPersonSecond
-                    persons={this.state.persons}
-                    onCheckboxChange={this.handleCheckboxChange}
-                  />
-                );
+        <div className="fisrtStepSelected">
+          <Link
+            to={{
+              pathname: '/fnmodule',
+              search: `resid=607189885707&recid=643225485805&type=问卷系统&title=问卷首页`
+            }}
+            target="_self"
+          >
+            <div className='back2history'><Icon type='left' /> 返回</div>
+          </Link>
+          <SelectPersonnel
+            radioGroupConfig={[
+              {
+                type: 'list',
+                title: '按级别添加',
+                resid: 449335746776,
+                nameField: 'C3_587136281870'
+              },
+              {
+                type: 'tree',
+                title: '按部门添加',
+                resid: 466282405067,
+                nameField: 'DEP_NAME',
+                idField: 'DEP_ID',
+                pidField: 'DEP_PID'
+              },
+              {
+                type: 'search',
+                title: '输入关键词搜索'
+              },
+              {
+                type: 'file',
+                title: '请选择要上传的文件'
               }
-            }
-          ]}
-          completeText="发送"
-          onSelectPerson={this.handleSelectPerson}
-          onComplete={this.handleComplete}
-        />
-      </div>
+            ]}
+            subResid={609599795438}
+            personFields={[
+              '',
+              'C3_227192472953',
+              'C3_227192484125',
+              'C3_227212499515'
+            ]}
+            personPrimaryKeyField="C3_227192472953"
+            secondFilterInputPlaceholder="输入关键词搜索"
+            stepList={[
+              {
+                stepTitle: '验证',
+                renderContent: current => {
+                  return (
+                    <SelectPersonSecond
+                      persons={this.state.persons}
+                      onCheckboxChange={this.handleCheckboxChange}
+                    />
+                  );
+                }
+              }
+            ]}
+            completeText="发送"
+            onSelectPerson={this.handleSelectPerson}
+            onComplete={this.handleComplete}
+          />
+        </div>
       </Spin>
     );
   }

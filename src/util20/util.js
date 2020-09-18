@@ -158,3 +158,16 @@ export const table2Tree = (tableData, idField, pidField, parentNode) => {
 
   return ret;
 };
+
+/**
+ * 获取生成 BEM 命令法的函数
+ * @param {string} prefix 类名前缀
+ */
+export const getGBEMClassName = prefix => {
+  return (suffix = '') => {
+    if (!suffix) {
+      return prefix;
+    }
+    return `${prefix}__${suffix}`;
+  };
+};

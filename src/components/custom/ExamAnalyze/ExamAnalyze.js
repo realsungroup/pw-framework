@@ -1,6 +1,7 @@
 import React from 'react';
 import { TableData } from 'Common/loadableCommon';
-import { Button, Modal, message, Spin, Table, Progress } from 'antd';
+import { Button, Modal, message, Spin, Table, Progress, Icon } from 'antd';
+import { Link } from 'react-router-dom';
 import './ExamAnalyze.less';
 import qs from 'qs';
 import http from 'Util20/api';
@@ -125,7 +126,7 @@ class ExamAnalyze extends React.Component {
 
   renderDepartment = () => {
     const { selectedDepartmentRecord } = this.state;
-    console.log("selectedDepartmentRecord",selectedDepartmentRecord)
+    console.log("selectedDepartmentRecord", selectedDepartmentRecord)
     if (selectedDepartmentRecord) {
       return selectedDepartmentRecord.deptname;
     }
@@ -237,14 +238,14 @@ class ExamAnalyze extends React.Component {
     const departmentArr = [],
       levelArr = [];
     resData.forEach(item => {
-      console.log("item",item)
+      console.log("item", item)
       const tempDepartment = departmentArr.find(
         depItem => depItem.id === item.dept
       );
       if (!tempDepartment) {
         departmentArr.push({
           name: item[departmentNameKey],
-          deptname:item[departmentName],
+          deptname: item[departmentName],
           id: item.dept
         });
       }
@@ -327,13 +328,15 @@ class ExamAnalyze extends React.Component {
         formatter: '{a} <br/>{b}: {c} ({d}%)'
       },
       legend: {
-        data: ['通过', '未通过']
+        data: ['通过', '未通过'],
+        top: 32
       },
       series: [
         {
           name: `${this.state.title}`,
           type: 'pie',
           avoidLabelOverlap: false,
+          center: ['50%', '55%'],
           label: {
             normal: {
               show: false,
@@ -343,7 +346,8 @@ class ExamAnalyze extends React.Component {
               show: true,
               textStyle: {
                 fontSize: '30',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                color: '#fff'
               }
             }
           },
@@ -473,6 +477,15 @@ class ExamAnalyze extends React.Component {
     return (
       <Spin spinning={loading}>
         <div className="exam-analyze">
+          <Link
+            to={{
+              pathname: '/fnmodule',
+              search: `resid=607168405062&recid=610628239901&type=考试系统&title=统计分析`
+            }}
+            target="_self"
+          >
+            <div className='back2history'><Icon type='left' /> 返回</div>
+          </Link>
           <h1 style={{ textAlign: 'center' }}>{title}</h1>
           <h2>筛选</h2>
           <div className="exam-analyze__condition">
@@ -493,7 +506,7 @@ class ExamAnalyze extends React.Component {
                     this.getData(
                       null,
                       this.state.selectedLevelRecord &&
-                        this.state.selectedLevelRecord.C3_587136281870
+                      this.state.selectedLevelRecord.C3_587136281870
                     );
                   }}
                   style={{ marginLeft: 4 }}
@@ -518,7 +531,7 @@ class ExamAnalyze extends React.Component {
                     this.setState({ selectedLevelRecord: null });
                     this.getData(
                       this.state.selectedDepartmentRecord &&
-                        this.state.selectedDepartmentRecord.DEP_NAME,
+                      this.state.selectedDepartmentRecord.DEP_NAME,
                       null
                     );
                   }}

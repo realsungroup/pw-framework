@@ -81,12 +81,12 @@ export default class MenuMultiple extends React.Component {
   };
 
   getRecordList = async (selectedRecord, wheres = '') => {
-    const { resid, subresid, hostrecid } = this.props;
+    const { resid, subresid, hostrecid, baseURL } = this.props;
     let res;
     try {
       res = await getSubTableData(resid, subresid, hostrecid, {
         cmswhere: wheres
-      });
+      }, baseURL);
     } catch (err) {
       return message.error(err.message);
     }
@@ -98,13 +98,13 @@ export default class MenuMultiple extends React.Component {
   };
 
   getFormData = async () => {
-    const { subresid } = this.props;
+    const { subresid, baseURL } = this.props;
     if (!subresid) {
       return;
     }
     let res;
     try {
-      res = await getFormData(subresid, 'default');
+      res = await getFormData(subresid, 'default', baseURL);
     } catch (err) {
       return message.error(err.message);
     }

@@ -63,7 +63,8 @@ class MyQuery extends React.Component {
     const newItem = [
       {
         query_name: item.query_name,
-        query_description: item.query_description
+        query_description: item.query_description,
+        floder_name: item.floder_name
       }
     ];
     this.setState({ loading: true });
@@ -184,7 +185,7 @@ class MyQuery extends React.Component {
   componentWillUpdate() {
     //页面将要更新时执行的函数
   }
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   /**
    * 获取数据
@@ -225,8 +226,15 @@ class MyQuery extends React.Component {
       })
       .then(res => {
         console.log('问卷', res.data);
+
+        let n = 0;
+        let arr = res.data;
+        while (n < arr.length) {
+          arr[n].query_address = window.location.host + arr[n].query_address;
+          n++;
+        }
         this.setState({
-          questionnaire: res.data,
+          questionnaire: arr,
           loading: false,
           total: res.total
         });
@@ -335,7 +343,7 @@ class MyQuery extends React.Component {
           queryStatus,
           searchValue
         } = this.state;
-        this.getData(current, pageSize,folderId, queryStatus, searchValue);
+        this.getData(current, pageSize, folderId, queryStatus, searchValue);
       })
       .catch(err => {
         console.error('修改失败原因', err);
@@ -386,6 +394,7 @@ class MyQuery extends React.Component {
     return (
       <Spin spinning={loading}>
         <div className="query">
+
           <div className="query-top">
             <Link
               to={{

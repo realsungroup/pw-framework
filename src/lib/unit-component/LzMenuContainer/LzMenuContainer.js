@@ -181,7 +181,7 @@ export default class LzMenuContainer extends React.Component {
 
       // 显示默认的视图
       if (mode === 'single') {
-        const { defaultComponetProps } = this.props;
+        const { defaultComponetProps, baseURL } = this.props;
         const { record } = this.state;
 
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -192,13 +192,14 @@ export default class LzMenuContainer extends React.Component {
           ...defaultComponetProps,
           hostrecid: record.REC_ID,
           searchValue: this.state.searchValue,
-          cmswhere
+          cmswhere,
+          baseURL
         };
 
         return <LzTable {...props} key={props.hostrecid} />;
       } else {
         const { subresid, resid, hostrecid } = this.state;
-        const { advSearchConfig } = this.props;
+        const { advSearchConfig, baseURL } = this.props;
         const formTitle = this.getFormTitle(this.props.menuList, subresid);
         const props = {
           formTitle,
@@ -207,7 +208,7 @@ export default class LzMenuContainer extends React.Component {
           subresid,
           hostrecid
         };
-        return <MenuMultiple {...props} advSearchConfig={advSearchConfig} />;
+        return <MenuMultiple {...props} baseURL={baseURL} advSearchConfig={advSearchConfig} />;
       }
     }
   };
@@ -271,13 +272,14 @@ export default class LzMenuContainer extends React.Component {
   };
 
   searchStaff = async value => {
+    const { baseURL } = this.props
     this.setState({ searchLoading: true });
     let res;
     try {
       const cmswhere = this.getCmswhere();
       res = await getMainTableData(this.props.resid, undefined, {
         cmswhere
-      });
+      }, baseURL);
     } catch (err) {
       this.setState({ searchLoading: false });
       return message.error(err.message);
