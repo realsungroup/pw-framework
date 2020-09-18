@@ -439,8 +439,9 @@ export const getReportList = groupId => {
  * @param {string} cmswhere 查询条件
  * @param {string} filetype 导出文件格式（默认 xls）
  */
-export const exportTableData = (resid, cmswhere, filetype = 'xls') => {
-  const url = baseUrl + 'api/100/table/ExportTableData';
+export const exportTableData = (resid, cmswhere, filetype = 'xls', baseURL) => {
+  baseURL = baseURL ? baseURL : baseUrl;
+  const url = baseURL + 'api/100/table/ExportTableData';
   const params = {
     resid,
     cmswhere,
@@ -670,8 +671,9 @@ export const runAutoImport = taskId => {
 /**
  * 批量处理
  */
-export const batchDeal = title => {
-  const url = baseUrl + 'api/Resource/RunAutoImportByName';
+export const batchDeal = (title, baseURL) => {
+  baseURL = baseURL ? baseURL : baseUrl;
+  const url = baseURL + 'api/Resource/RunAutoImportByName';
   const params = {
     title
   };
@@ -681,8 +683,9 @@ export const batchDeal = title => {
 /**
  * 获取批量处理的状态
  */
-export const getBatchDealStatus = taskId => {
-  const url = baseUrl + 'api/Resource/GetAutoImportStatusByTaskId';
+export const getBatchDealStatus = (taskId, baseURL) => {
+  baseURL = baseURL ? baseURL : baseUrl;
+  const url = baseURL + 'api/Resource/GetAutoImportStatusByTaskId';
   const params = {
     taskId
   };

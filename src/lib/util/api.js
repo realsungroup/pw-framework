@@ -54,8 +54,9 @@ export const getResource = id => {
 };
 
 // 获取主表数据
-export const getMainTableData = (resid, mtsid, options = {}) => {
-  const url = baseUrl + appConfig.path.getData;
+export const getMainTableData = (resid, mtsid, options = {}, baseURL) => {
+  baseURL = baseURL ? baseURL : baseUrl;
+  const url = baseURL + appConfig.path.getData;
   const params = {
     resid,
     getcolumninfo: 1,
@@ -75,8 +76,9 @@ export const getMainTableData = (resid, mtsid, options = {}) => {
 };
 
 // 获取子表数据
-export const getSubTableData = (resid, subresid, hostrecid, options = {}) => {
-  const url = baseUrl + appConfig.path.getSubData;
+export const getSubTableData = (resid, subresid, hostrecid, options = {}, baseURL) => {
+  baseURL = baseURL ? baseURL : baseUrl;
+  const url = baseURL + appConfig.path.getSubData;
   const params = {
     resid,
     subresid,
@@ -96,8 +98,9 @@ export const getSubTableData = (resid, subresid, hostrecid, options = {}) => {
 };
 
 // 获取字段定义
-export const getColumnsDefine = resid => {
-  const url = baseUrl + appConfig.path.getColumnsDefine;
+export const getColumnsDefine = (resid, baseURL) => {
+  baseURL = baseURL ? baseURL : baseUrl;
+  const url = baseURL + appConfig.path.getColumnsDefine;
   const params = {
     resid
   };
@@ -105,8 +108,9 @@ export const getColumnsDefine = resid => {
 };
 
 // 获取窗体设计数据
-export const getFormData = (resid, formName) => {
-  const url = baseUrl + appConfig.path.getFormDefine;
+export const getFormData = (resid, formName, baseURL) => {
+  baseURL = baseURL ? baseURL : baseUrl;
+  const url = baseURL + appConfig.path.getFormDefine;
   const params = {
     resid: resid, //id
     formname: formName //窗体名

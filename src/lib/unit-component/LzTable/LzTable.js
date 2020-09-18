@@ -1943,7 +1943,8 @@ class LzTable extends React.Component {
         res = await getMainTableData(
           resid,
           mtsid,
-          Object.assign(options, { cmswhere, cmscolumns })
+          Object.assign(options, { cmswhere, cmscolumns }),
+          this.props.baseURL
         );
       } catch (err) {
         this.setState({ loading: false });
@@ -1959,14 +1960,15 @@ class LzTable extends React.Component {
         }`;
       }
       if (operation === 'add') {
-        res = await getColumnsDefine(subresid);
+        res = await getColumnsDefine(subresid, this.props.baseURL);
       } else if (operation !== 'add' && hostrecid !== 0) {
         try {
           res = await getSubTableData(
             resid,
             subresid,
             hostrecid,
-            Object.assign(options, { cmswhere, cmscolumns })
+            Object.assign(options, { cmswhere, cmscolumns }),
+            this.props.baseURL
           );
         } catch (err) {
           this.setState({ loading: false });
@@ -2723,7 +2725,11 @@ class LzTable extends React.Component {
       submitLoading:true
     })
     try {
-      res = await http().modifyRecords({
+      const params = {};
+      if (this.props.baseURL) {
+        params.baseURL = baseURL;
+      }
+      res = await http(params).modifyRecords({
         resid: 590863325025,
         data: [{ C3_591373760332: 'Y', REC_ID: record.REC_ID }]
       });
@@ -3003,7 +3009,7 @@ class LzTable extends React.Component {
     const { title } = batchBtn;
     let res;
     try {
-      res = await batchDeal(title);
+      res = await batchDeal(title, this.props.baseURL);
     } catch (err) {
       return message.error(err.message);
     }
@@ -3024,7 +3030,7 @@ class LzTable extends React.Component {
   getTaskInfo = async taskId => {
     let res;
     try {
-      res = await getBatchDealStatus(taskId);
+      res = await getBatchDealStatus(taskId, this.props.baseURL);
     } catch (err) {
       return message.error(err.message);
     }
@@ -3066,7 +3072,7 @@ class LzTable extends React.Component {
     this.setState({ loading: true });
     let res;
     try {
-      res = await exportTableData(this.props.resid, this.wheres);
+      res = await exportTableData(this.props.resid, this.wheres, this.props.baseURL);
     } catch (err) {
       return message.error(err.message);
     }
