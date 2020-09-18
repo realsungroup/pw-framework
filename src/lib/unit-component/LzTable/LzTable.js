@@ -912,7 +912,7 @@ class LzTable extends React.Component {
       totalIndex: 0, // 任务总进度
       curIndex: 0, // 当前任务进度
       isTaskComplete: false, // 当前任务是否已完成
-      submitLoading:false //提交按钮的loading
+      submitLoading: false //提交按钮的loading
     };
   }
 
@@ -1383,9 +1383,9 @@ class LzTable extends React.Component {
 
           newPagination
             ? this.setState({
-                tableData: newTableData,
-                pagination: newPagination
-              })
+              tableData: newTableData,
+              pagination: newPagination
+            })
             : this.setState({ tableData: newTableData });
 
           message.success('删除成功');
@@ -1937,7 +1937,7 @@ class LzTable extends React.Component {
       if (this.props.cmswhere) {
         cmswhere = `${cmswhere ? cmswhere + ' and ' : ''} ${
           this.props.cmswhere
-        }`;
+          }`;
       }
       try {
         res = await getMainTableData(
@@ -1957,7 +1957,7 @@ class LzTable extends React.Component {
       if (this.props.cmswhere) {
         cmswhere = `${cmswhere ? cmswhere + ' and ' : ''} ${
           this.props.cmswhere
-        }`;
+          }`;
       }
       if (operation === 'add') {
         res = await getColumnsDefine(subresid, this.props.baseURL);
@@ -2648,7 +2648,7 @@ class LzTable extends React.Component {
   getFormHeader = (record, rowIndex) => {
     const { formHeaderRecords, btnsVisible, backendBtnsHide } = this.props;
     const { mod, del } = btnsVisible;
-    const { backEndBtnsSingle ,submitLoading} = this.state;
+    const { backEndBtnsSingle, submitLoading } = this.state;
 
     const backEndBtns = filterBackEndBtns(
       backEndBtnsSingle,
@@ -2722,12 +2722,12 @@ class LzTable extends React.Component {
   handleFESubmit = async record => {
     let res;
     this.setState({
-      submitLoading:true
+      submitLoading: true
     })
     try {
       const params = {};
       if (this.props.baseURL) {
-        params.baseURL = baseURL;
+        params.baseURL = this.props.baseURL;
       }
       res = await http(params).modifyRecords({
         resid: 590863325025,
@@ -2753,13 +2753,13 @@ class LzTable extends React.Component {
         this.refreshTableData();
       }
     } else {
-    this.setState({
-      submitLoading:false
-    })
+      this.setState({
+        submitLoading: false
+      })
       message.error('操作失败');
     }
     this.setState({
-      submitLoading:false
+      submitLoading: false
     })
   };
 
@@ -2904,7 +2904,7 @@ class LzTable extends React.Component {
           rowClassName={'rowClassName'}
           onRow={record => {
             return {
-              onMouseEnter: () => {} // 鼠标移入行
+              onMouseEnter: () => { } // 鼠标移入行
             };
           }}
           locale={{
