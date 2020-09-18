@@ -1,6 +1,7 @@
 import React from 'react';
 import { TableData } from 'Common/loadableCommon';
-import { Button, Modal, message, Spin, Table, Progress } from 'antd';
+import { Button, Modal, message, Spin, Table, Progress, Icon } from 'antd';
+import { Link } from 'react-router-dom';
 import './ExamAnalyze.less';
 import qs from 'qs';
 import http from 'Util20/api';
@@ -327,13 +328,15 @@ class ExamAnalyze extends React.Component {
         formatter: '{a} <br/>{b}: {c} ({d}%)'
       },
       legend: {
-        data: ['通过', '未通过']
+        data: ['通过', '未通过'],
+        top: 32
       },
       series: [
         {
           name: `${this.state.title}`,
           type: 'pie',
           avoidLabelOverlap: false,
+          center: ['50%', '55%'],
           label: {
             normal: {
               show: false,
@@ -343,7 +346,8 @@ class ExamAnalyze extends React.Component {
               show: true,
               textStyle: {
                 fontSize: '30',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                color: '#fff'
               }
             }
           },
@@ -473,6 +477,15 @@ class ExamAnalyze extends React.Component {
     return (
       <Spin spinning={loading}>
         <div className="exam-analyze">
+          <Link
+            to={{
+              pathname: '/fnmodule',
+              search: `resid=607168405062&recid=610628239901&type=考试系统&title=统计分析`
+            }}
+            target="_self"
+          >
+            <div className='back2history'><Icon type='left' /> 返回</div>
+          </Link>
           <h1 style={{ textAlign: 'center' }}>{title}</h1>
           <h2>筛选</h2>
           <div className="exam-analyze__condition">

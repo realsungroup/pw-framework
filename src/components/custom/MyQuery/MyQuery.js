@@ -226,8 +226,15 @@ class MyQuery extends React.Component {
       })
       .then(res => {
         console.log('问卷', res.data);
+
+        let n = 0;
+        let arr = res.data;
+        while (n < arr.length) {
+          arr[n].query_address = window.location.host + arr[n].query_address;
+          n++;
+        }
         this.setState({
-          questionnaire: res.data,
+          questionnaire: arr,
           loading: false,
           total: res.total
         });

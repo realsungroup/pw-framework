@@ -14,15 +14,20 @@ import {
   message,
   Switch
 } from 'antd';
+import FormData from '../../common/data/FormData';
 import TableData from '../../common/data/TableData';
+import dealControlArr from 'Util20/controls';
+import { getDataProp } from 'Util20/formData2ControlsData';
 
 import http from '../../../util20/api';
 import logo from '../../../assets/logo.png';
 const { Option } = Select;
+const resid = window.pwConfig[process.env.NODE_ENV].offerletter;
 
 class OfferLetter extends React.Component {
   constructor() {
     super();
+
     this.state = {
       salary: '',
       level: '',
@@ -69,7 +74,6 @@ class OfferLetter extends React.Component {
     var peopleData = this.props.personDetail;
     this.getTableData(peopleData);
     let data = this.state.data;
-
     this.setState({
       data: {
         ...data,
@@ -77,41 +81,27 @@ class OfferLetter extends React.Component {
       }
     });
   };
+  /**
+     * 获取主表窗体数据
+     */
+  getFormData = async (record, formName = 'default') => {
+    let res;
+    try {
+      this.setState({ loading: true });
+      res = await http().getFormData({
+        resid: resid,
+        formName
+      });
+      const formData = dealControlArr(res.data.columns);
+      this._dataProp = getDataProp(formData, record, true, false, false);
+    } catch (err) {
+      console.log(err);
+      return message.error(err.message);
+    }
+    this.setState({ loading: false });
+  };
 
   componentWillReceiveProps = nextProps => {
-    // this.setState({
-    //   data: {
-    //     candidate: '',
-    //     position: '',
-    //     salary: '',
-    //     level: '',
-    //     manager: '',
-    //     details: '',
-    //     signature: '',
-    //     date: '',
-    //     year: '',
-    //     month: '',
-    //     day: '',
-    //     hour: '',
-    //     bgCorp: '',
-    //     contactsOne: '',
-    //     contactsPositionOne: '',
-    //     officeNo: '',
-    //     contactsOnePhone: '',
-    //     contactsTwo: '',
-    //     contactsPositionTwo: '',
-    //     contactsTwoOfficeNo: '',
-    //     contactsTwoPhone: '',
-    //     contactsThree: '',
-    //     contactsPositionThree: '',
-    //     contactsThreeOfficeNo: '',
-    //     contactsThreePhone: '',
-    //     englishName: '',
-    //     HRName: '',
-    //     HROfficeNo: '',
-    //     HRPhone: ''
-    //   }
-    // });
     let data = this.state.data;
     console.log(nextProps.personDetail);
     if (nextProps.personDetail) {
@@ -123,12 +113,11 @@ class OfferLetter extends React.Component {
           }
         });
         this.getTableData(nextProps.personDetail);
-        // this.getPersonalInfo(613149356409,nextProps.personDetail);
+        // this.getFormData(record, createWindowName);
       }
     } else {
     }
 
-    // let ID = ''
   };
 
   getTableData = async id => {
@@ -631,7 +620,7 @@ class OfferLetter extends React.Component {
       Modal.error({
         title: '提示',
         content: err.message,
-        okText:'OK'
+        okText: 'OK'
 
       });
       this.setState({ loading: false });
@@ -641,22 +630,14 @@ class OfferLetter extends React.Component {
     const bodyHtml = window.document.body.innerHTML;
 
     var footstr = "</body>";
-     var newstr = document.getElementById('content').innerHTML;
-     var style='<style>p{font-size:15px;}</style>';
-      // var style="<style media='print'>#toPrint .sm-wrap{width:30%;margin-right:5%;height:auto;float:left;}	@page {	size: auto; margin: 0;	}</style><style>#toPrint .sm-wrap{width:30%;margin-right:5%;height:auto;float:left;}#toPrint .sm-wrap:nth-child(4n-1){margin-right:0;}.alter>div{margin:0;}#toPrint .sm-wrap>div{width:100%;height:auto;line-height: 22px;margin-bottom: 17px;}#toPrint .sm-wrap>div:last-child{margin-bottom: 0;}.clearfix{clear:both;margin-bottom: 32px;}.printBtn{position:fixed;top:16px;left:16px;}</style>";
-     var headstr = "<html><head><title></title>"+style+"</head><body>";
-     document.body.innerHTML = headstr + newstr + footstr;
-     window.print();
+    var newstr = document.getElementById('content').innerHTML;
+    var style = '<style>p{font-size:15px;}</style>';
+    var headstr = "<html><head><title></title>" + style + "</head><body>";
+    document.body.innerHTML = headstr + newstr + footstr;
+    window.print();
     window.document.body.innerHTML = bodyHtml;
     window.location.reload();
 
-
-
-    // const bodyHtml = window.document.body.innerHTML;
-    // window.document.body.innerHTML = this.printer.innerHTML;
-    // window.print();
-    // window.document.body.innerHTML = bodyHtml;
-    // window.location.reload();
   };
 
   onSendMail = async () => {
@@ -686,40 +667,6 @@ class OfferLetter extends React.Component {
           data: [data]
         });
         message.success('发送邮件成功');
-        // this.setState({
-        //   data: {
-        //     candidate: '',
-        //     position: '',
-        //     salary: '',
-        //     level: '',
-        //     manager: '',
-        //     details: '',
-        //     signature: '',
-        //     date: '',
-        //     year: '',
-        //     month: '',
-        //     day: '',
-        //     hour: '',
-        //     bgCorp: '',
-        //     contactsOne: '',
-        //     contactsPositionOne: '',
-        //     officeNo: '',
-        //     contactsOnePhone: '',
-        //     contactsTwo: '',
-        //     contactsPositionTwo: '',
-        //     contactsTwoOfficeNo: '',
-        //     contactsTwoPhone: '',
-        //     contactsThree: '',
-        //     contactsPositionThree: '',
-        //     contactsThreeOfficeNo: '',
-        //     contactsThreePhone: '',
-        //     englishName: '',
-        //     HRName: '',
-        //     HROfficeNo: '',
-        //     HRPhone: '',
-        //     stock:''
-        //   }
-        // });
         this.setState({ loading: false });
       } catch (error) {
         message.error(error.message);
@@ -738,7 +685,7 @@ class OfferLetter extends React.Component {
             id="content"
             ref={p => (this.printer = p)}
           >
-            
+
             <div
               className={
                 this.state.data.location == 'WX' || !this.state.data.location
@@ -780,8 +727,8 @@ class OfferLetter extends React.Component {
                       }}
                     />
                   ) : (
-                    <span>{this.state.data.candidate}</span>
-                  )}
+                      <span>{this.state.data.candidate}</span>
+                    )}
                 </u>
               </strong>
               <br />
@@ -804,8 +751,8 @@ class OfferLetter extends React.Component {
                         value={this.state.data.position}
                       />
                     ) : (
-                      <span>{this.state.data.position}</span>
-                    )}
+                        <span>{this.state.data.position}</span>
+                      )}
                   </u>
                 </strong>
                 . We trust that your knowledge, skills and experience will be
@@ -836,8 +783,8 @@ class OfferLetter extends React.Component {
                           }}
                         />
                       ) : (
-                        <span>{this.state.data.salary}</span>
-                      )}
+                          <span>{this.state.data.salary}</span>
+                        )}
                     </u>
                   </strong>
                   (before tax, 12months pay), paid by direct deposit.
@@ -865,8 +812,8 @@ class OfferLetter extends React.Component {
                       }}
                     />
                   ) : (
-                    <span>{this.state.data.salary}</span>
-                  )}
+                      <span>{this.state.data.salary}</span>
+                    )}
                   The value will be split equally (50/50) between Stock Options
                   and RSUs. The price associated with these RSUs and Stock
                   Options will be referenced from the closing price on the 27th
@@ -916,8 +863,8 @@ class OfferLetter extends React.Component {
                           }}
                         />
                       ) : (
-                        <span>{this.state.data.level}</span>
-                      )}
+                          <span>{this.state.data.level}</span>
+                        )}
                     </u>
                   </strong>
                 </li>
@@ -939,8 +886,8 @@ class OfferLetter extends React.Component {
                           }}
                         />
                       ) : (
-                        <span>{this.state.data.manager}</span>
-                      )}
+                          <span>{this.state.data.manager}</span>
+                        )}
                     </u>
                   </strong>
                 </li>
@@ -1005,8 +952,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.details}</span>
-                    )}
+                        <span>{this.state.data.details}</span>
+                      )}
                   </u>
                 </strong>
                 &nbsp; at Finisar Wuxi, Incorporated. I have reviewed and agree
@@ -1029,8 +976,8 @@ class OfferLetter extends React.Component {
                           }}
                         />
                       ) : (
-                        <span>{this.state.data.signature}</span>
-                      )}
+                          <span>{this.state.data.signature}</span>
+                        )}
                     </u>
                   </strong>
                   Date:
@@ -1056,18 +1003,18 @@ class OfferLetter extends React.Component {
                   after you receive it. If not, the offer letter will become
                   invalid.
                 </p>
-                {this.state.data.isHasStock == 'Y' ?null:(
-                  <div style={{height:'280px',width:'100%'}}>
-                  
+                {this.state.data.isHasStock == 'Y' ? null : (
+                  <div style={{ height: '280px', width: '100%' }}>
+
                   </div>
                 )}
                 <div
                   style={{
                     width: '100%',
                     height: '1px',
-                    borderBottom:'1px solid #971a1e'
+                    borderBottom: '1px solid #971a1e'
                   }}></div>
-                <p style = {{textAlign:"center",color:"#971a1e",fontSize:'12px'}}>T. 724.352.4455  |  F. 724.352.5284  |  ii-vi.com</p>
+                <p style={{ textAlign: "center", color: "#971a1e", fontSize: '12px' }}>T. 724.352.4455  |  F. 724.352.5284  |  ii-vi.com</p>
                 <div
                   style={{ height: '1px', width: '100%' }}
                   className={this.state.data.isHasStock == 'Y' ? '' : 'hidden'}
@@ -1155,8 +1102,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.year}</span>
-                    )}
+                        <span>{this.state.data.year}</span>
+                      )}
                   </u>
                 </strong>
                 年
@@ -1176,8 +1123,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.month}</span>
-                    )}
+                        <span>{this.state.data.month}</span>
+                      )}
                   </u>
                 </strong>
                 月
@@ -1197,8 +1144,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.day}</span>
-                    )}
+                        <span>{this.state.data.day}</span>
+                      )}
                   </u>
                 </strong>
                 日{' '}
@@ -1218,8 +1165,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.hour}</span>
-                    )}
+                        <span>{this.state.data.hour}</span>
+                      )}
                   </u>
                 </strong>
                 时携带如下资料至公司人力资源部办理报到手续。如无法按期报到的，请您及时与公司人力资源部取得联系并说明理由，公司将酌情是否另行安排报到时间。如您未能按时报到或未能在公司另行指定的报到时间报到的，本录取通知书失效。
@@ -1508,8 +1455,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.HRName}</span>
-                    )}
+                        <span>{this.state.data.HRName}</span>
+                      )}
                   </u>
                 </strong>
                 &nbsp; 联系。Tel: &nbsp;
@@ -1530,8 +1477,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.HROfficeNo}</span>
-                    )}
+                        <span>{this.state.data.HROfficeNo}</span>
+                      )}
                   </u>
                 </strong>
                 &nbsp; or &nbsp;
@@ -1552,8 +1499,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.HRPhone}</span>
-                    )}
+                        <span>{this.state.data.HRPhone}</span>
+                      )}
                   </u>
                 </strong>
                 。
@@ -1609,8 +1556,8 @@ class OfferLetter extends React.Component {
                       }}
                     />
                   ) : (
-                    <span>{this.state.data.candidate}</span>
-                  )}
+                      <span>{this.state.data.candidate}</span>
+                    )}
                 </u>
               </strong>
               <br />
@@ -1633,8 +1580,8 @@ class OfferLetter extends React.Component {
                         value={this.state.data.position}
                       />
                     ) : (
-                      <span>{this.state.data.position}</span>
-                    )}
+                        <span>{this.state.data.position}</span>
+                      )}
                   </u>
                 </strong>
                 .We trust that your knowledge, skills and experience will be
@@ -1665,8 +1612,8 @@ class OfferLetter extends React.Component {
                           }}
                         />
                       ) : (
-                        <span>{this.state.data.salary}</span>
-                      )}
+                          <span>{this.state.data.salary}</span>
+                        )}
                     </u>
                   </strong>
                   (before tax, 12months pay), paid by direct deposit.
@@ -1696,13 +1643,13 @@ class OfferLetter extends React.Component {
                       }}
                     />
                   ) : (
-                    <span>{this.state.data.salary}</span>
-                  )}{' '}
+                      <span>{this.state.data.salary}</span>
+                    )}{' '}
                   in Finisar’s Restricted Stock Units (RSUs). These RSUs will
                   vest over a four-year period at the rate of 25% per year
                   starting from the date of grant and will be subject to the
                   terms and conditions of Finisar’s Stock Incentive Plan and
-                  applicable agreements. 
+                  applicable agreements.
                   <br />
                   <br />
                   If you start after the acquisition date, you will be issued a
@@ -1718,7 +1665,7 @@ class OfferLetter extends React.Component {
                   vest equally over a four-year period at a rate of one quarter
                   per year.  These Awards will be subject to the terms and
                   conditions of II-VI’s Stock Incentive Plan and applicable
-                  agreements. 
+                  agreements.
                   <br />
                   <br />
                   If the employment contract between you and the company is
@@ -1753,8 +1700,8 @@ class OfferLetter extends React.Component {
                           }}
                         />
                       ) : (
-                        <span>{this.state.data.level}</span>
-                      )}
+                          <span>{this.state.data.level}</span>
+                        )}
                     </u>
                   </strong>
                 </li>
@@ -1776,8 +1723,8 @@ class OfferLetter extends React.Component {
                           }}
                         />
                       ) : (
-                        <span>{this.state.data.manager}</span>
-                      )}
+                          <span>{this.state.data.manager}</span>
+                        )}
                     </u>
                   </strong>
                 </li>
@@ -1840,8 +1787,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.details}</span>
-                    )}
+                        <span>{this.state.data.details}</span>
+                      )}
                   </u>
                 </strong>
                 &nbsp; at Finisar , Incorporated. I have reviewed and
@@ -1866,8 +1813,8 @@ class OfferLetter extends React.Component {
                           }}
                         />
                       ) : (
-                        <span>{this.state.data.signature}</span>
-                      )}
+                          <span>{this.state.data.signature}</span>
+                        )}
                     </u>
                   </strong>
                   Date:
@@ -1894,18 +1841,18 @@ class OfferLetter extends React.Component {
                   after you receive it. If not, the offer letter will become
                   invalid.
                 </p>
-                {this.state.data.isHasStock == 'Y' ?null:(
-                  <div style={{height:'280px',width:'100%'}}>
-                  
+                {this.state.data.isHasStock == 'Y' ? null : (
+                  <div style={{ height: '280px', width: '100%' }}>
+
                   </div>
                 )}
                 <div
                   style={{
                     width: '100%',
                     height: '1px',
-                    borderBottom:'1px solid #971a1e'
+                    borderBottom: '1px solid #971a1e'
                   }}></div>
-                <p style = {{textAlign:"center",color:"#971a1e",fontSize:'12px'}}>T. 724.352.4455  |  F. 724.352.5284  |  ii-vi.com</p>
+                <p style={{ textAlign: "center", color: "#971a1e", fontSize: '12px' }}>T. 724.352.4455  |  F. 724.352.5284  |  ii-vi.com</p>
                 <div
                   style={{ height: '1px', width: '100%' }}
                   className={this.state.data.isHasStock == 'Y' ? '' : 'hidden'}
@@ -1992,8 +1939,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.year}</span>
-                    )}
+                        <span>{this.state.data.year}</span>
+                      )}
                   </u>
                 </strong>
                 年
@@ -2013,8 +1960,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.month}</span>
-                    )}
+                        <span>{this.state.data.month}</span>
+                      )}
                   </u>
                 </strong>
                 月
@@ -2034,8 +1981,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.day}</span>
-                    )}
+                        <span>{this.state.data.day}</span>
+                      )}
                   </u>
                 </strong>
                 日{' '}
@@ -2055,8 +2002,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.hour}</span>
-                    )}
+                        <span>{this.state.data.hour}</span>
+                      )}
                   </u>
                 </strong>
                 时携带如下资料至公司人力资源部办理报到手续。如无法按期报到的，请您及时与公司人力资源部取得联系并说明理由，公司将酌情是否另行安排报到时间。如您未能按时报到或未能在公司另行指定的报到时间报到的，本录取通知书失效。
@@ -2367,8 +2314,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.HRName}</span>
-                    )}
+                        <span>{this.state.data.HRName}</span>
+                      )}
                   </u>
                 </strong>
                 &nbsp; 联系。Tel: &nbsp;
@@ -2388,8 +2335,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.HROfficeNo}</span>
-                    )}
+                        <span>{this.state.data.HROfficeNo}</span>
+                      )}
                   </u>
                 </strong>
                 &nbsp; or &nbsp;
@@ -2409,8 +2356,8 @@ class OfferLetter extends React.Component {
                         }}
                       />
                     ) : (
-                      <span>{this.state.data.HRPhone}</span>
-                    )}
+                        <span>{this.state.data.HRPhone}</span>
+                      )}
                   </u>
                 </strong>
                 。
@@ -2426,7 +2373,7 @@ class OfferLetter extends React.Component {
             </div>
           </div>
           <div
-            style={{ marginLeft: '280px',textAlign:'right' }}
+            style={{ marginLeft: '280px', textAlign: 'right' }}
             className={this.state.data ? 'buttonLine' : 'hidden'}
           >
             <div className="right">

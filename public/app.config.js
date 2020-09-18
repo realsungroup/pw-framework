@@ -24,7 +24,7 @@ window.pwConfig = {
     penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
 
     hasAttendanceMonth: true, // 是否有考勤月份切换的功能
-
+    offerletter: 621366399676,
     //各定制组件需用到的基地址
     customURLs: {
       attendanceBaseURL: 'http://10.108.21.41:2001/', //考勤审批
@@ -237,6 +237,7 @@ window.pwConfig = {
     penetrate: true, //是否穿透模式
     penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
     hasAttendanceMonth: true, // 是否有考勤月份切换的功能
+    offerletter: 621366399676,
 
     //各定制组件需用到的基地址
     customURLs: {

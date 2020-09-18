@@ -830,3 +830,10 @@ export const ReplyComplain = Loadable({
     return minLoading;
   }
 });
+
+export const MyApplication = Loadable({
+  loader: () => import('./MyApplication'),
+  loading() {
+    return minLoading;
+  }
+});

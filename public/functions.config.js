@@ -11,7 +11,6 @@ window[606476781618] = {
     hasDelete: false,
     hasRowView: true,
     hasRowModify: false,
-    hasRowDelete: false,
     subtractH: 220,
     hasRowSelection: true,
     isSearch: false,
@@ -935,6 +934,7 @@ window[648297903478] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
+    hasRowSelection: true,
     height: '100vh',
     recordFormFormWidth: '90%',
     backendButtonPopConfirmProps: { placement: 'bottom' },
@@ -5021,7 +5021,7 @@ window[642855760886] = {
 };
 window[642855770350] = {
   name: 'TableData', // 组件名称，
-  title: '我的招聘申请', // 功能模块名称
+  title: '我的招聘申请', // 功能模块名称  
   props: {
     baseURL: 'http://10.108.21.41:6001',
     downloadBaseURL: 'http://10.108.21.41:6000/',
@@ -5053,52 +5053,52 @@ window[642855770350] = {
 };
 window[642855780253] = {
   // name: 'TableData', // 组件名称，
-  name: 'MainTableSubTables',
+  name: 'MyApplication',
   title: '我的招聘审批', // 功能模块名称
-  props: {
-    baseURL: 'http://10.108.21.41:6001/',
-    downloadBaseURL: 'http://10.108.21.41:6000/',
-    resid: 518442541615,
-    mainTableProps: {
-      actionBarWidth: 300,
-      hasAdd: true,
-      hasBeBtns: true,
-      hasModify: true,
-      hasBackBtn: true,
-      hasDelete: true,
-      hasRowModify: true,
-      hasRowView: true,
-      hasRowDelete: true,
-      isUseFormDefine: false,
-      // isSetColumnWidth:false,
-      recordFormUseAbsolute: true,
+  // props: {
+  //   baseURL: 'http://10.108.21.41:6001/',
+  //   downloadBaseURL: 'http://10.108.21.41:6000/',
+  //   resid: 518442541615,
+  //   mainTableProps: {
+  //     actionBarWidth: 300,
+  //     hasAdd: true,
+  //     hasBeBtns: true,
+  //     hasModify: true,
+  //     hasBackBtn: true,
+  //     hasDelete: true,
+  //     hasRowModify: true,
+  //     hasRowView: true,
+  //     hasRowDelete: true,
+  //     isUseFormDefine: false,
+  //     // isSetColumnWidth:false,
+  //     recordFormUseAbsolute: true,
 
-      backendButtonPopConfirmProps: { placement: 'bottom' },
-      advSearch: {
-        formName: 'defaultSearch'
-      },
-      formProps: {
-        // height: 500
-        width: 1250
-      },
-      subtractH: 200
-    },
-    subTablesProps: {
-      518461643267: {
-        hasBeBtns: true,
-        hasRowModify: false,
-        hasRowView: false,
-        hasRowDelete: false,
-        // isSetColumnWidth:false,
-        noWidthFields: 'C3_518436882584',
-        baseURL: 'http://10.108.21.41:6001/',
-        downloadBaseURL: 'http://10.108.21.41:6000/',
-        advSearch: {
-          isRequestFormData: false,
-        },
-      }
-    }
-  }
+  //     backendButtonPopConfirmProps: { placement: 'bottom' },
+  //     advSearch: {
+  //       formName: 'defaultSearch'
+  //     },
+  //     formProps: {
+  //       // height: 500
+  //       width: 1250
+  //     },
+  //     subtractH: 200
+  //   },
+  //   subTablesProps: {
+  //     518461643267: {
+  //       hasBeBtns: true,
+  //       hasRowModify: false,
+  //       hasRowView: false,
+  //       hasRowDelete: false,
+  //       // isSetColumnWidth:false,
+  //       noWidthFields: 'C3_518436882584',
+  //       baseURL: 'http://10.108.21.41:6001/',
+  //       downloadBaseURL: 'http://10.108.21.41:6000/',
+  //       advSearch: {
+  //         isRequestFormData: false,
+  //       },
+  //     }
+  //   }
+  // }
 };
 
 window[647714701722] = {

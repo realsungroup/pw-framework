@@ -19,7 +19,7 @@ const { Option } = Select;
 
 const attr = [
   '部门名',
-  '职务名',
+  '岗位名',
   '级别',
   '主管',
   '项目代码',
@@ -900,7 +900,7 @@ class IDLTransferHr extends Component {
                         <ul style={{ padding: '0' }}>
                           <li> <b>姓名: </b>{this.state.toCheckFront.person}</li>
                           <li ><b>部门名: </b>{this.state.toCheckFront.depart === this.state.toCheck[0] ? this.state.toCheckFront.depart : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.depart + ' => ' + this.state.toCheck[0]}</b>}</li>
-                          <li ><b>职务名: </b>{this.state.toCheckFront.jobName === this.state.toCheck[1] ? this.state.toCheckFront.jobName : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.jobName + ' => ' + this.state.toCheck[1]}</b>}</li>
+                          <li ><b>岗位名: </b>{this.state.toCheckFront.jobName === this.state.toCheck[1] ? this.state.toCheckFront.jobName : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.jobName + ' => ' + this.state.toCheck[1]}</b>}</li>
                           <li><b>级别: </b>{this.state.toCheckFront.level === this.state.toCheck[2] ? this.state.toCheckFront.level : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.level + ' => ' + this.state.toCheck[2]}</b>}</li>
                           <li><b>主管: </b>{this.state.toCheckFront.driectorName === this.state.toCheck[3] ? this.state.toCheckFront.driectorName : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.driectorName + ' => ' + this.state.toCheck[3]}</b>}</li>
                           <li ><b>项目代码: </b>{this.state.toCheckFront.proj_code === this.state.toCheck[4] ? this.state.toCheckFront.proj_code : <b style={{ color: '#f5222d' }}>{this.state.toCheckFront.proj_code + ' => ' + this.state.toCheck[4]}</b>}</li>
