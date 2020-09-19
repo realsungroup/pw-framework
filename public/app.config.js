@@ -5,7 +5,7 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://10.108.11.36:6001/', // 请求的基地址
+    baseURL: 'http://pwkwebapi.realsun.me/', // 请求的基地址
     // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     // baseURL: 'http://10.108.2.66:5002/', // 请求的基地址
     basename: '/',
@@ -13,48 +13,48 @@ window.pwConfig = {
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     //  baseURL:'http://hr.realsun.me:8081/',
-    fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
+    fileDownloadUrl: 'http://pwkweb.realsun.me/', // 导出 Excel 文件下载基地址
     // 切换考勤月份的基地址
-    attendanceMonthChangeUrl: 'http://10.108.21.41:2001/',
+    attendanceMonthChangeUrl: 'http://ehrwebapi.realsun.me/',
     fileDownloadConfig: {
       629462405981: {
         fileType: 'mdb'
       }
     },
     penetrate: true, //是否穿透模式
-    penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
-    waitingHandleBaseURL: 'http://10.108.21.41:6000',
+    penetrateReplaceBaseURL: 'http://ehrweb.realsun.me',
+    waitingHandleBaseURL: 'http://pwkwebapi.realsun.me',
     hasAttendanceMonth: true, // 是否有考勤月份切换的功能
     offerletter: 621366399676,
     pexan: 623152549932,
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://10.108.21.41:2001/', //考勤审批
+      attendanceBaseURL: 'http://ehrwebapi.realsun.me/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
-      DataProcessBaseURL: 'http://10.108.21.41:2001/',
+      DataProcessBaseURL: 'http://ehrwebapi.realsun.me/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
-      HeadCountBaseURL: 'http://10.108.21.41:2001/',
-      PostArchitectureBaseURL: 'http://10.108.21.41:2001/',
-      PostArchitectureDownloadBaseURL: 'http://10.108.21.41:2001/',
-      comprehensiveQueryBaseURL: 'http://10.108.21.41:2001/', //综合查询
+      HeadCountBaseURL: 'http://ehrwebapi.realsun.me/',
+      PostArchitectureBaseURL: 'http://ehrwebapi.realsun.me/',
+      PostArchitectureDownloadBaseURL: 'http://ehrweb.realsun.me/',
+      comprehensiveQueryBaseURL: 'http://ehrwebapi.realsun.me/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
       onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
-      headquartersBaseURL: 'http://10.108.11.36:6001', //总部工作流管理-总部工作流
-      headquartersDownloadURL: 'http://10.108.21.41:6000', //总部工作流管理-总部工作流下载URl
+      headquartersBaseURL: 'http://pwkwebapi.realsun.me', //总部工作流管理-总部工作流
+      headquartersDownloadURL: 'http://ehrweb.realsun.me', //总部工作流管理-总部工作流下载URl
       WzBaseURL: 'http://ngrok8.realsun.me:7071', //物资管理
       WzDownloadURL: 'http://ngrok8.realsun.me:7071', //物资管理
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
-      AchievementsBaseURL: 'http://10.108.11.36:6001/', //绩效定制页面基地址
-      RBASchedulingBaseURL: 'http://10.108.21.41:2001', //RBA排班基地址
-      RBASchedulingDownloadBaseURL: 'http://10.108.21.41:2000', //RBA排班下载基地址
-      WuxiHr03BaseURL: 'http://10.108.21.41:2001', //80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL: 'http://10.108.21.41:2000', //80端口非定制组件下载基地址
+      AchievementsBaseURL: 'http://pwkwebapi.realsun.me/', //绩效定制页面基地址
+      RBASchedulingBaseURL: 'http://ehrwebapi.realsun.me', //RBA排班基地址
+      RBASchedulingDownloadBaseURL: 'http://ehrweb.realsun.me/', //RBA排班下载基地址
+      WuxiHr03BaseURL: 'http://ehrwebapi.realsun.me', //80端口非定制组件基地址
+      WuxiHr03DownloadBaseURL: 'http://ehrweb.realsun.me/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
       importTemplateDownloadURL:
-        'http://10.108.2.66/rispweb/upfiles/transtem.xls' //岗位任职导入模板下载链接
+        'http://ehrweb.realsun.me/rispweb/upfiles/transtem.xls' //岗位任职导入模板下载链接
     },
 
     // 绩效-我的评估表功能用到的子表
@@ -163,7 +163,7 @@ window.pwConfig = {
       mode: 'local', // 模式：'cloud' 云对象存储；'local' 本地存储
       bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
       url:
-        'http://10.108.2.66:1000/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+        'http://pwkwebapi.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
     },
 
     // 工作台配置
@@ -173,11 +173,11 @@ window.pwConfig = {
     reminderDataConfig: [
       {
         dblinkname: 'me',
-        baseurl: 'http://10.108.21.41:2001/'
+        baseurl: 'http://ehrwebapi.realsun.me/'
       },
       {
         dblinkname: 'ehr',
-        baseurl: 'http://10.108.21.41:2001/'
+        baseurl: 'http://ehrwebapi.realsun.me/'
       }
     ],
 
@@ -228,17 +228,17 @@ window.pwConfig = {
     baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     basename: '/',
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
-    fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
+    fileDownloadUrl: 'http://pwkweb.realsun.me/', // 导出 Excel 文件下载基地址
     // 切换考勤月份的基地址
-    attendanceMonthChangeUrl: 'http://10.108.21.41:2001/',
+    attendanceMonthChangeUrl: 'http://ehrwebapi.realsun.me/',
     fileDownloadConfig: {
       629462405981: {
         fileType: 'mdb'
       }
     },
     penetrate: true, //是否穿透模式
-    penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
-    waitingHandleBaseURL: 'http://10.108.21.41:6000',
+    penetrateReplaceBaseURL: 'http://ehrweb.realsun.me/',
+    waitingHandleBaseURL: 'http://pwkwebapi.realsun.me',
 
     hasAttendanceMonth: true, // 是否有考勤月份切换的功能
     offerletter: 621366399676,
@@ -246,32 +246,32 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://10.108.21.41:2001/', //考勤审批
-      attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
-      DataProcessBaseURL: 'http://10.108.21.41:2001/',
+      attendanceBaseURL: 'http://ehrwebapi.realsun.me/', //考勤审批
+      attendanceDownloadURL: 'http://ehrweb.realsun.me/', //考勤审批表格下载url
+      DataProcessBaseURL: 'http://ehrwebapi.realsun.me/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
 
-      HeadCountBaseURL: 'http://10.108.21.41:2001/',
-      PostArchitectureBaseURL: 'http://10.108.21.41:2001/',
-      comprehensiveQueryBaseURL: 'http://10.108.21.41:2001/', //综合查询
+      HeadCountBaseURL: 'http://ehrwebapi.realsun.me/',
+      PostArchitectureBaseURL: 'http://ehrwebapi.realsun.me/',
+      comprehensiveQueryBaseURL: 'http://ehrwebapi.realsun.me/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
       onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
       headquartersBaseURL: 'http://10.108.2.66:1001/', //总部工作流管理-总部工作流
-      headquartersDownloadURL: 'http://10.108.2.66:1000', //总部工作流管理-总部工作流下载URl
+      headquartersDownloadURL: 'http://pwkweb.realsun.me', //总部工作流管理-总部工作流下载URl
       WzBaseURL: 'http://10.108.2.66:2001', //物资管理
       WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
-      AchievementsBaseURL: 'http://10.108.2.66:1001/',
-      RBASchedulingBaseURL: 'http://10.108.21.41:2001', //RBA排班基地址
-      RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
-      wuxiHr03BaseURL: 'http://10.108.21.41:2001', //80端口非定制组件基地址
-      wuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
+      AchievementsBaseURL: 'http://pwkwebapi.realsun.me/',
+      RBASchedulingBaseURL: 'http://ehrwebapi.realsun.me', //RBA排班基地址
+      RBASchedulingDownloadBaseURL: 'http://ehrweb.realsun.me', //RBA排班下载基地址
+      wuxiHr03BaseURL: 'http://ehrwebapi.realsun.me', //80端口非定制组件基地址
+      wuxiHr03DownloadBaseURL: 'http://ehrweb.realsun.me/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //员工沟通平台数据基地址
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //员工沟通平台下载基地址
       importTemplateDownloadURL:
-        'http://10.108.2.66/rispweb/upfiles/transtem.xls' //岗位任职导入模板下载链接
+        'http://ehrweb.realsun.me/rispweb/upfiles/transtem.xls' //岗位任职导入模板下载链接
     },
     // 绩效-我的评估表功能用到的子表
     achievementSubResid: {
@@ -291,7 +291,7 @@ window.pwConfig = {
       mode: 'local',
       bucketname: 'realsun',
       url:
-        'http://ngrok9.realsun.me:7071/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:7071/rispweb/upfiles'
+        'http://pwkwebapi.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:7071/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [
@@ -320,7 +320,7 @@ window.pwConfig = {
     defaultLoginMode: 'normal', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置
-      baseUrl: 'http://10.108.2.66:1001/', // 域登录基地址
+      baseUrl: 'http://pwkwebapi.realsun.me/', // 域登录基地址
       usernameSuffix: '@finisar.com', // 域登录用户名的后缀
       domain: 'china', // 域名
       domainUserField: 'emp_email' // 域用户字段
@@ -374,7 +374,7 @@ window.pwConfig = {
       mode: 'local', // 模式：'cloud' 云对象存储；'local' 本地存储
       bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
       url:
-        'http://10.108.2.66:1000/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+        'http://pwkwebapi.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
     },
 
     // 工作台配置
@@ -384,11 +384,11 @@ window.pwConfig = {
     reminderDataConfig: [
       {
         dblinkname: 'me',
-        baseurl: 'http://10.108.21.41:2001'
+        baseurl: 'http://pwkwebapi.realsun.me'
       },
       {
         dblinkname: 'ehr',
-        baseurl: 'http://10.108.21.41:2001'
+        baseurl: 'http://ehrwebapi.realsun.me'
       }
     ],
 
