@@ -23,7 +23,7 @@ window.pwConfig = {
     },
     penetrate: true, //是否穿透模式
     penetrateReplaceBaseURL: 'http://ehrweb.realsun.me',
-    waitingHandleBaseURL: 'http://pwkwebapi.realsun.me',
+    waitingHandleBaseURL: 'http://localhost:3000',
     hasAttendanceMonth: true, // 是否有考勤月份切换的功能
     offerletter: 621366399676,
     pexan: 623152549932,
@@ -238,7 +238,7 @@ window.pwConfig = {
     },
     penetrate: true, //是否穿透模式
     penetrateReplaceBaseURL: 'http://ehrweb.realsun.me/',
-    waitingHandleBaseURL: 'http://pwkwebapi.realsun.me',
+    waitingHandleBaseURL: 'http://localhost:3000',
 
     hasAttendanceMonth: true, // 是否有考勤月份切换的功能
     offerletter: 621366399676,
