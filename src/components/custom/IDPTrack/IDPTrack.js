@@ -266,11 +266,15 @@ class IDPTrack extends Component {
           let ability = year.ability.find(i => {
             return i.competence === item.ability;
           });
-          if (ability.measures) {
-            ability.measures.push(item);
-          } else {
-            ability.measures = [item];
+          if(ability){
+          
+             if (ability.measures) {
+              ability.measures.push(item);
+            } else {
+              ability.measures = [item];
+            }
           }
+         
         }
         // if (year.ability) {
         //   year.ability.push(item);
