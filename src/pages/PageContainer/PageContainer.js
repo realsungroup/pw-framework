@@ -29,6 +29,7 @@ import AbbreviationApp from './AbbreviationApp';
 import { OrgChartData } from '../../components/common/loadableCommon';
 import DesktopBg from './DesktopBg';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
+import JobArchitectureDiagram from '../../components/custom/PostAndPersonnel/PostArchitecture/ArchitectureDiagram';
 
 import {
   DesktopColorPicker,
@@ -1249,7 +1250,39 @@ export default class PageContainer extends React.Component {
   };
 
   handleOpenOrgChart = () => {
-    const children = <OrgChartData {...orgChartConfig} />;
+    // const children = <OrgChartData {...orgChartConfig} />;
+    const baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureBaseURL;
+    const children = (
+      <JobArchitectureDiagram
+        key="job"
+        name="job"
+        resid="638632769633"
+        historyResid="638632807929" //历史
+        // rootResid="638559408357" //根节点
+        idField="orgcode" //主表id字段名
+        pidField="orgSupCode" //父节点id字段名
+        level={200}
+        displayFileds={{
+          firstField: 'orgJobEN',
+          secondaryField: 'orgNumber',
+          thirdField: 'orgDepEN'
+        }}
+        procedureConfig={{
+          procedure: 'pw_orgstaffbydates',
+          paranames: 'dates',
+          paratypes: 'string'
+        }}
+        baseURL={baseURL}
+        createWindowName="CreateWindow"
+        editWindowName="EditWindow"
+        hasImport={false}
+        hasGroup={false}
+        hasDepartmentFilter={false}
+        // role={role}
+        rootId={0}
+      />
+    );
     const width = this.desktopMainRef.clientWidth;
     const height = this.desktopMainRef.clientHeight;
     this.addAppToBottomBar([
