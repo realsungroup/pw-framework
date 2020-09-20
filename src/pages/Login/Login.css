@@ -2,19 +2,19 @@
 .login__left-part {
   background-image: url('./images/login-red.png');
   background-size: auto 100%;
-  filter:brightness(1.5);
+  filter:brightness(2.5) hue-rotate(-140deg);
 }
 
 .ant-col .ant-btn-block,.ant-col .ant-btn-primary,.ant-col .ant-btn-primary:hover,.ant-col .ant-btn-primary:before,.ant-col .ant-btn-primary:after{
-  background-color: #A11D21!important;
-  border-color: #A11D21!important;
+  /* background-color: #A11D21!important; */
+  /* border-color: #A11D21!important; */
 }
 .login__right-part a,.login__right-part a:hover{
-  color:#A11D21;
+  /* color:#A11D21; */
 }
 .login__right-part a:active{
-  color:#6B171A;
+  /* color:#6B171A; */
 }
 .login__right-part .ant-input:focus,.login__right-part .ant-input:hover,.login__right-part .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled){
-  border-color: #A11D21;
+  /* border-color: #A11D21; */
 }
