@@ -190,7 +190,7 @@ class OfferLetter extends React.Component {
     if (this.state.isSave == false) {
       try {
         const res = await http().addRecords({
-          resid: 、,
+          resid: 621366399676,
           data: [data]
         });
         message.success('保存成功');
