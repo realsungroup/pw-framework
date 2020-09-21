@@ -27,7 +27,7 @@ class IDPTrack extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSupervisor:'N',
+      isSupervisor: 'N',
       currentTheme: 'synpho',
       courseLi: [['', '', '']],
       showRepo: false,
@@ -90,7 +90,7 @@ class IDPTrack extends Component {
             year: data2[n2].REC_YEAR,
             abi: [data2[n2].C3_431106931302],
             status: [data2[n2].C3_431102475269],
-            detail:data2[n2].C3_431090378241
+            detail: data2[n2].C3_431090378241
 
           });
         }
@@ -110,10 +110,10 @@ class IDPTrack extends Component {
         cmswhere: `personID = '${id}'`
       });
 
-      if(res.data.length>0){
+      if (res.data.length > 0) {
         this.setState({ name: res.data[0].personName });
 
-      }else{
+      } else {
         this.setState({ name: '' });
 
       }
@@ -134,7 +134,7 @@ class IDPTrack extends Component {
           c++;
         }
         if (bol == false) {
-          
+
           year.push({
             year: data[n].finicialYear,
             abi: [data[n].competency],
@@ -153,10 +153,10 @@ class IDPTrack extends Component {
           if (year[c].year == str) {
             var x = 0;
             var str2 = [];
-            var arr3=[];
+            var arr3 = [];
             while (x < score[n].abi.length) {
               str2.push(score[n].abi[x] + '-' + score[n].status[x]);
-              arr3.push({abi:score[n].abi[x],detail:score[n].detail})
+              arr3.push({ abi: score[n].abi[x], detail: score[n].detail })
               x++;
             }
             year[c].score = str2;
@@ -175,17 +175,17 @@ class IDPTrack extends Component {
       console.log(e);
     }
   };
-  judgeSuper = async id =>{
-     // 判断是不是主管
-     try {
+  judgeSuper = async id => {
+    // 判断是不是主管
+    try {
       let res = await http().getTable({
         resid: 609599795438,
         cmswhere: `C3_478191359848 = '${id}'`
       });
-      if(res.data.length>0){
-        this.setState({isSupervisor:'Y'})
+      if (res.data.length > 0) {
+        this.setState({ isSupervisor: 'Y' })
       }
-    }catch(e){
+    } catch (e) {
       console.log(e)
     }
   }
@@ -237,17 +237,20 @@ class IDPTrack extends Component {
       });
       res.data.forEach(item => {
         const year = data.find(i => i.year === item.year);
-        if (year.ability) {
-          year.ability.push(item);
-        } else {
-          year.ability = [item];
+        if (year) {
+          if (year.ability) {
+            year.ability.push(item);
+          } else {
+            year.ability = [item];
+          }
         }
+
       });
       this.setState({
         data: [...data]
       });
     } catch (error) {
-      message.error(error.message);
+      message.error('1', error.message);
       console.error(error);
     }
   };
@@ -266,15 +269,15 @@ class IDPTrack extends Component {
           let ability = year.ability.find(i => {
             return i.competence === item.ability;
           });
-          if(ability){
-          
-             if (ability.measures) {
+          if (ability) {
+
+            if (ability.measures) {
               ability.measures.push(item);
             } else {
               ability.measures = [item];
             }
           }
-         
+
         }
         // if (year.ability) {
         //   year.ability.push(item);
@@ -286,7 +289,7 @@ class IDPTrack extends Component {
         data: [...data]
       });
     } catch (error) {
-      message.error(error.message);
+      message.error('2', error.message);
       console.error(error);
     }
   };
@@ -392,14 +395,14 @@ class IDPTrack extends Component {
       });
       res.data.forEach(item => {
         const year = data.find(i => i.year === item.C3_613941384328);
-        if(year){
+        if (year) {
           if (year.course) {
             year.course.push(item);
           } else {
             year.course = [item];
           }
         }
-       
+
       });
       this.setState({ data: [...data] });
     } catch (error) {
@@ -475,13 +478,13 @@ class IDPTrack extends Component {
             name: year,
             data: data[0],
             type: 'scatter',
-            symbolSize: function(data) {
+            symbolSize: function (data) {
               return data[2];
             },
             label: {
               emphasis: {
                 show: true,
-                formatter: function(param) {
+                formatter: function (param) {
                   return param.data[3] + '\n' + '课时：' + param.data[1];
                 },
                 position: 'top'
@@ -550,8 +553,8 @@ class IDPTrack extends Component {
           />
         </div>
         <div style={{ width: 'calc(100% - 24px)', float: 'left' }}>
-        {this.state.showRepo ?( <ReportForm2 chara="individual" named={this.state.personID}/>) :null}
-         
+          {this.state.showRepo ? (<ReportForm2 chara="individual" named={this.state.personID} />) : null}
+
         </div>
       </div>
     );
@@ -587,7 +590,7 @@ class IDPTrack extends Component {
               <div id="chart3"></div>
             </TabPane>
             <TabPane tab="课程明细" key="2">
-              <div style={{ width: '100%', position: 'relative',height:'68vh' }}>
+              <div style={{ width: '100%', position: 'relative', height: '68vh' }}>
                 <TableData
                   resid="629824871972"
                   cmswhere={`C3_613941384328 = '${this.state.courseYear}' and C3_613941384832 = '${this.state.courseTarget}'`}
@@ -624,7 +627,7 @@ class IDPTrack extends Component {
           onClick={() => this.setState({ abilityVisible: false })}
         ></div>
         <div className="IDPTrack__modal--ability">
-          <AbilityIndicator currentYear={this.state.currentYear} isSupervisor={this.state.isSupervisor}/>
+          <AbilityIndicator currentYear={this.state.currentYear} isSupervisor={this.state.isSupervisor} />
         </div>
       </div>
     );
@@ -637,9 +640,9 @@ class IDPTrack extends Component {
           this.state.visible
             ? { transform: 'scaleY(1)', top: '0vh' }
             : {
-                transform: 'scaleY(0)',
-                top: '-50vh'
-              }
+              transform: 'scaleY(0)',
+              top: '-50vh'
+            }
         }
         className="pop"
       >
