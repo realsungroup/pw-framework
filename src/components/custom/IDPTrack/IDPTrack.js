@@ -237,10 +237,12 @@ class IDPTrack extends Component {
       });
       res.data.forEach(item => {
         const year = data.find(i => i.year === item.year);
-        if (year.ability) {
-          year.ability.push(item);
-        } else {
-          year.ability = [item];
+        if(year){
+          if (year.ability) {
+            year.ability.push(item);
+          } else {
+            year.ability = [item];
+          }
         }
       });
       this.setState({
