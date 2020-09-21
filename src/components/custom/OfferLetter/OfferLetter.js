@@ -166,7 +166,7 @@ class OfferLetter extends React.Component {
 
     try {
       let res = await http().getTable({
-        resid: 621422585590,
+        resid: 621366399676,
         cmswhere: `ID=${id}`
       });
       console.log(res);
@@ -190,7 +190,7 @@ class OfferLetter extends React.Component {
     if (this.state.isSave == false) {
       try {
         const res = await http().addRecords({
-          resid: 621422585590,
+          resid: 621366399676,
           data: [data]
         });
         message.success('保存成功');
@@ -203,7 +203,7 @@ class OfferLetter extends React.Component {
     } else {
       try {
         const res = await http().modifyRecords({
-          resid: 621422585590,
+          resid: 621366399676,
           data: [data]
         });
         message.success('保存成功');
@@ -658,7 +658,7 @@ class OfferLetter extends React.Component {
     if (this.state.isSave == false) {
       try {
         const res = await http().addRecords({
-          resid: 621422585590,
+          resid: 621366399676,
           data: [data]
         });
         message.success('发送邮件成功');
@@ -672,7 +672,7 @@ class OfferLetter extends React.Component {
       data.REC_ID = recid;
       try {
         const res = await http().modifyRecords({
-          resid: 621422585590,
+          resid: 621366399676,
           data: [data]
         });
         message.success('发送邮件成功');
@@ -742,7 +742,7 @@ class OfferLetter extends React.Component {
             <rect onClick={this.clzHis}></rect>
             <div>
               <TableData
-                resid={621422585590}
+                resid={621366399676}
                 hasRowView={false}
                 hasAdd={false}
                 hasRowSelection={false}

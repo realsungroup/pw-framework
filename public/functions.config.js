@@ -1143,6 +1143,7 @@ window[607562749445] = {
     hasRowDelete: false,
     hasRowModify: false,
     hasBeBtns: true,
+    subtractH: 196,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
