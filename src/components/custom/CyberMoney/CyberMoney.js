@@ -262,8 +262,10 @@ class CyberMoney extends Component {
         });
         n++;
       }
-      this.setState({ loading: false, history: arr ,yesterdayVar:res.data[0].turnover,total:Number(res.data[0].beforeBalance)+Number(res.data[0].turnover),symbol:res.data[0].dealSymbol});
-
+      if(res.data.length>0){
+          this.setState({ loading: false, history: arr ,yesterdayVar:res.data[0].turnover,total:Number(res.data[0].beforeBalance)+Number(res.data[0].turnover),symbol:res.data[0].dealSymbol});
+      }
+    
     } catch (err) {
       this.setState({ loading: false });
 
