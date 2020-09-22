@@ -408,6 +408,7 @@ class Home extends React.Component {
       recentApps,
       waitingHandleFetching,
       waitingHandleData,
+      onRemindItemClick,
       // folders
     } = this.props;
     const folders = this.filterPersonApps([...this.props.folders]);
@@ -447,7 +448,7 @@ class Home extends React.Component {
                 ) : (
                     <WaitingHandle
                       data={waitingHandleData}
-                      onItemClick={this.handleRemindItemClick}
+                      onItemClick={onRemindItemClick}
                       reminderDataConfig={reminderDataConfig}
                     />
                   )}

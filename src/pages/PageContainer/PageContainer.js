@@ -45,7 +45,8 @@ const {
   defaultOpenWindow,
   orgChartConfig,
   reminderDataConfig,
-  attendanceMonthChangeUrl
+  attendanceMonthChangeUrl,
+  waitingHandleBaseURL
 } = window.pwConfig[process.env.NODE_ENV];
 
 const time = lockScreenWaitTime;
@@ -139,6 +140,7 @@ export default class PageContainer extends React.Component {
       reminderNum: 0,
       password: '',
       desktopStyle: null,
+      allApps: [],
       activeApps: [],
       folders: [],
       zIndexActiveApps: [],
@@ -338,7 +340,7 @@ export default class PageContainer extends React.Component {
 
     // 桌面的文件夹
     const folders = dealApps([...res.data, ...(res.userdefined || [])]);
-    this.setState({ folders, fixedApps: res.userdefined }, () => {
+    this.setState({ folders, fixedApps: res.userdefined, allApps: res.data }, () => {
       const appArr = [];
       // 第一次打开桌面时，默认打开的 app
       if (isFirst) {
@@ -411,6 +413,18 @@ export default class PageContainer extends React.Component {
       menus: fnTreeData,
       allFoldersExpandedKeys: expandedKeys
     });
+  };
+
+  handleRemindItemClick = (resid, url) => {
+    console.log(this.props, resid)
+    const app = this.state.allApps.find(item => {
+      return item.ResID == resid;
+    });
+    if (app) {
+      this.handleOpenWindow([{ app, typeName: app.BusinessNode }]);
+    } else {
+      window.open(waitingHandleBaseURL + url);
+    }
   };
 
   dealFnTreeData = (fnTreeData, selectedApps) => {
@@ -1611,6 +1625,7 @@ export default class PageContainer extends React.Component {
                   attendanceMonthList={attendanceMonthList}
                   currentAttendanceMonth={currentAttendanceMonth}
                   onAttendanceChange={this.handleAttendanceChange}
+                  onRemindItemClick={this.handleRemindItemClick}
                 ></Component>
               );
             }}
