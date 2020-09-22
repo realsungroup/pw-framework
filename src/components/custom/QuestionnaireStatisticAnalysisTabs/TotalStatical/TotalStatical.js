@@ -103,7 +103,7 @@ class TotalStatical extends Component {
     let QuestionsData;
     try {
       QuestionsData = await http().getTable({
-        resid: 613576714181,
+        resid: 654106502171,
         cmswhere: `query_id = ${id}`
       });
     } catch (err) {

@@ -4777,7 +4777,7 @@ window[642855262376] = {
       isUseFormDefine: false,
       // isSetColumnWidth:false,
       // noWidthFields:'C3_518381536343',
-      noWidthFieldsIndex: 1,
+      // noWidthFieldsIndex: 1,
       recordFormUseAbsolute: true,
 
       backendButtonPopConfirmProps: { placement: 'bottom' },
