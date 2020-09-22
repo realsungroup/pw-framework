@@ -221,7 +221,12 @@ export const FJList = Loadable({
     return minLoading;
   }
 });
-
+export const FinisarMenjin = Loadable({
+  loader: () => import('./FinisarMenjin'),
+  loading() {
+    return minLoading;
+  }
+});
 // 管理员确认
 export const AdminConfirm = Loadable({
   loader: () => import('./AdminConfirm'),

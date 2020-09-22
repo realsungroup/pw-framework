@@ -1143,6 +1143,7 @@ window[607562749445] = {
     hasRowDelete: false,
     hasRowModify: false,
     hasBeBtns: true,
+    subtractH: 196,
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
@@ -9515,7 +9516,13 @@ window[646330411706] = {
 
   }
 }
+window[653996857070] = {
+  name: 'FinisarMenjin',
+  title: '当月门禁确认',
+  props: {
 
+  }
+}
 window[648312862539] = {
   name: 'StaffCommunicationRecord',
   title: '员工沟通管理',

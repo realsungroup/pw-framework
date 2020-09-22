@@ -45,6 +45,7 @@ export { Selected } from '../components/custom/loadableCustom';
 // export {} from '../components/custom/loadableCustom';
 export { FJList } from '../components/custom/loadableCustom';
 export { AdminConfirm } from '../components/custom/loadableCustom';
+export { FinisarMenjin } from '../components/custom/loadableCustom';
 export { CreatePlan } from '../components/custom/loadableCustom';
 export { ExpireViolationsList } from '../components/custom/loadableCustom';
 

@@ -12,6 +12,10 @@ import {
 } from '../../../lib/util/api';
 import { clone } from '../../../lib/util/util';
 import cloneDeep from 'lodash.clonedeep';
+const baseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03BaseURL;
+const downloadURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03DownloadBaseURL;
 /**
  * 管理员确认
  */
@@ -187,7 +191,7 @@ class AdminConfirm extends React.Component {
     record.C3_591373760332 = '';
     record.C3_617212255449 = this.state.sendBackReason;
     try {
-      res = await http().modifyRecords({
+      res = await http({ baseURL }).modifyRecords({
         resid: 605617716920,
         data: [record]
       });
@@ -225,7 +229,7 @@ class AdminConfirm extends React.Component {
       return message.error("请填写删除原因！")
     }
     try {
-      res = await http().modifyRecords({
+      res = await http({ baseURL }).modifyRecords({
         resid: 605617716920,
         data: [record]
       });
@@ -267,7 +271,7 @@ class AdminConfirm extends React.Component {
 
     let res;
     try {
-      res = await http().modifyRecords({
+      res = await http({ baseURL }).modifyRecords({
         resid,
         data
       });
@@ -323,7 +327,7 @@ class AdminConfirm extends React.Component {
 
     let res;
     try {
-      res = await http().modifyRecords({
+      res = await http({ baseURL }).modifyRecords({
         resid,
         data
       });
@@ -588,6 +592,8 @@ class AdminConfirm extends React.Component {
           {advSearchConfig && this.renderAdvSearchBtn()}
           <TableData
             {...this.props}
+            baseURL={baseURL}
+            downloadBaseURL={downloadURL}
             actionBarExtra={this.renderActionBarExtra}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
