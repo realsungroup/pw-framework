@@ -353,9 +353,9 @@ class TotalStatical extends Component {
       let list = [];
 
       item.answers.map(i => {
-        if (i.isAdopt == 'Y') {
-          list.push([{ text: i.write_content, style: 'tableRow' }]);
-        }
+        // if (i.isAdopt == 'Y') {
+        list.push([{ text: i.write_content, style: 'tableRow' }]);
+        // }
       });
       answers.push({
         style: 'tableExample',
