@@ -966,7 +966,6 @@ window[606242031630] = {
     formProps: {
       height: 800
     },
-    subtractH: 200,
     recordFormFormWidth: '40%',
     recordFormType: 'drawer',
     recordFormContainerProps: {
@@ -5062,7 +5061,7 @@ window[642855780253] = {
   //   baseURL: 'http://pwkwebapi.realsun.me/',
   //   downloadBaseURL: 'http://pwkweb.realsun.me/',
   //   resid: 518442541615,
-  //   mainTableProps: {
+  //   // mainTableProps: {
   //     actionBarWidth: 300,
   //     hasAdd: true,
   //     hasBeBtns: true,

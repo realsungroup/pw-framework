@@ -4,6 +4,7 @@ import { Tabs } from 'antd';
 import moment from 'moment';
 import http from '../../../util20/api';
 import TableData from '../../common/data/TableData';
+import MainTableSubTables from '../../common/data/MainTableSubTables';
 import PropTypes from 'prop-types';
 const { TabPane } = Tabs;
 const baseURL =
@@ -37,12 +38,12 @@ class MyApplication extends Component {
       <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
         <Tabs defaultActiveKey="1" >
           <TabPane tab="未审批" key="1">
-            <div style={{ width: '100vw', height: 'calc(100vh - 60px)' }}>
-              <TableData
+            <div style={{ width: '100vw' }}>
+              <MainTableSubTables
                 resid={518442541615}
+                baseURL={baseURL}
+                downloadBaseURL={downloadURL}
                 mainTableProps={{
-                  baseURL:baseURL,
-                  downloadBaseURL: downloadURL,
                   actionBarWidth: 300,
                   hasAdd: true,
                   hasBeBtns: true,
