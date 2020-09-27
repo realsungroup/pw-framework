@@ -1758,7 +1758,6 @@ class TableData extends React.Component {
     iframeURL,
     title
   ) => {
-    console.log(`${iframeURL}&mnurecid=${records[0].REC_ID}&timeid=${records[0].REC_ID}`)
     if (type === 1 || type === 5) {
       this.handleRefresh();
       // 编辑记录
