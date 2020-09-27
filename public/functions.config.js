@@ -1382,7 +1382,7 @@ window[611077057050] = {
       placement: 'bottom',
       height: 600
     },
-    noWidthFields: "C3_611070959393",
+    // noWidthFields: "C3_611070959393",
     subTableArrProps: [
       {
         subTableName: '人员名单',
