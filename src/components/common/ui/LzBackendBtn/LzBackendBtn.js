@@ -99,7 +99,7 @@ class LzBackendBtn extends React.PureComponent {
         onConfirm(
           backendBtnType,
           Type,
-          undefined,
+          records,
           undefined,
           undefined,
           undefined,
