@@ -7,9 +7,9 @@ import TableData from '../../common/data/TableData';
 import MainTableSubTables from '../../common/data/MainTableSubTables';
 import PropTypes from 'prop-types';
 const { TabPane } = Tabs;
-this.baseURL =
+const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.headquartersBaseURL;
-this.downloadURL =
+const downloadURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.headquartersDownloadURL;
 class MyApplication extends Component {
   static propTypes = {
