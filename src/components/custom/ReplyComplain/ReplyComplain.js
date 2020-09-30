@@ -646,6 +646,7 @@ class ReplyComplain extends React.Component {
                       <img
                         src={item.fileURL}
                         style={{ width: 200, height: 'auto' }}
+                        onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }}
                       />
                     );
                   })
@@ -735,6 +736,7 @@ class ReplyComplain extends React.Component {
                       <img
                         src={item.fileURL}
                         style={{ width: 200, height: 'auto' }}
+                        onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }}
                       />
                     );
                   })
@@ -777,6 +779,17 @@ class ReplyComplain extends React.Component {
               )}
             </div>
           </Spin>
+        </Modal>
+        <Modal
+          visible={this.state.enlargePic}
+          width={'90vw'}
+          style={{ height: 'auto', marginBottom: 0, paddingBottom: 0, textAlign: 'center' }}
+          centered={true}
+          onCancel={() => this.setState({ enlargePic: false })}
+          destroyOnClose={true}
+          footer={null}
+        >
+          <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
         </Modal>
         <Modal
           title="回复投诉"

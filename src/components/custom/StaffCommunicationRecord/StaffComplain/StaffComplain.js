@@ -890,13 +890,14 @@ class StaffComplain extends React.Component {
         </div>
         <Modal
           visible={this.state.enlargePic}
-          width={'100vw'}
-          style={{ height: 'auto' }}
+          width={'90vw'}
+          style={{ height: 'auto', marginBottom: 0, paddingBottom: 0, textAlign: 'center' }}
+          centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
         >
-          <img src={this.state.picKey} />
+          <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
         </Modal>
         <Modal
           visible={this.state.showRecord}
@@ -1022,24 +1023,24 @@ class StaffComplain extends React.Component {
                     {depInfoRecord && depInfoRecord.C3_422840508142}
                   </span>
                 </Col>
-                <Col span={12}>
+                {/* <Col span={12}>
                   <span>
                     <label>部门英文名：</label>
                     {depInfoRecord && depInfoRecord.C3_422840463535}
                   </span>
-                </Col>
+                </Col> */}
                 <Col span={12}>
                   <span>
                     <label>部门负责人：</label>
                     {depInfoRecord && depInfoRecord.C3_417993433650}
                   </span>
                 </Col>
-                <Col span={12}>
+                {/* <Col span={12}>
                   <span>
                     <label>部门负责人英文名：</label>
                     {depInfoRecord && depInfoRecord.C3_417993433650}
                   </span>
-                </Col>
+                </Col> */}
                 <Col span={12}>
                   <span>
                     <label>部门负责人工号：</label>
@@ -1063,7 +1064,7 @@ class StaffComplain extends React.Component {
                 <h4>图片证据：</h4>
                 {dImgProofRecord.length ? (
                   dImgProofRecord.map(item => {
-                    return (<><img src={item.fileURL} /> <img
+                    return (<><img src={item.fileURL} onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }} /> <img
                       style={{ cursor: 'pointer', verticalAlign: 'bottom', width: '1rem', height: '1rem' }}
                       src={downloadImg}
                       onClick={() => {
@@ -1105,7 +1106,7 @@ class StaffComplain extends React.Component {
                   <h4>图片证据：</h4>
                   {hrReplyImgs.length ? (
                     hrReplyImgs.map(item => {
-                      return (<><img src={item.fileURL} alt="" /> <img
+                      return (<><img src={item.fileURL} alt="" onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }} /> <img
                         style={{ textAlign: 'bottom', width: '1rem', height: '1rem' }}
                         src={downloadImg}
                         onClick={() => {
@@ -1248,7 +1249,7 @@ class StaffComplain extends React.Component {
           {leaderProofRecord.mediaType == '图片' && (
             <div className="picProof">
               <p>图片证据：</p>
-              <img src={leaderProofRecord.fileURL}></img>
+              <img src={leaderProofRecord.fileURL} onClick={() => { this.setState({ enlargePic: true, picKey: leaderProofRecord.fileURL }) }}></img>
             </div>
           )}
           {leaderProofRecord.mediaType == '音频' && (

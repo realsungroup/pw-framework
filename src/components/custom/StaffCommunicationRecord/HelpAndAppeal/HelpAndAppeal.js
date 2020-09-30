@@ -67,25 +67,25 @@ class HelpAndAppeal extends React.Component {
     backVisible: false, //退回模态窗是否显示
     backReason: '', //退回理由
     backLoading: '', //
-	noNo:0,//未处理数量
+    noNo: 0,//未处理数量
   };
 
   componentDidMount = () => {
-this.getNo();
-};
-getNo=async()=>{
-	let res;
-		try {
-			res = await http({ baseURL: this.baseURL }).getTable({
-       				 resid: residNo
-      			});
+    this.getNo();
+  };
+  getNo = async () => {
+    let res;
+    try {
+      res = await http({ baseURL: this.baseURL }).getTable({
+        resid: residNo
+      });
       this.setState({
-        noNo:res.data.length
+        noNo: res.data.length
       });
     } catch (error) {
       message.error(error.message);
     }
-}
+  }
   onSelect = e => {
     this.setState({
       selectKey: e.key
@@ -167,21 +167,21 @@ getNo=async()=>{
     try {
       const data = isBatchReply
         ? selectedRecords.map(item => ({
-            REC_ID: item.recordID,
+          REC_ID: item.recordID,
+          replication: this.state.replyContent,
+          replicationHR: 'Y',
+          status: '已处理',
+          renew: 'Y'
+        }))
+        : [
+          {
+            REC_ID: this.state.selectRecord.recordID,
             replication: this.state.replyContent,
             replicationHR: 'Y',
             status: '已处理',
             renew: 'Y'
-          }))
-        : [
-            {
-              REC_ID: this.state.selectRecord.recordID,
-              replication: this.state.replyContent,
-              replicationHR: 'Y',
-              status: '已处理',
-              renew: 'Y'
-            }
-          ];
+          }
+        ];
       this.setState({ replyButtonLoading: true });
       await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
@@ -195,7 +195,7 @@ getNo=async()=>{
         isBatchReply: false
       });
       this.tableDataRef.handleRefresh();
-this.getNo();
+      this.getNo();
     } catch (error) {
       message.error(error.message);
     }
@@ -261,8 +261,8 @@ this.getNo();
     this.setState({
       showRecord: false
     });
-this.tableDataRef.handleRefresh();
-this.getNo();
+    this.tableDataRef.handleRefresh();
+    this.getNo();
   };
 
   timeChange = value => {
@@ -287,7 +287,7 @@ this.getNo();
     if (this.state.beginTime !== '') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}REC_CRTTIME > '${
         this.state.beginTime
-      }' and REC_CRTTIME < '${this.state.endTime}'`;
+        }' and REC_CRTTIME < '${this.state.endTime}'`;
     }
     console.log('cmsWhere', cmsWhere);
     this.setState({
@@ -310,7 +310,7 @@ this.getNo();
         renew: 'Y'
       });
       this.tableDataRef.handleRefresh();
-this.getNo();
+      this.getNo();
       message.success('操作成功');
     } catch (error) {
       message.error(error.message);
@@ -341,7 +341,7 @@ this.getNo();
         ]
       });
       this.tableDataRef.handleRefresh();
-this.getNo();
+      this.getNo();
       message.success('退回成功');
       this.setState({ backReason: '', backVisible: false, showRecord: false });
     } catch (error) {
@@ -410,7 +410,7 @@ this.getNo();
             hasRowDelete={false}
             subtractH={200}
             cmswhere={cmswhere}
-columnsWidth={{'状态':100,'是否实名':20,'是否撤回':20,'HR是否通知了负责人':20,'负责人是否回复完毕':20,'HR是否回复了员工':20,'同意HR将投诉内容分享给上级领导':20}}
+            columnsWidth={{ '状态': 100, '是否实名': 20, '是否撤回': 20, 'HR是否通知了负责人': 20, '负责人是否回复完毕': 20, 'HR是否回复了员工': 20, '同意HR将投诉内容分享给上级领导': 20 }}
             actionBarWidth={200}
             actionBarExtra={({
               dataSource = [],
@@ -467,17 +467,17 @@ columnsWidth={{'状态':100,'是否实名':20,'是否撤回':20,'HR是否通知�
                 );
               },
               hasButton &&
-                (record => {
-                  return (
-                    <Button
-                      onClick={() => {
-                        this.reply(record);
-                      }}
-                    >
-                      回复
-                    </Button>
-                  );
-                })
+              (record => {
+                return (
+                  <Button
+                    onClick={() => {
+                      this.reply(record);
+                    }}
+                  >
+                    回复
+                  </Button>
+                );
+              })
             ]}
           />
         </div>
@@ -514,7 +514,7 @@ columnsWidth={{'状态':100,'是否实名':20,'是否撤回':20,'HR是否通知�
     } = this.state;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
-        <div style={{ width: (this.state.noNo>0?'160px':'100px') }}>
+        <div style={{ width: (this.state.noNo > 0 ? '160px' : '100px') }}>
           <Menu
             style={{ height: '100vh' }}
             defaultSelectedKeys={['1']}
@@ -522,7 +522,7 @@ columnsWidth={{'状态':100,'是否实名':20,'是否撤回':20,'HR是否通知�
             onSelect={this.onSelect}
           >
             <Menu.Item key="1">
-              <span> 未处理{this.state.noNo>0?'（'+this.state.noNo+'）':null} </span>
+              <span> 未处理{this.state.noNo > 0 ? '（' + this.state.noNo + '）' : null} </span>
             </Menu.Item>
             <Menu.Item key="3">
               <span> 已处理</span>
@@ -546,6 +546,7 @@ columnsWidth={{'状态':100,'是否实名':20,'是否撤回':20,'HR是否通知�
         >
           {this.renderContent()}
         </div>
+
         <Modal
           visible={this.state.showRecord}
           width={777}
@@ -606,11 +607,11 @@ columnsWidth={{'状态':100,'是否实名':20,'是否撤回':20,'HR是否通知�
                 <h4>图片证据：</h4>
                 {imgProofRecord.length ? (
                   imgProofRecord.map(item => {
-                    return <img src={item.fileURL} alt="" />;
+                    return <img src={item.fileURL} alt="" onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }} />;
                   })
                 ) : (
-                  <span>暂无图片</span>
-                )}
+                    <span>暂无图片</span>
+                  )}
               </div>
 
               <div className="videoProof">
@@ -636,13 +637,13 @@ columnsWidth={{'状态':100,'是否实名':20,'是否撤回':20,'HR是否通知�
                     );
                   })
                 ) : (
-                  <span style={{ textAlign: 'center' }}>暂无视频</span>
-                )}
+                    <span style={{ textAlign: 'center' }}>暂无视频</span>
+                  )}
               </div>
               {selectKey === '1' && (
                 <Button
                   onClick={() => {
-                    this.reply();
+                    this.reply(selectRecord);
                   }}
                   style={{ marginRight: 8 }}
                 >
@@ -661,6 +662,17 @@ columnsWidth={{'状态':100,'是否实名':20,'是否撤回':20,'HR是否通知�
               )}
             </div>
           </Spin>
+        </Modal>
+        <Modal
+          visible={this.state.enlargePic}
+          width={'90vw'}
+          style={{ height: 'auto', marginBottom: 0, paddingBottom: 0, textAlign: 'center' }}
+          centered={true}
+          onCancel={() => this.setState({ enlargePic: false })}
+          destroyOnClose={true}
+          footer={null}
+        >
+          <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
         </Modal>
         <Modal
           title="回复内容"
