@@ -435,6 +435,9 @@ class ArrangingCourses extends React.Component {
    */
   moveLearner = async () => {
     let { selectedTargetCourseArrangment, selectedMoveLearners } = this.state;
+    if (!selectedTargetCourseArrangment) {
+      return message.info('请选择目标课程');
+    }
     selectedMoveLearners.forEach((item, index) => {
       item.CourseArrangeID = selectedTargetCourseArrangment;
       item._id = index;
@@ -617,7 +620,7 @@ class ArrangingCourses extends React.Component {
       case 'all':
         searchPeriod = ['', ''];
         break;
-      case 'week'://一周内
+      case 'week': //一周内
         searchPeriod = [
           moment().format(formatString),
           moment()
@@ -625,7 +628,7 @@ class ArrangingCourses extends React.Component {
             .format(formatString)
         ];
         break;
-      case 'weeks'://两周内
+      case 'weeks': //两周内
         searchPeriod = [
           moment().format(formatString),
           moment()
@@ -633,7 +636,7 @@ class ArrangingCourses extends React.Component {
             .format(formatString)
         ];
         break;
-      case 'month'://一个月内
+      case 'month': //一个月内
         searchPeriod = [
           moment().format(formatString),
           moment()
@@ -641,7 +644,7 @@ class ArrangingCourses extends React.Component {
             .format(formatString)
         ];
         break;
-      case 'months'://两个月内
+      case 'months': //两个月内
         searchPeriod = [
           moment().format(formatString),
           moment()
