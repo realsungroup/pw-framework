@@ -51,7 +51,7 @@ class S1S2RecruitApply extends React.Component {
                 recordFormType: 'modal',
                 isUseFormDefine: false,
                 height: 'calc(100vh - 60px)',
-                isSetColumnWidth: true,
+                isSetColumnWidth: false,
                 // noWidthFields: 'C3_518986364887',
                 isWrap: true,
                 formProps: { height: 650 },

@@ -966,7 +966,6 @@ window[606242031630] = {
     formProps: {
       height: 800
     },
-    subtractH: 200,
     recordFormFormWidth: '40%',
     recordFormType: 'drawer',
     recordFormContainerProps: {
@@ -1383,7 +1382,7 @@ window[611077057050] = {
       placement: 'bottom',
       height: 600
     },
-    noWidthFields: "C3_611070959393",
+    // noWidthFields: "C3_611070959393",
     subTableArrProps: [
       {
         subTableName: '人员名单',
@@ -1468,7 +1467,7 @@ window[611339874157] = {
         ]
       },
       {
-        resid: 611086999042,
+        resid: 614160204544,
         TabsTitle: '未审批',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -1479,6 +1478,7 @@ window[611339874157] = {
         hasRowModify: false,
         hasRowView: true,
         subtractH: 220,
+        hasRowSelection:true,
         // height:600,
         recordFormType: 'drawer',
         recordFormContainerProps: {
@@ -2270,7 +2270,7 @@ window[641992029202] = {
   title: 'Offer Proposal管理',
   props: {
     resid: '534530373089',
-    replaceBaseUrl: 'http://kingofoffer.realsun.me/',
+    replaceBaseUrl: 'http://kingofoffer.realsun.me',
     baseURL: 'http://pwkwebapi.realsun.me',
 
   }
@@ -2280,7 +2280,7 @@ window[641992076936] = {
   title: 'Offer Proposal审批',
   props: {
     resid: '534957565681',
-    replaceBaseUrl: 'http://kingofoffer.realsun.me/',
+    replaceBaseUrl: 'http://kingofoffer.realsun.me',
     baseURL: 'http://pwkwebapi.realsun.me',
 
   }
@@ -2290,7 +2290,7 @@ window[641992112255] = {
   title: 'Offer Comfirmation管理',
   props: {
     resid: '537391112338',
-    replaceBaseUrl: 'http://kingofoffer.realsun.me/',
+    replaceBaseUrl: 'http://kingofoffer.realsun.me',
     baseURL: 'http://pwkwebapi.realsun.me',
 
   }
@@ -2301,7 +2301,7 @@ window[641992135890] = {
   title: 'Offer Comfirmation核对',
   props: {
     resid: '537532977680',
-    replaceBaseUrl: 'http://kingofoffer.realsun.me/',
+    replaceBaseUrl: 'http://kingofoffer.realsun.me',
     baseURL: 'http://pwkwebapi.realsun.me',
 
   }
@@ -4776,7 +4776,7 @@ window[642855262376] = {
       isUseFormDefine: false,
       // isSetColumnWidth:false,
       // noWidthFields:'C3_518381536343',
-      noWidthFieldsIndex: 1,
+      // noWidthFieldsIndex: 1,
       recordFormUseAbsolute: true,
 
       backendButtonPopConfirmProps: { placement: 'bottom' },
@@ -5061,7 +5061,7 @@ window[642855780253] = {
   //   baseURL: 'http://pwkwebapi.realsun.me/',
   //   downloadBaseURL: 'http://pwkweb.realsun.me/',
   //   resid: 518442541615,
-  //   mainTableProps: {
+  //   // mainTableProps: {
   //     actionBarWidth: 300,
   //     hasAdd: true,
   //     hasBeBtns: true,

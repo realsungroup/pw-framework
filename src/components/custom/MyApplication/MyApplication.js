@@ -4,8 +4,13 @@ import { Tabs } from 'antd';
 import moment from 'moment';
 import http from '../../../util20/api';
 import TableData from '../../common/data/TableData';
+import MainTableSubTables from '../../common/data/MainTableSubTables';
 import PropTypes from 'prop-types';
 const { TabPane } = Tabs;
+const baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.PWKBaseURL;
+const downloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.PWKDownloadURL;
 class MyApplication extends Component {
   static propTypes = {
     /**
@@ -33,9 +38,11 @@ class MyApplication extends Component {
       <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
         <Tabs defaultActiveKey="1" >
           <TabPane tab="未审批" key="1">
-            <div style={{ width: '100vw', height: 'calc(100vh - 60px)' }}>
-              <TableData
+            <div style={{ width: '100vw' }}>
+              <MainTableSubTables
                 resid={518442541615}
+                baseURL={baseURL}
+                downloadBaseURL={downloadURL}
                 mainTableProps={{
                   actionBarWidth: 300,
                   hasAdd: true,
@@ -43,9 +50,9 @@ class MyApplication extends Component {
                   hasModify: true,
                   hasBackBtn: true,
                   hasDelete: true,
-                  hasRowModify: true,
+                  hasRowModify: false,
                   hasRowView: true,
-                  hasRowDelete: true,
+                  hasRowDelete: false,
                   isUseFormDefine: false,
                   // isSetColumnWidth:false,
                   recordFormUseAbsolute: true,
@@ -68,8 +75,8 @@ class MyApplication extends Component {
                     hasRowDelete: false,
                     // isSetColumnWidth:false,
                     noWidthFields: 'C3_518436882584',
-                    baseURL: 'http://10.108.11.36:6001/',
-                    downloadBaseURL: 'http://10.108.21.41:6000/',
+                    baseURL:baseURL,
+                    downloadBaseURL: downloadURL,
                     advSearch: {
                       isRequestFormData: false,
                     },
@@ -83,6 +90,8 @@ class MyApplication extends Component {
           <TabPane tab="已审批" key="2">
             <div style={{ width: '100vw', height: 'calc(100vh - 60px)' }}>
               <TableData
+                baseURL={baseURL}
+                downloadBaseURL={downloadURL}
                 resid={526752850957}
                 actionBarWidth={300}
                 hasAdd={false}

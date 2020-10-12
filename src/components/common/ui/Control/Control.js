@@ -251,7 +251,7 @@ class Control extends React.Component {
     innerFieldNames.forEach(innerFieldName => {
       colValues.push({
         col1: innerFieldName.col1,
-        col1Value: record(innerFieldName.col1),
+        col1Value: record[innerFieldName.col1],
         col2: innerFieldName.col2
       });
     });

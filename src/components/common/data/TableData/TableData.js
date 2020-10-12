@@ -1774,7 +1774,7 @@ class TableData extends React.Component {
           <div style={{ height: '80vh' }}>
             <iframe
               title="iframe"
-              src={iframeURL}
+              src={records.length ? `${iframeURL}&mnurecid=${records[0].REC_ID}&timeid=${records[0].REC_ID}` : iframeURL}
               width="100%"
               height="100%"
               style={{ border: 'none' }}

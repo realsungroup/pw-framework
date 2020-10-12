@@ -53,6 +53,8 @@ window.pwConfig = {
       WuxiHr03DownloadBaseURL: 'http://ehrweb.realsun.me/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
+      PWKBaseURL:'http://pwkwebapi.realsun.me/',//pwk基地址
+      PWKDownloadURL:'http://pwkweb.realsun.me/',//pwk下载地址
       importTemplateDownloadURL:
         'http://ehrweb.realsun.me/rispweb/upfiles/transtem.xls' //岗位任职导入模板下载链接
     },
@@ -142,7 +144,7 @@ window.pwConfig = {
 
     // 主题
     themeColor: {
-      '@primary-color': '#A11D21'
+      '@primary-color': '#236eb4'
     }, // 默认主题色
 
     // 锁屏
@@ -225,7 +227,7 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    baseURL: 'http://pwkwebapi.realsun.me', // 请求的基地址
     basename: '/',
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://pwkweb.realsun.me/', // 导出 Excel 文件下载基地址
@@ -270,8 +272,10 @@ window.pwConfig = {
       wuxiHr03DownloadBaseURL: 'http://ehrweb.realsun.me/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //员工沟通平台数据基地址
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //员工沟通平台下载基地址
+      PWKBaseURL:'http://pwkwebapi.realsun.me/',//pwk基地址
+      PWKDownloadURL:'http://pwkweb.realsun.me/',//pwk下载地址
       importTemplateDownloadURL:
-        'http://ehrweb.realsun.me/rispweb/upfiles/transtem.xls' //岗位任职导入模板下载链接
+        'http://ehrweb.realsun.me/rispweb/upfiles/transtem.xls', //岗位任职导入模板下载链接
     },
     // 绩效-我的评估表功能用到的子表
     achievementSubResid: {
@@ -358,7 +362,7 @@ window.pwConfig = {
 
     // 主题
     themeColor: {
-      '@primary-color': '#A11D21'
+      '@primary-color': '#236eb4'
     }, // 默认主题色
 
     // 锁屏
