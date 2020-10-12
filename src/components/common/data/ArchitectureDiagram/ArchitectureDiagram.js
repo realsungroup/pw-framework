@@ -811,7 +811,7 @@ class ArchitectureDiagram extends React.Component {
     if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
       return message.info('岗位未启用');
     }
-    if (node.isEmpty !== 'Y') {
+    if (node.isVirtual !== 'Y' && node.isEmpty !== 'Y') {
       return message.info('非空缺岗位');
     }
     this.getJoinFormData({
