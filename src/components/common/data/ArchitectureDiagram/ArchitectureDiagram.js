@@ -504,6 +504,7 @@ class ArchitectureDiagram extends React.Component {
   _cmscolumninfo = []; // 主表的列定义
   _nodes = []; // 当前所有节点数据
   _emptyJobs = []; //空缺岗位
+  _transferableJobs = []; //空缺岗位
   /**
    * 获取节点数据
    */
@@ -517,6 +518,7 @@ class ArchitectureDiagram extends React.Component {
       rootId
     } = this.props;
     this._emptyJobs = [];
+    this._transferableJobs = [];
     const { selectedDate } = this.state;
     const options = {
       ...procedureConfig,
@@ -579,6 +581,14 @@ class ArchitectureDiagram extends React.Component {
             node[item.id] = 'N/A';
           }
         });
+        if (
+          (item.isEmpty === 'Y' ||
+            item.isPartOccupied === 'Y' ||
+            item.isVirtual === 'Y') &&
+          item.isScrap !== 'Y'
+        ) {
+          this._transferableJobs.push(item);
+        }
         return node;
       });
       const treeData = this.getTreeData(res.data);
@@ -795,6 +805,9 @@ class ArchitectureDiagram extends React.Component {
    */
   handleJoin = id => {
     const node = this.chart.get(id);
+    if (node.isScrap === 'Y') {
+      return message.info('岗位已废弃');
+    }
     if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
       return message.info('岗位未启用');
     }
@@ -1141,8 +1154,14 @@ class ArchitectureDiagram extends React.Component {
   openLizhiModal = nodeId => {
     const { baseURL } = this.props;
     const node = this.chart.get(nodeId);
+    if (node.isScrap === 'Y') {
+      return message.info('岗位已废弃');
+    }
     if (node.isEmpty === 'Y') {
       return message.info('空缺岗位，不可离职');
+    }
+    if (node.isVirtual === 'Y') {
+      return message.info('多人任职岗位请使用导入离职方式');
     }
     this.props.openModalOrDrawer(
       'modal',
@@ -1206,6 +1225,15 @@ class ArchitectureDiagram extends React.Component {
   };
   openTransferToModal = nodeId => {
     const node = this.chart.get(nodeId);
+    if (node.isScrap === 'Y') {
+      return message.info('岗位已废弃');
+    }
+    if (node.isVirtual === 'Y') {
+      return message.info('多人任职岗位请使用导入变动方式');
+    }
+    if (node.isEmpty === 'Y') {
+      return message.info('空缺岗位不可调动');
+    }
     this.props.openModalOrDrawer(
       'modal',
       {
@@ -1220,12 +1248,12 @@ class ArchitectureDiagram extends React.Component {
             <div style={{ height: 600 }}>
               <PwAggrid
                 originalColumn={this._cmscolumninfo}
-                dataSource={this._emptyJobs}
+                dataSource={this._transferableJobs}
                 onReady={gridApi => {
                   this.transferGridApi = gridApi;
                 }}
                 gridProps={[]}
-                resid={this.props.resid}
+                resid={638646080344}
                 baseURL={this.props.baseURL}
                 hasAdd={false}
                 hasModify={false}
@@ -1288,7 +1316,10 @@ class ArchitectureDiagram extends React.Component {
   };
   openTransferFromModal = nodeId => {
     const node = this.chart.get(nodeId);
-    if (node.isEmpty !== 'Y') {
+    if (node.isScrap === 'Y') {
+      return message.info('岗位已废弃');
+    }
+    if (node.isVirtual !== 'Y' && node.isEmpty !== 'Y') {
       return message.info('非空缺岗位');
     }
     this.props.openModalOrDrawer(
@@ -1422,6 +1453,9 @@ class ArchitectureDiagram extends React.Component {
 
   clearPerson = nodeId => {
     const node = this.chart.get(nodeId);
+    if (node.isScrap === 'Y') {
+      return message.info('岗位已废弃');
+    }
     if (node.isEmpty !== 'Y') {
       return message.info('非空缺岗位');
     }
