@@ -35,7 +35,11 @@ const withImport = WrappedComponent => {
       type = 'drawer',
       saveState,
       containerProps,
-      onFinishImport
+      onFinishImport,
+      saveParams = {},
+      fixedFields = {},
+      strict = false,
+      fileNameField = ''
     ) => {
       const importContainerProps = {
         title: '导入数据',
@@ -57,7 +61,11 @@ const withImport = WrappedComponent => {
         mode,
         saveState,
         dblinkname,
-        onFinishImport
+        onFinishImport,
+        saveParams,
+        fixedFields,
+        strict,
+        fileNameField
       });
     };
 
