@@ -18,7 +18,10 @@ import {
   Tabs,
   Checkbox,
   Popover,
-  Tree
+  Tree,
+  Dropdown,
+  Menu,
+  Input
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -49,6 +52,10 @@ import PWSpin from 'Common/ui/Spin';
 const { TreeNode } = Tree;
 const { Option } = Select;
 
+const yesterday = moment();
+const disableDate = currentDate => {
+  return currentDate.isBefore(yesterday);
+};
 function childCount(id, nodes) {
   let count = 0;
   for (var i = 0; i < nodes.length; i++) {
@@ -223,7 +230,7 @@ class ArchitectureDiagram extends React.Component {
       resultMin: true,
       hasImportResult: false,
       detailVisible: false,
-      selectedResultResid: '638645984799',
+      selectedResultResid: '638645137963',
       selectedType: 'IDL',
       hasResult: true,
       hasDetail: true,
@@ -238,7 +245,11 @@ class ArchitectureDiagram extends React.Component {
       selectedBranch: 'all',
       rootKey: [],
       parentKeys: [],
-      filtedNodes: []
+      filtedNodes: [],
+      joinVisible: false,
+      joinRecord: {},
+      selectedResult: '全部',
+      transferDate: moment()
     };
   }
 
@@ -322,8 +333,28 @@ class ArchitectureDiagram extends React.Component {
             icon: '<img/>',
             onClick: this.setRootNode
           },
+          ruzhi: {
+            text: '人员入职',
+            icon: '<img/>',
+            onClick: this.handleJoin
+          },
+          lizhi: {
+            text: '人员离职',
+            icon: '<img/>',
+            onClick: this.openLizhiModal
+          },
+          transferTo: {
+            text: '调动至其他岗位',
+            icon: '<img/>',
+            onClick: this.openTransferToModal
+          },
+          transferFrom: {
+            text: '从在职人员调动',
+            icon: '<img/>',
+            onClick: this.openTransferFromModal
+          },
           addPerson: {
-            text: '添加兼职人员',
+            text: '变更兼职人员',
             icon: '<img/>',
             onClick: this.openAddModal
           },
@@ -333,7 +364,7 @@ class ArchitectureDiagram extends React.Component {
             onClick: this.openImportModal
           },
           clearPerson: {
-            text: `<span style='color:red'>清空人员</span>`,
+            text: `<span style='color:red'>清空兼职人员</span>`,
             icon: '<img/>',
             onClick: this.clearPerson
           }
@@ -760,6 +791,26 @@ class ArchitectureDiagram extends React.Component {
   };
 
   /**
+   * 入职
+   */
+  handleJoin = id => {
+    const node = this.chart.get(id);
+    if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
+      return message.info('岗位未启用');
+    }
+    if (node.isEmpty !== 'Y') {
+      return message.info('非空缺岗位');
+    }
+    this.getJoinFormData({
+      C3_465142349966: node.orgNumber,
+      C3_638469590670: '入职'
+    });
+    this.setState({
+      joinVisible: true
+    });
+  };
+
+  /**
    * 添加节点
    */
   handleAdd = level => () => {
@@ -901,6 +952,32 @@ class ArchitectureDiagram extends React.Component {
       res = await http(httpParams).getFormData({
         resid: resid,
         formName
+      });
+      const formData = dealControlArr(res.data.columns);
+      this._dataProp = getDataProp(formData, record, true, false, false);
+    } catch (err) {
+      console.log(err);
+      return message.error(err.message);
+    }
+    this.setState({ loading: false });
+  };
+
+  /**
+   * 获取入职窗体数据
+   */
+  getJoinFormData = async record => {
+    let res;
+    try {
+      const { importResid, baseURL } = this.props;
+      this.setState({ loading: true });
+      let httpParams = {};
+      // 使用传入的 baseURL
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      res = await http(httpParams).getFormData({
+        resid: importResid,
+        formName: 'join'
       });
       const formData = dealControlArr(res.data.columns);
       this._dataProp = getDataProp(formData, record, true, false, false);
@@ -1061,8 +1138,275 @@ class ArchitectureDiagram extends React.Component {
     );
   };
 
+  openLizhiModal = nodeId => {
+    const { baseURL } = this.props;
+    const node = this.chart.get(nodeId);
+    if (node.isEmpty === 'Y') {
+      return message.info('空缺岗位，不可离职');
+    }
+    this.props.openModalOrDrawer(
+      'modal',
+      {
+        title: '人员离职',
+        width: '50vw',
+        onCancel: this.props.closeModalOrDrawer,
+        footer: null
+      },
+      () => {
+        return (
+          <LizhiForm
+            name={node.memberCN}
+            number={node.memberID}
+            onOk={async data => {
+              try {
+                let httpParams = {};
+                if (baseURL) {
+                  httpParams.baseURL = baseURL;
+                }
+                this.props.closeModalOrDrawer();
+                this.setState({ loading: true });
+                await http(httpParams).modifyRecords({
+                  resid: '655636441513',
+                  isEditOrAdd: true,
+                  data: [
+                    {
+                      C3_244132849812: data.lizhiDate, //离职日期
+                      C3_418993073324: data.lizhiReason, //离职原因
+                      C3_383426933426: data.lizhiType, //离职类型
+                      C3_470524257391: data.date, //生效日期
+                      C3_305737857578: node.memberCode,
+                      C3_470524286017: data.lizhiDate.format('YYYYMMDD'),
+                      C3_638469590670: '离职',
+                      C3_465142349966: '',
+                      C3_294355760203: '',
+                      C3_655655647639: 'Y', //锁定
+                      C3_294483212234: 'Y' //离职薪已结
+                    }
+                  ],
+                  rp: {
+                    EnableBitianCheck: false,
+                    EnableFormula1Layer: false
+                  },
+                  formulalayer: '0'
+                });
+                await this.clearCache();
+                this.setState({ loading: false });
+                await this.getData();
+              } catch (error) {
+                console.error(error);
+                message.error(error.message);
+              }
+            }}
+            onCancel={this.props.closeModalOrDrawer}
+          />
+        );
+      },
+      {}
+    );
+  };
+  openTransferToModal = nodeId => {
+    const node = this.chart.get(nodeId);
+    this.props.openModalOrDrawer(
+      'modal',
+      {
+        title: '调动至其他岗位',
+        width: '80vw',
+        onCancel: this.props.closeModalOrDrawer,
+        footer: null
+      },
+      () => {
+        return (
+          <div>
+            <div style={{ height: 600 }}>
+              <PwAggrid
+                originalColumn={this._cmscolumninfo}
+                dataSource={this._emptyJobs}
+                onReady={gridApi => {
+                  this.transferGridApi = gridApi;
+                }}
+                gridProps={[]}
+                resid={this.props.resid}
+                baseURL={this.props.baseURL}
+                hasAdd={false}
+                hasModify={false}
+                hasDelete={false}
+                hasImport={false}
+                hasRefresh={false}
+                hasAdvSearch={false}
+                hasDownload={false}
+                rowSelectionAg="single"
+              />
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                padding: '8px 0'
+              }}
+            >
+              <Button
+                type="primary"
+                onClick={() => {
+                  const waitingImport = this.transferGridApi.getSelectedRows();
+                  if (!waitingImport.length) {
+                    return message.info('请选择待调动人员');
+                  }
+                  Modal.confirm({
+                    title: '选择生效日期',
+                    content: (
+                      <div>
+                        <DatePicker
+                          defaultValue={this.state.transferDate}
+                          disabledDate={disableDate}
+                          onChange={v => {
+                            this.setState({ transferDate: v });
+                          }}
+                        />
+                      </div>
+                    ),
+                    onOk: async () => {
+                      this.handleTransfer({
+                        C3_638469590670: '变动',
+                        C3_470524257391: this.state.transferDate, //生效日期
+                        C3_227192472953: node.memberID,
+                        C3_305737857578: node.memberCode,
+                        C3_227192484125: node.memberCN,
+                        C3_465142349966: waitingImport[0].orgNumber
+                      });
+                    }
+                  });
+                }}
+              >
+                确认调动
+              </Button>
+            </div>
+          </div>
+        );
+      },
+      {}
+    );
+  };
+  openTransferFromModal = nodeId => {
+    const node = this.chart.get(nodeId);
+    if (node.isEmpty !== 'Y') {
+      return message.info('非空缺岗位');
+    }
+    this.props.openModalOrDrawer(
+      'modal',
+      {
+        title: '从在职人员调动',
+        width: '80vw',
+        onCancel: this.props.closeModalOrDrawer,
+        footer: null
+      },
+      () => {
+        return (
+          <div>
+            <div style={{ height: 600 }}>
+              <TableData
+                baseURL={this.props.baseURL}
+                resid="638645137963"
+                wrappedComponentRef={element =>
+                  (this.transferFromTableDataRef = element)
+                }
+                refTargetComponentName="TableData"
+                // subtractH={240}
+                hasAdd={false}
+                tableComponent="ag-grid"
+                rowSelectionAg={'single'}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                cmswhere={`C3_294355760203 = 'Y' and importStatus = '正常'`}
+                afterSaveRefresh={true}
+                hasAdvSearch={false}
+                importConfig={null}
+              />
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                padding: '8px 0'
+              }}
+            >
+              <Button
+                type="primary"
+                onClick={() => {
+                  const waitingImport = this.transferFromTableDataRef.getAggridSelectedRows();
+                  if (!waitingImport.length) {
+                    return message.info('请选择待调动人员');
+                  }
+                  Modal.confirm({
+                    title: '选择生效日期',
+                    content: (
+                      <div>
+                        <DatePicker
+                          defaultValue={this.state.transferDate}
+                          disabledDate={disableDate}
+                          onChange={v => {
+                            this.setState({ transferDate: v });
+                          }}
+                        />
+                      </div>
+                    ),
+                    onOk: async () => {
+                      this.handleTransfer({
+                        C3_638469590670: '变动',
+                        C3_470524257391: this.state.transferDate, //生效日期
+                        C3_417994161226: waitingImport[0].C3_417994161226,
+                        C3_227192472953: waitingImport[0].C3_227192472953,
+                        C3_305737857578: waitingImport[0].C3_305737857578,
+                        C3_227192484125: waitingImport[0].C3_227192484125,
+                        C3_465142349966: node.orgNumber,
+                        C3_308778699827: waitingImport[0].C3_308778699827
+                      });
+                    }
+                  });
+                }}
+              >
+                确认调动
+              </Button>
+            </div>
+          </div>
+        );
+      },
+      {}
+    );
+  };
+
+  /**
+   * 调动
+   */
+  handleTransfer = async record => {
+    const { baseURL } = this.props;
+    try {
+      let httpParams = {};
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      this.props.closeModalOrDrawer();
+      this.setState({ loading: true });
+      await http(httpParams).modifyRecords({
+        resid: '638646080344',
+        isEditOrAdd: true,
+        data: [record]
+      });
+      await this.clearCache();
+      this.setState({ loading: false });
+      await this.getData();
+      message.success('调动成功');
+    } catch (error) {
+      console.error(error);
+      message.error(error.message);
+    }
+  };
+
   clearCache = async () => {
-    const { selectedDate } = this.state;
     const { baseURL } = this.props;
     const httpParams = {};
     // 使用传入的 baseURL
@@ -1078,110 +1422,60 @@ class ArchitectureDiagram extends React.Component {
 
   clearPerson = nodeId => {
     const node = this.chart.get(nodeId);
+    if (node.isEmpty !== 'Y') {
+      return message.info('非空缺岗位');
+    }
     if (node.isEmpty === 'Y' && node.isPartOccupied !== 'Y') {
-      return message.info('无任职或兼职人员');
+      return message.info('无兼职人员');
     }
     const { baseURL, historyResid } = this.props;
-    if (node.isPartOccupied === 'Y') {
-      //有兼职人员，则清空兼职人员
-      Modal.confirm({
-        title: '清空岗位人员',
-        content: (
+    Modal.confirm({
+      title: '清空岗位人员',
+      content: (
+        <div>
+          此岗位的兼职人员将被清空，请确认
           <div>
-            此岗位的兼职人员将被清空，请确认
-            <div>
-              生效日期：
-              {this.state.selectedDate.format('YYYY-MM-DD')}
-            </div>
+            生效日期：
+            {this.state.selectedDate.format('YYYY-MM-DD')}
           </div>
-        ),
-        onOk: async () => {
-          try {
-            this.setState({ loading: true });
-            let httpParams = {};
-            // 使用传入的 baseURL
-            if (baseURL) {
-              httpParams.baseURL = baseURL;
-            }
-            await http(httpParams).addRecords({
-              resid: '639083780814',
-              data: [
-                {
-                  orgcode: node.orgcode,
-                  pnid: 0,
-                  dates: this.state.selectedDate.format('YYYYMMDD')
-                }
-              ],
-              uniquecolumns: 'orgcode,dates',
-              isEditOrAdd: 'true'
-            });
-            await this.clearCache();
-            this.setState({ loading: false });
-            this.props.closeModalOrDrawer();
-            // 重新获取数据
-            await this.getData();
-            message.success('清空成功');
+        </div>
+      ),
+      onOk: async () => {
+        try {
+          this.setState({ loading: true });
+          let httpParams = {};
+          // 使用传入的 baseURL
+          if (baseURL) {
+            httpParams.baseURL = baseURL;
+          }
+          await http(httpParams).addRecords({
+            resid: '639083780814',
+            data: [
+              {
+                orgcode: node.orgcode,
+                pnid: 0,
+                dates: this.state.selectedDate.format('YYYYMMDD')
+              }
+            ],
+            uniquecolumns: 'orgcode,dates',
+            isEditOrAdd: 'true'
+          });
+          await this.clearCache();
+          this.setState({ loading: false });
+          this.props.closeModalOrDrawer();
+          // 重新获取数据
+          await this.getData();
+          message.success('清空成功');
 
-            if (node.id) {
-              this.chart.center(node.id);
-            }
-          } catch (error) {
-            message.error(error.message);
-            this.setState({ loading: false });
+          if (node.id) {
+            this.chart.center(node.id);
           }
+        } catch (error) {
+          message.error(error.message);
+          this.setState({ loading: false });
         }
-      });
-    } else {
-      Modal.confirm({
-        title: '清空岗位人员',
-        content: (
-          <div>
-            此岗位的任职人员将被清空，请确认
-            <div>
-              生效日期：
-              {this.state.selectedDate.format('YYYY-MM-DD')}
-            </div>
-          </div>
-        ),
-        onOk: async () => {
-          try {
-            this.setState({ loading: true });
-            let httpParams = {};
-            // 使用传入的 baseURL
-            if (baseURL) {
-              httpParams.baseURL = baseURL;
-            }
-            await http(httpParams).modifyRecords({
-              resid: 639230706234,
-              data: [
-                {
-                  C3_227192472953: node.memberID,
-                  C3_465142349966: '',
-                  orgCode: -1,
-                  C3_740524286017: this.state.selectedDate.format('YYYYMMDD'),
-                  C3_470524257391: this.state.selectedDate,
-                  C3_227192484125: node.memberCN,
-                  C3_638469590670: '变动'
-                }
-              ],
-              uniquecolumns: 'C3_227192472953',
-              isEditOrAdd: 'true'
-            });
-            await this.clearCache();
-            this.setState({ loading: false });
-            this.props.closeModalOrDrawer();
-            await this.getData();
-            message.success('清空成功');
-            if (node.id) {
-              this.chart.center(node.id);
-            }
-          } catch (error) {
-            message.error(error.message);
-            this.setState({ loading: false });
-          }
-        }
-      });
-    }
+      }
+    });
   };
 
   openImportModal = nodeId => {
@@ -1284,7 +1578,7 @@ class ArchitectureDiagram extends React.Component {
             <div style={{ height: 600 }}>
               <TableData
                 baseURL={this.props.baseURL}
-                resid="638645984799"
+                resid="655673514788"
                 wrappedComponentRef={element =>
                   (this.importModalTableDataRef = element)
                 }
@@ -1381,6 +1675,7 @@ class ArchitectureDiagram extends React.Component {
   };
 
   closeBroModal = () => this.setState({ addBroVisible: false });
+  closeJoinModal = () => this.setState({ joinVisible: false });
 
   viewHistoryDetail = () => {
     this.setState({ viewHistoryDetailVisible: true });
@@ -1495,6 +1790,12 @@ class ArchitectureDiagram extends React.Component {
     }
   };
 
+  handleJoinSuccess = async () => {
+    this.closeJoinModal();
+    await this.clearCache();
+    await this.getData();
+    message.success('入职成功');
+  };
   onLevelChange = level => {
     this.setState({ currentLevel: level });
     this.chart.expandCollapseToLevel(0, {
@@ -1604,6 +1905,91 @@ class ArchitectureDiagram extends React.Component {
         importConfig.saveState,
         importConfig.containerProps,
         this.handleFinishImport
+      );
+  };
+  /**
+   * 入职
+   */
+  handleRuzhi = () => {
+    const {
+      openImportView,
+      baseURL,
+      importConfig,
+      importResid,
+      dblinkname
+    } = this.props;
+    const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
+
+    openImportView &&
+      openImportView(
+        dblinkname,
+        url,
+        importResid,
+        importConfig.mode,
+        importConfig.containerType,
+        importConfig.saveState,
+        importConfig.containerProps,
+        this.handleFinishImport,
+        {},
+        {},
+        true,
+        'fileName'
+      );
+  };
+  /**
+   * 离职
+   */
+  handleLizhi = () => {
+    const { openImportView, baseURL, importConfig, dblinkname } = this.props;
+    const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
+
+    openImportView &&
+      openImportView(
+        dblinkname,
+        url,
+        655636441513,
+        importConfig.mode,
+        importConfig.containerType,
+        importConfig.saveState,
+        importConfig.containerProps,
+        this.handleFinishImport,
+        {
+          rp: {
+            EnableBitianCheck: false,
+            EnableFormula1Layer: false
+          },
+          formulalayer: '0'
+        },
+        {
+          C3_465142349966: '',
+          C3_294355760203: '',
+          C3_655655647639: 'Y' //锁定
+        },
+        true,
+        'fileName'
+      );
+  };
+  /**
+   * 变动
+   */
+  handleBiandong = () => {
+    const { openImportView, baseURL, importConfig, dblinkname } = this.props;
+    const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
+
+    openImportView &&
+      openImportView(
+        dblinkname,
+        url,
+        655636467905,
+        importConfig.mode,
+        importConfig.containerType,
+        importConfig.saveState,
+        importConfig.containerProps,
+        this.handleFinishImport,
+        {},
+        {},
+        true,
+        'fileName'
       );
   };
 
@@ -1822,16 +2208,24 @@ class ArchitectureDiagram extends React.Component {
         )} */}
         {hasImport && (
           <div className="architecture-diagram_header_icon-button-group">
-            <div
-              className="architecture-diagram_header_icon-button"
-              onClick={this.handleImport}
+            <Dropdown
+              overlay={
+                <Menu>
+                  <Menu.Item onClick={this.handleRuzhi}>入职</Menu.Item>
+                  <Menu.Item onClick={this.handleLizhi}>离职</Menu.Item>
+                  <Menu.Item onClick={this.handleBiandong}>变动</Menu.Item>
+                  {/* <Menu.Item onClick={this.handleImport}>兼任</Menu.Item> */}
+                </Menu>
+              }
             >
-              <Icon
-                type="upload"
-                className="architecture-diagram_header_icon-button__icon"
-              />
-              导入数据
-            </div>
+              <div className="architecture-diagram_header_icon-button">
+                <Icon
+                  type="upload"
+                  className="architecture-diagram_header_icon-button__icon"
+                />
+                导入数据
+              </div>
+            </Dropdown>
             <div
               className="architecture-diagram_header_icon-button"
               onClick={this.handleDownload}
@@ -1945,7 +2339,22 @@ class ArchitectureDiagram extends React.Component {
   };
   renderImportResult = () => {
     const { baseURL } = this.props;
-    const { selectedResultResid, selectedType, mode, resultMin } = this.state;
+    const {
+      selectedResultResid,
+      selectedType,
+      mode,
+      resultMin,
+      selectedResult
+    } = this.state;
+    let cmswhere = '';
+    if (selectedType) {
+      cmswhere += `C3_417994161226 = '${selectedType}'`;
+    }
+    if (selectedResult && selectedResult !== '全部') {
+      cmswhere += `${
+        cmswhere ? ' and ' : ''
+      } importStatus = '${selectedResult}'`;
+    }
     return (
       <div
         className={classNames('architecture-diagram__import-result', {
@@ -1974,16 +2383,46 @@ class ArchitectureDiagram extends React.Component {
               <Select
                 style={{ width: 120, marginRight: 16 }}
                 size="small"
-                defaultValue="638645137963"
                 onChange={v => {
                   this.setState({ selectedResultResid: v });
+                  if (v === '638646009862') {
+                    this.setState({ selectedResult: '全部' });
+                  }
                 }}
                 value={selectedResultResid}
               >
                 <Select.Option value="638645137963">全部</Select.Option>
-                <Select.Option value="638646080344">正常</Select.Option>
-                <Select.Option value="638645984799">未匹配</Select.Option>
-                <Select.Option value="638646009862">错误</Select.Option>
+                <Select.Option value="638645984799">入职</Select.Option>
+                <Select.Option value="638646080344">变动</Select.Option>
+                <Select.Option value="638646009862">离职</Select.Option>
+              </Select>
+              <Select
+                style={{ width: 120, marginRight: 16 }}
+                size="small"
+                onChange={v => {
+                  this.setState({ selectedResult: v });
+                }}
+                value={selectedResult}
+              >
+                <Select.Option value="全部">全部</Select.Option>
+                <Select.Option
+                  disabled={selectedResultResid === '638646009862'}
+                  value="正常"
+                >
+                  正常
+                </Select.Option>
+                <Select.Option
+                  disabled={selectedResultResid === '638646009862'}
+                  value="未匹配"
+                >
+                  未匹配
+                </Select.Option>
+                <Select.Option
+                  disabled={selectedResultResid === '638646009862'}
+                  value="错误"
+                >
+                  错误
+                </Select.Option>
               </Select>
               <Select
                 style={{ width: 120, marginRight: 16 }}
@@ -1997,7 +2436,7 @@ class ArchitectureDiagram extends React.Component {
                 <Select.Option value="DL">DL</Select.Option>
                 <Select.Option value="IDL">IDL</Select.Option>
               </Select>
-              {selectedResultResid === '638645984799' && (
+              {selectedResult === '未匹配' && (
                 <Button
                   size="small"
                   type="primary"
@@ -2070,10 +2509,6 @@ class ArchitectureDiagram extends React.Component {
                   匹配
                 </Button>
               )}
-              {/* <span style={{ marginRight: 16 }}>合计：100</span>
-            <span style={{ marginRight: 16 }}>成功：70</span>
-            <span style={{ marginRight: 16 }}>错误：20</span>
-            <span style={{ marginRight: 16 }}>未匹配：10</span> */}
             </div>
             <div style={{ flex: 1, overflow: 'hidden' }}>
               <TableData
@@ -2092,7 +2527,7 @@ class ArchitectureDiagram extends React.Component {
                 hasModify={false}
                 hasRowModify={false}
                 hasRowSelection={false}
-                cmswhere={selectedType && `C3_417994161226 = '${selectedType}'`}
+                cmswhere={cmswhere}
                 afterSaveRefresh={true}
                 afterSaveCallback={this.clearCache}
                 hasAdvSearch={false}
@@ -2238,7 +2673,9 @@ class ArchitectureDiagram extends React.Component {
       parentKeys,
       rootKey,
       filtedNodes,
-      fetchingData
+      fetchingData,
+      joinVisible,
+      joinRecord
     } = this.state;
     const { baseURL, displayFileds, hasView, historyResid } = this.props;
     return (
@@ -2689,6 +3126,26 @@ class ArchitectureDiagram extends React.Component {
             baseURL={this.props.baseURL}
           />
         </Modal>
+        <Modal
+          visible={joinVisible}
+          title="人员入职"
+          width={800}
+          footer={null}
+          onCancel={this.closeJoinModal}
+          destroyOnClose
+        >
+          <FormData
+            info={{ dataMode: 'main', resid: this.props.importResid }}
+            operation="add"
+            data={this._dataProp}
+            record={joinRecord}
+            // useAbsolute={true}
+            // formProps={{ width: 500 }}
+            onCancel={this.closeJoinModal}
+            onSuccess={this.handleJoinSuccess}
+            baseURL={this.props.baseURL}
+          />
+        </Modal>
         <Drawer
           visible={selfDefineVisible}
           title="自定义卡片"
@@ -2926,3 +3383,90 @@ const composedHoc = compose(
 );
 
 export default composedHoc(ArchitectureDiagram);
+
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 8 }
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 16 }
+  }
+};
+class LizhiForm extends React.PureComponent {
+  state = {
+    lizhiDate: null,
+    lizhiReason: '',
+    lizhiType: '',
+    date: null
+  };
+  render() {
+    const { lizhiDate, lizhiReason, date, lizhiType } = this.state;
+    const { name, number } = this.props;
+    return (
+      <Form {...formItemLayout}>
+        <Form.Item label="离职人姓名">
+          <Input value={name} disabled />
+        </Form.Item>
+        <Form.Item label="离职人工号">
+          <Input value={number} disabled />
+        </Form.Item>
+        <Form.Item label="离职日期" required>
+          <DatePicker
+            value={lizhiDate}
+            onChange={v => {
+              this.setState({ lizhiDate: v });
+            }}
+          />
+        </Form.Item>
+        <Form.Item label="离职原因" required>
+          <Input
+            value={lizhiReason}
+            onChange={e => {
+              this.setState({ lizhiReason: e.target.value });
+            }}
+          />
+        </Form.Item>
+        <Form.Item label="离职类型" required>
+          <Input
+            value={lizhiType}
+            onChange={e => {
+              this.setState({ lizhiType: e.target.value });
+            }}
+          />
+        </Form.Item>
+        <Form.Item label="生效日期" required>
+          <DatePicker
+            value={date}
+            onChange={v => {
+              this.setState({ date: v });
+            }}
+          />
+        </Form.Item>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            type="primary"
+            onClick={() => {
+              if (!lizhiDate) {
+                return message.info('请选择离职日期');
+              }
+              if (!lizhiReason) {
+                return message.info('请输入离职原因');
+              }
+              if (!lizhiType) {
+                return message.info('请输入离职类型');
+              }
+              if (!date) {
+                return message.info('请选择生效日期');
+              }
+              this.props.onOk({ lizhiDate, lizhiReason, lizhiType, date });
+            }}
+          >
+            提交
+          </Button>
+        </div>
+      </Form>
+    );
+  }
+}
