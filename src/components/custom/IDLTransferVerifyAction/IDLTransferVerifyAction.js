@@ -516,7 +516,6 @@ class IDLTransferVerifyAction extends Component {
               hasRowModify={false}
               hasModify={false}
               hasDelete={false}
-              style={{ height: '100%' }}
               hasRowView={false}
               actionBarWidth={100}
               actionBarFixed={true}
