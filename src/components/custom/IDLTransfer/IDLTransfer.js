@@ -696,8 +696,11 @@ class IDLTransfer extends Component {
         data: toSub
 
       });
-      this.setState({ loading: false, result: 'success', hint: '提交成功', step: 2, isSub: true });
-      console.log(res);
+      if(b=='draft'){
+        this.setState({ loading: false, result: 'success', hint: '草稿保存成功', step: 2, isSub: true });
+      }else{
+        this.setState({ loading: false, result: 'success', hint: '提交成功', step: 2, isSub: true });
+      }
     } catch (e) {
       this.setState({ loading: false, result: 'error', hint: e.message, step: 2, isSub: false });
       console.log(e)
@@ -860,7 +863,7 @@ class IDLTransfer extends Component {
               <Steps current={this.state.step} style={{ width: '100%', cursor: 'default' }}>
                 <Step title="选择调动人员" />
                 <Step title="填写调岗申请单" />
-                <Step title="查看提交结果" />
+                <Step title="查看结果" />
               </Steps>
               {
                 this.state.step == 0 ? (

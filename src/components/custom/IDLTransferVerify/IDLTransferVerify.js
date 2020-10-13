@@ -270,13 +270,13 @@ class IDLTransferVerify extends Component {
       arr.push(a)
       n++;
     }
-    var obj = r;
-    var date = obj.effortDate;
-    if (date) { date = moment(date); }
-    obj.effortDate = date;
-    this.getMem(obj.changeID);
-    console.log('obj', obj)
-    this.setState({ memberDetail: null, visible: true, toCheck: arr, toCheckFront: obj, C3_632503844784: obj.changeID });
+    let object = {};
+    Object.assign(object,r);
+    let myDate = object.effortDate;
+    if (myDate) { myDate = moment(myDate); }
+    object.effortDate = myDate;
+    this.getMem(object.changeID);
+    this.setState({ memberDetail: null, visible: true, toCheck: arr, toCheckFront: object, C3_632503844784: object.changeID });
 
   }
   judgeMulti = async (dataSource, selectedRowKeys, bol) => {
