@@ -20,6 +20,7 @@ function areEqual(prevProps, nextProps) {
  * @author 邓铭
  */
 const InternalTraining = React.memo(props => {
+  console.log("props.roleName",props.roleName)
   return (
     <div id="internal-training" className="probation-form">
       <Card
@@ -40,7 +41,7 @@ const InternalTraining = React.memo(props => {
         extra={
           // props.auth.hasAdd &&
           // props.editable &&
-          props.roleName === ('主管' || 'HR') && (
+          (props.roleName === '主管' || props.roleName === 'HR') && (
             <Button
               style={{ marginLeft: 8 }}
               onClick={() => {
