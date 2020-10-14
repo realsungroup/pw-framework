@@ -516,10 +516,10 @@ class IDLTransferVerifyAction extends Component {
               hasRowModify={false}
               hasModify={false}
               hasDelete={false}
-              style={{ height: '100%' }}
               hasRowView={false}
               actionBarWidth={100}
               actionBarFixed={true}
+              subtractH={175}
               // noWidthFields={this.state.selection == '1' ? 'C3_634660565034' : null}
               actionBarExtra={({ dataSource, selectedRowKeys }) => {
                 return (

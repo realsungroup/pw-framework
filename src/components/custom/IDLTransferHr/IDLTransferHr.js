@@ -478,7 +478,7 @@ class IDLTransferHr extends Component {
   // 选择变更后的审批人
   changeAppMem = (v) => {
     console.log(this.state.changeKey, v, this.state.stream)
-    var obj = this.state.stream;
+    var obj = this.state.streamChange;
     obj[this.state.changeKey].stepPeople = v.C3_227192484125;
     obj[this.state.changeKey].stepPeopleID = v.C3_305737857578;
     this.setState({ stream: obj, changeApprove: false });
@@ -718,6 +718,7 @@ class IDLTransferHr extends Component {
                         arrAfter[n].auditRecno = (n + 1);
                         n++;
                       }
+                      console.log(arrAfter)
                       this.setState({ streamChange: arrAfter });
                     }}>删除节点</Button>
                     <div style={{ height: '16px', width: 'calc(90vw - 48px)', borderBottom: '1px solid #e8e8e8' }}></div>

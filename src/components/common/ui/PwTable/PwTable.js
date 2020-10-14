@@ -16,7 +16,6 @@ import 'react-resizable/css/styles.css';
 import { getIntlVal } from 'Util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import { BIGrid } from 'lz-components-and-utils/lib/index';
-import classNames from 'classnames';
 
 const Search = Input.Search;
 
@@ -32,33 +31,9 @@ class PwTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isFooterAbsolute: true,
       zoomStatus: 0 // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
     };
   }
-
-  componentDidMount = () => {
-    if (this.containerRef) {
-      const el = this.containerRef;
-      if (el.scrollHeight > el.clientHeight) {
-        this.setState({ isFooterAbsolute: false });
-      } else {
-        this.setState({ isFooterAbsolute: true });
-      }
-    }
-  };
-
-  componentDidMount = () => {
-    if (this.containerRef) {
-      const el = this.containerRef;
-      if (el.scrollHeight > el.clientHeight) {
-        this.setState({ isFooterAbsolute: false });
-      } else {
-        this.setState({ isFooterAbsolute: true });
-      }
-    }
-  }
-  
 
   handleImport = () => {
     this.props.onImport && this.props.onImport();
@@ -89,18 +64,13 @@ class PwTable extends React.Component {
   };
 
   renderPagination = () => {
-    const { isFooterAbsolute } = this.state;
     const { pagination, size, intl } = this.props;
     const rang = getRang(pagination);
     const hasTotal = pagination.current && pagination.total;
 
     if (pagination) {
       return (
-        <div
-          className={classNames('pw-table__footer', {
-            'pw-table__footer--absolute': isFooterAbsolute
-          })}
-        >
+        <div className="pw-table__footer">
           <Pagination
             style={{ marginLeft: 8 }}
             {...pagination}
@@ -135,10 +105,6 @@ class PwTable extends React.Component {
 
   handleSearch = (value, e) => {
     this.props.onSearch && this.props.onSearch(value, e);
-  };
-
-  getContainerRef = node => {
-    this.containerRef = node;
   };
 
   render() {
@@ -192,7 +158,7 @@ class PwTable extends React.Component {
 
     const hasStatisticalAnalysis = gridProps.length ? true : false;
     return (
-      <div className="pw-table" ref={this.getContainerRef}>
+      <div className="pw-table">
         {hasHeader && (
           <div className="pw-table__header">
             <div
