@@ -732,11 +732,11 @@ class IDLTransferHr extends Component {
             visible={this.state.visibleHC}
 
             footer={
-              (this.state.C3_637425449725 && this.state.C3_637425577105 && this.state.C3_637425470106) ?
+              (this.state.C3_637425449725 &&  this.state.C3_637425470106) ?
                 <>
                   <Button type='danger' style={{ marginLeft: '8px' }} onClick={() => { this.approveHC('N') }}>不通过审核</Button>
                   <Button type='primary' onClick={() => { this.approveHC('Y') }}>保存并通过HC审核</Button>
-                </> : '至少全部填选完第1、2、4项才能提交'}
+                </> : '至少全部填选完第1、4项才能提交'}
             onCancel={() => this.setState({ visibleHC: false })}
           >
 
@@ -759,7 +759,7 @@ class IDLTransferHr extends Component {
             </Select>
             <div style={{ width: '100%', height: '1rem' }}></div>
 
-            <b>替代人：{this.state.C3_637425666513 ? (this.state.C3_637425666513.C3_227192484125 + '-' + this.state.C3_637425666513.C3_305737857578) : '请点击右边的按钮选择人员'}</b><Button style={{ marginLeft: '8px' }} type='primary' onClick={() => { this.setState({ memberD: true }) }}>选择人员</Button>
+            <b>替代人：{this.state.C3_637425666513 ? (this.state.C3_637425666513.C3_227192484125 + '-' + this.state.C3_637425666513.C3_305737857578) : '请点击右边的按钮选择人员'}</b><Button disabled={this.state.C3_637425577105 == 'New' ? true : false} style={{ marginLeft: '8px' }} type='primary' onClick={() => { this.setState({ memberD: true }) }}>选择人员</Button>
             <div style={{ width: '100%', height: '1rem' }}></div>
 
             <b>备注：</b>
