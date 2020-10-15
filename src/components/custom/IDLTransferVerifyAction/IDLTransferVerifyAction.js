@@ -524,7 +524,7 @@ class IDLTransferVerifyAction extends Component {
               actionBarExtra={({ dataSource, selectedRowKeys }) => {
                 return (
                   this.state.selection == '1' ?
-                    <Button type='primary' disabled={!(selectedRowKeys.length > 0)} onClick={() => { this.approveGroup(dataSource, selectedRowKeys) }}>审批</Button>
+                    <Button type='primary' disabled={!(selectedRowKeys.length > 0)} onClick={() => { this.approveGroup(dataSource, selectedRowKeys) }}>批量审批通过</Button>
 
                     : null
                 );
