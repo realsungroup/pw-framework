@@ -735,7 +735,7 @@ class IDLTransferHr extends Component {
               (this.state.C3_637425449725 &&  this.state.C3_637425470106) ?
                 <>
                   <Button type='danger' style={{ marginLeft: '8px' }} onClick={() => { this.approveHC('N') }}>不通过审核</Button>
-                  <Button type='primary' onClick={() => { this.approveHC('Y') }}>保存并通过HC审核</Button>
+                  <Button type='primary' onClick={() => { this.approveHC('Y') }}disabled={this.state.C3_637425449725=='无'?true:false}>保存并通过HC审核</Button>
                 </> : '至少全部填选完第1、4项才能提交'}
             onCancel={() => this.setState({ visibleHC: false })}
           >
