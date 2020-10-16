@@ -12,7 +12,8 @@ import {
   DatePicker,
   Spin,
   Row,
-  Col
+  Col,
+  Slider,
 } from 'antd';
 import TableData from '../../../common/data/TableData';
 import downloadImg from './下载.png';
@@ -600,13 +601,42 @@ class Advice extends React.Component {
         <Modal
           visible={this.state.enlargePic}
           width={'90vw'}
-          style={{ height: 'auto', marginBottom: 0, paddingBottom: 0, textAlign: 'center' }}
+          style={{
+            height: '90vh',
+            marginBottom: 0,
+            paddingBottom: 0,
+            textAlign: 'center'
+          }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
         >
-          <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
+          <img
+            id="pic"
+            src={this.state.picKey}
+            style={{
+              transform: `scale(${this.state.imgDeatilSize})`,
+              height: 'calc(100vh - 48px)',
+              width: 'auto'
+            }}
+          />
+          <Slider
+            style={{
+              left: '180px',
+              position: 'fixed',
+              bottom: '5vh',
+              width: '1000px'
+            }}
+            defaultValue={1}
+            step={0.1}
+            max={3}
+            tooltipVisible
+            onChange={value => {
+              this.setState({ imgDeatilSize: value });
+              console.log(this.state.imgDeatilSize);
+            }}
+          />
         </Modal>
         <Modal
           visible={this.state.showRecord}
@@ -690,6 +720,14 @@ class Advice extends React.Component {
                           src={item.fileURL}
                           autoPlay={false}
                           style={{ width: '50%' }}
+                        />
+                        <img
+                          src={downloadImg}
+                          onClick={() => {
+                            this.downloadVideo(index);
+                            window.open(item.fileURL)
+                          }}
+                          alt=""
                         />
                       </>
                     );

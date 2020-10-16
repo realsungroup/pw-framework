@@ -12,7 +12,8 @@ import {
   DatePicker,
   Spin,
   Row,
-  Col
+  Col,
+  Slider
 } from 'antd';
 import TableData from '../../../common/data/TableData';
 import downloadImg from './下载.png';
@@ -547,6 +548,7 @@ class HelpAndAppeal extends React.Component {
           {this.renderContent()}
         </div>
 
+          
         <Modal
           visible={this.state.showRecord}
           width={777}
@@ -630,6 +632,7 @@ class HelpAndAppeal extends React.Component {
                           src={downloadImg}
                           onClick={() => {
                             this.downloadVideo(index);
+                            window.open(item.fileURL)
                           }}
                           alt=""
                         />
@@ -663,7 +666,7 @@ class HelpAndAppeal extends React.Component {
             </div>
           </Spin>
         </Modal>
-        <Modal
+        {/* <Modal
           visible={this.state.enlargePic}
           width={'90vw'}
           style={{ height: 'auto', marginBottom: 0, paddingBottom: 0, textAlign: 'center' }}
@@ -673,6 +676,46 @@ class HelpAndAppeal extends React.Component {
           footer={null}
         >
           <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
+        </Modal> */}
+        <Modal
+          visible={this.state.enlargePic}
+          width={'90vw'}
+          style={{
+            height: '90vh',
+            marginBottom: 0,
+            paddingBottom: 0,
+            textAlign: 'center'
+          }}
+          centered={true}
+          onCancel={() => this.setState({ enlargePic: false })}
+          destroyOnClose={true}
+          footer={null}
+        >
+          <img
+            id="pic"
+            src={this.state.picKey}
+            style={{
+              transform: `scale(${this.state.imgDeatilSize})`,
+              height: 'calc(100vh - 48px)',
+              width: 'auto'
+            }}
+          />
+          <Slider
+            style={{
+              left: '180px',
+              position: 'fixed',
+              bottom: '5vh',
+              width: '1000px'
+            }}
+            defaultValue={1}
+            step={0.1}
+            max={3}
+            tooltipVisible
+            onChange={value => {
+              this.setState({ imgDeatilSize: value });
+              console.log(this.state.imgDeatilSize);
+            }}
+          />
         </Modal>
         <Modal
           title="回复内容"
