@@ -7916,7 +7916,6 @@ window[642864955816] = {
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
     resid: 498060017391,
-    actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
