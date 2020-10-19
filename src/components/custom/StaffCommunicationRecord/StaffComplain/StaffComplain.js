@@ -87,7 +87,9 @@ class StaffComplain extends React.Component {
     noNo: 0, //未处理数量
     ingNo: 0, //处理中数量
     imgDeatilSize: 1,//图片放大倍数
-    modalVisbile:false
+    modalVisbile:false,
+    adminRemark: '', //管理员备注
+    adminRemarkVis: false
   };
 
   componentDidMount = () => {
@@ -323,7 +325,33 @@ class StaffComplain extends React.Component {
       selectedProofs: selectedRecords
     });
   };
-
+  handleSubmitRemark = async () => {
+    const { selectedRecords, adminRemark } = this.state;
+    const data = selectedRecords.length>1
+        ? selectedRecords.map(item => ({
+            REC_ID: item.recordID,
+            adminRemark: adminRemark,
+          }))
+        : [
+            {
+              REC_ID: selectedRecords[0].recordID,
+              adminRemark: adminRemark,
+            }
+          ];
+    try {
+      let res = await http({baseURL:this.baseURL}).modifyRecords({
+        resid,
+        data
+      });
+      message.success("备注添加成功")
+      this.setState({
+        adminRemarkVis:false
+      })
+      this.tableDataRef.handleRefresh();
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
   submitReply = async () => {
     const { selectedProofs, isBatchReply, selectedRecords } = this.state;
     const now = new Date().getTime();
@@ -701,6 +729,7 @@ class StaffComplain extends React.Component {
       noticeLoading,
       selectKey
     } = this.state;
+    const userType = this.props.userType
     return (
       <div>
         <div className="staff-contain_menu">
@@ -842,8 +871,22 @@ class StaffComplain extends React.Component {
                       }}
                     >
                       批量回复
-                    </Button>
+                    </Button> 
                   )}
+                  {userType === "admin" &&(<Button
+                        size="small"
+                        onClick={() => {
+                          if (!selectedRecords.length) {
+                            return message.info('请选择记录');
+                          }
+                          this.setState({
+                            selectedRecords,
+                            adminRemarkVis: true,
+                          });
+                        }}
+                      >
+                        添加备注
+                      </Button>)}
                 </div>
               );
             }}
@@ -917,7 +960,9 @@ class StaffComplain extends React.Component {
       replyContent,
       modalVisbile,
       picKey,
+      adminRemarkVis
     } = this.state;
+    const userType = this.props.userType;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
         <div
@@ -992,6 +1037,10 @@ class StaffComplain extends React.Component {
             marginBottom: 0,
             paddingBottom: 0,
             textAlign: 'center',
+            height: 'auto',
+            marginBottom: 0,
+            paddingBottom: 0,
+            textAlign: 'center'
           }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
@@ -1030,6 +1079,11 @@ class StaffComplain extends React.Component {
           />
         </Modal> */}
       
+          {/* <img
+            src={this.state.picKey}
+            style={{ height: 'calc(100vh - 48px)', width: 'auto' }}
+          />
+        </Modal> */}
         <Modal
           visible={this.state.showRecord}
           width={777}
@@ -1342,6 +1396,16 @@ class StaffComplain extends React.Component {
                   )}
                 </div>
               </div>
+              {userType === 'admin' && (
+                <div style = {{fontWeight:"bold"}}>
+                <p>管理员备注：</p>
+                <TextArea
+                  disabled
+                  value={selectRecord.adminRemark}
+                  style = {{marginBottom:'5px'}}
+                />
+                </div>
+              )}
               {selectKey === '1' && (
                 <Popconfirm
                   title="确认通知部门负责人？"
@@ -1527,6 +1591,22 @@ class StaffComplain extends React.Component {
               this.setState({ backReason: e.target.value });
             }}
             placeholder="请输入退回理由"
+          />
+        </Modal>
+        <Modal
+          visible={adminRemarkVis}
+          title="填写管理员备注"
+          width={500}
+          onCancel={() => {
+            this.setState({ adminRemarkVis: false, adminRemark:''});
+          }}
+          onOk={this.handleSubmitRemark}
+        >
+          <TextArea
+            onChange={e => {
+              this.setState({ adminRemark: e.target.value });
+            }}
+            placeholder="输入管理员备注"
           />
         </Modal>
       </div>
