@@ -80,9 +80,10 @@ class StaffComplain extends React.Component {
     backLoading: '', //
     hrReplyImgs: [],
     hrReplyVideos: [],
-    noNo: 0,//未处理数量
-    ingNo: 0,//处理中数量
-
+    noNo: 0, //未处理数量
+    ingNo: 0, //处理中数量
+    adminRemark: '', //管理员备注
+    adminRemarkVis: false
   };
 
   componentDidMount = () => {
@@ -108,7 +109,7 @@ class StaffComplain extends React.Component {
     } catch (error) {
       message.error(error.message);
     }
-  }
+  };
   getColumnData = async () => {
     let res;
     let type = [];
@@ -258,7 +259,6 @@ class StaffComplain extends React.Component {
       status: '处理中'
     };
 
-
     try {
       this.setState({ noticeLoading: true });
       // 通知负责人
@@ -307,7 +307,33 @@ class StaffComplain extends React.Component {
       selectedProofs: selectedRecords
     });
   };
-
+  handleSubmitRemark = async () => {
+    const { selectedRecords, adminRemark } = this.state;
+    const data = selectedRecords.length>1
+        ? selectedRecords.map(item => ({
+            REC_ID: item.recordID,
+            adminRemark: adminRemark,
+          }))
+        : [
+            {
+              REC_ID: selectedRecords[0].recordID,
+              adminRemark: adminRemark,
+            }
+          ];
+    try {
+      let res = await http({baseURL:this.baseURL}).modifyRecords({
+        resid,
+        data
+      });
+      message.success("备注添加成功")
+      this.setState({
+        adminRemarkVis:false
+      })
+      this.tableDataRef.handleRefresh();
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
   submitReply = async () => {
     const { selectedProofs, isBatchReply, selectedRecords } = this.state;
     const now = new Date().getTime();
@@ -321,23 +347,23 @@ class StaffComplain extends React.Component {
       });
       const data = isBatchReply
         ? selectedRecords.map(item => ({
-          REC_ID: item.recordID,
-          replyID: now,
-          replication: this.state.replyContent,
-          replicationHR: 'Y',
-          status: '已处理',
-          renew: 'Y'
-        }))
-        : [
-          {
-            REC_ID: this.state.selectRecord.recordID,
+            REC_ID: item.recordID,
             replyID: now,
             replication: this.state.replyContent,
             replicationHR: 'Y',
             status: '已处理',
             renew: 'Y'
-          }
-        ];
+          }))
+        : [
+            {
+              REC_ID: this.state.selectRecord.recordID,
+              replyID: now,
+              replication: this.state.replyContent,
+              replicationHR: 'Y',
+              status: '已处理',
+              renew: 'Y'
+            }
+          ];
       await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
         data
@@ -510,7 +536,7 @@ class StaffComplain extends React.Component {
     if (this.state.complainType !== '全部') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}typeComplaint = '${
         this.state.complainType
-        }' `;
+      }' `;
     }
     if (this.state.isAms !== '全部') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}signed = '${this.state.isAms}' `;
@@ -518,7 +544,7 @@ class StaffComplain extends React.Component {
     if (this.state.beginTime !== '') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}REC_CRTTIME > '${
         this.state.beginTime
-        }' and REC_CRTTIME < '${this.state.endTime}'`;
+      }' and REC_CRTTIME < '${this.state.endTime}'`;
     }
     console.log('cmsWhere', cmsWhere);
     this.setState({
@@ -641,6 +667,7 @@ class StaffComplain extends React.Component {
       noticeLoading,
       selectKey
     } = this.state;
+    const userType = this.props.userType
     return (
       <div>
         <div className="staff-contain_menu">
@@ -668,8 +695,8 @@ class StaffComplain extends React.Component {
               <Option value="全部">全部</Option>
               {typeComplaint.length
                 ? typeComplaint.map((item, index) => {
-                  return <Option value={item}>{item}</Option>;
-                })
+                    return <Option value={item}>{item}</Option>;
+                  })
                 : null}
             </Select>
           </div>
@@ -726,7 +753,15 @@ class StaffComplain extends React.Component {
             subtractH={200}
             cmswhere={cmswhere}
             actionBarWidth={200}
-            columnsWidth={{ '状态': 100, '是否实名': 20, '是否撤回': 20, 'HR是否通知了负责人': 20, '负责人是否回复完毕': 20, 'HR是否回复了员工': 20, '同意HR将投诉内容分享给上级领导': 20 }}
+            columnsWidth={{
+              状态: 100,
+              是否实名: 20,
+              是否撤回: 20,
+              HR是否通知了负责人: 20,
+              负责人是否回复完毕: 20,
+              HR是否回复了员工: 20,
+              同意HR将投诉内容分享给上级领导: 20
+            }}
             actionBarExtra={({
               dataSource = [],
               selectedRowKeys = [],
@@ -774,8 +809,22 @@ class StaffComplain extends React.Component {
                       }}
                     >
                       批量回复
-                    </Button>
+                    </Button> 
                   )}
+                  {userType === "admin" &&(<Button
+                        size="small"
+                        onClick={() => {
+                          if (!selectedRecords.length) {
+                            return message.info('请选择记录');
+                          }
+                          this.setState({
+                            selectedRecords,
+                            adminRemarkVis: true,
+                          });
+                        }}
+                      >
+                        添加备注
+                      </Button>)}
                 </div>
               );
             }}
@@ -792,17 +841,17 @@ class StaffComplain extends React.Component {
                 );
               },
               hasButton &&
-              (record => {
-                return (
-                  <Button
-                    onClick={() => {
-                      this.openProofList(record);
-                    }}
-                  >
-                    回复
-                  </Button>
-                );
-              })
+                (record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.openProofList(record);
+                      }}
+                    >
+                      回复
+                    </Button>
+                  );
+                })
             ]}
           />
         </div>
@@ -846,25 +895,40 @@ class StaffComplain extends React.Component {
       backLoading,
       hrReplyImgs,
       hrReplyVideos,
-      replyContent
+      replyContent,
+      adminRemarkVis
     } = this.state;
+    const userType = this.props.userType;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
-        <div style={{ width: ((this.state.noNo > 0) || (this.state.ingNo > 0) ? '160px' : '100px') }}>
+        <div
+          style={{
+            width:
+              this.state.noNo > 0 || this.state.ingNo > 0 ? '160px' : '100px'
+          }}
+        >
           <Menu
             style={{ height: '100vh' }}
             defaultSelectedKeys={['1']}
             // defaultOpenKeys={['sub1']}
             mode={this.state.mode}
             onSelect={this.onSelect}
-          // inlineCollapsed={this.state.collapsed}
-          // selectedKeys = {selectKeys}
+            // inlineCollapsed={this.state.collapsed}
+            // selectedKeys = {selectKeys}
           >
             <Menu.Item key="1">
-              <span> 未处理{this.state.noNo > 0 ? '（' + this.state.noNo + '）' : null}</span>
+              <span>
+                {' '}
+                未处理
+                {this.state.noNo > 0 ? '（' + this.state.noNo + '）' : null}
+              </span>
             </Menu.Item>
             <Menu.Item key="2">
-              <span> 处理中{this.state.ingNo > 0 ? '（' + this.state.ingNo + '）' : null}</span>
+              <span>
+                {' '}
+                处理中
+                {this.state.ingNo > 0 ? '（' + this.state.ingNo + '）' : null}
+              </span>
             </Menu.Item>
             <Menu.Item key="3">
               <span> 已处理</span>
@@ -891,13 +955,21 @@ class StaffComplain extends React.Component {
         <Modal
           visible={this.state.enlargePic}
           width={'90vw'}
-          style={{ height: 'auto', marginBottom: 0, paddingBottom: 0, textAlign: 'center' }}
+          style={{
+            height: 'auto',
+            marginBottom: 0,
+            paddingBottom: 0,
+            textAlign: 'center'
+          }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
         >
-          <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
+          <img
+            src={this.state.picKey}
+            style={{ height: 'calc(100vh - 48px)', width: 'auto' }}
+          />
         </Modal>
         <Modal
           visible={this.state.showRecord}
@@ -970,23 +1042,38 @@ class StaffComplain extends React.Component {
               <div className="picProof">
                 <h4>图片证据：</h4>
                 {imgProofRecord.length ? (
-                  imgProofRecord.map((item) => {
-                    return (<>
-                      <img src={item.fileURL} alt=""
-                        onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }}
-                      />
-                      <img
-                        style={{ cursor: 'pointer', verticalAlign: 'bottom', width: '1rem', height: '1rem' }}
-                        src={downloadImg}
-                        onClick={() => {
-                          window.open(item.fileURL)
-                        }}
-                        alt=""
-                      /></>);
+                  imgProofRecord.map(item => {
+                    return (
+                      <>
+                        <img
+                          src={item.fileURL}
+                          alt=""
+                          onClick={() => {
+                            this.setState({
+                              enlargePic: true,
+                              picKey: item.fileURL
+                            });
+                          }}
+                        />
+                        <img
+                          style={{
+                            cursor: 'pointer',
+                            verticalAlign: 'bottom',
+                            width: '1rem',
+                            height: '1rem'
+                          }}
+                          src={downloadImg}
+                          onClick={() => {
+                            window.open(item.fileURL);
+                          }}
+                          alt=""
+                        />
+                      </>
+                    );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
               <div className="videoProof">
                 <h4>视频证据：</h4>
@@ -1011,8 +1098,8 @@ class StaffComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
               <hr />
               <h3>负责部门信息</h3>
@@ -1064,18 +1151,36 @@ class StaffComplain extends React.Component {
                 <h4>图片证据：</h4>
                 {dImgProofRecord.length ? (
                   dImgProofRecord.map(item => {
-                    return (<><img src={item.fileURL} onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }} /> <img
-                      style={{ cursor: 'pointer', verticalAlign: 'bottom', width: '1rem', height: '1rem' }}
-                      src={downloadImg}
-                      onClick={() => {
-                        window.open(item.fileURL)
-                      }}
-                      alt=""
-                    /></>);
+                    return (
+                      <>
+                        <img
+                          src={item.fileURL}
+                          onClick={() => {
+                            this.setState({
+                              enlargePic: true,
+                              picKey: item.fileURL
+                            });
+                          }}
+                        />{' '}
+                        <img
+                          style={{
+                            cursor: 'pointer',
+                            verticalAlign: 'bottom',
+                            width: '1rem',
+                            height: '1rem'
+                          }}
+                          src={downloadImg}
+                          onClick={() => {
+                            window.open(item.fileURL);
+                          }}
+                          alt=""
+                        />
+                      </>
+                    );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
 
               <div className="videoProof">
@@ -1092,8 +1197,8 @@ class StaffComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
               <hr />
               <h3>HR回复</h3>
@@ -1106,18 +1211,36 @@ class StaffComplain extends React.Component {
                   <h4>图片证据：</h4>
                   {hrReplyImgs.length ? (
                     hrReplyImgs.map(item => {
-                      return (<><img src={item.fileURL} alt="" onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }} /> <img
-                        style={{ textAlign: 'bottom', width: '1rem', height: '1rem' }}
-                        src={downloadImg}
-                        onClick={() => {
-                          window.open(item.fileURL)
-                        }}
-                        alt=""
-                      /></>);
+                      return (
+                        <>
+                          <img
+                            src={item.fileURL}
+                            alt=""
+                            onClick={() => {
+                              this.setState({
+                                enlargePic: true,
+                                picKey: item.fileURL
+                              });
+                            }}
+                          />{' '}
+                          <img
+                            style={{
+                              textAlign: 'bottom',
+                              width: '1rem',
+                              height: '1rem'
+                            }}
+                            src={downloadImg}
+                            onClick={() => {
+                              window.open(item.fileURL);
+                            }}
+                            alt=""
+                          />
+                        </>
+                      );
                     })
                   ) : (
-                      <span>暂无图片</span>
-                    )}
+                    <span>暂无图片</span>
+                  )}
                 </div>
                 <div className="videoProof">
                   <h4>视频证据：</h4>
@@ -1133,10 +1256,20 @@ class StaffComplain extends React.Component {
                       );
                     })
                   ) : (
-                      <span style={{ textAlign: 'center' }}>暂无视频</span>
-                    )}
+                    <span style={{ textAlign: 'center' }}>暂无视频</span>
+                  )}
                 </div>
               </div>
+              {userType === 'admin' && (
+                <div style = {{fontWeight:"bold"}}>
+                <p>管理员备注：</p>
+                <TextArea
+                  disabled
+                  value={selectRecord.adminRemark}
+                  style = {{marginBottom:'5px'}}
+                />
+                </div>
+              )}
               {selectKey === '1' && (
                 <Popconfirm
                   title="确认通知部门负责人？"
@@ -1198,7 +1331,6 @@ class StaffComplain extends React.Component {
               hasRowView={false}
               hasRowDelete={false}
               subtractH={200}
-
               cmswhere={
                 isBatchReply
                   ? ''
@@ -1249,7 +1381,15 @@ class StaffComplain extends React.Component {
           {leaderProofRecord.mediaType == '图片' && (
             <div className="picProof">
               <p>图片证据：</p>
-              <img src={leaderProofRecord.fileURL} onClick={() => { this.setState({ enlargePic: true, picKey: leaderProofRecord.fileURL }) }}></img>
+              <img
+                src={leaderProofRecord.fileURL}
+                onClick={() => {
+                  this.setState({
+                    enlargePic: true,
+                    picKey: leaderProofRecord.fileURL
+                  });
+                }}
+              ></img>
             </div>
           )}
           {leaderProofRecord.mediaType == '音频' && (
@@ -1315,6 +1455,22 @@ class StaffComplain extends React.Component {
               this.setState({ backReason: e.target.value });
             }}
             placeholder="请输入退回理由"
+          />
+        </Modal>
+        <Modal
+          visible={adminRemarkVis}
+          title="填写管理员备注"
+          width={500}
+          onCancel={() => {
+            this.setState({ adminRemarkVis: false, adminRemark:''});
+          }}
+          onOk={this.handleSubmitRemark}
+        >
+          <TextArea
+            onChange={e => {
+              this.setState({ adminRemark: e.target.value });
+            }}
+            placeholder="输入管理员备注"
           />
         </Modal>
       </div>

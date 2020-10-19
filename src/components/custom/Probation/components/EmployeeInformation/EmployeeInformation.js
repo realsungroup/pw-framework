@@ -21,18 +21,20 @@ class EmployeeInformation extends React.Component {
   constructor(props) {
     super(props);
     this.fetchUser = debounce(this.fetchUser, 800);
+    this.fectchSemi = debounce(this.fectchSemi, 800);
   }
 
   //根据工号搜索辅导员
   fetchUser = async value => {
+    if(!value.trim())return;
     this.setState({ data: [], fetching: true });
     try {
       const res = await http().getTable({
         resid: '619281130628',
-        cmswhere: `userID = '${value}'`
+        key:value
       });
       const data = res.data.map(user => ({
-        label: `${user.name}`,
+        label: `${user.name}-${user.userID}`,
         key: user.userID
       }));
 
@@ -48,15 +50,15 @@ class EmployeeInformation extends React.Component {
   };
 
   fectchSemi = async value => {
+    if(!value.trim())return;
     this.setState({ data2: [], fetching: true });
     try {
       const res = await http().getTable({
         resid: '609599795438',
-        cmswhere: `C3_227192472953 = '${value}'`
+        key:value
       });
-      console.log(res);
       const data2 = res.data.map(user => ({
-        label: `${user.C3_227192484125}`,
+        label: `${user.C3_227192484125}-${user.C3_227192472953}`,
         key: user.C3_305737857578
       }));
 
@@ -143,6 +145,7 @@ class EmployeeInformation extends React.Component {
       }
       : undefined;
     let { fetching, data } = this.state;
+    console.log(value,value2)
     return (
       <div id="employee-imformation" className="probation-form">
         <Card
@@ -250,7 +253,9 @@ class EmployeeInformation extends React.Component {
                     >
                       {this.state.data2.map(d => (
                         <Option key={d.key}>{d.label}</Option>
-                      ))}
+                       
+                      )
+                      )}
                     </Select>
                   )}
                   <input

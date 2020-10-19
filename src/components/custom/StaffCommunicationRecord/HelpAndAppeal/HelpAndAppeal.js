@@ -67,7 +67,9 @@ class HelpAndAppeal extends React.Component {
     backVisible: false, //退回模态窗是否显示
     backReason: '', //退回理由
     backLoading: '', //
-    noNo: 0,//未处理数量
+    noNo: 0, //未处理数量
+    adminRemark: '', //管理员备注
+    adminRemarkVis: false
   };
 
   componentDidMount = () => {
@@ -85,7 +87,7 @@ class HelpAndAppeal extends React.Component {
     } catch (error) {
       message.error(error.message);
     }
-  }
+  };
   onSelect = e => {
     this.setState({
       selectKey: e.key
@@ -132,6 +134,34 @@ class HelpAndAppeal extends React.Component {
     });
   };
 
+  handleSubmitRemark = async () => {
+    const { selectedRecords, adminRemark } = this.state;
+    const data = selectedRecords.length>1
+        ? selectedRecords.map(item => ({
+            REC_ID: item.recordID,
+            adminRemark: adminRemark,
+          }))
+        : [
+            {
+              REC_ID: selectedRecords[0].recordID,
+              adminRemark: adminRemark,
+            }
+          ];
+    try {
+      let res = await http({baseURL:this.baseURL}).modifyRecords({
+        resid,
+        data
+      });
+      message.success("备注添加成功")
+      this.setState({
+        adminRemarkVis:false
+      })
+      this.tableDataRef.handleRefresh();
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
   markRead = async record => {
     try {
       http({ baseURL: this.baseURL }).modifyRecords({
@@ -167,21 +197,21 @@ class HelpAndAppeal extends React.Component {
     try {
       const data = isBatchReply
         ? selectedRecords.map(item => ({
-          REC_ID: item.recordID,
-          replication: this.state.replyContent,
-          replicationHR: 'Y',
-          status: '已处理',
-          renew: 'Y'
-        }))
-        : [
-          {
-            REC_ID: this.state.selectRecord.recordID,
+            REC_ID: item.recordID,
             replication: this.state.replyContent,
             replicationHR: 'Y',
             status: '已处理',
             renew: 'Y'
-          }
-        ];
+          }))
+        : [
+            {
+              REC_ID: this.state.selectRecord.recordID,
+              replication: this.state.replyContent,
+              replicationHR: 'Y',
+              status: '已处理',
+              renew: 'Y'
+            }
+          ];
       this.setState({ replyButtonLoading: true });
       await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
@@ -287,7 +317,7 @@ class HelpAndAppeal extends React.Component {
     if (this.state.beginTime !== '') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}REC_CRTTIME > '${
         this.state.beginTime
-        }' and REC_CRTTIME < '${this.state.endTime}'`;
+      }' and REC_CRTTIME < '${this.state.endTime}'`;
     }
     console.log('cmsWhere', cmsWhere);
     this.setState({
@@ -352,6 +382,7 @@ class HelpAndAppeal extends React.Component {
   };
   renderContentBody = (resid, hasButton) => {
     const { cmswhere, markReadLoading, selectKey, readFilter } = this.state;
+    const userType = this.props.userType
     return (
       <div>
         <div className="staff-contain_menu">
@@ -410,7 +441,15 @@ class HelpAndAppeal extends React.Component {
             hasRowDelete={false}
             subtractH={200}
             cmswhere={cmswhere}
-            columnsWidth={{ '状态': 100, '是否实名': 20, '是否撤回': 20, 'HR是否通知了负责人': 20, '负责人是否回复完毕': 20, 'HR是否回复了员工': 20, '同意HR将投诉内容分享给上级领导': 20 }}
+            columnsWidth={{
+              状态: 100,
+              是否实名: 20,
+              是否撤回: 20,
+              HR是否通知了负责人: 20,
+              负责人是否回复完毕: 20,
+              HR是否回复了员工: 20,
+              同意HR将投诉内容分享给上级领导: 20
+            }}
             actionBarWidth={200}
             actionBarExtra={({
               dataSource = [],
@@ -449,6 +488,20 @@ class HelpAndAppeal extends React.Component {
                       >
                         批量回复
                       </Button>
+                      {userType === "admin" &&(<Button
+                        size="small"
+                        onClick={() => {
+                          if (!selectedRecords.length) {
+                            return message.info('请选择记录');
+                          }
+                          this.setState({
+                            selectedRecords,
+                            adminRemarkVis: true,
+                          });
+                        }}
+                      >
+                        添加备注
+                      </Button>)}
                     </>
                   )}
                 </div>
@@ -467,17 +520,17 @@ class HelpAndAppeal extends React.Component {
                 );
               },
               hasButton &&
-              (record => {
-                return (
-                  <Button
-                    onClick={() => {
-                      this.reply(record);
-                    }}
-                  >
-                    回复
-                  </Button>
-                );
-              })
+                (record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.reply(record);
+                      }}
+                    >
+                      回复
+                    </Button>
+                  );
+                })
             ]}
           />
         </div>
@@ -510,11 +563,13 @@ class HelpAndAppeal extends React.Component {
       replyButtonLoading,
       backVisible,
       backReason,
-      backLoading
+      backLoading,
+      adminRemarkVis,
     } = this.state;
+    const userType = this.props.userType;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
-        <div style={{ width: (this.state.noNo > 0 ? '160px' : '100px') }}>
+        <div style={{ width: this.state.noNo > 0 ? '160px' : '100px' }}>
           <Menu
             style={{ height: '100vh' }}
             defaultSelectedKeys={['1']}
@@ -522,7 +577,13 @@ class HelpAndAppeal extends React.Component {
             onSelect={this.onSelect}
           >
             <Menu.Item key="1">
-              <span> 未处理{this.state.noNo > 0 ? '（' + this.state.noNo + '）' : null} </span>
+              <span>
+                {' '}
+                未处理
+                {this.state.noNo > 0
+                  ? '（' + this.state.noNo + '）'
+                  : null}{' '}
+              </span>
             </Menu.Item>
             <Menu.Item key="3">
               <span> 已处理</span>
@@ -607,11 +668,22 @@ class HelpAndAppeal extends React.Component {
                 <h4>图片证据：</h4>
                 {imgProofRecord.length ? (
                   imgProofRecord.map(item => {
-                    return <img src={item.fileURL} alt="" onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }} />;
+                    return (
+                      <img
+                        src={item.fileURL}
+                        alt=""
+                        onClick={() => {
+                          this.setState({
+                            enlargePic: true,
+                            picKey: item.fileURL
+                          });
+                        }}
+                      />
+                    );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
 
               <div className="videoProof">
@@ -637,9 +709,19 @@ class HelpAndAppeal extends React.Component {
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
+              {userType === 'admin' && (
+                <div style={{ fontWeight: 'bold' }}>
+                  <p>管理员备注：</p>
+                  <TextArea
+                    disabled
+                    value={selectRecord.adminRemark}
+                    style={{ marginBottom: '5px' }}
+                  />
+                </div>
+              )}
               {selectKey === '1' && (
                 <Button
                   onClick={() => {
@@ -666,13 +748,21 @@ class HelpAndAppeal extends React.Component {
         <Modal
           visible={this.state.enlargePic}
           width={'90vw'}
-          style={{ height: 'auto', marginBottom: 0, paddingBottom: 0, textAlign: 'center' }}
+          style={{
+            height: 'auto',
+            marginBottom: 0,
+            paddingBottom: 0,
+            textAlign: 'center'
+          }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
         >
-          <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
+          <img
+            src={this.state.picKey}
+            style={{ height: 'calc(100vh - 48px)', width: 'auto' }}
+          />
         </Modal>
         <Modal
           title="回复内容"
@@ -705,6 +795,22 @@ class HelpAndAppeal extends React.Component {
               this.setState({ backReason: e.target.value });
             }}
             placeholder="请输入退回理由"
+          />
+        </Modal>
+        <Modal
+          visible={adminRemarkVis}
+          title="填写管理员备注"
+          width={500}
+          onCancel={() => {
+            this.setState({ adminRemarkVis: false, adminRemark:''});
+          }}
+          onOk={this.handleSubmitRemark}
+        >
+          <TextArea
+            onChange={e => {
+              this.setState({ adminRemark: e.target.value });
+            }}
+            placeholder="输入管理员备注"
           />
         </Modal>
       </div>

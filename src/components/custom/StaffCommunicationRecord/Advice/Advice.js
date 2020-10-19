@@ -70,6 +70,8 @@ class Advice extends React.Component {
     backReason: '', //退回理由
     backLoading: '', //
     noNo: 0,//未处理数量
+    adminRemark: '', //管理员备注
+    adminRemarkVis: false
   };
 
   componentDidMount = () => {
@@ -182,7 +184,33 @@ class Advice extends React.Component {
       selectRecord: record
     });
   };
-
+  handleSubmitRemark = async () => {
+    const { selectedRecords, adminRemark } = this.state;
+    const data = selectedRecords.length>1
+        ? selectedRecords.map(item => ({
+            REC_ID: item.recordID,
+            adminRemark: adminRemark,
+          }))
+        : [
+            {
+              REC_ID: selectedRecords[0].recordID,
+              adminRemark: adminRemark,
+            }
+          ];
+    try {
+      let res = await http({baseURL:this.baseURL}).modifyRecords({
+        resid,
+        data
+      });
+      message.success("备注添加成功")
+      this.setState({
+        adminRemarkVis:false
+      })
+      this.tableDataRef.handleRefresh();
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
   submitReply = async () => {
     const { isBatchReply, selectedRecords } = this.state;
     try {
@@ -386,6 +414,7 @@ class Advice extends React.Component {
       adviceTypes,
       selectedAdviceType
     } = this.state;
+    const userType = this.props.userType
     return (
       <div>
         <div className="staff-contain_menu">
@@ -502,6 +531,20 @@ class Advice extends React.Component {
                       </Button>
                     </>
                   )}
+                  {userType === "admin" &&(<Button
+                        size="small"
+                        onClick={() => {
+                          if (!selectedRecords.length) {
+                            return message.info('请选择记录');
+                          }
+                          this.setState({
+                            selectedRecords,
+                            adminRemarkVis: true,
+                          });
+                        }}
+                      >
+                        添加备注
+                      </Button>)}
                 </div>
               );
             }}
@@ -561,8 +604,10 @@ class Advice extends React.Component {
       replyButtonLoading,
       backVisible,
       backReason,
-      backLoading
+      backLoading,
+      adminRemarkVis
     } = this.state;
+    const userType = this.props.userType
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
         <div style={{ width: (this.state.noNo > 0 ? '160px' : '100px') }}>
@@ -699,6 +744,16 @@ class Advice extends React.Component {
                   )}
               </div>
               <hr />
+              {userType === 'admin' && (
+                <div style = {{fontWeight:"bold"}}>
+                <p>管理员备注：</p>
+                <TextArea
+                  disabled
+                  value={selectRecord.adminRemark}
+                  style = {{marginBottom:'5px'}}
+                />
+                </div>
+              )}
               {selectKey === '1' && (
                 <Button
                   onClick={() => {
@@ -755,6 +810,22 @@ class Advice extends React.Component {
               this.setState({ backReason: e.target.value });
             }}
             placeholder="请输入退回理由"
+          />
+        </Modal>
+        <Modal
+          visible={adminRemarkVis}
+          title="填写管理员备注"
+          width={500}
+          onCancel={() => {
+            this.setState({ adminRemarkVis: false, adminRemark:''});
+          }}
+          onOk={this.handleSubmitRemark}
+        >
+          <TextArea
+            onChange={e => {
+              this.setState({ adminRemark: e.target.value });
+            }}
+            placeholder="输入管理员备注"
           />
         </Modal>
       </div>
