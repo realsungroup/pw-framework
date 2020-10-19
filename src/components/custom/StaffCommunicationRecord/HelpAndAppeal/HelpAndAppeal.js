@@ -19,6 +19,7 @@ import TableData from '../../../common/data/TableData';
 import downloadImg from './下载.png';
 import http, { makeCancelable } from 'Util20/api';
 import download from 'downloadjs';
+import ImageModal from 'cxj-react-image';
 
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
@@ -69,11 +70,18 @@ class HelpAndAppeal extends React.Component {
     backReason: '', //退回理由
     backLoading: '', //
     noNo: 0,//未处理数量
+    modalVisbile:false
   };
 
   componentDidMount = () => {
     this.getNo();
   };
+
+  closeImg = ()=>{
+    this.setState({
+      modalVisbile:false
+    })
+  }
   getNo = async () => {
     let res;
     try {
@@ -511,7 +519,9 @@ class HelpAndAppeal extends React.Component {
       replyButtonLoading,
       backVisible,
       backReason,
-      backLoading
+      backLoading,
+      modalVisbile,
+      picKey,
     } = this.state;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
@@ -609,7 +619,7 @@ class HelpAndAppeal extends React.Component {
                 <h4>图片证据：</h4>
                 {imgProofRecord.length ? (
                   imgProofRecord.map(item => {
-                    return <img src={item.fileURL} alt="" onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }} />;
+                    return <img src={item.fileURL} alt="" onClick={() => { this.setState({ modalVisbile:true,enlargePic: true, picKey: item.fileURL }) }} />;
                   })
                 ) : (
                     <span>暂无图片</span>
@@ -677,7 +687,20 @@ class HelpAndAppeal extends React.Component {
         >
           <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
         </Modal> */}
-        <Modal
+        { modalVisbile  && 
+          <ImageModal 
+              style={{
+                marginTop:'3000px',
+              }}
+              src={picKey}     
+              closeModal={this.closeImg} 
+              option={{
+                move: true,                                         
+                zoom: true                        
+              }}
+            />
+          }
+        {/* <Modal
           visible={this.state.enlargePic}
           width={'90vw'}
           style={{
@@ -687,7 +710,7 @@ class HelpAndAppeal extends React.Component {
             textAlign: 'center'
           }}
           centered={true}
-          onCancel={() => this.setState({ enlargePic: false })}
+          onCancel={() => this.setState({ enlargePic: false,modalVisbile:true, })}
           destroyOnClose={true}
           footer={null}
         >
@@ -716,7 +739,7 @@ class HelpAndAppeal extends React.Component {
               console.log(this.state.imgDeatilSize);
             }}
           />
-        </Modal>
+        </Modal> */}
         <Modal
           title="回复内容"
           visible={this.state.replyTextModal}

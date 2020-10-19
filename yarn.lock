@@ -3625,6 +3625,11 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
+cxj-react-image@^1.0.13:
+  version "1.0.13"
+  resolved "https://registry.npm.taobao.org/cxj-react-image/download/cxj-react-image-1.0.13.tgz#cb10c6039951f42c7df769371f7f371a851a462c"
+  integrity sha1-yxDGA5lR9Cx992k3H383GoUaRiw=
+
 cyclist@~0.2.2:
   version "0.2.2"
   resolved "https://registry.npm.taobao.org/cyclist/download/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"

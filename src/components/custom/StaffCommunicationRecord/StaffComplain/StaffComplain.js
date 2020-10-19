@@ -19,6 +19,7 @@ import TableData from '../../../common/data/TableData';
 import downloadImg from './下载.png';
 import http, { makeCancelable } from 'Util20/api';
 import download from 'downloadjs';
+import ImageModal from 'cxj-react-image';
 
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
@@ -39,7 +40,9 @@ class StaffComplain extends React.Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.staffComBaseURL;
     this.downloadURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.staffComDownloadURL;
+    this.pic = React.createRef();
   }
+  
   state = {
     mode: 'inline',
     theme: 'light',
@@ -83,13 +86,19 @@ class StaffComplain extends React.Component {
     hrReplyVideos: [],
     noNo: 0, //未处理数量
     ingNo: 0, //处理中数量
-    imgDeatilSize: 1
+    imgDeatilSize: 1,//图片放大倍数
+    modalVisbile:false
   };
 
   componentDidMount = () => {
     this.getNo();
     this.getColumnData();
   };
+  closeImg = ()=>{
+    this.setState({
+      modalVisbile:false
+    })
+  }
   getNo = async () => {
     let res;
     let res2;
@@ -382,6 +391,49 @@ class StaffComplain extends React.Component {
     });
   };
 
+  // //鼠标移动图片
+  // movePic = (pic) =>{   
+  //   // var pic = document.getElementById('pic');
+    
+  //   let isDrag = false;
+  //   let x = 0;
+  //   let y = 0;
+  //   let offsetLeft = 0; 
+  //   let offsetTop = 0;
+  //   pic.onmousedown = function(e){
+  //     isDrag = true;
+  //     this.style.cursor = 'move';
+  //     x = e.clientX;
+  //     y = e.clientY;
+  //     offsetLeft = this.offsetLeft;
+  //     offsetTop = this.offsetTop;
+  //     isDrag = true;
+  //     handleMove();
+  //     console.log('进入移动事件')
+  //     console.log(`x=${x},y=${y},offsetLeft=${offsetLeft},offsetTop=${offsetTop}`)
+  //   }
+  //   function handleMove(){
+  //     onmousemove = function(e){
+  //       if(isDrag == false){
+  //         return
+  //       }else{
+  //         e.preventDefault();
+  //       }
+  //       let nx = e.clientX;
+  //       let ny = e.clientY;
+  //       let finalx = nx-(x-offsetLeft);
+  //       let finaly = ny-(y-offsetTop)
+  //       pic.style.left = finalx +'px';
+  //       pic.style.top = finaly +'px';
+  //       console.log(`nx=${nx},ny=${ny},left=${nx-(x-offsetLeft)}`)
+  //       console.log('进入移动事件')
+  //     }
+  //   }
+  //   pic.onmouseup = function(){
+  //     isDrag = false;
+  //     this.style.cursor = 'default';
+  //   }
+  // }
 
   //下载音频
   downloadAudio = index => {
@@ -862,7 +914,9 @@ class StaffComplain extends React.Component {
       backLoading,
       hrReplyImgs,
       hrReplyVideos,
-      replyContent
+      replyContent,
+      modalVisbile,
+      picKey,
     } = this.state;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
@@ -917,29 +971,47 @@ class StaffComplain extends React.Component {
         >
           {this.renderContent()}
         </div>
-        <Modal
+        { modalVisbile  && 
+          <ImageModal 
+              style={{
+                marginTop:'3000px',
+              }}
+              src={picKey}     
+              closeModal={this.closeImg} 
+              option={{
+                move: true,                                         
+                zoom: true                        
+              }}
+            />
+          }
+        {/* <Modal
           visible={this.state.enlargePic}
           width={'90vw'}
           style={{
-            height: '90vh',
+            height: '95vh',
             marginBottom: 0,
             paddingBottom: 0,
-            textAlign: 'center'
+            textAlign: 'center',
           }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
         >
+          
           <img
+            ref = {this.pic}
             id="pic"
             src={this.state.picKey}
             style={{
               transform: `scale(${this.state.imgDeatilSize})`,
               height: 'calc(100vh - 48px)',
-              width: 'auto'
+              width: 'auto',
+              position:'absolute',
+              left: '0px',
+              top: '0px',
             }}
-          />
+          />         
           <Slider
             style={{
               left: '180px',
@@ -956,7 +1028,8 @@ class StaffComplain extends React.Component {
               console.log(this.state.imgDeatilSize);
             }}
           />
-        </Modal>
+        </Modal> */}
+      
         <Modal
           visible={this.state.showRecord}
           width={777}
@@ -1036,7 +1109,8 @@ class StaffComplain extends React.Component {
                           alt=""
                           onClick={() => {
                             this.setState({
-                              enlargePic: true,
+                              modalVisbile:true,
+                              enlargePic:true,
                               picKey: item.fileURL
                             });
                           }}

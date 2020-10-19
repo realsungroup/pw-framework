@@ -18,6 +18,7 @@ import moment from 'moment';
 import { getItem } from '../../../util20/util';
 import http from '../../../util20/api';
 import downloadImg from './下载.png';
+import ImageModal from 'cxj-react-image';
 
 const { TextArea } = Input;
 const { TabPane } = Tabs;
@@ -80,8 +81,15 @@ class ReplyComplain extends React.Component {
       videos: []
     },
     submitLoading: false,
-    selectedTab: 'untreated'
+    selectedTab: 'untreated',
+    modalVisbile:false
   };
+
+  closeImg = ()=>{
+    this.setState({
+      modalVisbile:false
+    })
+  }
   cancelModal = () => {
     this.setState({
       showRecord: false
@@ -409,7 +417,9 @@ class ReplyComplain extends React.Component {
       previewFileType,
       submitLoading,
       selectedTab,
-      showRecord
+      showRecord,
+      modalVisbile,
+      picKey,
     } = this.state;
     return (
       <div className="reply-complain">
@@ -648,7 +658,7 @@ class ReplyComplain extends React.Component {
                       <img
                         src={item.fileURL}
                         style={{ width: 200, height: 'auto' }}
-                        onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }}
+                        onClick={() => { this.setState({ modalVisbile:true,enlargePic: true, picKey: item.fileURL }) }}
                       />
                     );
                   })
@@ -800,7 +810,20 @@ class ReplyComplain extends React.Component {
             </div>
           </Spin>
         </Modal>
-        <Modal
+        { modalVisbile  && 
+          <ImageModal 
+              style={{
+                marginTop:'3000px',
+              }}
+              src={picKey}     
+              closeModal={this.closeImg} 
+              option={{
+                move: true,                                         
+                zoom: true                        
+              }}
+            />
+          }
+        {/* <Modal
           visible={this.state.enlargePic}
           width={'90vw'}
           style={{
@@ -839,7 +862,7 @@ class ReplyComplain extends React.Component {
               console.log(this.state.imgDeatilSize);
             }}
           />
-        </Modal>
+        </Modal> */}
         <Modal
           title="回复投诉"
           visible={replyVisible}
