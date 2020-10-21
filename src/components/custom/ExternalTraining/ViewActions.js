@@ -140,6 +140,24 @@ modiShijifeiyong=async()=>{
     message.error(e.message)
   }
 }
+
+//获取发票
+
+getFapiao = async(id)=>{
+  let res;
+  this.setState({loading:true});
+  try{
+    res =  await http().getTable({
+      resid:656586685332,
+      cmswhere:`recordId = '${id}'`
+    })
+  this.setState({loading:false,baoxiaodanData:res.data});
+  }catch(e){
+    message.error(e.message);
+    this.setState({loading:false})
+  }
+}
+
   /**
    * 关闭模态窗
    */
@@ -173,7 +191,7 @@ modiShijifeiyong=async()=>{
 
   render() {
     return (
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1 ,height:'calc(100vh - 64px'}}>
         <TableData
           resid={courseDetailId}
           // subtractH='220px'
@@ -184,8 +202,7 @@ modiShijifeiyong=async()=>{
           hasRowSelection={true}
           hasRowDelete={false}
           hasRowModify={false}
-          subtractH={200}
-          // height='600'
+          subtractH={300}
           // height="calc(100vh - 64px)"
           recordFormType="drawer"
           customRowBtns={[
@@ -210,13 +227,13 @@ modiShijifeiyong=async()=>{
                         ()=>{
                           this.setState({
                             baoxiaodanData:[],
-                            baoxiaodan:true,
-                            curId:record.REC_ID
-                          })
+                            baoxiaodan:true
+                          });
+                          this.getFapiao(record.CourseArrangeDetailID);
                         }
                       }
                     >
-                      查看报销单
+                      查看报销发票
                     </Button>
                     <Button
                       onClick={
@@ -264,10 +281,10 @@ modiShijifeiyong=async()=>{
           
         </Modal>
         <Modal
-         title="查看报销单"
+         title="查看报销发票"
          visible={this.state.baoxiaodan}
          footer={null}
-         width="70%"
+         width="400px"
          destroyOnClose
          onCancel={
            ()=>{
@@ -275,7 +292,15 @@ modiShijifeiyong=async()=>{
            }
          }
         >
-
+          <ul>
+            {this.state.baoxiaodanData.map((item,key)=>{
+              return(
+                <li>
+                  <a target="_blank" href={item.filePath} key={key}>{item.fileName}</a>
+                </li>
+              )
+            })}
+          </ul>
         </Modal>
         <Modal
           title="查看反馈和行动计划"
