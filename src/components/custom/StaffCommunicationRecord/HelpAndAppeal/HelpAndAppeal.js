@@ -776,7 +776,7 @@ class HelpAndAppeal extends React.Component {
         >
           <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
         </Modal> */}
-        { modalVisbile  && 
+        {/* { modalVisbile  && 
           <ImageModal 
               style={{
                 marginTop:'3000px',
@@ -788,47 +788,55 @@ class HelpAndAppeal extends React.Component {
                 zoom: true                        
               }}
             />
-          }
-        {/* <Modal
+          } */}
+        <Modal
+          className="changeAntCSS"
           visible={this.state.enlargePic}
           width={'90vw'}
           style={{
+            
             height: '90vh',
             marginBottom: 0,
             paddingBottom: 0,
-            textAlign: 'center'
+            textAlign: 'center',
+            backgroundColor:'transparent',
           }}
           centered={true}
-          onCancel={() => this.setState({ enlargePic: false,modalVisbile:true, })}
+          onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
         >
+          
           <img
+            ref = {this.pic}
             id="pic"
             src={this.state.picKey}
             style={{
+              transformOrigin:'top left',
               transform: `scale(${this.state.imgDeatilSize})`,
+              // transformOrigin: 'left',
               height: 'calc(100vh - 48px)',
-              width: 'auto'
+              width: 'auto',
             }}
-          />
+          />         
           <Slider
             style={{
               left: '180px',
               position: 'fixed',
               bottom: '5vh',
-              width: '1000px'
+              width: '1000px',
+              opacity:'0.3'
             }}
             defaultValue={1}
             step={0.1}
-            max={3}
+            max={4}
             tooltipVisible
             onChange={value => {
               this.setState({ imgDeatilSize: value });
               console.log(this.state.imgDeatilSize);
             }}
           />
-        </Modal> */}
+        </Modal>
           {/* <img
             src={this.state.picKey}
             style={{ height: 'calc(100vh - 48px)', width: 'auto' }}
