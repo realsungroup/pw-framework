@@ -254,7 +254,7 @@ class CyberMoney extends Component {
       while (n < res.data.length) {
         arr.push({
           time: res.data[n].dealTime || '未能获取到时间',
-          varAbsolute: res.data[n].turnover || '',
+          varAbsolute: res.data[n].turnover || 0,
           total: res.data[n].NowBalance || '???',
           case: res.data[n].dealName || '未能获取到交易记录',
           dealSymbol: res.data[n].dealSymbol == '增加' ? '+' : '',
@@ -282,7 +282,7 @@ class CyberMoney extends Component {
             <div className="user">
               <div className="avatar"></div>
               <p>{this.state.history[0].person}</p>
-              <span>最近{this.state.history[0].dealSymbol == '+' ? '增加' : '减少'} {Math.abs(Number(this.state.history[0].varAbsolute))}</span>
+              <span>最近{this.state.history[0].dealSymbol == '+' ? '增加' : '减少'} {this.state.history[0].varAbsolute?Math.abs(Number(this.state.history[0].varAbsolute)):0}</span>
               <oval>
                 <p>{this.state.history[0].total}</p>
               </oval>

@@ -102,16 +102,16 @@ class ViewActions extends React.Component {
   };
   // 获取实际费用
   getFeiyong=async(id)=>{
-    this.setState({loading:true});
+    this.setState({loading:true,feiyongID:id});
     try{
       let res= await http().getTable({
         resid: 613940032707,
-        cmswhere: `C3_615479555134 = '${id}'`
+        cmswhere: `CourseArrangeDetailID = '${id}'`
       });
       console.log('shijifeiy',res)
       if(res.data){
-        this.setState({shijifeiyongData:res.data.data[0].C3_614962974343})
-
+        let shiji=res.data[0].C3_614962974343||0;
+        this.setState({shijifeiyongData:shiji});
       }
 
     this.setState({loading:false});
@@ -120,6 +120,25 @@ class ViewActions extends React.Component {
     this.setState({loading:false});
       message.error(e.message)
     }
+}
+// 修改实际费用
+modiShijifeiyong=async()=>{
+  this.setState({loading:true});
+  try{
+    let res= await http().modifyRecords({
+      resid: 613940032707,
+      data:[{
+        REC_ID:this.state.feiyongID,
+        C3_614962974343:this.state.shijifeiyongData
+      }]
+    });
+  this.setState({loading:false,shijifeiyong:false});
+  message.success('修改成功！')
+  }catch(e){
+    console.log(e.message);
+  this.setState({loading:false});
+    message.error(e.message)
+  }
 }
   /**
    * 关闭模态窗
@@ -221,8 +240,18 @@ class ViewActions extends React.Component {
         <Modal
          title="修改实际费用"
          visible={this.state.shijifeiyong}
-         footer={null}
-         width="70%"
+         footer={
+           <>
+            <Button onClick={()=>{this.setState({shijifeiyong:false})}}>
+               取消
+              </Button>
+             <Button type='primary' onClick={()=>{this.modiShijifeiyong()}} loading={this.state.loading}>
+               确定
+              </Button>
+            </>
+         }
+         
+         width="400px"
          destroyOnClose
           onCancel={
            ()=>{
@@ -230,9 +259,9 @@ class ViewActions extends React.Component {
            }
          }
         >
-          <span>实际费用：
-          <Input value={this.state.shijifeiyongData} onChange={(v)=>{this.setState({shijifeiyongData:v.target.value})}} disabled={this.state.loading}/>
-          </span>
+          <span>实际费用：</span>
+          <Input style={{marginTop:'.5rem'}} value={this.state.shijifeiyongData} onChange={(v)=>{this.setState({shijifeiyongData:v.target.value})}} disabled={this.state.loading}/>
+          
         </Modal>
         <Modal
          title="查看报销单"
