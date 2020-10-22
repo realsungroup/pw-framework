@@ -1158,6 +1158,9 @@ class ArchitectureDiagram extends React.Component {
     if (node.isScrap === 'Y') {
       return message.info('岗位已废弃');
     }
+    if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
+      return message.info('岗位未启用');
+    }
     if (node.isEmpty === 'Y') {
       return message.info('空缺岗位，不可离职');
     }
@@ -1228,6 +1231,9 @@ class ArchitectureDiagram extends React.Component {
     const node = this.chart.get(nodeId);
     if (node.isScrap === 'Y') {
       return message.info('岗位已废弃');
+    }
+    if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
+      return message.info('岗位未启用');
     }
     if (node.isVirtual === 'Y') {
       return message.info('多人任职岗位请使用导入变动方式');
@@ -1319,6 +1325,9 @@ class ArchitectureDiagram extends React.Component {
     const node = this.chart.get(nodeId);
     if (node.isScrap === 'Y') {
       return message.info('岗位已废弃');
+    }
+    if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
+      return message.info('岗位未启用');
     }
     if (node.isVirtual !== 'Y' && node.isEmpty !== 'Y') {
       return message.info('非空缺岗位');
@@ -3589,7 +3598,7 @@ class DLImportResult extends React.PureComponent {
                       hasRowDelete={true}
                       // hasRowEdit={true}
                       // hasRowEditAdd={true}
-                      hasDelete={false}
+                      hasDelete={true}
                       hasModify={false}
                       hasRowModify={true}
                       hasRowSelection={true}
@@ -3622,7 +3631,7 @@ class DLImportResult extends React.PureComponent {
                       hasRowView={false}
                       hasRowDelete={true}
                       hasRowEdit={false}
-                      hasDelete={false}
+                      hasDelete={true}
                       hasModify={false}
                       hasRowModify={false}
                       hasRowSelection={true}
@@ -3738,7 +3747,6 @@ class DLImportResult extends React.PureComponent {
         orgDepCode: record.C3_656588009121,
         orgDepCN: record.dep_cn,
         orgDepEN: record.dep_en,
-
         orgSupNumber: record.C3_656590854233,
         companycode: record.C3_656587686721,
         C3_642185521087: record.C3_656587419404,
