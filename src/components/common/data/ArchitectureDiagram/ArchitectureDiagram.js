@@ -3681,6 +3681,7 @@ class DLImportResult extends React.PureComponent {
               data: JSON.stringify(submiteData)
             }}
             title="提交"
+            showFields={['C3_227192472953', 'C3_227192484125']}
           />
         ) : null}
         <Modal
