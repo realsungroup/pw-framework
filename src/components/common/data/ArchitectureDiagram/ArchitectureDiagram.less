@@ -246,7 +246,12 @@
     bottom: 0;
     z-index: 1;
     transition: width 0.5s;
-
+    > .ant-spin-nested-loading {
+      height: 100%;
+      & > .ant-spin-container {
+        height: 100%;
+      }
+    }
     &__main {
       height: 100%;
       width: calc(100% - 200px);
@@ -274,6 +279,13 @@
         flex-direction: column;
         z-index: 0;
         background: #ffffff;
+
+        .ant-tabs {
+          height: 100%;
+        }
+        .ant-tabs-top-content.ant-tabs-content-animated {
+          height: calc(100% - 60px);
+        }
       }
     }
   }

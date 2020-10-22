@@ -35,7 +35,7 @@ window.pwConfig = {
       DataProcessBaseURL: 'http://10.108.21.41:2001/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.21.41:2001/',
-      PostArchitectureBaseURL: 'http://10.108.21.41:2001/',
+      PostArchitectureBaseURL: 'http://10.108.2.66:7001/',
       PostArchitectureDownloadBaseURL: 'http://10.108.21.41:2001/',
       comprehensiveQueryBaseURL: 'http://10.108.21.41:2001/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
