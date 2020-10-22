@@ -85,7 +85,7 @@ class ExternalTraining extends React.Component {
               }}
             />
             <Step
-              title="查看行动计划"
+              title="查看行动计划与报销发票"
               description=""
               style={{ cursor: 'pointer' }}
               onClick={() => {

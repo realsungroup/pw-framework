@@ -1079,6 +1079,7 @@ class CourseArrangementInternal extends React.Component {
                       课程类别:
                     </label>
                     <Select
+                      style={{minWidth:'200px'}}
                       value={inputCourseArrangement.courseType}
                       onChange={e => {
                         this.setState({

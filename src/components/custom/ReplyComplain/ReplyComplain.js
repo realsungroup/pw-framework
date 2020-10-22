@@ -10,12 +10,15 @@ import {
   Col,
   Input,
   Upload,
-  Icon
+  Icon,
+  Slider
 } from 'antd';
 import TableData from 'Common/data/TableData';
 import moment from 'moment';
 import { getItem } from '../../../util20/util';
 import http from '../../../util20/api';
+import downloadImg from './下载.png';
+import ImageModal from 'cxj-react-image';
 
 const { TextArea } = Input;
 const { TabPane } = Tabs;
@@ -78,8 +81,15 @@ class ReplyComplain extends React.Component {
       videos: []
     },
     submitLoading: false,
-    selectedTab: 'untreated'
+    selectedTab: 'untreated',
+    modalVisbile:false
   };
+
+  closeImg = ()=>{
+    this.setState({
+      modalVisbile:false
+    })
+  }
   cancelModal = () => {
     this.setState({
       showRecord: false
@@ -407,7 +417,9 @@ class ReplyComplain extends React.Component {
       previewFileType,
       submitLoading,
       selectedTab,
-      showRecord
+      showRecord,
+      modalVisbile,
+      picKey,
     } = this.state;
     return (
       <div className="reply-complain">
@@ -646,7 +658,7 @@ class ReplyComplain extends React.Component {
                       <img
                         src={item.fileURL}
                         style={{ width: 200, height: 'auto' }}
-                        onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }}
+                        onClick={() => { this.setState({ modalVisbile:true,enlargePic: true, picKey: item.fileURL }) }}
                       />
                     );
                   })
@@ -666,6 +678,14 @@ class ReplyComplain extends React.Component {
                           src={item.fileURL}
                           autoPlay={false}
                           style={{ width: '50%' }}
+                        />
+                        <img
+                          src={downloadImg}
+                          onClick={() => {
+                            this.downloadVideo(index);
+                            window.open(item.fileURL)
+                          }}
+                          alt=""
                         />
                       </div>
                     );
@@ -750,12 +770,22 @@ class ReplyComplain extends React.Component {
                 {dVideoProof.length ? (
                   dVideoProof.map((item, index) => {
                     return (
+                      <>
                       <video
                         controls
                         src={item.fileURL}
                         autoPlay={false}
                         style={{ width: '40%', marginRight: 8 }}
                       />
+                      <img
+                          src={downloadImg}
+                          onClick={() => {
+                            this.downloadVideo(index);
+                            window.open(item.fileURL)
+                          }}
+                          alt=""
+                      />
+                      </>
                     );
                   })
                 ) : (
@@ -780,17 +810,59 @@ class ReplyComplain extends React.Component {
             </div>
           </Spin>
         </Modal>
-        <Modal
+        { modalVisbile  && 
+          <ImageModal 
+              style={{
+                marginTop:'3000px',
+              }}
+              src={picKey}     
+              closeModal={this.closeImg} 
+              option={{
+                move: true,                                         
+                zoom: true                        
+              }}
+            />
+          }
+        {/* <Modal
           visible={this.state.enlargePic}
           width={'90vw'}
-          style={{ height: 'auto', marginBottom: 0, paddingBottom: 0, textAlign: 'center' }}
+          style={{
+            height: '90vh',
+            marginBottom: 0,
+            paddingBottom: 0,
+            textAlign: 'center'
+          }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
         >
-          <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
-        </Modal>
+          <img
+            id="pic"
+            src={this.state.picKey}
+            style={{
+              transform: `scale(${this.state.imgDeatilSize})`,
+              height: 'calc(100vh - 48px)',
+              width: 'auto'
+            }}
+          />
+          <Slider
+            style={{
+              left: '180px',
+              position: 'fixed',
+              bottom: '5vh',
+              width: '1000px'
+            }}
+            defaultValue={1}
+            step={0.1}
+            max={3}
+            tooltipVisible
+            onChange={value => {
+              this.setState({ imgDeatilSize: value });
+              console.log(this.state.imgDeatilSize);
+            }}
+          />
+        </Modal> */}
         <Modal
           title="回复投诉"
           visible={replyVisible}

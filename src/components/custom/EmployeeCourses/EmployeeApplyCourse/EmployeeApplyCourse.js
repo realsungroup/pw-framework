@@ -10,9 +10,14 @@ import {
   List,
   message,
   Popconfirm,
-  Form
+  Form,
+  Icon,
+  Upload,
+  Spin
 } from 'antd';
 import { TableData } from '../../../common/loadableCommon';
+import { uploadFile } from "../../../../util/api";
+
 import http from 'Util20/api';
 import TextArea from 'antd/lib/input/TextArea';
 import './EmployeeApplyCourse.less';
@@ -20,6 +25,7 @@ import './EmployeeApplyCourse.less';
 const { Option } = Select;
 const CourseDetailResid = '613959487818';
 const CourseArrangeResid = '613959525708';
+const fapiaoResid = '656586685332';
 const form = props => {
   const {
     getFieldDecorator,
@@ -49,7 +55,9 @@ const form = props => {
       }
     }
   };
+  console.log(props.fileList)
   return (
+    
     <Form {...formItemLayout}>
       <Form.Item label="课程名称">
         {getFieldDecorator('courseName', {
@@ -91,26 +99,44 @@ const form = props => {
           rules: [{ required: true, message: '请填写上课地点' }]
         })(<Input placeholder="请填写上课地点" />)}
       </Form.Item>
-      <Form.Item label="培训类别">
-        {getFieldDecorator('TranningType', {
-          rules: [{ required: true, message: '请选择培训类别' }]
-        })(
-          <Select defaultValue="外训" placeholder="请选择培训类别">
-            <Option value="内训">内训</Option>
-            <Option value="外训">外训</Option>
-          </Select>
-        )}
-      </Form.Item>
       <Form.Item label="课程概要">
         {getFieldDecorator('courseIntroduction', {
           rules: [{ required: true, message: '请填写课程概要' }]
         })(<TextArea placeholder="请填写课程概要" />)}
       </Form.Item>
+      <Form.Item label="报销发票">
+        <Spin spinning={props.loading}>
+                  <Upload
+                        onChange={props.handleFileChange}
+                        fileList={props.fileList}
+                        customRequest={async file => {
+                          props.setLoading(true);
+                          const res = await uploadFile(file.file);
+                          let { fileList } = props;
+                          fileList.push({
+                            name: file.file.name,
+                            url: res,
+                            status: 'done',
+                            uid: fileList.length
+                          });
+                          props.setList(fileList);
+                          props.setLoading(false);
+                        }}
+                      >
+                        <Button>
+                          <Icon type="upload" /> 选择文件
+                        </Button>
+                  </Upload>
+        </Spin>
+        </Form.Item>
+
       <Form.Item {...tailFormItemLayout}>
-        <Button style={{ marginRight: 12 }} onClick={props.closeModal}>
+
+        <Button style={{ marginRight: 12 }} onClick={()=>{props.closeModal();props.setList([])}}>
           取消
         </Button>
         <Button
+          loading={props.loading}
           onClick={() => {
             props.form.validateFields((errors, values) => {
               console.log(errors, values);
@@ -139,7 +165,15 @@ class EmployeeApplyCourse extends React.Component {
     selectedCourse: {},
     searchKey: '',
     courseArrangeID: '',
-    UserCode: ''
+    UserCode: '',
+    fileList:[],
+    curRec:{
+      C3_613941384328:'',
+      C3_613941385538:'',
+      C3_613941384592:'',
+      C3_615393093633:'',
+      C3_615394023182:''
+    }
   };
 
   componentDidMount() {
@@ -148,6 +182,13 @@ class EmployeeApplyCourse extends React.Component {
     let usrChara = JSON.parse(usercode);
     let userCode = usrChara.UserInfo.EMP_USERCODE;
     this.setState({ UserCode: userCode });
+  }
+  setList=(v)=>{
+    console.log('fileList',v)
+    this.setState({fileList:v})
+  }
+  setLoading=(v)=>{
+    this.setState({loading:v})
   }
 
   //获取课程
@@ -185,6 +226,7 @@ class EmployeeApplyCourse extends React.Component {
   };
   //明细表添加记录
   submitSelfDefineCourse = async course => {
+   
     try {
       let res = await http().addRecords({
         resid: CourseDetailResid,
@@ -196,16 +238,30 @@ class EmployeeApplyCourse extends React.Component {
             C3_615393093633: course.endClassTime,
             C3_613941386325: course.TranningLocation,
             courseIntroduction: course.courseIntroduction,
-            courseType: course.TranningType,
+            courseType: '外训',
             trainingClub: course.TrainingOrganization,
             CourseArrangeID: course.CourseArrangeID,
             C3_613941384328: course.currentYear,
             C3_613956470258: 'Y',
-            C3_613941384832: this.state.UserCode
+            C3_613941384832: this.state.UserCode,
             // C3_613941386081:classTime
-          }
-        ]
+          }]
+       
       });
+      let arr=[];
+      let n=0;
+      while(n<this.state.fileList.length){
+        arr.push({
+          recordId:res.data[0].REC_ID,
+            filePath:this.state.fileList[n].url,
+            fileName:this.state.fileList[n].name,
+          });
+        n++;
+      }
+      let res2 = await http().addRecords({
+        resid: fapiaoResid,
+        data:arr
+      })
       message.success(res.message);
       this.tableDataRef.handleRefresh();
       this.setState({ applyByUnexistCourseVisible: false });
@@ -219,8 +275,9 @@ class EmployeeApplyCourse extends React.Component {
   submitCentrolList = async course => {
     try {
       let res = await http().addRecords({
+       
         resid: CourseArrangeResid,
-        data: [
+        data:[ 
           {
             CourseName: course.courseName,
             actualCost: course.cost,
@@ -233,9 +290,9 @@ class EmployeeApplyCourse extends React.Component {
             isCustom: 'Y',
             FisYear: course.currentYear,
             quarter: course.quarter
-          }
-        ]
+          }]
       });
+      console.log(res)
       const data = res.data[0];
       this.setState({
         applyByUnexistCourseVisible: false
@@ -244,11 +301,15 @@ class EmployeeApplyCourse extends React.Component {
         ...course,
         CourseArrangeID: data.CourseArrangeID
       });
-      message.success(res.message);
     } catch (error) {
       console.error(error.message);
       message.error(error.message);
     }
+  };
+  // 上传文件
+  handleFileChange = info => {
+    let { fileList } = info;
+    this.setState({ fileList ,loading:false});
   };
 
   //内训课课程申请添加至课程安排主表
@@ -305,7 +366,77 @@ class EmployeeApplyCourse extends React.Component {
       message.error(error.message);
     }
   };
+  addFapiao = async()=>{
+    let res;
+    this.setState({loading:true})
+    try{
+     let arr=this.state.fileList;
+     let n=0;
+    while(n<this.state.fileList.length){
+      arr[n].fileName=arr[n].name;
+      arr[n].filePath=arr[n].url;
+      arr[n].recordId=this.state.curRec.REC_ID;
+      n++;
+    }
+    res = await http().addRecords({
+      resid:fapiaoResid,
+      data:arr,
+      isEditOrAdd:'true'
+    }) 
+    message.success('操作成功！');
+    this.setState({loading:false,fapiao:false});
+    }catch(e){
+      message.error(e.message);
+      this.setState({loading:false})
+    }
+  }
+  getFapiao = async(rec)=>{
+    let res;
+    this.setState({loading:true});
+    try{
+      res =  await http().getTable({
+        resid:fapiaoResid,
+        cmswhere:`recordId = '${rec.REC_ID}'`
+      }) 
+      let n = 0;
+      let fileList = []
+      while(n<res.data.length){
+        fileList.push({
+          name: res.data[n].fileName,
+          status: "done",
+          uid: -1-n,
+          url: res.data[n].filePath,
+          REC_ID: res.data[n].REC_ID
+        })
+        n++;
+      }
+    this.setState({loading:false,fileList});
+    }catch(e){
+      message.error(e.message);
+      this.setState({loading:false})
+    }
+  }
 
+  delFapiao = async(v)=>{
+    console.log(v)
+    let res;
+          this.setState({loading:true})
+          try{
+            if(v.REC_ID){
+              res =  await http().removeRecords({
+                resid:fapiaoResid,
+                data:[v]
+              });
+            }
+            message.success('删除成功！');
+          this.setState({loading:false});
+
+          }catch(e){
+            message.error(e.message);
+            this.setState({loading:false})
+          }
+   
+  }
   closeModal = () => {
     this.setState({
       applyByCourseVisible: false,
@@ -332,18 +463,87 @@ class EmployeeApplyCourse extends React.Component {
           actionBarFixed={true}
           hasRowModify={false}
           height="90vh"
+          customRowBtns={[
+            record => {
+              return (
+                <Button type='primary' onClick={
+                  ()=>{
+                    this.setState({fapiao:true,curRec:record,fileList:[]});
+                    this.getFapiao(record);
+                  }
+                }>
+                  上传报销发票
+                </Button>
+          )}]}
           actionBarExtra={[
             <Button
               onClick={() => {
-                this.setState({ applyByUnexistCourseVisible: true });
+                this.setState({ applyByUnexistCourseVisible: true ,loading:false,fileList:[]});
               }}
             >
-              填写报销单
+              填写自定义课程的报销单
             </Button>
 
             // <Button>资格证书申请</Button>
           ]}
         />
+        <Modal
+            visible={this.state.fapiao}
+            onCancel={() =>
+              this.setState({
+                fapiao: false,
+                curRec:{
+                  C3_613941384328:'',
+                  C3_613941385538:'',
+                  C3_613941384592:'',
+                  C3_615393093633:'',
+                  C3_615394023182:''
+                }
+              })
+            }
+            width="80%"
+            title='上传报销发票'
+            centered={true}
+            destroyOnClose
+            footer={
+              <>
+                <Button onClick={()=>this.setState({fapiao:false})}>取消</Button>
+                <Button type='primary' onClick={()=>this.addFapiao()} loading={this.state.loading}>确定</Button>
+              </>
+            }
+        >
+        <Spin spinning={this.state.loading}>
+
+          <h3>{'['+this.state.curRec.C3_613941384328+' '+this.state.curRec.C3_613941385538+']'+this.state.curRec.C3_613941384592}</h3>
+          <span>开始时间：{this.state.curRec.C3_615393093633} - 结束时间：{this.state.curRec.C3_615394023182}</span>
+          <div style={{width:'100%',height:'.5rem'}}></div>
+          <Upload
+                  onChange={this.handleFileChange}
+                  onRemove={(v)=>{this.delFapiao(v)}}
+                  fileList={this.state.fileList}
+                  customRequest={async file => {
+                    this.setState({loading:true});
+                    const res = await uploadFile(file.file);
+                    let { fileList } = this.state;
+                    fileList[fileList.length - 1] = {
+                      name: file.file.name,
+                      url: res,
+                      status: 'done',
+                      uid: -fileList.length
+                    };
+                    this.setState({
+                      fileList,
+                      loading:false
+                    });
+                  }}
+                >
+                  <Button>
+                    <Icon type="upload" /> 选择文件
+                  </Button>
+                </Upload>
+                </Spin>
+
+        </Modal>
         <Modal
           visible={this.state.applyByCourseVisible}
           onCancel={() =>
@@ -492,13 +692,18 @@ class EmployeeApplyCourse extends React.Component {
         </Modal>
         <Modal
           visible={this.state.applyByUnexistCourseVisible}
-          title="填写报销单"
+          title="填写自定义课程的报销单"
           width="50%"
           onCancel={this.closeModal}
           footer={null}
           centered
         >
           <SelfDefineCourseForm
+            setLoading={(v)=>{this.setLoading(v)}}
+            setList={(v)=>{this.setList(v)}}
+            fileList={this.state.fileList}
+            handleFileChange={this.handleFileChange}
+            loading={this.state.loading}
             closeModal={this.closeModal}
             onSubmit={this.submitCourse}
           />

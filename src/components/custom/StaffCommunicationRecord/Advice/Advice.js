@@ -12,12 +12,14 @@ import {
   DatePicker,
   Spin,
   Row,
-  Col
+  Col,
+  Slider,
 } from 'antd';
 import TableData from '../../../common/data/TableData';
 import downloadImg from './下载.png';
 import http, { makeCancelable } from 'Util20/api';
 import download from 'downloadjs';
+import ImageModal from 'cxj-react-image';
 
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
@@ -70,12 +72,21 @@ class Advice extends React.Component {
     backReason: '', //退回理由
     backLoading: '', //
     noNo: 0,//未处理数量
+    modalVisbile:false,
+    adminRemark: '', //管理员备注
+    adminRemarkVis: false
   };
 
   componentDidMount = () => {
     this.fetchAdviceTypes();
     this.getNo();
   };
+
+  closeImg = ()=>{
+    this.setState({
+      modalVisbile:false
+    })
+  }
   getNo = async () => {
     let res;
     try {
@@ -182,7 +193,33 @@ class Advice extends React.Component {
       selectRecord: record
     });
   };
-
+  handleSubmitRemark = async () => {
+    const { selectedRecords, adminRemark } = this.state;
+    const data = selectedRecords.length>1
+        ? selectedRecords.map(item => ({
+            REC_ID: item.recordID,
+            adminRemark: adminRemark,
+          }))
+        : [
+            {
+              REC_ID: selectedRecords[0].recordID,
+              adminRemark: adminRemark,
+            }
+          ];
+    try {
+      let res = await http({baseURL:this.baseURL}).modifyRecords({
+        resid,
+        data
+      });
+      message.success("备注添加成功")
+      this.setState({
+        adminRemarkVis:false
+      })
+      this.tableDataRef.handleRefresh();
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
   submitReply = async () => {
     const { isBatchReply, selectedRecords } = this.state;
     try {
@@ -386,6 +423,7 @@ class Advice extends React.Component {
       adviceTypes,
       selectedAdviceType
     } = this.state;
+    const userType = this.props.userType
     return (
       <div>
         <div className="staff-contain_menu">
@@ -502,6 +540,20 @@ class Advice extends React.Component {
                       </Button>
                     </>
                   )}
+                  {userType === "admin" &&(<Button
+                        size="small"
+                        onClick={() => {
+                          if (!selectedRecords.length) {
+                            return message.info('请选择记录');
+                          }
+                          this.setState({
+                            selectedRecords,
+                            adminRemarkVis: true,
+                          });
+                        }}
+                      >
+                        添加备注
+                      </Button>)}
                 </div>
               );
             }}
@@ -561,8 +613,12 @@ class Advice extends React.Component {
       replyButtonLoading,
       backVisible,
       backReason,
-      backLoading
+      backLoading,
+      modalVisbile,
+      picKey,
+      adminRemarkVis
     } = this.state;
+    const userType = this.props.userType
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
         <div style={{ width: (this.state.noNo > 0 ? '160px' : '100px') }}>
@@ -597,17 +653,59 @@ class Advice extends React.Component {
         >
           {this.renderContent()}
         </div>
-        <Modal
+        { modalVisbile  && 
+          <ImageModal 
+              style={{
+                marginTop:'3000px',
+              }}
+              src={picKey}     
+              closeModal={this.closeImg} 
+              option={{
+                move: true,                                         
+                zoom: true                        
+              }}
+            />
+          }
+        {/* <Modal
           visible={this.state.enlargePic}
           width={'90vw'}
-          style={{ height: 'auto', marginBottom: 0, paddingBottom: 0, textAlign: 'center' }}
+          style={{
+            height: '90vh',
+            marginBottom: 0,
+            paddingBottom: 0,
+            textAlign: 'center'
+          }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
         >
-          <img src={this.state.picKey} style={{ height: 'calc(100vh - 48px)', width: 'auto' }} />
-        </Modal>
+          <img
+            id="pic"
+            src={this.state.picKey}
+            style={{
+              transform: `scale(${this.state.imgDeatilSize})`,
+              height: 'calc(100vh - 48px)',
+              width: 'auto'
+            }}
+          />
+          <Slider
+            style={{
+              left: '180px',
+              position: 'fixed',
+              bottom: '5vh',
+              width: '1000px'
+            }}
+            defaultValue={1}
+            step={0.1}
+            max={3}
+            tooltipVisible
+            onChange={value => {
+              this.setState({ imgDeatilSize: value });
+              console.log(this.state.imgDeatilSize);
+            }}
+          />
+        </Modal> */}
         <Modal
           visible={this.state.showRecord}
           width={777}
@@ -673,7 +771,7 @@ class Advice extends React.Component {
                 <h4>图片证据：</h4>
                 {imgProofRecord.length ? (
                   imgProofRecord.map(item => {
-                    return <img src={item.fileURL} alt="" onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }} />;
+                    return <img src={item.fileURL} alt="" onClick={() => { this.setState({ modalVisbile:true,enlargePic: true, picKey: item.fileURL }) }} />;
                   })
                 ) : (
                     <span>暂无图片</span>
@@ -691,6 +789,14 @@ class Advice extends React.Component {
                           autoPlay={false}
                           style={{ width: '50%' }}
                         />
+                        <img
+                          src={downloadImg}
+                          onClick={() => {
+                            this.downloadVideo(index);
+                            window.open(item.fileURL)
+                          }}
+                          alt=""
+                        />
                       </>
                     );
                   })
@@ -699,6 +805,16 @@ class Advice extends React.Component {
                   )}
               </div>
               <hr />
+              {userType === 'admin' && (
+                <div style = {{fontWeight:"bold"}}>
+                <p>管理员备注：</p>
+                <TextArea
+                  disabled
+                  value={selectRecord.adminRemark}
+                  style = {{marginBottom:'5px'}}
+                />
+                </div>
+              )}
               {selectKey === '1' && (
                 <Button
                   onClick={() => {
@@ -755,6 +871,22 @@ class Advice extends React.Component {
               this.setState({ backReason: e.target.value });
             }}
             placeholder="请输入退回理由"
+          />
+        </Modal>
+        <Modal
+          visible={adminRemarkVis}
+          title="填写管理员备注"
+          width={500}
+          onCancel={() => {
+            this.setState({ adminRemarkVis: false, adminRemark:''});
+          }}
+          onOk={this.handleSubmitRemark}
+        >
+          <TextArea
+            onChange={e => {
+              this.setState({ adminRemark: e.target.value });
+            }}
+            placeholder="输入管理员备注"
           />
         </Modal>
       </div>

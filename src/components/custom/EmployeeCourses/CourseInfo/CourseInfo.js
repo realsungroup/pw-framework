@@ -34,7 +34,7 @@ const CourseInfo = function(props) {
       <Row style={rowStyle}>
         <Col md={12}>
           <span className="course-info_label">价格:</span>
-          {course.C3_622227141162}
+          {course.C3_613941385069}
         </Col>
         <Col md={12}>
           <span className="course-info_label">地点:</span>
