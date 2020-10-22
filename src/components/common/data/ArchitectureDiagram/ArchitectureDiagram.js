@@ -2312,41 +2312,18 @@ class ArchitectureDiagram extends React.Component {
               />
               查看导入结果
             </div>
-            <Popover
-              placement="right"
-              content={
-                <div>
-                  <div>
-                    <Checkbox
-                      checked={hasDetail}
-                      onChange={e => {
-                        this.setState({ hasDetail: e.target.checked });
-                      }}
-                    >
-                      详细信息
-                    </Checkbox>
-                  </div>
-                  <div>
-                    <Checkbox
-                      checked={hasHistory}
-                      onChange={e => {
-                        this.setState({ hasHistory: e.target.checked });
-                      }}
-                    >
-                      历史信息
-                    </Checkbox>
-                  </div>
-                </div>
-              }
+            <div
+              className="architecture-diagram_header_icon-button"
+              onClick={() => {
+                this.setState({ DLImportResultVisible: true });
+              }}
             >
-              <div className="architecture-diagram_header_icon-button">
-                <Icon
-                  type="layout"
-                  className="architecture-diagram_header_icon-button__icon"
-                />
-                显示
-              </div>
-            </Popover>
+              <Icon
+                type="eye"
+                className="architecture-diagram_header_icon-button__icon"
+              />
+              查看DL入职导入匹配结果
+            </div>
           </div>
         )}
         <div className="architecture-diagram_header_icon-button-group">
@@ -3584,7 +3561,7 @@ class DLImportResult extends React.PureComponent {
             className={classNames('architecture-diagram__import-result__main')}
           >
             <div className="architecture-diagram__import-result__main__title">
-              DL数据匹配结果
+              DL入职匹配结果
               <Icon
                 type="close"
                 className="architecture-diagram__min-button"
@@ -3765,6 +3742,7 @@ class DLImportResult extends React.PureComponent {
         orgSupNumber: record.C3_656590854233,
         companycode: record.C3_656587686721,
         C3_642185521087: record.C3_656587419404,
+        updateDate: record.C3_470524257391,
         isVirtual: 'Y'
       },
       true,
