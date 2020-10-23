@@ -377,7 +377,6 @@ class IDLTransferHr extends Component {
 
   }
   showOverlay = (v) => {
-    console.log(v)
     this.setState({ memberDetail: null, stream: [] })
     var n = 0;
     var arr = [];
@@ -386,10 +385,14 @@ class IDLTransferHr extends Component {
       arr.push(a)
       n++;
     }
-    var obj = v;
-    var date = obj.effortDate;
-    if (date) { date = moment(date); }
-    obj.effortDate = date;
+    // var obj = v;
+    let object = {};
+    Object.assign(object,v);
+    let myDate = object.effortDate;
+    console.log('myDate:'+myDate)
+    if (myDate) { myDate = moment(myDate); }
+    object.effortDate = myDate;
+    console.log('object.effortDate:'+object.effortDate)
     var resid = '';
     resid = '634822110774'
     // if(obj.changeType=='部门变更'){
@@ -401,10 +404,10 @@ class IDLTransferHr extends Component {
     // }else if(obj.changeType=='级别变更'){
     //   resid='634820028458';
     // }
-    this.getStream(obj.changeID, resid);
-    this.getMem(obj.changeID);
+    this.getStream(object.changeID, resid);
+    this.getMem(object.changeID);
 
-    this.setState({ toCheck: arr, toCheckFront: v, visible: true });
+    this.setState({ toCheck: arr, toCheckFront: object, visible: true });
     console.log('v', v)
   }
 
@@ -839,7 +842,6 @@ class IDLTransferHr extends Component {
 
                       )
                       : <Button type='primary' loading={this.state.loading} onClick={() => this.approve('Y')}>保存并通过审核</Button>
-
                   }
                 </>) : null)}
             onCancel={() => this.setState({ visible: false })}
