@@ -3606,9 +3606,13 @@ class DLImportResult extends React.PureComponent {
                       importConfig={null}
                       customRowBtns={[
                         (record, btnSize) => {
+                          if (record.C3_465142349966) {
+                            return null;
+                          }
                           return (
                             <Button
                               type="primary"
+                              size={btnSize}
                               onClick={() => this.handleCreateJobClick(record)}
                             >
                               创建岗位
