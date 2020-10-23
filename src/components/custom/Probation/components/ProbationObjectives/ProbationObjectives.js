@@ -88,7 +88,7 @@ const ProbationObjectives = props => {
                 </Popconfirm>
               )}
               <div className="probation-objectives_audit-stage_objective-card_item">
-                <h4>工作目标/Objectives</h4>
+                <h4>{index + 1}. 工作目标/Objectives</h4>
                 <TextArea
                   placeholder="请输入工作目标"
                   value={item.target}
