@@ -42,7 +42,7 @@ class StaffComplain extends React.Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.staffComDownloadURL;
     this.pic = React.createRef();
   }
-  
+
   state = {
     mode: 'inline',
     theme: 'light',
@@ -86,21 +86,22 @@ class StaffComplain extends React.Component {
     hrReplyVideos: [],
     noNo: 0, //未处理数量
     ingNo: 0, //处理中数量
-    imgDeatilSize: 1,//图片放大倍数
-    modalVisbile:false,
+    imgDeatilSize: 1, //图片放大倍数
+    modalVisbile: false,
     adminRemark: '', //管理员备注
-    adminRemarkVis: false
+    adminRemarkVis: false,
+    cmsWhere: ''
   };
 
   componentDidMount = () => {
     this.getNo();
     this.getColumnData();
   };
-  closeImg = ()=>{
+  closeImg = () => {
     this.setState({
-      modalVisbile:false
-    })
-  }
+      modalVisbile: false
+    });
+  };
   getNo = async () => {
     let res;
     let res2;
@@ -327,26 +328,27 @@ class StaffComplain extends React.Component {
   };
   handleSubmitRemark = async () => {
     const { selectedRecords, adminRemark } = this.state;
-    const data = selectedRecords.length>1
+    const data =
+      selectedRecords.length > 1
         ? selectedRecords.map(item => ({
             REC_ID: item.recordID,
-            adminRemark: adminRemark,
+            adminRemark: adminRemark
           }))
         : [
             {
               REC_ID: selectedRecords[0].recordID,
-              adminRemark: adminRemark,
+              adminRemark: adminRemark
             }
           ];
     try {
-      let res = await http({baseURL:this.baseURL}).modifyRecords({
+      let res = await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
         data
       });
-      message.success("备注添加成功")
+      message.success('备注添加成功');
       this.setState({
-        adminRemarkVis:false
-      })
+        adminRemarkVis: false
+      });
       this.tableDataRef.handleRefresh();
     } catch (error) {
       message.error(error.message);
@@ -420,13 +422,13 @@ class StaffComplain extends React.Component {
   };
 
   // //鼠标移动图片
-  // movePic = (pic) =>{   
+  // movePic = (pic) =>{
   //   // var pic = document.getElementById('pic');
-    
+
   //   let isDrag = false;
   //   let x = 0;
   //   let y = 0;
-  //   let offsetLeft = 0; 
+  //   let offsetLeft = 0;
   //   let offsetTop = 0;
   //   pic.onmousedown = function(e){
   //     isDrag = true;
@@ -729,7 +731,7 @@ class StaffComplain extends React.Component {
       noticeLoading,
       selectKey
     } = this.state;
-    const userType = this.props.userType
+    const userType = this.props.userType;
     return (
       <div>
         <div className="staff-contain_menu">
@@ -863,30 +865,34 @@ class StaffComplain extends React.Component {
                         if (!selectedRecords.length) {
                           return message.info('请选择记录');
                         }
+                        const recordIDs =  selectedRecords.map(item =>item.recordID).join(",")
                         this.setState({
                           selectedRecords,
                           isBatchReply: true,
-                          proofListModal: true
+                          proofListModal: true,
+                          cmsWhere:recordIDs
                         });
                       }}
                     >
                       批量回复
-                    </Button> 
+                    </Button>
                   )}
-                  {userType === "admin" &&(<Button
-                        size="small"
-                        onClick={() => {
-                          if (!selectedRecords.length) {
-                            return message.info('请选择记录');
-                          }
-                          this.setState({
-                            selectedRecords,
-                            adminRemarkVis: true,
-                          });
-                        }}
-                      >
-                        添加备注
-                      </Button>)}
+                  {userType === 'admin' && (
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        if (!selectedRecords.length) {
+                          return message.info('请选择记录');
+                        }
+                        this.setState({
+                          selectedRecords,
+                          adminRemarkVis: true
+                        });
+                      }}
+                    >
+                      添加备注
+                    </Button>
+                  )}
                 </div>
               );
             }}
@@ -1016,19 +1022,19 @@ class StaffComplain extends React.Component {
         >
           {this.renderContent()}
         </div>
-        { modalVisbile  && 
-          <ImageModal 
-              style={{
-                marginTop:'3000px',
-              }}
-              src={picKey}     
-              closeModal={this.closeImg} 
-              option={{
-                move: true,                                         
-                zoom: true                        
-              }}
-            />
-          }
+        {modalVisbile && (
+          <ImageModal
+            style={{
+              marginTop: '3000px'
+            }}
+            src={picKey}
+            closeModal={this.closeImg}
+            option={{
+              move: true,
+              zoom: true
+            }}
+          />
+        )}
         {/* <Modal
           visible={this.state.enlargePic}
           width={'90vw'}
@@ -1078,8 +1084,8 @@ class StaffComplain extends React.Component {
             }}
           />
         </Modal> */}
-      
-          {/* <img
+
+        {/* <img
             src={this.state.picKey}
             style={{ height: 'calc(100vh - 48px)', width: 'auto' }}
           />
@@ -1163,8 +1169,8 @@ class StaffComplain extends React.Component {
                           alt=""
                           onClick={() => {
                             this.setState({
-                              modalVisbile:true,
-                              enlargePic:true,
+                              modalVisbile: true,
+                              enlargePic: true,
                               picKey: item.fileURL
                             });
                           }}
@@ -1397,13 +1403,13 @@ class StaffComplain extends React.Component {
                 </div>
               </div>
               {userType === 'admin' && (
-                <div style = {{fontWeight:"bold"}}>
-                <p>管理员备注：</p>
-                <TextArea
-                  disabled
-                  value={selectRecord.adminRemark}
-                  style = {{marginBottom:'5px'}}
-                />
+                <div style={{ fontWeight: 'bold' }}>
+                  <p>管理员备注：</p>
+                  <TextArea
+                    disabled
+                    value={selectRecord.adminRemark}
+                    style={{ marginBottom: '5px' }}
+                  />
                 </div>
               )}
               {selectKey === '1' && (
@@ -1469,7 +1475,7 @@ class StaffComplain extends React.Component {
               subtractH={200}
               cmswhere={
                 isBatchReply
-                  ? ''
+                  ? `recordID in (${this.state.cmsWhere})  `
                   : `recordID = '${this.state.selectRecord.recordID}'`
               }
               customRowBtns={[
@@ -1598,7 +1604,7 @@ class StaffComplain extends React.Component {
           title="填写管理员备注"
           width={500}
           onCancel={() => {
-            this.setState({ adminRemarkVis: false, adminRemark:''});
+            this.setState({ adminRemarkVis: false, adminRemark: '' });
           }}
           onOk={this.handleSubmitRemark}
         >
