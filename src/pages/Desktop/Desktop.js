@@ -575,6 +575,7 @@ class Desktop extends React.Component {
               alt={app.appIconUrl}
               style={{ display: 'inline-block', width: 48 }}
               defaulting={folderPng}
+              defaultImg={folderPng}
             />
           ) : (
             <i
@@ -639,7 +640,7 @@ class Desktop extends React.Component {
                               <Img
                                 src={app.appIconUrl}
                                 alt={app.appIconUrl}
-                                defaulting={folderPng}
+                                defaultImg={folderPng}
                                 style={{
                                   display: 'inline-block',
                                   height: 32,
@@ -658,7 +659,7 @@ class Desktop extends React.Component {
                                     height: 32,
                                     width: 'auto'
                                   }}
-                                  defaulting={folderPng}
+                                  defaultImg={folderPng}
                                   // onError={this.handleImageError}
                                 />
                               </div>
@@ -833,7 +834,7 @@ class Desktop extends React.Component {
       onLogoClick,
       attendanceMonthList,
       currentAttendanceMonth,
-      onAttendanceChange,
+      onAttendanceChange
     } = this.props;
 
     // 背景样式
