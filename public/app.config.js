@@ -22,7 +22,7 @@ window.pwConfig = {
         fileType: 'mdb'
       }
     },
-    penetrate: true, //是否穿透模式
+    penetrate: false, //是否穿透模式
     penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
     waitingHandleBaseURL: 'http://10.108.21.41:6000',
     hasAttendanceMonth: true, // 是否有考勤月份切换的功能

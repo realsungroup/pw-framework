@@ -1022,70 +1022,67 @@ class StaffComplain extends React.Component {
         >
           {this.renderContent()}
         </div>
-        {modalVisbile && (
-          <ImageModal
-            style={{
-              marginTop: '3000px'
-            }}
-            src={picKey}
-            closeModal={this.closeImg}
-            option={{
-              move: true,
-              zoom: true
-            }}
-          />
-        )}
-        {/* <Modal
+        {/* { modalVisbile  && 
+          <ImageModal 
+              style={{
+                marginTop:'3000px',
+              }}
+              src={picKey}     
+              closeModal={this.closeImg} 
+              option={{
+                move: true,                                         
+                zoom: true                        
+              }}
+            />
+          } */}
+        <Modal
+          className="changeAntCSS"
           visible={this.state.enlargePic}
           width={'90vw'}
-          style={{
-            height: '95vh',
+          style={{ 
+            height: '90vh',
             marginBottom: 0,
             paddingBottom: 0,
             textAlign: 'center',
-            height: 'auto',
-            marginBottom: 0,
-            paddingBottom: 0,
-            textAlign: 'center'
+            backgroundColor:'transparent',
           }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
-        >
-          
+        >  
           <img
             ref = {this.pic}
             id="pic"
             src={this.state.picKey}
             style={{
+              transformOrigin:'top left',
               transform: `scale(${this.state.imgDeatilSize})`,
               height: 'calc(100vh - 48px)',
               width: 'auto',
-              position:'absolute',
-              left: '0px',
-              top: '0px',
             }}
           />         
           <Slider
             style={{
-              left: '180px',
               position: 'fixed',
+              left:'0',
+              right:'0',
+              margin:'auto',
               bottom: '5vh',
-              width: '1000px'
+              width: '1000px',
             }}
             defaultValue={1}
             step={0.1}
-            max={3}
+            max={4}
             tooltipVisible
             onChange={value => {
               this.setState({ imgDeatilSize: value });
               console.log(this.state.imgDeatilSize);
             }}
           />
-        </Modal> */}
-
-        {/* <img
+        </Modal>
+      
+          {/* <img
             src={this.state.picKey}
             style={{ height: 'calc(100vh - 48px)', width: 'auto' }}
           />
