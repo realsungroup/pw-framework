@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, message, Modal, Card, Row, Col, Rate } from 'antd';
+import { Button, message, Modal, Card, Row, Col, Rate ,Input} from 'antd';
 import { TableData } from '../../common/loadableCommon';
 import http from 'Util20/api';
 
@@ -9,7 +9,10 @@ class ViewActions extends React.Component {
   state = {
     viewActionsVisible: false,
     selectedCourseArrangmentDetail: {},
+    baoxiaodan:false,
+    baoxiaodanData:[],
     planView: [],
+    shijifeiyongData:'',
     // 内训评分
     rate: {
       rate1: null,
@@ -97,6 +100,63 @@ class ViewActions extends React.Component {
       });
     }
   };
+  // 获取实际费用
+  getFeiyong=async(id)=>{
+    this.setState({loading:true,feiyongID:id});
+    try{
+      let res= await http().getTable({
+        resid: 613940032707,
+        cmswhere: `CourseArrangeDetailID = '${id}'`
+      });
+      console.log('shijifeiy',res)
+      if(res.data){
+        let shiji=res.data[0].C3_614962974343||0;
+        this.setState({shijifeiyongData:shiji});
+      }
+
+    this.setState({loading:false});
+    }catch(e){
+      console.log(e.message);
+    this.setState({loading:false});
+      message.error(e.message)
+    }
+}
+// 修改实际费用
+modiShijifeiyong=async()=>{
+  this.setState({loading:true});
+  try{
+    let res= await http().modifyRecords({
+      resid: 613940032707,
+      data:[{
+        REC_ID:this.state.feiyongID,
+        C3_614962974343:this.state.shijifeiyongData
+      }]
+    });
+  this.setState({loading:false,shijifeiyong:false});
+  message.success('修改成功！')
+  }catch(e){
+    console.log(e.message);
+  this.setState({loading:false});
+    message.error(e.message)
+  }
+}
+
+//获取发票
+
+getFapiao = async(id)=>{
+  let res;
+  this.setState({loading:true});
+  try{
+    res =  await http().getTable({
+      resid:656586685332,
+      cmswhere:`recordId = '${id}'`
+    })
+  this.setState({loading:false,baoxiaodanData:res.data});
+  }catch(e){
+    message.error(e.message);
+    this.setState({loading:false})
+  }
+}
 
   /**
    * 关闭模态窗
@@ -131,7 +191,7 @@ class ViewActions extends React.Component {
 
   render() {
     return (
-      <div style={{ flex: 1 }}>
+      <div style={{ flex: 1 ,height:'calc(100vh - 64px'}}>
         <TableData
           resid={courseDetailId}
           // subtractH='220px'
@@ -142,13 +202,13 @@ class ViewActions extends React.Component {
           hasRowSelection={true}
           hasRowDelete={false}
           hasRowModify={false}
-          subtractH={200}
-          // height='600'
+          subtractH={300}
           // height="calc(100vh - 64px)"
           recordFormType="drawer"
           customRowBtns={[
             record => {
               return (
+                <>
                 <Button
                   onClick={() => {
                     this.setState(
@@ -162,11 +222,86 @@ class ViewActions extends React.Component {
                 >
                   查看
                 </Button>
+                <Button
+                      onClick={
+                        ()=>{
+                          this.setState({
+                            baoxiaodanData:[],
+                            baoxiaodan:true
+                          });
+                          this.getFapiao(record.CourseArrangeDetailID);
+                        }
+                      }
+                    >
+                      查看报销发票
+                    </Button>
+                    <Button
+                      onClick={
+                        ()=>{
+                          this.getFeiyong(record.REC_ID);
+                          this.setState({
+                            shijifeiyongData:'',
+                            shijifeiyong:true
+                          })
+                        }
+                      }
+                    >
+                      修改实际费用
+                    </Button>
+                </>
               );
             }
           ]}
           // cmswhere={`C3_614184177086 = '${selectedCourseArrangment.CourseArrangeID}'`}
         />
+        <Modal
+         title="修改实际费用"
+         visible={this.state.shijifeiyong}
+         footer={
+           <>
+            <Button onClick={()=>{this.setState({shijifeiyong:false})}}>
+               取消
+              </Button>
+             <Button type='primary' onClick={()=>{this.modiShijifeiyong()}} loading={this.state.loading}>
+               确定
+              </Button>
+            </>
+         }
+         
+         width="400px"
+         destroyOnClose
+          onCancel={
+           ()=>{
+             this.setState({shijifeiyong:false})
+           }
+         }
+        >
+          <span>实际费用：</span>
+          <Input style={{marginTop:'.5rem'}} value={this.state.shijifeiyongData} onChange={(v)=>{this.setState({shijifeiyongData:v.target.value})}} disabled={this.state.loading}/>
+          
+        </Modal>
+        <Modal
+         title="查看报销发票"
+         visible={this.state.baoxiaodan}
+         footer={null}
+         width="400px"
+         destroyOnClose
+         onCancel={
+           ()=>{
+             this.setState({baoxiaodan:false})
+           }
+         }
+        >
+          <ul>
+            {this.state.baoxiaodanData.map((item,key)=>{
+              return(
+                <li>
+                  <a target="_blank" href={item.filePath} key={key}>{item.fileName}</a>
+                </li>
+              )
+            })}
+          </ul>
+        </Modal>
         <Modal
           title="查看反馈和行动计划"
           visible={this.state.viewActionsVisible}

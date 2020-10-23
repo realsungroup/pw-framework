@@ -23,6 +23,7 @@ import {
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
 import './ProbationForms.less';
+import debounce from 'lodash/debounce';
 
 const { Link } = Anchor;
 const { Option } = Select;
@@ -44,6 +45,10 @@ const tutorshipResid = '619281130628'; //辅导员表
 const authResid = '619703562233';
 
 class ProbationForms extends React.Component {
+  constructor(props) {
+    super(props);
+    this.fetchUser = debounce(this.fetchUser, 800);
+  }
   state = {
     flagHitBack: false,
     flagAlreadyHit: 0,
@@ -685,11 +690,15 @@ class ProbationForms extends React.Component {
    * 根据工号搜索培训师
    */
   fetchUser = async value => {
+    if (!value) {
+      return;
+    }
     this.setState({ trainerData: [], fetching: true });
     try {
       const res = await http().getTable({
         resid: '609599795438',
-        cmswhere: `C3_227192472953 = '${value}'`
+        // cmswhere: `C3_227192472953 = '${value}'`
+        key: value
       });
       const trainerData = res.data.map(user => ({
         label: `${user.C3_227192484125}`,

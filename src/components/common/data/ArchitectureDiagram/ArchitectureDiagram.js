@@ -48,10 +48,11 @@ import withModalDrawer from '../../hoc/withModalDrawer';
 import qs from 'qs';
 import debounce from 'lodash/debounce';
 import PWSpin from 'Common/ui/Spin';
+import PlanProgress from './PlanProgress';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
-
+const { SubMenu } = Menu;
 const yesterday = moment();
 const disableDate = currentDate => {
   return currentDate.isBefore(yesterday);
@@ -232,7 +233,6 @@ class ArchitectureDiagram extends React.Component {
       detailVisible: false,
       selectedResultResid: '638645137963',
       selectedType: 'IDL',
-      hasResult: true,
       hasDetail: true,
       hasHistory: true,
       selectedDepartments: [],
@@ -249,7 +249,8 @@ class ArchitectureDiagram extends React.Component {
       joinVisible: false,
       joinRecord: {},
       selectedResult: '全部',
-      transferDate: moment()
+      transferDate: moment(),
+      DLImportResultVisible: false
     };
   }
 
@@ -1157,6 +1158,9 @@ class ArchitectureDiagram extends React.Component {
     if (node.isScrap === 'Y') {
       return message.info('岗位已废弃');
     }
+    if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
+      return message.info('岗位未启用');
+    }
     if (node.isEmpty === 'Y') {
       return message.info('空缺岗位，不可离职');
     }
@@ -1227,6 +1231,9 @@ class ArchitectureDiagram extends React.Component {
     const node = this.chart.get(nodeId);
     if (node.isScrap === 'Y') {
       return message.info('岗位已废弃');
+    }
+    if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
+      return message.info('岗位未启用');
     }
     if (node.isVirtual === 'Y') {
       return message.info('多人任职岗位请使用导入变动方式');
@@ -1318,6 +1325,9 @@ class ArchitectureDiagram extends React.Component {
     const node = this.chart.get(nodeId);
     if (node.isScrap === 'Y') {
       return message.info('岗位已废弃');
+    }
+    if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
+      return message.info('岗位未启用');
     }
     if (node.isVirtual !== 'Y' && node.isEmpty !== 'Y') {
       return message.info('非空缺岗位');
@@ -1971,6 +1981,33 @@ class ArchitectureDiagram extends React.Component {
       );
   };
   /**
+   * DL入职
+   */
+  handleDLRuzhi = () => {
+    const { openImportView, baseURL, importConfig, dblinkname } = this.props;
+    const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
+
+    openImportView &&
+      openImportView(
+        dblinkname,
+        url,
+        '656418093200',
+        importConfig.mode,
+        importConfig.containerType,
+        importConfig.saveState,
+        importConfig.containerProps,
+        () => {
+          this.setState({ DLImportResultVisible: true });
+          this.props.closeImportView();
+          this.DLImportResultRef.refreshTable();
+        },
+        {},
+        {},
+        false,
+        'fileName'
+      );
+  };
+  /**
    * 离职
    */
   handleLizhi = () => {
@@ -2067,7 +2104,6 @@ class ArchitectureDiagram extends React.Component {
       selectedNode,
       currentLevel,
       hasDetail,
-      hasResult,
       hasHistory
     } = this.state;
     const { hasOpration, hasImport } = this.props;
@@ -2245,7 +2281,10 @@ class ArchitectureDiagram extends React.Component {
             <Dropdown
               overlay={
                 <Menu>
-                  <Menu.Item onClick={this.handleRuzhi}>入职</Menu.Item>
+                  <SubMenu title="入职">
+                    <Menu.Item onClick={this.handleDLRuzhi}>DL</Menu.Item>
+                    <Menu.Item onClick={this.handleRuzhi}>IDL</Menu.Item>
+                  </SubMenu>
                   <Menu.Item onClick={this.handleLizhi}>离职</Menu.Item>
                   <Menu.Item onClick={this.handleBiandong}>变动</Menu.Item>
                   {/* <Menu.Item onClick={this.handleImport}>兼任</Menu.Item> */}
@@ -2282,41 +2321,18 @@ class ArchitectureDiagram extends React.Component {
               />
               查看导入结果
             </div>
-            <Popover
-              placement="right"
-              content={
-                <div>
-                  <div>
-                    <Checkbox
-                      checked={hasDetail}
-                      onChange={e => {
-                        this.setState({ hasDetail: e.target.checked });
-                      }}
-                    >
-                      详细信息
-                    </Checkbox>
-                  </div>
-                  <div>
-                    <Checkbox
-                      checked={hasHistory}
-                      onChange={e => {
-                        this.setState({ hasHistory: e.target.checked });
-                      }}
-                    >
-                      历史信息
-                    </Checkbox>
-                  </div>
-                </div>
-              }
+            <div
+              className="architecture-diagram_header_icon-button"
+              onClick={() => {
+                this.setState({ DLImportResultVisible: true });
+              }}
             >
-              <div className="architecture-diagram_header_icon-button">
-                <Icon
-                  type="layout"
-                  className="architecture-diagram_header_icon-button__icon"
-                />
-                显示
-              </div>
-            </Popover>
+              <Icon
+                type="eye"
+                className="architecture-diagram_header_icon-button__icon"
+              />
+              查看DL入职导入匹配结果
+            </div>
           </div>
         )}
         <div className="architecture-diagram_header_icon-button-group">
@@ -2701,7 +2717,6 @@ class ArchitectureDiagram extends React.Component {
       detailVisible,
       hasDetail,
       hasHistory,
-      hasResult,
       departmentTreeVisible,
       treeData,
       parentKeys,
@@ -2709,7 +2724,8 @@ class ArchitectureDiagram extends React.Component {
       filtedNodes,
       fetchingData,
       joinVisible,
-      joinRecord
+      joinRecord,
+      DLImportResultVisible
     } = this.state;
     const { baseURL, displayFileds, hasView, historyResid } = this.props;
     return (
@@ -3126,20 +3142,16 @@ class ArchitectureDiagram extends React.Component {
               </div>
             </div>
 
-            {hasResult && this.renderImportResult()}
+            {this.renderImportResult()}
+            <DLImportResult
+              ref={e => (this.DLImportResultRef = e)}
+              visible={DLImportResultVisible}
+              baseURL={baseURL}
+              onClose={this.handleCloseDLRuzhiImport}
+            />
           </div>
         </Spin>
-        {/* <Drawer
-          visible={!resultMin}
-          onCancel={() => {
-            this.setState({ resultMin: true });
-          }}
-          placement="left"
-          width={800}
-          title="导入结果"
-        >
-          {this.renderImportResult()}
-        </Drawer> */}
+
         <Modal
           visible={addBroVisible}
           title={operation === 'modify' ? '修改' : '添加'}
@@ -3409,6 +3421,9 @@ class ArchitectureDiagram extends React.Component {
       </div>
     );
   }
+  handleCloseDLRuzhiImport = () => {
+    this.setState({ DLImportResultVisible: false });
+  };
 }
 const composedHoc = compose(
   injectIntl,
@@ -3503,4 +3518,313 @@ class LizhiForm extends React.PureComponent {
       </Form>
     );
   }
+}
+
+class DLImportResult extends React.PureComponent {
+  state = {
+    activeKey: '1',
+    addVisible: false,
+    record: {},
+    isShowProgress: false,
+    submiteData: [],
+    selectedSubmiteData: [],
+    spinnig: false
+  };
+  componentDidMount() {
+    this.getFormData();
+  }
+  refreshTable = () => {
+    this.tableDataRef1 && this.tableDataRef1.handleRefresh();
+    this.tableDataRef2 && this.tableDataRef2.handleRefresh();
+  };
+  defaultPagination = {
+    pageSize: 100,
+    current: 1,
+    showSizeChanger: true,
+    showQuickJumper: true,
+    pageSizeOptions: ['10', '20', '30', '40', '100']
+  };
+  render() {
+    const { visible, baseURL, onClose } = this.props;
+    const {
+      activeKey,
+      addVisible,
+      record,
+      isShowProgress,
+      submiteData,
+      spinnig
+    } = this.state;
+    return (
+      <div
+        className={classNames('architecture-diagram__import-result', {
+          hidden: !visible
+        })}
+      >
+        <div
+          className="architecture-diagram__import-result-mask"
+          onClick={this.handleCloseImportResult}
+        ></div>
+        <Spin spinning={spinnig}>
+          <div
+            id="import-result"
+            className={classNames('architecture-diagram__import-result__main')}
+          >
+            <div className="architecture-diagram__import-result__main__title">
+              DL入职匹配结果
+              <Icon
+                type="close"
+                className="architecture-diagram__min-button"
+                style={{ fontSize: 16 }}
+                onClick={onClose}
+              />
+            </div>
+            <div className="architecture-diagram__import-result__main__content">
+              <div style={{ flex: 1, overflow: 'hidden' }}>
+                <Tabs
+                  activeKey={activeKey}
+                  onChange={this.handleActiveKeyChange}
+                >
+                  <Tabs.TabPane tab="未匹配" key="1">
+                    <TableData
+                      baseURL={baseURL}
+                      resid={'656440052647'}
+                      wrappedComponentRef={element =>
+                        (this.tableDataRef1 = element)
+                      }
+                      refTargetComponentName="TableData"
+                      subtractH={240}
+                      hasAdd={false}
+                      hasRowView={false}
+                      hasRowDelete={true}
+                      // hasRowEdit={true}
+                      // hasRowEditAdd={true}
+                      hasDelete={true}
+                      hasModify={false}
+                      hasRowModify={true}
+                      hasRowSelection={true}
+                      hasAdvSearch={false}
+                      importConfig={null}
+                      customRowBtns={[
+                        (record, btnSize) => {
+                          return (
+                            <Button
+                              type="primary"
+                              onClick={() => this.handleCreateJobClick(record)}
+                            >
+                              创建岗位
+                            </Button>
+                          );
+                        }
+                      ]}
+                    />
+                  </Tabs.TabPane>
+                  <Tabs.TabPane tab="已匹配" key="2">
+                    <TableData
+                      baseURL={baseURL}
+                      resid={'656440072649'}
+                      wrappedComponentRef={element =>
+                        (this.tableDataRef2 = element)
+                      }
+                      refTargetComponentName="TableData"
+                      subtractH={200}
+                      hasAdd={false}
+                      hasRowView={false}
+                      hasRowDelete={true}
+                      hasRowEdit={false}
+                      hasDelete={true}
+                      hasModify={false}
+                      hasRowModify={false}
+                      hasRowSelection={true}
+                      hasAdvSearch={false}
+                      importConfig={null}
+                      defaultPagination={this.defaultPagination}
+                      actionBarExtra={({
+                        dataSource = [],
+                        selectedRowKeys = [],
+                        data = [],
+                        recordFormData,
+                        size
+                      }) => {
+                        const selectedRecords = selectedRowKeys.map(key => {
+                          return dataSource.find(item => item.REC_ID === key);
+                        });
+                        return (
+                          <Button
+                            type="primary"
+                            size={size}
+                            onClick={() => {
+                              if (!selectedRecords.length) {
+                                return message.info('请选择记录');
+                              }
+                              this.handleSubmit([...selectedRecords]);
+                            }}
+                          >
+                            提交
+                          </Button>
+                        );
+                      }}
+                    />
+                  </Tabs.TabPane>
+                </Tabs>
+              </div>
+            </div>
+          </div>
+        </Spin>
+
+        {isShowProgress ? (
+          <PlanProgress
+            onFinished={this.onSbumitFinished}
+            struct="100"
+            baseURL={baseURL}
+            options={{
+              resid: 638459489229,
+              data: JSON.stringify(submiteData)
+            }}
+            title="提交"
+            showFields={['C3_227192472953', 'C3_227192484125']}
+          />
+        ) : null}
+        <Modal
+          visible={addVisible}
+          title={'创建岗位'}
+          width={800}
+          footer={null}
+          onCancel={this.closeModal}
+          destroyOnClose
+        >
+          <FormData
+            info={{ dataMode: 'main', resid: 638632769633 }}
+            operation={'add'}
+            data={this._dataProp}
+            record={record}
+            // formProps={{ width: 500 }}
+            onCancel={this.closeModal}
+            onSuccess={this.afterSave}
+            baseURL={baseURL}
+          />
+        </Modal>
+      </div>
+    );
+  }
+  afterSave = async () => {
+    const { baseURL } = this.props;
+    const { record } = this.state;
+    try {
+      this.closeModal();
+      this.setState({ spinnig: true });
+      await http({ baseURL }).modifyRecords({
+        resid: '656440052647',
+        data: [{ REC_ID: record.REC_ID }]
+      });
+      this.tableDataRef1.handleRefresh();
+    } catch (error) {}
+    this.setState({ spinnig: false });
+  };
+  handleActiveKeyChange = activeKey => {
+    this.setState(
+      {
+        activeKey
+      },
+      () => {
+        if (activeKey === '1') {
+          this.tableDataRef1 && this.tableDataRef1.handleRefresh();
+        } else {
+          this.tableDataRef2 && this.tableDataRef2.handleRefresh();
+        }
+      }
+    );
+  };
+  handleCreateJobClick = record => {
+    this._dataProp = getDataProp(
+      this._formData,
+      {
+        ...record,
+        isCreated: 'N',
+        isScrap: 'N',
+        orgName: record.C3_417990929081,
+        orgJobEN: record.C3_417990929081,
+        Location: record.C3_417994395847,
+        orgLevelCode: record.C3_656532371973,
+        orgDepCode: record.C3_656588009121,
+        orgDepCN: record.dep_cn,
+        orgDepEN: record.dep_en,
+        orgSupNumber: record.C3_656590854233,
+        companycode: record.C3_656587686721,
+        C3_642185521087: record.C3_656587419404,
+        updateDate: record.C3_470524257391,
+        isVirtual: 'Y'
+      },
+      true,
+      false,
+      false
+    );
+    this.setState({ addVisible: true, record });
+  };
+  closeModal = () => {
+    this.setState({ addVisible: false, record: {} });
+  };
+
+  _dataProp = [];
+  _formData = [];
+  /**
+   * 获取主表窗体数据
+   */
+  getFormData = async () => {
+    let res;
+    try {
+      const { baseURL } = this.props;
+      let httpParams = {};
+      // 使用传入的 baseURL
+      if (baseURL) {
+        httpParams.baseURL = baseURL;
+      }
+      res = await http(httpParams).getFormData({
+        resid: 638632769633,
+        formName: 'CreateWindow1'
+      });
+      this._formData = dealControlArr(res.data.columns);
+    } catch (err) {
+      console.log(err);
+      return message.error(err.message);
+    }
+    this.setState({ loading: false });
+  };
+
+  handleSubmit = (records = []) => {
+    this.setState({
+      isShowProgress: true,
+      selectedSubmiteData: records,
+      submiteData: records.map((item, index) => {
+        const data = {
+          ...item,
+          C3_638469590670: item.C3_656522583613,
+          _state: 'editoradd',
+          _id: index
+        };
+        delete data.REC_ID;
+        return data;
+      })
+    });
+  };
+  onSbumitFinished = async () => {
+    const { selectedSubmiteData } = this.state;
+    const { baseURL } = this.props;
+    this.setState({ spinning: true });
+    try {
+      this.setState({
+        isShowProgress: false,
+        spinnig: true,
+        submiteData: [],
+        selectedSubmiteData: []
+      });
+      await http({ baseURL }).modifyRecords({
+        resid: 656440072649,
+        data: selectedSubmiteData.map(item => {
+          return { REC_ID: item.REC_ID, C3_656523333717: 'Y' };
+        })
+      });
+      this.tableDataRef2.handleRefresh();
+    } catch (error) {}
+    this.setState({ spinnig: false });
+  };
 }
