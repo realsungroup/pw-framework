@@ -670,8 +670,7 @@ class Advice extends React.Component {
           className="changeAntCSS"
           visible={this.state.enlargePic}
           width={'90vw'}
-          style={{
-            
+          style={{ 
             height: '90vh',
             marginBottom: 0,
             paddingBottom: 0,
@@ -682,8 +681,7 @@ class Advice extends React.Component {
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
-        >
-          
+        >  
           <img
             ref = {this.pic}
             id="pic"
@@ -691,18 +689,18 @@ class Advice extends React.Component {
             style={{
               transformOrigin:'top left',
               transform: `scale(${this.state.imgDeatilSize})`,
-              // transformOrigin: 'left',
               height: 'calc(100vh - 48px)',
               width: 'auto',
             }}
           />         
           <Slider
             style={{
-              left: '180px',
               position: 'fixed',
+              left:'0',
+              right:'0',
+              margin:'auto',
               bottom: '5vh',
               width: '1000px',
-              opacity:'0.3'
             }}
             defaultValue={1}
             step={0.1}

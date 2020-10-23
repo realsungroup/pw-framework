@@ -15,10 +15,19 @@
 }
 
 .changeAntCSS {
-  .ant-modal-content{
-    background-color: transparent !important;
-  }
-  .ant-modal-close-x{
-    color:white !important;
-  }
+  :global{
+    .ant-modal-content{
+      background-color: transparent;
+    }
+    .ant-modal-close-x{
+      color:white;
+      position: fixed;
+    }
+    .ant-slider{
+      opacity: 0.2;
+    }
+    .ant-slider:hover{
+      opacity: 1;
+    }
+  }  
 }
