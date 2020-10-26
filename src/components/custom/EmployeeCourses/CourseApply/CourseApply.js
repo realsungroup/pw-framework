@@ -53,6 +53,24 @@ class CourseApply extends Component {
               <span className="courseApply_label">部门负责人:</span>
               {course.C3_615642922917}
             </Col>
+            
+          </Row>
+          <Row style={rowStyle} class="courseApply_row">
+          <Col md={12} sm={12}>
+              <span className="courseApply_label">dept code:</span>
+              {course.deptCode}
+            </Col>
+          <Col md={12} sm={12}>
+              <span className="courseApply_label" style={{width:'auto'}}>project code:</span>
+              {course.projectCode}
+            </Col>
+         
+          </Row>
+          <Row style={rowStyle} class="courseApply_row">
+          <Col md={12} sm={12}>
+              <span className="courseApply_label">BU_CODE:</span>
+              {course.buCode}
+            </Col>
           </Row>
         </Card>
         <CourseInfo
