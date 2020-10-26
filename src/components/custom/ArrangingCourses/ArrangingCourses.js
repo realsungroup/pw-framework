@@ -1201,7 +1201,7 @@ class ArrangingCourses extends React.Component {
           <div style={{width:'100%',height:'80vh'}}>
             <TableData
                 resid={streamId}
-                key={this.state.streamData.recid}
+                cmswhere={`C3_615657103208 = '${this.state.streamData.recid}'`}
                 height={'100%'}
                 subtractH={240}
                 hasRowView={false}
@@ -1252,6 +1252,7 @@ class ArrangingCourses extends React.Component {
                   <>
                     <Button onClick={()=>{
                       this.setState({
+                        isShowStream:true,
                         streamData:{
                           name:record.C3_613941385305,
                           recid:record.REC_ID

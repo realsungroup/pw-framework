@@ -7,8 +7,8 @@ window.pwConfig = {
     // 地址
     // baseURL: 'http://10.108.11.36:6001/', // 请求的基地址
     // baseURL: 'http://pwkwebapi.realsun.me/',
-    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
-    // baseURL: 'http://10.108.2.66:5002/', // 请求的基地址
+    // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    baseURL: 'http://10.108.2.66:5002/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
@@ -76,7 +76,7 @@ window.pwConfig = {
       mode: 'local',
       bucketname: 'realsun',
       url:
-        'http://ngrok9.realsun.me:7071/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:7071/rispweb/upfiles'
+        'http://10.108.2.66:1000/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [
@@ -292,7 +292,7 @@ window.pwConfig = {
       mode: 'local',
       bucketname: 'realsun',
       url:
-        'http://ngrok9.realsun.me:7071/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://ngrok10.realsun.me:7071/rispweb/upfiles'
+        'http://10.108.2.66:1000/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [
