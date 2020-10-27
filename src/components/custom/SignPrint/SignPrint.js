@@ -28,7 +28,7 @@ const Module1 =(props)=>{
         <br/><br/><span style={{fontStyle:'italic'}}>（以下故意留白）</span><br/><br/><br/>
         正楷姓名：<span style={{display:'inline-block',width:'200px',borderBottom:'1px solid #000',fontFamily:'KaiTi',fontSize:'1.5rem',lineHeight:'2rem'}}>{props.data.C3_634066603591}</span><br/><br/>
         签字：<span style={{position:'relative',display:'inline-block',width:'250px',borderBottom:'1px solid #000',fontSize:'1.5rem',lineHeight:'2rem'}}><img style={{transform:'rotate(90deg)',width: '40%',marginLeft: '20%',top: '-100px',position: 'absolute'}} src={props.data.signature}/></span><br/><br/>
-        日期：<span style={{display:'inline-block',width:'250px',borderBottom:'1px solid #000',fontSize:'1.5rem',lineHeight:'2rem'}}>{props.data.text3Time?props.data.text3Time.substring(1,10):null}</span><br/><br/>
+        日期：<span style={{display:'inline-block',width:'250px',borderBottom:'1px solid #000',fontSize:'1.5rem',lineHeight:'2rem'}}>{props.data.text3Time?props.data.text3Time.substring(0,10):null}</span><br/><br/>
       </p>
     </div>
   )
