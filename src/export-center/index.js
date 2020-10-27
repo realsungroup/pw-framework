@@ -157,6 +157,7 @@ export { WzApprove } from '../components/custom/loadableCustom';
 export { WzAdminApprove } from '../components/custom/loadableCustom';
 export { WzEquipmentApprove } from '../components/custom/loadableCustom';
 export { WzImportApprove } from '../components/custom/loadableCustom';
+export { SignPrint } from '../components/custom/loadableCustom';
 export {
   OnlineTrainingManager,
   MyAssessmentTable,

@@ -842,3 +842,10 @@ export const MyApplication = Loadable({
     return minLoading;
   }
 });
+
+export const SignPrint = Loadable({
+  loader: () => import('./SignPrint'),
+  loading() {
+    return minLoading;
+  }
+});
