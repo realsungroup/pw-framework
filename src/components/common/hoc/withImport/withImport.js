@@ -38,8 +38,7 @@ const withImport = WrappedComponent => {
       onFinishImport,
       saveParams = {},
       fixedFields = {},
-      strict = false,
-      fileNameField = ''
+      strict = false
     ) => {
       const importContainerProps = {
         title: '导入数据',
@@ -64,8 +63,7 @@ const withImport = WrappedComponent => {
         onFinishImport,
         saveParams,
         fixedFields,
-        strict,
-        fileNameField
+        strict
       });
     };
 

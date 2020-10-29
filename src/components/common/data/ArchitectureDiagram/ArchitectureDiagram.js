@@ -371,7 +371,7 @@ class ArchitectureDiagram extends React.Component {
           }
         },
 
-        enableSearch: true,
+        enableSearch: false,
         onClick: (sender, node) => {
           if (!node) {
             return false;
@@ -1975,9 +1975,8 @@ class ArchitectureDiagram extends React.Component {
         importConfig.containerProps,
         this.handleFinishImport,
         {},
-        {},
-        true,
-        'fileName'
+        { fileName: moment().format('YYYY-MM-DD HH:mm') },
+        true
       );
   };
   /**
@@ -2002,9 +2001,8 @@ class ArchitectureDiagram extends React.Component {
           this.DLImportResultRef.refreshTable();
         },
         {},
-        {},
-        false,
-        'fileName'
+        { fileName: moment().format('YYYY-MM-DD HH:mm') },
+        false
       );
   };
   /**
@@ -2688,7 +2686,10 @@ class ArchitectureDiagram extends React.Component {
         filtedNodes: this.chart.config.nodes.filter(item => {
           return (
             item.orgName.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
-            item.memberCN.toLowerCase().indexOf(value.toLowerCase()) >= 0
+            item.memberCN.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+            item.memberID.indexOf(value.toLowerCase()) >= 0 ||
+            item.orgJobEN.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+            item.orgJobCN.toLowerCase().indexOf(value.toLowerCase()) >= 0
           );
         })
       });
@@ -2798,7 +2799,7 @@ class ArchitectureDiagram extends React.Component {
                     onSelect={v => {
                       this.setRootNode(v);
                     }}
-                    placeholder="岗位名、人员姓名搜索"
+                    placeholder="岗位名、人员姓名、工号搜索"
                     size="small"
                   >
                     {filtedNodes.map(job => {

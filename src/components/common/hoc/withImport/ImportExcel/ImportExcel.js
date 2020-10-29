@@ -340,7 +340,7 @@ export default class Import extends React.Component {
   };
 
   handleImportExcel = (sheetData, fileName) => {
-    const { resid, fixedFields, strict, fileNameField } = this.props;
+    const { resid, fixedFields, strict } = this.props;
     const { columninfo } = this.state;
     const resultArr = XLSX.utils.sheet_to_json(sheetData, {
       header: 1,
@@ -381,9 +381,7 @@ export default class Import extends React.Component {
       recordsValue.forEach((value, index) => {
         obj[`${headerInnerFields[index]}`] = value;
       });
-      if (fileNameField) {
-        obj[fileNameField] = fileName;
-      }
+
       return { ...obj, ...fixedFields };
     });
     this.setState({ feRecords: records }, () => {

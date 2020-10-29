@@ -251,7 +251,7 @@ class ArchitectureDiagram extends React.Component {
           }
         },
 
-        enableSearch: true,
+        enableSearch: false,
         onClick: (sender, node) => {
           if (!node) {
             return false;
