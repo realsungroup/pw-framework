@@ -35,7 +35,7 @@ const courseArrangmentResid = '613959525708'; //课程安排表id
 const courseDetailId = '615054661547';
 const OutCourseId = '624970414826'; //外训课程表ID
 const YEAR_RESID = '420161931474'; //财年表id
-
+const streamId='615663201836'//审批流ID
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -63,6 +63,11 @@ const selectStyle = { width: 100, marginRight: 5 };
 
 class ArrangingCourses extends React.Component {
   state = {
+    isShowStream:false,
+    streamData:{
+      name:'',
+      recid:''
+    },//获取审批流用到的数据
     loading: false,
     courseArrangment: [], //课程安排
     isShowModifyModal: false, //是否显示修改课程安排模态窗
@@ -1182,6 +1187,34 @@ class ArrangingCourses extends React.Component {
           </Modal>
         ) : null}
         <Modal
+          visible={this.state.isShowStream}
+          onCancel={
+           ()=>this.setState({
+              isShowStream:false
+            })
+          }
+          width='70%'
+          title={this.state.streamData.name+'申请单审批流'}
+          centered={true}
+          destroyOnClose
+        >
+          <div style={{width:'100%',height:'80vh'}}>
+            <TableData
+                resid={streamId}
+                cmswhere={`C3_615657103208 = '${this.state.streamData.recid}'`}
+                height={'100%'}
+                subtractH={240}
+                hasRowView={false}
+                hasModify={false}
+                hasDelete={false}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowSelection={false}
+            
+            />
+          </div>
+        </Modal>
+        <Modal
           visible={this.state.isShowLearnerInfo}
           onCancel={() =>
             this.setState({
@@ -1217,6 +1250,16 @@ class ArrangingCourses extends React.Component {
               (record, btnSize) => {
                 return (
                   <>
+                    <Button onClick={()=>{
+                      this.setState({
+                        isShowStream:true,
+                        streamData:{
+                          name:record.C3_613941385305,
+                          recid:record.REC_ID
+                        }
+                      })
+
+                    }}>查看申请单审批流</Button>
                     <Popconfirm
                       title="确认放弃吗？"
                       onConfirm={() => {

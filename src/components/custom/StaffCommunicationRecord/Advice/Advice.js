@@ -764,7 +764,12 @@ class Advice extends React.Component {
                 </Col>
                 <Col span={24}>
                   <div>
-                    <label>详细内容：</label> {selectRecord.detail}
+                    <label>现状描述：</label> {selectRecord.currentSituation}
+                  </div>
+                </Col>
+                <Col span={24}>
+                  <div>
+                    <label>改善建议：</label> {selectRecord.adviceContent}
                   </div>
                 </Col>
                 <Col span={24}>

@@ -73,3 +73,10 @@ export const ProcessData = Loadable({
     return minLoading;
   }
 });
+
+export const MultiPrint = Loadable({
+  loader: () => import('./data/MultiPrint'),
+  loading() {
+    return minLoading;
+  }
+});

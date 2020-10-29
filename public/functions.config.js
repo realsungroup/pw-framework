@@ -9535,6 +9535,12 @@ window[649329486527] = {
   props: {}
 };
 
+window[657112495271] = {
+  name: 'SignPrint',
+  title: '员工隐私协议签名打印',
+  props: {}
+};
+
 window[652189809837] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '考勤审核', // 功能模块名称
