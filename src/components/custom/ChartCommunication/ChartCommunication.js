@@ -1,13 +1,15 @@
 import React from 'react';
 import './ChartCommunication.less';
 import TableData from '../../common/data/TableData';
-import { Tabs, Select, Menu, Button, Spin, Radio } from 'antd';
+import { Tabs, Select, Menu, Button, Spin, Radio, DatePicker } from 'antd';
 import http from 'Util20/api';
+import moment from 'moment';
 import html2canvas from 'html2canvas';
 import echarts from 'echarts';
 
 const { Option } = Select;
 const { TabPane } = Tabs;
+const { RangePicker } = DatePicker;
 const dataURIToBlob = (dataURI, fileName, callback) => {
   var binStr = atob(dataURI.split(',')[1]),
     len = binStr.length,
@@ -61,7 +63,9 @@ class ChartCommunication extends React.Component {
       ingTousu: 0,//处理中投诉
       ingQiuzhu: 0,//处理中求助
       ingJianyi: 0,//处理中建议
-      range: '',//报表显示的时间范围
+      range: '-- -- 至 -- --',//报表显示的时间范围
+      stTime:'',//开始日期
+      edTime:'',//结束日期
     };
   }
   changeRepo = (v) => {
@@ -118,7 +122,8 @@ class ChartCommunication extends React.Component {
     this.setState({ season: v });
     this.getData('season', this.state.month, this.state.year, v);
   }
-  getData = async (type, mm, yy, ss) => {
+  getData = async (stTime,edTime) => {
+    console.log(stTime,edTime)
     this.setState({
       loading: true,//是否在获取数据
       total: 0,//总记录
@@ -147,47 +152,53 @@ class ChartCommunication extends React.Component {
       complainTypeData: {}
     })
 
-    let cms = ``;
-    if (type == 'month') {
-      if (mm) {
-        let e = 0;
-        if (mm == 2) {
-          if (yy % 4 == 0 && yy % 100 != 0 || yy % 400 == 0) {
-            e = 29;
-          } else {
-            e = 28;
-          }
-        } else if (mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12) {
-          e = 31;
-        } else {
-          e = 30;
-        }
-        cms = `REC_CRTTIME > "${yy + '-' + mm + '-01'}" and REC_CRTTIME < "${yy + '-' + mm + '-' + e}"`;
-        this.setState({ title: yy + '年' + mm + '月员工沟通统计报告', range: (yy + '年' + mm + '月1日 00:00:00 至 ' + (yy + '年' + mm + '月' + e + '日 23:59:59')) });
-      }
-    } else if (type == 'season') {
-      if (ss) {
-        this.setState({ title: yy + '年第' + ss + '季度员工沟通统计报告' })
-        if (ss == 1) {
-          cms = `REC_CRTTIME > "${yy + '-' + '01-01'}" and REC_CRTTIME < "${yy + '-' + '03-31'}"`;
-          this.setState({ range: yy + '年1月1日 00:00:00 至' + yy + '年3月31日 23:59:59' });
-        } else if (ss == 2) {
-          cms = `REC_CRTTIME > "${yy + '-' + '04-01'}" and REC_CRTTIME < "${yy + '-' + '06-30'}"`;
-          this.setState({ range: yy + '年4月1日 00:00:00 至' + yy + '年6月30日 23:59:59' });
-        } else if (ss == 3) {
-          cms = `REC_CRTTIME > "${yy + '-' + '07-01'}" and REC_CRTTIME < "${yy + '-' + '09-30'}"`;
-          this.setState({ range: yy + '年7月1日 00:00:00 至' + yy + '年9月30日 23:59:59' });
-        } else if (ss == 4) {
-          cms = `REC_CRTTIME > "${yy + '-' + '10-01'}" and REC_CRTTIME < "${yy + '-' + '12-31'}"`;
-          this.setState({ range: yy + '年10月1日 00:00:00 至' + yy + '年12月31日 23:59:59' });
-        }
-      }
-    } else if (type == 'year') {
-      if (yy) {
-        cms = `REC_CRTTIME > "${yy + '-' + '01-01'}" and REC_CRTTIME < "${yy + '-' + '12-31'}"`;
-        this.setState({ title: yy + '年员工沟通统计报告', range: yy + '年1月1日 00:00:00 至' + yy + '年12月31日 23:59:59' });
-      }
-    }
+    let cms=`REC_CRTTIME > "${stTime}" and REC_CRTTIME < "${edTime}"`
+    let str = '';
+    str += stTime||'-- --';
+    str += '至';
+    str += edTime||'-- --'
+    this.setState({ title: '员工沟通统计报告', range: str});
+
+    // if (type == 'month') {
+    //   if (mm) {
+    //     let e = 0;
+    //     if (mm == 2) {
+    //       if (yy % 4 == 0 && yy % 100 != 0 || yy % 400 == 0) {
+    //         e = 29;
+    //       } else {
+    //         e = 28;
+    //       }
+    //     } else if (mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12) {
+    //       e = 31;
+    //     } else {
+    //       e = 30;
+    //     }
+    //     cms = `REC_CRTTIME > "${yy + '-' + mm + '-01'}" and REC_CRTTIME < "${yy + '-' + mm + '-' + e}"`;
+    //     this.setState({ title: yy + '年' + mm + '月员工沟通统计报告', range: (yy + '年' + mm + '月1日 00:00:00 至 ' + (yy + '年' + mm + '月' + e + '日 23:59:59')) });
+    //   }
+    // } else if (type == 'season') {
+    //   if (ss) {
+    //     this.setState({ title: yy + '年第' + ss + '季度员工沟通统计报告' })
+    //     if (ss == 1) {
+    //       cms = `REC_CRTTIME > "${yy + '-' + '01-01'}" and REC_CRTTIME < "${yy + '-' + '03-31'}"`;
+    //       this.setState({ range: yy + '年1月1日 00:00:00 至' + yy + '年3月31日 23:59:59' });
+    //     } else if (ss == 2) {
+    //       cms = `REC_CRTTIME > "${yy + '-' + '04-01'}" and REC_CRTTIME < "${yy + '-' + '06-30'}"`;
+    //       this.setState({ range: yy + '年4月1日 00:00:00 至' + yy + '年6月30日 23:59:59' });
+    //     } else if (ss == 3) {
+    //       cms = `REC_CRTTIME > "${yy + '-' + '07-01'}" and REC_CRTTIME < "${yy + '-' + '09-30'}"`;
+    //       this.setState({ range: yy + '年7月1日 00:00:00 至' + yy + '年9月30日 23:59:59' });
+    //     } else if (ss == 4) {
+    //       cms = `REC_CRTTIME > "${yy + '-' + '10-01'}" and REC_CRTTIME < "${yy + '-' + '12-31'}"`;
+    //       this.setState({ range: yy + '年10月1日 00:00:00 至' + yy + '年12月31日 23:59:59' });
+    //     }
+    //   }
+    // } else if (type == 'year') {
+    //   if (yy) {
+    //     cms = `REC_CRTTIME > "${yy + '-' + '01-01'}" and REC_CRTTIME < "${yy + '-' + '12-31'}"`;
+    //     this.setState({ title: yy + '年员工沟通统计报告', range: yy + '年1月1日 00:00:00 至' + yy + '年12月31日 23:59:59' });
+    //   }
+    // }
     try {
       let res = await http({ baseURL: this.baseURL }).getTable({
         resid: '648050843809',
@@ -531,7 +542,7 @@ myChart2.setOption(option2);
     } catch (e) { console.log(e.message); this.setState({ loading: false }) }
   }
   componentWillMount() {
-    this.getTime();
+    // this.getTime();
   }
   // 导出图片的功能
   exportPNG = async () => {
@@ -554,6 +565,13 @@ myChart2.setOption(option2);
 
     await this.refs.toPrint.classList.remove('printMode');
   };
+  //改变日期
+  changeDate=(v)=>{
+    let stTime = moment(v[0]).format('YYYY-MM-DD HH:mm:ss');
+    let edTime = moment(v[1]).format('YYYY-MM-DD HH:mm:ss');
+    console.log(stTime,edTime,'111')
+    this.getData(stTime,edTime)
+  }
   render() {
     const { complainTypeData } = this.state
     return (
@@ -563,7 +581,7 @@ myChart2.setOption(option2);
             <div className='innerWrap'>
               <div className='center'>
                 <div className='ctr'>
-                  <div class='ctr-line'>
+                  {/* <div class='ctr-line'>
                     <div style={{ marginBottom: 8 }}>
                       <Radio.Group defaultValue="月报" buttonStyle="solid" onChange={(v) => this.changeRepo(v.target.value)}>
                         <Radio.Button value="月报" style={{ width: 68, textAlign: 'center' }}>月报</Radio.Button>
@@ -610,7 +628,11 @@ myChart2.setOption(option2);
                         <Option value="4">4</Option>
                       </Select>
                     </div>
-                    : null}
+                    : null} */}
+                  <h3>选择时间段：</h3>
+                  <div style={{margin:'1rem 0'}}>
+                  <RangePicker allowClear={false} showTime onOk={(v)=>{this.changeDate(v)}}/>
+                  </div>
                   <Button disabled={this.state.loading} onClick={() => this.exportPNG()}>导出PNG</Button>
                 </div>
 
