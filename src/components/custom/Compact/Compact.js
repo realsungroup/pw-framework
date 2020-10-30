@@ -32,6 +32,10 @@ const filterTab1 = [
   {
     label: '全部人员',
     resid: '436624135588'
+  },
+  {
+    label:'合同历史信息',
+    resid:'436624421847'
   }
 ];
 const filterTab2A = [
@@ -300,6 +304,45 @@ refre=()=>{
                   }
                 ]}
               />:null}
+              
+              {this.state.residTab1=='436624421847'?<TableData
+                resid={436624421847}
+                subtractH={180}
+                // tableComponent="ag-grid"
+                // sideBarAg={true}
+                hasAdvSearch={true}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasRowModify={true}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={false}
+                hasRowSelection={false}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+
+                // customRowBtns={[
+                //   (record, btnSize) => {
+                //     return (
+                //       <Button
+                //         size={btnSize}
+                //         onClick={() => {
+                          
+                //           this.setState({
+                //             selectedPerson: record,
+                //             contractHistoryVisible: true
+                //           });
+                //           console.log(record)
+                //         }}
+                //       >
+                //         查看历史信息
+                //       </Button>
+                //     );
+                //   }
+                // ]}
+              />:null}
+
               {this.state.residTab1=='436624135588'?<TableData
                 resid={436624135588}
                 subtractH={180}
