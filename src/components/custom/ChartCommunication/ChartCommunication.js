@@ -631,7 +631,7 @@ myChart2.setOption(option2);
                     : null} */}
                   <h3>选择时间段：</h3>
                   <div style={{margin:'1rem 0'}}>
-                  <RangePicker allowClear={false} showTime onChange={(v)=>{this.changeDate(v)}}/>
+                  <RangePicker allowClear={false} showTime onOk={(v)=>{this.changeDate(v)}}/>
                   </div>
                   <Button disabled={this.state.loading} onClick={() => this.exportPNG()}>导出PNG</Button>
                 </div>
