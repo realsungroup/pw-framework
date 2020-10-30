@@ -9672,3 +9672,8 @@ window[644526459974] = {
     subtractH: 200
   }
 };
+window[657303161887] = {
+  name: 'PersonnelChangeHistory', // 组件名称，
+  title: '人事变动历史', // 功能模块名称
+  props: {resid:'657295115165'}
+};

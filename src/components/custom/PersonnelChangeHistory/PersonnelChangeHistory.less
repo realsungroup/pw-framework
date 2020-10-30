@@ -1,0 +1,106 @@
+.personnel-chang-history {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100vh;
+  background: #ffffff;
+  position: relative;
+  .pch-header {
+    .pch-header-times {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      padding-bottom: 0;
+      .pch-header-times-item {
+        margin-right: 12px;
+        span {
+          margin-right: 8px;
+        }
+      }
+    }
+    .pch-header-type {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+    }
+  }
+  .pch-tabledata-container {
+    flex: 1;
+    overflow: hidden;
+  }
+  .pch-change-history {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    background: #ffffff;
+    overflow: hidden;
+    & > .ant-spin-nested-loading {
+      width: 100%;
+      height: 100%;
+      & > .ant-spin-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    .change-history-main {
+      display: flex;
+      flex: 1;
+      overflow: scroll;
+    }
+    header {
+      display: flex;
+      padding: 12px;
+      border-bottom: 1px solid #e3e3e3;
+      background: #ffffff;
+      align-items: center;
+      justify-content: space-between;
+      .change-history__employee-info {
+        img {
+          height: 36px;
+          width: auto;
+          margin-right: 12px;
+        }
+        span {
+          margin-right: 12px;
+          font-size: 14px;
+        }
+        span:first-of-type {
+          font-size: 16px;
+          color: #000000;
+          font-weight: bold;
+        }
+      }
+    }
+    aside {
+      padding: 16px 24px;
+      background: #ffffff;
+      border-right: 1px solid #e3e3e3;
+      h3 {
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+      .ant-timeline-item {
+        cursor: pointer;
+      }
+    }
+    content {
+      margin: 16px 24px;
+      background: #ffffff;
+      overflow-y: scroll;
+      flex: 1;
+      h3 {
+        font-size: 14px;
+      }
+      h2 {
+        font-size: 16px;
+        padding-top: 12px;
+        border-top: 1px solid #e3e3e3;
+      }
+    }
+  }
+}

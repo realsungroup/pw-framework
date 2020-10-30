@@ -173,5 +173,6 @@ export {
   StaffCommunicationRecord,
   StaffComplain,
   ChartCommunication,
-  ReplyComplain
+  ReplyComplain,
+  PersonnelChangeHistory
 } from '../components/custom/loadableCustom';
