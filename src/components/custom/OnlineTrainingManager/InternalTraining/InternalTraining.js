@@ -252,7 +252,7 @@ class InternalTraining extends React.Component {
       courseCompletionVisible,
       chapter
     } = this.state;
-    const { baseURL, coursePapers } = this.props;
+    const { baseURL, coursePapers, downloadBaseURL } = this.props;
     const _courses = this.filterCourses(courses, filterText);
     return (
       <div className="online-internal-training">
@@ -322,7 +322,7 @@ class InternalTraining extends React.Component {
             baseURL={baseURL}
             actionBarWidth={150}
             hasRowModify={false}
-            noWidthFields='C3_636484839104'
+            noWidthFields="C3_636484839104"
             hasRowSelection={true}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
@@ -331,6 +331,7 @@ class InternalTraining extends React.Component {
                 ? `C3_636732625526 = '${selectedCourse.C3_636484839104}'`
                 : '1 != 1'
             }
+            downloadBaseURL={downloadBaseURL}
             actionBarExtra={({
               dataSource,
               selectedRowKeys,
