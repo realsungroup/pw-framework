@@ -870,6 +870,21 @@ class CourseArrangementInternal extends React.Component {
                   }}
                 />
               </Form.Item>
+              <Form.Item label="课程名额">
+                <Input
+                  id="quarter"
+                  type="number"
+                  value={modifiedCourseArrangement.places}
+                  onChange={e => {
+                    this.setState({
+                      modifiedCourseArrangement: {
+                        ...modifiedCourseArrangement,
+                        places: e.target.value
+                      }
+                    });
+                  }}
+                />
+              </Form.Item>
               <Form.Item label="安排类型">
                 <Select
                   id="classType"
