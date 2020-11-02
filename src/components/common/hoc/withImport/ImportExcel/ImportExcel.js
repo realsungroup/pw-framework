@@ -375,7 +375,6 @@ export default class Import extends React.Component {
     if (!fieldIsCorrect) {
       return;
     }
-    console.info(resultArr[0]);
     const records = recordArr.map(recordsValue => {
       let obj = {};
       recordsValue.forEach((value, index) => {
@@ -390,7 +389,7 @@ export default class Import extends React.Component {
           return this.saveOneRecord(resid, record, index);
         };
       });
-      runPromiseByQueue(pArr, null, this.props.onFinishImport);
+      runPromiseByQueue(pArr, null, () => this.props.onFinishImport(records));
     });
   };
 
