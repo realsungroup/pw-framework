@@ -849,3 +849,9 @@ export const SignPrint = Loadable({
     return minLoading;
   }
 });
+export const PersonnelChangeHistory = Loadable({
+  loader: () => import('./PersonnelChangeHistory'),
+  loading() {
+    return minLoading;
+  }
+});

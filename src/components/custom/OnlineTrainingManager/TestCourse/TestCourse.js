@@ -252,7 +252,7 @@ class TestCourse extends React.Component {
       courseCompletionVisible,
       chapter
     } = this.state;
-    const { baseURL, coursePapers } = this.props;
+    const { baseURL, coursePapers, downloadBaseURL } = this.props;
     const _courses = this.filterCourses(courses, filterText);
     return (
       <div className="online-internal-training">
@@ -321,11 +321,12 @@ class TestCourse extends React.Component {
             hasAdd={false}
             baseURL={baseURL}
             actionBarWidth={150}
-            noWidthFields='C3_636484839104'
+            noWidthFields="C3_636484839104"
             hasRowModify={false}
             hasRowSelection={true}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
+            downloadBaseURL={downloadBaseURL}
             cmswhere={
               selectedCourse.REC_ID
                 ? `C3_636732625526 = '${selectedCourse.C3_636484839104}'`

@@ -2,8 +2,6 @@ import React from 'react';
 import './InternalTrainingAuth.less';
 import TableData from 'Common/data/TableData';
 
-const baseURLDownload =
-  window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainningDownload;
 class InternalTrainingAuth extends React.Component {
   constructor(props) {
     super(props);
@@ -11,10 +9,11 @@ class InternalTrainingAuth extends React.Component {
   }
 
   render() {
+    const { downloadBaseURL } = this.props;
     return (
       <TableData
+        downloadBaseURL={downloadBaseURL}
         resid={640021774020}
-        downloadBaseURL={baseURLDownload}
         baseURL={this.props.baseURL}
         recordFormFormWidth="90%"
         hasBeBtns={true}
@@ -25,7 +24,7 @@ class InternalTrainingAuth extends React.Component {
         hasRowModify={false}
         hasRowView={false}
         subtractH={180}
-        noWidthFields='ID'
+        noWidthFields="ID"
         isSetColumnWidth={false}
         formProps={{ height: 550 }}
       />

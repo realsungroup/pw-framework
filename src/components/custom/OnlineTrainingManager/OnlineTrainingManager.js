@@ -14,6 +14,10 @@ const tabBarStyle = { background: '#ffffff', marginBottom: 0 };
 
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.OnlineTrainingManagerBaseURL;
+
+const baseURLDownload =
+  window.pwConfig[process.env.NODE_ENV].customURLs.staffComDownloadURL;
+
 class OnlineTrainingManager extends React.Component {
   state = { coursePapers: [] };
   componentDidMount() {
@@ -48,19 +52,37 @@ class OnlineTrainingManager extends React.Component {
         onChange={this.handleTabsChange}
       >
         <TabPane tab="入职培训" key="1" style={{ height: '100%' }}>
-          <EntryTraining baseURL={baseURL} coursePapers={coursePapers} />
+          <EntryTraining
+            baseURL={baseURL}
+            coursePapers={coursePapers}
+            downloadBaseURL={baseURLDownload}
+          />
         </TabPane>
         <TabPane tab="在线内训" key="2">
-          <InternalTraining baseURL={baseURL} coursePapers={coursePapers} />
+          <InternalTraining
+            baseURL={baseURL}
+            coursePapers={coursePapers}
+            downloadBaseURL={baseURLDownload}
+          />
         </TabPane>
         <TabPane tab="考试课程" key="3">
-          <TestCourse baseURL={baseURL} coursePapers={coursePapers} />
+          <TestCourse
+            baseURL={baseURL}
+            coursePapers={coursePapers}
+            downloadBaseURL={baseURLDownload}
+          />
         </TabPane>
         <TabPane tab="在线内训授权" key="4">
-          <InternalTrainingAuth baseURL={baseURL} />
+          <InternalTrainingAuth
+            baseURL={baseURL}
+            downloadBaseURL={baseURLDownload}
+          />
         </TabPane>
         <TabPane tab="在线培训试卷管理" key="5">
-          <TestPaperManager baseURL={baseURL} />
+          <TestPaperManager
+            baseURL={baseURL}
+            downloadBaseURL={baseURLDownload}
+          />
         </TabPane>
         <TabPane tab="考试回答记录" key="6">
           <TableData
@@ -76,9 +98,9 @@ class OnlineTrainingManager extends React.Component {
             hasRowSelection={true}
             baseURL={baseURL}
             advSearch={{
-              formName:"defaultSearch"
-            }
-            }
+              formName: 'defaultSearch'
+            }}
+            downloadBaseURL={baseURLDownload}
           />
         </TabPane>
         <TabPane tab="课程附件管理" key="7">
@@ -92,11 +114,11 @@ class OnlineTrainingManager extends React.Component {
             hasAdd={true}
             baseURL={baseURL}
             isSetColumnWidth={false}
-            noWidthFields='C3_636485664255'
+            noWidthFields="C3_636485664255"
             advSearch={{
-              formName:"defaultSearch"
-            }
-            }
+              formName: 'defaultSearch'
+            }}
+            downloadBaseURL={baseURLDownload}
           />
         </TabPane>
       </Tabs>

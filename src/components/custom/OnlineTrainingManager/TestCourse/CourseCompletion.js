@@ -5,8 +5,6 @@ import exportJsonExcel from 'js-export-excel';
 import TableData from 'Common/data/TableData';
 import moment from 'moment';
 
-const baseURLDownload =
-  window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainningDownload;
 class CourseCompletion extends React.Component {
   state = { authData: [], dataSource: [], loading: true };
   _column = [
@@ -154,7 +152,7 @@ class CourseCompletion extends React.Component {
   };
   render() {
     const { dataSource, loading } = this.state;
-    const { chapter, baseURL, course } = this.props;
+    const { chapter, baseURL, course, downloadBaseURL } = this.props;
     return chapter.C3_636735464189 ? (
       <div>
         <Button
@@ -179,7 +177,7 @@ class CourseCompletion extends React.Component {
     ) : (
       <TableData
         resid={640021774020}
-        downloadBaseURL={baseURLDownload}
+        downloadBaseURL={downloadBaseURL}
         baseURL={baseURL}
         recordFormFormWidth="90%"
         hasBeBtns={false}
