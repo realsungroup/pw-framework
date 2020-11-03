@@ -1998,7 +1998,7 @@ class ArchitectureDiagram extends React.Component {
         () => {
           this.setState({ DLImportResultVisible: true });
           this.props.closeImportView();
-          this.DLImportResultRef.refreshTable();
+          this.DLImportResultRef && this.DLImportResultRef.refreshTable();
         },
         {},
         { fileName: moment().format('YYYY-MM-DD HH:mm') },
@@ -2283,8 +2283,11 @@ class ArchitectureDiagram extends React.Component {
                     <Menu.Item onClick={this.handleDLRuzhi}>DL</Menu.Item>
                     <Menu.Item onClick={this.handleRuzhi}>IDL</Menu.Item>
                   </SubMenu>
+                  <SubMenu title="变动">
+                    <Menu.Item onClick={this.handleDLRuzhi}>DL</Menu.Item>
+                    <Menu.Item onClick={this.handleBiandong}>IDL</Menu.Item>
+                  </SubMenu>
                   <Menu.Item onClick={this.handleLizhi}>离职</Menu.Item>
-                  <Menu.Item onClick={this.handleBiandong}>变动</Menu.Item>
                   {/* <Menu.Item onClick={this.handleImport}>兼任</Menu.Item> */}
                 </Menu>
               }
@@ -2689,7 +2692,8 @@ class ArchitectureDiagram extends React.Component {
             item.memberCN.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
             item.memberID.indexOf(value.toLowerCase()) >= 0 ||
             item.orgJobEN.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
-            item.orgJobCN.toLowerCase().indexOf(value.toLowerCase()) >= 0
+            item.orgJobCN.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+            item.orgNumber.toLowerCase().indexOf(value.toLowerCase()) >= 0
           );
         })
       });
@@ -3144,12 +3148,13 @@ class ArchitectureDiagram extends React.Component {
             </div>
 
             {this.renderImportResult()}
-            <DLImportResult
-              ref={e => (this.DLImportResultRef = e)}
-              visible={DLImportResultVisible}
-              baseURL={baseURL}
-              onClose={this.handleCloseDLRuzhiImport}
-            />
+            {DLImportResultVisible && (
+              <DLImportResult
+                ref={e => (this.DLImportResultRef = e)}
+                baseURL={baseURL}
+                onClose={this.handleCloseDLRuzhiImport}
+              />
+            )}
           </div>
         </Spin>
 
@@ -3556,11 +3561,7 @@ class DLImportResult extends React.PureComponent {
       spinnig
     } = this.state;
     return (
-      <div
-        className={classNames('architecture-diagram__import-result', {
-          hidden: !visible
-        })}
-      >
+      <div className={classNames('architecture-diagram__import-result', {})}>
         <div
           className="architecture-diagram__import-result-mask"
           onClick={this.handleCloseImportResult}
@@ -3593,7 +3594,7 @@ class DLImportResult extends React.PureComponent {
                         (this.tableDataRef1 = element)
                       }
                       refTargetComponentName="TableData"
-                      subtractH={240}
+                      subtractH={180}
                       hasAdd={false}
                       hasRowView={false}
                       hasRowDelete={true}
@@ -3638,7 +3639,7 @@ class DLImportResult extends React.PureComponent {
                       hasRowEdit={false}
                       hasDelete={true}
                       hasModify={false}
-                      hasRowModify={false}
+                      hasRowModify={true}
                       hasRowSelection={true}
                       hasAdvSearch={false}
                       importConfig={null}

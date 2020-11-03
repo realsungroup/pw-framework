@@ -13,7 +13,8 @@ import {
   Form,
   Button,
   DatePicker,
-  Tree
+  Tree,
+  Progress
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -170,7 +171,9 @@ class ArchitectureDiagram extends React.Component {
       selectedDepartments: [],
       rootKey: [],
       parentKeys: [],
-      filtedNodes: []
+      filtedNodes: [],
+      importRecords: [],
+      importProgressVisible: false
     };
   }
 
@@ -1112,7 +1115,36 @@ class ArchitectureDiagram extends React.Component {
   handleAggridSelectionChange = rows => {
     this.setState({ tableSelectedNode: rows[0] ? rows[0] : {} });
   };
-
+  handleImport = () => {
+    const { openImportView, baseURL, resid, closeImportView } = this.props;
+    const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
+    openImportView &&
+      openImportView(
+        '',
+        url,
+        resid,
+        'fe',
+        'drawer',
+        'editoradd',
+        {},
+        records => {
+          closeImportView();
+          this.setState({
+            importProgressVisible: true,
+            importRecords: records
+          });
+        },
+        {},
+        {},
+        false
+      );
+  };
+  handleDownload = () => {
+    window.open(
+      window.pwConfig[process.env.NODE_ENV].customURLs
+        .importJobTemplateDownloadURL
+    );
+  };
   renderHeader = () => {
     const { mode, isGrouping, selectedNode, currentLevel } = this.state;
     const { hasOpration, hasImport, hasGroup } = this.props;
@@ -1291,9 +1323,12 @@ class ArchitectureDiagram extends React.Component {
                 type="upload"
                 className="architecture-diagram_header_icon-button__icon"
               />
-              导入数据
+              批量修改岗位信息
             </div>
-            <div className="architecture-diagram_header_icon-button">
+            <div
+              className="architecture-diagram_header_icon-button"
+              onClick={this.handleDownload}
+            >
               <Icon
                 type="download"
                 className="architecture-diagram_header_icon-button__icon"
@@ -1464,7 +1499,8 @@ class ArchitectureDiagram extends React.Component {
         filtedNodes: this.chart.config.nodes.filter(item => {
           return (
             item.orgJobEN.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
-            item.orgName.toLowerCase().indexOf(value.toLowerCase()) >= 0
+            item.orgName.toLowerCase().indexOf(value.toLowerCase()) >= 0 ||
+            item.orgNumber.toLowerCase().indexOf(value.toLowerCase()) >= 0
           );
         })
       });
@@ -1494,7 +1530,9 @@ class ArchitectureDiagram extends React.Component {
       rootKey,
       parentKeys,
       filtedNodes,
-      fetchingData
+      fetchingData,
+      importRecords,
+      importProgressVisible
     } = this.state;
     const { baseURL, displayFileds, hasView, idField } = this.props;
     return (
@@ -1994,6 +2032,17 @@ class ArchitectureDiagram extends React.Component {
             }}
           />
         </Drawer>
+        {importProgressVisible && (
+          <ImportProgress
+            records={importRecords}
+            resid={638459489229}
+            baseURL={baseURL}
+            onClose={() => {
+              this.setState({ importProgressVisible: false });
+              this.handleRefresh();
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -2005,3 +2054,135 @@ const composedHoc = compose(
 );
 
 export default composedHoc(ArchitectureDiagram);
+
+class ImportProgress extends React.Component {
+  state = { percent: 0, isFinished: false };
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData = async () => {
+    const { baseURL, resid, records } = this.props;
+    const orgNumbers = records.map(item => {
+      return `'${item.orgNumber}'`;
+    });
+    try {
+      let res = await http({ baseURL }).getTable({
+        resid,
+        cmswhere: `C3_465142349966 in (${orgNumbers.join(',')})`
+      });
+
+      res = await http({ baseURL }).StartSaveTask({
+        resid,
+        data: JSON.stringify(
+          res.data.map((item, index) => {
+            const findData = records.find(record => {
+              return record.orgNumber == item.C3_465142349966;
+            });
+            console.log(findData);
+            return {
+              ...item,
+              C3_470524257391: findData.updateDate,
+              _state: 'editoradd',
+              _id: index
+            };
+          })
+        )
+      });
+      const taskid = res.taskid;
+      if (taskid) {
+        this.getTaskInfo(taskid);
+      } else {
+        message.error('无taskid');
+      }
+    } catch (error) {
+      console.error(error);
+      message.error(error.message);
+    }
+  };
+  componentWillUnmount = () => {
+    this.timer = null;
+    this.getTaskInfo = null;
+  };
+  getTaskInfo = async taskid => {
+    let res;
+    const { baseURL } = this.props;
+    let httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    try {
+      res = await http(httpParams).RetrieveSaveTask({
+        taskid,
+        includeData: true
+      });
+    } catch (err) {
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo(taskid);
+        }
+      }, 1000);
+      console.log(err);
+      return message.error(err.message);
+    }
+    let data = res.data;
+    if (res.IsCompleted) {
+      // 当前任务已完成
+      if (data.result.Error !== 0) {
+        let errorList = [];
+        data.result.data.forEach(item => {
+          if (item.maindata.message) {
+            errorList.push(item.maindata);
+          }
+        });
+        let percent = Math.floor((data.intCurrent / data.intTotalNumber) * 100);
+        this.setState({
+          errorList,
+          percent,
+          isFinished: true,
+          intCurrent: data.intCurrent,
+          intErrLines: data.intErrLines,
+          intTotalNumber: data.intTotalNumber
+        });
+      } else {
+        this.setState({
+          percent: 100,
+          isFinished: true,
+          intCurrent: data.intCurrent,
+          intErrLines: data.intErrLines,
+          intTotalNumber: data.intTotalNumber
+        });
+      }
+    } else {
+      // 当前任务未完成
+      let percent = Math.floor((data.intCurrent / data.intTotalNumber) * 100);
+      this.setState({
+        percent,
+        isFinished: false,
+        intCurrent: data.intCurrent,
+        intErrLines: data.intErrLines,
+        intTotalNumber: data.intTotalNumber
+      });
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo(taskid);
+        }
+      }, 1000);
+    }
+  };
+  render() {
+    const { percent, isFinished } = this.state;
+    const { onClose } = this.props;
+    return (
+      <Modal visible={true} title="同步进度" onCancel={null} footer={null}>
+        <Progress percent={percent} />
+        <div style={{ padding: 12 }}>
+          <Button disabled={!isFinished} type="primary" block onClick={onClose}>
+            完成
+          </Button>
+        </div>
+      </Modal>
+    );
+  }
+}

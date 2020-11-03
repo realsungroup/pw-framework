@@ -106,7 +106,7 @@ class PostArchitecture extends React.Component {
               baseURL={baseURL}
               createWindowName="CreateWindow"
               editWindowName="EditWindow"
-              hasImport={false}
+              hasImport={true}
               hasGroup={hasGroup}
               hasDepartmentFilter={hasDepartmentFilter}
               role={role}

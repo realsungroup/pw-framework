@@ -55,6 +55,8 @@ window.pwConfig = {
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
       importTemplateDownloadURL:
+        'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
+      importJobTemplateDownloadURL:
         'http://10.108.2.66/rispweb/upfiles/transtem.zip' //岗位任职导入模板下载链接
     },
 
@@ -272,6 +274,8 @@ window.pwConfig = {
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //员工沟通平台数据基地址
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //员工沟通平台下载基地址
       importTemplateDownloadURL:
+        'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
+      importJobTemplateDownloadURL:
         'http://10.108.2.66/rispweb/upfiles/transtem.zip' //岗位任职导入模板下载链接
     },
     // 绩效-我的评估表功能用到的子表
