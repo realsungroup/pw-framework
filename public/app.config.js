@@ -7,11 +7,7 @@ window.pwConfig = {
     // 地址
     // baseURL: 'http://10.108.11.36:6001/', // 请求的基地址
     // baseURL: 'http://pwkwebapi.realsun.me/',
-<<<<<<< HEAD
-    baseURL: 'http://10.108.2.66:1001/',// 请求的基地址
-=======
     baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
->>>>>>> f004fcfbdced55eed4abe77b0198ea9a6fb2be60
     // baseURL: 'http://10.108.2.66:5002/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址

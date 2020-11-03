@@ -2332,7 +2332,7 @@ class ArchitectureDiagram extends React.Component {
                 type="eye"
                 className="architecture-diagram_header_icon-button__icon"
               />
-              查看DL入职导入匹配结果
+              查看DL导入匹配结果
             </div>
           </div>
         )}

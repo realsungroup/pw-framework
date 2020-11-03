@@ -286,7 +286,14 @@ class ChangeHistory extends React.PureComponent {
                       }}
                       key={item[0]}
                     >
-                      {item[0]}
+                      <p
+                        style={{
+                          color:
+                            item[0] == selectedHistory[0] ? '#1890FF' : '#000'
+                        }}
+                      >
+                        {item[0]}
+                      </p>
                     </Timeline.Item>
                   );
                 })}
