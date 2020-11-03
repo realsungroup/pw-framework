@@ -206,7 +206,7 @@ export default class PageContainer extends React.Component {
 
   // 获取考勤月份列表
   getAttendanceMonthList = async () => {
-    const res = await http().getTable({
+    const res = await http({ baseURL: attendanceMonthChangeUrl }).getTable({
       resid: 424358078333
     });
     if (res && Array.isArray(res.data)) {
