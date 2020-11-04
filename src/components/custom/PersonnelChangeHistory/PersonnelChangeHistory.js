@@ -19,6 +19,9 @@ const { Panel } = Collapse;
 const { Option } = Select;
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureBaseURL;
+const downloadBaseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs
+    .PostArchitectureDownloadBaseURL;
 
 class PersonnelChangeHistory extends React.Component {
   state = {
@@ -112,6 +115,7 @@ class PersonnelChangeHistory extends React.Component {
           <TableData
             resid={resid}
             baseURL={baseURL}
+            downloadBaseURL={downloadBaseURL}
             hasRowView={false}
             hasRowDelete={false}
             hasRowEdit={false}
