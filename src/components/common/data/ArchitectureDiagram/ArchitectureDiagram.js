@@ -599,6 +599,10 @@ class ArchitectureDiagram extends React.Component {
         selectedNode: newSelectedNode,
         treeData
       });
+      if (newSelectedNode.id) {
+        this.getHistory();
+        this.getPartHistory();
+      }
       this.chart.load(nodes);
       this._nodes = [...nodes];
       for (var i = 0; i < nodes.length; i++) {
@@ -821,6 +825,9 @@ class ArchitectureDiagram extends React.Component {
     });
     this.setState({
       joinVisible: true
+    });
+    this.handleNodeClick(this.chart, {
+      node: { id }
     });
   };
 
@@ -1150,6 +1157,9 @@ class ArchitectureDiagram extends React.Component {
       },
       {}
     );
+    this.handleNodeClick(this.chart, {
+      node: { id: nodeId }
+    });
   };
 
   openLizhiModal = nodeId => {
@@ -1320,6 +1330,9 @@ class ArchitectureDiagram extends React.Component {
       },
       {}
     );
+    this.handleNodeClick(this.chart, {
+      node: { id: nodeId }
+    });
   };
   openTransferFromModal = nodeId => {
     const node = this.chart.get(nodeId);
@@ -1418,6 +1431,9 @@ class ArchitectureDiagram extends React.Component {
       },
       {}
     );
+    this.handleNodeClick(this.chart, {
+      node: { id: nodeId }
+    });
   };
 
   /**
@@ -1525,7 +1541,7 @@ class ArchitectureDiagram extends React.Component {
   openImportModal = nodeId => {
     const node = this.chart.get(nodeId);
     const { baseURL } = this.props;
-    if (node.isEmpty !== 'Y') {
+    if (node.isEmpty !== 'Y' && node.isVirtual !== 'Y') {
       return message.info('非空缺岗位');
     }
     if (node.isScrap !== 'Y' && node.isScrap !== 'N') {
@@ -1649,6 +1665,9 @@ class ArchitectureDiagram extends React.Component {
       },
       {}
     );
+    this.handleNodeClick(this.chart, {
+      node: { id: nodeId }
+    });
   };
 
   /**
@@ -2332,7 +2351,7 @@ class ArchitectureDiagram extends React.Component {
                 type="eye"
                 className="architecture-diagram_header_icon-button__icon"
               />
-              查看DL入职导入匹配结果
+              查看DL导入匹配结果
             </div>
           </div>
         )}

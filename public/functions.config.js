@@ -212,9 +212,9 @@ window[606493652444] = {
     hasRowDelete: false,
     subtractH: 166,
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
-    backendButtonPopConfirmProps: { placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' }
   }
 };
 
@@ -838,14 +838,13 @@ window[605871880758] = {
   name: 'LzRecord',
   props: {
     height: 'calc(100vh - 60px)'
-  },
+  }
 };
 // 访客审批
 window[605893340481] = {
   title: '访客审批',
   name: 'LzApproval'
 };
-
 
 //打印
 window[603827488844] = {
@@ -937,7 +936,7 @@ window[648297903478] = {
     hasRowSelection: true,
     height: '100vh',
     recordFormFormWidth: '90%',
-    backendButtonPopConfirmProps: { placement: 'bottom' },
+    backendButtonPopConfirmProps: { placement: 'bottom' }
   } // 组件所接收的 props
 };
 //供应商审批
@@ -1112,7 +1111,7 @@ window[607168416937] = {
     resid: 607188943833,
     hasAdd: false,
     hasModify: false,
-    hasDelete: false,
+    hasDelete: false
     // columnsWidth: {
     //   考试名称: 250,
     //   考试次数: 110,
@@ -1384,7 +1383,7 @@ window[611077057050] = {
       placement: 'bottom',
       height: 600
     },
-    noWidthFields: "C3_611070959393",
+    noWidthFields: 'C3_611070959393',
     subTableArrProps: [
       {
         subTableName: '人员名单',
@@ -1833,7 +1832,7 @@ window[614706766207] = {
   title: '符合解除人员',
   props: {
     baseURL: 'http://10.108.2.66:9091',
-    downloadBaseURL: 'http://10.108.2.66:80',
+    downloadBaseURL: 'http://10.108.2.66:80'
     //   resid: 614709186509,
     //   recordFormFormWidth: '90%',
     //   hasBeBtns: false,
@@ -2169,7 +2168,7 @@ window[628886558788] = {
     hasRowDelete: false,
     isUseFormDefine: false,
     advSearch: {
-      formName: 'defaultSearch',
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -2263,7 +2262,7 @@ window[641990842014] = {
   props: {
     resid: '534530373089',
     replaceBaseUrl: 'http://10.108.2.66:8011/',
-    baseURL: 'http://10.108.2.66:1001',
+    baseURL: 'http://10.108.2.66:1001'
   }
 };
 window[641992029202] = {
@@ -2272,8 +2271,7 @@ window[641992029202] = {
   props: {
     resid: '534530373089',
     replaceBaseUrl: 'http://10.108.2.66:8011/',
-    baseURL: 'http://10.108.2.66:1001',
-
+    baseURL: 'http://10.108.2.66:1001'
   }
 };
 window[641992076936] = {
@@ -2282,8 +2280,7 @@ window[641992076936] = {
   props: {
     resid: '534957565681',
     replaceBaseUrl: 'http://10.108.2.66:8011/',
-    baseURL: 'http://10.108.2.66:1001',
-
+    baseURL: 'http://10.108.2.66:1001'
   }
 };
 window[641992112255] = {
@@ -2292,8 +2289,7 @@ window[641992112255] = {
   props: {
     resid: '537391112338',
     replaceBaseUrl: 'http://10.108.2.66:8011/',
-    baseURL: 'http://10.108.2.66:1001',
-
+    baseURL: 'http://10.108.2.66:1001'
   }
 };
 
@@ -2303,8 +2299,7 @@ window[641992135890] = {
   props: {
     resid: '537532977680',
     replaceBaseUrl: 'http://10.108.2.66:8011/',
-    baseURL: 'http://10.108.2.66:1001',
-
+    baseURL: 'http://10.108.2.66:1001'
   }
 };
 window[643313663856] = {
@@ -2402,7 +2397,7 @@ window[642853692520] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2429,7 +2424,7 @@ window[646240367975] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2480,7 +2475,7 @@ window[642853717153] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2506,7 +2501,7 @@ window[642853731843] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2531,7 +2526,7 @@ window[642853756410] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2559,7 +2554,7 @@ window[642853770096] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2588,7 +2583,7 @@ window[642853871961] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2617,7 +2612,7 @@ window[642853893908] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2642,7 +2637,7 @@ window[642853907777] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200,
     beforeSaveConfig: {
@@ -2673,7 +2668,7 @@ window[642853918132] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -2684,8 +2679,8 @@ window[642853918132] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -2714,7 +2709,7 @@ window[642853928356] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2738,12 +2733,12 @@ window[642853955171] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     isUseFormDefine: false,
-    noWidthFields: "DEP_ID",
+    noWidthFields: 'DEP_ID',
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2772,7 +2767,7 @@ window[642854041376] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2799,7 +2794,7 @@ window[642854056479] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2832,7 +2827,7 @@ window[642854067180] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -2845,8 +2840,8 @@ window[642854067180] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       433771913157: {
         hasBeBtns: true,
@@ -2856,8 +2851,8 @@ window[642854067180] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       469288143241: {
         hasBeBtns: true,
@@ -2867,8 +2862,8 @@ window[642854067180] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -2897,13 +2892,13 @@ window[642854077482] = {
     noWidthFields: 'C3_441994473858',
     advSearch: {
       // formName:"defaultSearch"
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -2965,7 +2960,7 @@ window[642854098292] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -2976,8 +2971,8 @@ window[642854098292] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -3003,7 +2998,7 @@ window[642854107052] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3032,7 +3027,7 @@ window[642854117487] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3061,7 +3056,7 @@ window[642854131163] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3087,7 +3082,7 @@ window[642854141907] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3112,7 +3107,7 @@ window[642854704644] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3137,7 +3132,7 @@ window[642854157717] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3188,7 +3183,7 @@ window[618661462541] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     advSearch: {
-      formName: "defaultSearch"
+      formName: 'defaultSearch'
     },
     formProps: {
       // height: 500
@@ -3217,7 +3212,7 @@ window[642856262431] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    columnsWidth: { '申请人': 120 },
+    columnsWidth: { 申请人: 120 },
     // isSetColumnWidth:false,
     noWidthFields: 'C3_518986364887',
     advSearch: {
@@ -3249,7 +3244,7 @@ window[642856283564] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3274,7 +3269,7 @@ window[642854180216] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3300,7 +3295,7 @@ window[642854999190] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3326,7 +3321,7 @@ window[642855062753] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3351,7 +3346,7 @@ window[642854713880] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3384,7 +3379,7 @@ window[642854200143] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3412,7 +3407,7 @@ window[642854211673] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3437,7 +3432,7 @@ window[642854223262] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3465,7 +3460,7 @@ window[642854235003] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3490,7 +3485,7 @@ window[642854252939] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3515,7 +3510,7 @@ window[642854266702] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3542,7 +3537,7 @@ window[642854279289] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3569,7 +3564,7 @@ window[642854434101] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3596,7 +3591,7 @@ window[642854450973] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3622,7 +3617,7 @@ window[642854462178] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3649,7 +3644,7 @@ window[642854476015] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3678,7 +3673,7 @@ window[642868834485] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3706,7 +3701,7 @@ window[642854616358] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3733,7 +3728,7 @@ window[642854648916] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3765,7 +3760,7 @@ window[642854660698] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -3775,8 +3770,8 @@ window[642854660698] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
 
       423664972378: {
@@ -3784,48 +3779,48 @@ window[642854660698] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       382917623098: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       423662411106: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       425248261392: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       425173186017: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       426438255597: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -3850,7 +3845,7 @@ window[642854669532] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3880,7 +3875,7 @@ window[642854678648] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3906,12 +3901,12 @@ window[642854689917] = {
     isUseFormDefine: false,
     actionBarFixed: false,
     // isSetColumnWidth:false,
-    noWidthFields: "C3_445799498673",
+    noWidthFields: 'C3_445799498673',
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3936,7 +3931,7 @@ window[642854704644] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3963,7 +3958,7 @@ window[642854723134] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -3989,7 +3984,7 @@ window[642854733765] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4015,7 +4010,7 @@ window[642854743729] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4041,7 +4036,7 @@ window[642854754543] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4067,7 +4062,7 @@ window[642854868542] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4093,7 +4088,7 @@ window[642854784459] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4119,7 +4114,7 @@ window[642854766667] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4148,7 +4143,7 @@ window[642854803335] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4174,7 +4169,7 @@ window[642854814341] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4200,7 +4195,7 @@ window[642854826219] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4239,19 +4234,19 @@ window[642854845983] = {
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
-    addText: "刷卡登记",
+    addText: '刷卡登记',
     hasModify: true,
     hasBackBtn: true,
     hasDelete: true,
     hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
-    noWidthFields: "C3_383046867442",
+    noWidthFields: 'C3_383046867442',
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4277,7 +4272,7 @@ window[642854858872] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4301,7 +4296,7 @@ window[642854885216] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     formProps: {
       // height: 500
@@ -4330,7 +4325,7 @@ window[642854896162] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4356,7 +4351,7 @@ window[642865689790] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4382,7 +4377,7 @@ window[642854917620] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4407,7 +4402,7 @@ window[642854999190] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4433,7 +4428,7 @@ window[642865743568] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4460,7 +4455,7 @@ window[642855062753] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4486,7 +4481,7 @@ window[642865760883] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4509,12 +4504,12 @@ window[642855075847] = {
     hasRowDelete: true,
     // isUseFormDefine: false,
     // isSetColumnWidth:false,
-    noWidthFields: "C3_437046231179",
+    noWidthFields: 'C3_437046231179',
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4536,12 +4531,12 @@ window[642855085886] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    noWidthFields: "C3_427541796327",
+    noWidthFields: 'C3_427541796327',
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4567,7 +4562,7 @@ window[642855095782] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4593,7 +4588,7 @@ window[642855105931] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4620,7 +4615,7 @@ window[642855115194] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4648,7 +4643,7 @@ window[642868538751] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 180
   }
@@ -4673,7 +4668,7 @@ window[642855166893] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -4702,7 +4697,7 @@ window[642855176494] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -4711,7 +4706,7 @@ window[642855176494] = {
         hasBeBtns: false,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       449441441589: {
         hasBeBtns: true,
@@ -4722,8 +4717,8 @@ window[642855176494] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -4750,10 +4745,10 @@ window[642855189869] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200,
-    beforeSaveConfig: { operation: 'add' },
+    beforeSaveConfig: { operation: 'add' }
   }
 };
 window[642855262376] = {
@@ -4786,7 +4781,7 @@ window[642855262376] = {
       },
       formProps: {
         // height: 500
-        width: 1200,
+        width: 1200
       },
       subtractH: 200
     },
@@ -4798,8 +4793,8 @@ window[642855262376] = {
         baseURL: 'http://10.108.2.66:1001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -4842,10 +4837,10 @@ window[642855273462] = {
         // isSetColumnWidth:false,
         noWidthFields: 'C3_518985388229',
         advSearch: {
-          isRequestFormData: false,
+          isRequestFormData: false
         },
         baseURL: 'http://10.108.2.66:1001/',
-        downloadBaseURL: 'http://10.108.2.66:1000/',
+        downloadBaseURL: 'http://10.108.2.66:1000/'
       }
     }
   }
@@ -4901,7 +4896,7 @@ window[642855719230] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -4913,18 +4908,18 @@ window[642855719230] = {
         baseURL: 'http://10.108.2.66:1001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       518461643267: {
         hasBeBtns: true,
-        // isUseFormDefine: false,   
+        // isUseFormDefine: false,
         noWidthFields: 'C3_518436882584',
         baseURL: 'http://10.108.2.66:1001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -4990,8 +4985,8 @@ window[642855746711] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -5024,7 +5019,7 @@ window[642855760886] = {
 };
 window[642855770350] = {
   name: 'TableData', // 组件名称，
-  title: '我的招聘申请', // 功能模块名称  
+  title: '我的招聘申请', // 功能模块名称
   props: {
     baseURL: 'http://10.108.2.66:1001',
     downloadBaseURL: 'http://10.108.2.66:1000/',
@@ -5048,16 +5043,32 @@ window[642855770350] = {
       width: 850
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
-    labelRequiredList: ['Specify', 'Dept', 'Status', 'Pay Type', 'Job Grade Level', 'Relocation Eligible?', 'Incentive Eligible?', 'Budget Quarter', 'Dept. Code', 'Project Code', '1)', 'Name', 'KEY JOB DUTIES & RESPONSIBILITIES:', '% of Travel', 'SKILLS & QUALIFICATIONS:'],
+    labelRequiredList: [
+      'Specify',
+      'Dept',
+      'Status',
+      'Pay Type',
+      'Job Grade Level',
+      'Relocation Eligible?',
+      'Incentive Eligible?',
+      'Budget Quarter',
+      'Dept. Code',
+      'Project Code',
+      '1)',
+      'Name',
+      'KEY JOB DUTIES & RESPONSIBILITIES:',
+      '% of Travel',
+      'SKILLS & QUALIFICATIONS:'
+    ],
     subtractH: 200
   }
 };
 window[642855780253] = {
   // name: 'TableData', // 组件名称，
   name: 'MyApplication',
-  title: '我的招聘审批', // 功能模块名称
+  title: '我的招聘审批' // 功能模块名称
   // props: {
   //   baseURL: 'http://10.108.2.66:6001/',
   //   downloadBaseURL: 'http://10.108.2.66:1000/',
@@ -5142,8 +5153,8 @@ window[647714701722] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       527715777875: {
         isUseFormDefine: false,
@@ -5151,8 +5162,8 @@ window[647714701722] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -5230,7 +5241,7 @@ window[642856303619] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5261,7 +5272,7 @@ window[642856315965] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -5272,8 +5283,8 @@ window[642856315965] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       561550544816: {
         hasBeBtns: true,
@@ -5281,8 +5292,8 @@ window[642856315965] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       568398863279: {
         hasBeBtns: true,
@@ -5290,8 +5301,8 @@ window[642856315965] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -5316,7 +5327,7 @@ window[642856328223] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5342,7 +5353,7 @@ window[642856338095] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5368,7 +5379,7 @@ window[642856348581] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5394,7 +5405,7 @@ window[642856357054] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5420,7 +5431,7 @@ window[642856366737] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5448,7 +5459,7 @@ window[642856395014] = {
       width: 1100
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5474,7 +5485,7 @@ window[642856420818] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5500,7 +5511,7 @@ window[642856432739] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5525,7 +5536,7 @@ window[642856442104] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5551,7 +5562,7 @@ window[642856451989] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5576,7 +5587,7 @@ window[642856463210] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5600,7 +5611,7 @@ window[642856472970] = {
     recordFormUseAbsolute: true,
     backendButtonPopConfirmProps: { placement: 'bottom' },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     formProps: {
       // height: 500
@@ -5628,7 +5639,7 @@ window[642856600971] = {
     recordFormUseAbsolute: true,
     backendButtonPopConfirmProps: { placement: 'bottom' },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     formProps: {
       // height: 500
@@ -5646,7 +5657,7 @@ window[642856612138] = {
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     hasAdd: true,
     hasBeBtns: true,
@@ -5661,7 +5672,7 @@ window[642856612138] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5689,7 +5700,7 @@ window[642856627631] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5716,7 +5727,7 @@ window[642856644144] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -5748,7 +5759,7 @@ window[642856652519] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -5765,8 +5776,8 @@ window[642856652519] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       631911796331: {
         hasAdd: false,
@@ -5781,8 +5792,8 @@ window[642856652519] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       631908278263: {
         hasAdd: false,
@@ -5796,8 +5807,8 @@ window[642856652519] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       631908322536: {
         hasAdd: false,
@@ -5811,8 +5822,8 @@ window[642856652519] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       631908332741: {
         hasAdd: false,
@@ -5826,8 +5837,8 @@ window[642856652519] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       631908345599: {
         hasAdd: false,
@@ -5839,7 +5850,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908357382: {
         hasAdd: false,
@@ -5851,7 +5862,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908368002: {
         hasAdd: false,
@@ -5863,8 +5874,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
-
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908380066: {
         hasAdd: false,
@@ -5876,7 +5886,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908391826: {
         hasAdd: false,
@@ -5888,7 +5898,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908402889: {
         hasAdd: false,
@@ -5900,7 +5910,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908414849: {
         hasAdd: false,
@@ -5910,8 +5920,7 @@ window[642856652519] = {
         hasDelete: false,
         hasRowModify: false,
         hasRowView: false,
-        hasRowDelete: false,
-
+        hasRowDelete: false
       },
       631908468437: {
         hasAdd: false,
@@ -5923,7 +5932,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908487343: {
         hasAdd: false,
@@ -5935,7 +5944,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908500686: {
         hasAdd: false,
@@ -5947,7 +5956,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908512015: {
         hasAdd: false,
@@ -5959,7 +5968,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908524164: {
         hasAdd: false,
@@ -5971,7 +5980,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908535350: {
         hasAdd: false,
@@ -5983,7 +5992,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908546056: {
         hasAdd: false,
@@ -5995,7 +6004,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908556110: {
         hasAdd: false,
@@ -6007,7 +6016,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908578110: {
         hasAdd: false,
@@ -6019,7 +6028,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908587861: {
         hasAdd: false,
@@ -6031,7 +6040,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908598349: {
         hasAdd: false,
@@ -6043,7 +6052,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908607040: {
         hasAdd: false,
@@ -6055,7 +6064,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908616827: {
         hasAdd: false,
@@ -6067,7 +6076,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908628445: {
         hasAdd: false,
@@ -6079,7 +6088,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908639692: {
         hasAdd: false,
@@ -6091,7 +6100,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908648936: {
         hasAdd: false,
@@ -6103,7 +6112,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908660368: {
         hasAdd: false,
@@ -6115,7 +6124,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631908672225: {
         hasAdd: false,
@@ -6127,7 +6136,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       631909905356: {
         hasAdd: false,
@@ -6139,7 +6148,7 @@ window[642856652519] = {
         hasRowView: false,
         hasRowDelete: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       }
     }
   }
@@ -6169,7 +6178,7 @@ window[642856661616] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -6178,199 +6187,199 @@ window[642856661616] = {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       528384647857: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       483143248907: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       483143269379: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       483143292739: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       483143313607: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490441845783: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490441985369: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490442033277: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490442082614: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490442208450: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490442251347: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490442311854: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490442351603: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490442367584: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490442379053: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490442394231: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       490442407188: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533377990246: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378160861: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378175759: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378198800: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378212840: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378238689: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378256722: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378269639: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378289607: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378309262: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378346468: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378368276: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378381536: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378397713: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       },
       533378418165: {
         hasBeBtns: true,
         isUseFormDefine: false,
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
+        downloadBaseURL: 'http://10.108.2.66:80/'
       }
     }
   }
@@ -6396,7 +6405,7 @@ window[642856673827] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6422,7 +6431,7 @@ window[642856682732] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6448,7 +6457,7 @@ window[642856691841] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6474,7 +6483,7 @@ window[642856702868] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6501,7 +6510,7 @@ window[642856714810] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6531,7 +6540,7 @@ window[642856723891] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -6543,8 +6552,8 @@ window[642856723891] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       538589701925: {
         hasBeBtns: true,
@@ -6553,8 +6562,8 @@ window[642856723891] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -6582,7 +6591,7 @@ window[642856733155] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6613,7 +6622,7 @@ window[642856745730] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6644,7 +6653,7 @@ window[642856753982] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6672,7 +6681,7 @@ window[642856763791] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -6682,16 +6691,16 @@ window[642856763791] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       433706772782: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -6719,7 +6728,7 @@ window[642856772119] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -6730,8 +6739,8 @@ window[642856772119] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -6762,7 +6771,7 @@ window[642856782319] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6793,7 +6802,7 @@ window[642856799479] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6824,7 +6833,7 @@ window[642856807541] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6855,7 +6864,7 @@ window[642856817466] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6884,7 +6893,7 @@ window[642856836829] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6913,7 +6922,7 @@ window[642856846560] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6940,7 +6949,7 @@ window[642858017774] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6966,7 +6975,7 @@ window[642858195015] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -6992,7 +7001,7 @@ window[642858209225] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7018,7 +7027,7 @@ window[642858219205] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7043,10 +7052,10 @@ window[642858230550] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200,
-    recordsMap: (records) => {
+    recordsMap: records => {
       records.forEach(record => {
         Object.keys(record).forEach(key => {
           const value = record[key];
@@ -7079,7 +7088,7 @@ window[642858239772] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7105,7 +7114,7 @@ window[642858250217] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7131,7 +7140,7 @@ window[642858265046] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7157,7 +7166,7 @@ window[642858275747] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7184,7 +7193,7 @@ window[642858287535] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7211,7 +7220,7 @@ window[643038878833] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7238,7 +7247,7 @@ window[642858302008] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7265,7 +7274,7 @@ window[642858311245] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7291,7 +7300,7 @@ window[642858321470] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7317,7 +7326,7 @@ window[642858331244] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7344,7 +7353,7 @@ window[642858341571] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7370,7 +7379,7 @@ window[642858355008] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7399,7 +7408,7 @@ window[642858364531] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7428,7 +7437,7 @@ window[642858381832] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7452,12 +7461,12 @@ window[642858651331] = {
       hasRowView: true,
       hasRowDelete: true,
       isUseFormDefine: false,
-      customColumnWidth: { '年末新入职参评截止日期': 400 },
+      customColumnWidth: { 年末新入职参评截止日期: 400 },
       formProps: {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -7468,8 +7477,8 @@ window[642858651331] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -7495,7 +7504,7 @@ window[642858661984] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7521,7 +7530,7 @@ window[642858671562] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7553,7 +7562,7 @@ window[642858680954] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7582,7 +7591,7 @@ window[642858691148] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7609,7 +7618,7 @@ window[642858700263] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7635,7 +7644,7 @@ window[642858711892] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7662,7 +7671,7 @@ window[642858815692] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7688,7 +7697,7 @@ window[642858825314] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7715,7 +7724,7 @@ window[642864859197] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7742,7 +7751,7 @@ window[642864873312] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7770,7 +7779,7 @@ window[642864883370] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7797,7 +7806,7 @@ window[642864894557] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7823,7 +7832,7 @@ window[642864905946] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7850,7 +7859,7 @@ window[642864915093] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7877,7 +7886,7 @@ window[642864924530] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -7904,7 +7913,7 @@ window[642864936700] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8098,7 +8107,7 @@ window[642865138428] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8124,7 +8133,7 @@ window[642865148916] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8150,7 +8159,7 @@ window[642865159694] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8177,7 +8186,7 @@ window[642865168807] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8203,7 +8212,7 @@ window[642865180079] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8229,7 +8238,7 @@ window[642865189736] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8255,7 +8264,7 @@ window[642865230273] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8280,7 +8289,7 @@ window[642865241049] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8306,7 +8315,7 @@ window[646235959397] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8336,7 +8345,7 @@ window[642865251509] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8362,7 +8371,7 @@ window[642865263466] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8392,7 +8401,7 @@ window[642865468370] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8420,7 +8429,7 @@ window[642865477980] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8448,7 +8457,7 @@ window[647360686387] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8474,7 +8483,7 @@ window[642865487428] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8500,7 +8509,7 @@ window[642865500060] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8528,7 +8537,7 @@ window[642865508238] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8554,7 +8563,7 @@ window[642865517021] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8582,7 +8591,7 @@ window[642865529507] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8610,7 +8619,7 @@ window[642865539047] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8638,7 +8647,7 @@ window[642865548263] = {
     },
     noWidthFields: 'C3_549654039380',
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8665,7 +8674,7 @@ window[642854837350] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8712,7 +8721,7 @@ window[642854549263] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8739,7 +8748,7 @@ window[640366579330] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8771,7 +8780,7 @@ window[644335881606] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8802,7 +8811,7 @@ window[644327624410] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8829,7 +8838,7 @@ window[645027658426] = {
     isUseFormDefine: false,
     noWidthFields: 'C3_506093177840',
     advSearch: {
-      isUseTableFields: true,
+      isUseTableFields: true
     },
     backendButtonPopConfirmProps: { placement: 'bottom' },
     hasRowEditAdd: true,
@@ -8917,7 +8926,7 @@ window[645287046055] = {
         iframeResid: 645286591505,
         replaceBaseUrl: 'http://10.108.2.66:1000',
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.2.66:1001/'
       },
       '169': {
         //总监
@@ -8926,13 +8935,11 @@ window[645287046055] = {
         iframeResid: 645288462780,
         replaceBaseUrl: 'http://10.108.2.66:1000',
         baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.2.66:1001/'
       }
     }
   }
 };
-
-
 
 window[645649238968] = {
   name: 'TableData', // 组件名称，
@@ -8959,7 +8966,7 @@ window[645649238968] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -8990,7 +8997,7 @@ window[647005159900] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9020,7 +9027,7 @@ window[647005183171] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9049,7 +9056,7 @@ window[647005199463] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9078,7 +9085,7 @@ window[647005213957] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9106,12 +9113,12 @@ window[647005261709] = {
     // noWidthFields: 'C3_433505203981',
     actionBarFixed: false,
     isWrap: true,
-    columnsWidth: { '分公司': 120 },
+    columnsWidth: { 分公司: 120 },
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9141,7 +9148,7 @@ window[647005277545] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9170,7 +9177,7 @@ window[647005294257] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9197,7 +9204,7 @@ window[647005579815] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9224,7 +9231,7 @@ window[647005627465] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9250,7 +9257,7 @@ window[647005644256] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9275,12 +9282,12 @@ window[647005664728] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    noWidthFields: "C3_448453177684",
+    noWidthFields: 'C3_448453177684',
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9305,12 +9312,12 @@ window[647005696097] = {
     hasRowEdit: true,
     hasRowEditAdd: true,
     actionBarFixed: false,
-    noWidthFields: "C3_472822127334",
+    noWidthFields: 'C3_472822127334',
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9340,7 +9347,7 @@ window[647005718255] = {
       },
       backendButtonPopConfirmProps: { placement: 'bottom' },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -9351,8 +9358,8 @@ window[647005718255] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -9381,7 +9388,7 @@ window[647005738876] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -9392,8 +9399,8 @@ window[647005738876] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       }
     }
   }
@@ -9420,7 +9427,7 @@ window[647005761923] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9447,7 +9454,7 @@ window[647005790386] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9467,14 +9474,14 @@ window[647005829686] = {
     hasRowView: true,
     hasRowDelete: true,
     isUseFormDefine: false,
-    noWidthFields: "C3_534182272208",
+    noWidthFields: 'C3_534182272208',
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9495,14 +9502,14 @@ window[647032148938] = {
     hasRowDelete: true,
     isUseFormDefine: false,
     isSetColumnWidth: false,
-    noWidthFields: "C3_534182272208",
+    noWidthFields: 'C3_534182272208',
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
     formProps: {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9511,24 +9518,18 @@ window[647032148938] = {
 window[646330411706] = {
   name: 'PersonnelImport',
   title: '人事信息批量导入',
-  props: {
-
-  }
-}
+  props: {}
+};
 window[653996857070] = {
   name: 'FinisarMenjin',
   title: '当月门禁确认',
-  props: {
-
-  }
-}
+  props: {}
+};
 window[648312862539] = {
   name: 'StaffCommunicationRecord',
   title: '员工沟通管理',
-  props: {
-
-  }
-}
+  props: {}
+};
 window[649329486527] = {
   name: 'ReplyComplain',
   title: '员工投诉回复',
@@ -9563,7 +9564,7 @@ window[652189809837] = {
         // height: 500
       },
       advSearch: {
-        isRequestFormData: false,
+        isRequestFormData: false
       },
       subtractH: 200
     },
@@ -9573,75 +9574,73 @@ window[652189809837] = {
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       537126727126: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       537126763380: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       537125710346: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       537125804210: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       537126636974: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       537126688079: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       537128298384: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
+          isRequestFormData: false
+        }
       },
       537128341955: {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
         advSearch: {
-          isRequestFormData: false,
-        },
-      },
-
-
+          isRequestFormData: false
+        }
+      }
     }
   }
 };
@@ -9667,7 +9666,7 @@ window[644526459974] = {
       // height: 500
     },
     advSearch: {
-      isRequestFormData: false,
+      isRequestFormData: false
     },
     subtractH: 200
   }
@@ -9675,5 +9674,21 @@ window[644526459974] = {
 window[657303161887] = {
   name: 'PersonnelChangeHistory', // 组件名称，
   title: '人事变动历史', // 功能模块名称
-  props: {resid:'657295115165'}
+  props: {
+    resid: '657295115165',
+    typesResid: '638466404110',
+    effectiveDateField: 'C3_470524286017',
+    employeeNumberField: 'C3_305737857578'
+  }
+};
+window[657885982933] = {
+  name: 'PersonnelChangeHistory', // 组件名称，
+  title: '人员档案变动记录', // 功能模块名称
+  props: {
+    resid: '657886372964',
+    typesResid: '637428356421',
+    effectiveDateField: 'C3_657648581945',
+        employeeNumberField: 'C3_464172117706'
+
+  }
 };
