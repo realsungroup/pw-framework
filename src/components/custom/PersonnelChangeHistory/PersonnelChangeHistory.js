@@ -216,7 +216,6 @@ class ChangeHistory extends React.PureComponent {
       employeeNumberField,
       effectiveDateField
     } = this.props;
-    console.log(record, employeeNumberField);
     try {
       const res = await http().getTable({
         resid: '227186227531',
