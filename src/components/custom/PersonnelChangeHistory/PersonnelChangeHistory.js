@@ -36,9 +36,10 @@ class PersonnelChangeHistory extends React.Component {
     this.fetchTypes();
   }
   fetchTypes = async () => {
+    const { typesResid } = this.props;
     try {
       const res = await http({ baseURL }).getTableColumnDefine({
-        resid: 638466404110
+        resid: typesResid
       });
       const types = res.data.map(item => item.ColResDataSort);
 
@@ -56,11 +57,12 @@ class PersonnelChangeHistory extends React.Component {
   };
   changeCmswhere = () => {
     const { rangeDate, categories } = this.state;
+    const { effectiveDateField } = this.props;
     let cmswhere = '';
     if (rangeDate.length) {
-      cmswhere = `C3_470524286017 >= '${rangeDate[0].format(
+      cmswhere = `${effectiveDateField} >= '${rangeDate[0].format(
         'YYYYMMDD'
-      )}' and C3_470524286017 <= '${rangeDate[1].format('YYYYMMDD')}'`;
+      )}' and ${effectiveDateField} <= '${rangeDate[1].format('YYYYMMDD')}'`;
     }
     if (categories.length) {
       cmswhere += `${cmswhere ? ' and ' : ''} changeType in (${categories
@@ -73,7 +75,7 @@ class PersonnelChangeHistory extends React.Component {
     this.setState({ rangeDate: v }, this.changeCmswhere);
   };
   render() {
-    const { resid } = this.props;
+    const { resid, employeeNumberField, effectiveDateField } = this.props;
     const {
       categories,
       historyVisible,
@@ -146,6 +148,9 @@ class PersonnelChangeHistory extends React.Component {
             visible={historyVisible}
             record={selectedRecord}
             onClose={this.handleClose}
+            employeeNumberField={employeeNumberField}
+            effectiveDateField={effectiveDateField}
+            resid={resid}
           />
         )}
       </div>
@@ -205,26 +210,32 @@ class ChangeHistory extends React.PureComponent {
   }
 
   fetchData = async () => {
-    const { record } = this.props;
+    const {
+      record,
+      resid,
+      employeeNumberField,
+      effectiveDateField
+    } = this.props;
+    console.log(record, employeeNumberField);
     try {
       const res = await http().getTable({
         resid: '227186227531',
-        cmswhere: ` C3_305737857578 = '${record.C3_305737857578}'`
+        cmswhere: ` C3_305737857578 = '${record[employeeNumberField]}'`
       });
       if (!res.data.length) {
         return message.error('未查到此人员');
       }
       const res1 = await http({ baseURL }).getTable({
-        resid: '657295115165',
-        cmswhere: ` C3_305737857578 = '${record.C3_305737857578}'`
+        resid,
+        cmswhere: ` ${employeeNumberField} = '${record[employeeNumberField]}'`
       });
       const historiesMap = new Map();
       res1.data.forEach(item => {
         try {
-          if (historiesMap.has(item.C3_470524286017)) {
-            historiesMap.get(item.C3_470524286017).push(item);
+          if (historiesMap.has(item[effectiveDateField])) {
+            historiesMap.get(item[effectiveDateField]).push(item);
           } else {
-            historiesMap.set(item.C3_470524286017, [item]);
+            historiesMap.set(item[effectiveDateField], [item]);
           }
         } catch (error) {
           console.log(error);
