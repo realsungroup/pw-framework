@@ -11,7 +11,9 @@ class PersonInfoPrivate extends React.Component {
     constructor(props) {
       // resid:612530416359
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-      var usercode=userInfo.UserInfo.EMP_ID;
+     
+     console.log(userInfo)
+      var usercode=userInfo.UserInfo.EMP_USERCODE;
       console.log(usercode)
       super(props);
       this.state = {

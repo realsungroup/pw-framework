@@ -105,9 +105,9 @@ class PersonInfoManager extends React.Component {
                       onClick={() => {
                         var t;
                         if(this.state.laowu){
-                          t='C3_464702128504'
+                          t='C3_464172117706'
                         }else{
-                          t='C3_227192472953'
+                          t='C3_305737857578'
                         }
                         this.setState({
                           showDetail: true,

@@ -55,6 +55,7 @@ class AbsoluteForm extends React.PureComponent {
                 title={item.initialValue}
                 style={{
                   position: 'absolute',
+                  minHeight:'3%',
                   top: ((customStyle.top + 4) / containerHeight) * 100 + '%',
                   left: (customStyle.left / containerWidth) * 100 + '%',
                   width: (customStyle.width / containerWidth) * 100 + '%',
