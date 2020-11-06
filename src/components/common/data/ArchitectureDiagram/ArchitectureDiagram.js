@@ -3373,6 +3373,7 @@ class ArchitectureDiagram extends React.Component {
                 hasDelete={false}
                 hasModify={false}
                 hasRowModify={false}
+                recordFormUseAbsolute={true}
                 hasRowSelection={false}
                 cmswhere={`C3_305737857578 = '${selectedNode.memberCode}'`}
                 hasAdvSearch={false}
