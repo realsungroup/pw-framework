@@ -162,6 +162,11 @@ export default class Import extends React.Component {
     }
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.resid != this.props.resid) {
+      this.getData();
+    }
+  }
   selectedItem;
   importFile = (baseURL, resid, cfgid, fileInfo, item) => {
     const file = fileInfo.file;
@@ -329,13 +334,13 @@ export default class Import extends React.Component {
       ctx.setState({ isSelectFile: true });
       const sheet1Name = workbook.SheetNames[0];
       ctx._sheetData = workbook.Sheets[sheet1Name];
-      ctx.handleImportExcel(ctx._sheetData);
+      ctx.handleImportExcel(ctx._sheetData, file.name);
     };
     reader.readAsArrayBuffer(file);
   };
 
-  handleImportExcel = sheetData => {
-    const { resid } = this.props;
+  handleImportExcel = (sheetData, fileName) => {
+    const { resid, fixedFields, strict, fileNameField } = this.props;
     const { columninfo } = this.state;
     const resultArr = XLSX.utils.sheet_to_json(sheetData, {
       header: 1,
@@ -354,6 +359,14 @@ export default class Import extends React.Component {
         }
         return temp.id;
       });
+      if (strict) {
+        columninfo.forEach(column => {
+          if (!resultArr[0].find(item => item === column.text)) {
+            message.error(`导入失败：Excel表中没有 ${column.text} 字段`);
+            throw new Error('导入失败');
+          }
+        });
+      }
     } catch (err) {
       fieldIsCorrect = false;
       console.error(err);
@@ -362,13 +375,16 @@ export default class Import extends React.Component {
     if (!fieldIsCorrect) {
       return;
     }
-
+    console.info(resultArr[0]);
     const records = recordArr.map(recordsValue => {
       let obj = {};
       recordsValue.forEach((value, index) => {
         obj[`${headerInnerFields[index]}`] = value;
       });
-      return obj;
+      if (fileNameField) {
+        obj[fileNameField] = fileName;
+      }
+      return { ...obj, ...fixedFields };
     });
     this.setState({ feRecords: records }, () => {
       const pArr = records.map((record, index) => {
@@ -382,14 +398,15 @@ export default class Import extends React.Component {
 
   saveOneRecord = async (resid, record) => {
     const { feMessages } = this.state;
-    const { saveState, dblinkname } = this.props;
+    const { saveState, dblinkname, saveParams } = this.props;
     let res;
     try {
       res = await http(this.state.httpParams).addRecords({
         resid,
         data: [record],
         isEditOrAdd: saveState === 'editoradd',
-        dblinkname
+        dblinkname,
+        ...saveParams
       });
     } catch (err) {
       feMessages.push(err.message);
