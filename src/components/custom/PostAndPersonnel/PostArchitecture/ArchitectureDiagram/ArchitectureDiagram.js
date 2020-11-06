@@ -1799,11 +1799,13 @@ class ArchitectureDiagram extends React.Component {
             operation={operation}
             data={this._dataProp}
             record={record}
-            // useAbsolute={true}
+            useAbsolute={true}
             // formProps={{ width: 500 }}
             onCancel={this.closeBroModal}
             onSuccess={this.afterSave}
             baseURL={this.props.baseURL}
+            // recordFormUseAbsolute={true} 
+
           />
         </Modal>
         <Drawer

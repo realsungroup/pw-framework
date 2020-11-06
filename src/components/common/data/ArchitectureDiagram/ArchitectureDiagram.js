@@ -1197,6 +1197,7 @@ class ArchitectureDiagram extends React.Component {
                       C3_418993073324: data.lizhiReason, //离职原因
                       C3_383426933426: data.lizhiType, //离职类型
                       C3_470524257391: data.date, //生效日期
+                      C3_543601479390: data.aDate, //实际离职日期
                       C3_305737857578: node.memberCode,
                       C3_470524286017: data.lizhiDate.format('YYYYMMDD'),
                       C3_638469590670: '离职',
@@ -3454,10 +3455,11 @@ class LizhiForm extends React.PureComponent {
     lizhiDate: null,
     lizhiReason: '',
     lizhiType: '',
-    date: null
+    date: null,
+    aDate:null
   };
   render() {
-    const { lizhiDate, lizhiReason, date, lizhiType } = this.state;
+    const { lizhiDate, lizhiReason, date, lizhiType,aDate } = this.state;
     const { name, number } = this.props;
     return (
       <Form {...formItemLayout}>
@@ -3499,6 +3501,14 @@ class LizhiForm extends React.PureComponent {
             }}
           />
         </Form.Item>
+        <Form.Item label="实际离职日期" >
+          <DatePicker
+            value={aDate}
+            onChange={v => {
+              this.setState({ aDate: v });
+            }}
+          />
+        </Form.Item>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button
             type="primary"
@@ -3515,7 +3525,7 @@ class LizhiForm extends React.PureComponent {
               if (!date) {
                 return message.info('请选择生效日期');
               }
-              this.props.onOk({ lizhiDate, lizhiReason, lizhiType, date });
+              this.props.onOk({ lizhiDate, lizhiReason, lizhiType, date,aDate });
             }}
           >
             提交
