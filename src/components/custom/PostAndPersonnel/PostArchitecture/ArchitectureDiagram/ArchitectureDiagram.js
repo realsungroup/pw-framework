@@ -718,8 +718,7 @@ class ArchitectureDiagram extends React.Component {
 
             this.setState(
               { selectedNode: {}, breadcrumb: [], loading: false },
-              async () => {
-                await this.clearCache();
+              () => {
                 this.handleRefresh();
               }
             );
@@ -956,7 +955,6 @@ class ArchitectureDiagram extends React.Component {
         tags.push('empty'); //空缺
       }
 
-      await this.clearCache();
       this.handleRefresh();
       message.success('添加成功');
       // this.chart.addNode(node);
@@ -977,7 +975,6 @@ class ArchitectureDiagram extends React.Component {
         pid: record[pidField],
         tags: [...tags, selected]
       };
-      await this.clearCache();
       await this.handleRefresh();
       message.success('修改成功');
       this.setState({ selectedNode: node }, () => {
@@ -1085,6 +1082,7 @@ class ArchitectureDiagram extends React.Component {
   };
   handleRefresh = async () => {
     const { selectedNode } = this.state;
+    await this.clearCache();
     await this.getData();
     // this.chart.load(data);
     // this._nodes = [...this.chart.config.nodes];
@@ -1804,8 +1802,7 @@ class ArchitectureDiagram extends React.Component {
             onCancel={this.closeBroModal}
             onSuccess={this.afterSave}
             baseURL={this.props.baseURL}
-            // recordFormUseAbsolute={true} 
-
+            // recordFormUseAbsolute={true}
           />
         </Modal>
         <Drawer
