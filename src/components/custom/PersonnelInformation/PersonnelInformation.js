@@ -50,7 +50,7 @@ class PersonnelInformation extends React.Component {
               <div className="table-data-wrapper">
                 <TableData
                   baseURL={baseURL}
-                  resid="637772568684"
+                  resid="227186227531"
                   wrappedComponentRef={element => (this.tableDataRef = element)}
                   refTargetComponentName="TableData"
                   subtractH={180}
