@@ -727,6 +727,7 @@ class HelpAndAppeal extends React.Component {
                   <span style={{ textAlign: 'center' }}>暂无视频</span>
                 )}
               </div>
+              <hr />
               {userType === 'admin' && (
                 <div style={{ fontWeight: 'bold' }}>
                   <p>管理员备注：</p>

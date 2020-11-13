@@ -822,7 +822,7 @@ class Advice extends React.Component {
                 <TextArea
                   disabled
                   value={selectRecord.adminRemark}
-                  style = {{marginBottom:'5px'}}
+                  style = {{marginBottom:'5px',color:'#000',backgroundColor:'#fff'}}
                 />
                 </div>
               )}

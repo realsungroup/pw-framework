@@ -1399,6 +1399,7 @@ class StaffComplain extends React.Component {
                   )}
                 </div>
               </div>
+              <hr />
               {userType === 'admin' && (
                 <div style={{ fontWeight: 'bold' }}>
                   <p>管理员备注：</p>
