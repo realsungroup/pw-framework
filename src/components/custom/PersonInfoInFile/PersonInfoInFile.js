@@ -179,9 +179,11 @@ class PersonInfoInFile extends React.Component {
       var str=''
       if(!this.state.data.C3_464172127930){
         str='姓名'
-      }else if(!this.state.data.C3_464172148589){
-        str='英文名'
-      }else if(!this.state.data.C3_464172157606){
+      }
+      // else if(!this.state.data.C3_464172148589){
+      //   str='英文名'
+      // }
+      else if(!this.state.data.C3_464172157606){
         str='性别'
       }else if(!this.state.data.C3_464172188709){
         str='国籍'
@@ -197,15 +199,19 @@ class PersonInfoInFile extends React.Component {
         str='文书送达地址'
       }else if(!this.state.data.C3_464172402553){
         str='现居住地址'
-      }else if(!this.state.data.C3_464172444813){
-        str='邮编'
-      }else if(!this.state.data.C3_464172486192){
+      }
+      // else if(!this.state.data.C3_464172444813){
+      //   str='邮编'
+      // }
+      else if(!this.state.data.C3_464172486192){
         str='家庭号码'
       }else if(!this.state.data.C3_464172500234){
         str='手机号码'
-      }else if(!this.state.data.C3_464172522558){
-        str='公司邮箱'
-      }else if(!this.state.data.C3_464172654284){
+      }
+      // else if(!this.state.data.C3_464172522558){
+      //   str='公司邮箱'
+      // }
+      else if(!this.state.data.C3_464172654284){
         str='学历'
       }else if(!this.state.data.C3_464172707004){
         str='政治面貌'
@@ -220,16 +226,18 @@ class PersonInfoInFile extends React.Component {
               (this.state.data.C3_464173535280&&this.state.data.C3_464173667723&&this.state.data.C3_464173750564&&this.state.data.C3_464173879808&&this.state.data.C3_464173949368)
               ){
         str='学历/学位'
-      }else if(!(this.state.data.C3_464174073888&&this.state.data.C3_464174245669&&this.state.data.C3_464174345857&&this.state.data.C3_464174451732)
-          ||
-          (this.state.data.C3_464174102741&&this.state.data.C3_464174263309&&this.state.data.C3_464174365244&&this.state.data.C3_464174461446)
-          ||
-          (this.state.data.C3_464174124614&&this.state.data.C3_464174274118&&this.state.data.C3_464174394548&&this.state.data.C3_464174473180)
-          ||
-          (this.state.data.C3_464174135706&&this.state.data.C3_464174314278&&this.state.data.C3_464174405591&&this.state.data.C3_464174481889)
-          ){
-        str='专业/执业资格'
-      }else if(!(this.state.data.C3_464174535762&&this.state.data.C3_464174605218&&this.state.data.C3_464174974466&&this.state.data.C3_464175049944&&this.state.data.C3_464458881276)
+      }
+      // else if(!(this.state.data.C3_464174073888&&this.state.data.C3_464174245669&&this.state.data.C3_464174345857&&this.state.data.C3_464174451732)
+      //     ||
+      //     (this.state.data.C3_464174102741&&this.state.data.C3_464174263309&&this.state.data.C3_464174365244&&this.state.data.C3_464174461446)
+      //     ||
+      //     (this.state.data.C3_464174124614&&this.state.data.C3_464174274118&&this.state.data.C3_464174394548&&this.state.data.C3_464174473180)
+      //     ||
+      //     (this.state.data.C3_464174135706&&this.state.data.C3_464174314278&&this.state.data.C3_464174405591&&this.state.data.C3_464174481889)
+      //     ){
+      //   str='专业/执业资格'
+      // }
+      else if(!(this.state.data.C3_464174535762&&this.state.data.C3_464174605218&&this.state.data.C3_464174974466&&this.state.data.C3_464175049944&&this.state.data.C3_464458881276)
           ||
           (this.state.data.C3_464174545465&&this.state.data.C3_464174895167&&this.state.data.C3_464174984491&&this.state.data.C3_464175060992&&this.state.data.C3_464458911775)
           ||
@@ -472,7 +480,8 @@ class PersonInfoInFile extends React.Component {
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172127930} onChange={(v)=>{this.onChange('C3_464172127930',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
-            <b className={this.state.data.C3_464172148589?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'4px'}}>英文名：</b>
+          {/* className={this.state.data.C3_464172148589?'':'alert'} */}
+            <b  style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'4px'}}>英文名：</b>
             <Input disabled={!this.state.edit} value={this.state.data.C3_464172148589} onChange={(v)=>{this.onChange('C3_464172148589',v.target.value)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left'}}>
@@ -549,7 +558,8 @@ class PersonInfoInFile extends React.Component {
          
           <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
           <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
-            <b className={this.state.data.C3_464172444813?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'4px'}}>邮编：</b>
+          {/* className={this.state.data.C3_464172444813?'':'alert'} */}
+            <b  style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'4px'}}>邮编：</b>
             <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172444813} onChange={(v)=>{this.onChange('C3_464172444813',v)}} size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
           <div style={{width:'33.33%',float:'left',borderRight:'1px solid #333'}}>
@@ -569,7 +579,8 @@ class PersonInfoInFile extends React.Component {
           </div>
 
           <div style={{width:'66.66%',float:'left'}}>
-            <b className={this.state.data.C3_464172522558?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'4px'}}>公司邮箱：</b>
+          {/* className={this.state.data.C3_464172522558?'':'alert'} */}
+            <b  style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'4px'}}>公司邮箱：</b>
             <Input value={this.state.data.C3_464172522558} onChange={(v)=>{this.onChange('C3_464172522558',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
           </div>
 
@@ -672,9 +683,7 @@ class PersonInfoInFile extends React.Component {
               <Input value={this.state.data.C3_464173949368} onChange={(v)=>{this.onChange('C3_464173949368',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'100%'}}/></td>
           </tr>
         </table>
-
-        <div
-        className={
+        {/* className={
           (this.state.data.C3_464174073888&&this.state.data.C3_464174245669&&this.state.data.C3_464174345857&&this.state.data.C3_464174451732)
           ||
           (this.state.data.C3_464174102741&&this.state.data.C3_464174263309&&this.state.data.C3_464174365244&&this.state.data.C3_464174461446)
@@ -682,7 +691,9 @@ class PersonInfoInFile extends React.Component {
           (this.state.data.C3_464174124614&&this.state.data.C3_464174274118&&this.state.data.C3_464174394548&&this.state.data.C3_464174473180)
           ||
           (this.state.data.C3_464174135706&&this.state.data.C3_464174314278&&this.state.data.C3_464174405591&&this.state.data.C3_464174481889)
-          ?'':'alert'}
+          ?'':'alert'} */}
+        <div
+       
        style={{marginTop:'4px',marginBottom:'4px'}}>专业/执业资格：</div>
           <table border="1" style={{width:'100%',border:'1px solid #333'}}>
           <tr>
