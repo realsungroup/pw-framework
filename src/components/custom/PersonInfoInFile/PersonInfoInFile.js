@@ -283,11 +283,15 @@ class PersonInfoInFile extends React.Component {
     getData = async(memberId) =>{
       this.setState({loading:true});
       let res;
+      let cms = `C3_464172117706 = '${memberId}'`;
+      if(!this.props.private){
+        cms = `C3_464702128504 = '${this.props.gonghao}' and C3_464172300168 = '${this.props.idNum}'`
+      }
       try {
         res = await http({baseURL:this.state.baseURL}).getTable({
           resid: 464705942338,
-          // cmswhere: `C3_464702128504 = '${memberId}'`
-          cmswhere: `C3_464172117706 = '${memberId}'`
+          cmswhere: cms
+          // cmswhere: `C3_464172117706 = '${memberId}'`
         });
         var obj = res.data[0];
         console.log('org',obj)

@@ -103,15 +103,24 @@ class PersonInfoManager extends React.Component {
                   <div>
                     <Button
                       onClick={() => {
-                        var t;
+                        let t;
+                        let num;
+                        let gonghao;
                         if(this.state.laowu){
                           t='C3_464172117706'
+                          num='C3_464172300168'
+                          gonghao='C3_464702128504'
                         }else{
                           t='C3_305737857578'
+                          num='C3_308778699827'
+                          gonghao='C3_227192472953'
                         }
+                        
                         this.setState({
                           showDetail: true,
-                          selectedRecord: record[t]
+                          selectedRecord: record[t],
+                          idNum:record[num],
+                          gonghao:record[gonghao]
                         });
                       }}
                     >
@@ -145,6 +154,8 @@ class PersonInfoManager extends React.Component {
               edit={true}
               isOuter={this.state.isOuter}
               memberId={this.state.selectedRecord}
+              idNum={this.state.idNum}
+              gonghao={this.state.gonghao}
             ></PersonInfoInFile>
           </div>
         ) : null}
