@@ -1,7 +1,15 @@
 import React from 'react';
 import TableData from '../../common/data/TableData';
 
+const  baseURL =
+window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03BaseURL;
+const downloadURL =
+window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03DownloadBaseURL;
 class TableDataDiscipline extends React.Component {
+  constructor(props){
+    super(props);
+   
+  }
   state = {
     visible: false,
     record: null,
@@ -9,8 +17,10 @@ class TableDataDiscipline extends React.Component {
   };
 
   //奖惩-查看个人违纪
-
-
+componentDidMount = () =>{
+  console.log(baseURL)
+}
+ 
   handleOk = () => {
     this.setState({
       visible: false
@@ -31,7 +41,8 @@ class TableDataDiscipline extends React.Component {
         style={{ height: '100vh' }}
       >
         <TableData
-          baseURL='http://10.108.21.41:2001'
+          baseURL={baseURL}
+          downloadBaseURL = {downloadURL}
           resid={622206065690}
           subtractH={220}
           hasBeBtns={false}
