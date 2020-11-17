@@ -80,8 +80,8 @@ class PersonnelInformation extends React.Component {
           <TabPane key="2" tab="汇报关系" style={tabPaneStyle}>
             <PersonRelationship
               resid="639856535460"
-              idField="C3_305737857578" //主表id字段名
-              pidField="C3_417993417686" //父节点id字段名
+              idField="pnid" //主表id字段名
+              pidField="supPnid" //父节点id字段名
               level={2}
               hasOpration={false}
               displayFileds={{

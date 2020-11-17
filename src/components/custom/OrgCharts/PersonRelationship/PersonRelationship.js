@@ -880,6 +880,7 @@ class PersonRelationship extends React.Component {
 
   handleRefresh = async () => {
     const { selectedNode } = this.state;
+    await this.clearCache()
     await this.getData();
     if (selectedNode.id) {
       this.chart.center(selectedNode.id);
@@ -1100,6 +1101,17 @@ class PersonRelationship extends React.Component {
     }
   }, 800);
 
+  clearCache = async () => {
+    const { baseURL } = this.props;
+    const httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    await http(httpParams).clearOrgCache({
+      key: ''
+    });
+  };
   render() {
     const {
       selectedNode,
