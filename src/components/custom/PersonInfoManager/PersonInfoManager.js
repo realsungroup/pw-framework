@@ -20,6 +20,9 @@ class PersonInfoManager extends React.Component {
         .comprehensiveQueryBaseURL;
     var laowuURL = window.pwConfig[process.env.NODE_ENV].customURLs.laowuURL;
     console.log(laowuURL);
+    let downloadUrl=window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureDownloadBaseURL
+    
+
     var bol = false; //是否为劳务公司
     var usercode = localStorage.getItem('userInfo');
     var usrChara = JSON.parse(usercode);
@@ -27,13 +30,15 @@ class PersonInfoManager extends React.Component {
     if (userCode == '632830432866') {
       bol = true;
       baseURL = laowuURL;
+      downloadUrl = window.pwConfig[process.env.NODE_ENV].customURLs.staffComDownloadURL
       this.state = {
         showDetail: false,
         selectedRecord: '',
         baseURL: baseURL,
         isOuter: bol,
         selectedDepartment: '',
-        laowu:true
+        laowu:true,
+        downloadUrl
       };
     }else{
       this.state = {
@@ -42,7 +47,8 @@ class PersonInfoManager extends React.Component {
         baseURL: baseURL,
         isOuter: bol,
         selectedDepartment: '',
-        laowu:false
+        laowu:false,
+        downloadUrl
       };
     }
 
@@ -80,6 +86,7 @@ class PersonInfoManager extends React.Component {
             resid={this.state.laowu?464705942338:637772568684}
             hasRowView={false}
             baseURL={baseURL}
+            downloadBaseURL={this.state.downloadUrl}
             hasAdd={false}
             refTargetComponentName="TableData"
             wrappedComponentRef={element => (this.tableDataRef = element)}
