@@ -36,6 +36,7 @@ class PersonInfoInFile extends React.Component {
         hasRelated:false,
         memberId:memberId,
         data:{
+          C3_657648552302:'',//生效日期
           C3_464172117706:'',//人员编号
           C3_464702128504:'',//人员工号
           C3_464172127930:'',//中文名
@@ -217,14 +218,14 @@ class PersonInfoInFile extends React.Component {
         str='政治面貌'
       }else if(!this.state.data.C3_464172722124){
         str='户籍类别'
-      }else if(!(this.state.data.C3_464173481804&&this.state.data.C3_464173629942&&this.state.data.C3_464173711606&&this.state.data.C3_464173836290&&this.state.data.C3_464173912562)
+      }else if(!((this.state.data.C3_464173481804&&this.state.data.C3_464173629942&&this.state.data.C3_464173711606&&this.state.data.C3_464173836290&&this.state.data.C3_464173912562)
               ||
               (this.state.data.C3_464173514735&&this.state.data.C3_464173639392&&this.state.data.C3_464173723045&&this.state.data.C3_464173847918&&this.state.data.C3_464173926575)
               ||
               (this.state.data.C3_464173524810&&this.state.data.C3_464173646851&&this.state.data.C3_464173733523&&this.state.data.C3_464173861459&&this.state.data.C3_464173937460)
               ||
               (this.state.data.C3_464173535280&&this.state.data.C3_464173667723&&this.state.data.C3_464173750564&&this.state.data.C3_464173879808&&this.state.data.C3_464173949368)
-              ){
+              )){
         str='学历/学位'
       }
       // else if(!(this.state.data.C3_464174073888&&this.state.data.C3_464174245669&&this.state.data.C3_464174345857&&this.state.data.C3_464174451732)
@@ -237,23 +238,23 @@ class PersonInfoInFile extends React.Component {
       //     ){
       //   str='专业/执业资格'
       // }
-      else if(!(this.state.data.C3_464174535762&&this.state.data.C3_464174605218&&this.state.data.C3_464174974466&&this.state.data.C3_464175049944&&this.state.data.C3_464458881276)
+      else if(!((this.state.data.C3_464174535762&&this.state.data.C3_464174605218&&this.state.data.C3_464174974466&&this.state.data.C3_464175049944&&this.state.data.C3_464458881276)
           ||
           (this.state.data.C3_464174545465&&this.state.data.C3_464174895167&&this.state.data.C3_464174984491&&this.state.data.C3_464175060992&&this.state.data.C3_464458911775)
           ||
           (this.state.data.C3_464174554658&&this.state.data.C3_464174904208&&this.state.data.C3_464174996449&&this.state.data.C3_464175072014&&this.state.data.C3_464458921788)
           ||
           (this.state.data.C3_464174563152&&this.state.data.C3_464174917676&&this.state.data.C3_464175006600&&this.state.data.C3_464175085490&&this.state.data.C3_464458930539)
-          ){
+          )){
         str='工作经验'
-      }else if(!(this.state.data.C3_464175119119&&this.state.data.C3_464175402821&&this.state.data.C3_464175464598&&this.state.data.C3_464175628311)
+      }else if(!((this.state.data.C3_464175119119&&this.state.data.C3_464175402821&&this.state.data.C3_464175464598&&this.state.data.C3_464175628311)
             ||
             (this.state.data.C3_464175141966&&this.state.data.C3_464175419381&&this.state.data.C3_464175479476&&this.state.data.C3_464175642417)
             ||
             (this.state.data.C3_464175301544&&this.state.data.C3_464175427954&&this.state.data.C3_464175490285&&this.state.data.C3_464175653685)
             ||
             (this.state.data.C3_464175313029&&this.state.data.C3_464175436022&&this.state.data.C3_464175539610&&this.state.data.C3_464175665668)
-            ){
+      )){
         str='家庭成员及主要社会关系'
       }else if(!this.state.data.C3_464175727918){
         str='紧急联系人姓名';
@@ -269,6 +270,8 @@ class PersonInfoInFile extends React.Component {
         str='问答2';
       }else if(!this.state.data.C3_464277267009){
         str='问答3';
+      }else if(!this.state.data.C3_657648552302){
+        str='生效日期';
       }
       console.log(str)
       if(str==''){
@@ -297,6 +300,13 @@ class PersonInfoInFile extends React.Component {
         console.log('org',obj)
         console.log(isString(obj.C3_464173535280))
         // 格式化时间
+        if(isString(obj.C3_657648552302)){
+          this.setState({shengxiaoriqi:moment(obj.C3_657648552302 )});
+        }else{
+          this.setState({shengxiaoriqi:obj.C3_657648552302});
+
+        }
+        
         if(isString(obj.C3_464172321287)){
           obj.C3_464172321287=moment(obj.C3_464172321287 );
         }
@@ -545,7 +555,8 @@ class PersonInfoInFile extends React.Component {
           </div>
           <div style={{width:'66.66%',float:'left'}}>
             <b className={this.state.data.C3_464172300168?'':'alert'} style={{display:'inline-block',width:'104px',verticalAlign:'middle',textAlign:'left',marginLeft:'4px'}}>证件号码：</b>
-            <Input value={this.state.data.C3_464172300168} onChange={(v)=>{this.onChange('C3_464172300168',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
+      <span style={{color:'#333'}}>{this.state.data.C3_464172300168}</span>
+            {/* <Input disabled={true} value={this.state.data.C3_464172300168} onChange={(v)=>{this.onChange('C3_464172300168',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/> */}
           </div>
           <div style={{clear:'both',height:'1px',borderBottom:'1px solid #333',boxSizing:'border-box'}}></div>
 
@@ -1043,6 +1054,18 @@ class PersonInfoInFile extends React.Component {
        
        <div className='fix'>_</div>
         <footer>
+          {this.props.private?null:<>
+          <span style={{color:'#333333'}}>生效日期：</span>
+          <DatePicker 
+          style={{width:'120px',marginLeft:'-28px'}}
+          value={this.state.shengxiaoriqi}
+          allowClear={false}
+          onChange={(v)=>{
+            let str=moment(v).format('YYYY-MM-DD');
+            this.onChange('C3_657648552302',str);
+            this.setState({shengxiaoriqi:v})
+            }}/>
+          </>}
           <Button style={{width:'92px'}} onClick={this.onPrinting}>打印</Button>
           {((this.state.data.C3_464700452077=='Y')||(this.state.isOuter==true))?null:<Button type='primary' style={{width:'92px'}} onClick={this.onSubmit}>保存</Button>}
           {((this.state.data.C3_464700452077=='Y')||(this.state.isOuter==true))?null:<Button type='primary' style={{width:'92px',background:'#fa8c16',borderColor:'#fa8c16'}}onClick={()=>this.onSubmit('sub')}>保存并归档</Button>}  
