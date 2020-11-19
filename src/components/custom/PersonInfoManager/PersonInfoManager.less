@@ -9,10 +9,17 @@
     padding: 8px;
     overflow-y: auto;
     overflow-x: hidden;
+    float: left;
   }
   .table-data-wrapper {
-    flex: 1;
     overflow: hidden;
+    height:calc(100vh - 56px);
+    width:100vw;
+    .tableRight{
+      float:right;
+    height:calc(100vh - 56px);
+width:calc(100vw - 255px);
+    }
   }
 }
 .overlay {
