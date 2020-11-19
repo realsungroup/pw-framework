@@ -39,7 +39,9 @@ class PersonInfoManager extends React.Component {
         isOuter: bol,
         selectedDepartment: '',
         laowu:true,
-        downloadUrl
+        downloadUrl,
+        laowuURL:laowuURL,
+        laowuDownURL:window.pwConfig[process.env.NODE_ENV].customURLs.staffComDownloadURL
       };
     }else{
       this.state = {
@@ -49,7 +51,9 @@ class PersonInfoManager extends React.Component {
         isOuter: bol,
         selectedDepartment: '',
         laowu:false,
-        downloadUrl
+        downloadUrl,
+        laowuURL:laowuURL,
+        laowuDownURL:window.pwConfig[process.env.NODE_ENV].customURLs.staffComDownloadURL
       };
     }
 
@@ -69,8 +73,8 @@ class PersonInfoManager extends React.Component {
             // 464171754083
             resid={464705942338}
             hasRowView={false}
-            baseURL={baseURL}
-            downloadBaseURL={this.state.downloadUrl}
+            baseURL={this.state.laowuURL}
+            downloadBaseURL={this.state.laowuDownURL}
             hasAdd={false}
             refTargetComponentName="TableData"
             wrappedComponentRef={element => (this.tableDataRef = element)}
