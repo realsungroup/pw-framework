@@ -1,7 +1,10 @@
 import React from 'react';
 import './SignPrint.less';
+import { Tabs} from 'antd';
 import {MultiPrint} from'../../common/loadableCommon';
+import TableData from '../../common/data/TableData';
 
+const { TabPane } = Tabs;
 const Template =(props)=>{
   return(
 <div style={{width:'1150px',height:'1620px',background:'#fff',pageBreakAfter:'always'}}>
@@ -52,6 +55,10 @@ class SignPrint extends React.Component {
   render() {
     return (
       <div className="SignPrint">
+      <Tabs defaultActiveKey="1">
+      <TabPane tab="已完成" key="1">
+    
+        <div className='inner'>
         <MultiPrint
           baseURL={this.baseURL}
           downloadBaseURL={this.dlEmployDownloadURL}
@@ -61,7 +68,30 @@ class SignPrint extends React.Component {
             return<Template data={data}/>
           }}
         </MultiPrint>
+        </div>
+      </TabPane>
+      <TabPane tab="未完成" key="2">
+        <div className='inner'>
+        <TableData
+          baseURL={this.baseURL}
+          downloadBaseURL={this.dlEmployDownloadURL}
+          resid={658838729515}
+          subtractH={180}
+          hasAdd={false}
+          hasRowView={false}
+          hasRowDelete={false}
+          hasRowEdit={false}
+          hasDelete={false}
+          hasModify={false}
+          hasRowModify={false}
+          hasRowSelection={false}
+          hasAdvSearch={false}
+        />
+        </div>
+      </TabPane>
+      </Tabs>
       </div>
+
     );
   }
 }

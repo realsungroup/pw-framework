@@ -32,7 +32,12 @@ class ChartCommunication extends React.Component {
   constructor(props) {
     super(props);
     this.baseURL = window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainning;
+    this.downloadURL=window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainningDownload;
     this.state = {
+      customDate:null,//自定义筛选的日期
+      customCms: ``,//自定义筛选的cmswhere
+      customDate2:null,//自定义筛选的日期
+      customCms2: ``,//自定义筛选的cmswhere
       title: '',//报表标题名
       reportType: '月报',//报表种类
       season: 1,//当前选择的季度
@@ -574,6 +579,7 @@ myChart2.setOption(option2);
   }
   render() {
     const { complainTypeData } = this.state
+    
     return (
       <div className='wrap'>
         <Tabs defaultActiveKey="1">
@@ -739,12 +745,60 @@ myChart2.setOption(option2);
               </div>
             </div>
           </TabPane>
+          
           <TabPane tab="自定义" key="2">
+          <div className='searchBar'>
+            <span>事件发生日期</span>
+            <RangePicker value={this.state.customDate}
+            allowClear={false}
+              onChange={
+                
+                (v)=>{
+                  let cms=`time >= '${moment(v[0]).format('YYYY-MM-DD')}' and time <= '${moment(v[1]).format('YYYY-MM-DD')}'`
+                  this.setState({customDate:v,customCms:cms});
+                }
+              }
+              
+              />
+
+          <span>HR回复时间</span>
+            <RangePicker showTime
+            allowClear={false}
+            value={this.state.customDate2}
+              onChange={
+                (v)=>{
+                  let cms=`HRReplyTime >= '${moment(v[0]).format('YYYY-MM-DD HH:mm:ss')}' and HRReplyTime <= '${moment(v[1]).format('YYYY-MM-DD HH:mm:ss')}'`
+                  this.setState({customDate2:v,customCms2:cms});
+                }
+              }
+              
+              />
+            <Button type='primary'
+            onClick={
+              ()=>{this.setState({
+                customCms:``,
+                customCms2:``,
+                customDate:null,
+                customDate2:null
+              })}
+            }
+            >重置</Button>
+          </div>
+            
             <div className='innerWrap'>
               <TableData
                 resid={648050843809}
                 baseURL={this.baseURL}
                 subtractH={220}
+                cmswhere={
+                  this.state.customCms?(
+                  this.state.customCms2?
+                  this.state.customCms2 + ` and `+this.state.customCms
+                  :this.state.customCms):(
+                    this.state.customCms2?
+                    this.state.customCms2
+                    :``)
+                }
                 tableComponent="ag-grid"
                 sideBarAg={true}
                 hasAdvSearch={true}
@@ -757,6 +811,7 @@ myChart2.setOption(option2);
                 hasBeBtns={false}
                 hasRowModify={false}
                 hasRowSelection={false}
+                downloadBaseURL={this.downloadURL}
               />
             </div>
           </TabPane>

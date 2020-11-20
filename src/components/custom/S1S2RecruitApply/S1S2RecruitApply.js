@@ -64,7 +64,7 @@ class S1S2RecruitApply extends React.Component {
                   hasBeBtns: true,
                   isUseFormDefine: false,
                   baseURL: this.baseURL,
-                  downloadBaseURL: this.downloadBaseURL,
+                  downloadBaseURL: this.downloadURL,
                   advSearch: {
                     isRequestFormData: false
                   }
@@ -73,7 +73,7 @@ class S1S2RecruitApply extends React.Component {
                   isUseFormDefine: false,
                   hasBeBtns: true,
                   baseURL: this.baseURL,
-                  downloadBaseURL: this.downloadBaseURL,
+                  downloadBaseURL: this.downloadURL,
                   advSearch: {
                     isRequestFormData: false
                   }
@@ -115,7 +115,7 @@ class S1S2RecruitApply extends React.Component {
                   hasBeBtns: true,
                   isUseFormDefine: false,
                   baseURL: this.baseURL,
-                  downloadBaseURL: this.downloadBaseURL,
+                  downloadBaseURL: this.downloadURL,
                   advSearch: {
                     isRequestFormData: false
                   }
@@ -124,7 +124,7 @@ class S1S2RecruitApply extends React.Component {
                   isUseFormDefine: false,
                   hasBeBtns: true,
                   baseURL: this.baseURL,
-                  downloadBaseURL: this.downloadBaseURL,
+                  downloadBaseURL: this.downloadURL,
                   advSearch: {
                     isRequestFormData: false
                   }
@@ -166,7 +166,7 @@ class S1S2RecruitApply extends React.Component {
                   hasBeBtns: true,
                   isUseFormDefine: false,
                   baseURL: this.baseURL,
-                  downloadBaseURL: this.downloadBaseURL,
+                  downloadBaseURL: this.downloadURL,
                   advSearch: {
                     isRequestFormData: false
                   }
@@ -175,7 +175,7 @@ class S1S2RecruitApply extends React.Component {
                   isUseFormDefine: false,
                   hasBeBtns: true,
                   baseURL: this.baseURL,
-                  downloadBaseURL: this.downloadBaseURL,
+                  downloadBaseURL: this.downloadURL,
                   advSearch: {
                     isRequestFormData: false
                   }
@@ -220,7 +220,7 @@ class S1S2RecruitApply extends React.Component {
                   hasBeBtns: true,
                   isUseFormDefine: false,
                   baseURL: this.baseURL,
-                  downloadBaseURL: this.downloadBaseURL,
+                  downloadBaseURL: this.downloadURL,
                   advSearch: {
                     isRequestFormData: false
                   }
@@ -229,7 +229,7 @@ class S1S2RecruitApply extends React.Component {
                   isUseFormDefine: false,
                   hasBeBtns: true,
                   baseURL: this.baseURL,
-                  downloadBaseURL: this.downloadBaseURL,
+                  downloadBaseURL: this.downloadURL,
                   advSearch: {
                     isRequestFormData: false
                   }

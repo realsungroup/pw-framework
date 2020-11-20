@@ -61,9 +61,9 @@ class IDLTransferVerify extends Component {
       conUnpass: false,
       selection: 1,
       canApprove: false, //是否为当前审批人
-      cms: `headcount = 'waiting' or hrPreAprrove ='waiting'`,
+      cms: `(headcount = 'waiting' or hrPreAprrove ='waiting')`,
       userId: jobNum,
-      cmsView: `headcount = 'waiting' or hrPreAprrove ='waiting' and applyPersonNum = '${jobNum}'`,
+      cmsView: `(headcount = 'waiting' or hrPreAprrove ='waiting') and applyPersonNum = '${jobNum}'`,
       visible: false,
       C3_632503844784: '', //记录编号
       toCheck: [],
@@ -668,8 +668,8 @@ class IDLTransferVerify extends Component {
               onClick={() => {
                 this.setState({
                   selection: '1',
-                  cms: `hrPreAprrove ='waiting' or headcount = 'waiting'`,
-                  cmsView: `hrPreAprrove ='waiting' or headcount = 'waiting' and applyPersonNum = '${this.state.userId}'`
+                  cms: `(hrPreAprrove ='waiting' or headcount = 'waiting')`,
+                  cmsView: `(hrPreAprrove ='waiting' or headcount = 'waiting') and applyPersonNum = '${this.state.userId}'`
                 });
               }}
             >
