@@ -7471,9 +7471,10 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
-lz-components-and-utils@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.npmjs.org/lz-components-and-utils/-/lz-components-and-utils-1.7.2.tgz#308132fd526d852991f775c5a354229b34fa6737"
+lz-components-and-utils@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.npmjs.org/lz-components-and-utils/-/lz-components-and-utils-1.9.1.tgz#68fbce8fe1c56c05aecc01aa0bc7d61f15097d9f"
+  integrity sha512-51TLca73zhN9wJXvj6VUCZHV1pWS6rDEIfUlMXaGP9D/Oo519u/AtycryuPMhKQwVZNBk9C5wFhe7wwQ5TWlog==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.4.0"
     "@babel/polyfill" "^7.4.3"

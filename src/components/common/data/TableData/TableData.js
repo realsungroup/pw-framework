@@ -1738,13 +1738,14 @@ class TableData extends React.Component {
   };
 
   _cmsWhere = '';
-  getCmsWhere = (cmsWhere, isAdvSearch) => {
+  getCmsWhere = (cmsWhere, isAdvSearch, isRefreshTable = true) => {
+    console.log({isRefreshTable})
     if (isAdvSearch) {
       this._cmsWhere = cmsWhere;
     } else {
       this._cmsWhere = accurate2fuzzy(cmsWhere);
     }
-    this.handleRefresh(true);
+    isRefreshTable && this.handleRefresh(true);
   };
 
   beBtnConfirm = (
