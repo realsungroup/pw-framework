@@ -35,7 +35,7 @@ window.pwConfig = {
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.21.41:2001/',
-      PostArchitectureBaseURL: 'http://10.108.2.66:8044/',
+      PostArchitectureBaseURL: 'http://10.108.2.66:9091/',
       PostArchitectureDownloadBaseURL: 'http://10.108.21.41:2001/',
       comprehensiveQueryBaseURL: 'http://10.108.21.41:2001/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
@@ -50,8 +50,8 @@ window.pwConfig = {
       AchievementsBaseURL: 'http://10.108.11.36:6001/', //绩效定制页面基地址
       RBASchedulingBaseURL: 'http://10.108.21.41:2001', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.21.41:2000', //RBA排班下载基地址
-      WuxiHr03BaseURL: 'http://10.108.2.66:7001', //80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL: 'http://10.108.2.66:7000', //80端口非定制组件下载基地址
+      WuxiHr03BaseURL: 'http://10.108.2.66:9091/', //80端口非定制组件基地址
+      WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
       importTemplateDownloadURL:

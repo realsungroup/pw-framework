@@ -7,9 +7,9 @@ class PersonnelImport extends React.Component {
   constructor(props) {
     super(props);
     this.baseURL =
-      window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03BaseURL;
-    this.dlEmployDownloadURL =
-      window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03DownloadBaseURL;
+      window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03BaseURL;
+    this.downloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03DownloadBaseURL;
   }
   state = {
     SquareCardArr: [],
@@ -25,7 +25,7 @@ class PersonnelImport extends React.Component {
               wrappedComponentRef: element => (this.tableDataRef = element),
               refTargetComponentName: 'TableData',
               baseURL: this.baseURL,
-              downloadBaseURL: this.dlEmployDownloadURL,
+              downloadBaseURL: this.downloadURL,
               resid: 424904771305,
               TabsTitle: '人员信息导入',
               OutHeight: '91vh',
@@ -42,6 +42,7 @@ class PersonnelImport extends React.Component {
               actionBarWidth: 220,
               recordFormType: 'modal',
               isUseFormDefine: false,
+              hasRowSelection:true,
               // isSetColumnWidth:false,
               isWrap: true,
               formProps: {
@@ -53,7 +54,7 @@ class PersonnelImport extends React.Component {
             },
             {
               baseURL: this.baseURL,
-              downloadBaseURL: this.dlEmployDownloadURL,
+              downloadBaseURL: this.downloadURL,
               resid: 424566070449,
               TabsTitle: '离职操作导入',
               OutHeight: '91vh',
@@ -68,6 +69,7 @@ class PersonnelImport extends React.Component {
               subtractH: 220,
               actionBarWidth: 220,
               isUseFormDefine: false,
+              hasRowSelection:true,
               // isSetColumnWidth:false,
               isWrap: true,
               formProps: {
@@ -80,7 +82,7 @@ class PersonnelImport extends React.Component {
             },
             {
               baseURL: this.baseURL,
-              downloadBaseURL: this.dlEmployDownloadURL,
+              downloadBaseURL: this.downloadURL,
               resid: 603468350125,
               TabsTitle: '除名导入',
               OutHeight: '91vh',
@@ -95,6 +97,7 @@ class PersonnelImport extends React.Component {
               subtractH: 220,
               actionBarWidth: 220,
               isUseFormDefine: false,
+              hasRowSelection:true,
               // isSetColumnWidth:false,
               isWrap: true,
               formProps: {
