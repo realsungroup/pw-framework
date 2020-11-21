@@ -863,6 +863,30 @@ class ProbationForms extends React.Component {
   };
 
   /**
+   * 主管评价内容变化
+   */
+  directorEvaluateChange = directorEvaluate => {
+    this.setState({
+      employeeInformation: {
+        ...this.state.employeeInformation,
+        directorEvaluate: directorEvaluate
+      }
+    });
+  };
+
+  /**
+   * 经理评价内容变化
+   */
+  managerEvaluateChange = managerEvaluate => {
+    this.setState({
+      employeeInformation: {
+        ...this.state.employeeInformation,
+        ManagerEvaluate: managerEvaluate
+      }
+    });
+  };
+
+  /**
    * 分配辅导员
    */
   setTutorship = ({ name, userMemberId }, bol) => {
@@ -1107,7 +1131,9 @@ class ProbationForms extends React.Component {
             data = [
               {
                 REC_ID: this.state.employeeInformation.REC_ID,
-                isRegular: isAgree ? 'Y' : 'N'
+                isRegular: isAgree ? 'Y' : 'N',
+                directorEvaluate: this.state.employeeInformation
+                  .directorEvaluate
               }
             ];
           }
@@ -1115,7 +1141,8 @@ class ProbationForms extends React.Component {
             data = [
               {
                 REC_ID: this.state.employeeInformation.REC_ID,
-                isManagerRegular: isAgree ? 'Y' : 'N'
+                isManagerRegular: isAgree ? 'Y' : 'N',
+                ManagerEvaluate: this.state.employeeInformation.ManagerEvaluate
               }
             ];
           }
@@ -1250,8 +1277,12 @@ class ProbationForms extends React.Component {
               />
               <IndividualSummary
                 summary={employeeInformation.smmary}
+                directorEvaluate={employeeInformation.directorEvaluate}
+                managerEvaluate={employeeInformation.ManagerEvaluate}
                 endTime={employeeInformation.endTime}
                 summaryChange={this.summaryChange}
+                directorEvaluateChange={this.directorEvaluateChange}
+                managerEvaluateChange={this.managerEvaluateChange}
                 roleName={roleName}
                 editable={editable}
               />

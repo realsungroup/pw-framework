@@ -10,7 +10,14 @@ const { TextArea } = Input;
  */
 
 const IndividualSummary = React.memo(props => {
-  const { roleName, editable } = props;
+  const {
+    roleName,
+    editable,
+    directorEvaluate,
+    directorEvaluateChange,
+    managerEvaluate,
+    managerEvaluateChange
+  } = props;
   const disabled = !((roleName === 'HR' || roleName === '员工') && editable);
   // const time = moment(props.endTime);
   return (
@@ -43,6 +50,44 @@ const IndividualSummary = React.memo(props => {
           前完成上述若干项，人力资源部将综合部门考核意见，对新员工试用期考核结果进行公布
         </p>
       )}
+      <Card
+        title={
+          <React.Fragment>
+            <span className="card_title_name__zh">试用期主管评价</span>
+            <span className="card_title_name__en">Director Evaluate</span>
+          </React.Fragment>
+        }
+        style={{ marginBottom: 24 }}
+      >
+        <TextArea
+          placeholder="试用期主管评价"
+          value={directorEvaluate}
+          disabled={roleName !== '主管'}
+          onChange={v => {
+            directorEvaluateChange(v.target.value);
+          }}
+          rows={5}
+        />
+      </Card>
+      <Card
+        title={
+          <React.Fragment>
+            <span className="card_title_name__zh">试用期经理评价</span>
+            <span className="card_title_name__en">Manager Evaluate</span>
+          </React.Fragment>
+        }
+        style={{ marginBottom: 24 }}
+      >
+        <TextArea
+          placeholder="试用期经理评价"
+          value={managerEvaluate}
+          disabled={roleName !== '经理'}
+          onChange={v => {
+            managerEvaluateChange(v.target.value);
+          }}
+          rows={5}
+        />
+      </Card>
     </div>
   );
 });

@@ -25,6 +25,12 @@ class Search extends React.Component {
     onConfirm && onConfirm(cmswhere, true);
   };
 
+  handleAdvSearchChange = (where, searchList) => {
+    this.setState({ searchList });
+    const { onConfirm } = this.props;
+    onConfirm && onConfirm(where, true, false);
+  }
+
   render() {
     const { searchList } = this.state;
     const { searchComponent, onConfirm, ...otherProps } = this.props;
@@ -71,7 +77,8 @@ class Search extends React.Component {
                 onConfirm: this.handleAdvConfirm,
                 initialSearchList: searchList,
                 confirmText: '搜索',
-                enConfirmText: 'Search'
+                enConfirmText: 'Search',
+                onChange: this.handleAdvSearchChange
               };
             } else if (tabItem.name === 'PwForm') {
               props = otherProps;
@@ -92,6 +99,7 @@ class Search extends React.Component {
           {...otherProps}
           onConfirm={this.handleAdvConfirm}
           initialSearchList={searchList}
+          onChange={this.handleAdvSearchChange}
         />
       );
     } else {
@@ -273,8 +281,8 @@ const withAdvSearch = (options = {}) => {
         });
       };
 
-      handleGetAdvSearchWhere = (where, isAdvSearch) => {
-        this._getCmsWhere(where, isAdvSearch);
+      handleGetAdvSearchWhere = (where, isAdvSearch, isRefreshTable) => {
+        this._getCmsWhere(where, isAdvSearch, isRefreshTable);
       };
 
       render() {

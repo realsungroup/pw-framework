@@ -58,7 +58,9 @@ class AdjustTarget extends React.Component {
   fetchMainData = async () => {
     const { residConfig, currentYear } = this.props;
     try {
-      const res = await http({baseURL:this.props.baseURL}).getTable({ resid: residConfig.可调整目标 });
+      const res = await http({ baseURL: this.props.baseURL }).getTable({
+        resid: residConfig.可调整目标
+      });
       this.setState({
         mainData: res.data,
         yearMainData: res.data.filter(
@@ -104,7 +106,7 @@ class AdjustTarget extends React.Component {
     });
     try {
       this.setState({ submitLoading: true });
-      await http({baseURL:this.props.baseURL}).modifyRecords({
+      await http({ baseURL: this.props.baseURL }).modifyRecords({
         resid: residConfig.可调整目标,
         data: checkedData
       });
@@ -259,7 +261,9 @@ class AdjustTarget extends React.Component {
                 );
               })}
             </div>
-            {selectedData.REC_ID && this.renderTable()}
+            <div style={{ flex: 1 }}>
+              {selectedData.REC_ID && this.renderTable()}
+            </div>
           </div>
         </div>
       </div>
@@ -267,7 +271,7 @@ class AdjustTarget extends React.Component {
   }
   renderTable = () => {
     const { selectedData, selectedTableTab } = this.state;
-    const { residConfig,baseURL } = this.props;
+    const { residConfig, baseURL } = this.props;
     const tableDataProps = {};
 
     tableDataProps.hasAdd = false;

@@ -201,7 +201,6 @@ const getData = (controlArr, rulesControl) => {
     // 所有控件都加上验证规则
     if (typeof rulesControl === 'boolean') {
       if (obj.name !== 'Checkbox' && obj.name !== 'Upload' && obj.name !== 'Image') {
-        console.log("obj.name:", obj.name);
         obj.rules = getRules(controlData);
       }
       // 指定的字段加上验证规则

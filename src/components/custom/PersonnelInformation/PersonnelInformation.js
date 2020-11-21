@@ -25,7 +25,7 @@ class PersonnelInformation extends React.Component {
     return (
       <div className="personnel-information">
         <Tabs defaultActiveKey="1">
-          <TabPane key="1" tab="人事基本信息" style={tabPaneStyle}>
+          <TabPane key="1" tab="在职人员基本信息" style={tabPaneStyle}>
             <div className="personnel-information-base">
               <div className="department-tree-wrapper">
                 <DepartmentTree
@@ -70,14 +70,66 @@ class PersonnelInformation extends React.Component {
                   downloadBaseURL={downloadBaseURL}
                   cmswhere={
                     selectedDepartment
-                      ? `HRUSER_DEP2ID = '${selectedDepartment}' or HRUSER_DEP3ID = '${selectedDepartment}' or HRUSER_DEP4ID = '${selectedDepartment}' or HRUSER_DEP5ID = '${selectedDepartment}'`
-                      : ''
+                      ? `( HRUSER_DEP2ID = '${selectedDepartment}' or HRUSER_DEP3ID = '${selectedDepartment}' or HRUSER_DEP4ID = '${selectedDepartment}' or HRUSER_DEP5ID = '${selectedDepartment}' ) and C3_294355760203 = 'Y'`
+                      : `C3_294355760203 = 'Y'`
                   }
                 />
               </div>
             </div>
           </TabPane>
-          <TabPane key="2" tab="汇报关系" style={tabPaneStyle}>
+          <TabPane key="2" tab="离职人员基本信息" style={tabPaneStyle}>
+            <div className="personnel-information-base">
+              <div className="department-tree-wrapper">
+                <DepartmentTree
+                  resid="417643880834"
+                  baseURL={baseURL}
+                  idField="DEP_ID"
+                  pidField="DEP_PID"
+                  titleField="DEP_NAME"
+                  rootNode={{
+                    title: 'Enterprise',
+                    key: 0
+                  }}
+                  onSelect={selectedKeys => {
+                    this.setState({
+                      selectedDepartment: selectedKeys[0] ? selectedKeys[0] : ''
+                    });
+                  }}
+                  treeClassName="personnel-information-tree"
+                  onlyPersonData={role === 'manager'}
+                />
+              </div>
+              <div className="table-data-wrapper">
+                <TableData
+                  baseURL={baseURL}
+                  resid="227186227531"
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  refTargetComponentName="TableData"
+                  subtractH={180}
+                  hasAdd={true}
+                  hasRowView={true}
+                  hasRowDelete={true}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasRowModify={true}
+                  hasRowSelection={false}
+                  hasAdvSearch={false}
+                  importConfig={null}
+                  actionBarWidth={200}
+                  recordFormUseAbsolute={true}
+                  recordFormContainerProps={{ width: 1000 }}
+                  downloadBaseURL={downloadBaseURL}
+                  cmswhere={
+                    selectedDepartment
+                      ? `( HRUSER_DEP2ID = '${selectedDepartment}' or HRUSER_DEP3ID = '${selectedDepartment}' or HRUSER_DEP4ID = '${selectedDepartment}' or HRUSER_DEP5ID = '${selectedDepartment}' ) and ISNULL( C3_294355760203,'')=''`
+                      : `ISNULL( C3_294355760203,'')=''`
+                  }
+                />
+              </div>
+            </div>
+          </TabPane>
+          <TabPane key="3" tab="汇报关系" style={tabPaneStyle}>
             <PersonRelationship
               resid="639856535460"
               idField="pnid" //主表id字段名
