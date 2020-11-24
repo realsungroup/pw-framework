@@ -1,11 +1,12 @@
 import React from 'react';
 import './EmployeeInformation.less';
-import { Card, Row, Col, Select, message } from 'antd';
+import { Card, Row, Col, Select, message, Popover, Steps } from 'antd';
 import http from 'Util20/api';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
 
 const { Option } = Select;
+const { Step } = Steps;
 
 /**
  * @description 员工基本信息
@@ -26,12 +27,12 @@ class EmployeeInformation extends React.Component {
 
   //根据工号搜索辅导员
   fetchUser = async value => {
-    if(!value.trim())return;
+    if (!value.trim()) return;
     this.setState({ data: [], fetching: true });
     try {
       const res = await http().getTable({
         resid: '619281130628',
-        key:value
+        key: value
       });
       const data = res.data.map(user => ({
         label: `${user.name}-${user.userID}`,
@@ -50,12 +51,12 @@ class EmployeeInformation extends React.Component {
   };
 
   fectchSemi = async value => {
-    if(!value.trim())return;
+    if (!value.trim()) return;
     this.setState({ data2: [], fetching: true });
     try {
       const res = await http().getTable({
         resid: '609599795438',
-        key:value
+        key: value
       });
       const data2 = res.data.map(user => ({
         label: `${user.C3_227192484125}-${user.C3_227192472953}`,
@@ -83,7 +84,10 @@ class EmployeeInformation extends React.Component {
     this.props.setTutorship2({ name: value.label, userMemberId: value.key });
   };
   handleChange4 = value => {
-    this.props.setTutorshipSemi2({ name: value.label, userMemberId: value.key });
+    this.props.setTutorshipSemi2({
+      name: value.label,
+      userMemberId: value.key
+    });
   };
   ck = () => {
     if (this.props.employeeInformation.isSemi == true) {
@@ -119,33 +123,37 @@ class EmployeeInformation extends React.Component {
     this.props.isSemi2(v.target.checked);
   };
   render() {
-    const { employeeInformation, roleName, editable } = this.props;
+    const {
+      employeeInformation,
+      roleName,
+      editable,
+      approveNodes
+    } = this.props;
     let value = employeeInformation.instructor
       ? {
-        label: employeeInformation.instructor,
-        key: employeeInformation.instructorID
-      }
+          label: employeeInformation.instructor,
+          key: employeeInformation.instructorID
+        }
       : undefined;
     let valueSemi = employeeInformation.instructorDirectorId
       ? {
-        label: employeeInformation.instructorDirectorName,
-        key: employeeInformation.instructorDirectorId
-      }
+          label: employeeInformation.instructorDirectorName,
+          key: employeeInformation.instructorDirectorId
+        }
       : undefined;
     let value2 = employeeInformation.C3_637084526216
       ? {
-        label: employeeInformation.C3_637084539039,
-        key: employeeInformation.C3_637084526216
-      }
+          label: employeeInformation.C3_637084539039,
+          key: employeeInformation.C3_637084526216
+        }
       : undefined;
     let valueSemi2 = employeeInformation.instructorDirectorId2
       ? {
-        label: employeeInformation.instructorDirectorName2,
-        key: employeeInformation.instructorDirectorId2
-      }
+          label: employeeInformation.instructorDirectorName2,
+          key: employeeInformation.instructorDirectorId2
+        }
       : undefined;
     let { fetching, data } = this.state;
-    console.log(value,value2)
     return (
       <div id="employee-imformation" className="probation-form">
         <Card
@@ -173,8 +181,8 @@ class EmployeeInformation extends React.Component {
               </span>
               {employeeInformation.joinCompanyDate
                 ? moment(employeeInformation.joinCompanyDate).format(
-                  'YYYY-MM-DD'
-                )
+                    'YYYY-MM-DD'
+                  )
                 : 'UNKNOWN'}
             </Col>
           </Row>
@@ -206,6 +214,35 @@ class EmployeeInformation extends React.Component {
                 转正状态/Status:
               </span>
               {employeeInformation.regStatus}
+              {employeeInformation.C3_622649502021 === 'Y' &&
+                roleName === 'HR' && (
+                  <Popover
+                    placement="right"
+                    content={
+                      <Steps direction="vertical">
+                        {approveNodes.map(item => {
+                          let status = 'wait';
+                          if (item.auditPerson === 'Y') {
+                            status = 'finish';
+                          } else if (item.auditPerson === 'N') {
+                            status = 'error';
+                          }
+                          return (
+                            <Step
+                              title={item.name}
+                              description={item.C3_659447231160}
+                              status={status}
+                            />
+                          );
+                        })}
+                      </Steps>
+                    }
+                  >
+                    <span style={{ marginLeft: 12, color: '#2593fc' }}>
+                      审批节点
+                    </span>
+                  </Popover>
+                )}
             </Col>
             <Col span={8}>
               <span className="employee-imformation_lable">转正日期/Date:</span>
@@ -253,9 +290,7 @@ class EmployeeInformation extends React.Component {
                     >
                       {this.state.data2.map(d => (
                         <Option key={d.key}>{d.label}</Option>
-                       
-                      )
-                      )}
+                      ))}
                     </Select>
                   )}
                   <input
@@ -280,11 +315,13 @@ class EmployeeInformation extends React.Component {
                   </span>
                 </div>
               ) : (
-                  employeeInformation.instructor
-                )}
+                employeeInformation.instructor
+              )}
             </Col>
             <Col span={12}>
-              <span className="employee-imformation_lable">辅导员2/Mentor2:</span>
+              <span className="employee-imformation_lable">
+                辅导员2/Mentor2:
+              </span>
               {(roleName === '主管' || roleName === 'HR') && editable ? (
                 <div>
                   {employeeInformation.isSemi2 == false ? (
@@ -346,11 +383,10 @@ class EmployeeInformation extends React.Component {
                   </span>
                 </div>
               ) : (
-                  employeeInformation.C3_637084539039
-                )}
+                employeeInformation.C3_637084539039
+              )}
             </Col>
           </Row>
-
         </Card>
       </div>
     );

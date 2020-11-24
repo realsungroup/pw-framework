@@ -1964,6 +1964,20 @@ window[619553156237] = {
   props: { function: true }
 };
 
+//试用期————总监
+window[659527793159] = {
+  name: 'ChiefInspectorProbation',
+  title: '试用期管理',
+  props: {}
+};
+
+//试用期————HR经理
+window[659527811598] = {
+  name: 'HRManagerProbation',
+  title: '试用期管理',
+  props: {}
+};
+
 // 616081514704
 window[616081514704] = {
   name: 'TableData',
@@ -9688,7 +9702,24 @@ window[657885982933] = {
     resid: '657886372964',
     typesResid: '637428356421',
     effectiveDateField: 'C3_657648581945',
-        employeeNumberField: 'C3_464172117706'
-
+    employeeNumberField: 'C3_464172117706'
+  }
+};
+window[659456403721] = {
+  name: 'ADPExport', // 组件名称，
+  title: '导出ADP数据', // 功能模块名称
+  props: {
+    resid: '311025002785',
+    baseURL: 'http://10.108.2.66:9091/',
+    company: '100'
+  }
+};
+window[659456530340] = {
+  name: 'ADPExport', // 组件名称，
+  title: '导出ADP数据', // 功能模块名称
+  props: {
+    resid: '311025002785',
+    baseURL: 'http://10.108.2.66:9091/',
+    company: '2000'
   }
 };

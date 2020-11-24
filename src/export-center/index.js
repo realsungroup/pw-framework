@@ -174,5 +174,8 @@ export {
   StaffComplain,
   ChartCommunication,
   ReplyComplain,
-  PersonnelChangeHistory
+  PersonnelChangeHistory,
+  ADPExport,
+  HRManagerProbation,
+  ChiefInspectorProbation
 } from '../components/custom/loadableCustom';

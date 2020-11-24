@@ -855,3 +855,24 @@ export const PersonnelChangeHistory = Loadable({
     return minLoading;
   }
 });
+
+export const ADPExport = Loadable({
+  loader: () => import('./ADPExport'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const HRManagerProbation = Loadable({
+  loader: () => import('./Probation/HRManagerProbation'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const ChiefInspectorProbation = Loadable({
+  loader: () => import('./Probation/ChiefInspectorProbation'),
+  loading() {
+    return minLoading;
+  }
+});

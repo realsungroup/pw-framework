@@ -91,7 +91,8 @@ class ProbationForms extends React.Component {
     addInternalCourseVisible: false,
     modifyInternalCourseVisible: false,
     modifyOnJobTrainingVisible: false,
-    modifyProbationObjectiveVisible: false
+    modifyProbationObjectiveVisible: false,
+    approveNodes: []
   };
 
   async componentDidMount() {
@@ -105,6 +106,7 @@ class ProbationForms extends React.Component {
       employedId = this.props.employedId;
     }
     this.setState({ memIDOrg: memberId });
+    this.fetchApproveNodes(employedId);
     await this.getAuth();
     await this.getCircle();
     await this.getRecords(memberId, employedId);
@@ -114,6 +116,18 @@ class ProbationForms extends React.Component {
     this.getOrientationTraining(memberId, employedId);
   }
 
+  fetchApproveNodes = async id => {
+    try {
+      const res = await http().getTable({
+        resid: 618591268064,
+        cmswhere: `C3_659451908745 = '${id}'`
+      });
+      console.log(res.data);
+      res.data.length && this.setState({ approveNodes: res.data });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   /**
    * 申请转正
    */
@@ -1127,25 +1141,48 @@ class ProbationForms extends React.Component {
       onOk: async () => {
         try {
           let data;
-          if (this.props.roleName === '主管') {
-            data = [
-              {
-                REC_ID: this.state.employeeInformation.REC_ID,
-                isRegular: isAgree ? 'Y' : 'N',
-                directorEvaluate: this.state.employeeInformation
-                  .directorEvaluate
-              }
-            ];
+          switch (this.props.roleName) {
+            case '主管':
+              data = [
+                {
+                  REC_ID: this.state.employeeInformation.REC_ID,
+                  isRegular: isAgree ? 'Y' : 'N',
+                  directorEvaluate: this.state.employeeInformation
+                    .directorEvaluate
+                }
+              ];
+              break;
+            case '经理':
+              data = [
+                {
+                  REC_ID: this.state.employeeInformation.REC_ID,
+                  isManagerRegular: isAgree ? 'Y' : 'N',
+                  ManagerEvaluate: this.state.employeeInformation
+                    .ManagerEvaluate
+                }
+              ];
+              break;
+            case 'HR经理':
+              data = [
+                {
+                  REC_ID: this.state.employeeInformation.REC_ID,
+                  hrManagerApprove: isAgree ? 'Y' : 'N'
+                }
+              ];
+              break;
+            case '总监':
+              data = [
+                {
+                  REC_ID: this.state.employeeInformation.REC_ID,
+                  driectorApprove: isAgree ? 'Y' : 'N'
+                }
+              ];
+              break;
+
+            default:
+              break;
           }
-          if (this.props.roleName === '经理') {
-            data = [
-              {
-                REC_ID: this.state.employeeInformation.REC_ID,
-                isManagerRegular: isAgree ? 'Y' : 'N',
-                ManagerEvaluate: this.state.employeeInformation.ManagerEvaluate
-              }
-            ];
-          }
+
           await http().modifyRecords({
             resid: resid1,
             data
@@ -1192,7 +1229,7 @@ class ProbationForms extends React.Component {
 
   render() {
     const { roleName } = this.props;
-    const { loading, employeeInformation } = this.state;
+    const { loading, employeeInformation, approveNodes } = this.state;
     const editable = employeeInformation.regStatus === '待转正';
     return (
       <Spin spinning={loading}>
@@ -1219,6 +1256,7 @@ class ProbationForms extends React.Component {
                 isSemi2={this.isSemi2}
                 roleName={roleName}
                 editable={editable}
+                approveNodes={approveNodes}
               />
               <ProbationObjectives
                 probationObjectives={this.state.probationObjectives}
@@ -1370,7 +1408,11 @@ class ProbationForms extends React.Component {
                   ((roleName === '主管' &&
                     employeeInformation.isRegular !== 'Y') ||
                     (roleName === '经理' &&
-                      employeeInformation.isManagerRegular !== 'Y')) && (
+                      employeeInformation.isManagerRegular !== 'Y') ||
+                    (roleName === 'HR经理' &&
+                      employeeInformation.hrManagerApprove !== 'Y') ||
+                    (roleName === '总监' &&
+                      employeeInformation.driectorApprove !== 'Y')) && (
                     <React.Fragment>
                       <Button
                         type="primary"

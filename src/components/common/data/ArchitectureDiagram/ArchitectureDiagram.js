@@ -3476,10 +3476,10 @@ class LizhiForm extends React.PureComponent {
     lizhiReason: '',
     lizhiType: '',
     date: null,
-    aDate:null
+    aDate: null
   };
   render() {
-    const { lizhiDate, lizhiReason, date, lizhiType,aDate } = this.state;
+    const { lizhiDate, lizhiReason, date, lizhiType, aDate } = this.state;
     const { name, number } = this.props;
     return (
       <Form {...formItemLayout}>
@@ -3521,7 +3521,7 @@ class LizhiForm extends React.PureComponent {
             }}
           />
         </Form.Item>
-        <Form.Item label="实际离职日期" >
+        <Form.Item label="实际离职日期">
           <DatePicker
             value={aDate}
             onChange={v => {
@@ -3545,7 +3545,13 @@ class LizhiForm extends React.PureComponent {
               if (!date) {
                 return message.info('请选择生效日期');
               }
-              this.props.onOk({ lizhiDate, lizhiReason, lizhiType, date,aDate });
+              this.props.onOk({
+                lizhiDate,
+                lizhiReason,
+                lizhiType,
+                date,
+                aDate
+              });
             }}
           >
             提交
@@ -3636,6 +3642,7 @@ class DLImportResult extends React.PureComponent {
                       hasRowSelection={true}
                       hasAdvSearch={false}
                       importConfig={null}
+                      hasBeBtns
                       customRowBtns={[
                         (record, btnSize) => {
                           if (record.C3_465142349966) {
