@@ -68,11 +68,7 @@ class PersonnelInformation extends React.Component {
                   recordFormUseAbsolute={true}
                   recordFormContainerProps={{ width: 1000 }}
                   downloadBaseURL={downloadBaseURL}
-                  cmswhere={
-                    selectedDepartment
-                      ? `( HRUSER_DEP2ID = '${selectedDepartment}' or HRUSER_DEP3ID = '${selectedDepartment}' or HRUSER_DEP4ID = '${selectedDepartment}' or HRUSER_DEP5ID = '${selectedDepartment}'`
-                      :``
-                  }
+                  cparm1={selectedDepartment}
                 />
               </div>
             </div>
@@ -120,11 +116,8 @@ class PersonnelInformation extends React.Component {
                   recordFormUseAbsolute={true}
                   recordFormContainerProps={{ width: 1000 }}
                   downloadBaseURL={downloadBaseURL}
-                  cmswhere={
-                    selectedDepartment
-                      ? `( HRUSER_DEP2ID = '${selectedDepartment}' or HRUSER_DEP3ID = '${selectedDepartment}' or HRUSER_DEP4ID = '${selectedDepartment}' or HRUSER_DEP5ID = '${selectedDepartment}' )`
-                      : ``
-                  }
+                  cparm1={selectedDepartment}
+
                 />
               </div>
             </div>
