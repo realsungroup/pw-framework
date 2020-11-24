@@ -50,7 +50,7 @@ class PersonnelInformation extends React.Component {
               <div className="table-data-wrapper">
                 <TableData
                   baseURL={baseURL}
-                  resid="227186227531"
+                  resid="424537954415"
                   wrappedComponentRef={element => (this.tableDataRef = element)}
                   refTargetComponentName="TableData"
                   subtractH={180}
@@ -68,11 +68,7 @@ class PersonnelInformation extends React.Component {
                   recordFormUseAbsolute={true}
                   recordFormContainerProps={{ width: 1000 }}
                   downloadBaseURL={downloadBaseURL}
-                  cmswhere={
-                    selectedDepartment
-                      ? `( HRUSER_DEP2ID = '${selectedDepartment}' or HRUSER_DEP3ID = '${selectedDepartment}' or HRUSER_DEP4ID = '${selectedDepartment}' or HRUSER_DEP5ID = '${selectedDepartment}' ) and C3_294355760203 = 'Y'`
-                      : `C3_294355760203 = 'Y'`
-                  }
+                  cparm1={selectedDepartment}
                 />
               </div>
             </div>
@@ -102,7 +98,7 @@ class PersonnelInformation extends React.Component {
               <div className="table-data-wrapper">
                 <TableData
                   baseURL={baseURL}
-                  resid="227186227531"
+                  resid="659550084796"
                   wrappedComponentRef={element => (this.tableDataRef = element)}
                   refTargetComponentName="TableData"
                   subtractH={180}
@@ -120,11 +116,8 @@ class PersonnelInformation extends React.Component {
                   recordFormUseAbsolute={true}
                   recordFormContainerProps={{ width: 1000 }}
                   downloadBaseURL={downloadBaseURL}
-                  cmswhere={
-                    selectedDepartment
-                      ? `( HRUSER_DEP2ID = '${selectedDepartment}' or HRUSER_DEP3ID = '${selectedDepartment}' or HRUSER_DEP4ID = '${selectedDepartment}' or HRUSER_DEP5ID = '${selectedDepartment}' ) and ISNULL( C3_294355760203,'')=''`
-                      : `ISNULL( C3_294355760203,'')=''`
-                  }
+                  cparm1={selectedDepartment}
+
                 />
               </div>
             </div>

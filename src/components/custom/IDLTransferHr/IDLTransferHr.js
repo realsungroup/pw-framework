@@ -640,8 +640,11 @@ class IDLTransferHr extends Component {
                 hasRowModify={false}
                 hasModify={false}
                 hasDelete={false}
+                recordFormUseAbsolute={true}
                 style={{ height: '100%' }}
                 hasRowView={false}
+                recordFormUseAbsolute={true}
+
                 customRowBtns={[
                   (record) => {
                     return (
@@ -672,6 +675,8 @@ class IDLTransferHr extends Component {
                 hasRowDelete={false}
                 hasRowModify={false}
                 hasModify={false}
+                recordFormUseAbsolute={true}
+
                 hasDelete={false}
                 style={{ height: '100%' }}
                 hasRowView={false}
@@ -811,6 +816,8 @@ class IDLTransferHr extends Component {
                 hasModify={false}
                 hasRowModify={false}
                 hasRowSelection={false}
+                recordFormUseAbsolute={true}
+
                 actionBarWidth={100}
                 customRowBtns={[
                   record => {
@@ -961,6 +968,8 @@ class IDLTransferHr extends Component {
                     hasModify={false}
                     hasDelete={false}
                     style={{ height: '100%' }}
+                  recordFormUseAbsolute={true}
+
                     hasRowView={false}
                     actionBarWidth={120}
                     actionBarFixed={true}
