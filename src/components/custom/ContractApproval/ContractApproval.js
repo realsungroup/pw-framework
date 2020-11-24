@@ -164,6 +164,8 @@ class ContractApproval extends React.Component {
                 hasModify={false}
                 hasBeBtns={false}
                 hasRowSelection={true}
+              recordFormUseAbsolute={true}
+
                 customRowBtns={this.waitingCustomRowBtns}
                 actionBarExtra={({ dataSource, selectedRowKeys }) => {
                   return (
@@ -190,6 +192,8 @@ class ContractApproval extends React.Component {
                 hasRowView={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
+              recordFormUseAbsolute={true}
+
                 hasRowModify={false}
                 hasDelete={false}
                 hasModify={false}
@@ -209,6 +213,8 @@ class ContractApproval extends React.Component {
                 hasAdvSearch={true}
                 hasAdd={false}
                 hasRowView={true}
+              recordFormUseAbsolute={true}
+
                 hasRowDelete={false}
                 hasRowEdit={false}
                 hasRowModify={false}

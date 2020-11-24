@@ -117,6 +117,7 @@ class PersonnelChangeHistory extends React.Component {
           <TableData
             resid={resid}
             baseURL={baseURL}
+            recordFormUseAbsolute={true}
             downloadBaseURL={downloadBaseURL}
             hasRowView={false}
             hasRowDelete={false}

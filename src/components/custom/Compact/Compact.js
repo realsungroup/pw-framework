@@ -242,6 +242,7 @@ refre=()=>{
                 hasAdvSearch={true}
                 hasAdd={false}
                 hasRowView={true}
+                recordFormUseAbsolute={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
                 hasRowModify={true}
@@ -277,6 +278,7 @@ refre=()=>{
                 hasAdvSearch={true}
                 hasAdd={false}
                 hasRowView={true}
+                recordFormUseAbsolute={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
                 hasRowModify={true}
@@ -313,6 +315,7 @@ refre=()=>{
                 hasAdvSearch={true}
                 hasAdd={false}
                 hasRowView={true}
+                recordFormUseAbsolute={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
                 hasRowModify={true}
@@ -355,6 +358,8 @@ refre=()=>{
                 hasRowEdit={false}
                 hasRowModify={true}
                 hasDelete={false}
+                recordFormUseAbsolute={true}
+
                 hasModify={false}
                 hasBeBtns={false}
                 hasRowSelection={false}
@@ -438,6 +443,8 @@ refre=()=>{
                 hasDelete={false}
                 hasModify={false}
                 hasBeBtns={true}
+                recordFormUseAbsolute={true}
+
                 hasRowModify={false}
                 hasRowSelection={true}
                 wrappedComponentRef={element => (this.tableDataRef2 = element)}
@@ -522,6 +529,8 @@ refre=()=>{
                 hasRowView={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
+                recordFormUseAbsolute={true}
+
                 hasDelete={false}
                 hasModify={false}
                 hasBeBtns={true}
@@ -587,6 +596,8 @@ refre=()=>{
                 subtractH={220}
                 hasAdd={false}
                 hasRowView={true}
+                recordFormUseAbsolute={true}
+
                 hasRowDelete={false}
                 hasRowEdit={false}
                 hasDelete={false}
@@ -694,6 +705,8 @@ refre=()=>{
                 resid={640899304937}
                 subtractH={220}
                 hasAdd={false}
+                recordFormUseAbsolute={true}
+
                 hasRowView={false}
                 hasRowDelete={false}
                 hasRowEdit={false}
@@ -739,6 +752,8 @@ refre=()=>{
               hasRowModify={false}
               hasDelete={false}
               hasModify={false}
+              recordFormUseAbsolute={true}
+
               hasBeBtns={false}
               hasRowSelection={false}
               cmswhere={`C3_436624448098 = '${selectedPerson.C3_436624212137}'`}
