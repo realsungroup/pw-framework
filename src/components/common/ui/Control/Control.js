@@ -10,7 +10,7 @@ import {
   message,
   Modal,
   Radio,
-  AutoComplete,
+  AutoComplete
 } from 'antd';
 import DateTimePicker from '../DateTimePicker';
 import withAdvDicTable from '../../hoc/withAdvDicTable';
@@ -21,7 +21,7 @@ import { compose } from 'recompose';
 import moment from 'moment';
 import { defaultProps, propTypes } from './propTypes';
 import * as blobUtil from 'blob-util';
-import { getRadioGroupOptions } from './util'
+import { getRadioGroupOptions } from './util';
 import './Control.less';
 import http from 'Util20/api';
 
@@ -136,21 +136,22 @@ const getSelectViewValue = (value, controlData, props) => {
 
 const imageReg = /\.png|\.jpg|\.jpeg$/;
 
-
 const getAutoCompleteDataSource = (res, key) => {
   let ret = [];
   if (!res || !key) {
     return ret;
   }
   if (res && Array.isArray(res.cmscolumninfo)) {
-    const item = res.cmscolumninfo.find(cmscolumninfoItem => cmscolumninfoItem.id === key);
+    const item = res.cmscolumninfo.find(
+      cmscolumninfoItem => cmscolumninfoItem.id === key
+    );
     if (item && item[key]) {
       const obj = item[key];
       ret = obj.DisplayOptions;
     }
   }
   return ret;
-}
+};
 
 /**
  * Control
@@ -170,12 +171,19 @@ class Control extends React.Component {
       takePictureCancelText: '取消', // 可选值：'取消' | '重拍'
       mediaFieldValue: '', // 媒体字段值
       isMediaField: false, // 是否为多媒体字段
-      dataSource: [], // AutoComplete 的下拉选项
+      dataSource: [] // AutoComplete 的下拉选项
     };
   }
 
   componentDidMount = async () => {
-    const { dataItem, resid, record, dblinkname, baseURL, mediaFieldBaseURL } = this.props;
+    const {
+      dataItem,
+      resid,
+      record,
+      dblinkname,
+      baseURL,
+      mediaFieldBaseURL
+    } = this.props;
     const { id, name, controlData } = dataItem;
     const { ColType } = controlData;
     if (name === 'Input' && ColType === 6) {
@@ -190,15 +198,18 @@ class Control extends React.Component {
           colname: id,
           recid: record.REC_ID,
           dblinkname
-        })
+        });
       } catch (err) {
         return message.error(err.message);
       }
 
       if (res && res.data) {
-        this.setState({ mediaFieldValue: `${mediaFieldBaseURL}${res.data}`, isMediaField: true });
+        this.setState({
+          mediaFieldValue: `${mediaFieldBaseURL}${res.data}`,
+          isMediaField: true
+        });
       } else {
-        this.setState({ mediaFieldValue: '', isMediaField: true, });
+        this.setState({ mediaFieldValue: '', isMediaField: true });
       }
     }
 
@@ -217,8 +228,8 @@ class Control extends React.Component {
       try {
         res = await http(httpParams).getTable({
           resid,
-          getcolumninfo: 1,
-        })
+          getcolumninfo: 1
+        });
       } catch (err) {
         return message.error(err.message);
       }
@@ -228,7 +239,7 @@ class Control extends React.Component {
     }
   };
 
-  componentWillUnmount = () => { };
+  componentWillUnmount = () => {};
 
   shouldComponentUpdate = (nextProps, nextState) => {
     if (
@@ -243,7 +254,7 @@ class Control extends React.Component {
       return true;
     }
     return false;
-  };  
+  };
 
   retFilterFieldValues = innerFieldNames => {
     const { record } = this.props;
@@ -276,7 +287,8 @@ class Control extends React.Component {
               (where += colValue.col2 + "='" + colValue.col1Value + "'"); // 需要用单引号将字段值括起来
           } else {
             colValue.col1Value &&
-              (where += colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
+              (where +=
+                colValue.col2 + "='" + colValue.col1Value + "'" + ' and ');
           }
         });
       }
@@ -296,14 +308,20 @@ class Control extends React.Component {
     const advDicTableProps = {
       cmswhere: this.getAdvDicCmswhere(
         dataItem.controlData &&
-        dataItem.controlData.AdvDictionaryListData &&
-        dataItem.controlData.AdvDictionaryListData[0]
+          dataItem.controlData.AdvDictionaryListData &&
+          dataItem.controlData.AdvDictionaryListData[0]
       )
-    }
-    showAdvDicTable(baseURL, form, dataItem, advDicTableProps, this.handleBeforeSave);
+    };
+    showAdvDicTable(
+      baseURL,
+      form,
+      dataItem,
+      advDicTableProps,
+      this.handleBeforeSave
+    );
   };
 
-  handleCheckboxChange = (e) => {
+  handleCheckboxChange = e => {
     const { dataItem } = this.props;
     const controlData = dataItem.controlData;
     if (controlData) {
@@ -314,7 +332,7 @@ class Control extends React.Component {
         this.handleChange('');
       }
     }
-  }
+  };
 
   /**
    * 控件值发生改变的回调
@@ -455,7 +473,7 @@ class Control extends React.Component {
         this.stream.getTracks().forEach(track => track.stop());
         this.stream = null;
         this.canvas = null;
-      } catch (err) { }
+      } catch (err) {}
 
       this.setState({
         takePictureVisible: false,
@@ -575,16 +593,21 @@ class Control extends React.Component {
     if (mode === 'view') {
       switch (name) {
         case 'Input': {
-          const { mediaFieldValue, isMediaField } = this.state
+          const { mediaFieldValue, isMediaField } = this.state;
           if (!isMediaField) {
-            return (
-              <span>{value}</span>
-            );
+            return <span>{value}</span>;
           }
 
           // 多媒体字段
           if (mediaFieldValue) {
-            return <img src={mediaFieldValue} key={mediaFieldValue} alt={mediaFieldValue} className="control__media-field-img"></img>
+            return (
+              <img
+                src={mediaFieldValue}
+                key={mediaFieldValue}
+                alt={mediaFieldValue}
+                className="control__media-field-img"
+              ></img>
+            );
           }
 
           return null;
@@ -651,15 +674,16 @@ class Control extends React.Component {
         }
 
         case 'Image': {
-          return value ? <img
-            src={value}
-            alt={value}
-            style={{ width: customStyle.width, height: customStyle.height }}
-          ></img> : ''
-
+          return value ? (
+            <img
+              src={value}
+              alt={value}
+              style={{ width: customStyle.width, height: customStyle.height }}
+            ></img>
+          ) : (
+            ''
+          );
         }
-
-       
 
         default: {
           return <span>{value}</span>;
@@ -675,7 +699,7 @@ class Control extends React.Component {
               onBlur={this.handleBeforeSave}
               {...props}
             />
-          );    
+          );
         }
         case 'AutoComplete': {
           const { dataSource } = this.state;
@@ -696,7 +720,7 @@ class Control extends React.Component {
               onChange={this.handleChange}
               onBlur={this.handleBeforeSave}
               {...props}
-              autosize={true}
+              autosize={{ minRows: 2, maxRows: 4 }}
             />
           );
         }
@@ -733,7 +757,9 @@ class Control extends React.Component {
         }
         case 'Checkbox': {
           const checked = getCheckboxChecked(value);
-          return <Checkbox checked={checked} onChange={this.handleCheckboxChange} />;
+          return (
+            <Checkbox checked={checked} onChange={this.handleCheckboxChange} />
+          );
         }
         case 'Select': {
           const { options } = props;
@@ -808,11 +834,15 @@ class Control extends React.Component {
           );
         }
         case 'Image': {
-          return value ? <img
-            src={value}
-            alt={value}
-            style={{ width: customStyle.width, height: customStyle.height }}
-          ></img> : ''
+          return value ? (
+            <img
+              src={value}
+              alt={value}
+              style={{ width: customStyle.width, height: customStyle.height }}
+            ></img>
+          ) : (
+            ''
+          );
         }
 
         case 'RadioGroup': {
@@ -820,11 +850,15 @@ class Control extends React.Component {
 
           return (
             <Radio.Group value={value} onChange={this.handleChange}>
-              {options.map(option => <Radio key={option.value} value={option.value}>{option.label}</Radio>)}
+              {options.map(option => (
+                <Radio key={option.value} value={option.value}>
+                  {option.label}
+                </Radio>
+              ))}
             </Radio.Group>
-          )
+          );
         }
-        
+
         default: {
           return <div>{value}</div>;
         }
