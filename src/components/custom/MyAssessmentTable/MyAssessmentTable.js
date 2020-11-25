@@ -94,7 +94,8 @@ class MyAssessmentTable extends React.Component {
     fetching: true,
     submitBtnLoading: false,
     modalVisible: false,
-    selectedInterview: {}
+    selectedInterview: {},
+    fetcingForm: true
   };
   async componentDidMount() {
     await this.fetchMainData();
@@ -160,6 +161,7 @@ class MyAssessmentTable extends React.Component {
         resid: subresids.员工绩效反馈,
         formName: 'default'
       });
+      this.setState({ fetcingForm: true });
       const resArr = await Promise.all(pArr);
       this._formDataObj.员工自评 = dealControlArr(resArr[0].data.columns);
       this._formDataObj.员工年末自评 = dealControlArr(resArr[1].data.columns);
@@ -168,6 +170,8 @@ class MyAssessmentTable extends React.Component {
     } catch (error) {
       console.error(error);
       message.error(error.message);
+    } finally {
+      this.setState({ fetcingForm: false });
     }
   };
   modifiableTable = (record, resid) => {
@@ -614,7 +618,10 @@ class MyAssessmentTable extends React.Component {
   };
 
   renderForm = () => {
-    const { selectedMainData, tableConfig } = this.state;
+    const { selectedMainData, tableConfig, fetcingForm } = this.state;
+    if (fetcingForm) {
+      return message('正在获取窗体数据，请稍等。');
+    }
     let operation = 'view';
     const formName = tableConfig.formName;
     if (formName === '员工自评') {

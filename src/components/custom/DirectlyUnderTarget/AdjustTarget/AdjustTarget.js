@@ -240,7 +240,7 @@ class AdjustTarget extends React.Component {
               '请选择一条记录'
             )}
           </header>
-          <div className="approval-target__right__table">
+          <div className="adjust-target__right__table">
             <div className="adjust-target-table-tab">
               {tableTab.map(tab => {
                 return (
