@@ -287,8 +287,8 @@ class AdjustTarget extends React.Component {
       selectedData.C3_420953811304 === 'Y' &&
       selectedData.C3_420976746773 === 'Y'
     ) {
-      tableDataProps.hasAdd = true;
-      tableDataProps.hasDelete = true;
+      // tableDataProps.hasAdd = true;
+      // tableDataProps.hasDelete = true;
       tableDataProps.hasRowEdit = true;
       tableDataProps.hasRowEditAdd = true;
       tableDataProps.actionBarFixed = false;
