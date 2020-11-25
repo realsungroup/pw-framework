@@ -64,23 +64,6 @@ const columns = [
     isSameBegin: true
   },
   {
-    name: '产前假扣款比例',
-    filed: 'C3_456247368964',
-    number1: '25PR',
-    number2: '2100',
-    isFront: true,
-    isSameBegin: true
-  },
-  {
-    name: '路程假扣款比例',
-    filed: 'C3_456247870527',
-    number1: '25RR',
-    number2: '2100',
-    isFront: true,
-    isSameBegin: true
-  },
-
-  {
     name: '加班费（加班系数）',
     filed: 'C3_427240958358',
     number1: '2OTA',
