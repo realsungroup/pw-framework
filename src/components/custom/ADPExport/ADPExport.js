@@ -166,25 +166,37 @@ class ADPExport extends React.Component {
           let data = `HEADR|"GVIIVI|"IIVIINC|"LEO_CHEN|"+86 591 88052823|"FZCN.Payroll@ii-vi.com|"${fileName}|"${now.format(
             'YYYYMMDD'
           )}|"51222|"P|"1|"|"|"\n`;
+
+          let counts = 2;
           records.forEach(record => {
-            columns.forEach(column => {
-              data += `P${column.number2}|"${record.personnumber}|"CN|"|"INS|"${
-                column.number2
-              }|"${column.number1}|"${record.C3_659465238204}|"${
-                column.isSameBegin ? record.C3_659465238204 : '99991231'
-              }|"|"|"|"|"${column.number1}|"`;
-              if (column.isFront) {
-                data += `${
-                  record[column.filed] ? record[column.filed] : ''
-                }|"CNY|"|"|"|"|"|"|"|"|"\n`;
-              } else {
-                data += `|"|"|"|"CNY|"${
-                  record[column.filed] ? record[column.filed] : ''
-                }|"|"|"|"|"\n`;
-              }
-            });
+            if (record.personnuumber) {
+              //去掉没有personnumber的员工记录
+              columns.forEach(column => {
+                //去掉值为null或0的数据
+                if (record[column.filed]) {
+                  let row = `P${column.number2}|"${
+                    record.personnuumber
+                  }|"CN|"|"INS|"${column.number2}|"${column.number1}|"${
+                    record.C3_659465238204
+                  }|"${
+                    column.isSameBegin ? record.C3_659465238204 : '99991231'
+                  }|"|"|"|"|"${column.number1}|"`;
+                  if (column.isFront) {
+                    row += `${
+                      record[column.filed] ? record[column.filed] : ''
+                    }|"CNY|"|"|"|"|"|"|"|"|"\n`;
+                  } else {
+                    row += `|"|"|"|"CNY|"${
+                      record[column.filed] ? record[column.filed] : ''
+                    }|"|"|"|"|"\n`;
+                  }
+                  data += row;
+                  counts++;
+                }
+              });
+            }
           });
-          data += `TRAIL|"${records.length * columns.length + 2}`;
+          data += `TRAIL|"${counts}`;
           exportRaw(data, fileName);
         }}
       >
