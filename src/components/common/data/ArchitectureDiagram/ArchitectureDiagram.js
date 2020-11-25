@@ -2077,7 +2077,7 @@ class ArchitectureDiagram extends React.Component {
         this.handleFinishImport,
         {},
         {},
-        true,
+        false,
         'fileName'
       );
   };
