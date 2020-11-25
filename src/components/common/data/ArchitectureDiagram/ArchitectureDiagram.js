@@ -250,7 +250,8 @@ class ArchitectureDiagram extends React.Component {
       joinRecord: {},
       selectedResult: '全部',
       transferDate: moment(),
-      DLImportResultVisible: false
+      DLImportResultVisible: false,
+      chumingVisible: false
     };
   }
 
@@ -2115,6 +2116,18 @@ class ArchitectureDiagram extends React.Component {
     this.setState({ tableSelectedNode: rows[0] ? rows[0] : {} });
   };
 
+  chuMing = () => {
+    this.setState({
+      chumingVisible: true
+    });
+  };
+
+  closeChuMing = () => {
+    this.setState({
+      chumingVisible: false
+    });
+  };
+
   renderHeader = () => {
     const {
       mode,
@@ -2308,6 +2321,7 @@ class ArchitectureDiagram extends React.Component {
                     <Menu.Item onClick={this.handleBiandong}>IDL</Menu.Item>
                   </SubMenu>
                   <Menu.Item onClick={this.handleLizhi}>离职</Menu.Item>
+                  <Menu.Item onClick={this.chuMing}>除名</Menu.Item>
                   {/* <Menu.Item onClick={this.handleImport}>兼任</Menu.Item> */}
                 </Menu>
               }
@@ -2750,7 +2764,8 @@ class ArchitectureDiagram extends React.Component {
       fetchingData,
       joinVisible,
       joinRecord,
-      DLImportResultVisible
+      DLImportResultVisible,
+      chumingVisible
     } = this.state;
     const { baseURL, displayFileds, hasView, historyResid } = this.props;
     return (
@@ -3174,6 +3189,9 @@ class ArchitectureDiagram extends React.Component {
                 baseURL={baseURL}
                 onClose={this.handleCloseDLRuzhiImport}
               />
+            )}
+            {chumingVisible && (
+              <ChuMing baseURL={baseURL} onClose={this.closeChuMing} />
             )}
           </div>
         </Spin>
@@ -3870,4 +3888,65 @@ class DLImportResult extends React.PureComponent {
     } catch (error) {}
     this.setState({ spinnig: false });
   };
+}
+
+class ChuMing extends React.PureComponent {
+  render() {
+    const { baseURL, onClose } = this.props;
+    return (
+      <div className={classNames('architecture-diagram__import-result', {})}>
+        <div
+          className="architecture-diagram__import-result-mask"
+          onClick={this.handleCloseImportResult}
+        ></div>
+        <div
+          id="import-result"
+          className={classNames('architecture-diagram__import-result__main')}
+        >
+          <div className="architecture-diagram__import-result__main__title">
+            除名
+            <Icon
+              type="close"
+              className="architecture-diagram__min-button"
+              style={{ fontSize: 16 }}
+              onClick={onClose}
+            />
+          </div>
+          <div className="architecture-diagram__import-result__main__content">
+            <div style={{ flex: 1, overflow: 'hidden' }}>
+              <TableData
+                baseURL={baseURL}
+                resid={'603468350125'}
+                wrappedComponentRef={element => (this.tableDataRef1 = element)}
+                refTargetComponentName="TableData"
+                subtractH={180}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={true}
+                // hasRowEdit={true}
+                // hasRowEditAdd={true}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={true}
+                hasRowSelection={true}
+                hasAdvSearch={false}
+                // importConfig={null}
+                hasBeBtns
+                actionBarWidth={220}
+                isUseFormDefine={false}
+                isWrap={true}
+                formProps={{
+                  height: 650
+                }}
+                advSearch={{
+                  isRequestFormData: false
+                }}
+                recordFormType="modal"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
