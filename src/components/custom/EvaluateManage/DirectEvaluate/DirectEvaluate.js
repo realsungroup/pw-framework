@@ -58,6 +58,7 @@ class DirectEvaluate extends React.Component {
         mode: 'sub'
       },
       '2': {
+        resid: residConfig.年中目标, //子表
         mode: 'form',
         formName: '员工直评'
       },
@@ -66,6 +67,7 @@ class DirectEvaluate extends React.Component {
         mode: 'sub'
       },
       '4': {
+        resid: residConfig.年末目标, //子表
         mode: 'form',
         formName: '员工年末直评'
       }
@@ -303,8 +305,8 @@ class DirectEvaluate extends React.Component {
                 </div>
               </>
             ) : (
-                '请选择一条记录'
-              )}
+              '请选择一条记录'
+            )}
           </header>
           <div className="direct-evaluate__right__table">
             <div className="direct-evaluate-table-tab">
@@ -360,21 +362,21 @@ class DirectEvaluate extends React.Component {
                     年中直评提交
                   </Button>
                 ) : (
-                    <Button
-                      type="primary"
-                      size="small"
-                      onClick={this.submitTarget('end')}
-                      loading={submitLoading}
-                      disabled={
-                        selectedData.C3_420949753683 !== 'Y' ||
-                        selectedData.C3_420976746773 !== 'Y' ||
-                        selectedData.C3_431106931302 !== '年末' ||
-                        selectedData.C3_436734710960 == 'Y'
-                      }
-                    >
-                      年末直评提交
-                    </Button>
-                  )}
+                  <Button
+                    type="primary"
+                    size="small"
+                    onClick={this.submitTarget('end')}
+                    loading={submitLoading}
+                    disabled={
+                      selectedData.C3_420949753683 !== 'Y' ||
+                      selectedData.C3_420976746773 !== 'Y' ||
+                      selectedData.C3_431106931302 !== '年末' ||
+                      selectedData.C3_436734710960 == 'Y'
+                    }
+                  >
+                    年末直评提交
+                  </Button>
+                )}
               </div>
             </div>
             {selectedYear &&
@@ -425,7 +427,7 @@ class DirectEvaluate extends React.Component {
       (this.tableDataRef = element);
     tableDataProps.refTargetComponentName = 'TableData';
     const modifiable = this.modifiableTable(selectedData, tableConfig.resid);
-    console.log("modifiable", modifiable)
+    console.log('modifiable', modifiable);
     // const modifiable = true;
     if (modifiable) {
       tableDataProps.hasAdd = true;
@@ -487,7 +489,7 @@ class DirectEvaluate extends React.Component {
         useAbsolute={true}
         saveMode="single"
         resid={resid}
-      // formProps={{ width: 500 }}
+        // formProps={{ width: 500 }}
       />
     );
   };
