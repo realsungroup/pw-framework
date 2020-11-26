@@ -16,7 +16,9 @@ const IndividualSummary = React.memo(props => {
     directorEvaluate,
     directorEvaluateChange,
     managerEvaluate,
-    managerEvaluateChange
+    managerEvaluateChange,
+    hrManagerEvaluate,
+    hrManagerEvaluateChange
   } = props;
   const disabled = !((roleName === 'HR' || roleName === '员工') && editable);
   // const time = moment(props.endTime);
@@ -72,18 +74,37 @@ const IndividualSummary = React.memo(props => {
       <Card
         title={
           <React.Fragment>
-            <span className="card_title_name__zh">试用期经理评价</span>
+            <span className="card_title_name__zh">试用期经理/总监评价</span>
             <span className="card_title_name__en">Manager Evaluate</span>
           </React.Fragment>
         }
         style={{ marginBottom: 24 }}
       >
         <TextArea
-          placeholder="试用期经理评价"
+          placeholder="试用期经理/总监评价"
           value={managerEvaluate}
-          disabled={roleName !== '经理'}
+          disabled={!(roleName === '经理'|| roleName === '总监')}
           onChange={v => {
             managerEvaluateChange(v.target.value);
+          }}
+          rows={5}
+        />
+      </Card>
+      <Card
+        title={
+          <React.Fragment>
+            <span className="card_title_name__zh">试用期HR经理评价</span>
+            <span className="card_title_name__en">HR Manager Evaluate</span>
+          </React.Fragment>
+        }
+        style={{ marginBottom: 24 }}
+      >
+        <TextArea
+          placeholder="试用期HR经理评价"
+          value={hrManagerEvaluate}
+          disabled={roleName !== 'HR经理'}
+          onChange={v => {
+            hrManagerEvaluateChange(v.target.value);
           }}
           rows={5}
         />

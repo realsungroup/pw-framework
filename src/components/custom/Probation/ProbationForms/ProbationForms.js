@@ -901,6 +901,18 @@ class ProbationForms extends React.Component {
   };
 
   /**
+   * 经理评价内容变化
+   */
+  hrManagerEvaluateChange = hrManagerEvaluate => {
+    this.setState({
+      employeeInformation: {
+        ...this.state.employeeInformation,
+        hrManagerEvaluate: hrManagerEvaluate
+      }
+    });
+  };
+
+  /**
    * 分配辅导员
    */
   setTutorship = ({ name, userMemberId }, bol) => {
@@ -1166,7 +1178,9 @@ class ProbationForms extends React.Component {
               data = [
                 {
                   REC_ID: this.state.employeeInformation.REC_ID,
-                  hrManagerApprove: isAgree ? 'Y' : 'N'
+                  hrManagerApprove: isAgree ? 'Y' : 'N',
+                  hrManagerEvaluate: this.state.employeeInformation
+                  .hrManagerEvaluate
                 }
               ];
               break;
@@ -1174,7 +1188,9 @@ class ProbationForms extends React.Component {
               data = [
                 {
                   REC_ID: this.state.employeeInformation.REC_ID,
-                  driectorApprove: isAgree ? 'Y' : 'N'
+                  driectorApprove: isAgree ? 'Y' : 'N',
+                  ManagerEvaluate: this.state.employeeInformation
+                    .ManagerEvaluate
                 }
               ];
               break;
@@ -1317,10 +1333,12 @@ class ProbationForms extends React.Component {
                 summary={employeeInformation.smmary}
                 directorEvaluate={employeeInformation.directorEvaluate}
                 managerEvaluate={employeeInformation.ManagerEvaluate}
+                hrManagerEvaluate={employeeInformation.hrManagerEvaluate}
                 endTime={employeeInformation.endTime}
                 summaryChange={this.summaryChange}
                 directorEvaluateChange={this.directorEvaluateChange}
                 managerEvaluateChange={this.managerEvaluateChange}
+                hrManagerEvaluateChange={this.hrManagerEvaluateChange}
                 roleName={roleName}
                 editable={editable}
               />

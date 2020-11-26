@@ -47,7 +47,7 @@ window.pwConfig = {
       WzBaseURL: 'http://ngrok8.realsun.me:7071', //物资管理
       WzDownloadURL: 'http://ngrok8.realsun.me:7071', //物资管理
       OnlineTrainingManagerBaseURL: 'http://kingofdinner.realsun.me:9091/',
-      AchievementsBaseURL: 'http://10.108.11.36:6001/', //绩效定制页面基地址
+      AchievementsBaseURL: 'http://10.108.2.66:1001/', //绩效定制页面基地址
       RBASchedulingBaseURL: 'http://10.108.21.41:2001', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.21.41:2000', //RBA排班下载基地址
       WuxiHr03BaseURL: 'http://10.108.2.66:9091/', //80端口非定制组件基地址
