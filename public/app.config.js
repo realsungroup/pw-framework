@@ -51,7 +51,7 @@ window.pwConfig = {
       RBASchedulingBaseURL: 'http://10.108.21.41:2001', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.21.41:2000', //RBA排班下载基地址
       WuxiHr03BaseURL: 'http://10.108.2.66:9091/', //80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80', //80端口非定制组件下载基地址
+      WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
       importTemplateDownloadURL:
@@ -269,8 +269,8 @@ window.pwConfig = {
       AchievementsBaseURL: 'http://10.108.2.66:1001/',
       RBASchedulingBaseURL: 'http://10.108.2.66:9091', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
-      wuxiHr03BaseURL: 'http://10.108.2.66:9091', //80端口非定制组件基地址
-      wuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
+      WuxiHr03BaseURL: 'http://10.108.2.66:9091/', //80端口非定制组件基地址
+      WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //员工沟通平台数据基地址
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //员工沟通平台下载基地址
       importTemplateDownloadURL:

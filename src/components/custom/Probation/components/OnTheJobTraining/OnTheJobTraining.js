@@ -54,7 +54,7 @@ const OnTheJobTraining = props => {
             title="已通知确认/IsNoticeConfirm"
             dataIndex="isNoticeTrainer"
           />
-          {/* <Column title="培训日期/Date" dataIndex="trainDate" style={{display:'none'}}/> */}
+          <Column title="已确认/Confirm" dataIndex="isAffirm" />
           <Column
             title="操作/operation"
             dataIndex="operation"
