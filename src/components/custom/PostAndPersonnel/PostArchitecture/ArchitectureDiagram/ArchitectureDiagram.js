@@ -2085,7 +2085,6 @@ class ImportProgress extends React.Component {
             const findData = records.find(record => {
               return record.orgNumber == item.C3_465142349966;
             });
-            console.log(findData);
             return {
               ...item,
               C3_470524257391: findData.updateDate,

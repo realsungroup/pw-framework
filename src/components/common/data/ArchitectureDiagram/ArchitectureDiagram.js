@@ -2057,7 +2057,42 @@ class ArchitectureDiagram extends React.Component {
           C3_655655647639: 'Y' //锁定
         },
         true,
-        'fileName'
+        async (records, setMessages) => {
+          try {
+            const res = await http({ baseURL }).getTable({
+              resid: '638459489229',
+              cmswhere: `C3_305737857578 in (${records
+                .map(item => item.C3_305737857578)
+                .join(',')})`
+            });
+            const { data } = res;
+            const messages = [];
+            records.forEach(record => {
+              const _findData = data.find(
+                _data => _data.C3_305737857578 === record.C3_305737857578
+              );
+              if (_findData) {
+                if (_findData.C3_227192472953 != record.C3_227192472953) {
+                  messages.push(
+                    `编号${_findData.C3_305737857578}的人员的工号是${_findData.C3_227192472953},Excel中填写的工号是${record.C3_227192472953}`
+                  );
+                }
+              } else {
+                messages.push(`没有编号为${record.C3_305737857578}的人员`);
+              }
+            });
+            setMessages(messages);
+            if (messages.length) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (error) {
+            console.error(error);
+            message.error(error.message);
+            return true;
+          }
+        }
       );
   };
   /**
@@ -2084,24 +2119,16 @@ class ArchitectureDiagram extends React.Component {
       );
   };
 
-  handleFinishImport = async () => {
+  handleFinishImport = async (records, hasError) => {
     await this.clearCache();
-    this.props.closeImportView();
+    !hasError && this.props.closeImportView();
     await this.getData();
     this.setState({ hasImportResult: true, resultMin: false }, () => {
-      // this.contentRef.scrollTo({
-      //   left: 0,
-      //   top: window.innerHeight,
-      //   behavior: 'smooth'
-      // });
       this.tableDataRef && this.tableDataRef.handleRefresh();
     });
     notification.open({
       message: '导入完成',
-      description: '请查看导入结果',
-      onClick: () => {
-        console.log('Notification Clicked!');
-      }
+      description: '请查看导入结果'
     });
   };
 

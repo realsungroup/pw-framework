@@ -60,7 +60,7 @@ const columns = [
     filed: 'C3_456247344400',
     number1: '25SR',
     number2: '2100',
-    isFront: true,
+    isFront: false,
     isSameBegin: true
   },
   {

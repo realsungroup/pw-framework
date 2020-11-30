@@ -158,7 +158,10 @@ export default class Import extends React.Component {
         console.error(err);
         return message.error(err.message);
       }
-      this.setState({ columninfo: res.cmscolumninfo, loading: false });
+      this.setState({
+        columninfo: res.cmscolumninfo,
+        loading: false
+      });
     }
   };
 
@@ -267,7 +270,10 @@ export default class Import extends React.Component {
   };
 
   handleShowErrMsg = item => {
-    this.setState({ errMsgItem: item, errMsgModalVisible: true });
+    this.setState({
+      errMsgItem: item,
+      errMsgModalVisible: true
+    });
   };
 
   handleStart = async item => {
@@ -323,7 +329,11 @@ export default class Import extends React.Component {
     const file = info.file.originFileObj;
     const reader = new FileReader();
     const ctx = this;
-    this.setState({ fileInfo: info, progressIndex: 0, feMessages: [] });
+    this.setState({
+      fileInfo: info,
+      progressIndex: 0,
+      feMessages: []
+    });
     reader.onload = function(e) {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, {
@@ -339,8 +349,8 @@ export default class Import extends React.Component {
     reader.readAsArrayBuffer(file);
   };
 
-  handleImportExcel = (sheetData, fileName) => {
-    const { resid, fixedFields, strict } = this.props;
+  handleImportExcel = async (sheetData, fileName) => {
+    const { resid, fixedFields, strict, beforeImport } = this.props;
     const { columninfo } = this.state;
     const resultArr = XLSX.utils.sheet_to_json(sheetData, {
       header: 1,
@@ -383,13 +393,37 @@ export default class Import extends React.Component {
 
       return { ...obj, ...fixedFields };
     });
+    let excelError = false;
+    if (beforeImport) {
+      try {
+        excelError = await beforeImport(records, _messages => {
+          this.setState(state => {
+            return {
+              feMessages: [...state.feMessages, ..._messages]
+            };
+          });
+        });
+      } catch (error) {}
+    }
     this.setState({ feRecords: records }, () => {
+      if (excelError) {
+        return;
+      }
       const pArr = records.map((record, index) => {
         return async () => {
           return this.saveOneRecord(resid, record, index);
         };
       });
-      runPromiseByQueue(pArr, null, () => this.props.onFinishImport(records));
+      runPromiseByQueue(
+        pArr,
+        null,
+        () =>
+          this.props.onFinishImport &&
+          this.props.onFinishImport(
+            records,
+            getImportFailCount(this.state.feMessages).length
+          )
+      );
     });
   };
 
@@ -407,13 +441,19 @@ export default class Import extends React.Component {
       });
     } catch (err) {
       feMessages.push(err.message);
-      this.setState({ progressIndex: feMessages.length, feMessages });
+      this.setState({
+        progressIndex: feMessages.length,
+        feMessages
+      });
       console.error(err);
       return console.error(err);
     }
     feMessages.push(res.rowstate[0].message);
 
-    this.setState({ progressIndex: feMessages.length, feMessages });
+    this.setState({
+      progressIndex: feMessages.length,
+      feMessages
+    });
   };
 
   renderProgress = item => {
@@ -469,7 +509,11 @@ export default class Import extends React.Component {
         BtnIcon = (
           <Tooltip title="暂停">
             <Icon
-              style={{ fontSize: 30, marginLeft: 10, cursor: 'pointer' }}
+              style={{
+                fontSize: 30,
+                marginLeft: 10,
+                cursor: 'pointer'
+              }}
               type="pause-circle"
               onClick={() => this.handlePause(item)}
             />
@@ -479,7 +523,11 @@ export default class Import extends React.Component {
         BtnIcon = (
           <Tooltip title="开始">
             <Icon
-              style={{ fontSize: 30, marginLeft: 10, cursor: 'pointer' }}
+              style={{
+                fontSize: 30,
+                marginLeft: 10,
+                cursor: 'pointer'
+              }}
               type="play-circle"
               onClick={() => this.handleStart(item)}
             />
@@ -493,7 +541,11 @@ export default class Import extends React.Component {
           <Tooltip title="终止">
             <Icon
               type="stop"
-              style={{ fontSize: 30, marginLeft: 10, cursor: 'pointer' }}
+              style={{
+                fontSize: 30,
+                marginLeft: 10,
+                cursor: 'pointer'
+              }}
               onClick={() => this.handleTerminate(item)}
             />
           </Tooltip>
@@ -543,6 +595,7 @@ export default class Import extends React.Component {
     const { loading, progressIndex, feRecords, feMessages } = this.state;
     const len = feRecords.length || 1;
     const percent = Math.floor((progressIndex / len) * 100);
+
     return (
       <Spin spinning={loading}>
         <div className="import-excel">
@@ -565,7 +618,7 @@ export default class Import extends React.Component {
           </div>
         </div>
         {!!percent && <Progress percent={percent} />}
-        {!!percent && (
+        {(!!percent || getImportFailCount(feMessages).length > 0) && (
           <div className="import-excel__result">
             <h4>导入结果：</h4>
             <div className="import-excel__result-item">
@@ -585,7 +638,8 @@ export default class Import extends React.Component {
                 (feMessage, index) =>
                   feMessage !== 'success' && (
                     <li style={{ color: '#f00', fontSize: 12 }}>
-                      Excel 中的第 {index + 1} 条记录：{feMessage}
+                      Excel 中的第 {index + 1} 条记录：
+                      {feMessage}
                     </li>
                   )
               )}
