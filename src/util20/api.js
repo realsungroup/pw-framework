@@ -410,6 +410,14 @@ http.createApi('StartSaveTask200', {
 });
 
 /**
+ * 停止任务
+ */
+http.createApi('TerminateSaveTask', {
+  method: 'get',
+  url: '/api/tablethread/TerminateSaveTask'
+});
+
+/**
  * 根据id获取任务状况
  */
 http.createApi('RetrieveSaveTask', {
