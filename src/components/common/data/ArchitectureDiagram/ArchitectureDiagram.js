@@ -2113,9 +2113,7 @@ class ArchitectureDiagram extends React.Component {
         importConfig.containerProps,
         this.handleFinishImport,
         {},
-        {},
-        false,
-        'fileName'
+        { fileName: moment().format('YYYY-MM-DD HH:mm') }
       );
   };
 
