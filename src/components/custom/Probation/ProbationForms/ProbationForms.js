@@ -24,6 +24,8 @@ import http from 'Util20/api';
 import { getItem } from 'Util20/util';
 import './ProbationForms.less';
 import debounce from 'lodash/debounce';
+import html2canvas from 'html2canvas';
+import printJS from 'print-js';
 
 const { Link } = Anchor;
 const { Option } = Select;
@@ -1180,7 +1182,7 @@ class ProbationForms extends React.Component {
                   REC_ID: this.state.employeeInformation.REC_ID,
                   hrManagerApprove: isAgree ? 'Y' : 'N',
                   hrManagerEvaluate: this.state.employeeInformation
-                  .hrManagerEvaluate
+                    .hrManagerEvaluate
                 }
               ];
               break;
@@ -1257,7 +1259,7 @@ class ProbationForms extends React.Component {
           )}
           <header>
             <h1>新员工试用期考核表</h1>
-            <p>New Employee Probation Appraisal Form</p>
+            <p>New&nbsp;Employee&nbsp;Probation&nbsp;Appraisal&nbsp;Form</p>
           </header>
           <main className="probation-forms_main">
             <div className="probation-forms_main_tables">
@@ -1355,102 +1357,146 @@ class ProbationForms extends React.Component {
               </Anchor>
             </aside>
           </main>
-          {!loading &&
-            (roleName === 'HR' ||
-              employeeInformation.regStatus !== '已转正') && (
-              <footer
-                className="probation-forms_footer"
-                style={roleName === '辅导员' ? { display: 'none' } : {}}
-              >
-                {/* 待转正状态 */}
-                {(roleName === 'HR' ||
-                  employeeInformation.regStatus === '待转正') &&
-                  employeeInformation.C3_622649502021 != 'Y' && (
-                    <div>
-                      <Button
-                        type="primary"
-                        style={{ marginRight: 16 }}
-                        onClick={() => {
-                          this.handleSubmit(roleName);
-                        }}
-                      >
-                        保存
-                      </Button>
-                      {roleName === 'HR' &&
-                      this.state.flagHitBack == true &&
-                      this.state.flagAlreadyHit == 0 ? (
-                        <span>
-                          <Button
-                            style={{ marginRight: '8px' }}
-                            onClick={this.agreeApply}
-                          >
-                            同意自定义辅导员
-                          </Button>
-                          <Button onClick={this.disagreeApply} type="danger">
-                            驳回自定义辅导员
-                          </Button>
-                        </span>
-                      ) : (
-                        ''
-                      )}
-                      {
-                        <span style={{ color: 'red' }}>
-                          {this.state.flagAlreadyHit == 2
-                            ? '该记录的自定义辅导员申请已经驳回'
-                            : ''}
-                        </span>
-                      }
-                    </div>
-                  )}
-                {/* 角色为员工且转正申请未提交 */}
-                {roleName === '员工' &&
-                  employeeInformation.regStatus === '待转正' &&
-                  employeeInformation.C3_622649502021 != 'Y' && (
-                    <Popconfirm
-                      title="确认提交转正申请？"
-                      onConfirm={this.positiveApply}
-                    >
-                      <Button type="primary" style={{ marginRight: 16 }}>
-                        申请转正
-                      </Button>
-                    </Popconfirm>
-                  )}
-                {/* 角色为员工且转正申请已经提交 */}
-                {roleName === '员工' &&
-                  employeeInformation.regStatus === '待转正' &&
-                  employeeInformation.C3_622649502021 == 'Y' && (
-                    <span style={{ color: 'red' }}>转正申请已经提交</span>
-                  )}
-                {/* 转正中 */}
-                {employeeInformation.regStatus === '转正中' &&
-                  ((roleName === '主管' &&
-                    employeeInformation.isRegular !== 'Y') ||
-                    (roleName === '经理' &&
-                      employeeInformation.isManagerRegular !== 'Y') ||
-                    (roleName === 'HR经理' &&
-                      employeeInformation.hrManagerApprove !== 'Y') ||
-                    (roleName === '总监' &&
-                      employeeInformation.driectorApprove !== 'Y')) && (
-                    <React.Fragment>
-                      <Button
-                        type="primary"
-                        style={{ marginRight: 16 }}
-                        onClick={() => this.isAgree(true)}
-                      >
-                        同意转正
-                      </Button>
-                      <Button
-                        type="danger"
-                        style={{ marginRight: 16 }}
-                        onClick={() => this.isAgree(false)}
-                      >
-                        不同意转正
-                      </Button>
-                    </React.Fragment>
-                  )}
-              </footer>
-            )}
         </div>
+        {!loading &&
+          (roleName === 'HR' || employeeInformation.regStatus !== '已转正') && (
+            <footer
+              className="probation-forms_footer"
+              style={roleName === '辅导员' ? { display: 'none' } : {}}
+            >
+              {/* 待转正状态 */}
+              {(roleName === 'HR' ||
+                employeeInformation.regStatus === '待转正') &&
+                employeeInformation.C3_622649502021 != 'Y' && (
+                  <div>
+                    <Button
+                      type="primary"
+                      style={{ marginRight: 16 }}
+                      onClick={() => {
+                        this.handleSubmit(roleName);
+                      }}
+                    >
+                      保存
+                    </Button>
+                    {roleName === 'HR' &&
+                    this.state.flagHitBack == true &&
+                    this.state.flagAlreadyHit == 0 ? (
+                      <span>
+                        <Button
+                          style={{ marginRight: '8px' }}
+                          onClick={this.agreeApply}
+                        >
+                          同意自定义辅导员
+                        </Button>
+                        <Button onClick={this.disagreeApply} type="danger">
+                          驳回自定义辅导员
+                        </Button>
+                      </span>
+                    ) : (
+                      ''
+                    )}
+                    {
+                      <span style={{ color: 'red' }}>
+                        {this.state.flagAlreadyHit == 2
+                          ? '该记录的自定义辅导员申请已经驳回'
+                          : ''}
+                      </span>
+                    }
+                  </div>
+                )}
+              {/* 角色为员工且转正申请未提交 */}
+              {roleName === '员工' &&
+                employeeInformation.regStatus === '待转正' &&
+                employeeInformation.C3_622649502021 != 'Y' && (
+                  <Popconfirm
+                    title="确认提交转正申请？"
+                    onConfirm={this.positiveApply}
+                  >
+                    <Button type="primary" style={{ marginRight: 16 }}>
+                      申请转正
+                    </Button>
+                  </Popconfirm>
+                )}
+              {/* 角色为员工且转正申请已经提交 */}
+              {roleName === '员工' &&
+                employeeInformation.regStatus === '待转正' &&
+                employeeInformation.C3_622649502021 == 'Y' && (
+                  <span style={{ color: 'red' }}>转正申请已经提交</span>
+                )}
+              {/* 转正中 */}
+              {employeeInformation.regStatus === '转正中' &&
+                ((roleName === '主管' &&
+                  employeeInformation.isRegular !== 'Y') ||
+                  (roleName === '经理' &&
+                    employeeInformation.isManagerRegular !== 'Y') ||
+                  (roleName === 'HR经理' &&
+                    employeeInformation.hrManagerApprove !== 'Y') ||
+                  (roleName === '总监' &&
+                    employeeInformation.driectorApprove !== 'Y')) && (
+                  <React.Fragment>
+                    <Button
+                      type="primary"
+                      style={{ marginRight: 16 }}
+                      onClick={() => this.isAgree(true)}
+                    >
+                      同意转正
+                    </Button>
+                    <Button
+                      type="danger"
+                      style={{ marginRight: 16 }}
+                      onClick={() => this.isAgree(false)}
+                    >
+                      不同意转正
+                    </Button>
+                  </React.Fragment>
+                )}
+
+              <Button
+                onClick={async () => {
+                  await function download(src, name) {
+                    if (!src) return;
+                    const a = document.createElement('a');
+                    a.setAttribute('download', name);
+                    a.href = src;
+                    a.click();
+                  };
+                  const isChrome = () => {
+                    const userAgent = navigator.userAgent.toLowerCase();
+                    return userAgent.indexOf('chrome') !== -1;
+                  };
+                  const dataURIToBlob = (dataURI, fileName, callback) => {
+                    var binStr = atob(dataURI.split(',')[1]),
+                      len = binStr.length,
+                      arr = new Uint8Array(len);
+
+                    for (var i = 0; i < len; i++) {
+                      arr[i] = binStr.charCodeAt(i);
+                    }
+
+                    callback(new Blob([arr]), fileName + '.png');
+                  };
+                  const callback = function(blob, fileName) {
+                    var a = document.createElement('a');
+                    a.setAttribute('download', fileName);
+                    a.href = URL.createObjectURL(blob);
+                    a.click();
+                  };
+                  await html2canvas(
+                    document.querySelector('#probation-forms')
+                  ).then(canvas => {
+                    const imgDataURL = canvas.toDataURL('image/png', 1.0);
+                    if (isChrome()) {
+                      dataURIToBlob(imgDataURL, '新员工试用期考核表', callback);
+                    } else {
+                      window.open(imgDataURL);
+                    }
+                  });
+                }}
+              >
+                导出PNG
+              </Button>
+            </footer>
+          )}
         <Modal
           title="内训课程详细"
           visible={this.state.interDetailVis}

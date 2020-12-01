@@ -43,7 +43,7 @@ const IndividualSummary = React.memo(props => {
         />
       </Card>
       {(roleName === 'HR' || roleName === '员工') && (
-        <p className="new-em'ployee-tip" style={{ marginLeft: '24px' }}>
+        <p className="new-employee-tip" style={{ marginLeft: '24px' }}>
           请新员工在&nbsp;
           <strong className="new-employee-tip_highlight__words">
             {props.endTime ? props.endTime.substring(0, 10) : '- - - -'}
@@ -83,7 +83,7 @@ const IndividualSummary = React.memo(props => {
         <TextArea
           placeholder="试用期经理/总监评价"
           value={managerEvaluate}
-          disabled={!(roleName === '经理'|| roleName === '总监')}
+          disabled={!(roleName === '经理' || roleName === '总监')}
           onChange={v => {
             managerEvaluateChange(v.target.value);
           }}

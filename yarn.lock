@@ -9361,9 +9361,10 @@ pretty-format@^23.6.0:
     ansi-regex "^3.0.0"
     ansi-styles "^3.2.0"
 
-print-js@^1.0.54:
-  version "1.0.61"
-  resolved "https://registry.npm.taobao.org/print-js/download/print-js-1.0.61.tgz#6e6079f636c04fc34f23fa561f0b8fced32e36d3"
+print-js@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.npm.taobao.org/print-js/download/print-js-1.5.0.tgz#6f7e68c6d542ed5eeb535b2ad2469fc24fc9888c"
+  integrity sha1-b35oxtVC7V7rU1sq0kafwk/JiIw=
 
 printj@~1.1.0, printj@~1.1.2:
   version "1.1.2"
