@@ -60,7 +60,8 @@ class PlanProgress extends React.Component {
     }
     this.timer = null;
     this.getTaskInfo = null;
-    this._taskid && http(httpParams).TerminateSaveTask(this._taskid);
+    this._taskid &&
+      http(httpParams).TerminateSaveTask({ taskid: this._taskid });
   };
   getTaskInfo = async taskid => {
     let res;
