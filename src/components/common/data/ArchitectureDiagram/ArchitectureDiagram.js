@@ -1621,7 +1621,7 @@ class ArchitectureDiagram extends React.Component {
                         await this.clearCache();
                         this.setState({ loading: false });
                         this.props.closeModalOrDrawer();
-                        await this.getData();
+                        this.getData();
                         message.success('任职成功');
                         if (node.id) {
                           this.chart.center(node.id);

@@ -1809,7 +1809,31 @@ class ArchitectureDiagram extends React.Component {
             onCancel={this.closeBroModal}
             onSuccess={this.afterSave}
             baseURL={this.props.baseURL}
-            // recordFormUseAbsolute={true}
+            extraButtons={form => {
+              if (operation === 'modify') {
+                return null;
+              }
+              return (
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    form.validateFields(async (error, value) => {
+                      if (!error) {
+                        await http({ baseURL: this.props.baseURL }).addRecords({
+                          resid: this.props.resid,
+                          data: [{ ...value, isScrap: 'N' }]
+                        });
+                        this.closeBroModal();
+                        this.handleRefresh();
+                        message.success('添加成功');
+                      }
+                    });
+                  }}
+                >
+                  保存并启用
+                </Button>
+              );
+            }}
           />
         </Modal>
         <Drawer
