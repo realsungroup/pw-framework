@@ -57,7 +57,7 @@ const columns = [
   },
   {
     name: '病假扣款比例',
-    filed: 'C3_456247344400',
+    filed: 'C3_660058502793',
     number1: '25SR',
     number2: '2100',
     isFront: false,
@@ -142,11 +142,9 @@ class ADPExport extends React.Component {
           if (!records.length) {
             return message.info('请选择记录');
           }
-          const now = moment();
-          const fileName = `PP3104_${now.format(
-            'YYYYMMDDHHmmss'
-          )}_CN2890_HRMD01_MUT8G2I-sample.sap`;
-          let data = `HEADR|"GVIIVI|"IIVIINC|"LEO_CHEN|"+86 591 88052823|"FZCN.Payroll@ii-vi.com|"${fileName}|"${now.format(
+          const now = moment().format('YYYYMMDDHHmmss');
+          const fileName = `PP3104_${now}_CN2890_HRMD01_MUT8G2I.sap`;
+          let data = `HEADR|"GVIIVI|"IIVIINC|"LEO_CHEN|"+86 591 88052823|"FZCN.Payroll@ii-vi.com|"${fileName}|"${moment().format(
             'YYYYMMDD'
           )}|"51222|"P|"1|"|"|"\n`;
 
@@ -180,7 +178,7 @@ class ADPExport extends React.Component {
             }
           });
           data += `TRAIL|"${counts}`;
-          exportRaw(data, fileName);
+          exportRaw(data, `PP3104_${now}_CN2890_HRMD01_MUT8G2I-sample.sap`);
         }}
       >
         导出
@@ -214,7 +212,7 @@ class ADPExport extends React.Component {
               yearMonth
                 ? `YEARMONTH = '${yearMonth.format(
                     'YYYYMM'
-                  )}' and DEPT1ID = '${company}'`
+                  )}' and DEPT1ID = '${company}' and C3_429786712779 = 'Y'`
                 : ''
             }
             subtractH={200}
