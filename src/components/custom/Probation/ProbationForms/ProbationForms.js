@@ -1251,113 +1251,121 @@ class ProbationForms extends React.Component {
     const editable = employeeInformation.regStatus === '待转正';
     return (
       <Spin spinning={loading}>
-        <div id="probation-forms">
-          {this.props.roleName !== '员工' && (
-            <div className="probation-forms_goback" onClick={this.props.goBack}>
-              <Icon type="rollback" style={{ color: '#999' }} />
-            </div>
-          )}
-          <header>
-            <h1>新员工试用期考核表</h1>
-            <p>New&nbsp;Employee&nbsp;Probation&nbsp;Appraisal&nbsp;Form</p>
-          </header>
-          <main className="probation-forms_main">
-            <div className="probation-forms_main_tables">
-              <EmployeeInformation
-                employeeInformation={employeeInformation}
-                tutorships={this.state.tutorships}
-                setTutorship={this.setTutorship}
-                setTutorship2={this.setTutorship2}
-                setTutorshipSemi={this.setTutorshipSemi}
-                setTutorshipSemi2={this.setTutorshipSemi2}
-                isSemi={this.isSemi}
-                isSemi2={this.isSemi2}
-                roleName={roleName}
-                editable={editable}
-                approveNodes={approveNodes}
-              />
-              <ProbationObjectives
-                probationObjectives={this.state.probationObjectives}
-                addObjective={this.addObjective}
-                removeObjective={this.removeObjective}
-                modifyObjective={this.modifyObjective}
-                roleName={roleName}
-                openModifyProbationObjectiveModal={
-                  this.openModifyProbationObjectiveModal
-                }
-                auth={this.state.tableAuth.objective}
-                editable={editable}
-              />
-              <OrientationTraining
-                orientationTraining={this.state.orientationTraining.map(
-                  (item, index) => ({ ...item, no: index + 1 })
-                )}
-                roleName={roleName}
-                editable={editable}
-              />
-              <InternalTraining
-                setInterDetailVis={this.setInterDetailVis}
-                setAddInternalCourseVisible={this.setAddInternalCourseVisible}
-                internalTraining={this.state.internalTraining.map(
-                  (item, index) => ({ ...item, no: index + 1 })
-                )}
-                deleteInternalCourse={this.deleteInternalCourse}
-                openModifyInternalCourseModal={
-                  this.openModifyInternalCourseModal
-                }
-                roleName={roleName}
-                auth={this.state.tableAuth.internal}
-                editable={editable}
-              />
-              <OnTheJobTraining
-                onTheJobTraining={this.state.onTheJobTraining.map(
-                  (item, index) => ({ ...item, no: index + 1 })
-                )}
-                setAddOnJobTrainingVisible={this.setAddOnJobTrainingVisible}
-                deleteOnJobTraining={this.deleteOnJobTraining}
-                openModifyOnJobTrainingModal={this.openModifyOnJobTrainingModal}
-                roleName={roleName}
-                auth={this.state.tableAuth.onJob}
-                inviteConfirm={this.inviteConfirm}
-                editable={editable}
-              />
-              <MentorshipRecord
-                mentorshipRecord={this.state.mentorshipRecord}
-                addMentor={this.addMentor}
-                removeMentor={this.removeMentor}
-                modifyMentor={this.modifyMentor}
-                confirmMentor={this.confirmMentor}
-                roleName={roleName}
-                auth={this.state.tableAuth.mentorRecord}
-                editable={editable}
-              />
-              <IndividualSummary
-                summary={employeeInformation.smmary}
-                directorEvaluate={employeeInformation.directorEvaluate}
-                managerEvaluate={employeeInformation.ManagerEvaluate}
-                hrManagerEvaluate={employeeInformation.hrManagerEvaluate}
-                endTime={employeeInformation.endTime}
-                summaryChange={this.summaryChange}
-                directorEvaluateChange={this.directorEvaluateChange}
-                managerEvaluateChange={this.managerEvaluateChange}
-                hrManagerEvaluateChange={this.hrManagerEvaluateChange}
-                roleName={roleName}
-                editable={editable}
-              />
-            </div>
-            <aside className="probation-forms_main_sider">
-              <Anchor bounds={15}>
-                <Link href="#employee-imformation" title="个人信息" />
-                <Link href="#probation-objectives" title="试用期工作目标" />
-                <Link href="#orientation-training" title="入职培训（必修）" />
-                <Link href="#internal-training" title="内训课程" />
-                <Link href="#on-the-job-training" title="在岗培训" />
-                <Link href="#mentorshi-record" title="辅导记录" />
-                <Link href="#individual-summary" title="试用期个人小结" />
-              </Anchor>
-            </aside>
-          </main>
+        <div id="probation-forms-print">
+          <div id="probation-forms">
+            {this.props.roleName !== '员工' && (
+              <div
+                className="probation-forms_goback toHide"
+                onClick={this.props.goBack}
+              >
+                <Icon type="rollback" style={{ color: '#999' }} />
+              </div>
+            )}
+            <header>
+              <h1>新员工试用期考核表</h1>
+              <p>New&nbsp;Employee&nbsp;Probation&nbsp;Appraisal&nbsp;Form</p>
+            </header>
+            <main className="probation-forms_main">
+              <div className="probation-forms_main_tables">
+                <EmployeeInformation
+                  employeeInformation={employeeInformation}
+                  tutorships={this.state.tutorships}
+                  setTutorship={this.setTutorship}
+                  setTutorship2={this.setTutorship2}
+                  setTutorshipSemi={this.setTutorshipSemi}
+                  setTutorshipSemi2={this.setTutorshipSemi2}
+                  isSemi={this.isSemi}
+                  isSemi2={this.isSemi2}
+                  roleName={roleName}
+                  editable={editable}
+                  approveNodes={approveNodes}
+                />
+                <ProbationObjectives
+                  probationObjectives={this.state.probationObjectives}
+                  addObjective={this.addObjective}
+                  removeObjective={this.removeObjective}
+                  modifyObjective={this.modifyObjective}
+                  roleName={roleName}
+                  openModifyProbationObjectiveModal={
+                    this.openModifyProbationObjectiveModal
+                  }
+                  auth={this.state.tableAuth.objective}
+                  editable={editable}
+                />
+                <OrientationTraining
+                  orientationTraining={this.state.orientationTraining.map(
+                    (item, index) => ({ ...item, no: index + 1 })
+                  )}
+                  roleName={roleName}
+                  editable={editable}
+                />
+                <InternalTraining
+                  setInterDetailVis={this.setInterDetailVis}
+                  setAddInternalCourseVisible={this.setAddInternalCourseVisible}
+                  internalTraining={this.state.internalTraining.map(
+                    (item, index) => ({ ...item, no: index + 1 })
+                  )}
+                  deleteInternalCourse={this.deleteInternalCourse}
+                  openModifyInternalCourseModal={
+                    this.openModifyInternalCourseModal
+                  }
+                  roleName={roleName}
+                  auth={this.state.tableAuth.internal}
+                  editable={editable}
+                />
+                <OnTheJobTraining
+                  onTheJobTraining={this.state.onTheJobTraining.map(
+                    (item, index) => ({ ...item, no: index + 1 })
+                  )}
+                  setAddOnJobTrainingVisible={this.setAddOnJobTrainingVisible}
+                  deleteOnJobTraining={this.deleteOnJobTraining}
+                  openModifyOnJobTrainingModal={
+                    this.openModifyOnJobTrainingModal
+                  }
+                  roleName={roleName}
+                  auth={this.state.tableAuth.onJob}
+                  inviteConfirm={this.inviteConfirm}
+                  editable={editable}
+                />
+                <MentorshipRecord
+                  mentorshipRecord={this.state.mentorshipRecord}
+                  addMentor={this.addMentor}
+                  removeMentor={this.removeMentor}
+                  modifyMentor={this.modifyMentor}
+                  confirmMentor={this.confirmMentor}
+                  roleName={roleName}
+                  auth={this.state.tableAuth.mentorRecord}
+                  editable={editable}
+                />
+                <IndividualSummary
+                  summary={employeeInformation.smmary}
+                  directorEvaluate={employeeInformation.directorEvaluate}
+                  managerEvaluate={employeeInformation.ManagerEvaluate}
+                  hrManagerEvaluate={employeeInformation.hrManagerEvaluate}
+                  endTime={employeeInformation.endTime}
+                  summaryChange={this.summaryChange}
+                  directorEvaluateChange={this.directorEvaluateChange}
+                  managerEvaluateChange={this.managerEvaluateChange}
+                  hrManagerEvaluateChange={this.hrManagerEvaluateChange}
+                  roleName={roleName}
+                  editable={editable}
+                />
+              </div>
+              <aside className="probation-forms_main_sider toHide">
+                <Anchor bounds={15}>
+                  <Link href="#employee-imformation" title="个人信息" />
+                  <Link href="#probation-objectives" title="试用期工作目标" />
+                  <Link href="#orientation-training" title="入职培训（必修）" />
+                  <Link href="#internal-training" title="内训课程" />
+                  <Link href="#on-the-job-training" title="在岗培训" />
+                  <Link href="#mentorshi-record" title="辅导记录" />
+                  <Link href="#individual-summary" title="试用期个人小结" />
+                </Anchor>
+              </aside>
+            </main>
+          </div>
         </div>
+
         {!loading &&
           (roleName === 'HR' || employeeInformation.regStatus !== '已转正') && (
             <footer
@@ -1494,6 +1502,26 @@ class ProbationForms extends React.Component {
                 }}
               >
                 导出PNG
+              </Button>
+              <Button
+                style={{ marginLeft: 8 }}
+                onClick={() => {
+                  const bodyHtml = window.document.body.innerHTML;
+                  const footstr = '</body>';
+                  const newstr = document.getElementById(
+                    'probation-forms-print'
+                  ).innerHTML;
+                  const style =
+                    "<style media='print'>@page {size: auto; margin: 0mm;}header{text-align: center;padding-top: 32px;padding-bottom: 40px;}header>h1{font-size: 26px;margin: 0;}header>p{font-size: 22px;margin: 0;}.probation-forms_main_tables{width:100%}.toHide{display:none!important;width:0;height:0;overflow:hidden}b,h4,h3{font-weight:normal}input{border:none!important;}.page{height:100vh;}footer{display:none;}.ant-select-selection{border:none!important;}.ant-select-arrow{display:none;}.date i{display:none}.fix{display:none;}.ant-input-number{border:none;}*{font-size:12px!important;color:#333333!important;border-color:#333333!important;}i{color:#fff!important;display:none!important}</style>";
+                  const headstr =
+                    '<html><head><title></title>' + style + '</head><body>';
+                  document.body.innerHTML = headstr + newstr + footstr;
+                  window.print();
+                  window.document.body.innerHTML = bodyHtml;
+                  window.location.reload();
+                }}
+              >
+                打印
               </Button>
             </footer>
           )}

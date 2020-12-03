@@ -32,6 +32,7 @@ const OnTheJobTraining = props => {
           auth.hasAdd &&
           editable && (
             <Button
+              className="toHide"
               onClick={() => {
                 setAddOnJobTrainingVisible(true);
               }}
@@ -44,21 +45,22 @@ const OnTheJobTraining = props => {
         <Table
           dataSource={onTheJobTraining}
           pagination={false}
-          scroll={{ x: 1200 }}
+          size="small"
+          bordered
+          scroll={{ x: '100%' }}
         >
-          <Column title="序号/No" dataIndex="no" fixed="left" width={100} />
+          <Column title="序号/No" dataIndex="no" width={100} />
           <Column title="课程/Courses" dataIndex="course" />
           <Column title="培训师/Trainer" dataIndex="trainer" />
           <Column title="培训师2/Trainer2" dataIndex="trainMember" />
+          <Column title="已确认/Confirm" dataIndex="isAffirm" />
           <Column
             title="已通知确认/IsNoticeConfirm"
             dataIndex="isNoticeTrainer"
           />
-          <Column title="已确认/Confirm" dataIndex="isAffirm" />
           <Column
             title="操作/operation"
             dataIndex="operation"
-            fixed="right"
             width={160}
             render={(text, record) => (
               <div>
