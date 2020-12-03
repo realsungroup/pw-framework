@@ -215,10 +215,8 @@ class PwAggrid extends React.Component {
     // params.api.sizeColumnsToFit();
   };
 
-  onQuickFilterChanged = () => {
-    this.gridApi.setQuickFilter(
-      document.getElementById('quickFilter-' + this.props.resid).value
-    );
+  onQuickFilterChanged = e => {
+    this.gridApi.setQuickFilter(e.currentTarget.value);
   };
 
   getcolumnDefs = memoize((columns, columnDefs) => {
