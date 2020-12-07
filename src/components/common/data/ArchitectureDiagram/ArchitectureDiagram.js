@@ -53,6 +53,8 @@ import PlanProgress from './PlanProgress';
 const { TreeNode } = Tree;
 const { Option } = Select;
 const { SubMenu } = Menu;
+const { MonthPicker } = DatePicker;
+
 const yesterday = moment();
 const disableDate = currentDate => {
   return currentDate.isBefore(yesterday);
@@ -252,7 +254,8 @@ class ArchitectureDiagram extends React.Component {
       selectedResult: '全部',
       transferDate: moment(),
       DLImportResultVisible: false,
-      chumingVisible: false
+      chumingVisible: false,
+      contrastResultVisible: false
     };
   }
 
@@ -1997,14 +2000,14 @@ class ArchitectureDiagram extends React.Component {
         importConfig.containerProps,
         this.handleFinishImport,
         {},
-        { fileName: moment().format('YYYY-MM-DD HH:mm') },
+        { fileName: 'IDL入职-' + moment().format('YYYY-MM-DD HH:mm') },
         true
       );
   };
   /**
    * DL入职
    */
-  handleDLRuzhi = () => {
+  handleDLRuzhi = (isBiandong = false) => {
     const { openImportView, baseURL, importConfig, dblinkname } = this.props;
     const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
 
@@ -2023,7 +2026,11 @@ class ArchitectureDiagram extends React.Component {
           this.DLImportResultRef && this.DLImportResultRef.refreshTable();
         },
         {},
-        { fileName: moment().format('YYYY-MM-DD HH:mm') },
+        {
+          fileName: isBiandong
+            ? 'DL变动'
+            : 'DL入职-' + moment().format('YYYY-MM-DD HH:mm')
+        },
         false
       );
   };
@@ -2113,7 +2120,7 @@ class ArchitectureDiagram extends React.Component {
         importConfig.containerProps,
         this.handleFinishImport,
         {},
-        { fileName: moment().format('YYYY-MM-DD HH:mm') }
+        { fileName: 'IDL变动' + moment().format('YYYY-MM-DD HH:mm') }
       );
   };
 
@@ -2343,7 +2350,9 @@ class ArchitectureDiagram extends React.Component {
                     <Menu.Item onClick={this.handleRuzhi}>IDL</Menu.Item>
                   </SubMenu>
                   <SubMenu title="变动">
-                    <Menu.Item onClick={this.handleDLRuzhi}>DL</Menu.Item>
+                    <Menu.Item onClick={() => this.handleDLRuzhi(true)}>
+                      DL
+                    </Menu.Item>
                     <Menu.Item onClick={this.handleBiandong}>IDL</Menu.Item>
                   </SubMenu>
                   <Menu.Item onClick={this.handleLizhi}>离职</Menu.Item>
@@ -2393,6 +2402,18 @@ class ArchitectureDiagram extends React.Component {
                 className="architecture-diagram_header_icon-button__icon"
               />
               查看DL导入匹配结果
+            </div>
+            <div
+              className="architecture-diagram_header_icon-button"
+              onClick={() => {
+                this.setState({ contrastResultVisible: true });
+              }}
+            >
+              <Icon
+                type="eye"
+                className="architecture-diagram_header_icon-button__icon"
+              />
+              导入结果对比
             </div>
           </div>
         )}
@@ -2620,6 +2641,9 @@ class ArchitectureDiagram extends React.Component {
                   匹配
                 </Button>
               )}
+              <Button onClick={this.handleOpenContrastResult}>
+                查看对比结果
+              </Button>
             </div>
             <div style={{ flex: 1, overflow: 'hidden' }}>
               <TableData
@@ -2791,7 +2815,8 @@ class ArchitectureDiagram extends React.Component {
       joinVisible,
       joinRecord,
       DLImportResultVisible,
-      chumingVisible
+      chumingVisible,
+      contrastResultVisible
     } = this.state;
     const { baseURL, displayFileds, hasView, historyResid } = this.props;
     return (
@@ -3218,6 +3243,7 @@ class ArchitectureDiagram extends React.Component {
                 ref={e => (this.DLImportResultRef = e)}
                 baseURL={baseURL}
                 onClose={this.handleCloseDLRuzhiImport}
+                openContrastResult={this.handleOpenContrastResult}
               />
             )}
             {chumingVisible && (
@@ -3493,11 +3519,23 @@ class ArchitectureDiagram extends React.Component {
             }}
           />
         </Drawer>
+        {contrastResultVisible && (
+          <ContrastResult
+            baseURL={baseURL}
+            onClose={this.handleCloseContrastResult}
+          />
+        )}
       </div>
     );
   }
   handleCloseDLRuzhiImport = () => {
     this.setState({ DLImportResultVisible: false });
+  };
+  handleCloseContrastResult = () => {
+    this.setState({ contrastResultVisible: false });
+  };
+  handleOpenContrastResult = () => {
+    this.setState({ contrastResultVisible: true });
   };
 }
 const composedHoc = compose(
@@ -3898,8 +3936,8 @@ class DLImportResult extends React.PureComponent {
     });
   };
   onSbumitFinished = async () => {
-    const { selectedSubmiteData } = this.state;
-    const { baseURL } = this.props;
+    // const { selectedSubmiteData } = this.state;
+    // const { baseURL } = this.props;
     this.setState({ spinning: true });
     try {
       this.setState({
@@ -3908,13 +3946,14 @@ class DLImportResult extends React.PureComponent {
         submiteData: [],
         selectedSubmiteData: []
       });
-      await http({ baseURL }).modifyRecords({
-        resid: 656440072649,
-        data: selectedSubmiteData.map(item => {
-          return { REC_ID: item.REC_ID, C3_656523333717: 'Y' };
-        })
-      });
+      // await http({ baseURL }).modifyRecords({
+      //   resid: 656440072649,
+      //   data: selectedSubmiteData.map(item => {
+      //     return { REC_ID: item.REC_ID, C3_656523333717: 'Y' };
+      //   })
+      // });
       this.tableDataRef2.handleRefresh();
+      this.props.openContrastResult();
     } catch (error) {}
     this.setState({ spinnig: false });
   };
@@ -3977,6 +4016,139 @@ class ChuMing extends React.PureComponent {
           </div>
         </div>
       </div>
+    );
+  }
+}
+
+class ContrastResult extends React.PureComponent {
+  state = {
+    yearMonth: moment(),
+    batches: [],
+    yearMonthBatches: [],
+    selectedYearMonthBatch: ''
+  };
+  _downloadBaseURL =
+    window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03DownloadBaseURL;
+
+  async componentDidMount() {
+    const { baseURL } = this.props;
+    try {
+      const res = await http({ baseURL }).getTable({ resid: '660406986911' });
+      const _batches = res.data.map(item => {
+        return item.fileName;
+      });
+      this.setState({
+        batches: _batches,
+        yearMonthBatches: _batches.filter(item =>
+          item.includes(this.state.yearMonth.format('YYYY-MM'))
+        )
+      });
+    } catch (error) {}
+  }
+  render() {
+    const { baseURL, onClose } = this.props;
+    const {
+      yearMonth,
+      batches,
+      selectedYearMonthBatch,
+      yearMonthBatches
+    } = this.state;
+    return (
+      <Modal
+        title="导入结果对比"
+        visible={true}
+        width="95vw"
+        centered
+        footer={null}
+        onCancel={onClose}
+      >
+        <div style={{ display: 'flex', marginBottom: 8 }}>
+          <div style={{ marginRight: 8 }}>
+            <label>导入月份：</label>
+            <MonthPicker
+              value={yearMonth}
+              onChange={date => {
+                this.setState({
+                  yearMonth: date,
+                  yearMonthBatches: this.state.batches.filter(item =>
+                    item.includes(date.format('YYYY-MM'))
+                  ),
+                  selectedYearMonthBatch: ''
+                });
+              }}
+              placeholder="请选择月份"
+            />
+          </div>
+          <div>
+            <label>导入批次：</label>
+            <Select
+              style={{ width: 260 }}
+              value={selectedYearMonthBatch}
+              onChange={value => {
+                this.setState({
+                  selectedYearMonthBatch: value
+                });
+              }}
+            >
+              {yearMonthBatches.map(batch => {
+                return <Option value={batch}>{batch}</Option>;
+              })}
+            </Select>
+          </div>
+        </div>
+        <div style={{ display: 'flex', height: 600 }}>
+          <div style={{ width: '50%', height: '100%' }}>
+            <TableData
+              baseURL={baseURL}
+              resid={'638459489229'}
+              downloadBaseURL={this._downloadBaseURL}
+              wrappedComponentRef={element => (this.tableDataRef1 = element)}
+              refTargetComponentName="TableData"
+              subtractH={180}
+              hasAdd={false}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={false}
+              hasAdvSearch={false}
+              importConfig={null}
+              actionBarWidth={50}
+              cmswhere={
+                selectedYearMonthBatch
+                  ? `fileName = '${selectedYearMonthBatch}'`
+                  : '1 = 0'
+              }
+            />
+          </div>
+          <div style={{ width: '50%', height: '100%' }}>
+            <TableData
+              baseURL={baseURL}
+              resid={'660316842076'}
+              wrappedComponentRef={element => (this.tableDataRef1 = element)}
+              refTargetComponentName="TableData"
+              subtractH={180}
+              hasAdd={false}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={false}
+              hasAdvSearch={false}
+              importConfig={null}
+              actionBarWidth={50}
+              downloadBaseURL={this._downloadBaseURL}
+              cmswhere={
+                selectedYearMonthBatch
+                  ? `fileName = '${selectedYearMonthBatch}'`
+                  : '1 = 0'
+              }
+            />
+          </div>
+        </div>
+      </Modal>
     );
   }
 }
