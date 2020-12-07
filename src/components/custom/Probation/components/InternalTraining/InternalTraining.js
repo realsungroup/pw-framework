@@ -77,11 +77,7 @@ const InternalTraining = React.memo(props => {
             // width={300}
           />
           <Column title="培训师/Trainer" dataIndex="trainer" key="trainer" />
-          <Column
-            title="培训日期/Date"
-            dataIndex="C3_615393041304"
-            key="trainDate"
-          />
+          <Column title="培训日期/Date" dataIndex="trainDate" key="trainDate" />
           <Column
             title="操作/operation"
             render={(text, record) => {

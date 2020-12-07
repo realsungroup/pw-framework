@@ -25,7 +25,27 @@ import { getItem } from 'Util20/util';
 import './ProbationForms.less';
 import debounce from 'lodash/debounce';
 import html2canvas from 'html2canvas';
-import printJS from 'print-js';
+import {
+  Document,
+  Packer,
+  Paragraph,
+  HeadingLevel,
+  AlignmentType,
+  Table,
+  TableRow,
+  TableCell,
+  TextRun,
+  WidthType
+} from 'docx';
+import { saveAs } from 'file-saver';
+import {
+  employeeInfo,
+  employeeObjectives,
+  employeeOrientationtraining,
+  employeeInternaltraining,
+  employeeOnjobtraining,
+  employeeMentorshipRecord
+} from './config';
 
 const { Link } = Anchor;
 const { Option } = Select;
@@ -108,7 +128,7 @@ class ProbationForms extends React.Component {
       employedId = this.props.employedId;
     }
     this.setState({ memIDOrg: memberId });
-    this.fetchApproveNodes(employedId);
+
     await this.getAuth();
     await this.getCircle();
     await this.getRecords(memberId, employedId);
@@ -613,6 +633,7 @@ class ProbationForms extends React.Component {
           } else {
             this.setState({ flagAlreadyHit: 0 });
           }
+          this.fetchApproveNodes(data.C3_625051545181);
           this.setState({
             employeeInformation: data,
             probationObjectives: probationObjectives,
@@ -1245,6 +1266,337 @@ class ProbationForms extends React.Component {
     this.setState({ loading: false });
   };
 
+  exportWord = () => {
+    const { employeeInformation } = this.state;
+    const doc = new Document();
+    doc.addSection({
+      properties: {},
+      children: [
+        new Paragraph({
+          text: '新员工试用期考核表',
+          heading: HeadingLevel.HEADING_1,
+          alignment: AlignmentType.CENTER
+        }),
+        new Paragraph({
+          text: 'New Employee Probation Appraisal Form',
+          heading: HeadingLevel.HEADING_2,
+          alignment: AlignmentType.CENTER
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          text: '个人信息  Employee Information',
+          heading: HeadingLevel.HEADING_3
+        }),
+        new Table({
+          rows: [
+            new TableRow({
+              children: employeeInfo.map(item => {
+                return new TableCell({
+                  children: [new Paragraph(item.text)]
+                });
+              }),
+
+              tableHeader: true
+            }),
+            new TableRow({
+              children: employeeInfo.map(item => {
+                return new TableCell({
+                  children: [new Paragraph(employeeInformation[item.field])]
+                });
+              })
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          text: '试用期工作目标  Probation Objectives',
+          heading: HeadingLevel.HEADING_3
+        }),
+        new Table({
+          rows: [
+            new TableRow({
+              children: [
+                ...employeeObjectives.map(item => {
+                  return new TableCell({
+                    children: [new Paragraph(item.text)]
+                  });
+                }),
+                new TableCell({
+                  children: [new Paragraph('三个月-目标绩效完成评估')]
+                }),
+                new TableCell({
+                  children: [new Paragraph('三个月-评分')]
+                }),
+                new TableCell({
+                  children: [new Paragraph('五个月-目标绩效完成评估')]
+                }),
+                new TableCell({
+                  children: [new Paragraph('五个月-评分')]
+                })
+              ],
+              tableHeader: true
+            }),
+            ...this.state.probationObjectives.map(objective => {
+              return new TableRow({
+                children: [
+                  ...employeeObjectives.map(item => {
+                    return new TableCell({
+                      children: [new Paragraph(objective[item.field])]
+                    });
+                  }),
+                  new TableCell({
+                    children: [
+                      new Paragraph(
+                        (objective['619808533610'][0] &&
+                          objective['619808533610'][0].assessment) ||
+                          ''
+                      )
+                    ]
+                  }),
+                  new TableCell({
+                    children: [
+                      new Paragraph(
+                        (objective['619808533610'][0] &&
+                          objective['619808533610'][0].score) ||
+                          ''
+                      )
+                    ]
+                  }),
+                  new TableCell({
+                    children: [
+                      new Paragraph(
+                        (objective['619808533610'][1] &&
+                          objective['619808533610'][1].assessment) ||
+                          ''
+                      )
+                    ]
+                  }),
+                  new TableCell({
+                    children: [
+                      new Paragraph(
+                        (objective['619808533610'][1] &&
+                          objective['619808533610'][1].score) ||
+                          ''
+                      )
+                    ]
+                  })
+                ]
+              });
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          text: '入职培训（必修）  Orientation Training',
+          heading: HeadingLevel.HEADING_3
+        }),
+        new Table({
+          rows: [
+            new TableRow({
+              children: employeeOrientationtraining.map(item => {
+                return new TableCell({
+                  children: [new Paragraph(item.text)],
+                  width: {
+                    size: '33.3%',
+                    type: WidthType.PERCENTAGE
+                  }
+                });
+              }),
+
+              tableHeader: true
+            }),
+            ...this.state.orientationTraining.map(objective => {
+              return new TableRow({
+                cantSplit: true,
+                children: employeeOrientationtraining.map(item => {
+                  return new TableCell({
+                    children: [new Paragraph(objective[item.field])],
+                    width: {
+                      size: '33.3%',
+                      type: WidthType.PERCENTAGE
+                    }
+                  });
+                })
+              });
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          text: '内训课程  Internal Training',
+          heading: HeadingLevel.HEADING_3
+        }),
+        new Table({
+          rows: [
+            new TableRow({
+              children: employeeInternaltraining.map(item => {
+                return new TableCell({
+                  children: [new Paragraph(item.text)],
+                  width: {
+                    size: '33.3%',
+                    type: WidthType.PERCENTAGE
+                  }
+                });
+              }),
+
+              tableHeader: true
+            }),
+            ...this.state.internalTraining.map(objective => {
+              return new TableRow({
+                children: employeeInternaltraining.map(item => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph(
+                        objective[item.field] ? objective[item.field] : ''
+                      )
+                    ],
+                    width: {
+                      size: '33.3%',
+                      type: WidthType.PERCENTAGE
+                    }
+                  });
+                })
+              });
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          text: '在岗培训  On-the-job Training',
+          heading: HeadingLevel.HEADING_3
+        }),
+        new Table({
+          rows: [
+            new TableRow({
+              children: employeeOnjobtraining.map(item => {
+                return new TableCell({
+                  children: [new Paragraph(item.text)],
+                  width: {
+                    size: '25%',
+                    type: WidthType.PERCENTAGE
+                  }
+                });
+              }),
+
+              tableHeader: true
+            }),
+            ...this.state.onTheJobTraining.map(objective => {
+              return new TableRow({
+                children: employeeOnjobtraining.map(item => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph(
+                        objective[item.field] ? objective[item.field] : ''
+                      )
+                    ],
+                    width: {
+                      size: '25%',
+                      type: WidthType.PERCENTAGE
+                    }
+                  });
+                })
+              });
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          text: '辅导记录  Mentorship Record',
+          heading: HeadingLevel.HEADING_3
+        }),
+        new Table({
+          rows: [
+            new TableRow({
+              children: employeeMentorshipRecord.map(item => {
+                return new TableCell({
+                  children: [new Paragraph(item.text)],
+                  width: {
+                    size: '33.3%',
+                    type: WidthType.PERCENTAGE
+                  }
+                });
+              }),
+
+              tableHeader: true
+            }),
+            ...this.state.mentorshipRecord.map(objective => {
+              return new TableRow({
+                children: employeeMentorshipRecord.map(item => {
+                  let text = '';
+                  text = objective[item.field] ? objective[item.field] : '';
+                  if (item.text === '状态') {
+                    text = objective[item.field] === 'Y' ? '已确认' : '待确认';
+                  }
+                  return new TableCell({
+                    children: [new Paragraph(text)],
+                    width: {
+                      size: '33.3%',
+                      type: WidthType.PERCENTAGE
+                    }
+                  });
+                })
+              });
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          text: '试用期个人小结Individual Summary',
+          heading: HeadingLevel.HEADING_3
+        }),
+        new Paragraph({
+          children: [new TextRun(employeeInformation.smmary || '')]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          text: '试用期主管评价  Director Evaluate',
+          heading: HeadingLevel.HEADING_3
+        }),
+        new Paragraph({
+          children: [new TextRun(employeeInformation.directorEvaluate || '')]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          text: '试用期经理/总监评价  Manager Evaluate',
+          heading: HeadingLevel.HEADING_3
+        }),
+        new Paragraph({
+          children: [new TextRun(employeeInformation.ManagerEvaluate || '')]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          text: '试用期HR经理评价HR  Manager Evaluate',
+          heading: HeadingLevel.HEADING_3
+        }),
+        new Paragraph({
+          children: [new TextRun(employeeInformation.hrManagerEvaluate || '')]
+        })
+      ]
+    });
+    Packer.toBlob(doc).then(blob => {
+      saveAs(blob, '新员工试用期考核表.docx');
+    });
+  };
   render() {
     const { roleName } = this.props;
     const { loading, employeeInformation, approveNodes } = this.state;
@@ -1503,25 +1855,8 @@ class ProbationForms extends React.Component {
               >
                 导出PNG
               </Button>
-              <Button
-                style={{ marginLeft: 8 }}
-                onClick={() => {
-                  const bodyHtml = window.document.body.innerHTML;
-                  const footstr = '</body>';
-                  const newstr = document.getElementById(
-                    'probation-forms-print'
-                  ).innerHTML;
-                  const style =
-                    "<style media='print'>@page {size: auto; margin: 0mm;}header{text-align: center;padding-top: 32px;padding-bottom: 40px;}header>h1{font-size: 26px;margin: 0;}header>p{font-size: 22px;margin: 0;}.probation-forms_main_tables{width:100%}.toHide{display:none!important;width:0;height:0;overflow:hidden}b,h4,h3{font-weight:normal}input{border:none!important;}.page{height:100vh;}footer{display:none;}.ant-select-selection{border:none!important;}.ant-select-arrow{display:none;}.date i{display:none}.fix{display:none;}.ant-input-number{border:none;}*{font-size:12px!important;color:#333333!important;border-color:#333333!important;}i{color:#fff!important;display:none!important}</style>";
-                  const headstr =
-                    '<html><head><title></title>' + style + '</head><body>';
-                  document.body.innerHTML = headstr + newstr + footstr;
-                  window.print();
-                  window.document.body.innerHTML = bodyHtml;
-                  window.location.reload();
-                }}
-              >
-                打印
+              <Button style={{ marginLeft: 8 }} onClick={this.exportWord}>
+                导出Word
               </Button>
             </footer>
           )}
