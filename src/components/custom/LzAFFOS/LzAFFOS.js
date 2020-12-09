@@ -40,7 +40,9 @@ export default class LzAFFOS extends React.Component {
     super(props);
     this.state = {
       abnormalNum: 0,
-      activeKey: '审批中'
+      activeKey: '审批中',
+      addWorkerVisible: false,
+      selectTypeVisible: false
     };
     this.abnormalRef = React.createRef();
     this.inApplicationRef = React.createRef();
@@ -115,7 +117,12 @@ export default class LzAFFOS extends React.Component {
   };
 
   render() {
-    const { activeKey, abnormalNum } = this.state;
+    const {
+      activeKey,
+      abnormalNum,
+      addWorkerVisible,
+      selectTypeVisible
+    } = this.state;
     const { resids } = this.props;
     return (
       <div className="lz-affo">
@@ -167,15 +174,19 @@ export default class LzAFFOS extends React.Component {
                     </div>
                   )
                 }}
-                // actionBarExtra={({
-                //   dataSource = [],
-                //   selectedRowKeys = [],
-                //   data = [],
-                //   recordFormData,
-                //   size
-                // }) => {
-                //   return <Button size={size}>添加施工人员</Button>;
-                // }}
+                actionBarExtra={({
+                  dataSource = [],
+                  selectedRowKeys = [],
+                  data = [],
+                  recordFormData,
+                  size
+                }) => {
+                  return (
+                    <Button size={size} onClick={this.toggleSelectTypeVisible}>
+                      添加施工人员
+                    </Button>
+                  );
+                }}
               />
             </div>
           </TabPane>
@@ -213,16 +224,48 @@ export default class LzAFFOS extends React.Component {
         {!!abnormalNum && (
           <div className="lz-affo__abnormal-num">{abnormalNum}</div>
         )}
-        <AddWorker />
+
+        <Modal
+          title="选择人员类型"
+          visible={selectTypeVisible}
+          onCancel={this.toggleSelectTypeVisible}
+        >
+          <div>
+            <label>是否长期施工</label>
+            <Switch
+              onChange={checked => {}}
+              checkedChildren="是"
+              unCheckedChildren="否"
+            />
+          </div>
+        </Modal>
+        <AddWorker
+          visible={addWorkerVisible}
+          onClose={this.handleCloseAddWorker}
+        />
       </div>
     );
   }
+  handleCloseAddWorker = () => {
+    this.setState({ addWorkerVisible: false });
+  };
+
+  toggleSelectTypeVisible = () => {
+    this.setState({ selectTypeVisible: !this.state.selectTypeVisible });
+  };
 }
 
 class AddWorker extends React.PureComponent {
   render() {
+    const { visible, onClose } = this.props;
     return (
-      <Modal title="添加施工人员" visible={false} width={'90vw'} footer={null}>
+      <Modal
+        title="添加施工人员"
+        visible={visible}
+        width={'90vw'}
+        footer={null}
+        onCancel={onClose}
+      >
         <div>
           <label>是否长期施工</label>
           <Switch
