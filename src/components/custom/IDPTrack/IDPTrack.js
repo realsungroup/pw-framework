@@ -91,7 +91,6 @@ class IDPTrack extends Component {
             abi: [data2[n2].C3_431106931302],
             status: [data2[n2].C3_431102475269],
             detail: data2[n2].C3_431090378241
-
           });
         }
         n2++;
@@ -112,10 +111,8 @@ class IDPTrack extends Component {
 
       if (res.data.length > 0) {
         this.setState({ name: res.data[0].personName });
-
       } else {
         this.setState({ name: '' });
-
       }
       var data = res.data;
       var arr = [];
@@ -134,7 +131,6 @@ class IDPTrack extends Component {
           c++;
         }
         if (bol == false) {
-
           year.push({
             year: data[n].finicialYear,
             abi: [data[n].competency],
@@ -156,7 +152,7 @@ class IDPTrack extends Component {
             var arr3 = [];
             while (x < score[n].abi.length) {
               str2.push(score[n].abi[x] + '-' + score[n].status[x]);
-              arr3.push({ abi: score[n].abi[x], detail: score[n].detail })
+              arr3.push({ abi: score[n].abi[x], detail: score[n].detail });
               x++;
             }
             year[c].score = str2;
@@ -183,12 +179,12 @@ class IDPTrack extends Component {
         cmswhere: `C3_478191359848 = '${id}'`
       });
       if (res.data.length > 0) {
-        this.setState({ isSupervisor: 'Y' })
+        this.setState({ isSupervisor: 'Y' });
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
   getScore = async id => {
     var score;
     try {
@@ -244,7 +240,6 @@ class IDPTrack extends Component {
             year.ability = [item];
           }
         }
-
       });
       this.setState({
         data: [...data]
@@ -270,14 +265,12 @@ class IDPTrack extends Component {
             return i.competence === item.ability;
           });
           if (ability) {
-
             if (ability.measures) {
               ability.measures.push(item);
             } else {
               ability.measures = [item];
             }
           }
-
         }
         // if (year.ability) {
         //   year.ability.push(item);
@@ -402,7 +395,6 @@ class IDPTrack extends Component {
             year.course = [item];
           }
         }
-
       });
       this.setState({ data: [...data] });
     } catch (error) {
@@ -478,13 +470,13 @@ class IDPTrack extends Component {
             name: year,
             data: data[0],
             type: 'scatter',
-            symbolSize: function (data) {
+            symbolSize: function(data) {
               return data[2];
             },
             label: {
               emphasis: {
                 show: true,
-                formatter: function (param) {
+                formatter: function(param) {
                   return param.data[3] + '\n' + '课时：' + param.data[1];
                 },
                 position: 'top'
@@ -553,8 +545,9 @@ class IDPTrack extends Component {
           />
         </div>
         <div style={{ width: 'calc(100% - 24px)', float: 'left' }}>
-          {this.state.showRepo ? (<ReportForm2 chara="individual" named={this.state.personID} />) : null}
-
+          {this.state.showRepo ? (
+            <ReportForm2 chara="individual" named={this.state.personID} />
+          ) : null}
         </div>
       </div>
     );
@@ -590,11 +583,13 @@ class IDPTrack extends Component {
               <div id="chart3"></div>
             </TabPane>
             <TabPane tab="课程明细" key="2">
-              <div style={{ width: '100%', position: 'relative', height: '68vh' }}>
+              <div
+                style={{ width: '100%', position: 'relative', height: '65vh' }}
+              >
                 <TableData
                   resid="629824871972"
                   cmswhere={`C3_613941384328 = '${this.state.courseYear}' and C3_613941384832 = '${this.state.courseTarget}'`}
-                  subtractH={240}
+                  subtractH={200}
                   hasRowView={false}
                   hasAdd={false}
                   hasModify={false}
@@ -627,7 +622,10 @@ class IDPTrack extends Component {
           onClick={() => this.setState({ abilityVisible: false })}
         ></div>
         <div className="IDPTrack__modal--ability">
-          <AbilityIndicator currentYear={this.state.currentYear} isSupervisor={this.state.isSupervisor} />
+          <AbilityIndicator
+            currentYear={this.state.currentYear}
+            isSupervisor={this.state.isSupervisor}
+          />
         </div>
       </div>
     );
@@ -640,9 +638,9 @@ class IDPTrack extends Component {
           this.state.visible
             ? { transform: 'scaleY(1)', top: '0vh' }
             : {
-              transform: 'scaleY(0)',
-              top: '-50vh'
-            }
+                transform: 'scaleY(0)',
+                top: '-50vh'
+              }
         }
         className="pop"
       >
