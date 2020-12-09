@@ -23,7 +23,6 @@ class DepartmentTree extends React.Component {
       autoExpandParent: true,
       loading: false
     };
-    console.log(this.state);
   }
 
   async componentDidMount() {
@@ -161,8 +160,6 @@ class DepartmentTree extends React.Component {
     treeData.forEach(item => {
       this.calcChildren(item, data);
     });
-    console.log(treeData);
-
     this.setState({ treeData });
   };
 
@@ -259,7 +256,7 @@ class DepartmentTree extends React.Component {
       treeData,
       autoExpandParent,
       expandedKeys,
-      loading,
+      loading
     } = this.state;
     const { onSelect, treeClassName, onlyPersonData } = this.props;
     const _treeData = this.filterTreeData(selectedBranch, treeData);

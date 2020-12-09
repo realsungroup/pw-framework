@@ -17,7 +17,7 @@ const downloadBaseURL =
 const { TabPane } = Tabs;
 class PersonnelInformation extends React.Component {
   state = {
-    selectedDepartment: ''
+    selectedDepartment: null
   };
   render() {
     const { role } = this.props;
@@ -40,7 +40,9 @@ class PersonnelInformation extends React.Component {
                   }}
                   onSelect={selectedKeys => {
                     this.setState({
-                      selectedDepartment: selectedKeys[0] ? selectedKeys[0] : ''
+                      selectedDepartment: selectedKeys[0]
+                        ? selectedKeys[0]
+                        : null
                     });
                   }}
                   treeClassName="personnel-information-tree"
@@ -88,7 +90,9 @@ class PersonnelInformation extends React.Component {
                   }}
                   onSelect={selectedKeys => {
                     this.setState({
-                      selectedDepartment: selectedKeys[0] ? selectedKeys[0] : ''
+                      selectedDepartment: selectedKeys[0]
+                        ? selectedKeys[0]
+                        : null
                     });
                   }}
                   treeClassName="personnel-information-tree"
@@ -117,7 +121,6 @@ class PersonnelInformation extends React.Component {
                   recordFormContainerProps={{ width: 1000 }}
                   downloadBaseURL={downloadBaseURL}
                   cparm1={selectedDepartment}
-
                 />
               </div>
             </div>

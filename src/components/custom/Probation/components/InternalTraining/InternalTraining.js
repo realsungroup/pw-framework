@@ -20,7 +20,6 @@ function areEqual(prevProps, nextProps) {
  * @author 邓铭
  */
 const InternalTraining = React.memo(props => {
-  console.log("props.roleName",props.roleName)
   return (
     <div id="internal-training" className="probation-form">
       <Card
@@ -30,6 +29,7 @@ const InternalTraining = React.memo(props => {
             <span className="card_title_name__en">Internal Training</span>
             <Button
               style={{ float: 'right' }}
+              className="toHide"
               onClick={() => {
                 props.setInterDetailVis(true);
               }}
@@ -44,6 +44,7 @@ const InternalTraining = React.memo(props => {
           (props.roleName === '主管' || props.roleName === 'HR') && (
             <Button
               style={{ marginLeft: 8 }}
+              className="toHide"
               onClick={() => {
                 props.setAddInternalCourseVisible(true);
               }}
@@ -62,20 +63,21 @@ const InternalTraining = React.memo(props => {
             &nbsp;&nbsp;&nbsp;&nbsp;3.内训课为公开课程，鼓励员工参加与工作有关或感兴趣的非必修课程，并在上述表格中做培训记录。
           </p>
         </div>
-        <Table dataSource={props.internalTraining} pagination={false}>
+        <Table
+          dataSource={props.internalTraining}
+          pagination={false}
+          size="small"
+          bordered
+        >
           <Column title="序号/No" dataIndex="no" key="no" width={100} />
           <Column
             title="课程/Courses"
             dataIndex="course"
             key="course"
-            width={300}
+            // width={300}
           />
           <Column title="培训师/Trainer" dataIndex="trainer" key="trainer" />
-          <Column
-            title="培训日期/Date"
-            dataIndex="C3_615393041304"
-            key="trainDate"
-          />
+          <Column title="培训日期/Date" dataIndex="trainDate" key="trainDate" />
           <Column
             title="操作/operation"
             render={(text, record) => {

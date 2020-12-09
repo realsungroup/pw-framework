@@ -46,7 +46,7 @@ const ProbationObjectives = props => {
         </div>
         <div className="probation-objectives_fill-stage">
           {props.auth.hasAdd && editable && (
-            <div className="probation-objectives_fill-stage_fill-area">
+            <div className="probation-objectives_fill-stage_fill-area toHide">
               <div className="probation-objectives_fill-stage_fill-area_action">
                 <Button
                   type="primary"

@@ -19,7 +19,12 @@ const OrientationTraining = props => {
           </React.Fragment>
         }
       >
-        <Table dataSource={props.orientationTraining} pagination={false}>
+        <Table
+          dataSource={props.orientationTraining}
+          pagination={false}
+          size="small"
+          bordered
+        >
           <Column title="序号/No" dataIndex="no" key="no" width={100} />
           <Column
             title="课程/Courses"

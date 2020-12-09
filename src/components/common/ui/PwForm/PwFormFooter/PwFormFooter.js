@@ -28,7 +28,8 @@ const PwFormFooter = React.memo(
   }) => {
     return (
       <div className="pw-form__footer">
-        {(function () {
+        <div>{typeof extraButtons === 'function' && extraButtons(form)}</div>
+        {(function() {
           if (mode === 'edit') {
             return (
               <Fragment>
@@ -43,16 +44,16 @@ const PwFormFooter = React.memo(
                       <Button type="primary">{saveText}</Button>
                     </Popconfirm>
                   ) : (
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          onSave && onSave(form);
-                        }}
-                        loading={confirmLoading}
-                      >
-                        {saveText}
-                      </Button>
-                    ))}
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        onSave && onSave(form);
+                      }}
+                      loading={confirmLoading}
+                    >
+                      {saveText}
+                    </Button>
+                  ))}
                 {saveReopen && (
                   <Button
                     type="primary"
@@ -80,9 +81,6 @@ const PwFormFooter = React.memo(
             );
           }
         })()}
-        <div>
-          {(typeof extraButtons === 'function') && extraButtons(form)}
-        </div>
       </div>
     );
   }
@@ -99,12 +97,12 @@ PwFormFooter.propTypes = {
    * 确认按钮是否处于 loading 状态（不可点击）
    * 默认：false
    */
-  confirmLoading: PropTypes.bool,
+  confirmLoading: PropTypes.bool
 };
 
 PwFormFooter.defaultProps = {
   saveConfirmTip: '您确定要提交吗？',
-  confirmLoading: false,
+  confirmLoading: false
 };
 
 export default PwFormFooter;

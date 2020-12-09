@@ -45,14 +45,23 @@ class PlanProgress extends React.Component {
           break;
       }
       let taskid = res.taskid;
+      this._taskid = taskid;
       this.getTaskInfo(taskid);
     } catch (error) {
       message.error(error.message);
     }
   };
   componentWillUnmount = () => {
+    const { baseURL } = this.props;
+    let httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
     this.timer = null;
     this.getTaskInfo = null;
+    this._taskid &&
+      http(httpParams).TerminateSaveTask({ taskid: this._taskid });
   };
   getTaskInfo = async taskid => {
     let res;
@@ -77,15 +86,15 @@ class PlanProgress extends React.Component {
       return message.error(err.message);
     }
     let data = res.data;
+    let errorList = [];
+    data.result.data.forEach(item => {
+      if (item.maindata.message) {
+        errorList.push(item.maindata);
+      }
+    });
     if (res.IsCompleted) {
       // 当前任务已完成
       if (data.result.Error !== 0) {
-        let errorList = [];
-        data.result.data.forEach(item => {
-          if (item.maindata.message) {
-            errorList.push(item.maindata);
-          }
-        });
         let percent = Math.floor((data.intCurrent / data.intTotalNumber) * 100);
         this.setState({
           errorList,
@@ -98,6 +107,7 @@ class PlanProgress extends React.Component {
       } else {
         this.setState({
           percent: 100,
+          errorList,
           isFinished: true,
           intCurrent: data.intCurrent,
           intErrLines: data.intErrLines,
@@ -109,6 +119,7 @@ class PlanProgress extends React.Component {
       let percent = Math.floor((data.intCurrent / data.intTotalNumber) * 100);
       this.setState({
         percent,
+        errorList,
         isFinished: false,
         intCurrent: data.intCurrent,
         intErrLines: data.intErrLines,

@@ -57,17 +57,17 @@ const columns = [
   },
   {
     name: '病假扣款比例',
-    filed: 'C3_456247344400',
+    filed: 'C3_660058502793',
     number1: '25SR',
-    number2: '2100',
-    isFront: true,
+    number2: '2010',
+    isFront: false,
     isSameBegin: true
   },
   {
     name: '加班费（加班系数）',
     filed: 'C3_427240958358',
     number1: '2OTA',
-    number2: '2100',
+    number2: '2010',
     isFront: false,
     isSameBegin: true
   },
@@ -75,7 +75,7 @@ const columns = [
     name: '旷工缺勤',
     filed: 'C3_659462980919',
     number1: '2500',
-    number2: '2100',
+    number2: '2010',
     isFront: false,
     isSameBegin: true
   },
@@ -83,7 +83,7 @@ const columns = [
     name: '无薪假扣款',
     filed: 'C3_659462988420',
     number1: '2501',
-    number2: '2100',
+    number2: '2010',
     isFront: false,
     isSameBegin: true
   },
@@ -91,7 +91,7 @@ const columns = [
     name: '病假扣款',
     filed: 'F_14',
     number1: '25SL',
-    number2: '2100',
+    number2: '2010',
     isFront: false,
     isSameBegin: true
   },
@@ -99,7 +99,7 @@ const columns = [
     name: '产前假扣款',
     filed: 'F_36',
     number1: '25PL',
-    number2: '2100',
+    number2: '2010',
     isFront: false,
     isSameBegin: true
   },
@@ -107,7 +107,7 @@ const columns = [
     name: '路程假扣款',
     filed: 'F_54',
     number1: '25RL',
-    number2: '2100',
+    number2: '2010',
     isFront: false,
     isSameBegin: true
   },
@@ -115,7 +115,7 @@ const columns = [
     name: '产假扣款',
     filed: 'F_16',
     number1: '2506',
-    number2: '2100',
+    number2: '2010',
     isFront: false,
     isSameBegin: true
   },
@@ -123,7 +123,7 @@ const columns = [
     name: '迟到早退缺勤',
     filed: 'C3_659462995171',
     number1: '2507',
-    number2: '2100',
+    number2: '2010',
     isFront: false,
     isSameBegin: true
   }
@@ -142,13 +142,11 @@ class ADPExport extends React.Component {
           if (!records.length) {
             return message.info('请选择记录');
           }
-          const now = moment();
-          const fileName = `PP3104_${now.format(
-            'YYYYMMDDHHmmss'
-          )}_CN2890_HRMD01_MUT8G2I-sample.sap`;
-          let data = `HEADR|"GVIIVI|"IIVIINC|"LEO_CHEN|"+86 591 88052823|"FZCN.Payroll@ii-vi.com|"${fileName}|"${now.format(
+          const now = moment().format('YYYYMMDDHHmmss');
+          const fileName = `PP3104_${now}_CN2890_HRMD01_MUT8G2I.sap`;
+          let data = `HEADR|"GVIIVI|"IIVIINC|"LEO_CHEN|"+86 591 88052823|"FZCN.Payroll@ii-vi.com|"${fileName}|"${moment().format(
             'YYYYMMDD'
-          )}|"51222|"P|"1|"|"|"\n`;
+          )}|"51222|"P|"1|"|"|"                                                                                                                                                                                                                                                                                                                                                                                                         |"|"|"|"|"|"|"|"|"|"|"\n`;
 
           let counts = 2;
           records.forEach(record => {
@@ -180,7 +178,7 @@ class ADPExport extends React.Component {
             }
           });
           data += `TRAIL|"${counts}`;
-          exportRaw(data, fileName);
+          exportRaw(data, `PP3104_${now}_CN2890_HRMD01_MUT8G2I-sample.sap`);
         }}
       >
         导出
@@ -214,7 +212,7 @@ class ADPExport extends React.Component {
               yearMonth
                 ? `YEARMONTH = '${yearMonth.format(
                     'YYYYMM'
-                  )}' and DEPT1ID = '${company}'`
+                  )}' and DEPT1ID = '${company}' and C3_429786712779 = 'Y'`
                 : ''
             }
             subtractH={200}

@@ -114,7 +114,7 @@ const MentorshipRecord = props => {
             </div>
           ))}
           {auth.hasAdd && editable && (
-            <div className="mentorshi-record_card__wrapper">
+            <div className="mentorshi-record_card__wrapper toHide">
               <div
                 className="mentorshi-record_card__addition"
                 onClick={addMentor}

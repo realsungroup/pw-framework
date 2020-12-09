@@ -18,19 +18,6 @@
     font-size: 16px;
     cursor: pointer;
   }
-
-  .probation-forms_goback:hover {
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-    font-size: 18px;
-  }
-
-  .probation-form {
-    margin-bottom: 24px;
-    .card_title_name__en {
-      color: #999;
-      padding-left: 16px;
-    }
-  }
   header {
     text-align: center;
     padding-top: 32px;
@@ -44,33 +31,47 @@
       margin: 0;
     }
   }
-  .probation-forms_main {
-    display: flex;
-    width: 100%;
-    padding-bottom: 80px;
-    &_tables {
-      width: calc(100% - 160px);
-    }
-    &_sider {
-      width: 154px;
+  .probation-forms_goback:hover {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
+    font-size: 18px;
+  }
+
+  .probation-form {
+    margin-bottom: 24px;
+    .card_title_name__en {
+      color: #999;
       padding-left: 16px;
     }
   }
-  footer.probation-forms_footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 64px;
-    padding: 0 2.78vw;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    z-index: 99;
-  }
+}
+footer.probation-forms_footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 64px;
+  padding: 0 2.78vw;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  z-index: 99;
 }
 .probation-forms_modal_inputrow {
   padding: 12px;
   display: flex;
   align-items: center;
+}
+
+.probation-forms_main {
+  display: flex;
+  width: 100%;
+  padding-bottom: 80px;
+  background-color: #fff;
+  &_tables {
+    width: calc(100% - 160px);
+  }
+  &_sider {
+    width: 154px;
+    padding-left: 16px;
+  }
 }

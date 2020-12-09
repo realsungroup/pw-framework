@@ -24,6 +24,43 @@ import http from 'Util20/api';
 import { getItem } from 'Util20/util';
 import './ProbationForms.less';
 import debounce from 'lodash/debounce';
+import html2canvas from 'html2canvas';
+import {
+  Document,
+  Packer,
+  Paragraph,
+  HeadingLevel,
+  AlignmentType,
+  Table,
+  TableRow,
+  TableCell,
+  TextRun,
+  WidthType,
+  Header,
+  Media,
+  VerticalAlign,
+  PageNumberFormat,
+  PageNumber,
+  Footer
+} from 'docx';
+import { saveAs } from 'file-saver';
+import {
+  employeeInfo,
+  employeeInfo2,
+  employeeObjectives,
+  employeeOrientationtraining,
+  employeeInternaltraining,
+  employeeOnjobtraining,
+  employeeMentorshipRecord,
+  IIVILogo
+} from './config';
+
+function buf2hex(buffer) {
+  // buffer is an ArrayBuffer
+  return Array.prototype.map
+    .call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2))
+    .join('');
+}
 
 const { Link } = Anchor;
 const { Option } = Select;
@@ -106,7 +143,7 @@ class ProbationForms extends React.Component {
       employedId = this.props.employedId;
     }
     this.setState({ memIDOrg: memberId });
-    this.fetchApproveNodes(employedId);
+
     await this.getAuth();
     await this.getCircle();
     await this.getRecords(memberId, employedId);
@@ -611,6 +648,7 @@ class ProbationForms extends React.Component {
           } else {
             this.setState({ flagAlreadyHit: 0 });
           }
+          this.fetchApproveNodes(data.C3_625051545181);
           this.setState({
             employeeInformation: data,
             probationObjectives: probationObjectives,
@@ -1180,7 +1218,7 @@ class ProbationForms extends React.Component {
                   REC_ID: this.state.employeeInformation.REC_ID,
                   hrManagerApprove: isAgree ? 'Y' : 'N',
                   hrManagerEvaluate: this.state.employeeInformation
-                  .hrManagerEvaluate
+                    .hrManagerEvaluate
                 }
               ];
               break;
@@ -1231,9 +1269,7 @@ class ProbationForms extends React.Component {
       const index = _data.findIndex(item => {
         return item.REC_ID === data.REC_ID;
       });
-      console.log(index);
       _data[index] = res.data[0];
-      console.log(_data);
       this.setState({ onTheJobTraining: _data });
       message.success('已邀请');
     } catch (error) {
@@ -1243,214 +1279,1184 @@ class ProbationForms extends React.Component {
     this.setState({ loading: false });
   };
 
+  exportWord = () => {
+    const { employeeInformation } = this.state;
+
+    const doc = new Document({
+      styles: {
+        tableStyles: [
+          {
+            id: 'tableCell',
+            name: 'TableCell',
+            run: {
+              color: '999999',
+              italics: true
+            }
+          }
+        ]
+      }
+    });
+    const logo26 = Media.addImage(
+      doc,
+      Uint8Array.from(atob(IIVILogo), c => c.charCodeAt(0)),
+      114,
+      33
+    );
+    doc.addSection({
+      headers: {
+        default: new Header({
+          children: [new Paragraph({ children: [logo26] })]
+        })
+      },
+      footers: {
+        default: new Footer({
+          children: [
+            new Paragraph({
+              alignment: AlignmentType.CENTER,
+              children: [
+                new TextRun({
+                  children: [PageNumber.CURRENT]
+                })
+              ]
+            })
+          ]
+        })
+      },
+      properties: {
+        pageNumberStart: 1,
+        pageNumberFormatType: PageNumberFormat.DECIMAL
+      },
+      children: [
+        new Paragraph({
+          heading: HeadingLevel.HEADING_1,
+          alignment: AlignmentType.CENTER,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '新员工试用期考核表',
+              color: '000000'
+            })
+          ]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_2,
+          alignment: AlignmentType.CENTER,
+          children: [
+            new TextRun({
+              bold: true,
+              text: 'New Employee Probation Appraisal Form',
+              color: '000000'
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '个人信息  Employee Information',
+              color: '000000'
+            })
+          ]
+        }),
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: employeeInfo.map(item => {
+                return new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun({ text: item.text, bold: true })],
+                      alignment: AlignmentType.CENTER
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER
+                });
+              }),
+              tableHeader: true
+            }),
+            new TableRow({
+              children: employeeInfo.map(item => {
+                let text = employeeInformation[item.field] || '';
+                if (item.isDate && text) {
+                  text = text.substring(0, 10);
+                }
+                return new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun(text)],
+                      alignment: AlignmentType.CENTER
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER
+                });
+              })
+            }),
+            new TableRow({
+              children: employeeInfo2.map(item => {
+                return new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun({ text: item.text, bold: true })],
+                      alignment: AlignmentType.CENTER
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER
+                });
+              }),
+
+              tableHeader: true
+            }),
+            new TableRow({
+              children: employeeInfo2.map(item => {
+                let text = employeeInformation[item.field] || '';
+                if (item.isDate && text) {
+                  text = text.substring(0, 10);
+                }
+                return new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun(text)],
+                      alignment: AlignmentType.CENTER
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER
+                });
+              })
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '试用期工作目标  Probation Objectives',
+              color: '000000'
+            })
+          ]
+        }),
+        new Table({
+          // width: {
+          //   size: 4535,
+          //   type: WidthType.DXA
+          // },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '序号',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 5.3,
+                    type: WidthType.PERCENTAGE
+                  }
+                }),
+                ...employeeObjectives.map(item => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: item.text,
+                            bold: true
+                          })
+                        ]
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 21,
+                      type: WidthType.PERCENTAGE
+                    }
+                  });
+                }),
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '三个月-目标绩效完成评估',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 21,
+                    type: WidthType.PERCENTAGE
+                  }
+                }),
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '三个月-评分',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 5.3,
+                    type: WidthType.PERCENTAGE
+                  }
+                }),
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '五个月-目标绩效完成评估',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 21,
+                    type: WidthType.PERCENTAGE
+                  }
+                }),
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '五个月-评分',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 5.3,
+                    type: WidthType.PERCENTAGE
+                  }
+                })
+              ],
+              tableHeader: true
+            }),
+            ...this.state.probationObjectives.map((objective, index) => {
+              return new TableRow({
+                children: [
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text: index + 1 + '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 5.3,
+                      type: WidthType.PERCENTAGE
+                    }
+                  }),
+                  ...employeeObjectives.map(item => {
+                    return new TableCell({
+                      children: [
+                        new Paragraph({
+                          alignment: AlignmentType.LEFT,
+                          children: [
+                            new TextRun({
+                              text: objective[item.field] || ''
+                            })
+                          ]
+                        })
+                      ],
+                      verticalAlign: VerticalAlign.TOP,
+                      width: {
+                        size: 21,
+                        type: WidthType.PERCENTAGE
+                      }
+                    });
+                  }),
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text:
+                          (objective['619808533610'][0] &&
+                            objective['619808533610'][0].assessment) ||
+                          '',
+                        alignment: AlignmentType.LEFT
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.TOP,
+                    width: {
+                      size: 21,
+                      type: WidthType.PERCENTAGE
+                    }
+                  }),
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text:
+                          (objective['619808533610'][0] &&
+                            objective['619808533610'][0].score) ||
+                          '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 5.3,
+                      type: WidthType.PERCENTAGE
+                    }
+                  }),
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text:
+                          (objective['619808533610'][1] &&
+                            objective['619808533610'][1].assessment) ||
+                          '',
+                        alignment: AlignmentType.LEFT
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.TOP,
+                    width: {
+                      size: 21,
+                      type: WidthType.PERCENTAGE
+                    }
+                  }),
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text:
+                          (objective['619808533610'][1] &&
+                            objective['619808533610'][1].score) ||
+                          '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 5.3,
+                      type: WidthType.PERCENTAGE
+                    }
+                  })
+                ]
+              });
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '入职培训（必修）  Orientation Training',
+              color: '000000'
+            })
+          ]
+        }),
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '序号',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 480,
+                    type: WidthType.DXA
+                  }
+                }),
+                ...employeeOrientationtraining.map(item => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: item.text,
+                            bold: true
+                          })
+                        ]
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 2863,
+                      type: WidthType.DXA
+                    }
+                  });
+                })
+              ],
+              tableHeader: true
+            }),
+            ...this.state.orientationTraining.map((objective, index) => {
+              return new TableRow({
+                cantSplit: true,
+                children: [
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text: index + 1 + '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 480,
+                      type: WidthType.DXA
+                    }
+                  }),
+                  ...employeeOrientationtraining.map(item => {
+                    return new TableCell({
+                      children: [
+                        new Paragraph({
+                          text: objective[item.field],
+                          alignment: AlignmentType.CENTER
+                        })
+                      ],
+                      width: {
+                        size: 2863,
+                        type: WidthType.DXA
+                      },
+                      verticalAlign: VerticalAlign.CENTER
+                    });
+                  })
+                ]
+              });
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '内训课程  Internal Training',
+              color: '000000'
+            })
+          ]
+        }),
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '序号',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 480,
+                    type: WidthType.DXA
+                  }
+                }),
+                ...employeeInternaltraining.map(item => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: item.text,
+                            bold: true
+                          })
+                        ]
+                      })
+                    ],
+                    width: {
+                      size: 2863,
+                      type: WidthType.DXA
+                    }
+                  });
+                })
+              ],
+              verticalAlign: VerticalAlign.CENTER,
+              tableHeader: true
+            }),
+            ...this.state.internalTraining.map((objective, index) => {
+              return new TableRow({
+                children: [
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text: index + 1 + '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 480,
+                      type: WidthType.DXA
+                    }
+                  }),
+                  ...employeeInternaltraining.map(item => {
+                    let text = objective[item.field] || '';
+                    if (item.isDate && text) {
+                      text = text.substring(0, 10);
+                    }
+                    return new TableCell({
+                      children: [
+                        new Paragraph({
+                          text,
+                          alignment: AlignmentType.CENTER
+                        })
+                      ],
+                      width: {
+                        size: 2863,
+                        type: WidthType.DXA
+                      },
+                      verticalAlign: VerticalAlign.CENTER
+                    });
+                  })
+                ],
+                cantSplit: true
+              });
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '在岗培训  On-the-job Training',
+              color: '000000'
+            })
+          ]
+        }),
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '序号',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 480,
+                    type: WidthType.DXA
+                  }
+                }),
+                ...employeeOnjobtraining.map(item => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: item.text,
+                            bold: true
+                          })
+                        ]
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 2147,
+                      type: WidthType.DXA
+                    }
+                  });
+                })
+              ],
+              tableHeader: true
+            }),
+            ...this.state.onTheJobTraining.map((objective, index) => {
+              return new TableRow({
+                children: [
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text: index + 1 + '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 480,
+                      type: WidthType.DXA
+                    }
+                  }),
+                  ...employeeOnjobtraining.map(item => {
+                    return new TableCell({
+                      children: [
+                        new Paragraph({
+                          text: objective[item.field]
+                            ? objective[item.field]
+                            : '',
+                          alignment: AlignmentType.CENTER
+                        })
+                      ],
+                      verticalAlign: VerticalAlign.CENTER,
+                      width: {
+                        size: 2147,
+                        type: WidthType.DXA
+                      }
+                    });
+                  })
+                ],
+                cantSplit: true
+              });
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '辅导记录  Mentorship Record',
+              color: '000000'
+            })
+          ]
+        }),
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '序号',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  width: {
+                    size: 480,
+                    type: WidthType.DXA
+                  },
+                  verticalAlign: VerticalAlign.CENTER
+                }),
+                ...employeeMentorshipRecord.map(item => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: item.text,
+                            bold: true
+                          })
+                        ]
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 2863,
+                      type: WidthType.DXA
+                    }
+                  });
+                })
+              ],
+              tableHeader: true
+            }),
+            ...this.state.mentorshipRecord.map((objective, index) => {
+              return new TableRow({
+                children: [
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text: index + 1 + '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 480,
+                      type: WidthType.DXA
+                    }
+                  }),
+                  ...employeeMentorshipRecord.map(item => {
+                    let text = '';
+                    text = objective[item.field] ? objective[item.field] : '';
+                    if (item.text === '状态') {
+                      text =
+                        objective[item.field] === 'Y' ? '已确认' : '待确认';
+                    }
+                    if (item.isDate && text) {
+                      text = text.substring(0, 10);
+                    }
+                    return new TableCell({
+                      children: [
+                        new Paragraph({ text, alignment: AlignmentType.CENTER })
+                      ],
+                      width: {
+                        size: 2863,
+                        type: WidthType.DXA
+                      },
+                      verticalAlign: VerticalAlign.CENTER
+                    });
+                  })
+                ],
+                cantSplit: true
+              });
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '试用期个人小结Individual Summary',
+              color: '000000'
+            })
+          ]
+        }),
+
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun(employeeInformation.smmary || '')]
+                    })
+                  ]
+                })
+              ],
+              cantSplit: true,
+              height: {
+                height: 1000
+              }
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '试用期主管评价  Director Evaluate',
+              color: '000000'
+            })
+          ]
+        }),
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [
+                        new TextRun(employeeInformation.directorEvaluate || '')
+                      ]
+                    })
+                  ]
+                })
+              ],
+              cantSplit: true,
+              height: {
+                height: 1000
+              }
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '试用期经理/总监评价  Manager Evaluate',
+              color: '000000'
+            })
+          ]
+        }),
+
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [
+                        new TextRun(employeeInformation.ManagerEvaluate || '')
+                      ]
+                    })
+                  ]
+                })
+              ],
+              cantSplit: true,
+              height: {
+                height: 1000
+              }
+            })
+          ]
+        }),
+        new Paragraph({
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '试用期HR经理评价HR  Manager Evaluate',
+              color: '000000'
+            })
+          ]
+        }),
+
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [
+                        new TextRun(employeeInformation.hrManagerEvaluate || '')
+                      ]
+                    })
+                  ]
+                })
+              ],
+              cantSplit: true,
+              height: {
+                height: 1000
+              }
+            })
+          ]
+        })
+      ]
+    });
+    Packer.toBlob(doc).then(blob => {
+      saveAs(blob, '新员工试用期考核表.docx');
+    });
+  };
   render() {
     const { roleName } = this.props;
     const { loading, employeeInformation, approveNodes } = this.state;
     const editable = employeeInformation.regStatus === '待转正';
     return (
       <Spin spinning={loading}>
-        <div id="probation-forms">
-          {this.props.roleName !== '员工' && (
-            <div className="probation-forms_goback" onClick={this.props.goBack}>
-              <Icon type="rollback" style={{ color: '#999' }} />
-            </div>
-          )}
-          <header>
-            <h1>新员工试用期考核表</h1>
-            <p>New Employee Probation Appraisal Form</p>
-          </header>
-          <main className="probation-forms_main">
-            <div className="probation-forms_main_tables">
-              <EmployeeInformation
-                employeeInformation={employeeInformation}
-                tutorships={this.state.tutorships}
-                setTutorship={this.setTutorship}
-                setTutorship2={this.setTutorship2}
-                setTutorshipSemi={this.setTutorshipSemi}
-                setTutorshipSemi2={this.setTutorshipSemi2}
-                isSemi={this.isSemi}
-                isSemi2={this.isSemi2}
-                roleName={roleName}
-                editable={editable}
-                approveNodes={approveNodes}
-              />
-              <ProbationObjectives
-                probationObjectives={this.state.probationObjectives}
-                addObjective={this.addObjective}
-                removeObjective={this.removeObjective}
-                modifyObjective={this.modifyObjective}
-                roleName={roleName}
-                openModifyProbationObjectiveModal={
-                  this.openModifyProbationObjectiveModal
-                }
-                auth={this.state.tableAuth.objective}
-                editable={editable}
-              />
-              <OrientationTraining
-                orientationTraining={this.state.orientationTraining.map(
-                  (item, index) => ({ ...item, no: index + 1 })
-                )}
-                roleName={roleName}
-                editable={editable}
-              />
-              <InternalTraining
-                setInterDetailVis={this.setInterDetailVis}
-                setAddInternalCourseVisible={this.setAddInternalCourseVisible}
-                internalTraining={this.state.internalTraining.map(
-                  (item, index) => ({ ...item, no: index + 1 })
-                )}
-                deleteInternalCourse={this.deleteInternalCourse}
-                openModifyInternalCourseModal={
-                  this.openModifyInternalCourseModal
-                }
-                roleName={roleName}
-                auth={this.state.tableAuth.internal}
-                editable={editable}
-              />
-              <OnTheJobTraining
-                onTheJobTraining={this.state.onTheJobTraining.map(
-                  (item, index) => ({ ...item, no: index + 1 })
-                )}
-                setAddOnJobTrainingVisible={this.setAddOnJobTrainingVisible}
-                deleteOnJobTraining={this.deleteOnJobTraining}
-                openModifyOnJobTrainingModal={this.openModifyOnJobTrainingModal}
-                roleName={roleName}
-                auth={this.state.tableAuth.onJob}
-                inviteConfirm={this.inviteConfirm}
-                editable={editable}
-              />
-              <MentorshipRecord
-                mentorshipRecord={this.state.mentorshipRecord}
-                addMentor={this.addMentor}
-                removeMentor={this.removeMentor}
-                modifyMentor={this.modifyMentor}
-                confirmMentor={this.confirmMentor}
-                roleName={roleName}
-                auth={this.state.tableAuth.mentorRecord}
-                editable={editable}
-              />
-              <IndividualSummary
-                summary={employeeInformation.smmary}
-                directorEvaluate={employeeInformation.directorEvaluate}
-                managerEvaluate={employeeInformation.ManagerEvaluate}
-                hrManagerEvaluate={employeeInformation.hrManagerEvaluate}
-                endTime={employeeInformation.endTime}
-                summaryChange={this.summaryChange}
-                directorEvaluateChange={this.directorEvaluateChange}
-                managerEvaluateChange={this.managerEvaluateChange}
-                hrManagerEvaluateChange={this.hrManagerEvaluateChange}
-                roleName={roleName}
-                editable={editable}
-              />
-            </div>
-            <aside className="probation-forms_main_sider">
-              <Anchor bounds={15}>
-                <Link href="#employee-imformation" title="个人信息" />
-                <Link href="#probation-objectives" title="试用期工作目标" />
-                <Link href="#orientation-training" title="入职培训（必修）" />
-                <Link href="#internal-training" title="内训课程" />
-                <Link href="#on-the-job-training" title="在岗培训" />
-                <Link href="#mentorshi-record" title="辅导记录" />
-                <Link href="#individual-summary" title="试用期个人小结" />
-              </Anchor>
-            </aside>
-          </main>
-          {!loading &&
-            (roleName === 'HR' ||
-              employeeInformation.regStatus !== '已转正') && (
-              <footer
-                className="probation-forms_footer"
-                style={roleName === '辅导员' ? { display: 'none' } : {}}
+        <div id="probation-forms-print">
+          <div id="probation-forms">
+            {this.props.roleName !== '员工' && (
+              <div
+                className="probation-forms_goback toHide"
+                onClick={this.props.goBack}
               >
-                {/* 待转正状态 */}
-                {(roleName === 'HR' ||
-                  employeeInformation.regStatus === '待转正') &&
-                  employeeInformation.C3_622649502021 != 'Y' && (
-                    <div>
-                      <Button
-                        type="primary"
-                        style={{ marginRight: 16 }}
-                        onClick={() => {
-                          this.handleSubmit(roleName);
-                        }}
-                      >
-                        保存
-                      </Button>
-                      {roleName === 'HR' &&
-                      this.state.flagHitBack == true &&
-                      this.state.flagAlreadyHit == 0 ? (
-                        <span>
-                          <Button
-                            style={{ marginRight: '8px' }}
-                            onClick={this.agreeApply}
-                          >
-                            同意自定义辅导员
-                          </Button>
-                          <Button onClick={this.disagreeApply} type="danger">
-                            驳回自定义辅导员
-                          </Button>
-                        </span>
-                      ) : (
-                        ''
-                      )}
-                      {
-                        <span style={{ color: 'red' }}>
-                          {this.state.flagAlreadyHit == 2
-                            ? '该记录的自定义辅导员申请已经驳回'
-                            : ''}
-                        </span>
-                      }
-                    </div>
-                  )}
-                {/* 角色为员工且转正申请未提交 */}
-                {roleName === '员工' &&
-                  employeeInformation.regStatus === '待转正' &&
-                  employeeInformation.C3_622649502021 != 'Y' && (
-                    <Popconfirm
-                      title="确认提交转正申请？"
-                      onConfirm={this.positiveApply}
-                    >
-                      <Button type="primary" style={{ marginRight: 16 }}>
-                        申请转正
-                      </Button>
-                    </Popconfirm>
-                  )}
-                {/* 角色为员工且转正申请已经提交 */}
-                {roleName === '员工' &&
-                  employeeInformation.regStatus === '待转正' &&
-                  employeeInformation.C3_622649502021 == 'Y' && (
-                    <span style={{ color: 'red' }}>转正申请已经提交</span>
-                  )}
-                {/* 转正中 */}
-                {employeeInformation.regStatus === '转正中' &&
-                  ((roleName === '主管' &&
-                    employeeInformation.isRegular !== 'Y') ||
-                    (roleName === '经理' &&
-                      employeeInformation.isManagerRegular !== 'Y') ||
-                    (roleName === 'HR经理' &&
-                      employeeInformation.hrManagerApprove !== 'Y') ||
-                    (roleName === '总监' &&
-                      employeeInformation.driectorApprove !== 'Y')) && (
-                    <React.Fragment>
-                      <Button
-                        type="primary"
-                        style={{ marginRight: 16 }}
-                        onClick={() => this.isAgree(true)}
-                      >
-                        同意转正
-                      </Button>
-                      <Button
-                        type="danger"
-                        style={{ marginRight: 16 }}
-                        onClick={() => this.isAgree(false)}
-                      >
-                        不同意转正
-                      </Button>
-                    </React.Fragment>
-                  )}
-              </footer>
+                <Icon type="rollback" style={{ color: '#999' }} />
+              </div>
             )}
+            <header>
+              <h1>新员工试用期考核表</h1>
+              <p>New&nbsp;Employee&nbsp;Probation&nbsp;Appraisal&nbsp;Form</p>
+            </header>
+            <main className="probation-forms_main">
+              <div className="probation-forms_main_tables">
+                <EmployeeInformation
+                  employeeInformation={employeeInformation}
+                  tutorships={this.state.tutorships}
+                  setTutorship={this.setTutorship}
+                  setTutorship2={this.setTutorship2}
+                  setTutorshipSemi={this.setTutorshipSemi}
+                  setTutorshipSemi2={this.setTutorshipSemi2}
+                  isSemi={this.isSemi}
+                  isSemi2={this.isSemi2}
+                  roleName={roleName}
+                  editable={editable}
+                  approveNodes={approveNodes}
+                />
+                <ProbationObjectives
+                  probationObjectives={this.state.probationObjectives}
+                  addObjective={this.addObjective}
+                  removeObjective={this.removeObjective}
+                  modifyObjective={this.modifyObjective}
+                  roleName={roleName}
+                  openModifyProbationObjectiveModal={
+                    this.openModifyProbationObjectiveModal
+                  }
+                  auth={this.state.tableAuth.objective}
+                  editable={editable}
+                />
+                <OrientationTraining
+                  orientationTraining={this.state.orientationTraining.map(
+                    (item, index) => ({ ...item, no: index + 1 })
+                  )}
+                  roleName={roleName}
+                  editable={editable}
+                />
+                <InternalTraining
+                  setInterDetailVis={this.setInterDetailVis}
+                  setAddInternalCourseVisible={this.setAddInternalCourseVisible}
+                  internalTraining={this.state.internalTraining.map(
+                    (item, index) => ({ ...item, no: index + 1 })
+                  )}
+                  deleteInternalCourse={this.deleteInternalCourse}
+                  openModifyInternalCourseModal={
+                    this.openModifyInternalCourseModal
+                  }
+                  roleName={roleName}
+                  auth={this.state.tableAuth.internal}
+                  editable={editable}
+                />
+                <OnTheJobTraining
+                  onTheJobTraining={this.state.onTheJobTraining.map(
+                    (item, index) => ({ ...item, no: index + 1 })
+                  )}
+                  setAddOnJobTrainingVisible={this.setAddOnJobTrainingVisible}
+                  deleteOnJobTraining={this.deleteOnJobTraining}
+                  openModifyOnJobTrainingModal={
+                    this.openModifyOnJobTrainingModal
+                  }
+                  roleName={roleName}
+                  auth={this.state.tableAuth.onJob}
+                  inviteConfirm={this.inviteConfirm}
+                  editable={editable}
+                />
+                <MentorshipRecord
+                  mentorshipRecord={this.state.mentorshipRecord}
+                  addMentor={this.addMentor}
+                  removeMentor={this.removeMentor}
+                  modifyMentor={this.modifyMentor}
+                  confirmMentor={this.confirmMentor}
+                  roleName={roleName}
+                  auth={this.state.tableAuth.mentorRecord}
+                  editable={editable}
+                />
+                <IndividualSummary
+                  summary={employeeInformation.smmary}
+                  directorEvaluate={employeeInformation.directorEvaluate}
+                  managerEvaluate={employeeInformation.ManagerEvaluate}
+                  hrManagerEvaluate={employeeInformation.hrManagerEvaluate}
+                  endTime={employeeInformation.endTime}
+                  summaryChange={this.summaryChange}
+                  directorEvaluateChange={this.directorEvaluateChange}
+                  managerEvaluateChange={this.managerEvaluateChange}
+                  hrManagerEvaluateChange={this.hrManagerEvaluateChange}
+                  roleName={roleName}
+                  editable={editable}
+                />
+              </div>
+              <aside className="probation-forms_main_sider toHide">
+                <Anchor bounds={15}>
+                  <Link href="#employee-imformation" title="个人信息" />
+                  <Link href="#probation-objectives" title="试用期工作目标" />
+                  <Link href="#orientation-training" title="入职培训（必修）" />
+                  <Link href="#internal-training" title="内训课程" />
+                  <Link href="#on-the-job-training" title="在岗培训" />
+                  <Link href="#mentorshi-record" title="辅导记录" />
+                  <Link href="#individual-summary" title="试用期个人小结" />
+                </Anchor>
+              </aside>
+            </main>
+          </div>
         </div>
+
+        {!loading &&
+          (roleName === 'HR' || employeeInformation.regStatus !== '已转正') && (
+            <footer
+              className="probation-forms_footer"
+              style={roleName === '辅导员' ? { display: 'none' } : {}}
+            >
+              {/* 待转正状态 */}
+              {(roleName === 'HR' ||
+                employeeInformation.regStatus === '待转正') &&
+                employeeInformation.C3_622649502021 != 'Y' && (
+                  <div>
+                    <Button
+                      type="primary"
+                      style={{ marginRight: 16 }}
+                      onClick={() => {
+                        this.handleSubmit(roleName);
+                      }}
+                    >
+                      保存
+                    </Button>
+                    {roleName === 'HR' &&
+                    this.state.flagHitBack == true &&
+                    this.state.flagAlreadyHit == 0 ? (
+                      <span>
+                        <Button
+                          style={{ marginRight: '8px' }}
+                          onClick={this.agreeApply}
+                        >
+                          同意自定义辅导员
+                        </Button>
+                        <Button onClick={this.disagreeApply} type="danger">
+                          驳回自定义辅导员
+                        </Button>
+                      </span>
+                    ) : (
+                      ''
+                    )}
+                    {
+                      <span style={{ color: 'red' }}>
+                        {this.state.flagAlreadyHit == 2
+                          ? '该记录的自定义辅导员申请已经驳回'
+                          : ''}
+                      </span>
+                    }
+                  </div>
+                )}
+              {/* 角色为员工且转正申请未提交 */}
+              {roleName === '员工' &&
+                employeeInformation.regStatus === '待转正' &&
+                employeeInformation.C3_622649502021 != 'Y' && (
+                  <Popconfirm
+                    title="确认提交转正申请？"
+                    onConfirm={this.positiveApply}
+                  >
+                    <Button type="primary" style={{ marginRight: 16 }}>
+                      申请转正
+                    </Button>
+                  </Popconfirm>
+                )}
+              {/* 角色为员工且转正申请已经提交 */}
+              {roleName === '员工' &&
+                employeeInformation.regStatus === '待转正' &&
+                employeeInformation.C3_622649502021 == 'Y' && (
+                  <span style={{ color: 'red' }}>转正申请已经提交</span>
+                )}
+              {/* 转正中 */}
+              {employeeInformation.regStatus === '转正中' &&
+                ((roleName === '主管' &&
+                  employeeInformation.isRegular !== 'Y') ||
+                  (roleName === '经理' &&
+                    employeeInformation.isManagerRegular !== 'Y') ||
+                  (roleName === 'HR经理' &&
+                    employeeInformation.hrManagerApprove !== 'Y') ||
+                  (roleName === '总监' &&
+                    employeeInformation.driectorApprove !== 'Y')) && (
+                  <React.Fragment>
+                    <Button
+                      type="primary"
+                      style={{ marginRight: 16 }}
+                      onClick={() => this.isAgree(true)}
+                    >
+                      同意转正
+                    </Button>
+                    <Button
+                      type="danger"
+                      style={{ marginRight: 16 }}
+                      onClick={() => this.isAgree(false)}
+                    >
+                      不同意转正
+                    </Button>
+                  </React.Fragment>
+                )}
+
+              <Button style={{ marginLeft: 8 }} onClick={this.exportWord}>
+                导出Word
+              </Button>
+            </footer>
+          )}
         <Modal
           title="内训课程详细"
           visible={this.state.interDetailVis}

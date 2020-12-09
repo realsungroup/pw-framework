@@ -127,6 +127,7 @@ class ArchitectureDiagram extends React.Component {
   constructor(props) {
     super(props);
     const displayFiledsJson = getItem(`displayField${this.props.resid}`);
+    this._EnterpriseCode = JSON.parse(getItem('userInfo')).EnterpriseCode;
     let firstField, secondaryField, thirdField;
     if (displayFiledsJson) {
       const displayFileds = JSON.parse(displayFiledsJson);
@@ -1665,108 +1666,56 @@ class ArchitectureDiagram extends React.Component {
                   <div id="architecture-diagram_orgchart"></div>
                 </div>
               </div>
-              <div className="architecture-diagram_main_sider">
-                {!detaileMin && (
-                  <div className="architecture-diagram_main_item-detail">
-                    <div className="architecture-diagram_main_sider_title">
-                      详细情况
-                      <Icon
-                        type="minus"
-                        className="architecture-diagram__min-button"
-                        style={{ fontSize: 16 }}
-                        onClick={() => {
-                          this.setState({ detaileMin: true });
-                        }}
-                      />
-                    </div>
-                    {selectedNode.REC_ID ? (
-                      <div className="architecture-diagram_main_item-detail_list">
-                        {this._cmscolumninfo.map(item => {
-                          if (!item[item.id].enableValue) {
-                            return null;
-                          }
-                          return (
-                            <p
-                              key={item.id}
-                              className="architecture-diagram_main_item-detail_list_item"
-                            >
-                              <label>{item.text}：</label>
-                              <span>{selectedNode[item.id]}</span>
-                              {hasView &&
-                                item.id === displayFileds.firstField &&
-                                selectedNode[item.id] && (
-                                  <span
-                                    style={{
-                                      color: '#1890FF',
-                                      cursor: 'pointer',
-                                      marginLeft: 8
-                                    }}
-                                    onClick={() => {
-                                      this.setState({
-                                        detailVisible: true
-                                      });
-                                    }}
-                                  >
-                                    查看
-                                  </span>
-                                )}
-                            </p>
-                          );
-                        })}
-                      </div>
-                    ) : (
-                      <div className="architecture-diagram_unselect-tip">
-                        <Alert
-                          message="尚未选中任何卡片！"
-                          type="info"
-                          showIcon
+              {this._EnterpriseCode === selectedNode.companycode && (
+                <div className="architecture-diagram_main_sider">
+                  {!detaileMin && (
+                    <div className="architecture-diagram_main_item-detail">
+                      <div className="architecture-diagram_main_sider_title">
+                        详细情况
+                        <Icon
+                          type="minus"
+                          className="architecture-diagram__min-button"
+                          style={{ fontSize: 16 }}
+                          onClick={() => {
+                            this.setState({ detaileMin: true });
+                          }}
                         />
                       </div>
-                    )}
-                  </div>
-                )}
-                {!historyMin && (
-                  <div className="architecture-diagram_main_item-history">
-                    <div className="architecture-diagram_main_sider_title">
-                      历史情况
-                      <Icon
-                        type="minus"
-                        className="architecture-diagram__min-button"
-                        style={{ fontSize: 16 }}
-                        onClick={() => {
-                          this.setState({ historyMin: true });
-                        }}
-                      />
-                    </div>
-                    <div className="architecture-diagram_change-hsitory_list">
                       {selectedNode.REC_ID ? (
-                        historyData.length ? (
-                          <Timeline>
-                            {historyData.map((item, index) => {
-                              return (
-                                <Timeline.Item>
-                                  <div>
-                                    {this._historyColinfo.map((i, ind) => {
-                                      return (
-                                        <p
-                                          key={i.id}
-                                          className="architecture-diagram_main_item-detail_list_item"
-                                        >
-                                          <label>{i.text}：</label>
-                                          <span>{item[i.id]}</span>
-                                        </p>
-                                      );
-                                    })}
-                                  </div>
-                                </Timeline.Item>
-                              );
-                            })}
-                          </Timeline>
-                        ) : (
-                          <div className="architecture-diagram_unselect-tip">
-                            <Alert message="无历史记录" type="info" showIcon />
-                          </div>
-                        )
+                        <div className="architecture-diagram_main_item-detail_list">
+                          {this._cmscolumninfo.map(item => {
+                            if (!item[item.id].enableValue) {
+                              return null;
+                            }
+                            return (
+                              <p
+                                key={item.id}
+                                className="architecture-diagram_main_item-detail_list_item"
+                              >
+                                <label>{item.text}：</label>
+                                <span>{selectedNode[item.id]}</span>
+                                {hasView &&
+                                  item.id === displayFileds.firstField &&
+                                  selectedNode[item.id] && (
+                                    <span
+                                      style={{
+                                        color: '#1890FF',
+                                        cursor: 'pointer',
+                                        marginLeft: 8
+                                      }}
+                                      onClick={() => {
+                                        this.setState({
+                                          detailVisible: true
+                                        });
+                                      }}
+                                    >
+                                      查看
+                                    </span>
+                                  )}
+                              </p>
+                            );
+                          })}
+                        </div>
                       ) : (
                         <div className="architecture-diagram_unselect-tip">
                           <Alert
@@ -1777,9 +1726,67 @@ class ArchitectureDiagram extends React.Component {
                         </div>
                       )}
                     </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                  {!historyMin && (
+                    <div className="architecture-diagram_main_item-history">
+                      <div className="architecture-diagram_main_sider_title">
+                        历史情况
+                        <Icon
+                          type="minus"
+                          className="architecture-diagram__min-button"
+                          style={{ fontSize: 16 }}
+                          onClick={() => {
+                            this.setState({ historyMin: true });
+                          }}
+                        />
+                      </div>
+                      <div className="architecture-diagram_change-hsitory_list">
+                        {selectedNode.REC_ID ? (
+                          historyData.length ? (
+                            <Timeline>
+                              {historyData.map((item, index) => {
+                                return (
+                                  <Timeline.Item>
+                                    <div>
+                                      {this._historyColinfo.map((i, ind) => {
+                                        return (
+                                          <p
+                                            key={i.id}
+                                            className="architecture-diagram_main_item-detail_list_item"
+                                          >
+                                            <label>{i.text}：</label>
+                                            <span>{item[i.id]}</span>
+                                          </p>
+                                        );
+                                      })}
+                                    </div>
+                                  </Timeline.Item>
+                                );
+                              })}
+                            </Timeline>
+                          ) : (
+                            <div className="architecture-diagram_unselect-tip">
+                              <Alert
+                                message="无历史记录"
+                                type="info"
+                                showIcon
+                              />
+                            </div>
+                          )
+                        ) : (
+                          <div className="architecture-diagram_unselect-tip">
+                            <Alert
+                              message="尚未选中任何卡片！"
+                              type="info"
+                              showIcon
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </Spin>
@@ -1802,7 +1809,31 @@ class ArchitectureDiagram extends React.Component {
             onCancel={this.closeBroModal}
             onSuccess={this.afterSave}
             baseURL={this.props.baseURL}
-            // recordFormUseAbsolute={true}
+            extraButtons={form => {
+              if (operation === 'modify') {
+                return null;
+              }
+              return (
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    form.validateFields(async (error, value) => {
+                      if (!error) {
+                        await http({ baseURL: this.props.baseURL }).addRecords({
+                          resid: this.props.resid,
+                          data: [{ ...value, isScrap: 'N' }]
+                        });
+                        this.closeBroModal();
+                        this.handleRefresh();
+                        message.success('添加成功');
+                      }
+                    });
+                  }}
+                >
+                  保存并启用
+                </Button>
+              );
+            }}
           />
         </Modal>
         <Drawer
@@ -2078,7 +2109,6 @@ class ImportProgress extends React.Component {
             const findData = records.find(record => {
               return record.orgNumber == item.C3_465142349966;
             });
-            console.log(findData);
             return {
               ...item,
               C3_470524257391: findData.updateDate,
