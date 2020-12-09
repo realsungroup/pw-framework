@@ -35,17 +35,32 @@ import {
   TableRow,
   TableCell,
   TextRun,
-  WidthType
+  WidthType,
+  Header,
+  Media,
+  VerticalAlign,
+  PageNumberFormat,
+  PageNumber,
+  Footer
 } from 'docx';
 import { saveAs } from 'file-saver';
 import {
   employeeInfo,
+  employeeInfo2,
   employeeObjectives,
   employeeOrientationtraining,
   employeeInternaltraining,
   employeeOnjobtraining,
-  employeeMentorshipRecord
+  employeeMentorshipRecord,
+  IIVILogo
 } from './config';
+
+function buf2hex(buffer) {
+  // buffer is an ArrayBuffer
+  return Array.prototype.map
+    .call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2))
+    .join('');
+}
 
 const { Link } = Anchor;
 const { Option } = Select;
@@ -1254,9 +1269,7 @@ class ProbationForms extends React.Component {
       const index = _data.findIndex(item => {
         return item.REC_ID === data.REC_ID;
       });
-      console.log(index);
       _data[index] = res.data[0];
-      console.log(_data);
       this.setState({ onTheJobTraining: _data });
       message.success('已邀请');
     } catch (error) {
@@ -1268,42 +1281,153 @@ class ProbationForms extends React.Component {
 
   exportWord = () => {
     const { employeeInformation } = this.state;
-    const doc = new Document();
+
+    const doc = new Document({
+      styles: {
+        tableStyles: [
+          {
+            id: 'tableCell',
+            name: 'TableCell',
+            run: {
+              color: '999999',
+              italics: true
+            }
+          }
+        ]
+      }
+    });
+    const logo26 = Media.addImage(
+      doc,
+      Uint8Array.from(atob(IIVILogo), c => c.charCodeAt(0)),
+      114,
+      33
+    );
     doc.addSection({
-      properties: {},
+      headers: {
+        default: new Header({
+          children: [new Paragraph({ children: [logo26] })]
+        })
+      },
+      footers: {
+        default: new Footer({
+          children: [
+            new Paragraph({
+              alignment: AlignmentType.CENTER,
+              children: [
+                new TextRun({
+                  children: [PageNumber.CURRENT]
+                })
+              ]
+            })
+          ]
+        })
+      },
+      properties: {
+        pageNumberStart: 1,
+        pageNumberFormatType: PageNumberFormat.DECIMAL
+      },
       children: [
         new Paragraph({
-          text: '新员工试用期考核表',
           heading: HeadingLevel.HEADING_1,
-          alignment: AlignmentType.CENTER
+          alignment: AlignmentType.CENTER,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '新员工试用期考核表',
+              color: '000000'
+            })
+          ]
         }),
         new Paragraph({
-          text: 'New Employee Probation Appraisal Form',
           heading: HeadingLevel.HEADING_2,
-          alignment: AlignmentType.CENTER
+          alignment: AlignmentType.CENTER,
+          children: [
+            new TextRun({
+              bold: true,
+              text: 'New Employee Probation Appraisal Form',
+              color: '000000'
+            })
+          ]
         }),
         new Paragraph({
           children: [new TextRun('')]
         }),
         new Paragraph({
-          text: '个人信息  Employee Information',
-          heading: HeadingLevel.HEADING_3
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '个人信息  Employee Information',
+              color: '000000'
+            })
+          ]
         }),
         new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
           rows: [
             new TableRow({
               children: employeeInfo.map(item => {
                 return new TableCell({
-                  children: [new Paragraph(item.text)]
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun({ text: item.text, bold: true })],
+                      alignment: AlignmentType.CENTER
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER
+                });
+              }),
+              tableHeader: true
+            }),
+            new TableRow({
+              children: employeeInfo.map(item => {
+                let text = employeeInformation[item.field] || '';
+                if (item.isDate && text) {
+                  text = text.substring(0, 10);
+                }
+                return new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun(text)],
+                      alignment: AlignmentType.CENTER
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER
+                });
+              })
+            }),
+            new TableRow({
+              children: employeeInfo2.map(item => {
+                return new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun({ text: item.text, bold: true })],
+                      alignment: AlignmentType.CENTER
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER
                 });
               }),
 
               tableHeader: true
             }),
             new TableRow({
-              children: employeeInfo.map(item => {
+              children: employeeInfo2.map(item => {
+                let text = employeeInformation[item.field] || '';
+                if (item.isDate && text) {
+                  text = text.substring(0, 10);
+                }
                 return new TableCell({
-                  children: [new Paragraph(employeeInformation[item.field])]
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun(text)],
+                      alignment: AlignmentType.CENTER
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER
                 });
               })
             })
@@ -1313,76 +1437,234 @@ class ProbationForms extends React.Component {
           children: [new TextRun('')]
         }),
         new Paragraph({
-          text: '试用期工作目标  Probation Objectives',
-          heading: HeadingLevel.HEADING_3
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '试用期工作目标  Probation Objectives',
+              color: '000000'
+            })
+          ]
         }),
         new Table({
+          // width: {
+          //   size: 4535,
+          //   type: WidthType.DXA
+          // },
           rows: [
             new TableRow({
               children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '序号',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 5.3,
+                    type: WidthType.PERCENTAGE
+                  }
+                }),
                 ...employeeObjectives.map(item => {
                   return new TableCell({
-                    children: [new Paragraph(item.text)]
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: item.text,
+                            bold: true
+                          })
+                        ]
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 21,
+                      type: WidthType.PERCENTAGE
+                    }
                   });
                 }),
                 new TableCell({
-                  children: [new Paragraph('三个月-目标绩效完成评估')]
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '三个月-目标绩效完成评估',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 21,
+                    type: WidthType.PERCENTAGE
+                  }
                 }),
                 new TableCell({
-                  children: [new Paragraph('三个月-评分')]
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '三个月-评分',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 5.3,
+                    type: WidthType.PERCENTAGE
+                  }
                 }),
                 new TableCell({
-                  children: [new Paragraph('五个月-目标绩效完成评估')]
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '五个月-目标绩效完成评估',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 21,
+                    type: WidthType.PERCENTAGE
+                  }
                 }),
                 new TableCell({
-                  children: [new Paragraph('五个月-评分')]
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '五个月-评分',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
+                  width: {
+                    size: 5.3,
+                    type: WidthType.PERCENTAGE
+                  }
                 })
               ],
               tableHeader: true
             }),
-            ...this.state.probationObjectives.map(objective => {
+            ...this.state.probationObjectives.map((objective, index) => {
               return new TableRow({
                 children: [
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text: index + 1 + '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 5.3,
+                      type: WidthType.PERCENTAGE
+                    }
+                  }),
                   ...employeeObjectives.map(item => {
                     return new TableCell({
-                      children: [new Paragraph(objective[item.field])]
+                      children: [
+                        new Paragraph({
+                          alignment: AlignmentType.LEFT,
+                          children: [
+                            new TextRun({
+                              text: objective[item.field] || ''
+                            })
+                          ]
+                        })
+                      ],
+                      verticalAlign: VerticalAlign.TOP,
+                      width: {
+                        size: 21,
+                        type: WidthType.PERCENTAGE
+                      }
                     });
                   }),
                   new TableCell({
                     children: [
-                      new Paragraph(
-                        (objective['619808533610'][0] &&
-                          objective['619808533610'][0].assessment) ||
-                          ''
-                      )
-                    ]
+                      new Paragraph({
+                        text:
+                          (objective['619808533610'][0] &&
+                            objective['619808533610'][0].assessment) ||
+                          '',
+                        alignment: AlignmentType.LEFT
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.TOP,
+                    width: {
+                      size: 21,
+                      type: WidthType.PERCENTAGE
+                    }
                   }),
                   new TableCell({
                     children: [
-                      new Paragraph(
-                        (objective['619808533610'][0] &&
-                          objective['619808533610'][0].score) ||
-                          ''
-                      )
-                    ]
+                      new Paragraph({
+                        text:
+                          (objective['619808533610'][0] &&
+                            objective['619808533610'][0].score) ||
+                          '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 5.3,
+                      type: WidthType.PERCENTAGE
+                    }
                   }),
                   new TableCell({
                     children: [
-                      new Paragraph(
-                        (objective['619808533610'][1] &&
-                          objective['619808533610'][1].assessment) ||
-                          ''
-                      )
-                    ]
+                      new Paragraph({
+                        text:
+                          (objective['619808533610'][1] &&
+                            objective['619808533610'][1].assessment) ||
+                          '',
+                        alignment: AlignmentType.LEFT
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.TOP,
+                    width: {
+                      size: 21,
+                      type: WidthType.PERCENTAGE
+                    }
                   }),
                   new TableCell({
                     children: [
-                      new Paragraph(
-                        (objective['619808533610'][1] &&
-                          objective['619808533610'][1].score) ||
-                          ''
-                      )
-                    ]
+                      new Paragraph({
+                        text:
+                          (objective['619808533610'][1] &&
+                            objective['619808533610'][1].score) ||
+                          '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 5.3,
+                      type: WidthType.PERCENTAGE
+                    }
                   })
                 ]
               });
@@ -1393,36 +1675,97 @@ class ProbationForms extends React.Component {
           children: [new TextRun('')]
         }),
         new Paragraph({
-          text: '入职培训（必修）  Orientation Training',
-          heading: HeadingLevel.HEADING_3
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '入职培训（必修）  Orientation Training',
+              color: '000000'
+            })
+          ]
         }),
         new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
           rows: [
             new TableRow({
-              children: employeeOrientationtraining.map(item => {
-                return new TableCell({
-                  children: [new Paragraph(item.text)],
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '序号',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
                   width: {
-                    size: '33.3%',
-                    type: WidthType.PERCENTAGE
+                    size: 480,
+                    type: WidthType.DXA
                   }
-                });
-              }),
-
+                }),
+                ...employeeOrientationtraining.map(item => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: item.text,
+                            bold: true
+                          })
+                        ]
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 2863,
+                      type: WidthType.DXA
+                    }
+                  });
+                })
+              ],
               tableHeader: true
             }),
-            ...this.state.orientationTraining.map(objective => {
+            ...this.state.orientationTraining.map((objective, index) => {
               return new TableRow({
                 cantSplit: true,
-                children: employeeOrientationtraining.map(item => {
-                  return new TableCell({
-                    children: [new Paragraph(objective[item.field])],
+                children: [
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text: index + 1 + '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
                     width: {
-                      size: '33.3%',
-                      type: WidthType.PERCENTAGE
+                      size: 480,
+                      type: WidthType.DXA
                     }
-                  });
-                })
+                  }),
+                  ...employeeOrientationtraining.map(item => {
+                    return new TableCell({
+                      children: [
+                        new Paragraph({
+                          text: objective[item.field],
+                          alignment: AlignmentType.CENTER
+                        })
+                      ],
+                      width: {
+                        size: 2863,
+                        type: WidthType.DXA
+                      },
+                      verticalAlign: VerticalAlign.CENTER
+                    });
+                  })
+                ]
               });
             })
           ]
@@ -1431,39 +1774,101 @@ class ProbationForms extends React.Component {
           children: [new TextRun('')]
         }),
         new Paragraph({
-          text: '内训课程  Internal Training',
-          heading: HeadingLevel.HEADING_3
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '内训课程  Internal Training',
+              color: '000000'
+            })
+          ]
         }),
         new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
           rows: [
             new TableRow({
-              children: employeeInternaltraining.map(item => {
-                return new TableCell({
-                  children: [new Paragraph(item.text)],
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '序号',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
                   width: {
-                    size: '33.3%',
-                    type: WidthType.PERCENTAGE
+                    size: 480,
+                    type: WidthType.DXA
                   }
-                });
-              }),
-
-              tableHeader: true
-            }),
-            ...this.state.internalTraining.map(objective => {
-              return new TableRow({
-                children: employeeInternaltraining.map(item => {
+                }),
+                ...employeeInternaltraining.map(item => {
                   return new TableCell({
                     children: [
-                      new Paragraph(
-                        objective[item.field] ? objective[item.field] : ''
-                      )
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: item.text,
+                            bold: true
+                          })
+                        ]
+                      })
                     ],
                     width: {
-                      size: '33.3%',
-                      type: WidthType.PERCENTAGE
+                      size: 2863,
+                      type: WidthType.DXA
                     }
                   });
                 })
+              ],
+              verticalAlign: VerticalAlign.CENTER,
+              tableHeader: true
+            }),
+            ...this.state.internalTraining.map((objective, index) => {
+              return new TableRow({
+                children: [
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text: index + 1 + '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 480,
+                      type: WidthType.DXA
+                    }
+                  }),
+                  ...employeeInternaltraining.map(item => {
+                    let text = objective[item.field] || '';
+                    if (item.isDate && text) {
+                      text = text.substring(0, 10);
+                    }
+                    return new TableCell({
+                      children: [
+                        new Paragraph({
+                          text,
+                          alignment: AlignmentType.CENTER
+                        })
+                      ],
+                      width: {
+                        size: 2863,
+                        type: WidthType.DXA
+                      },
+                      verticalAlign: VerticalAlign.CENTER
+                    });
+                  })
+                ],
+                cantSplit: true
               });
             })
           ]
@@ -1472,81 +1877,99 @@ class ProbationForms extends React.Component {
           children: [new TextRun('')]
         }),
         new Paragraph({
-          text: '在岗培训  On-the-job Training',
-          heading: HeadingLevel.HEADING_3
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '在岗培训  On-the-job Training',
+              color: '000000'
+            })
+          ]
         }),
         new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
           rows: [
             new TableRow({
-              children: employeeOnjobtraining.map(item => {
-                return new TableCell({
-                  children: [new Paragraph(item.text)],
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '序号',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  verticalAlign: VerticalAlign.CENTER,
                   width: {
-                    size: '25%',
-                    type: WidthType.PERCENTAGE
+                    size: 480,
+                    type: WidthType.DXA
                   }
-                });
-              }),
-
-              tableHeader: true
-            }),
-            ...this.state.onTheJobTraining.map(objective => {
-              return new TableRow({
-                children: employeeOnjobtraining.map(item => {
+                }),
+                ...employeeOnjobtraining.map(item => {
                   return new TableCell({
                     children: [
-                      new Paragraph(
-                        objective[item.field] ? objective[item.field] : ''
-                      )
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: item.text,
+                            bold: true
+                          })
+                        ]
+                      })
                     ],
+                    verticalAlign: VerticalAlign.CENTER,
                     width: {
-                      size: '25%',
-                      type: WidthType.PERCENTAGE
+                      size: 2147,
+                      type: WidthType.DXA
                     }
                   });
                 })
-              });
-            })
-          ]
-        }),
-        new Paragraph({
-          children: [new TextRun('')]
-        }),
-        new Paragraph({
-          text: '辅导记录  Mentorship Record',
-          heading: HeadingLevel.HEADING_3
-        }),
-        new Table({
-          rows: [
-            new TableRow({
-              children: employeeMentorshipRecord.map(item => {
-                return new TableCell({
-                  children: [new Paragraph(item.text)],
-                  width: {
-                    size: '33.3%',
-                    type: WidthType.PERCENTAGE
-                  }
-                });
-              }),
-
+              ],
               tableHeader: true
             }),
-            ...this.state.mentorshipRecord.map(objective => {
+            ...this.state.onTheJobTraining.map((objective, index) => {
               return new TableRow({
-                children: employeeMentorshipRecord.map(item => {
-                  let text = '';
-                  text = objective[item.field] ? objective[item.field] : '';
-                  if (item.text === '状态') {
-                    text = objective[item.field] === 'Y' ? '已确认' : '待确认';
-                  }
-                  return new TableCell({
-                    children: [new Paragraph(text)],
+                children: [
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text: index + 1 + '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
                     width: {
-                      size: '33.3%',
-                      type: WidthType.PERCENTAGE
+                      size: 480,
+                      type: WidthType.DXA
                     }
-                  });
-                })
+                  }),
+                  ...employeeOnjobtraining.map(item => {
+                    return new TableCell({
+                      children: [
+                        new Paragraph({
+                          text: objective[item.field]
+                            ? objective[item.field]
+                            : '',
+                          alignment: AlignmentType.CENTER
+                        })
+                      ],
+                      verticalAlign: VerticalAlign.CENTER,
+                      width: {
+                        size: 2147,
+                        type: WidthType.DXA
+                      }
+                    });
+                  })
+                ],
+                cantSplit: true
               });
             })
           ]
@@ -1555,41 +1978,259 @@ class ProbationForms extends React.Component {
           children: [new TextRun('')]
         }),
         new Paragraph({
-          text: '试用期个人小结Individual Summary',
-          heading: HeadingLevel.HEADING_3
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '辅导记录  Mentorship Record',
+              color: '000000'
+            })
+          ]
         }),
-        new Paragraph({
-          children: [new TextRun(employeeInformation.smmary || '')]
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      alignment: AlignmentType.CENTER,
+                      children: [
+                        new TextRun({
+                          text: '序号',
+                          bold: true
+                        })
+                      ]
+                    })
+                  ],
+                  width: {
+                    size: 480,
+                    type: WidthType.DXA
+                  },
+                  verticalAlign: VerticalAlign.CENTER
+                }),
+                ...employeeMentorshipRecord.map(item => {
+                  return new TableCell({
+                    children: [
+                      new Paragraph({
+                        alignment: AlignmentType.CENTER,
+                        children: [
+                          new TextRun({
+                            text: item.text,
+                            bold: true
+                          })
+                        ]
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 2863,
+                      type: WidthType.DXA
+                    }
+                  });
+                })
+              ],
+              tableHeader: true
+            }),
+            ...this.state.mentorshipRecord.map((objective, index) => {
+              return new TableRow({
+                children: [
+                  new TableCell({
+                    children: [
+                      new Paragraph({
+                        text: index + 1 + '',
+                        alignment: AlignmentType.CENTER
+                      })
+                    ],
+                    verticalAlign: VerticalAlign.CENTER,
+                    width: {
+                      size: 480,
+                      type: WidthType.DXA
+                    }
+                  }),
+                  ...employeeMentorshipRecord.map(item => {
+                    let text = '';
+                    text = objective[item.field] ? objective[item.field] : '';
+                    if (item.text === '状态') {
+                      text =
+                        objective[item.field] === 'Y' ? '已确认' : '待确认';
+                    }
+                    if (item.isDate && text) {
+                      text = text.substring(0, 10);
+                    }
+                    return new TableCell({
+                      children: [
+                        new Paragraph({ text, alignment: AlignmentType.CENTER })
+                      ],
+                      width: {
+                        size: 2863,
+                        type: WidthType.DXA
+                      },
+                      verticalAlign: VerticalAlign.CENTER
+                    });
+                  })
+                ],
+                cantSplit: true
+              });
+            })
+          ]
         }),
         new Paragraph({
           children: [new TextRun('')]
         }),
         new Paragraph({
-          text: '试用期主管评价  Director Evaluate',
-          heading: HeadingLevel.HEADING_3
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '试用期个人小结Individual Summary',
+              color: '000000'
+            })
+          ]
         }),
-        new Paragraph({
-          children: [new TextRun(employeeInformation.directorEvaluate || '')]
+
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [new TextRun(employeeInformation.smmary || '')]
+                    })
+                  ]
+                })
+              ],
+              cantSplit: true,
+              height: {
+                height: 1000
+              }
+            })
+          ]
         }),
         new Paragraph({
           children: [new TextRun('')]
         }),
         new Paragraph({
-          text: '试用期经理/总监评价  Manager Evaluate',
-          heading: HeadingLevel.HEADING_3
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '试用期主管评价  Director Evaluate',
+              color: '000000'
+            })
+          ]
         }),
-        new Paragraph({
-          children: [new TextRun(employeeInformation.ManagerEvaluate || '')]
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [
+                        new TextRun(employeeInformation.directorEvaluate || '')
+                      ]
+                    })
+                  ]
+                })
+              ],
+              cantSplit: true,
+              height: {
+                height: 1000
+              }
+            })
+          ]
         }),
         new Paragraph({
           children: [new TextRun('')]
         }),
         new Paragraph({
-          text: '试用期HR经理评价HR  Manager Evaluate',
-          heading: HeadingLevel.HEADING_3
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '试用期经理/总监评价  Manager Evaluate',
+              color: '000000'
+            })
+          ]
+        }),
+
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [
+                        new TextRun(employeeInformation.ManagerEvaluate || '')
+                      ]
+                    })
+                  ]
+                })
+              ],
+              cantSplit: true,
+              height: {
+                height: 1000
+              }
+            })
+          ]
         }),
         new Paragraph({
-          children: [new TextRun(employeeInformation.hrManagerEvaluate || '')]
+          children: [new TextRun('')]
+        }),
+        new Paragraph({
+          heading: HeadingLevel.HEADING_3,
+          children: [
+            new TextRun({
+              bold: true,
+              text: '试用期HR经理评价HR  Manager Evaluate',
+              color: '000000'
+            })
+          ]
+        }),
+
+        new Table({
+          width: {
+            size: 9070,
+            type: WidthType.DXA
+          },
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({
+                  children: [
+                    new Paragraph({
+                      children: [
+                        new TextRun(employeeInformation.hrManagerEvaluate || '')
+                      ]
+                    })
+                  ]
+                })
+              ],
+              cantSplit: true,
+              height: {
+                height: 1000
+              }
+            })
+          ]
         })
       ]
     });
@@ -1811,50 +2452,6 @@ class ProbationForms extends React.Component {
                   </React.Fragment>
                 )}
 
-              <Button
-                onClick={async () => {
-                  await function download(src, name) {
-                    if (!src) return;
-                    const a = document.createElement('a');
-                    a.setAttribute('download', name);
-                    a.href = src;
-                    a.click();
-                  };
-                  const isChrome = () => {
-                    const userAgent = navigator.userAgent.toLowerCase();
-                    return userAgent.indexOf('chrome') !== -1;
-                  };
-                  const dataURIToBlob = (dataURI, fileName, callback) => {
-                    var binStr = atob(dataURI.split(',')[1]),
-                      len = binStr.length,
-                      arr = new Uint8Array(len);
-
-                    for (var i = 0; i < len; i++) {
-                      arr[i] = binStr.charCodeAt(i);
-                    }
-
-                    callback(new Blob([arr]), fileName + '.png');
-                  };
-                  const callback = function(blob, fileName) {
-                    var a = document.createElement('a');
-                    a.setAttribute('download', fileName);
-                    a.href = URL.createObjectURL(blob);
-                    a.click();
-                  };
-                  await html2canvas(
-                    document.querySelector('#probation-forms')
-                  ).then(canvas => {
-                    const imgDataURL = canvas.toDataURL('image/png', 1.0);
-                    if (isChrome()) {
-                      dataURIToBlob(imgDataURL, '新员工试用期考核表', callback);
-                    } else {
-                      window.open(imgDataURL);
-                    }
-                  });
-                }}
-              >
-                导出PNG
-              </Button>
               <Button style={{ marginLeft: 8 }} onClick={this.exportWord}>
                 导出Word
               </Button>
