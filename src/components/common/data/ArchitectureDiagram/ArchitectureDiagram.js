@@ -2028,7 +2028,7 @@ class ArchitectureDiagram extends React.Component {
         {},
         {
           fileName: isBiandong
-            ? 'DL变动'
+            ? 'DL变动-' + moment().format('YYYY-MM-DD HH:mm')
             : 'DL入职-' + moment().format('YYYY-MM-DD HH:mm')
         },
         false
