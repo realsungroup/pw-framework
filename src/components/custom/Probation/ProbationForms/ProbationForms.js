@@ -2359,104 +2359,103 @@ class ProbationForms extends React.Component {
           </div>
         </div>
 
-        {!loading &&
-          (roleName === 'HR' || employeeInformation.regStatus !== '已转正') && (
-            <footer
-              className="probation-forms_footer"
-              style={roleName === '辅导员' ? { display: 'none' } : {}}
-            >
-              {/* 待转正状态 */}
-              {(roleName === 'HR' ||
-                employeeInformation.regStatus === '待转正') &&
-                employeeInformation.C3_622649502021 != 'Y' && (
-                  <div>
-                    <Button
-                      type="primary"
-                      style={{ marginRight: 16 }}
-                      onClick={() => {
-                        this.handleSubmit(roleName);
-                      }}
-                    >
-                      保存
-                    </Button>
-                    {roleName === 'HR' &&
-                    this.state.flagHitBack == true &&
-                    this.state.flagAlreadyHit == 0 ? (
-                      <span>
-                        <Button
-                          style={{ marginRight: '8px' }}
-                          onClick={this.agreeApply}
-                        >
-                          同意自定义辅导员
-                        </Button>
-                        <Button onClick={this.disagreeApply} type="danger">
-                          驳回自定义辅导员
-                        </Button>
-                      </span>
-                    ) : (
-                      ''
-                    )}
-                    {
-                      <span style={{ color: 'red' }}>
-                        {this.state.flagAlreadyHit == 2
-                          ? '该记录的自定义辅导员申请已经驳回'
-                          : ''}
-                      </span>
-                    }
-                  </div>
-                )}
-              {/* 角色为员工且转正申请未提交 */}
-              {roleName === '员工' &&
-                employeeInformation.regStatus === '待转正' &&
-                employeeInformation.C3_622649502021 != 'Y' && (
-                  <Popconfirm
-                    title="确认提交转正申请？"
-                    onConfirm={this.positiveApply}
+        {!loading && (
+          <footer
+            className="probation-forms_footer"
+            style={roleName === '辅导员' ? { display: 'none' } : {}}
+          >
+            {/* 待转正状态 */}
+            {(roleName === 'HR' ||
+              employeeInformation.regStatus === '待转正') &&
+              employeeInformation.C3_622649502021 != 'Y' && (
+                <div>
+                  <Button
+                    type="primary"
+                    style={{ marginRight: 16 }}
+                    onClick={() => {
+                      this.handleSubmit(roleName);
+                    }}
                   >
-                    <Button type="primary" style={{ marginRight: 16 }}>
-                      申请转正
-                    </Button>
-                  </Popconfirm>
-                )}
-              {/* 角色为员工且转正申请已经提交 */}
-              {roleName === '员工' &&
-                employeeInformation.regStatus === '待转正' &&
-                employeeInformation.C3_622649502021 == 'Y' && (
-                  <span style={{ color: 'red' }}>转正申请已经提交</span>
-                )}
-              {/* 转正中 */}
-              {employeeInformation.regStatus === '转正中' &&
-                ((roleName === '主管' &&
-                  employeeInformation.isRegular !== 'Y') ||
-                  (roleName === '经理' &&
-                    employeeInformation.isManagerRegular !== 'Y') ||
-                  (roleName === 'HR经理' &&
-                    employeeInformation.hrManagerApprove !== 'Y') ||
-                  (roleName === '总监' &&
-                    employeeInformation.driectorApprove !== 'Y')) && (
-                  <React.Fragment>
-                    <Button
-                      type="primary"
-                      style={{ marginRight: 16 }}
-                      onClick={() => this.isAgree(true)}
-                    >
-                      同意转正
-                    </Button>
-                    <Button
-                      type="danger"
-                      style={{ marginRight: 16 }}
-                      onClick={() => this.isAgree(false)}
-                    >
-                      不同意转正
-                    </Button>
-                  </React.Fragment>
-                )}
+                    保存
+                  </Button>
+                  {roleName === 'HR' &&
+                  this.state.flagHitBack == true &&
+                  this.state.flagAlreadyHit == 0 ? (
+                    <span>
+                      <Button
+                        style={{ marginRight: '8px' }}
+                        onClick={this.agreeApply}
+                      >
+                        同意自定义辅导员
+                      </Button>
+                      <Button onClick={this.disagreeApply} type="danger">
+                        驳回自定义辅导员
+                      </Button>
+                    </span>
+                  ) : (
+                    ''
+                  )}
+                  {
+                    <span style={{ color: 'red' }}>
+                      {this.state.flagAlreadyHit == 2
+                        ? '该记录的自定义辅导员申请已经驳回'
+                        : ''}
+                    </span>
+                  }
+                </div>
+              )}
+            {/* 角色为员工且转正申请未提交 */}
+            {roleName === '员工' &&
+              employeeInformation.regStatus === '待转正' &&
+              employeeInformation.C3_622649502021 != 'Y' && (
+                <Popconfirm
+                  title="确认提交转正申请？"
+                  onConfirm={this.positiveApply}
+                >
+                  <Button type="primary" style={{ marginRight: 16 }}>
+                    申请转正
+                  </Button>
+                </Popconfirm>
+              )}
+            {/* 角色为员工且转正申请已经提交 */}
+            {roleName === '员工' &&
+              employeeInformation.regStatus === '待转正' &&
+              employeeInformation.C3_622649502021 == 'Y' && (
+                <span style={{ color: 'red' }}>转正申请已经提交</span>
+              )}
+            {/* 转正中 */}
+            {employeeInformation.regStatus === '转正中' &&
+              ((roleName === '主管' && employeeInformation.isRegular !== 'Y') ||
+                (roleName === '经理' &&
+                  employeeInformation.isManagerRegular !== 'Y') ||
+                (roleName === 'HR经理' &&
+                  employeeInformation.hrManagerApprove !== 'Y') ||
+                (roleName === '总监' &&
+                  employeeInformation.driectorApprove !== 'Y')) && (
+                <React.Fragment>
+                  <Button
+                    type="primary"
+                    style={{ marginRight: 16 }}
+                    onClick={() => this.isAgree(true)}
+                  >
+                    同意转正
+                  </Button>
+                  <Button
+                    type="danger"
+                    style={{ marginRight: 16 }}
+                    onClick={() => this.isAgree(false)}
+                  >
+                    不同意转正
+                  </Button>
+                </React.Fragment>
+              )}
 
-              <Button style={{ marginLeft: 8 }} onClick={this.exportWord}>
-                导出Word
-              </Button>
-            </footer>
-          )}
+            <Button style={{ marginLeft: 8 }} onClick={this.exportWord}>
+              导出Word
+            </Button>
+          </footer>
+        )}
+
         <Modal
           title="内训课程详细"
           visible={this.state.interDetailVis}
