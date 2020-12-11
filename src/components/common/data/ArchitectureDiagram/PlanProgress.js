@@ -87,11 +87,12 @@ class PlanProgress extends React.Component {
     }
     let data = res.data;
     let errorList = [];
-    data.result.data.forEach(item => {
-      if (item.maindata.message) {
-        errorList.push(item.maindata);
-      }
-    });
+    data.result.data &&
+      data.result.data.forEach(item => {
+        if (item.maindata.message) {
+          errorList.push(item.maindata);
+        }
+      });
     if (res.IsCompleted) {
       // 当前任务已完成
       if (data.result.Error !== 0) {
