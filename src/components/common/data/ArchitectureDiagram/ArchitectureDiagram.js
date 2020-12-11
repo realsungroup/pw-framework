@@ -2346,7 +2346,9 @@ class ArchitectureDiagram extends React.Component {
               overlay={
                 <Menu>
                   <SubMenu title="入职">
-                    <Menu.Item onClick={this.handleDLRuzhi}>DL</Menu.Item>
+                    <Menu.Item onClick={() => this.handleDLRuzhi(false)}>
+                      DL
+                    </Menu.Item>
                     <Menu.Item onClick={this.handleRuzhi}>IDL</Menu.Item>
                   </SubMenu>
                   <SubMenu title="变动">
