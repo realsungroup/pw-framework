@@ -331,7 +331,6 @@ class SoleQuery extends Component {
   renderGetSingleChoice(item, index) {
     return (
       <div className="choice" key={item.question_id}>
-        1151
         <div className="query-set__questionTopic">
           <span className="questionOrder">{index + 1}.</span>{' '}
           {item.question_must === '1' ? <span className="mark">*</span> : ''}
