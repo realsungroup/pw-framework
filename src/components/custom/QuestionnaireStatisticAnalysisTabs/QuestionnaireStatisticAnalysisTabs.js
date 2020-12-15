@@ -11,7 +11,7 @@ console.log('问卷ID', qsObj);
 const residArr = [
   // {
   //   title: '选项统计',
-  //   resid: 611518608474,
+  //   resid: 661267404594,
   //   hasDepartmentFilter: false,
   //   hasLevelFilter: false
   // },

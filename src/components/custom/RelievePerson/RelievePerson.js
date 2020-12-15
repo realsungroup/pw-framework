@@ -12,9 +12,9 @@ class RelievePerson extends React.Component {
   constructor(props){
     super(props)
     this.baseURL =
-    window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03BaseURL;
+    window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03BaseURL;
     this.downloadURL =
-    window.pwConfig[process.env.NODE_ENV].customURLs.wuxiHr03DownloadBaseURL;
+    window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03DownloadBaseURL;
   }
 
   state = {
