@@ -151,7 +151,19 @@ class ProbationForms extends React.Component {
     // this.getTutorships();
     this.setState({ loading: false });
     this.getOrientationTraining(memberId, employedId);
+    // this.fetchEmployeeInternalCourses(memberId);
   }
+  fetchEmployeeInternalCourses = async memIDOrg => {
+    try {
+      const res = await http().getTable({
+        resid: 626260756738,
+        cmswhere: `C3_613941384832 = '${memIDOrg}'`
+      });
+      // res.data.length && this.setState({  });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   fetchApproveNodes = async id => {
     try {
@@ -159,7 +171,6 @@ class ProbationForms extends React.Component {
         resid: 618591268064,
         cmswhere: `C3_659451908745 = '${id}'`
       });
-      console.log(res.data);
       res.data.length && this.setState({ approveNodes: res.data });
     } catch (error) {
       console.error(error);
@@ -700,11 +711,21 @@ class ProbationForms extends React.Component {
   getOrientationTraining = async (memberId, employedId) => {
     if (memberId == '0') {
       try {
-        let res = await http().getTable({
-          resid: resid3,
-          cmswhere: `C3_625051545181 = '${employedId}'`
+        const res = await http().getTable({
+          resid: 622983009643
         });
-        this.setState({ orientationTraining: res.data });
+        const trainDate = this.state.employeeInformation.joinCompanyDate
+          ? this.state.employeeInformation.joinCompanyDate.substring(0, 10)
+          : '';
+        this.setState({
+          orientationTraining: res.data.map(item => {
+            return {
+              ...item,
+              trainDate,
+              trainer: item.trainingPerson || ''
+            };
+          })
+        });
       } catch (error) {
         message.error(error.message);
         console.log(error);
