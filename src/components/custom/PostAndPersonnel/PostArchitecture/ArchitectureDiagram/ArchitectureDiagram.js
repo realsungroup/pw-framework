@@ -1821,7 +1821,7 @@ class ArchitectureDiagram extends React.Component {
                       if (!error) {
                         await http({ baseURL: this.props.baseURL }).addRecords({
                           resid: this.props.resid,
-                          data: [{ ...value, isScrap: 'N' }]
+                          data: [{ ...value, isScrap: 'N' ,isCreated:'N'}]
                         });
                         this.closeBroModal();
                         this.handleRefresh();
