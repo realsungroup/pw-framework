@@ -24,7 +24,6 @@ import http from 'Util20/api';
 import { getItem } from 'Util20/util';
 import './ProbationForms.less';
 import debounce from 'lodash/debounce';
-import html2canvas from 'html2canvas';
 import {
   Document,
   Packer,
@@ -95,6 +94,7 @@ class ProbationForms extends React.Component {
     internalTraining: [], //内训课程
     onTheJobTraining: [], //在岗培训
     mentorshipRecord: [], //辅导记录
+    actualInternalTraining: [], //实际上过的内训课程
     addInternalCourseData: {}, //添加用到的内训课程数据
     modifyInternalCourseData: {}, //修改用到的内训课程数据
     addOnJobTrainingData: {}, //添加用到的在岗培训数据
@@ -152,6 +152,7 @@ class ProbationForms extends React.Component {
     this.setState({ loading: false });
     this.getOrientationTraining(memberId, employedId);
     // this.fetchEmployeeInternalCourses(memberId);
+    this.fetchActualInternalCourses(memberId);
   }
   fetchEmployeeInternalCourses = async memIDOrg => {
     try {
@@ -162,6 +163,18 @@ class ProbationForms extends React.Component {
       // res.data.length && this.setState({  });
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  fetchActualInternalCourses = async memberId => {
+    try {
+      const res = await http().getTable({
+        resid: '626260756738',
+        cmswhere: `C3_613941384832 = '${memberId}'`
+      });
+      this.setState({ actualInternalTraining: res.data });
+    } catch (error) {
+      message.error(error.message);
     }
   };
 
@@ -1301,8 +1314,31 @@ class ProbationForms extends React.Component {
   };
 
   exportWord = () => {
-    const { employeeInformation } = this.state;
-
+    const {
+      employeeInformation,
+      actualInternalTraining,
+      internalTraining
+    } = this.state;
+    let _internalTrainnings = [];
+    if (!actualInternalTraining.length) {
+      _internalTrainnings = [...internalTraining];
+    } else {
+      _internalTrainnings = [
+        ...actualInternalTraining.map(item => {
+          return {
+            course: item.C3_613941384592,
+            trainer: item.C3_613941386081,
+            trainDate: item.C3_615393041304 || '',
+            courseId: item.C3_614182469763
+          };
+        })
+      ];
+      internalTraining.forEach(item => {
+        if (!_internalTrainnings.find(_i => _i.courseId == item.courseId)) {
+          _internalTrainnings.push(item);
+        }
+      });
+    }
     const doc = new Document({
       styles: {
         tableStyles: [
@@ -1853,7 +1889,7 @@ class ProbationForms extends React.Component {
               verticalAlign: VerticalAlign.CENTER,
               tableHeader: true
             }),
-            ...this.state.internalTraining.map((objective, index) => {
+            ..._internalTrainnings.map((objective, index) => {
               return new TableRow({
                 children: [
                   new TableCell({
