@@ -77,8 +77,8 @@ class BuildApprovlForm extends React.Component {
       showData,
       isControl
     } = this.props.toFormMsg;
-    console.log('toFormMsg', this.props.toFormMsg);
-    console.log('state', this.state);
+    // console.log('toFormMsg', this.props.toFormMsg);
+    // console.log('state', this.state);
     return (
       <Modal
         title="施工申请"
@@ -135,6 +135,36 @@ class BuildApprovlForm extends React.Component {
                     {getFieldDecorator('C3_605703793342', {
                       initialValue: this.props.toFormMsg.approvalPeopleList[0]
                         .C3_227212499515,
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入该信息'
+                        }
+                      ]
+                    })(<Input autoComplete="off" />)}
+                  </th>
+                </tr>
+                <tr>
+                  <th colSpan="2">
+                    <label>来访单位</label>
+                  </th>
+                  <th colSpan="2">
+                    {getFieldDecorator('C3_605703828345', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入该信息'
+                        }
+                      ]
+                    })(<Input autoComplete="off" />)}
+                  </th>
+                  <th colSpan="2">
+                    <label>来访事由</label>
+                  </th>
+                  <th colSpan="3">
+                    {getFieldDecorator('C3_605703896083', {
+                      initialValue: '',
                       rules: [
                         {
                           required: true,

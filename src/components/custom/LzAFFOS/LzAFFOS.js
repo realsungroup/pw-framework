@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import http from '../../../util20/api';
 import LzAFFOSPeopleList from './LzAFFOSPeopleList';
 import BuildApprovlForm from './BuildApprovalForm';
+import DeliverApprovalForm from './DeliverApprovalForm';
+import DeliverPeopleList from './DeliverPeopleList';
 import {
   message,
   Tabs,
@@ -31,7 +33,6 @@ import {
   history,
   MyVisitor
 } from './config';
-import DeliverApprovalForm from './DeliverApprovalForm';
 
 const TabPane = Tabs.TabPane;
 const { RangePicker } = DatePicker;
@@ -65,15 +66,13 @@ export default class LzAFFOS extends React.Component {
     this.state = {
       abnormalNum: 0,
       activeKey: '审批中',
-<<<<<<< Updated upstream
       addWorkerVisible: false,
-      selectTypeVisible: false
-=======
+      selectTypeVisible: false,
       showModalJungleBuild: false, //选择是否长期施工人员模态框
       isBuilder: true, //是否是施工人员
       isLongBuilder: false, //是否长期施工人员
-      showBuilderModal: false, //施工申请表单模态框
-      showPeopleListModal: false, //打开人员清单模态框
+      showBuilderModal: false, //控制施工人员信息填写表单模态框
+      showPeopleListModal: false, //控制施工人员编辑人员清单模态框
       isPrint: true, //是否打印
       showLongApprovalModal: false, //长期施工审批流确认模态框
       showApprovalModal: false, //临时施工审批流确认模态框
@@ -82,6 +81,11 @@ export default class LzAFFOS extends React.Component {
       isControl: false, //是否经过管控区域
       forShowData: false, //用来展示的数据
       showDeliverApprovalModal: false, //控制送货人员信息填写表单模态框
+      showDeliverPeopleListModal: false, //控制送货人员编辑人员清单模态框
+      deliverList: [], //送货人员清单
+      isLongDeliver: false, //是否长期送货人员
+      showJungleLongDeliverModal: false, //展示判定长期送货人员模态框
+      deliverTime: '', //长期送过货时间
       approvalPeopleList: [
         {
           C3_227212499515: '',
@@ -146,7 +150,6 @@ export default class LzAFFOS extends React.Component {
       ], //审批人清单
       changeApproveModal: false, //选择审批人模态框
       selectApprovalKey: 0 //选择审批人的序号
->>>>>>> Stashed changes
     };
     this.abnormalRef = React.createRef();
     this.inApplicationRef = React.createRef();
@@ -217,6 +220,7 @@ export default class LzAFFOS extends React.Component {
       return err.message;
     }
     console.log(res2);
+
     this.tableDataRef.handleRefresh();
     this.setState({ activeKey: '审批中' });
   };
@@ -230,7 +234,7 @@ export default class LzAFFOS extends React.Component {
     console.log(result, msg);
   };
 
-  //获取申请表单数据
+  //获取施工申请表单数据
   getValues = (result, values) => {
     this.setState({
       value: values
@@ -238,6 +242,16 @@ export default class LzAFFOS extends React.Component {
     console.log('触发获取values');
     // console.log('父result', result, '父state', this.state.value);
     console.log('this.state.value:', this.state.value);
+  };
+  //获取送货申请表单数据
+  getValuesDeliver = async (result, values) => {
+    await this.setState({
+      value: values
+    });
+    console.log('触发获取values');
+    // console.log('父result', result, '父state', this.state.value);
+    console.log('this.state.value:', this.state.value);
+    this.submitAllDeliverData();
   };
 
   //打开长期施工审批确认模态框
@@ -327,15 +341,15 @@ export default class LzAFFOS extends React.Component {
   changeAppMem = v => {
     console.log(this.state.selectApprovalKey, v, this.state.approvalPeopleList);
     var obj = this.state.approvalPeopleList;
-    obj[this.state.selectApprovalKey].C3_227212499515 = v.C3_227212499515;
-    obj[this.state.selectApprovalKey].C3_605717998409 = v.C3_227192484125;
-    obj[this.state.selectApprovalKey].C3_605718032582 = v.C3_305737857578;
+    obj[this.state.selectApprovalKey].C3_227212499515 = v.C3_227212499515; //所属部门
+    obj[this.state.selectApprovalKey].C3_605717998409 = v.C3_227192484125; //姓名
+    obj[this.state.selectApprovalKey].C3_605718032582 = v.C3_305737857578; //人员编号
     obj[this.state.selectApprovalKey].C3_607445036471 =
-      this.state.selectApprovalKey + 1;
+      this.state.selectApprovalKey + 1; //序号
     obj[
       this.state.selectApprovalKey
-    ].C3_607445037719 = this.state.selectApprovalKey;
-    obj[this.state.selectApprovalKey].num = v.C3_227192472953;
+    ].C3_607445037719 = this.state.selectApprovalKey; //上级序号
+    obj[this.state.selectApprovalKey].num = v.C3_227192472953; //工号
     obj[this.state.selectApprovalKey].C3_607445040215 = v.C3_227192496109;
     switch (this.state.selectApprovalKey) {
       case 0:
@@ -365,9 +379,9 @@ export default class LzAFFOS extends React.Component {
         break;
     }
     this.setState({ approvalPeopleList: obj, changeApproveModal: false });
-    console.log(this.state.approvalPeopleList);
-    console.log('this.state.dataSource:', this.state.dataSource);
-    console.log('this.state.value:', this.state.value);
+    // console.log(this.state.approvalPeopleList);
+    // console.log('this.state.dataSource:', this.state.dataSource);
+    // console.log('this.state.value:', this.state.value);
   };
 
   submitAllData = async () => {
@@ -380,7 +394,20 @@ export default class LzAFFOS extends React.Component {
     const isApply = ({ C3_607445035535 }) => C3_607445035535 !== '申请人';
     const newAppList1 = this.state.approvalPeopleList.filter(isEmpty);
     const newAppList = newAppList1.filter(isApply);
-    newAppList.map((item, index) => {
+    //审批表需要额外添加数据
+
+    const extra = {};
+    extra.maxProcess = newAppList.length; //最大审批节点
+    extra.C3_605703779087 = this.state.value.C3_605703779087; //申请人姓名
+    extra.C3_605703754022 = this.state.value.C3_605703754022; //申请人工号
+    extra.C3_605703913037 = '施工人员'; //访客类型
+    extra.C3_605703828345 = this.state.value.C3_605703828345; //来访单位？？
+    extra.C3_605703896083 = this.state.value.C3_605703896083; //来访事由？？
+    extra.C3_619628041125 = this.state.dataSource.length; //来访人数
+    extra.C3_605703930741 = this.state.value.C3_605703930741; //访问区域
+    extra.C3_605703980025 = this.state.value.C3_605703980025; //有效开始日期
+    extra.C3_605703992046 = this.state.value.C3_605703980025; //有效结束日期
+    const list = newAppList.map((item, index) => {
       if (index === 0) {
         item.C3_605718009813 = 'waiting';
         item.construction = 'Y';
@@ -391,8 +418,12 @@ export default class LzAFFOS extends React.Component {
         item._state = 'added';
         item._id = index + 1;
       }
+      return {
+        ...item,
+        ...extra
+      };
     });
-    const appList = newAppList.map((item, index) => {
+    const appList = list.map((item, index) => {
       return {
         resid: '605717968873',
         maindata: item
@@ -420,7 +451,184 @@ export default class LzAFFOS extends React.Component {
         subdata: [...appList, ...subdataPeople]
       }
     ];
-    console.log('data', data);
+    console.log('施工人员data', data);
+    try {
+      res2 = await http().saveRecordAndSubTables({
+        data
+      });
+      message.info('提交成功');
+    } catch (err) {
+      console.log(err.message);
+      message.info(err.message);
+      return err.message;
+    }
+
+    console.log(res2);
+    this.setState({
+      value: {},
+      approvalPeopleList: [
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        }
+      ]
+    });
+    this.tableDataRef.handleRefresh();
+  };
+
+  //关闭送货人员信息填写表单
+  closeDeliverApprovalModal = () => {
+    this.setState({
+      showDeliverApprovalModal: false
+    });
+  };
+
+  //获取子组件的送货人员清单
+  getDelivererList = (result, msg) => {
+    this.setState({
+      deliverList: msg,
+      showDeliverPeopleListModal: false
+    });
+    // console.log(result, 'msg', msg);
+  };
+
+  //打开送货人员清单编辑页面
+  openDeliverPeopleListModal = () => {
+    this.setState({
+      showDeliverPeopleListModal: true
+    });
+  };
+
+  //提交送货人员全部信息
+  submitAllDeliverData = async () => {
+    //施工审批人空的要去除,为第一个人审批结果设为waiting，加上字段是否施工人员为Y
+    const isEmpty = ({ C3_605717998409 }) => C3_605717998409 !== '';
+    const isApply = ({ C3_607445035535 }) => C3_607445035535 !== '申请人';
+    const newAppList1 = this.state.approvalPeopleList.filter(isEmpty);
+    const newAppList = newAppList1.filter(isApply);
+    //审批表需要额外添加数据
+    console.log('是否已获取value', this.state.value);
+    const extra = {};
+    extra.maxProcess = newAppList.length; //最大审批节点
+    extra.C3_605703779087 = this.state.value.C3_605703779087; //申请人姓名
+    extra.C3_605703754022 = this.state.value.C3_605703754022; //申请人工号
+    extra.C3_605703913037 = '送货人员'; //访客类型
+    extra.C3_605703828345 = this.state.value.C3_605703828345; //来访单位？？
+    extra.C3_605703896083 = this.state.value.C3_605703896083; //来访事由？？
+    extra.C3_619628041125 = this.state.deliverList.length; //来访人数
+    extra.C3_605703930741 = this.state.value.C3_605703930741; //访问区域
+    extra.C3_605703980025 = this.state.value.C3_605703980025; //有效开始日期
+    extra.C3_605703992046 = this.state.value.C3_605703980025; //有效结束日期
+    console.log('extra', extra);
+    const list = newAppList.map((item, index) => {
+      if (index === 0) {
+        item.C3_605718009813 = 'waiting';
+        item.construction = 'Y';
+        item._state = 'added';
+        item._id = index + 1;
+      } else {
+        item.construction = 'Y';
+        item._state = 'added';
+        item._id = index + 1;
+      }
+      return {
+        ...item,
+        ...extra
+      };
+    });
+
+    const appList = list.map((item, index) => {
+      return {
+        resid: '605717968873',
+        maindata: item
+      };
+    });
+    //添加申请人员信息
+    const subdataPeople = this.state.deliverList.map((item, index) => {
+      item.longTime = this.state.isLongDeliver;
+      item._state = 'added';
+      item._id = index + 7;
+      return {
+        resid: '661445936862',
+        maindata: item
+      };
+    });
+    // 向申请中表加数据,主子表同时加
+    let res2;
+    const data = [
+      {
+        resid: '661445368965',
+        maindata: {
+          permitionDay: this.state.isLongDeliver
+            ? this.state.deliverTime === 'three'
+              ? '90'
+              : '180'
+            : '15',
+          longTime: this.state.isLongDeliver,
+          ...this.state.value,
+          _state: 'added',
+          _id: 1
+        },
+        subdata: [...appList, ...subdataPeople]
+      }
+    ];
+    console.log('送货data', data);
     try {
       res2 = await http().saveRecordAndSubTables({
         data
@@ -432,27 +640,82 @@ export default class LzAFFOS extends React.Component {
       return err.message;
     }
     console.log(res2);
+    this.setState({
+      value: {},
+      approvalPeopleList: [
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        }
+      ]
+    });
     this.tableDataRef.handleRefresh();
   };
 
-  //关闭送货人员信息填写表单
-  closeDeliverApprovalModal = () => {
-    this.setState({
-      showDeliverApprovalModal: false
-    });
-  };
-
   render() {
-<<<<<<< Updated upstream
     const {
       activeKey,
       abnormalNum,
       addWorkerVisible,
-      selectTypeVisible
+      selectTypeVisible,
+      dataSource
     } = this.state;
-=======
-    const { activeKey, abnormalNum, dataSource } = this.state;
->>>>>>> Stashed changes
     const { resids } = this.props;
 
     return (
@@ -505,19 +768,6 @@ export default class LzAFFOS extends React.Component {
                     </div>
                   )
                 }}
-<<<<<<< Updated upstream
-                actionBarExtra={({
-                  dataSource = [],
-                  selectedRowKeys = [],
-                  data = [],
-                  recordFormData,
-                  size
-                }) => {
-                  return (
-                    <Button size={size} onClick={this.toggleSelectTypeVisible}>
-                      添加施工人员
-                    </Button>
-=======
                 actionBarExtra={({}) => {
                   return (
                     <>
@@ -532,13 +782,16 @@ export default class LzAFFOS extends React.Component {
                       <Button
                         className="addButton"
                         onClick={() => {
-                          this.setState({ showDeliverApprovalModal: true });
+                          this.setState({ showJungleLongDeliverModal: true });
+                          console.log(
+                            '访客',
+                            this.state.showDeliverApprovalModal
+                          );
                         }}
                       >
                         请填写送货人员基本信息
                       </Button>
                     </>
->>>>>>> Stashed changes
                   );
                 }}
               />
@@ -546,7 +799,7 @@ export default class LzAFFOS extends React.Component {
 
             {/* 选择是否长期施工人员 */}
             <Modal
-              title="请选择施工人员"
+              title="请选择是否长期施工人员"
               visible={this.state.showModalJungleBuild}
               onOk={() => {
                 this.setState({
@@ -571,6 +824,50 @@ export default class LzAFFOS extends React.Component {
                   <Radio value={false}>否</Radio>
                 </Radio.Group>
               </div>
+            </Modal>
+
+            {/* 选择是否长期送货人员 */}
+            <Modal
+              title="请选择是否长期送货人员"
+              visible={this.state.showJungleLongDeliverModal}
+              onOk={() => {
+                this.setState({
+                  showJungleLongDeliverModal: false,
+                  showDeliverApprovalModal: true
+                });
+              }}
+              onCancel={() =>
+                this.setState({ showJungleLongDeliverModal: false })
+              }
+            >
+              <div>
+                <label className="jungle_isBuilder_label">
+                  是否长期送货人员
+                </label>
+                <Radio.Group
+                  onChange={e => {
+                    this.setState({ isLongDeliver: e.target.value });
+                  }}
+                >
+                  <Radio value={true}>是</Radio>
+                  <Radio value={false}>否</Radio>
+                </Radio.Group>
+              </div>
+              {this.state.isLongDeliver && (
+                <div>
+                  <label className="jungle_isBuilder_label">时间间隔</label>
+                  <Radio.Group
+                    onChange={e => {
+                      this.setState({ deliverTime: e.target.value });
+                      console.log('时间1', e.target.value);
+                      console.log('时间2', this.state.deliverTime);
+                    }}
+                  >
+                    <Radio value={'three'}>三个月</Radio>
+                    <Radio value={'six'}>六个月</Radio>
+                  </Radio.Group>
+                </div>
+              )}
             </Modal>
 
             {/* 填写施工人员信息表单组件 */}
@@ -598,10 +895,23 @@ export default class LzAFFOS extends React.Component {
             />
             {/* 填写送货人员信息表单组件 */}
             <DeliverApprovalForm
+              parent={this}
               toDeliverApprovalFormData={{
-                showDeliverApprovalModal: this.state.showDeliverApprovalModal
+                showDeliverApprovalModal: this.state.showDeliverApprovalModal,
+                deliverList: this.state.deliverList,
+                approvalPeopleList: this.state.approvalPeopleList,
+                isControl: this.state.isControl,
+                isLongDeliver: this.state.isLongDeliver,
+                deliverTime: this.state.deliverList
               }}
+              getValuesDeliver={this.getValuesDeliver}
               closeDeliverApprovalModal={this.closeDeliverApprovalModal}
+              changeManagerSpecial={this.changeManagerSpecial}
+              changeConductor={this.changeConductor}
+              openDeliverPeopleListModal={this.openDeliverPeopleListModal}
+              changeControl={this.changeControl}
+              changeApply={this.changeApply}
+              submitAllDeliverData={this.submitAllDeliverData}
             />
 
             {/* 施工人员编辑Modal */}
@@ -617,6 +927,21 @@ export default class LzAFFOS extends React.Component {
               footer={[]}
             >
               <LzAFFOSPeopleList parent={this} />
+            </Modal>
+
+            {/* 送货人员编辑Modal */}
+            <Modal
+              title="送货人员清单"
+              width="90%"
+              visible={this.state.showDeliverPeopleListModal}
+              onCancel={() => {
+                this.setState({
+                  showDeliverPeopleListModal: false
+                });
+              }}
+              footer={[]}
+            >
+              <DeliverPeopleList parent={this} />
             </Modal>
 
             {/* 临时施工审批流 */}
