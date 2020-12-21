@@ -1,10 +1,30 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import http from '../../../util20/api';
-import { message, Tabs, Button, Modal, Switch } from 'antd';
+import LzAFFOSPeopleList from './LzAFFOSPeopleList';
+import BuildApprovlForm from './BuildApprovalForm';
+import DeliverApprovalForm from './DeliverApprovalForm';
+import DeliverPeopleList from './DeliverPeopleList';
+import {
+  message,
+  Tabs,
+  Button,
+  Modal,
+  Switch,
+  Select,
+  Radio,
+  tr,
+  th,
+  DatePicker,
+  TimePicker,
+  Input,
+  Table,
+  Popconfirm
+} from 'antd';
 import './LzAFFOS.less';
 // import TableData from '../../../lib/unit-component/TableData';
 import { TableData } from '../../common/loadableCommon';
+import moment from 'moment';
 import {
   inApplication,
   inExaminationAndApproval,
@@ -15,6 +35,11 @@ import {
 } from './config';
 
 const TabPane = Tabs.TabPane;
+const { RangePicker } = DatePicker;
+const { Option } = Select;
+// const {format} = moment;
+
+//申请人员数据
 
 /**
  * 访客申请
@@ -42,7 +67,89 @@ export default class LzAFFOS extends React.Component {
       abnormalNum: 0,
       activeKey: '审批中',
       addWorkerVisible: false,
-      selectTypeVisible: false
+      selectTypeVisible: false,
+      showModalJungleBuild: false, //选择是否长期施工人员模态框
+      isBuilder: true, //是否是施工人员
+      isLongBuilder: false, //是否长期施工人员
+      showBuilderModal: false, //控制施工人员信息填写表单模态框
+      showPeopleListModal: false, //控制施工人员编辑人员清单模态框
+      isPrint: true, //是否打印
+      showLongApprovalModal: false, //长期施工审批流确认模态框
+      showApprovalModal: false, //临时施工审批流确认模态框
+      dataSource: [], //访客人员清单
+      value: {}, //表单数据
+      isControl: false, //是否经过管控区域
+      forShowData: false, //用来展示的数据
+      showDeliverApprovalModal: false, //控制送货人员信息填写表单模态框
+      showDeliverPeopleListModal: false, //控制送货人员编辑人员清单模态框
+      deliverList: [], //送货人员清单
+      isLongDeliver: false, //是否长期送货人员
+      showJungleLongDeliverModal: false, //展示判定长期送货人员模态框
+      deliverTime: '', //长期送过货时间
+      approvalPeopleList: [
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        }
+      ], //审批人清单
+      changeApproveModal: false, //选择审批人模态框
+      selectApprovalKey: 0 //选择审批人的序号
     };
     this.abnormalRef = React.createRef();
     this.inApplicationRef = React.createRef();
@@ -55,6 +162,7 @@ export default class LzAFFOS extends React.Component {
   handleTabsChange = activeKey => {
     this.setState({ activeKey });
   };
+
   reApply = async record => {
     console.log('当前记录', record);
     // 根据当前记录，找到与之对应的访客信息。
@@ -112,8 +220,492 @@ export default class LzAFFOS extends React.Component {
       return err.message;
     }
     console.log(res2);
+
     this.tableDataRef.handleRefresh();
     this.setState({ activeKey: '审批中' });
+  };
+
+  //获取子组件的施工人员清单
+  getBuilderList = (result, msg) => {
+    this.setState({
+      dataSource: msg,
+      showPeopleListModal: false
+    });
+    console.log(result, msg);
+  };
+
+  //获取施工申请表单数据
+  getValues = (result, values) => {
+    this.setState({
+      value: values
+    });
+    console.log('触发获取values');
+    // console.log('父result', result, '父state', this.state.value);
+    console.log('this.state.value:', this.state.value);
+  };
+  //获取送货申请表单数据
+  getValuesDeliver = async (result, values) => {
+    await this.setState({
+      value: values
+    });
+    console.log('触发获取values');
+    // console.log('父result', result, '父state', this.state.value);
+    console.log('this.state.value:', this.state.value);
+    this.submitAllDeliverData();
+  };
+
+  //打开长期施工审批确认模态框
+  openApprovalModal = () => {
+    this.setState({
+      showLongApprovalModal: true
+    });
+  };
+
+  //打开长期施工审批确认模态框
+  openShortApprovalModal = () => {
+    this.setState({
+      showApprovalModal: true
+    });
+  };
+
+  //供表单（子组件）关闭申请模态框
+  closeBuildModal = () => {
+    this.setState({
+      showBuilderModal: false
+    });
+  };
+
+  //编辑人员清单模态框
+  showPeopleList = () => {
+    this.setState({
+      showPeopleListModal: true
+    });
+  };
+
+  //更改厂务总监
+  changeConductor = () => {
+    this.setState({
+      changeApproveModal: true,
+      selectApprovalKey: 5
+    });
+  };
+
+  //更改经理
+  changeManagerSpecial = () => {
+    this.setState({
+      changeApproveModal: true,
+      selectApprovalKey: 4
+    });
+  };
+
+  //更改厂务经理
+  changeManager = () => {
+    this.setState({
+      changeApproveModal: true,
+      selectApprovalKey: 3
+    });
+  };
+
+  //更改工程师
+  changeEngineer = () => {
+    this.setState({
+      changeApproveModal: true,
+      selectApprovalKey: 2
+    });
+  };
+
+  //更改受影响部门负责人
+  changeEffect = () => {
+    this.setState({
+      changeApproveModal: true,
+      selectApprovalKey: 1
+    });
+  };
+
+  //更改申请人
+  changeApply = () => {
+    this.setState({
+      changeApproveModal: true,
+      selectApprovalKey: 0
+    });
+  };
+
+  //是否管控区域
+  changeControl = result => {
+    this.setState({
+      isControl: result
+    });
+  };
+
+  // 审批人确认时更改
+  changeAppMem = v => {
+    console.log(this.state.selectApprovalKey, v, this.state.approvalPeopleList);
+    var obj = this.state.approvalPeopleList;
+    obj[this.state.selectApprovalKey].C3_227212499515 = v.C3_227212499515; //所属部门
+    obj[this.state.selectApprovalKey].C3_605717998409 = v.C3_227192484125; //姓名
+    obj[this.state.selectApprovalKey].C3_605718032582 = v.C3_305737857578; //人员编号
+    obj[this.state.selectApprovalKey].C3_607445036471 =
+      this.state.selectApprovalKey + 1; //序号
+    obj[
+      this.state.selectApprovalKey
+    ].C3_607445037719 = this.state.selectApprovalKey; //上级序号
+    obj[this.state.selectApprovalKey].num = v.C3_227192472953; //工号
+    obj[this.state.selectApprovalKey].C3_607445040215 = v.C3_227192496109;
+    switch (this.state.selectApprovalKey) {
+      case 0:
+        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
+        obj[this.state.selectApprovalKey].C3_607445035535 = '申请人';
+        break;
+      case 1:
+        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
+        obj[this.state.selectApprovalKey].C3_607445035535 =
+          '受施工影响部门负责人';
+        break;
+      case 2:
+        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
+        obj[this.state.selectApprovalKey].C3_607445035535 = '厂务负责工程师';
+        break;
+      case 3:
+        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
+        obj[this.state.selectApprovalKey].C3_607445035535 = '厂务经理';
+        break;
+      case 4:
+        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
+        obj[this.state.selectApprovalKey].C3_607445035535 = '经理';
+        break;
+      case 5:
+        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
+        obj[this.state.selectApprovalKey].C3_607445035535 = '总监';
+        break;
+    }
+    this.setState({ approvalPeopleList: obj, changeApproveModal: false });
+    // console.log(this.state.approvalPeopleList);
+    // console.log('this.state.dataSource:', this.state.dataSource);
+    // console.log('this.state.value:', this.state.value);
+  };
+
+  submitAllData = async () => {
+    //转化时间格式，施工时段
+    const workTime1 = moment(this.state.value.workTime1).format('HH:mm');
+    const workTime2 = moment(this.state.value.workTime2).format('HH:mm');
+    this.state.value.workTime = `${workTime1}-${workTime2}`;
+    //施工审批人空的要去除,为第一个人审批结果设为waiting，加上字段是否施工人员为Y
+    const isEmpty = ({ C3_605717998409 }) => C3_605717998409 !== '';
+    const isApply = ({ C3_607445035535 }) => C3_607445035535 !== '申请人';
+    const newAppList1 = this.state.approvalPeopleList.filter(isEmpty);
+    const newAppList = newAppList1.filter(isApply);
+    //审批表需要额外添加数据
+
+    const extra = {};
+    extra.maxProcess = newAppList.length; //最大审批节点
+    extra.C3_605703779087 = this.state.value.C3_605703779087; //申请人姓名
+    extra.C3_605703754022 = this.state.value.C3_605703754022; //申请人工号
+    extra.C3_605703913037 = '施工人员'; //访客类型
+    extra.C3_605703828345 = this.state.value.C3_605703828345; //来访单位？？
+    extra.C3_605703896083 = this.state.value.C3_605703896083; //来访事由？？
+    extra.C3_619628041125 = this.state.dataSource.length; //来访人数
+    extra.C3_605703930741 = this.state.value.C3_605703930741; //访问区域
+    extra.C3_605703980025 = this.state.value.C3_605703980025; //有效开始日期
+    extra.C3_605703992046 = this.state.value.C3_605703980025; //有效结束日期
+    const list = newAppList.map((item, index) => {
+      if (index === 0) {
+        item.C3_605718009813 = 'waiting';
+        item.construction = 'Y';
+        item._state = 'added';
+        item._id = index + 1;
+      } else {
+        item.construction = 'Y';
+        item._state = 'added';
+        item._id = index + 1;
+      }
+      return {
+        ...item,
+        ...extra
+      };
+    });
+    const appList = list.map((item, index) => {
+      return {
+        resid: '605717968873',
+        maindata: item
+      };
+    });
+    //添加申请人员信息
+    const subdataPeople = this.state.dataSource.map((item, index) => {
+      item._state = 'added';
+      item._id = index + 7;
+      return {
+        resid: '605716014733',
+        maindata: item
+      };
+    });
+    // 向申请中表加数据,主子表同时加
+    let res2;
+    const data = [
+      {
+        resid: '605703697147',
+        maindata: {
+          ...this.state.value,
+          _state: 'added',
+          _id: 1
+        },
+        subdata: [...appList, ...subdataPeople]
+      }
+    ];
+    console.log('施工人员data', data);
+    try {
+      res2 = await http().saveRecordAndSubTables({
+        data
+      });
+      message.info('提交成功');
+    } catch (err) {
+      console.log(err.message);
+      message.info(err.message);
+      return err.message;
+    }
+
+    console.log(res2);
+    this.setState({
+      value: {},
+      approvalPeopleList: [
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        }
+      ]
+    });
+    this.tableDataRef.handleRefresh();
+  };
+
+  //关闭送货人员信息填写表单
+  closeDeliverApprovalModal = () => {
+    this.setState({
+      showDeliverApprovalModal: false
+    });
+  };
+
+  //获取子组件的送货人员清单
+  getDelivererList = (result, msg) => {
+    this.setState({
+      deliverList: msg,
+      showDeliverPeopleListModal: false
+    });
+    // console.log(result, 'msg', msg);
+  };
+
+  //打开送货人员清单编辑页面
+  openDeliverPeopleListModal = () => {
+    this.setState({
+      showDeliverPeopleListModal: true
+    });
+  };
+
+  //提交送货人员全部信息
+  submitAllDeliverData = async () => {
+    //施工审批人空的要去除,为第一个人审批结果设为waiting，加上字段是否施工人员为Y
+    const isEmpty = ({ C3_605717998409 }) => C3_605717998409 !== '';
+    const isApply = ({ C3_607445035535 }) => C3_607445035535 !== '申请人';
+    const newAppList1 = this.state.approvalPeopleList.filter(isEmpty);
+    const newAppList = newAppList1.filter(isApply);
+    //审批表需要额外添加数据
+    console.log('是否已获取value', this.state.value);
+    const extra = {};
+    extra.maxProcess = newAppList.length; //最大审批节点
+    extra.C3_605703779087 = this.state.value.C3_605703779087; //申请人姓名
+    extra.C3_605703754022 = this.state.value.C3_605703754022; //申请人工号
+    extra.C3_605703913037 = '送货人员'; //访客类型
+    extra.C3_605703828345 = this.state.value.C3_605703828345; //来访单位？？
+    extra.C3_605703896083 = this.state.value.C3_605703896083; //来访事由？？
+    extra.C3_619628041125 = this.state.deliverList.length; //来访人数
+    extra.C3_605703930741 = this.state.value.C3_605703930741; //访问区域
+    extra.C3_605703980025 = this.state.value.C3_605703980025; //有效开始日期
+    extra.C3_605703992046 = this.state.value.C3_605703980025; //有效结束日期
+    console.log('extra', extra);
+    const list = newAppList.map((item, index) => {
+      if (index === 0) {
+        item.C3_605718009813 = 'waiting';
+        item.construction = 'Y';
+        item._state = 'added';
+        item._id = index + 1;
+      } else {
+        item.construction = 'Y';
+        item._state = 'added';
+        item._id = index + 1;
+      }
+      return {
+        ...item,
+        ...extra
+      };
+    });
+
+    const appList = list.map((item, index) => {
+      return {
+        resid: '605717968873',
+        maindata: item
+      };
+    });
+    //添加申请人员信息
+    const subdataPeople = this.state.deliverList.map((item, index) => {
+      item.longTime = this.state.isLongDeliver;
+      item._state = 'added';
+      item._id = index + 7;
+      return {
+        resid: '661445936862',
+        maindata: item
+      };
+    });
+    // 向申请中表加数据,主子表同时加
+    let res2;
+    const data = [
+      {
+        resid: '661445368965',
+        maindata: {
+          permitionDay: this.state.isLongDeliver
+            ? this.state.deliverTime === 'three'
+              ? '90'
+              : '180'
+            : '15',
+          longTime: this.state.isLongDeliver,
+          ...this.state.value,
+          _state: 'added',
+          _id: 1
+        },
+        subdata: [...appList, ...subdataPeople]
+      }
+    ];
+    console.log('送货data', data);
+    try {
+      res2 = await http().saveRecordAndSubTables({
+        data
+      });
+      message.info('提交成功');
+    } catch (err) {
+      console.log(err.message);
+      message.info(err.message);
+      return err.message;
+    }
+    console.log(res2);
+    this.setState({
+      value: {},
+      approvalPeopleList: [
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        },
+        {
+          C3_227212499515: '',
+          C3_605717998409: '',
+          C3_605718032582: '',
+          C3_607445034147: '',
+          C3_607445035535: '',
+          C3_607445036471: '',
+          C3_607445037719: '',
+          C3_607445040215: ''
+        }
+      ]
+    });
+    this.tableDataRef.handleRefresh();
   };
 
   render() {
@@ -121,9 +713,11 @@ export default class LzAFFOS extends React.Component {
       activeKey,
       abnormalNum,
       addWorkerVisible,
-      selectTypeVisible
+      selectTypeVisible,
+      dataSource
     } = this.state;
     const { resids } = this.props;
+
     return (
       <div className="lz-affo">
         <Tabs
@@ -164,7 +758,7 @@ export default class LzAFFOS extends React.Component {
                     <div>
                       <p
                         style={{
-                          color: 'black',
+                          thor: 'black',
                           fontWeight: 'bold',
                           fontSize: '14px'
                         }}
@@ -174,21 +768,408 @@ export default class LzAFFOS extends React.Component {
                     </div>
                   )
                 }}
-                actionBarExtra={({
-                  dataSource = [],
-                  selectedRowKeys = [],
-                  data = [],
-                  recordFormData,
-                  size
-                }) => {
+                actionBarExtra={({}) => {
                   return (
-                    <Button size={size} onClick={this.toggleSelectTypeVisible}>
-                      添加施工人员
-                    </Button>
+                    <>
+                      <Button
+                        className="addButton"
+                        onClick={() => {
+                          this.setState({ showModalJungleBuild: true });
+                        }}
+                      >
+                        请填写施工访客基本信息
+                      </Button>
+                      <Button
+                        className="addButton"
+                        onClick={() => {
+                          this.setState({ showJungleLongDeliverModal: true });
+                          console.log(
+                            '访客',
+                            this.state.showDeliverApprovalModal
+                          );
+                        }}
+                      >
+                        请填写送货人员基本信息
+                      </Button>
+                    </>
                   );
                 }}
               />
             </div>
+
+            {/* 选择是否长期施工人员 */}
+            <Modal
+              title="请选择是否长期施工人员"
+              visible={this.state.showModalJungleBuild}
+              onOk={() => {
+                this.setState({
+                  showModalJungleBuild: false,
+                  showBuilderModal: true
+                });
+              }}
+              onCancel={() => this.setState({ showModalJungleBuild: false })}
+            >
+              <div>
+                <label className="jungle_isBuilder_label">
+                  是否长期施工人员
+                </label>
+                <Radio.Group
+                  onChange={e => {
+                    console.log('是否长期', e.target.value);
+                    this.setState({ isLongBuilder: e.target.value });
+                    console.log('是否长期', this.state.isLongBuilder);
+                  }}
+                >
+                  <Radio value={true}>是</Radio>
+                  <Radio value={false}>否</Radio>
+                </Radio.Group>
+              </div>
+            </Modal>
+
+            {/* 选择是否长期送货人员 */}
+            <Modal
+              title="请选择是否长期送货人员"
+              visible={this.state.showJungleLongDeliverModal}
+              onOk={() => {
+                this.setState({
+                  showJungleLongDeliverModal: false,
+                  showDeliverApprovalModal: true
+                });
+              }}
+              onCancel={() =>
+                this.setState({ showJungleLongDeliverModal: false })
+              }
+            >
+              <div>
+                <label className="jungle_isBuilder_label">
+                  是否长期送货人员
+                </label>
+                <Radio.Group
+                  onChange={e => {
+                    this.setState({ isLongDeliver: e.target.value });
+                  }}
+                >
+                  <Radio value={true}>是</Radio>
+                  <Radio value={false}>否</Radio>
+                </Radio.Group>
+              </div>
+              {this.state.isLongDeliver && (
+                <div>
+                  <label className="jungle_isBuilder_label">时间间隔</label>
+                  <Radio.Group
+                    onChange={e => {
+                      this.setState({ deliverTime: e.target.value });
+                      console.log('时间1', e.target.value);
+                      console.log('时间2', this.state.deliverTime);
+                    }}
+                  >
+                    <Radio value={'three'}>三个月</Radio>
+                    <Radio value={'six'}>六个月</Radio>
+                  </Radio.Group>
+                </div>
+              )}
+            </Modal>
+
+            {/* 填写施工人员信息表单组件 */}
+            <BuildApprovlForm
+              parent={this}
+              toFormMsg={{
+                dataSource: this.state.dataSource,
+                showBuilderModal: this.state.showBuilderModal,
+                isLongBuilder: this.state.isLongBuilder,
+                approvalPeopleList: this.state.approvalPeopleList,
+                isControl: this.state.isControl
+              }}
+              getValues={this.getValues}
+              openApprovalModal={this.openApprovalModal}
+              openShortApprovalModal={this.openShortApprovalModal}
+              closeBuildModal={this.closeBuildModal}
+              showPeopleList={this.showPeopleList}
+              changeApply={this.changeApply}
+              changeEffect={this.changeEffect}
+              changeEngineer={this.changeEngineer}
+              changeManager={this.changeManager}
+              changeConductor={this.changeConductor}
+              changeManagerSpecial={this.changeManagerSpecial}
+              changeControl={this.changeControl}
+            />
+            {/* 填写送货人员信息表单组件 */}
+            <DeliverApprovalForm
+              parent={this}
+              toDeliverApprovalFormData={{
+                showDeliverApprovalModal: this.state.showDeliverApprovalModal,
+                deliverList: this.state.deliverList,
+                approvalPeopleList: this.state.approvalPeopleList,
+                isControl: this.state.isControl,
+                isLongDeliver: this.state.isLongDeliver,
+                deliverTime: this.state.deliverList
+              }}
+              getValuesDeliver={this.getValuesDeliver}
+              closeDeliverApprovalModal={this.closeDeliverApprovalModal}
+              changeManagerSpecial={this.changeManagerSpecial}
+              changeConductor={this.changeConductor}
+              openDeliverPeopleListModal={this.openDeliverPeopleListModal}
+              changeControl={this.changeControl}
+              changeApply={this.changeApply}
+              submitAllDeliverData={this.submitAllDeliverData}
+            />
+
+            {/* 施工人员编辑Modal */}
+            <Modal
+              title="施工人员清单"
+              width="90%"
+              visible={this.state.showPeopleListModal}
+              onCancel={() => {
+                this.setState({
+                  showPeopleListModal: false
+                });
+              }}
+              footer={[]}
+            >
+              <LzAFFOSPeopleList parent={this} />
+            </Modal>
+
+            {/* 送货人员编辑Modal */}
+            <Modal
+              title="送货人员清单"
+              width="90%"
+              visible={this.state.showDeliverPeopleListModal}
+              onCancel={() => {
+                this.setState({
+                  showDeliverPeopleListModal: false
+                });
+              }}
+              footer={[]}
+            >
+              <DeliverPeopleList parent={this} />
+            </Modal>
+
+            {/* 临时施工审批流 */}
+            <Modal
+              width="600px"
+              title="审批流确认"
+              visible={
+                this.state.showApprovalModal && !this.state.isLongBuilder
+              }
+              onCancel={() => {
+                this.setState({
+                  showApprovalModal: false,
+                  showLongApprovalModal: false
+                });
+              }}
+              onOk={() => {
+                this.setState({
+                  showApprovalModal: false,
+                  showLongApprovalModal: false
+                });
+                this.submitAllData();
+              }}
+            >
+              <div className="approval_modal">
+                <label className="front_label">1.施工影响部门负责人审批</label>
+                <label min-width="120px">
+                  {this.state.approvalPeopleList[1].C3_605717998409}
+                </label>
+                <Button
+                  onClick={() => {
+                    this.changeEffect();
+                  }}
+                >
+                  查找人员
+                </Button>
+              </div>
+              <div className="approval_modal">
+                <label className="front_label">2.厂务工程师审批</label>
+                <label min-width="120px">
+                  {this.state.approvalPeopleList[2].C3_605717998409}
+                </label>
+                <Button
+                  onClick={() => {
+                    this.changeEngineer();
+                  }}
+                >
+                  查找人员
+                </Button>
+              </div>
+              <div className="approval_modal">
+                <label className="front_label">3.厂务经理审批</label>
+                <label min-width="120px">
+                  {this.state.approvalPeopleList[3].C3_605717998409}
+                </label>
+                <Button
+                  onClick={() => {
+                    this.changeManager();
+                  }}
+                >
+                  查找人员
+                </Button>
+              </div>
+              <div className="approval_modal">
+                <label className="front_label">4.经理审批</label>
+                <label min-width="120px">
+                  {this.state.approvalPeopleList[4].C3_605717998409}
+                </label>
+                <Button
+                  onClick={() => {
+                    this.changeManagerSpecial();
+                  }}
+                >
+                  查找人员
+                </Button>
+              </div>
+              {this.state.isControl && (
+                <div className="approval_modal">
+                  <label className="front_label">5.总监审批</label>
+                  <label min-width="120px">
+                    {this.state.approvalPeopleList[5].C3_605717998409}
+                  </label>
+                  <Button
+                    onClick={() => {
+                      this.changeConductor();
+                    }}
+                  >
+                    查找人员
+                  </Button>
+                </div>
+              )}
+            </Modal>
+
+            {/* 长期施工审批流确认 */}
+            <Modal
+              width="600px"
+              title="审批流确认"
+              visible={
+                this.state.showLongApprovalModal && this.state.isLongBuilder
+              }
+              onCancel={() => {
+                this.setState({
+                  showApprovalModal: false,
+                  showLongApprovalModal: false
+                });
+              }}
+              onOk={() => {
+                this.setState({
+                  showApprovalModal: false,
+                  showLongApprovalModal: false
+                });
+                this.submitAllData();
+              }}
+            >
+              <div className="approval_modal">
+                <label className="front_label">1.施工影响部门负责人审批</label>
+                <label min-width="120px">
+                  {this.state.approvalPeopleList[1].C3_605717998409}
+                </label>
+                <Button
+                  onClick={() => {
+                    this.changeEffect();
+                  }}
+                >
+                  查找人员
+                </Button>
+              </div>
+              <div className="approval_modal">
+                <label className="front_label">2.厂务工程师审批</label>
+                <label min-width="120px">
+                  {this.state.approvalPeopleList[2].C3_605717998409}
+                </label>
+                <Button
+                  onClick={() => {
+                    this.changeEngineer();
+                  }}
+                >
+                  查找人员
+                </Button>
+              </div>
+              <div className="approval_modal">
+                <label className="front_label">3.厂务经理审批</label>
+                <label min-width="120px">
+                  {this.state.approvalPeopleList[3].C3_605717998409}
+                </label>
+                <Button
+                  onClick={() => {
+                    this.changeManager();
+                  }}
+                >
+                  查找人员
+                </Button>
+              </div>
+              <div className="approval_modal">
+                <label className="front_label">4.经理审批</label>
+                <label min-width="120px">
+                  {this.state.approvalPeopleList[4].C3_605717998409}
+                </label>
+                <Button
+                  onClick={() => {
+                    this.changeManagerSpecial();
+                  }}
+                >
+                  查找人员
+                </Button>
+              </div>
+              {this.state.isControl && (
+                <div className="approval_modal">
+                  <label className="front_label">5.总监审批</label>
+                  <label min-width="120px">
+                    {this.state.approvalPeopleList[5].C3_605717998409}
+                  </label>
+                  <Button
+                    onClick={() => {
+                      this.changeConductor();
+                    }}
+                  >
+                    查找人员
+                  </Button>
+                </div>
+              )}
+            </Modal>
+
+            {/* 审批流确认时选择审批人 */}
+            <Modal
+              zIndex={4321}
+              title={'选择审批人'}
+              width={'90vw'}
+              visible={this.state.changeApproveModal}
+              footer={null}
+              onCancel={() => this.setState({ changeApproveModal: false })}
+            >
+              <div
+                style={{
+                  width: '100%',
+                  height: 'calc(80vh - 104px)',
+                  position: 'relative'
+                }}
+              >
+                <TableData
+                  resid={227186227531}
+                  hasRowView={false}
+                  subtractH={220}
+                  hasAdd={false}
+                  hasRowSelection={false}
+                  hasRowDelete={false}
+                  hasRowModify={false}
+                  hasModify={false}
+                  hasDelete={false}
+                  recordFormUseAbsolute={true}
+                  style={{ height: '100%' }}
+                  hasRowView={false}
+                  recordFormUseAbsolute={true}
+                  customRowBtns={[
+                    record => {
+                      return (
+                        <Button
+                          onClick={() => {
+                            this.changeAppMem(record);
+                          }}
+                        >
+                          选择
+                        </Button>
+                      );
+                    }
+                  ]}
+                />
+              </div>
+            </Modal>
           </TabPane>
           <TabPane tab="已审批" key="已审批">
             <div style={{ height: 'calc(100vh - 60px)' }}>
@@ -204,7 +1185,7 @@ export default class LzAFFOS extends React.Component {
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
                 {...history}
-                customRowBtns={[
+                customtrBtns={[
                   (record, btnSize) => {
                     return (
                       <Button
