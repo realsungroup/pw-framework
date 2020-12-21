@@ -48,14 +48,6 @@ const columns = [
     isSameBegin: true
   },
   {
-    name: '全勤津贴',
-    filed: 'C3_456101596314',
-    number1: '4120',
-    number2: '0015',
-    isFront: true,
-    isSameBegin: true
-  },
-  {
     name: '病假扣款比例',
     filed: 'C3_660058502793',
     number1: '25SR',
@@ -175,6 +167,8 @@ class ADPExport extends React.Component {
                   counts++;
                 }
               });
+              data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"|"${record.C3_659465238204}|"99991231|"|"|"|"|"|"|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"\n`;
+              counts++;
             }
           });
           data += `TRAIL|"${counts}`;
