@@ -40,19 +40,16 @@ class BuildApprovlForm extends React.Component {
   };
 
   //比较时间间隔是否超过15天
-  compareTime = () => {
-    const time1 = moment(this.props.form.getFieldValue('C3_605703980025')).add(
-      15,
-      'd'
-    );
-    // const time2 = moment(this.props.form.getFieldValue(C3_605703992046)).format('YYYY-MM-DD');
-    if (
-      (moment(time1).isAfter(this.props.form.getFieldValue('C3_605703992046')),
-      'day')
-    ) {
-      console.log(time1, this.props.form.getFieldValue('C3_605703992046'));
-    } else {
-      message.info('施工日期超过14天');
+  checkTime = () => {
+    if (this.props.toFormMsg.isLongBuilder) {
+      console.log('长期施工');
+      const workDate1 = this.props.form.getFieldValue('C3_605703980025');
+      const workDate2 = this.props.form.getFieldValue('C3_605703992046');
+      const workDate3 = moment(workDate1).add(15, 'd');
+      console.log('shijainjiage', workDate2, workDate3);
+      if (moment(workDate3).isBefore(workDate2, 'day')) {
+        message.info('施工时间不得超过15天');
+      }
     }
   };
 
@@ -64,6 +61,8 @@ class BuildApprovlForm extends React.Component {
       this.props.changeControl(false);
     }
   };
+
+  check = () => {};
 
   render() {
     let errors;
@@ -265,7 +264,12 @@ class BuildApprovlForm extends React.Component {
                           message: '请输入该信息'
                         }
                       ]
-                    })(<DatePicker style={{ width: '45%' }} />)}
+                    })(
+                      <DatePicker
+                        onOpenChange={this.checkTime()}
+                        style={{ width: '45%' }}
+                      />
+                    )}
                   </th>
                   <th>
                     <label>作业时段</label>

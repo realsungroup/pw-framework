@@ -231,7 +231,7 @@ export default class LzAFFOS extends React.Component {
       dataSource: msg,
       showPeopleListModal: false
     });
-    console.log(result, msg);
+    // console.log(result, msg);
   };
 
   //获取施工申请表单数据
@@ -344,11 +344,11 @@ export default class LzAFFOS extends React.Component {
     obj[this.state.selectApprovalKey].C3_227212499515 = v.C3_227212499515; //所属部门
     obj[this.state.selectApprovalKey].C3_605717998409 = v.C3_227192484125; //姓名
     obj[this.state.selectApprovalKey].C3_605718032582 = v.C3_305737857578; //人员编号
-    obj[this.state.selectApprovalKey].C3_607445036471 =
-      this.state.selectApprovalKey + 1; //序号
-    obj[
-      this.state.selectApprovalKey
-    ].C3_607445037719 = this.state.selectApprovalKey; //上级序号
+    // obj[this.state.selectApprovalKey].C3_607445036471 =
+    //   this.state.selectApprovalKey + 1; //序号
+    // obj[
+    //   this.state.selectApprovalKey
+    // ].C3_607445037719 = this.state.selectApprovalKey; //上级序号
     obj[this.state.selectApprovalKey].num = v.C3_227192472953; //工号
     obj[this.state.selectApprovalKey].C3_607445040215 = v.C3_227192496109;
     switch (this.state.selectApprovalKey) {
@@ -383,7 +383,14 @@ export default class LzAFFOS extends React.Component {
     // console.log('this.state.dataSource:', this.state.dataSource);
     // console.log('this.state.value:', this.state.value);
   };
-
+  // clickData =async () =>{
+  //   let res;
+  //   try{
+  // res = await http.
+  //   }catch(error){
+  //     console.log(error.message)
+  //   }
+  // }
   submitAllData = async () => {
     //转化时间格式，施工时段
     const workTime1 = moment(this.state.value.workTime1).format('HH:mm');
@@ -411,10 +418,14 @@ export default class LzAFFOS extends React.Component {
       if (index === 0) {
         item.C3_605718009813 = 'waiting';
         item.construction = 'Y';
+        item.C3_607445036471 = index + 1;
+        item.C3_607445037719 = index;
         item._state = 'added';
         item._id = index + 1;
       } else {
         item.construction = 'Y';
+        item.C3_607445036471 = index + 1;
+        item.C3_607445037719 = index;
         item._state = 'added';
         item._id = index + 1;
       }
@@ -445,6 +456,7 @@ export default class LzAFFOS extends React.Component {
         resid: '605703697147',
         maindata: {
           ...this.state.value,
+          C3_605703913037: '施工人员',
           _state: 'added',
           _id: 1
         },
@@ -580,10 +592,14 @@ export default class LzAFFOS extends React.Component {
       if (index === 0) {
         item.C3_605718009813 = 'waiting';
         item.construction = 'Y';
+        item.C3_607445036471 = index + 1;
+        item.C3_607445037719 = index;
         item._state = 'added';
         item._id = index + 1;
       } else {
         item.construction = 'Y';
+        item.C3_607445036471 = index + 1;
+        item.C3_607445037719 = index;
         item._state = 'added';
         item._id = index + 1;
       }
@@ -621,6 +637,7 @@ export default class LzAFFOS extends React.Component {
               : '180'
             : '15',
           longTime: this.state.isLongDeliver,
+          C3_605703913037: '送货人员',
           ...this.state.value,
           _state: 'added',
           _id: 1
@@ -815,9 +832,8 @@ export default class LzAFFOS extends React.Component {
                 </label>
                 <Radio.Group
                   onChange={e => {
-                    console.log('是否长期', e.target.value);
+                    console.log('是否长期施工人员', e.target.value);
                     this.setState({ isLongBuilder: e.target.value });
-                    console.log('是否长期', this.state.isLongBuilder);
                   }}
                 >
                   <Radio value={true}>是</Radio>
@@ -902,7 +918,7 @@ export default class LzAFFOS extends React.Component {
                 approvalPeopleList: this.state.approvalPeopleList,
                 isControl: this.state.isControl,
                 isLongDeliver: this.state.isLongDeliver,
-                deliverTime: this.state.deliverList
+                deliverTime: this.state.deliverTime
               }}
               getValuesDeliver={this.getValuesDeliver}
               closeDeliverApprovalModal={this.closeDeliverApprovalModal}
