@@ -159,6 +159,31 @@ export default class LzApproval extends React.Component {
   //审批施工人员申请
   approveBuilder = async result => {
     console.log(result);
+    let apprecid;
+    try {
+      apprecid = await http().getTable({
+        resid: '605717968873',
+        cmswhere: `C3_605718009813 = 'waiting' and C3_605717990563 = '${this.state.record.C3_605718092628}'`
+      });
+      console.log('recid', apprecid);
+    } catch (error) {
+      message.error(error.message);
+    }
+    let finalRes;
+
+    try {
+      finalRes = await http().modifyRecords({
+        resid: '605717968873',
+        data: [
+          {
+            REC_ID: apprecid,
+            C3_605718009813: result
+          }
+        ]
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
     // //获取该申请的审批信息
     // let oldApprovalData;
     // try {
@@ -275,10 +300,10 @@ export default class LzApproval extends React.Component {
                 });
               }}
               footer={[
-                <Button type="primary" onClick={this.approveBuilder(true)}>
+                <Button type="primary" onClick={this.approveBuilder('Y')}>
                   通过
                 </Button>,
-                <Button type="danger" onClick={this.approveBuilder(false)}>
+                <Button type="danger" onClick={this.approveBuilder('N')}>
                   拒绝
                 </Button>,
                 <Button

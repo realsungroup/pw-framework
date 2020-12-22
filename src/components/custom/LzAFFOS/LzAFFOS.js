@@ -383,14 +383,7 @@ export default class LzAFFOS extends React.Component {
     // console.log('this.state.dataSource:', this.state.dataSource);
     // console.log('this.state.value:', this.state.value);
   };
-  // clickData =async () =>{
-  //   let res;
-  //   try{
-  // res = await http.
-  //   }catch(error){
-  //     console.log(error.message)
-  //   }
-  // }
+
   submitAllData = async () => {
     //转化时间格式，施工时段
     const workTime1 = moment(this.state.value.workTime1).format('HH:mm');
@@ -443,7 +436,7 @@ export default class LzAFFOS extends React.Component {
     //添加申请人员信息
     const subdataPeople = this.state.dataSource.map((item, index) => {
       item._state = 'added';
-      item._id = index + 7;
+      item._id = index + 6;
       return {
         resid: '605716014733',
         maindata: item
