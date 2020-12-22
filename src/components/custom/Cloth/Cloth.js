@@ -168,7 +168,7 @@ class Cloth extends Component {
           <>
           <Button
             type="primary"
-            disabled={(this.state.data.C3_661863718947=='Y')||(this.state.currentId=='')||(!this.state.data.REC_ID)}
+            disabled={(this.state.data.C3_661863718947=='Y')||(!this.state.data.REC_ID)}
             onClick={()=>this.submit()}
           >
             确认领取
