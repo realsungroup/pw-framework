@@ -63,18 +63,28 @@ class Cloth extends Component {
 
       if(id){
       this.setState({loading:true});
-
+        let idAfter=id;
+        let n = 0;
+        let c = 0;
+        while(n<idAfter.length){
+          if(idAfter.substring(n,n+1)=='0'){
+            c++;
+            n++;
+          }else{
+            n=idAfter.length;
+          }
+        }
+        idAfter=idAfter.substring(c,idAfter.length);
         try {
           let res = await http({baseURL:this.PostArchitectureBaseURL}).getTable({
             resid: 661863546699,
-            cmswhere: `C3_661863637191 = '${id}'`
+            cmswhere: `C3_661863637191 = '${idAfter}'`
           });
           if (res.data.length) {
             this.setState({data:res.data[0]});
           }
           message.success('查询成功');
           this.setState({loading:false,currentId:''});
-  
         } catch (error) {
           message.error(error.message);
           console.log(error.message);
