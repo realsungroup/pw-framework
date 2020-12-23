@@ -169,17 +169,43 @@ class LzAFFOSPeopleList extends React.Component {
     const reader = new FileReader();
     const ctx = this;
     // this.setState({ fileInfo: info });
+    const { count, dataSource } = ctx.state;
+    const importData = [];
     reader.onload = function(e) {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
       message.success('选择文件成功');
       // 只读取 sheet1 中的 excel 数据
       ctx._sheet1 = workbook.Sheets[workbook.SheetNames[0]];
-      var sheetJson = XLSX.utils.sheet_to_csv(ctx._sheet1);
+      var sheetJson = XLSX.utils.sheet_to_json(ctx._sheet1);
       console.log(sheetJson);
-      console.log(ctx._sheet1);
+      // console.log(ctx._sheet1);
       // ctx.setState({ isSelectFile: true });
+
+      sheetJson.map((item, index) => {
+        // console.log(index, item);
+        const newInfo = {};
+        newInfo.key = count + index;
+        console.log('state', ctx.state.dataSource);
+        newInfo.C3_605716828937 = item.访客姓名;
+        newInfo.C3_605716867680 = item.登记证件类型;
+        newInfo.C3_614704116070 = item.登记证件号码;
+        newInfo.C3_606412134505 = item.访客手机号码;
+        newInfo.C3_605717318503 = item.备注;
+        importData.push(newInfo);
+        console.log('要添加的', newInfo);
+        // ctx.setState({
+        //   dataSource: [newInfo, ...dataSource],
+        //   count: count + 1
+        // });
+      });
+      console.log('import', importData);
+      this.setState({
+        dataSource: [...importData]
+      });
     };
+    console.log('外面import', importData);
+
     reader.readAsArrayBuffer(file);
     this.setState({
       showDragger: false

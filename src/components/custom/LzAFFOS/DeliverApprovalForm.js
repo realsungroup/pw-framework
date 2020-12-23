@@ -402,7 +402,7 @@ class DeliverApprovalForm extends React.Component {
                   </th>
                 </tr>
                 {deliverList.map((item, index) => {
-                  console.log(item);
+                  // console.log(item);
                   return (
                     <tr>
                       <th className="thCss">

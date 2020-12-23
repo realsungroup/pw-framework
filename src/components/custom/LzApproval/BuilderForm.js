@@ -6,7 +6,9 @@ class BuildApprovlForm extends React.Component {
   static propTypes = {};
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      app1: {}
+    };
   }
 
   render() {
@@ -18,8 +20,8 @@ class BuildApprovlForm extends React.Component {
       approvalList
     } = this.props.toBuilderFormInfo;
     const isControl = approvalInfo.C3_605703930741 === '管控区' ? true : false;
-    console.log(approvalInfo);
-
+    // console.log(approvalInfo);
+    // console.log('表单接收数据', approvalList);
     return (
       <Form>
         <div className="changeAntCss">
@@ -503,13 +505,21 @@ class BuildApprovlForm extends React.Component {
                       })(<Input disabled />)}
                     </th>
                     <th>
-                      <label></label>
+                      <label>
+                        {approvalList.length > 1
+                          ? approvalList[5].C3_605718009813
+                          : null}
+                      </label>
                     </th>
                     <th>
                       <label></label>
                     </th>
                     <th colSpan="3">
-                      <label></label>
+                      <label>
+                        {approvalList.length > 1
+                          ? approvalList[5].C3_605718014873
+                          : null}
+                      </label>
                     </th>
                   </tr>
                 </>
@@ -527,13 +537,21 @@ class BuildApprovlForm extends React.Component {
                   })(<Input disabled />)}
                 </th>
                 <th>
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[4].C3_605718009813
+                      : null}
+                  </label>
                 </th>
                 <th>
                   <label></label>
                 </th>
                 <th colSpan="3">
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[4].C3_605718014873
+                      : null}
+                  </label>
                 </th>
               </tr>
               <tr>
@@ -549,13 +567,21 @@ class BuildApprovlForm extends React.Component {
                   })(<Input disabled />)}
                 </th>
                 <th>
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[3].C3_605718009813
+                      : null}
+                  </label>
                 </th>
                 <th>
                   <label></label>
                 </th>
                 <th colSpan="3">
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[3].C3_605718014873
+                      : null}
+                  </label>
                 </th>
               </tr>
               <tr>
@@ -571,13 +597,21 @@ class BuildApprovlForm extends React.Component {
                   })(<Input disabled />)}
                 </th>
                 <th>
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[2].C3_605718009813
+                      : null}
+                  </label>
                 </th>
                 <th>
                   <label></label>
                 </th>
                 <th colSpan="3">
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[2].C3_605718014873
+                      : null}
+                  </label>
                 </th>
               </tr>
               <tr>
@@ -593,13 +627,21 @@ class BuildApprovlForm extends React.Component {
                   })(<Input disabled />)}
                 </th>
                 <th>
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[1].C3_605718009813
+                      : null}
+                  </label>
                 </th>
                 <th>
                   <label></label>
                 </th>
                 <th colSpan="3">
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[1].C3_605718014873
+                      : null}
+                  </label>
                 </th>
               </tr>
               <tr>
@@ -615,13 +657,21 @@ class BuildApprovlForm extends React.Component {
                   })(<Input disabled />)}
                 </th>
                 <th>
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[0].C3_605718009813
+                      : null}
+                  </label>
                 </th>
                 <th>
                   <label></label>
                 </th>
                 <th colSpan="3">
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[0].C3_605718014873
+                      : null}
+                  </label>
                 </th>
               </tr>
             </tbody>

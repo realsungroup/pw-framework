@@ -11,7 +11,11 @@ class DeliverApprovalForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { approvalInfo, deliverList } = this.props.toDeliverFormInfo;
+    const {
+      approvalInfo,
+      deliverList,
+      approvalList
+    } = this.props.toDeliverFormInfo;
     const isControl = approvalInfo.C3_605703930741 === '管控区' ? true : false;
     return (
       <Form>
@@ -181,7 +185,7 @@ class DeliverApprovalForm extends React.Component {
                 <th className="thCss">
                   <label>访客姓名</label>
                 </th>
-                <th className="thCss">
+                <th colSpan="2" className="thCss">
                   <label>登记证件类型</label>
                 </th>
                 <th colSpan="2" className="thCss">
@@ -190,18 +194,18 @@ class DeliverApprovalForm extends React.Component {
                 <th colSpan="2" className="thCss">
                   <label>访客手机号码</label>
                 </th>
-                <th colSpan="3" className="thCss">
+                <th colSpan="2" className="thCss">
                   <label>照片链接</label>
                 </th>
               </tr>
               {deliverList.map((item, index) => {
-                console.log(item);
+                // console.log(item);
                 return (
                   <tr>
                     <th className="thCss">
                       <label>{item.C3_605716828937}</label>
                     </th>
-                    <th className="thCss">
+                    <th colSpan="2" className="thCss">
                       <label>{item.C3_605716867680}</label>
                     </th>
                     <th colSpan="2" className="thCss">
@@ -210,7 +214,7 @@ class DeliverApprovalForm extends React.Component {
                     <th colSpan="2" className="thCss">
                       <label>{item.C3_606412134505}</label>
                     </th>
-                    <th colSpan="3" className="thCss">
+                    <th colSpan="2" className="thCss">
                       <label>{item.photo}</label>
                     </th>
                   </tr>
@@ -257,13 +261,21 @@ class DeliverApprovalForm extends React.Component {
                       })(<Input disabled autoComplete="off" />)}
                     </th>
                     <th>
-                      <label></label>
+                      <label>
+                        {approvalList.length > 1
+                          ? approvalList[5].C3_605718009813
+                          : null}
+                      </label>
                     </th>
                     <th>
                       <label></label>
                     </th>
                     <th colSpan="3">
-                      <label></label>
+                      <label>
+                        {approvalList.length > 1
+                          ? approvalList[5].C3_605718014873
+                          : null}
+                      </label>
                     </th>
                   </tr>
                 </>
@@ -281,13 +293,21 @@ class DeliverApprovalForm extends React.Component {
                   })(<Input disabled autoComplete="off" />)}
                 </th>
                 <th>
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[4].C3_605718009813
+                      : null}
+                  </label>
                 </th>
                 <th>
                   <label></label>
                 </th>
                 <th colSpan="3">
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[4].C3_605718014873
+                      : null}
+                  </label>
                 </th>
               </tr>
               <tr>
@@ -309,13 +329,21 @@ class DeliverApprovalForm extends React.Component {
                   })(<Input disabled autoComplete="off" />)}
                 </th>
                 <th>
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[0].C3_605718009813
+                      : null}
+                  </label>
                 </th>
                 <th>
                   <label></label>
                 </th>
                 <th colSpan="3">
-                  <label></label>
+                  <label>
+                    {approvalList.length > 1
+                      ? approvalList[0].C3_605718014873
+                      : null}
+                  </label>
                 </th>
               </tr>
             </tbody>
