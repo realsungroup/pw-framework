@@ -92,7 +92,9 @@ class DeliverApprovalForm extends React.Component {
                 </tr>
                 <tr>
                   <th colSpan="2">
-                    <label>申请人姓名</label>
+                    <label>
+                      申请人姓名<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_605703779087', {
@@ -115,7 +117,9 @@ class DeliverApprovalForm extends React.Component {
                     )}
                   </th>
                   <th colSpan="2">
-                    <label>申请人工号</label>
+                    <label>
+                      申请人工号<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="3">
                     {getFieldDecorator('C3_605703754022', {
@@ -132,7 +136,9 @@ class DeliverApprovalForm extends React.Component {
                 </tr>
                 <tr>
                   <th>
-                    <label>来访单位</label>
+                    <label>
+                      来访单位<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_605703828345', {
@@ -145,7 +151,9 @@ class DeliverApprovalForm extends React.Component {
                     })(<Input autoComplete="off" />)}
                   </th>
                   <th>
-                    <label>来访事由</label>
+                    <label>
+                      来访事由<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_605703896083', {
@@ -158,7 +166,9 @@ class DeliverApprovalForm extends React.Component {
                     })(<Input autoComplete="off" />)}
                   </th>
                   <th>
-                    <label>访问区域</label>
+                    <label>
+                      访问区域<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_605703930741', {
@@ -183,7 +193,9 @@ class DeliverApprovalForm extends React.Component {
                   <>
                     <tr>
                       <th colSpan="2">
-                        <label>管控区审批人</label>
+                        <label>
+                          管控区审批人<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('C3_614884016188', {
@@ -206,7 +218,9 @@ class DeliverApprovalForm extends React.Component {
                         )}
                       </th>
                       <th colSpan="2">
-                        <label>管控区审批人工号</label>
+                        <label>
+                          管控区审批人工号<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('C3_614884015488', {
@@ -221,7 +235,9 @@ class DeliverApprovalForm extends React.Component {
                         })(<Input autoComplete="off" />)}
                       </th>
                       <th colSpan="2">
-                        <label>管控区审批人编号</label>
+                        <label>
+                          管控区审批人编号<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('C3_614884015210', {
@@ -240,7 +256,9 @@ class DeliverApprovalForm extends React.Component {
                 )}
                 <tr>
                   <th colSpan="2">
-                    <label>非管控区负责人</label>
+                    <label>
+                      非管控区负责人<font color="red">*</font>
+                    </label>
                   </th>
 
                   <th>
@@ -264,7 +282,9 @@ class DeliverApprovalForm extends React.Component {
                     )}
                   </th>
                   <th colSpan="2">
-                    <label>非管控区审批人工号</label>
+                    <label>
+                      非管控区审批人工号<font color="red">*</font>
+                    </label>
                   </th>
                   <th>
                     {getFieldDecorator('C3_614883990443', {
@@ -279,7 +299,9 @@ class DeliverApprovalForm extends React.Component {
                     })(<Input autoComplete="off" />)}
                   </th>
                   <th colSpan="2">
-                    <label>非管控区审批人编号</label>
+                    <label>
+                      非管控区审批人编号<font color="red">*</font>
+                    </label>
                   </th>
                   <th>
                     {getFieldDecorator('C3_614883971652', {
@@ -296,7 +318,9 @@ class DeliverApprovalForm extends React.Component {
                 </tr>
                 <tr>
                   <th>
-                    <label>申请人手机号</label>
+                    <label>
+                      申请人手机号<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_619693496163', {
@@ -309,7 +333,9 @@ class DeliverApprovalForm extends React.Component {
                     })(<Input autoComplete="off" />)}
                   </th>
                   <th>
-                    <label>申请人分机号</label>
+                    <label>
+                      申请人分机号<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_619693518811', {
@@ -322,7 +348,9 @@ class DeliverApprovalForm extends React.Component {
                     })(<Input autoComplete="off" />)}
                   </th>
                   <th>
-                    <label>车牌号</label>
+                    <label>
+                      车牌号<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_645723637160', {
@@ -337,7 +365,9 @@ class DeliverApprovalForm extends React.Component {
                 </tr>
                 <tr>
                   <th colSpan="2">
-                    <label>有效开始时间</label>
+                    <label>
+                      有效开始时间<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="3">
                     {getFieldDecorator('C3_605703980025', {
@@ -351,7 +381,9 @@ class DeliverApprovalForm extends React.Component {
                     })(<DatePicker />)}
                   </th>
                   <th colSpan="2">
-                    <label>有效结束时间</label>
+                    <label>
+                      有效结束时间<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_605703992046', {

@@ -102,7 +102,9 @@ class BuildApprovlForm extends React.Component {
                 </tr>
                 <tr>
                   <th>
-                    <label>申请人</label>
+                    <label>
+                      申请人<font color="red">*</font>
+                    </label>
                   </th>
                   <th>
                     {getFieldDecorator('C3_605703779087', {
@@ -125,7 +127,9 @@ class BuildApprovlForm extends React.Component {
                     )}
                   </th>
                   <th colSpan="2">
-                    <label>申请人所属部门</label>
+                    <label>
+                      申请人所属部门<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="5">
                     {getFieldDecorator('C3_605703793342', {
@@ -142,7 +146,9 @@ class BuildApprovlForm extends React.Component {
                 </tr>
                 <tr>
                   <th colSpan="2">
-                    <label>来访单位</label>
+                    <label>
+                      来访单位<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_605703828345', {
@@ -156,7 +162,9 @@ class BuildApprovlForm extends React.Component {
                     })(<Input autoComplete="off" />)}
                   </th>
                   <th colSpan="2">
-                    <label>来访事由</label>
+                    <label>
+                      来访事由<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="3">
                     {getFieldDecorator('C3_605703896083', {
@@ -172,7 +180,9 @@ class BuildApprovlForm extends React.Component {
                 </tr>
                 <tr>
                   <th>
-                    <label>工程描述</label>
+                    <label>
+                      工程描述<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="8">
                     {getFieldDecorator('projectIntro', {
@@ -188,7 +198,9 @@ class BuildApprovlForm extends React.Component {
                 </tr>
                 <tr>
                   <th colSpan="2">
-                    <label>机台名称或作业地点</label>
+                    <label>
+                      机台名称或作业地点<font color="red">*</font>
+                    </label>
                   </th>
                   <th>
                     {getFieldDecorator('platformOrPlace', {
@@ -202,7 +214,9 @@ class BuildApprovlForm extends React.Component {
                     })(<Input autoComplete="off" />)}
                   </th>
                   <th colSpan="2">
-                    <label>是否为长期作业(最长十四日)</label>
+                    <label>
+                      是否为长期作业(最长十四日)<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="1">
                     {getFieldDecorator('isLong', {
@@ -240,7 +254,9 @@ class BuildApprovlForm extends React.Component {
                 </tr>
                 <tr>
                   <th colSpan="2">
-                    <label>申请作业时间</label>
+                    <label>
+                      申请作业时间<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="3">
                     {getFieldDecorator('C3_605703980025', {
@@ -269,7 +285,9 @@ class BuildApprovlForm extends React.Component {
                     )}
                   </th>
                   <th>
-                    <label>作业时段</label>
+                    <label>
+                      作业时段<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="3">
                     {getFieldDecorator('workTime1', {
@@ -303,7 +321,9 @@ class BuildApprovlForm extends React.Component {
                 </tr>
                 <tr>
                   <th colSpan="2">
-                    <label>施工管理部门</label>
+                    <label>
+                      施工管理部门<font color="red">*</font>
+                    </label>
                   </th>
                   <th>
                     {getFieldDecorator('buildArrangeDept', {
@@ -317,7 +337,9 @@ class BuildApprovlForm extends React.Component {
                     })(<Input autoComplete="off" />)}
                   </th>
                   <th colSpan="1">
-                    <label>Finisar施工/作业负责人</label>
+                    <label>
+                      Finisar施工/作业负责人<font color="red">*</font>
+                    </label>
                   </th>
                   <th>
                     {getFieldDecorator('factoryEngineer', {
@@ -340,7 +362,9 @@ class BuildApprovlForm extends React.Component {
                     )}
                   </th>
                   <th>
-                    <label>负责人电话</label>
+                    <label>
+                      负责人电话<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="3">
                     {getFieldDecorator('factoryEngineerTel', {
@@ -356,7 +380,9 @@ class BuildApprovlForm extends React.Component {
                 </tr>
                 <tr>
                   <th colSpan="2">
-                    <label>作业承包商公司名称</label>
+                    <label>
+                      作业承包商公司名称<font color="red">*</font>
+                    </label>
                   </th>
                   <th>
                     {getFieldDecorator('contractor', {
@@ -370,7 +396,9 @@ class BuildApprovlForm extends React.Component {
                     })(<Input autoComplete="off" />)}
                   </th>
                   <th colSpan="1">
-                    <label>安全管理人员姓名</label>
+                    <label>
+                      安全管理人员姓名<font color="red">*</font>
+                    </label>
                   </th>
                   <th>
                     {getFieldDecorator('securityName', {
@@ -384,7 +412,9 @@ class BuildApprovlForm extends React.Component {
                     })(<Input autoComplete="off" />)}
                   </th>
                   <th>
-                    <label>安全管理人员电话</label>
+                    <label>
+                      安全管理人员电话<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="3">
                     {getFieldDecorator('securityTel', {
@@ -400,7 +430,9 @@ class BuildApprovlForm extends React.Component {
                 </tr>
                 <tr>
                   <th>
-                    <label>访问区域</label>
+                    <label>
+                      访问区域<font color="red">*</font>
+                    </label>
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_605703930741', {
@@ -422,7 +454,9 @@ class BuildApprovlForm extends React.Component {
                     )}
                   </th>
                   <th colSpan={isControl ? '2' : '5'}>
-                    <label>非管控区负责人</label>
+                    <label>
+                      非管控区负责人<font color="red">*</font>
+                    </label>
                   </th>
                   <th>
                     {getFieldDecorator('C3_614884004893', {
@@ -447,7 +481,9 @@ class BuildApprovlForm extends React.Component {
                   {isControl && (
                     <>
                       <th colSpan="2">
-                        <label>管控区负责人</label>
+                        <label>
+                          管控区负责人<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('C3_614884016188', {
@@ -471,12 +507,17 @@ class BuildApprovlForm extends React.Component {
                   <>
                     <tr>
                       <th colSpan="9">
-                        <h3>承包商长期作业许可证</h3>
+                        <h3>
+                          承包商长期作业许可证<font color="red">*</font>
+                        </h3>
                       </th>
                     </tr>
                     <tr>
                       <th colSpan="3">
-                        <label>承包方的Finisar施工EHS培训是否完成</label>
+                        <label>
+                          承包方的Finisar施工EHS培训是否完成
+                          <font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('isTrained', {
@@ -498,6 +539,7 @@ class BuildApprovlForm extends React.Component {
                       <th colSpan="4">
                         <label>
                           承包商是否穿着[识别背心或公司制服]并备妥[施工标示板]
+                          <font color="red">*</font>
                         </label>
                       </th>
                       <th>
@@ -522,6 +564,7 @@ class BuildApprovlForm extends React.Component {
                       <th colSpan="3">
                         <label>
                           承包商作业人员是否已取得作业所需要的相关证照
+                          <font color="red">*</font>
                         </label>
                       </th>
                       <th>
@@ -544,6 +587,7 @@ class BuildApprovlForm extends React.Component {
                       <th colSpan="4">
                         <label>
                           气体钢瓶、化学品、工具箱、氩/电焊机、切割机，宽或高超过40公分之电气设施是否已标示作业厂商名称及联络人姓名及电话
+                          <font color="red">*</font>
                         </label>
                       </th>
                       <th>
@@ -566,7 +610,10 @@ class BuildApprovlForm extends React.Component {
                     </tr>
                     <tr>
                       <th colSpan="3">
-                        <label>作业过程中是否可能碰撞[消防喷淋系统]</label>
+                        <label>
+                          作业过程中是否可能碰撞[消防喷淋系统]
+                          <font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('isTall', {
@@ -586,7 +633,9 @@ class BuildApprovlForm extends React.Component {
                         )}
                       </th>
                       <th colSpan="4">
-                        <label>牵涉本作业之作业许可证</label>
+                        <label>
+                          牵涉本作业之作业许可证<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('specialLicence', {
@@ -608,7 +657,9 @@ class BuildApprovlForm extends React.Component {
                     </tr>
                     <tr>
                       <th colSpan="3">
-                        <label>是否是洁净室作业</label>
+                        <label>
+                          是否是洁净室作业<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('isClean', {
@@ -627,7 +678,10 @@ class BuildApprovlForm extends React.Component {
                         )}
                       </th>
                       <th colSpan="4">
-                        <label>承包商作业人员是否已完成[洁净室培训]</label>
+                        <label>
+                          承包商作业人员是否已完成[洁净室培训]
+                          <font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('isCleanTrained', {
@@ -642,7 +696,10 @@ class BuildApprovlForm extends React.Component {
                     </tr>
                     <tr>
                       <th colSpan="3">
-                        <label>作业过程中是否可能产生灰尘污染洁净室</label>
+                        <label>
+                          作业过程中是否可能产生灰尘污染洁净室
+                          <font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('maybePolluted', {
@@ -675,6 +732,7 @@ class BuildApprovlForm extends React.Component {
                       <th colSpan="3">
                         <label>
                           是否使用solvent（溶剂类）或可能产生异味之化学品
+                          <font color="red">*</font>
                         </label>
                       </th>
                       <th>
@@ -718,6 +776,7 @@ class BuildApprovlForm extends React.Component {
                       <th colSpan="3">
                         <label>
                           是否已向承包商作业人员进行危害告知及安全宣导
+                          <font color="red">*</font>
                         </label>
                       </th>
                       <th>
@@ -738,7 +797,9 @@ class BuildApprovlForm extends React.Component {
                         )}
                       </th>
                       <th colSpan="4">
-                        <label>承包商是否备齐“施工标示板”</label>
+                        <label>
+                          承包商是否备齐“施工标示板”<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('constructionMark', {
@@ -760,7 +821,9 @@ class BuildApprovlForm extends React.Component {
                     </tr>
                     <tr>
                       <th colSpan="3">
-                        <label>施工过程是否可能产生异味</label>
+                        <label>
+                          施工过程是否可能产生异味<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('peculiarSmell', {
@@ -780,7 +843,9 @@ class BuildApprovlForm extends React.Component {
                         )}
                       </th>
                       <th colSpan="4">
-                        <label>施工过程使用电器是否符合要求</label>
+                        <label>
+                          施工过程使用电器是否符合要求<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('electricAppliance', {
@@ -802,7 +867,9 @@ class BuildApprovlForm extends React.Component {
                     </tr>
                     <tr>
                       <th colSpan="3">
-                        <label>施工过程是否会使用化学品</label>
+                        <label>
+                          施工过程是否会使用化学品<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('useChemist2', {
@@ -822,7 +889,9 @@ class BuildApprovlForm extends React.Component {
                         )}
                       </th>
                       <th colSpan="4">
-                        <label>作业人员是否有必要的防护具</label>
+                        <label>
+                          作业人员是否有必要的防护具<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('protection', {
@@ -844,7 +913,9 @@ class BuildApprovlForm extends React.Component {
                     </tr>
                     <tr>
                       <th colSpan="3">
-                        <label>开孔作业是否有围篙和警示标志</label>
+                        <label>
+                          开孔作业是否有围篙和警示标志<font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('denfenceAndWarn', {
@@ -864,7 +935,10 @@ class BuildApprovlForm extends React.Component {
                         )}
                       </th>
                       <th colSpan="4">
-                        <label>施工器材是否会阻挡消防器材或消防通道</label>
+                        <label>
+                          施工器材是否会阻挡消防器材或消防通道
+                          <font color="red">*</font>
+                        </label>
                       </th>
                       <th>
                         {getFieldDecorator('blockFirePassage', {
