@@ -1,8 +1,19 @@
-import { Table, Input, Button, Popconfirm, Form } from 'antd';
+import {
+  Table,
+  Input,
+  Button,
+  Popconfirm,
+  Form,
+  message,
+  Upload,
+  Modal
+} from 'antd';
 import React from 'react';
 import './LzAFFOS.less';
+import XLSX from 'xlsx';
 
 const EditableContext = React.createContext();
+const Dragger = Upload.Dragger;
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -14,7 +25,8 @@ const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
   state = {
-    editing: false
+    editing: false,
+    _sheet1: {}
   };
 
   toggleEdit = () => {
@@ -93,6 +105,7 @@ class EditableCell extends React.Component {
   }
 }
 
+const noop = () => {};
 class LzAFFOSPeopleList extends React.Component {
   constructor(props) {
     super(props);
@@ -149,6 +162,55 @@ class LzAFFOSPeopleList extends React.Component {
       count: 6
     };
   }
+
+  readWorkbookFromLocalFile = info => {
+    console.log('点击导入');
+    const file = info.file.originFileObj;
+    const reader = new FileReader();
+    const ctx = this;
+    // this.setState({ fileInfo: info });
+    const { count, dataSource } = ctx.state;
+    const importData = [];
+    reader.onload = function(e) {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      message.success('选择文件成功');
+      // 只读取 sheet1 中的 excel 数据
+      ctx._sheet1 = workbook.Sheets[workbook.SheetNames[0]];
+      var sheetJson = XLSX.utils.sheet_to_json(ctx._sheet1);
+      console.log(sheetJson);
+      // console.log(ctx._sheet1);
+      // ctx.setState({ isSelectFile: true });
+
+      sheetJson.map((item, index) => {
+        // console.log(index, item);
+        const newInfo = {};
+        newInfo.key = count + index;
+        console.log('state', ctx.state.dataSource);
+        newInfo.C3_605716828937 = item.访客姓名;
+        newInfo.C3_605716867680 = item.登记证件类型;
+        newInfo.C3_614704116070 = item.登记证件号码;
+        newInfo.C3_606412134505 = item.访客手机号码;
+        newInfo.C3_605717318503 = item.备注;
+        importData.push(newInfo);
+        console.log('要添加的', newInfo);
+        // ctx.setState({
+        //   dataSource: [newInfo, ...dataSource],
+        //   count: count + 1
+        // });
+      });
+      console.log('import', importData);
+      this.setState({
+        dataSource: [...importData]
+      });
+    };
+    console.log('外面import', importData);
+
+    reader.readAsArrayBuffer(file);
+    this.setState({
+      showDragger: false
+    });
+  };
 
   //删除施工人员
   deleteBuilder = key => {
@@ -225,7 +287,34 @@ class LzAFFOSPeopleList extends React.Component {
         >
           添加
         </Button>
-        <Button type="primary">导入</Button>
+        <Button
+          type="primary"
+          onClick={() => {
+            this.setState({
+              showDragger: true
+            });
+          }}
+        >
+          导入
+        </Button>
+        <Modal
+          visible={this.state.showDragger}
+          title="导入人员清单"
+          onCancel={() => {
+            this.setState({
+              showDragger: false
+            });
+          }}
+        >
+          <Dragger
+            name="file"
+            customRequest={noop}
+            onChange={this.readWorkbookFromLocalFile}
+          >
+            <p>点击或拖拽文件到此区域</p>
+          </Dragger>
+        </Modal>
+
         <Table
           components={components}
           rowClassName={() => 'editable-row'}

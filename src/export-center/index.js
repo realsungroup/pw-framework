@@ -123,6 +123,7 @@ export { ReferenceCheck } from '../components/custom/loadableCustom';
 export { PhysicalExamination } from '../components/custom/loadableCustom';
 export { ApplyApprove } from '../components/custom/loadableCustom';
 export { CyberMoney } from '../components/custom/loadableCustom';
+export { Cloth } from '../components/custom/loadableCustom';
 export { ProjectBonus } from '../components/custom/loadableCustom';
 export { CourseMaintain } from '../components/custom/loadableCustom';
 export { TrainingOrganization } from '../components/custom/loadableCustom';

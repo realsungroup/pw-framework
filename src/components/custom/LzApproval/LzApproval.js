@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { message, Tabs } from 'antd';
+import { message, Tabs, Button, Modal } from 'antd';
 import './LzApproval.less';
 import classNames from 'classnames';
-import { TableData } from '../../common/loadableCommon'
+import http from 'Util20/api';
+import { TableData } from '../../common/loadableCommon';
 import EventEmitter from 'wolfy87-eventemitter';
+import BuilderForm from './BuilderForm';
+import DeliverForm from './DeliverForm';
 import {
   inApplication,
   applyForAbnormal,
@@ -26,7 +29,15 @@ export default class LzApproval extends React.Component {
     super(props);
     this.state = {
       abnormalNum: 0,
-      activeKey: '待审批'
+      activeKey: '待审批',
+      record: {}, //当前操作记录
+      showDeliverModal: false, //控制送货人员模态框
+      showBuilderModal: false, //控制施工人员模态框
+      deliverList: [], //送货人员清单
+      builderList: [], //施工人员清单
+      approvalList1: [], //审批流信息
+      printModal: false, //打印模态框
+      isPrint: false //是否打印
     };
     this.abnormalRef = React.createRef();
     this.inApplicationRef = React.createRef();
@@ -73,8 +84,153 @@ export default class LzApproval extends React.Component {
     this.setState({ activeKey });
   };
 
+  //根据人员类型不同，打开不同的模态框
+  showRecord = async record => {
+    // console.log('record', record);
+    if (record.C3_605703913037 === '施工人员') {
+      this.setState({ showBuilderModal: true, record: record });
+    } else if (record.C3_605703913037 === '送货人员') {
+      this.setState({ showDeliverModal: true, record: record });
+    } else {
+      message.info('当前申请为一般访客，点击行内审批或拒绝即可审批');
+    }
+    //获取人员清单
+    let peopleList;
+    try {
+      peopleList = await http().getTable({
+        resid: '605716014733',
+        cmswhere: `C3_606070812241 = '${record.C3_605718092628}'`
+      });
+      this.setState({
+        deliverList: peopleList.data,
+        builderList: peopleList.data
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+    //获取审批流信息
+    let approvalList;
+    const approvalPeopleList = [
+      {
+        C3_607445035535: '申请人',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      },
+      {
+        C3_607445035535: '受施工影响部门负责人',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      },
+      {
+        C3_607445035535: '厂务负责工程师',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      },
+      {
+        C3_607445035535: '厂务经理',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      },
+      {
+        C3_607445035535: '经理',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      },
+      {
+        C3_607445035535: '总监',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      }
+    ];
+    try {
+      approvalList = await http().getTable({
+        resid: '605717968873',
+        cmswhere: `C3_605717990563 = '${record.C3_605718092628}'`
+      });
+      this.setState({
+        approvalList: approvalList.data
+      });
+      // console.log('审批信息', approvalList.data);
+      approvalPeopleList.map((item, index) => {
+        const current = item.C3_607445035535;
+        const data = approvalList.data.filter(
+          item1 => item1.C3_607445035535 === current
+        );
+        // console.log('data', data);
+        // return {
+        //   item: { ...data }
+        // };
+        if (data.length === 1) {
+          // console.log('111');
+          // return {
+          //   item: data[0]
+          // };
+          item.C3_605718014873 = data[0].C3_605718014873;
+          item.C3_605718009813 = data[0].C3_605718009813;
+        }
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+    // console.log('approvalPeopleList', approvalPeopleList);
+    this.setState({
+      approvalList1: approvalPeopleList
+    });
+  };
+
+  //审批施工人员申请
+  approveBuilder = async result => {
+    // console.log(result);
+    let apprecid;
+    try {
+      apprecid = await http().getTable({
+        resid: '605717968873',
+        cmswhere: `C3_605718009813 = 'waiting' and C3_605717990563 = '${this.state.record.C3_605718092628}'`
+      });
+      console.log('recid', apprecid.data[0].REC_ID);
+    } catch (error) {
+      message.error(error.message);
+    }
+    let finalRes;
+    try {
+      finalRes = await http().modifyRecords({
+        resid: '605717968873',
+        data: [
+          {
+            REC_ID: apprecid.data[0].REC_ID,
+            C3_605718009813: result
+          }
+        ]
+      });
+      console.log('modify结果', result);
+      console.log(finalRes);
+      finalRes = await http().modifyRecords({
+        resid: '605717968873',
+        data: [
+          {
+            REC_ID: apprecid.data[0].REC_ID
+          }
+        ]
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+    this.tableDataRef.handleRefresh();
+    message.info('审批完成');
+  };
+
   render() {
-    const { activeKey, abnormalNum } = this.state;
+    const {
+      activeKey,
+      abnormalNum,
+      showBuilderModal,
+      showDeliverModal,
+      record,
+      approvalList1,
+      deliverList,
+      builderList,
+      isPrint
+    } = this.state;
     return (
       <div className="lz-approval">
         <Tabs
@@ -88,9 +244,153 @@ export default class LzApproval extends React.Component {
                 {...inApplication}
                 // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
                 // wrappedComponentRef={form => (this.inApplicationRef = form)}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
                 ref={this.inApplicationRef}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <Button
+                        style={{ width: '104px' }}
+                        onClick={() => {
+                          this.showRecord(record);
+                        }}
+                      >
+                        施工与送货审批
+                      </Button>
+                    );
+                  }
+                ]}
               />
             </div>
+            {/* 施工人员审批模态框 */}
+            <Modal
+              width="61%"
+              visible={showBuilderModal}
+              title="施工申请审批"
+              onCancel={() => {
+                this.setState({
+                  showBuilderModal: false
+                });
+              }}
+              footer={
+                isPrint
+                  ? [
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          console.log('开始打印');
+                          window.print();
+                        }}
+                      >
+                        打印
+                      </Button>
+                    ]
+                  : [
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          this.approveBuilder('Y');
+                          this.setState({ showBuilderModal: false });
+                        }}
+                      >
+                        通过
+                      </Button>,
+                      <Button
+                        type="danger"
+                        onClick={() => {
+                          this.approveBuilder('N');
+                          this.setState({ showBuilderModal: false });
+                        }}
+                      >
+                        拒绝
+                      </Button>,
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            showBuilderModal: false
+                          });
+                        }}
+                      >
+                        关闭
+                      </Button>
+                    ]
+              }
+            >
+              <div ref="printDeliver">
+                <BuilderForm
+                  toBuilderFormInfo={{
+                    approvalInfo: record,
+                    builderList: builderList,
+                    approvalList: approvalList1
+                  }}
+                />
+              </div>
+            </Modal>
+            {/* 送货人员审批模态框 */}
+            <Modal
+              width="61%"
+              visible={showDeliverModal}
+              title="送货申请审批"
+              onCancel={() => {
+                this.setState({
+                  showDeliverModal: false
+                });
+              }}
+              footer={
+                isPrint
+                  ? [
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          console.log('开始打印');
+                          window.print();
+                        }}
+                      >
+                        打印
+                      </Button>
+                    ]
+                  : [
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          this.approveBuilder('Y');
+                          this.setState({ showDeliverModal: false });
+                        }}
+                      >
+                        通过
+                      </Button>,
+                      <Button
+                        type="danger"
+                        onClick={() => {
+                          this.approveBuilder('N');
+                          this.setState({ showDeliverModal: false });
+                        }}
+                      >
+                        拒绝
+                      </Button>,
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            showDeliverModal: false
+                          });
+                        }}
+                      >
+                        关闭
+                      </Button>
+                    ]
+              }
+            >
+              <div ref="printBuilder">
+                <DeliverForm
+                  toDeliverFormInfo={{
+                    approvalInfo: record,
+                    deliverList: deliverList,
+                    approvalList: approvalList1
+                  }}
+                />
+              </div>
+            </Modal>
           </TabPane>
           <TabPane tab="已审批" key="已审批" forceRender={true}>
             <div style={{ height: 'calc(100vh - 60px)' }}>
@@ -100,6 +400,24 @@ export default class LzApproval extends React.Component {
                 // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
                 // wrappedComponentRef={form => (this.abnormalRef = form)}
                 ref={this.abnormalRef}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <Button
+                        style={{ width: '104px' }}
+                        onClick={() => {
+                          this.showRecord(record);
+                          this.setState({
+                            printModal: true,
+                            isPrint: true
+                          });
+                        }}
+                      >
+                        打印申请单
+                      </Button>
+                    );
+                  }
+                ]}
               />
             </div>
           </TabPane>

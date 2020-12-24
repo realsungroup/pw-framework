@@ -28,6 +28,17 @@ class DeliverApprovalForm extends React.Component {
       this.props.changeControl(false);
     }
   };
+  //检查时间间隔是否超过15天
+  checkTime = () => {
+    if (!this.props.toDeliverApprovalFormData.isLongDeliver) {
+      const workDate1 = this.props.form.getFieldValue('C3_605703980025');
+      const workDate2 = this.props.form.getFieldValue('C3_605703992046');
+      const workDate3 = moment(workDate1).add(15, 'd');
+      if (moment(workDate3).isBefore(workDate2, 'day')) {
+        message.info('送货时间不得超过15天');
+      }
+    }
+  };
 
   submit = () => {
     this.props.form.validateFields((error, value) => {
@@ -67,7 +78,6 @@ class DeliverApprovalForm extends React.Component {
         onOk={() => {
           this.submit();
           this.props.closeDeliverApprovalModal();
-
           //   this.props.openDeliverFinalApprovalModal();
         }}
       >
@@ -352,7 +362,7 @@ class DeliverApprovalForm extends React.Component {
                           message: '请输入该信息'
                         }
                       ]
-                    })(<DatePicker />)}
+                    })(<DatePicker onOpenChange={this.checkTime()} />)}
                   </th>
                 </tr>
 
@@ -392,7 +402,7 @@ class DeliverApprovalForm extends React.Component {
                   </th>
                 </tr>
                 {deliverList.map((item, index) => {
-                  console.log(item);
+                  // console.log(item);
                   return (
                     <tr>
                       <th className="thCss">

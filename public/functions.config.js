@@ -1993,6 +1993,10 @@ window[618572873186] = {
   name: 'IDPMangement',
   title: '员工个人发展管理'
 };
+window[661946957638] = {
+  name: 'Cloth',
+  title: '衣物发放'
+};
 window[618665452476] = {
   name: 'DLEmploy',
   title: '员工个人发展管理'

@@ -768,7 +768,12 @@ export const EvaluateManage = Loadable({
     return minLoading;
   }
 });
-
+export const Cloth = Loadable({
+  loader: () => import('./Cloth'),
+  loading() {
+    return minLoading;
+  }
+});
 export const WeeklySettlement = Loadable({
   loader: () => import('./WeeklySettlement'),
   loading() {
