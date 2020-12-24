@@ -118,7 +118,7 @@ class DeliverApprovalForm extends React.Component {
                     <label>申请人工号</label>
                   </th>
                   <th colSpan="3">
-                    {getFieldDecorator('C3_605703793342', {
+                    {getFieldDecorator('C3_605703754022', {
                       initialValue: this.props.toDeliverApprovalFormData
                         .approvalPeopleList[0].num,
                       rules: [

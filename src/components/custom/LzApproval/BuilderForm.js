@@ -33,21 +33,23 @@ class BuildApprovlForm extends React.Component {
                 </th>
               </tr>
               <tr>
-                <th>
+                <th colSpan="2">
                   <label>申请人</label>
                 </th>
                 <th>
-                  {getFieldDecorator('C3_605703779087', {
+                  <label>{approvalInfo.C3_605703779087}</label>
+                  {/* {getFieldDecorator('C3_605703779087', {
                     initialValue: approvalInfo.C3_605703779087
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
                 <th colSpan="2">
                   <label>申请人所属部门</label>
                 </th>
-                <th colSpan="5">
-                  {getFieldDecorator('C3_605703793342', {
+                <th colSpan="4">
+                  <label>{approvalInfo.C3_605703793342}</label>
+                  {/* {getFieldDecorator('C3_605703793342', {
                     initialValue: approvalInfo.C3_605703793342
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
               </tr>
               <tr>
@@ -55,141 +57,165 @@ class BuildApprovlForm extends React.Component {
                   <label>来访单位</label>
                 </th>
                 <th colSpan="2">
-                  {getFieldDecorator('C3_605703828345', {
+                  <label>{approvalInfo.C3_605703828345}</label>
+                  {/* {getFieldDecorator('C3_605703828345', {
                     initialValue: approvalInfo.C3_605703828345
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
                 <th colSpan="2">
                   <label>来访事由</label>
                 </th>
                 <th colSpan="3">
-                  {getFieldDecorator('C3_605703896083', {
+                  <label>{approvalInfo.C3_605703896083}</label>
+                  {/* {getFieldDecorator('C3_605703896083', {
                     initialValue: approvalInfo.C3_605703896083
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
               </tr>
               <tr>
-                <th>
+                <th colSpan="2">
                   <label>工程描述</label>
                 </th>
-                <th colSpan="8">
-                  {getFieldDecorator('projectIntro', {
+                <th colSpan="7">
+                  <label>{approvalInfo.projectIntro}</label>
+                  {/* {getFieldDecorator('projectIntro', {
                     initialValue: approvalInfo.projectIntro
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
               </tr>
               <tr>
                 <th colSpan="2">
                   <label>机台名称或作业地点</label>
                 </th>
-                <th>
-                  {getFieldDecorator('platformOrPlace', {
-                    initialValue: approvalInfo.platformOrPlace
-                  })(<Input disabled />)}
-                </th>
                 <th colSpan="2">
+                  <label>{approvalInfo.platformOrPlace}</label>
+                  {/* {getFieldDecorator('platformOrPlace', {
+                    initialValue: approvalInfo.platformOrPlace
+                  })(<Input disabled />)} */}
+                </th>
+                <th colSpan="3">
                   <label>是否为长期作业(最长十四日)</label>
                 </th>
-                <th colSpan="1">
-                  {getFieldDecorator('isLong', {
-                    initialValue: approvalInfo.isLong
-                  })(<Input disabled />)}
-                </th>
                 <th colSpan="2">
-                  <label>受施工影响部门负责人</label>
-                </th>
-                <th>
-                  {getFieldDecorator('influentedManage', {
-                    initialValue: approvalInfo.influentedManage
-                  })(<Input disabled />)}
+                  <label>{approvalInfo.isLong}</label>
+                  {/* {getFieldDecorator('isLong', {
+                    initialValue: approvalInfo.isLong
+                  })(<Input disabled />)} */}
                 </th>
               </tr>
+
               <tr>
                 <th colSpan="2">
                   <label>申请作业时间</label>
                 </th>
                 <th colSpan="3">
-                  {getFieldDecorator('C3_605703980025', {
+                  <label>
+                    {approvalInfo.C3_605703980025}~
+                    {approvalInfo.C3_605703992046}
+                  </label>
+                  {/* {getFieldDecorator('C3_605703980025', {
                     initialValue: `${approvalInfo.C3_605703980025}~${approvalInfo.C3_605703992046}`
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
-                <th>
+                <th colSpan="2">
                   <label>作业时段</label>
                 </th>
-                <th colSpan="3">
-                  {getFieldDecorator('workTime', {
+                <th colSpan="2">
+                  <label>{approvalInfo.workTime}</label>
+                  {/* {getFieldDecorator('workTime', {
                     initialValue: approvalInfo.workTime
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
               </tr>
               <tr>
                 <th colSpan="2">
                   <label>施工管理部门</label>
                 </th>
-                <th>
-                  {getFieldDecorator('buildArrangeDept', {
+                <th colSpan="2">
+                  <label>{approvalInfo.buildArrangeDept}</label>
+                  {/* {getFieldDecorator('buildArrangeDept', {
                     initialValue: approvalInfo.buildArrangeDept
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
-                <th colSpan="1">
+                <th colSpan="3">
+                  <label>受施工影响部门负责人</label>
+                </th>
+                <th colSpan="2">
+                  <label>{approvalInfo.influentedManage}</label>
+                  {/* {getFieldDecorator('influentedManage', {
+                    initialValue: approvalInfo.influentedManage
+                  })(<Input disabled />)} */}
+                </th>
+              </tr>
+              <tr>
+                <th colSpan="3">
                   <label>Finisar施工/作业负责人</label>
                 </th>
                 <th>
-                  {getFieldDecorator('factoryEngineer', {
+                  <label>{approvalInfo.factoryEngineer}</label>
+                  {/* {getFieldDecorator('factoryEngineer', {
                     initialValue: approvalInfo.factoryEngineer
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
-                <th>
+                <th colSpan="2">
                   <label>负责人电话</label>
                 </th>
                 <th colSpan="3">
-                  {getFieldDecorator('factoryEngineerTel', {
+                  <label>{approvalInfo.factoryEngineerTel}</label>
+                  {/* {getFieldDecorator('factoryEngineerTel', {
                     initialValue: approvalInfo.factoryEngineerTel
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
               </tr>
               <tr>
-                <th colSpan="2">
+                <th colSpan="3">
                   <label>作业承包商公司名称</label>
                 </th>
-                <th>
-                  {getFieldDecorator('contractor', {
+                <th colSpan="6">
+                  <label>{approvalInfo.contractor}</label>
+                  {/* {getFieldDecorator('contractor', {
                     initialValue: approvalInfo.contractor
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
-                <th colSpan="1">
+              </tr>
+              <tr>
+                <th colSpan="3">
                   <label>安全管理人员姓名</label>
                 </th>
-                <th>
-                  {getFieldDecorator('securityName', {
+                <th colSpan="1">
+                  <label>{approvalInfo.securityName}</label>
+                  {/* {getFieldDecorator('securityName', {
                     initialValue: approvalInfo.securityName
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
-                <th>
+                <th colSpan="2">
                   <label>安全管理人员电话</label>
                 </th>
                 <th colSpan="3">
-                  {getFieldDecorator('securityTel', {
+                  <label>{approvalInfo.securityTel}</label>
+                  {/* {getFieldDecorator('securityTel', {
                     initialValue: approvalInfo.securityTel
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
               </tr>
               <tr>
-                <th>
+                <th colSpan="2">
                   <label>访问区域</label>
                 </th>
-                <th colSpan="2">
-                  {getFieldDecorator('C3_605703930741', {
+                <th colSpan="1">
+                  <label>{approvalInfo.C3_605703930741}</label>
+                  {/* {getFieldDecorator('C3_605703930741', {
                     initialValue: approvalInfo.C3_605703930741
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
                 <th colSpan={isControl ? '2' : '5'}>
                   <label>非管控区负责人</label>
                 </th>
                 <th>
-                  {getFieldDecorator('C3_614884004893', {
+                  <label>{approvalInfo.C3_614884004893}</label>
+                  {/* {getFieldDecorator('C3_614884004893', {
                     initialValue: approvalInfo.C3_614884004893
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
                 {isControl && (
                   <>
@@ -197,9 +223,10 @@ class BuildApprovlForm extends React.Component {
                       <label>管控区负责人</label>
                     </th>
                     <th>
-                      {getFieldDecorator('C3_614884016188', {
+                      <label>{approvalInfo.C3_614884016188}</label>
+                      {/* {getFieldDecorator('C3_614884016188', {
                         initialValue: approvalInfo.C3_614884016188
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </>
                 )}
@@ -217,9 +244,10 @@ class BuildApprovlForm extends React.Component {
                       <label>承包方的Finisar施工EHS培训是否完成</label>
                     </th>
                     <th>
-                      {getFieldDecorator('isTrained', {
+                      <label>{approvalInfo.isTrained}</label>
+                      {/* {getFieldDecorator('isTrained', {
                         initialValue: approvalInfo.isTrained
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                     <th colSpan="4">
                       <label>
@@ -227,9 +255,10 @@ class BuildApprovlForm extends React.Component {
                       </label>
                     </th>
                     <th>
-                      {getFieldDecorator('isFormulated', {
+                      <label>{approvalInfo.isFormulated}</label>
+                      {/* {getFieldDecorator('isFormulated', {
                         initialValue: approvalInfo.isFormulated
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </tr>
                   <tr>
@@ -239,9 +268,10 @@ class BuildApprovlForm extends React.Component {
                       </label>
                     </th>
                     <th>
-                      {getFieldDecorator('isLicenced', {
+                      <label>{approvalInfo.isLicenced}</label>
+                      {/* {getFieldDecorator('isLicenced', {
                         initialValue: approvalInfo.isLicenced
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                     <th colSpan="4">
                       <label>
@@ -249,9 +279,10 @@ class BuildApprovlForm extends React.Component {
                       </label>
                     </th>
                     <th>
-                      {getFieldDecorator('isSpecialSigned', {
+                      <label>{approvalInfo.isSpecialSigned}</label>
+                      {/* {getFieldDecorator('isSpecialSigned', {
                         initialValue: approvalInfo.isSpecialSigned
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </tr>
                   <tr>
@@ -259,17 +290,19 @@ class BuildApprovlForm extends React.Component {
                       <label>作业过程中是否可能碰撞[消防喷淋系统]</label>
                     </th>
                     <th>
-                      {getFieldDecorator('isTall', {
+                      <label>{approvalInfo.isTall}</label>
+                      {/* {getFieldDecorator('isTall', {
                         initialValue: approvalInfo.isTall
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                     <th colSpan="4">
                       <label>牵涉本作业之作业许可证</label>
                     </th>
                     <th>
-                      {getFieldDecorator('specialLicence', {
+                      <label>{approvalInfo.specialLicence}</label>
+                      {/* {getFieldDecorator('specialLicence', {
                         initialValue: approvalInfo.specialLicence
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </tr>
                   <tr>
@@ -277,17 +310,19 @@ class BuildApprovlForm extends React.Component {
                       <label>是否是洁净室作业</label>
                     </th>
                     <th>
-                      {getFieldDecorator('isClean', {
+                      <label>{approvalInfo.isClean}</label>
+                      {/* {getFieldDecorator('isClean', {
                         initialValue: approvalInfo.isClean
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                     <th colSpan="4">
                       <label>承包商作业人员是否已完成[洁净室培训]</label>
                     </th>
                     <th>
-                      {getFieldDecorator('isCleanTrained', {
+                      <label>{approvalInfo.isCleanTrained}</label>
+                      {/* {getFieldDecorator('isCleanTrained', {
                         initialValue: approvalInfo.isCleanTrained
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </tr>
                   <tr>
@@ -295,9 +330,10 @@ class BuildApprovlForm extends React.Component {
                       <label>作业过程中是否可能产生灰尘污染洁净室</label>
                     </th>
                     <th>
-                      {getFieldDecorator('maybePolluted', {
+                      <label>{approvalInfo.maybePolluted}</label>
+                      {/* {getFieldDecorator('maybePolluted', {
                         initialValue: approvalInfo.maybePolluted
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                     <th colSpan="3">
                       <label>
@@ -305,9 +341,10 @@ class BuildApprovlForm extends React.Component {
                       </label>
                     </th>
                     <th colSpan="2">
-                      {getFieldDecorator('measureDefence', {
+                      <label>{approvalInfo.measureDefence}</label>
+                      {/* {getFieldDecorator('measureDefence', {
                         initialValue: approvalInfo.measureDefence
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </tr>
                   <tr>
@@ -317,9 +354,10 @@ class BuildApprovlForm extends React.Component {
                       </label>
                     </th>
                     <th>
-                      {getFieldDecorator('useChemist', {
+                      <label>{approvalInfo.useChemist}</label>
+                      {/* {getFieldDecorator('useChemist', {
                         initialValue: approvalInfo.useChemist
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                     <th colSpan="3">
                       <label>
@@ -327,9 +365,10 @@ class BuildApprovlForm extends React.Component {
                       </label>
                     </th>
                     <th colSpan="2">
-                      {getFieldDecorator('emergency', {
+                      <label>{approvalInfo.emergency}</label>
+                      {/* {getFieldDecorator('emergency', {
                         initialValue: approvalInfo.emergency
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </tr>
                 </>
@@ -349,17 +388,19 @@ class BuildApprovlForm extends React.Component {
                       </label>
                     </th>
                     <th>
-                      {getFieldDecorator('safetyPropaganda', {
+                      <label>{approvalInfo.safetyPropaganda}</label>
+                      {/* {getFieldDecorator('safetyPropaganda', {
                         initialValue: approvalInfo.safetyPropaganda
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                     <th colSpan="4">
                       <label>承包商是否备齐“施工标示板”</label>
                     </th>
                     <th>
-                      {getFieldDecorator('constructionMark', {
+                      <label>{approvalInfo.constructionMark}</label>
+                      {/* {getFieldDecorator('constructionMark', {
                         initialValue: approvalInfo.constructionMark
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </tr>
                   <tr>
@@ -367,17 +408,19 @@ class BuildApprovlForm extends React.Component {
                       <label>施工过程是否可能产生异味</label>
                     </th>
                     <th>
-                      {getFieldDecorator('peculiarSmell', {
+                      <label>{approvalInfo.peculiarSmell}</label>
+                      {/* {getFieldDecorator('peculiarSmell', {
                         initialValue: approvalInfo.peculiarSmell
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                     <th colSpan="4">
                       <label>施工过程使用电器是否符合要求</label>
                     </th>
                     <th>
-                      {getFieldDecorator('electricAppliance', {
+                      <label>{approvalInfo.electricAppliance}</label>
+                      {/* {getFieldDecorator('electricAppliance', {
                         initialValue: approvalInfo.electricAppliance
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </tr>
                   <tr>
@@ -385,17 +428,19 @@ class BuildApprovlForm extends React.Component {
                       <label>施工过程是否会使用化学品</label>
                     </th>
                     <th>
-                      {getFieldDecorator('useChemist2', {
+                      <label>{approvalInfo.useChemist2}</label>
+                      {/* {getFieldDecorator('useChemist2', {
                         initialValue: approvalInfo.useChemist2
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                     <th colSpan="4">
                       <label>作业人员是否有必要的防护具</label>
                     </th>
                     <th>
-                      {getFieldDecorator('protection', {
+                      <label>{approvalInfo.protection}</label>
+                      {/* {getFieldDecorator('protection', {
                         initialValue: approvalInfo.protection
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </tr>
                   <tr>
@@ -403,17 +448,19 @@ class BuildApprovlForm extends React.Component {
                       <label>开孔作业是否有围篙和警示标志</label>
                     </th>
                     <th>
-                      {getFieldDecorator('denfenceAndWarn', {
+                      <label>{approvalInfo.denfenceAndWarn}</label>
+                      {/* {getFieldDecorator('denfenceAndWarn', {
                         initialValue: approvalInfo.denfenceAndWarn
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                     <th colSpan="4">
                       <label>施工器材是否会阻挡消防器材或消防通道</label>
                     </th>
                     <th>
-                      {getFieldDecorator('blockFirePassage', {
+                      <label>{approvalInfo.blockFirePassage}</label>
+                      {/* {getFieldDecorator('blockFirePassage', {
                         initialValue: approvalInfo.blockFirePassage
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
                   </tr>
                 </>
@@ -499,12 +546,13 @@ class BuildApprovlForm extends React.Component {
                     <th>
                       <label>Director</label>
                     </th>
-                    <th>
-                      {getFieldDecorator('C3_614884016188', {
+                    <th className="thCss">
+                      <label>{approvalInfo.C3_614884016188}</label>
+                      {/* {getFieldDecorator('C3_614884016188', {
                         initialValue: approvalInfo.C3_614884016188
-                      })(<Input disabled />)}
+                      })(<Input disabled />)} */}
                     </th>
-                    <th>
+                    <th className="thCss">
                       <label>
                         {approvalList.length > 1
                           ? approvalList[5].C3_605718009813
@@ -531,12 +579,13 @@ class BuildApprovlForm extends React.Component {
                 <th>
                   <label>Manager</label>
                 </th>
-                <th>
-                  {getFieldDecorator('C3_614884004893', {
+                <th className="thCss">
+                  <label>{approvalInfo.C3_614884004893}</label>
+                  {/* {getFieldDecorator('C3_614884004893', {
                     initialValue: approvalInfo.C3_614884004893
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
-                <th>
+                <th className="thCss">
                   <label>
                     {approvalList.length > 1
                       ? approvalList[4].C3_605718009813
@@ -561,12 +610,13 @@ class BuildApprovlForm extends React.Component {
                 <th>
                   <label>FAC_Manager</label>
                 </th>
-                <th>
-                  {getFieldDecorator('FAC_Manager', {
+                <th className="thCss">
+                  <label>{approvalInfo.FAC_Manager}</label>
+                  {/* {getFieldDecorator('FAC_Manager', {
                     initialValue: approvalInfo.FAC_Manager
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
-                <th>
+                <th className="thCss">
                   <label>
                     {approvalList.length > 1
                       ? approvalList[3].C3_605718009813
@@ -591,12 +641,13 @@ class BuildApprovlForm extends React.Component {
                 <th>
                   <label>ASSIGNED-Zhang.Zhou</label>
                 </th>
-                <th>
-                  {getFieldDecorator('factoryEngineer', {
+                <th className="thCss">
+                  <label>{approvalInfo.factoryEngineer}</label>
+                  {/* {getFieldDecorator('factoryEngineer', {
                     initialValue: approvalInfo.factoryEngineer
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
-                <th>
+                <th className="thCss">
                   <label>
                     {approvalList.length > 1
                       ? approvalList[2].C3_605718009813
@@ -621,12 +672,13 @@ class BuildApprovlForm extends React.Component {
                 <th>
                   <label>ASSIGNED-NA</label>
                 </th>
-                <th>
-                  {getFieldDecorator('influentedManage', {
+                <th className="thCss">
+                  <label>{approvalInfo.influentedManage}</label>
+                  {/* {getFieldDecorator('influentedManage', {
                     initialValue: approvalInfo.influentedManage
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
-                <th>
+                <th className="thCss">
                   <label>
                     {approvalList.length > 1
                       ? approvalList[1].C3_605718009813
@@ -651,10 +703,11 @@ class BuildApprovlForm extends React.Component {
                 <th>
                   <label>Approver</label>
                 </th>
-                <th>
-                  {getFieldDecorator('C3_605703779087', {
+                <th className="thCss">
+                  <label>{approvalInfo.C3_605703779087}</label>
+                  {/* {getFieldDecorator('C3_605703779087', {
                     initialValue: approvalInfo.C3_605703779087
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
                 <th>
                   <label>

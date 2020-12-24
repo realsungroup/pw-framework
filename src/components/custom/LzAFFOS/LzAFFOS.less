@@ -17,6 +17,9 @@
 .addButton {
   height: 24px;
 }
+.ant-btn-sm {
+  height: 32px !important;
+}
 
 .jungle_isBuilder_label {
   flex: 1;
@@ -44,7 +47,7 @@
   font-size: 9px;
   font-weight: normal;
   th {
-    width: 12%;
+    width: 11%;
     margin-right: 3px;
   }
   .thCss {
@@ -99,4 +102,23 @@
   border: 1px solid #d9d9d9;
   border-radius: 4px;
   padding: 4px 11px;
+}
+
+@media print {
+  @page {
+    size: auto;
+    margin: 0mm;
+  }
+  // html {
+  //   background-color: #ffffff;
+  //   margin: 0px; /* this affects the margin on the html before sending to printer */
+  // }
+  // body {
+  //   border: solid 1px blue;
+  //   margin: 10mm 15mm 10mm 15mm; /* margin you want for the content */
+  // }
+}
+
+.printBody {
+  margin: 10mm 15mm 0mm 15mm;
 }

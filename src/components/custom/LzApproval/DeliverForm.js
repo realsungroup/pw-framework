@@ -32,17 +32,19 @@ class DeliverApprovalForm extends React.Component {
                   <label>申请人姓名</label>
                 </th>
                 <th colSpan="2">
-                  {getFieldDecorator('C3_605703779087', {
+                  <label>{approvalInfo.C3_605703779087}</label>
+                  {/* {getFieldDecorator('C3_605703779087', {
                     initialValue: approvalInfo.C3_605703779087
-                  })(<Input disabled autoComplete="off" />)}
-                </th>
-                <th colSpan="2">
-                  <label>申请人工号</label>
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
                 <th colSpan="3">
-                  {getFieldDecorator('C3_605703793342', {
+                  <label>申请人工号</label>
+                </th>
+                <th colSpan="2">
+                  <label>{approvalInfo.C3_605703754022}</label>
+                  {/* {getFieldDecorator('C3_605703793342', {
                     initialValue: approvalInfo.C3_605703793342
-                  })(<Input disabled autoComplete="off" />)}
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
               </tr>
               <tr>
@@ -50,25 +52,28 @@ class DeliverApprovalForm extends React.Component {
                   <label>来访单位</label>
                 </th>
                 <th colSpan="2">
-                  {getFieldDecorator('C3_605703828345', {
+                  <label>{approvalInfo.C3_605703828345}</label>
+                  {/* {getFieldDecorator('C3_605703828345', {
                     initialValue: approvalInfo.C3_605703828345
-                  })(<Input disabled autoComplete="off" />)}
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
                 <th>
                   <label>来访事由</label>
                 </th>
                 <th colSpan="2">
-                  {getFieldDecorator('C3_605703896083', {
+                  <label>{approvalInfo.C3_605703896083}</label>
+                  {/* {getFieldDecorator('C3_605703896083', {
                     initialValue: approvalInfo.C3_605703896083
-                  })(<Input disabled autoComplete="off" />)}
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
                 <th>
                   <label>访问区域</label>
                 </th>
                 <th colSpan="2">
-                  {getFieldDecorator('C3_605703930741', {
+                  <label>{approvalInfo.C3_605703930741}</label>
+                  {/* {getFieldDecorator('C3_605703930741', {
                     initialValue: approvalInfo.C3_605703930741
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
               </tr>
               {isControl && (
@@ -78,25 +83,28 @@ class DeliverApprovalForm extends React.Component {
                       <label>管控区审批人</label>
                     </th>
                     <th>
-                      {getFieldDecorator('C3_614884016188', {
+                      <label>{approvalInfo.C3_614884016188}</label>
+                      {/* {getFieldDecorator('C3_614884016188', {
                         initialValue: approvalInfo.C3_614884016188
-                      })(<Input disabled autoComplete="off" />)}
+                      })(<Input disabled autoComplete="off" />)} */}
                     </th>
                     <th colSpan="2">
                       <label>管控区审批人工号</label>
                     </th>
                     <th>
-                      {getFieldDecorator('C3_614884015488', {
+                      <label>{approvalInfo.C3_614884015488}</label>
+                      {/* {getFieldDecorator('C3_614884015488', {
                         initialValue: approvalInfo.C3_614884015488
-                      })(<Input disabled autoComplete="off" />)}
+                      })(<Input disabled autoComplete="off" />)} */}
                     </th>
                     <th colSpan="2">
                       <label>管控区审批人编号</label>
                     </th>
                     <th>
-                      {getFieldDecorator('C3_614884015210', {
+                      <label>{approvalInfo.C3_614884015210}</label>
+                      {/* {getFieldDecorator('C3_614884015210', {
                         initialValue: approvalInfo.C3_614884015210
-                      })(<Input disabled autoComplete="off" />)}
+                      })(<Input disabled autoComplete="off" />)} */}
                     </th>
                   </tr>
                 </>
@@ -107,27 +115,30 @@ class DeliverApprovalForm extends React.Component {
                 </th>
 
                 <th>
-                  {getFieldDecorator('C3_614884004893', {
+                  <label>{approvalInfo.C3_614884004893}</label>
+                  {/* {getFieldDecorator('C3_614884004893', {
                     initialValue: approvalInfo.C3_614884004893
                   })(
                     <Input disabled placeholder="请选择" autoComplete="off" />
-                  )}
+                  )} */}
                 </th>
                 <th colSpan="2">
                   <label>非管控区审批人工号</label>
                 </th>
                 <th>
-                  {getFieldDecorator('C3_614883990443', {
+                  <label>{approvalInfo.C3_614883990443}</label>
+                  {/* {getFieldDecorator('C3_614883990443', {
                     initialValue: approvalInfo.C3_614883990443
-                  })(<Input disabled autoComplete="off" />)}
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
                 <th colSpan="2">
                   <label>非管控区审批人编号</label>
                 </th>
                 <th>
-                  {getFieldDecorator('C3_614883971652', {
+                  <label>{approvalInfo.C3_614883971652}</label>
+                  {/* {getFieldDecorator('C3_614883971652', {
                     initialValue: approvalInfo.C3_614883971652
-                  })(<Input disabled autoComplete="off" />)}
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
               </tr>
               <tr>
@@ -135,25 +146,28 @@ class DeliverApprovalForm extends React.Component {
                   <label>申请人手机号</label>
                 </th>
                 <th colSpan="2">
-                  {getFieldDecorator('C3_619693496163', {
+                  <label>{approvalInfo.C3_619693496163}</label>
+                  {/* {getFieldDecorator('C3_619693496163', {
                     initialValue: approvalInfo.C3_619693496163
-                  })(<Input disabled autoComplete="off" />)}
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
                 <th>
                   <label>申请人分机号</label>
                 </th>
                 <th colSpan="2">
-                  {getFieldDecorator('C3_619693518811', {
+                  <label>{approvalInfo.C3_619693518811}</label>
+                  {/* {getFieldDecorator('C3_619693518811', {
                     initialValue: approvalInfo.C3_619693518811
-                  })(<Input disabled autoComplete="off" />)}
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
                 <th>
                   <label>车牌号</label>
                 </th>
                 <th colSpan="2">
-                  {getFieldDecorator('C3_645723637160', {
+                  <label>{approvalInfo.C3_645723637160}</label>
+                  {/* {getFieldDecorator('C3_645723637160', {
                     initialValue: approvalInfo.C3_645723637160
-                  })(<Input disabled autoComplete="off" />)}
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
               </tr>
               <tr>
@@ -161,17 +175,19 @@ class DeliverApprovalForm extends React.Component {
                   <label>有效开始时间</label>
                 </th>
                 <th colSpan="2">
-                  {getFieldDecorator('C3_605703980025', {
+                  <label>{approvalInfo.C3_605703980025}</label>
+                  {/* {getFieldDecorator('C3_605703980025', {
                     initialValue: approvalInfo.C3_605703980025
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
                 <th colSpan="2">
                   <label>有效结束时间</label>
                 </th>
                 <th colSpan="3">
-                  {getFieldDecorator('C3_605703992046', {
+                  <label>{approvalInfo.C3_605703992046}</label>
+                  {/* {getFieldDecorator('C3_605703992046', {
                     initialValue: approvalInfo.C3_605703992046
-                  })(<Input disabled />)}
+                  })(<Input disabled />)} */}
                 </th>
               </tr>
 
@@ -255,12 +271,13 @@ class DeliverApprovalForm extends React.Component {
                     <th>
                       <label>Director</label>
                     </th>
-                    <th>
-                      {getFieldDecorator('C3_614884016188', {
+                    <th className="thCss">
+                      <label>{approvalInfo.C3_614884016188}</label>
+                      {/* {getFieldDecorator('C3_614884016188', {
                         initialValue: approvalInfo.C3_614884016188
-                      })(<Input disabled autoComplete="off" />)}
+                      })(<Input disabled autoComplete="off" />)} */}
                     </th>
-                    <th>
+                    <th className="thCss">
                       <label>
                         {approvalList.length > 1
                           ? approvalList[5].C3_605718009813
@@ -287,12 +304,13 @@ class DeliverApprovalForm extends React.Component {
                 <th>
                   <label>Manager</label>
                 </th>
-                <th>
-                  {getFieldDecorator('C3_614884004893', {
+                <th className="thCss">
+                  <label>{approvalInfo.C3_614884004893}</label>
+                  {/* {getFieldDecorator('C3_614884004893', {
                     initialValue: approvalInfo.C3_614884004893
-                  })(<Input disabled autoComplete="off" />)}
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
-                <th>
+                <th className="thCss">
                   <label>
                     {approvalList.length > 1
                       ? approvalList[4].C3_605718009813
@@ -317,8 +335,9 @@ class DeliverApprovalForm extends React.Component {
                 <th>
                   <label>Approver</label>
                 </th>
-                <th>
-                  {getFieldDecorator('C3_605703779087', {
+                <th className="thCss">
+                  <label>{approvalInfo.C3_605703779087}</label>
+                  {/* {getFieldDecorator('C3_605703779087', {
                     initialValue: approvalInfo.C3_605703779087,
                     rules: [
                       {
@@ -326,9 +345,9 @@ class DeliverApprovalForm extends React.Component {
                         message: '请输入该信息'
                       }
                     ]
-                  })(<Input disabled autoComplete="off" />)}
+                  })(<Input disabled autoComplete="off" />)} */}
                 </th>
-                <th>
+                <th className="thCss">
                   <label>
                     {approvalList.length > 1
                       ? approvalList[0].C3_605718009813

@@ -6,14 +6,16 @@ import {
   Form,
   Icon,
   Upload,
-  message
+  message,
+  Modal
 } from 'antd';
 import React from 'react';
 import './LzAFFOS.less';
 import { uploadFile } from '../../../util/api';
 import moment from 'moment';
-
+import XLSX from 'xlsx';
 const EditableContext = React.createContext();
+const Dragger = Upload.Dragger;
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -103,7 +105,7 @@ class EditableCell extends React.Component {
     );
   }
 }
-
+const noop = () => {};
 class DeliverPeopleList extends React.Component {
   constructor(props) {
     super(props);
@@ -208,13 +210,61 @@ class DeliverPeopleList extends React.Component {
           key: 2
         }
       ],
-      count: 3
+      count: 3,
+      showDragger: false
     };
   }
   //照片上传
   handleFileChange = (info, record) => {
     let fileList = [...info.fileList];
     this.setState({ fileList });
+  };
+  //导入人员
+  readWorkbookFromLocalFile = info => {
+    console.log('点击导入');
+    const file = info.file.originFileObj;
+    const reader = new FileReader();
+    const ctx = this;
+    const { count, dataSource } = ctx.state;
+    const importData = [];
+    reader.onload = function(e) {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      message.success('选择文件成功');
+      // 只读取 sheet1 中的 excel 数据
+      ctx._sheet1 = workbook.Sheets[workbook.SheetNames[0]];
+      var sheetJson = XLSX.utils.sheet_to_json(ctx._sheet1);
+      // console.log(sheetJson);
+      // console.log(ctx._sheet1);
+      // ctx.setState({ isSelectFile: true });
+
+      sheetJson.map((item, index) => {
+        // console.log(index, item);
+        const newInfo = {};
+        newInfo.key = count + index;
+        console.log('state', ctx.state.dataSource);
+        newInfo.C3_605716828937 = item.访客姓名;
+        newInfo.C3_605716867680 = item.登记证件类型;
+        newInfo.C3_614704116070 = item.登记证件号码;
+        newInfo.C3_606412134505 = item.访客手机号码;
+
+        importData.push(newInfo);
+        // console.log('要添加的', newInfo);
+        // ctx.setState({
+        //   dataSource: [newInfo, ...dataSource],
+        //   count: count + 1
+        // });
+      });
+      // console.log('import', importData);
+      ctx.setState({
+        dataSource: [...importData]
+      });
+    };
+    // console.log('外面import', importData);
+    reader.readAsArrayBuffer(file);
+    this.setState({
+      showDragger: false
+    });
   };
 
   //删除施工人员
@@ -291,7 +341,33 @@ class DeliverPeopleList extends React.Component {
         >
           添加
         </Button>
-        <Button type="primary">导入</Button>
+        <Button
+          type="primary"
+          onClick={() => {
+            this.setState({
+              showDragger: true
+            });
+          }}
+        >
+          导入
+        </Button>
+        <Modal
+          visible={this.state.showDragger}
+          title="导入人员清单"
+          onCancel={() => {
+            this.setState({
+              showDragger: false
+            });
+          }}
+        >
+          <Dragger
+            name="file"
+            customRequest={noop}
+            onChange={this.readWorkbookFromLocalFile}
+          >
+            <p>点击或拖拽文件到此区域</p>
+          </Dragger>
+        </Modal>
         <Table
           components={components}
           rowClassName={() => 'editable-row'}

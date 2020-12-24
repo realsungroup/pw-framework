@@ -167,6 +167,7 @@ export default class LzApproval extends React.Component {
           // };
           item.C3_605718014873 = data[0].C3_605718014873;
           item.C3_605718009813 = data[0].C3_605718009813;
+          item.C3_227192472953 = data[0].C3_227192472953;
         }
       });
     } catch (error) {
@@ -178,9 +179,40 @@ export default class LzApproval extends React.Component {
     });
   };
 
+  doPrint = res => {
+    var currentHtml = window.document.body.innerHTML;
+    if (res === 'deliver') {
+      if (
+        window.document.getElementById('printDeliverForm').innerHTML != null
+      ) {
+        let bdHtml = window.document.getElementById('printDeliverForm')
+          .innerHTML;
+        window.document.body.innerHTML = bdHtml;
+        // console.log('获取打印');
+        window.print();
+        this.setState({
+          isPrint: false
+        });
+      }
+    } else if (res === 'builder') {
+      if (
+        window.document.getElementById('printBuilderForm').innerHTML != null
+      ) {
+        let bdHtml = window.document.getElementById('printBuilderForm')
+          .innerHTML;
+        window.document.body.innerHTML = bdHtml;
+        // console.log('获取打印');
+        window.print();
+        this.setState({
+          isPrint: false
+        });
+      }
+      window.document.body.innerHTML = currentHtml;
+    }
+  };
+
   //审批施工人员申请
   approveBuilder = async result => {
-    // console.log(result);
     let apprecid;
     try {
       apprecid = await http().getTable({
@@ -280,10 +312,23 @@ export default class LzApproval extends React.Component {
                         type="primary"
                         onClick={() => {
                           console.log('开始打印');
-                          window.print();
+                          this.doPrint('builder');
+                          this.setState({
+                            isPrint: true
+                          });
                         }}
                       >
                         打印
+                      </Button>,
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            showBuilderModal: false,
+                            isPrint: false
+                          });
+                        }}
+                      >
+                        关闭
                       </Button>
                     ]
                   : [
@@ -317,14 +362,16 @@ export default class LzApproval extends React.Component {
                     ]
               }
             >
-              <div ref="printDeliver">
-                <BuilderForm
-                  toBuilderFormInfo={{
-                    approvalInfo: record,
-                    builderList: builderList,
-                    approvalList: approvalList1
-                  }}
-                />
+              <div id="printBuilderForm">
+                <div className="printBody">
+                  <BuilderForm
+                    toBuilderFormInfo={{
+                      approvalInfo: record,
+                      builderList: builderList,
+                      approvalList: approvalList1
+                    }}
+                  />
+                </div>
               </div>
             </Modal>
             {/* 送货人员审批模态框 */}
@@ -344,10 +391,20 @@ export default class LzApproval extends React.Component {
                         type="primary"
                         onClick={() => {
                           console.log('开始打印');
-                          window.print();
+                          this.doPrint('deliver');
                         }}
                       >
                         打印
+                      </Button>,
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            showDeliverModal: false,
+                            isPrint: false
+                          });
+                        }}
+                      >
+                        关闭
                       </Button>
                     ]
                   : [
@@ -381,14 +438,16 @@ export default class LzApproval extends React.Component {
                     ]
               }
             >
-              <div ref="printBuilder">
-                <DeliverForm
-                  toDeliverFormInfo={{
-                    approvalInfo: record,
-                    deliverList: deliverList,
-                    approvalList: approvalList1
-                  }}
-                />
+              <div id="printDeliverForm">
+                <div className="printBody">
+                  <DeliverForm
+                    toDeliverFormInfo={{
+                      approvalInfo: record,
+                      deliverList: deliverList,
+                      approvalList: approvalList1
+                    }}
+                  />
+                </div>
               </div>
             </Modal>
           </TabPane>

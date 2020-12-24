@@ -863,7 +863,6 @@ export default class LzAFFOS extends React.Component {
                   return (
                     <>
                       <Button
-                        className="addButton"
                         onClick={() => {
                           this.getapplyInfo();
                           this.setState({ showModalJungleBuild: true });
@@ -872,7 +871,6 @@ export default class LzAFFOS extends React.Component {
                         请填写施工访客基本信息
                       </Button>
                       <Button
-                        className="addButton"
                         onClick={() => {
                           this.getapplyInfo();
                           this.setState({ showJungleLongDeliverModal: true });
