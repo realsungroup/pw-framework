@@ -167,8 +167,8 @@ class ADPExport extends React.Component {
                   counts++;
                 }
               });
-              data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"|"${record.C3_659465238204}|"99991231|"|"|"|"|"|"|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"\n`;
-              counts++;
+              // data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"|"${record.C3_659465238204}|"99991231|"|"|"|"|"|"|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"\n`;
+              // counts++;
             }
           });
           data += `TRAIL|"${counts}`;
