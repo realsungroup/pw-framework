@@ -881,3 +881,10 @@ export const ChiefInspectorProbation = Loadable({
     return minLoading;
   }
 });
+
+export const AnnualLeaveQuery = Loadable({
+  loader: () => import('./AnnualLeaveQuery'),
+  loading() {
+    return minLoading;
+  }
+});
