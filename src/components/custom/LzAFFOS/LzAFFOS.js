@@ -19,7 +19,8 @@ import {
   TimePicker,
   Input,
   Table,
-  Popconfirm
+  Popconfirm,
+  Spin
 } from 'antd';
 import './LzAFFOS.less';
 // import TableData from '../../../lib/unit-component/TableData';
@@ -88,6 +89,8 @@ export default class LzAFFOS extends React.Component {
       deliverTime: '', //长期送过货时间
       searchDepaV: false, //控制选择部门模态框按钮
       applyNum: '', //审批人编号，从localStorage获取
+      searchDepaV: false, //选择受影响部门的模态框
+      loading: false, //是否处于缓冲状态
       approvalPeopleList: [
         {
           C3_227212499515: '',
@@ -163,6 +166,12 @@ export default class LzAFFOS extends React.Component {
 
   handleTabsChange = activeKey => {
     this.setState({ activeKey });
+  };
+
+  openDeptModal = () => {
+    this.setState({
+      searchDepaV: true
+    });
   };
 
   getapplyInfo = async () => {
@@ -420,7 +429,7 @@ export default class LzAFFOS extends React.Component {
 
   // 审批人确认时更改
   changeAppMem = v => {
-    console.log(this.state.selectApprovalKey, v, this.state.approvalPeopleList);
+    // console.log(this.state.selectApprovalKey, v, this.state.approvalPeopleList);
     var obj = this.state.approvalPeopleList;
     obj[this.state.selectApprovalKey].C3_227212499515 = v.C3_227212499515; //所属部门
     obj[this.state.selectApprovalKey].C3_605717998409 = v.C3_227192484125; //姓名
@@ -466,6 +475,9 @@ export default class LzAFFOS extends React.Component {
   };
 
   submitAllData = async () => {
+    this.setState({
+      loading: true
+    });
     //转化时间格式，施工时段
     const workTime1 = moment(this.state.value.workTime1).format('HH:mm');
     const workTime2 = moment(this.state.value.workTime2).format('HH:mm');
@@ -616,6 +628,9 @@ export default class LzAFFOS extends React.Component {
       ]
     });
     this.tableDataRef.handleRefresh();
+    this.setState({
+      loading: false
+    });
   };
 
   //关闭送货人员信息填写表单
@@ -643,13 +658,16 @@ export default class LzAFFOS extends React.Component {
 
   //提交送货人员全部信息
   submitAllDeliverData = async () => {
+    this.setState({
+      loading: true
+    });
     //施工审批人空的要去除,为第一个人审批结果设为waiting，加上字段是否施工人员为Y
     const isEmpty = ({ C3_605717998409 }) => C3_605717998409 !== '';
     const isApply = ({ C3_607445035535 }) => C3_607445035535 !== '申请人';
     const newAppList1 = this.state.approvalPeopleList.filter(isEmpty);
     const newAppList = newAppList1.filter(isApply);
     //审批表需要额外添加数据
-    console.log('是否已获取value', this.state.value);
+    // console.log('是否已获取value', this.state.value);
     const extra = {};
     extra.maxProcess = newAppList.length; //最大审批节点
     extra.C3_605703779087 = this.state.value.C3_605703779087; //申请人姓名
@@ -661,7 +679,7 @@ export default class LzAFFOS extends React.Component {
     extra.C3_605703930741 = this.state.value.C3_605703930741; //访问区域
     extra.C3_605703980025 = this.state.value.C3_605703980025; //有效开始日期
     extra.C3_605703992046 = this.state.value.C3_605703980025; //有效结束日期
-    console.log('extra', extra);
+    // console.log('extra', extra);
     const list = newAppList.map((item, index) => {
       if (index === 0) {
         item.C3_605718009813 = 'waiting';
@@ -797,6 +815,9 @@ export default class LzAFFOS extends React.Component {
       ]
     });
     this.tableDataRef.handleRefresh();
+    this.setState({
+      loading: false
+    });
   };
 
   render() {
@@ -805,7 +826,8 @@ export default class LzAFFOS extends React.Component {
       abnormalNum,
       addWorkerVisible,
       selectTypeVisible,
-      dataSource
+      dataSource,
+      loading
     } = this.state;
     const { resids } = this.props;
 
@@ -868,7 +890,7 @@ export default class LzAFFOS extends React.Component {
                           this.setState({ showModalJungleBuild: true });
                         }}
                       >
-                        请填写施工访客基本信息
+                        请填写施工人员基本信息
                       </Button>
                       <Button
                         onClick={() => {
@@ -906,7 +928,7 @@ export default class LzAFFOS extends React.Component {
                 </label>
                 <Radio.Group
                   onChange={e => {
-                    console.log('是否长期施工人员', e.target.value);
+                    // console.log('是否长期施工人员', e.target.value);
                     this.setState({ isLongBuilder: e.target.value });
                   }}
                 >
@@ -949,8 +971,8 @@ export default class LzAFFOS extends React.Component {
                   <Radio.Group
                     onChange={e => {
                       this.setState({ deliverTime: e.target.value });
-                      console.log('时间1', e.target.value);
-                      console.log('时间2', this.state.deliverTime);
+                      // console.log('时间1', e.target.value);
+                      // console.log('时间2', this.state.deliverTime);
                     }}
                   >
                     <Radio value={'three'}>三个月</Radio>
@@ -959,97 +981,109 @@ export default class LzAFFOS extends React.Component {
                 </div>
               )}
             </Modal>
-            {/* 选择受影响部门模态框 */}
-            {/* <Modal
-                        title="部门列表"
-                        visible={this.state.searchDepaV}
-                        footer={null}
-                        onCancel={this.clzDepaSearch}
-                        width={'80vw'}
-                        height={'80vh'}
-                      >
-                        <Select placeholder='请选择级别' style={{ width: 240 }} value={this.state.depaFilter} onChange={(v) => { this.setState({ depaFilter: v }) }}>
-                          {this.state.companyArr.map((item, key) => {
-                            return (
-                              <Option value={item.C3_419448436728} key={key}>{item.C3_419448436728}</Option>
-                            )
-                          })}
-                        </Select>
-                        <br />
-                        <br />
-                        <div style={{ width: '100%', height: 'calc(80vh - 104px)', position: 'relative' }}>
-                          <TableData
-                            resid={632327119162}
-                            cmswhere={`C3_419339113187 != '' and C3_419448436728 = '${this.state.depaFilter}'`}
-                            hasRowView={false}
-                            subtractH={220}
-                            hasAdd={false}
-                            hasRowSelection={false}
-                            hasRowDelete={false}
-                            hasRowModify={false}
-                            hasModify={false}
-                            hasDelete={false}
-                            style={{ height: '100%' }}
-                            hasRowView={false}
-                            customRowBtns={[
-                              (record) => {
-                                return (
-                                  <Button onClick={() => {
-                                    var rec = this.state.selectMem;
 
-                                    rec[this.state.curPeopleKey].newDepa = record;
-                                    this.setState({ selectMem: rec, searchDepaV: false })
-                                  }}>选择</Button>
-                                );
-                              }
-                            ]}
-                          />
-                        </div>
-                      </Modal> */}
+            {/* 选择受影响部门模态框 */}
+            <Modal
+              title="部门列表"
+              visible={this.state.searchDepaV}
+              footer={null}
+              onCancel={() => {
+                this.setState({ searchDepaV: false });
+              }}
+              width={'80vw'}
+              height={'80vh'}
+            >
+              <div
+                style={{
+                  width: '100%',
+                  height: 'calc(80vh - 104px)',
+                  position: 'relative'
+                }}
+              >
+                <TableData
+                  resid={632327119162}
+                  cmswhere={`C3_419339113187 != '' and C3_419448436728 = '菲尼萨光电通讯科技(无锡)有限公司'`}
+                  hasRowView={false}
+                  subtractH={220}
+                  hasAdd={false}
+                  hasRowSelection={false}
+                  hasRowDelete={false}
+                  hasRowModify={false}
+                  hasModify={false}
+                  hasDelete={false}
+                  style={{ height: '100%' }}
+                  hasRowView={false}
+                  customRowBtns={[
+                    record => {
+                      return (
+                        <Button
+                          onClick={() => {
+                            // console.log('record', record.DEP_NAME);
+                            this.setState({
+                              searchDepaV: false,
+                              dept: record.DEP_NAME
+                            });
+                          }}
+                        >
+                          选择
+                        </Button>
+                      );
+                    }
+                  ]}
+                />
+              </div>
+            </Modal>
 
             {/* 填写施工人员信息表单组件 */}
-            <BuildApprovlForm
-              parent={this}
-              toFormMsg={{
-                dataSource: this.state.dataSource,
-                showBuilderModal: this.state.showBuilderModal,
-                isLongBuilder: this.state.isLongBuilder,
-                approvalPeopleList: this.state.approvalPeopleList,
-                isControl: this.state.isControl
-              }}
-              getValues={this.getValues}
-              openApprovalModal={this.openApprovalModal}
-              openShortApprovalModal={this.openShortApprovalModal}
-              closeBuildModal={this.closeBuildModal}
-              showPeopleList={this.showPeopleList}
-              changeApply={this.changeApply}
-              changeEffect={this.changeEffect}
-              changeEngineer={this.changeEngineer}
-              changeManager={this.changeManager}
-              changeConductor={this.changeConductor}
-              changeManagerSpecial={this.changeManagerSpecial}
-              changeControl={this.changeControl}
-            />
+            <Spin spinning={loading}>
+              <BuildApprovlForm
+                parent={this}
+                toFormMsg={{
+                  dataSource: this.state.dataSource,
+                  showBuilderModal: this.state.showBuilderModal,
+                  isLongBuilder: this.state.isLongBuilder,
+                  approvalPeopleList: this.state.approvalPeopleList,
+                  isControl: this.state.isControl,
+                  dept: this.state.dept
+                }}
+                getValues={this.getValues}
+                openApprovalModal={this.openApprovalModal}
+                openShortApprovalModal={this.openShortApprovalModal}
+                closeBuildModal={this.closeBuildModal}
+                showPeopleList={this.showPeopleList}
+                changeApply={this.changeApply}
+                changeEffect={this.changeEffect}
+                changeEngineer={this.changeEngineer}
+                changeManager={this.changeManager}
+                changeConductor={this.changeConductor}
+                changeManagerSpecial={this.changeManagerSpecial}
+                changeControl={this.changeControl}
+                openDeptModal={this.openDeptModal}
+              />
+            </Spin>
+
             {/* 填写送货人员信息表单组件 */}
-            <DeliverApprovalForm
-              parent={this}
-              toDeliverApprovalFormData={{
-                showDeliverApprovalModal: this.state.showDeliverApprovalModal,
-                deliverList: this.state.deliverList,
-                approvalPeopleList: this.state.approvalPeopleList,
-                isControl: this.state.isControl,
-                isLongDeliver: this.state.isLongDeliver,
-                deliverTime: this.state.deliverTime
-              }}
-              getValuesDeliver={this.getValuesDeliver}
-              closeDeliverApprovalModal={this.closeDeliverApprovalModal}
-              changeManagerSpecial={this.changeManagerSpecial}
-              changeConductor={this.changeConductor}
-              openDeliverPeopleListModal={this.openDeliverPeopleListModal}
-              changeControl={this.changeControl}
-              changeApply={this.changeApply}
-              submitAllDeliverData={this.submitAllDeliverData}
-            />
+            <Spin spinning={loading}>
+              <DeliverApprovalForm
+                parent={this}
+                toDeliverApprovalFormData={{
+                  showDeliverApprovalModal: this.state.showDeliverApprovalModal,
+                  deliverList: this.state.deliverList,
+                  approvalPeopleList: this.state.approvalPeopleList,
+                  isControl: this.state.isControl,
+                  isLongDeliver: this.state.isLongDeliver,
+                  deliverTime: this.state.deliverTime
+                }}
+                getValuesDeliver={this.getValuesDeliver}
+                closeDeliverApprovalModal={this.closeDeliverApprovalModal}
+                changeManagerSpecial={this.changeManagerSpecial}
+                changeConductor={this.changeConductor}
+                openDeliverPeopleListModal={this.openDeliverPeopleListModal}
+                changeControl={this.changeControl}
+                changeApply={this.changeApply}
+                submitAllDeliverData={this.submitAllDeliverData}
+              />
+            </Spin>
 
             {/* 施工人员编辑Modal */}
             <Modal

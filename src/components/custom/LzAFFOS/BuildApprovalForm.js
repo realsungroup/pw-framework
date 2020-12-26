@@ -24,15 +24,12 @@ class BuildApprovlForm extends React.Component {
   static propTypes = {};
   constructor(props) {
     super(props);
-    this.state = {
-      currentInfo: {}
-    };
+    this.state = {};
   }
 
   //将值传父组件
   submit = () => {
     this.props.form.validateFields((error, value) => {
-      // console.log('error:', error, 'value', value);
       this.props.parent.getValues(this, value);
     });
     const { resetFields } = this.props.form;
@@ -59,22 +56,18 @@ class BuildApprovlForm extends React.Component {
     }
   };
 
-  check = () => {};
-
   render() {
-    let errors;
     const { getFieldDecorator } = this.props.form;
     const initialMoment = moment();
-    let { currentInfo } = this.state;
     const {
       showBuilderModal,
       isLongBuilder,
       dataSource,
       showData,
-      isControl
+      isControl,
+      dept
     } = this.props.toFormMsg;
-    // console.log('toFormMsg', this.props.toFormMsg);
-    // console.log('state', this.state);
+
     return (
       <Modal
         title="施工申请"
@@ -299,11 +292,7 @@ class BuildApprovlForm extends React.Component {
                         }
                       ]
                     })(
-                      <TimePicker
-                        // onChange={this.compareTime}
-                        format={'HH:mm'}
-                        style={{ width: '45%' }}
-                      />
+                      <TimePicker format={'HH:mm'} style={{ width: '45%' }} />
                     )}
                     ~
                     {getFieldDecorator('workTime2', {
@@ -327,14 +316,20 @@ class BuildApprovlForm extends React.Component {
                   </th>
                   <th>
                     {getFieldDecorator('buildArrangeDept', {
-                      initialValue: '',
+                      initialValue: dept,
                       rules: [
                         {
                           required: true,
                           message: '请输入该信息'
                         }
                       ]
-                    })(<Input autoComplete="off" />)}
+                    })(
+                      <Input
+                        placeholder="请选择"
+                        onClick={this.props.openDeptModal}
+                        autoComplete="off"
+                      />
+                    )}
                   </th>
                   <th colSpan="1">
                     <label>
@@ -507,9 +502,7 @@ class BuildApprovlForm extends React.Component {
                   <>
                     <tr>
                       <th colSpan="9">
-                        <h3>
-                          承包商长期作业许可证<font color="red">*</font>
-                        </h3>
+                        <h3>承包商长期作业许可证</h3>
                       </th>
                     </tr>
                     <tr>

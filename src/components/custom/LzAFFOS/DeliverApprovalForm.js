@@ -42,17 +42,14 @@ class DeliverApprovalForm extends React.Component {
 
   submit = () => {
     this.props.form.validateFields((error, value) => {
-      console.log('error:', error, 'value', value);
       this.props.parent.getValuesDeliver(this, value);
     });
     const { resetFields } = this.props.form;
     resetFields();
   };
 
-  //   {changeManagerSpecial,changeConductor,changeIsControl}
   render() {
     const { getFieldDecorator } = this.props.form;
-
     const {
       showDeliverApprovalModal,
       deliverList,
@@ -66,6 +63,7 @@ class DeliverApprovalForm extends React.Component {
         ? moment().add(3, 'M')
         : moment().add(6, 'M')
       : moment(); //结束时间初始值
+
     return (
       <Modal
         title="送货申请"
@@ -78,7 +76,6 @@ class DeliverApprovalForm extends React.Component {
         onOk={() => {
           this.submit();
           this.props.closeDeliverApprovalModal();
-          //   this.props.openDeliverFinalApprovalModal();
         }}
       >
         <Form>
@@ -260,7 +257,6 @@ class DeliverApprovalForm extends React.Component {
                       非管控区负责人<font color="red">*</font>
                     </label>
                   </th>
-
                   <th>
                     {getFieldDecorator('C3_614884004893', {
                       initialValue: this.props.toDeliverApprovalFormData
@@ -434,7 +430,6 @@ class DeliverApprovalForm extends React.Component {
                   </th>
                 </tr>
                 {deliverList.map((item, index) => {
-                  // console.log(item);
                   return (
                     <tr>
                       <th className="thCss">

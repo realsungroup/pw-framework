@@ -58,7 +58,7 @@ export const inApplication = {
     placement: 'bottom',
     height: 600
   },
-  addText: '请填写访客基本信息',
+  addText: '请填写一般人员基本信息',
   subTableArrProps: [
     {
       subTableName: '访客信息',
@@ -102,7 +102,7 @@ export const inExaminationAndApproval = {
     placement: 'bottom',
     height: 600
   },
-  addText: '请填写访客基本信息',
+  addText: '请填写一般人员基本信息',
   subTableArrProps: [
     {
       subTableName: '访客信息',
@@ -115,14 +115,14 @@ export const inExaminationAndApproval = {
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
-        hasRowEdit:true,
-        rowEditFormName:'default',
+        hasRowEdit: true,
+        rowEditFormName: 'default',
         height: 400,
         defaultColumnWidth: 100,
         actionBarWidth: 100,
         subtractH: 196,
         actionBarFixed: false,
-        rowEditAddPosition:'start',
+        rowEditAddPosition: 'start',
         hasRowEditAdd: true,
         storeWay: 'fe',
         formProps: { saveReopen: true, saveOpenText: '保存并继续添加人员' }
