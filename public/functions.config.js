@@ -915,7 +915,8 @@ window[606071640940] = {
     hasRowView: true,
     hasRowDelete: false,
     height: '100vh',
-    recordFormFormWidth: '90%'
+    recordFormFormWidth: '90%',
+    subtractH: 180
   } // 组件所接收的 props
 };
 //VIP访客审批
@@ -963,10 +964,10 @@ window[606242031630] = {
     hasRowView: false,
     hasRowDelete: true,
     formProps: {
-      height: 800
+      height: 500
     },
     subtractH: 200,
-    recordFormFormWidth: '40%',
+    recordFormFormWidth: '50%',
     recordFormType: 'drawer',
     recordFormContainerProps: {
       placement: 'bottom',
@@ -978,6 +979,7 @@ window[606242031630] = {
         subTableName: '物品信息',
         subResid: 606413909447,
         tableProps: {
+          height: 600,
           hasAdd: true,
           hasModify: false,
           hasDelete: false
@@ -9725,15 +9727,5 @@ window[659456530340] = {
     resid: '311025002785',
     baseURL: 'http://10.108.2.66:9091/',
     company: '2000'
-  }
-};
-
-window[662294305216] = {
-  name: 'AnnualLeaveQuery', // 组件名称，
-  title: '年假查询', // 功能模块名称
-  props: {
-    baseURL: 'http://10.108.2.66:9091',
-    员工年假季度账户表: '662169346288',
-    员工年假使用明细表: "662169358054"
   }
 };
