@@ -86,8 +86,7 @@ export const inApplication = {
         recordFormTabsWidth: '60%',
         isSetColumnWidth: true
       }
-    },
-
+    }
   ]
 };
 // 审批中
@@ -138,7 +137,13 @@ export const inExaminationAndApproval = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true
+        hasRowView: false,
+        subtractH: 220,
+        height: 400
+        // hasAdd: false,
+        // hasModify: false,
+        // hasDelete: false,
+        // hasRowView: true
       }
     }
   ]
@@ -193,7 +198,7 @@ export const approved = {
         hasDelete: false,
         hasRowView: false,
         height: 400,
-        subtractH: 196,
+        subtractH: 196
       }
     }
   ]
@@ -249,7 +254,7 @@ export const refused = {
         hasDelete: false,
         hasRowView: false,
         subtractH: 220,
-        height: 400,
+        height: 400
       }
     }
   ]
@@ -305,8 +310,7 @@ export const history = {
         hasDelete: false,
         hasRowView: false,
         subtractH: 196,
-        height: 400,
-
+        height: 400
       }
     }
   ]

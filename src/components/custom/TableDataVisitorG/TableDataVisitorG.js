@@ -1,11 +1,11 @@
-import React from "react";
-import TableData from "../../common/data/TableData";
-import Base64 from "base-64";
-import { message, Modal, Form, Input, Button } from "antd";
-import http from "../../../util20/api";
-import { withRecordForm } from "../../common/hoc/withRecordForm";
-import { setDataInitialValue } from "Util20/formData2ControlsData";
-const socket = require("socket.io-client")("http://localhost:5000");
+import React from 'react';
+import TableData from '../../common/data/TableData';
+import Base64 from 'base-64';
+import { message, Modal, Form, Input, Button } from 'antd';
+import http from '../../../util20/api';
+import { withRecordForm } from '../../common/hoc/withRecordForm';
+import { setDataInitialValue } from 'Util20/formData2ControlsData';
+const socket = require('socket.io-client')('http://localhost:5000');
 
 class TableDataVisitorG extends React.Component {
   state = {
@@ -13,13 +13,13 @@ class TableDataVisitorG extends React.Component {
     record: null,
     readOnly: true
   };
-  btnStartRead = params => { };
+  btnStartRead = params => {};
   componentDidMount = () => {
-    socket.emit("startRead");
+    socket.emit('startRead');
     let card;
-    socket.on("card message", async msg => {
+    socket.on('card message', async msg => {
       var result = Base64.decode(msg);
-      card = eval("(" + result + ")");
+      card = eval('(' + result + ')');
 
       if (card) {
         let res;
@@ -29,15 +29,15 @@ class TableDataVisitorG extends React.Component {
             cmswhere: `C3_605719242955 = ${card.cardno}`
           });
           if (res.data.length > 0) {
-            message.success("查询成功！");
+            message.success('查询成功！');
             await this.setState({
               record: res.data
             });
-            document.getElementById("adds").click();
+            document.getElementById('adds').click();
           } else {
-            message.error("查无此人！");
+            message.error('查无此人！');
           }
-        } catch (error) { }
+        } catch (error) {}
       }
     });
     //   'card message', function(msg){//接收读卡信息
@@ -99,13 +99,11 @@ class TableDataVisitorG extends React.Component {
           case '备注':
             item.initialValue = record[0].C3_605719245575;
             break;
-
         }
         // if (item.label === "登记证件号码" && record) {
         //   item.initialValue = record[0].C3_608392189420;
         //   // console.log("item.initialValue", item.initialValue);
         // }
-
       });
       // let records = record[0];
       // records.C3_606071247109 = records.C3_608392189420
@@ -114,34 +112,33 @@ class TableDataVisitorG extends React.Component {
     }
 
     this.props.openRecordForm({
-      title: "添加",
-      type: "drawer",
+      title: '添加',
+      type: 'drawer',
       data,
-      operation: "add",
-      recordFormFormWidth: "50%",
-      recordFormTabsWidth: "50%",
+      operation: 'add',
+      recordFormFormWidth: '50%',
+      recordFormTabsWidth: '50%',
       onSuccess: () => {
         this.setState({
           record: null
-        })
-        message.success("保存成功！")
-        this.props.closeRecordForm()
+        });
+        message.success('保存成功！');
+        this.props.closeRecordForm();
       },
       onCancel: () => {
         this.setState({
           record: null
-        })
-        this.props.closeRecordForm()
-      }
-      ,
+        });
+        this.props.closeRecordForm();
+      },
       recordFormContainerProps: {
         height: 600,
-        placement: "bottom",
+        placement: 'bottom',
         onClose: () => {
           this.setState({
             record: null
-          })
-          this.props.closeRecordForm()
+          });
+          this.props.closeRecordForm();
         }
       },
       formProps: {
@@ -150,18 +147,18 @@ class TableDataVisitorG extends React.Component {
       subTableArr: recordFormData.subTableArr,
       subTableArrProps: [
         {
-          subTableName: "物品信息",
+          subTableName: '物品信息',
           subResid: 606413909447,
-          height: 600,
           tableProps: {
+            height: 600,
             hasAdd: true,
             hasModify: false,
             hasDelete: false
           }
         }
       ],
-      info: { dataMode: "sub", resid: this.props.resid },
-      storeWay: "fe"
+      info: { dataMode: 'sub', resid: this.props.resid },
+      storeWay: 'fe'
     });
   };
 
@@ -181,10 +178,7 @@ class TableDataVisitorG extends React.Component {
     const { visible, record, readOnly } = this.state;
     const { getFieldDecorator } = this.props.form;
     return (
-      <div
-        className="table-data-wrap"
-        style={{ height: "100vh" }}
-      >
+      <div className="table-data-wrap" style={{ height: '100vh' }}>
         <TableData
           {...this.props}
           actionBarExtra={({
@@ -222,83 +216,82 @@ class TableDataVisitorG extends React.Component {
         >
           {/* <div style={{width:"40%"}}> */}
           <Form.Item label="访客姓名">
-            {getFieldDecorator("name", {
+            {getFieldDecorator('name', {
               initialValue: [record && record[0] && record[0].C3_605719242294],
               rules: [
                 {
                   required: true,
-                  message: "Please input your E-mail!"
+                  message: 'Please input your E-mail!'
                 }
               ]
             })(<Input readOnly={readOnly} />)}
           </Form.Item>
           <Form.Item label="身份证号">
-            {getFieldDecorator("cardno", {
+            {getFieldDecorator('cardno', {
               initialValue: [record && record[0] && record[0].C3_605719242955],
               rules: [
                 {
                   required: true,
-                  message: "Please input your password!"
+                  message: 'Please input your password!'
                 }
               ]
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
 
           <Form.Item label="访客类型">
-            {getFieldDecorator("visiterType", {
+            {getFieldDecorator('visiterType', {
               initialValue: [record && record[0] && record[0].C3_605719242479],
               rules: [
                 {
                   required: true,
-                  message: "Please input your password!"
+                  message: 'Please input your password!'
                 }
               ]
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
           <Form.Item label="单位">
-            {getFieldDecorator("componey", {
+            {getFieldDecorator('componey', {
               initialValue: [record && record[0] && record[0].C3_605719242129],
               rules: [
                 {
                   required: true,
-                  message: "Please input your password!"
+                  message: 'Please input your password!'
                 }
               ]
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
 
           <Form.Item label="事由">
-            {getFieldDecorator("reason", {
+            {getFieldDecorator('reason', {
               initialValue: [record && record[0] && record[0].C3_606843168661],
               rules: [
                 {
                   required: true,
-                  message: "Please input your password!"
+                  message: 'Please input your password!'
                 }
               ]
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
 
           <Form.Item label="地区">
-            {getFieldDecorator("area", {
+            {getFieldDecorator('area', {
               initialValue: [record && record[0] && record[0].C3_605719242641],
               rules: [
                 {
                   required: true,
-                  message: "Please input your password!"
+                  message: 'Please input your password!'
                 }
               ]
             })(<Input type="text" readOnly={readOnly} />)}
           </Form.Item>
 
-
           <Form.Item label="申请人">
-            {getFieldDecorator("applyName", {
+            {getFieldDecorator('applyName', {
               initialValue: [record && record[0] && record[0].C3_612530147136],
               rules: [
                 {
                   required: true,
-                  message: "Please input your password!"
+                  message: 'Please input your password!'
                 }
               ]
             })(<Input type="text" readOnly={readOnly} />)}

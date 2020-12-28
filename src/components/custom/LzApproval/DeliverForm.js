@@ -20,7 +20,7 @@ class DeliverApprovalForm extends React.Component {
     return (
       <Form>
         <div className="changeAntCss">
-          <table border="1">
+          <table className="tableStyle" border="1">
             <tbody>
               <tr>
                 <th colSpan="9">

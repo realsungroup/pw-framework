@@ -38,7 +38,7 @@ class BuildApprovlForm extends React.Component {
 
   //比较时间间隔是否超过15天
   checkTime = () => {
-    if (this.props.toFormMsg.isLongBuilder) {
+    if (this.props.form.getFieldValue('isLong') === '长期施工') {
       const workDate1 = this.props.form.getFieldValue('C3_605703980025');
       const workDate2 = this.props.form.getFieldValue('C3_605703992046');
       const workDate3 = moment(workDate1).add(15, 'd');
