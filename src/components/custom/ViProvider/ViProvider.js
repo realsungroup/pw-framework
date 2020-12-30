@@ -158,7 +158,7 @@ export default class ViProvider extends React.Component {
           C3_605719340594: this.state.C3_605719340594,
           C3_605719340781: this.state.C3_605719340781,
           C3_605718146773: this.state.C3_605718146773,
-          C3_605703913037: '施工人员',
+          C3_605718133807: '送货人员',
           _state: 'added',
           _id: 1
         },
@@ -365,19 +365,19 @@ export default class ViProvider extends React.Component {
                         return (
                           <tr>
                             <th colSpan="2" className="thCss">
-                              <label>{item.C3_605716301557}</label>
+                              <label>{item.C3_605719242129}</label>
                             </th>
                             <th className="thCss">
-                              <label>{item.C3_605716828937}</label>
+                              <label>{item.C3_605719242294}</label>
                             </th>
                             <th colSpan="2" className="thCss">
-                              <label>{item.C3_605716867680}</label>
+                              <label>{item.C3_605719242802}</label>
                             </th>
                             <th colSpan="2" className="thCss">
-                              <label>{item.C3_614704116070}</label>
+                              <label>{item.C3_605719242955}</label>
                             </th>
                             <th colSpan="2" className="thCss">
-                              <label>{item.C3_645723303105}</label>
+                              <label>{item.carNum}</label>
                             </th>
                           </tr>
                         );

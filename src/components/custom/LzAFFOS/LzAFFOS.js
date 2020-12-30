@@ -5,6 +5,8 @@ import LzAFFOSPeopleList from './LzAFFOSPeopleList';
 import BuildApprovlForm from './BuildApprovalForm';
 import DeliverApprovalForm from './DeliverApprovalForm';
 import DeliverPeopleList from './DeliverPeopleList';
+import BuilderForm from '../LzApproval/BuilderForm';
+import DeliverForm from '../LzApproval/DeliverForm';
 import {
   message,
   Tabs,
@@ -91,6 +93,14 @@ export default class LzAFFOS extends React.Component {
       applyNum: '', //审批人编号，从localStorage获取
       searchDepaV: false, //选择受影响部门的模态框
       loading: false, //是否处于缓冲状态
+      isPrint: false, //是否打印
+      printDeliverModal: false, //打印模态框
+      printBuilderModal: false,
+      approvalList: [], //打印所需审批流
+      approvalList1: [],
+      builderList: [],
+      deliverList: [],
+      record: {},
       approvalPeopleList: [
         {
           C3_227212499515: '',
@@ -172,6 +182,134 @@ export default class LzAFFOS extends React.Component {
     this.setState({
       searchDepaV: true
     });
+  };
+
+  //根据人员类型不同，打开不同的模态框
+  showRecord = async record => {
+    // console.log('record', record);
+    if (record.C3_605703913037 === '施工人员') {
+      this.setState({ printBuilderModal: true, record: record });
+    } else if (record.C3_605703913037 === '送货人员') {
+      this.setState({ printDeliverModal: true, record: record });
+    } else {
+      message.info('当前申请为一般访客，不可打印');
+      this.setState({ isPrint: false });
+    }
+    //获取人员清单
+    let peopleList;
+    try {
+      peopleList = await http().getTable({
+        resid: '605716014733',
+        cmswhere: `C3_606070812241 = '${record.C3_605718092628}'`
+      });
+      this.setState({
+        deliverList: peopleList.data,
+        builderList: peopleList.data
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+    //获取审批流信息
+    let approvalList;
+    const approvalPeopleList = [
+      {
+        C3_607445035535: '申请人',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      },
+      {
+        C3_607445035535: '受施工影响部门负责人',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      },
+      {
+        C3_607445035535: '厂务负责工程师',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      },
+      {
+        C3_607445035535: '厂务经理',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      },
+      {
+        C3_607445035535: '经理',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      },
+      {
+        C3_607445035535: '总监',
+        C3_605718014873: '',
+        C3_605718009813: ''
+      }
+    ];
+    try {
+      approvalList = await http().getTable({
+        resid: '605717968873',
+        cmswhere: `C3_605717990563 = '${record.C3_605718092628}'`
+      });
+      this.setState({
+        approvalList: approvalList.data
+      });
+      // console.log('审批信息', approvalList.data);
+      approvalPeopleList.map((item, index) => {
+        const current = item.C3_607445035535;
+        const data = approvalList.data.filter(
+          item1 => item1.C3_607445035535 === current
+        );
+        // console.log('data', data);
+        // return {
+        //   item: { ...data }
+        // };
+        if (data.length === 1) {
+          // console.log('111');
+          // return {
+          //   item: data[0]
+          // };
+          item.C3_605718014873 = data[0].C3_605718014873;
+          item.C3_605718009813 = data[0].C3_605718009813;
+          item.C3_227192472953 = data[0].C3_227192472953;
+        }
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+    // console.log('approvalPeopleList', approvalPeopleList);
+    this.setState({
+      approvalList1: approvalPeopleList
+    });
+  };
+
+  doPrint = res => {
+    var currentHtml = window.document.body.innerHTML;
+    if (res === 'deliver') {
+      if (
+        window.document.getElementById('printDeliverForm').innerHTML != null
+      ) {
+        let bdHtml = window.document.getElementById('printDeliverForm')
+          .innerHTML;
+        window.document.body.innerHTML = bdHtml;
+        // console.log('获取打印');
+        window.print();
+        this.setState({
+          isPrint: false
+        });
+      }
+    } else if (res === 'builder') {
+      if (
+        window.document.getElementById('printBuilderForm').innerHTML != null
+      ) {
+        let bdHtml = window.document.getElementById('printBuilderForm')
+          .innerHTML;
+        window.document.body.innerHTML = bdHtml;
+        // console.log('获取打印');
+        window.print();
+        this.setState({
+          isPrint: false
+        });
+      }
+      window.document.body.innerHTML = currentHtml;
+    }
   };
 
   getapplyInfo = async () => {
@@ -827,7 +965,14 @@ export default class LzAFFOS extends React.Component {
       addWorkerVisible,
       selectTypeVisible,
       dataSource,
-      loading
+      loading,
+      isPrint,
+      printBuilderModal,
+      printDeliverModal,
+      approvalList1,
+      builderList,
+      deliverList,
+      record
     } = this.state;
     const { resids } = this.props;
 
@@ -1344,8 +1489,118 @@ export default class LzAFFOS extends React.Component {
           </TabPane>
           <TabPane tab="已审批" key="已审批">
             <div style={{ height: 'calc(100vh - 60px)' }}>
-              <TableData {...approved} />
+              <TableData
+                {...approved}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <Button
+                        style={{ width: '104px' }}
+                        onClick={() => {
+                          this.showRecord(record);
+                          this.setState({
+                            isPrint: true
+                          });
+                        }}
+                      >
+                        打印申请单
+                      </Button>
+                    );
+                  }
+                ]}
+              />
             </div>
+            {/* 施工人员打印模态框 */}
+            <Modal
+              width="61%"
+              visible={printBuilderModal}
+              title="施工申请审批"
+              onCancel={() => {
+                this.setState({
+                  printBuilderModal: false
+                });
+              }}
+              footer={[
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    console.log('开始打印');
+                    this.doPrint('builder');
+                    this.setState({
+                      isPrint: true
+                    });
+                  }}
+                >
+                  打印
+                </Button>,
+                <Button
+                  onClick={() => {
+                    this.setState({
+                      printBuilderModal: false,
+                      isPrint: false
+                    });
+                  }}
+                >
+                  关闭
+                </Button>
+              ]}
+            >
+              <div id="printBuilderForm">
+                <div className="printBody">
+                  <BuilderForm
+                    toBuilderFormInfo={{
+                      approvalInfo: record,
+                      builderList: builderList,
+                      approvalList: approvalList1
+                    }}
+                  />
+                </div>
+              </div>
+            </Modal>
+            {/* 送货人员打印模态框 */}
+            <Modal
+              width="61%"
+              visible={printDeliverModal}
+              title="送货申请审批"
+              onCancel={() => {
+                this.setState({
+                  printDeliverModal: false
+                });
+              }}
+              footer={[
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    console.log('开始打印');
+                    this.doPrint('deliver');
+                  }}
+                >
+                  打印
+                </Button>,
+                <Button
+                  onClick={() => {
+                    this.setState({
+                      printDeliverModal: false,
+                      isPrint: false
+                    });
+                  }}
+                >
+                  关闭
+                </Button>
+              ]}
+            >
+              <div id="printDeliverForm">
+                <div className="printBody">
+                  <DeliverForm
+                    toDeliverFormInfo={{
+                      approvalInfo: record,
+                      deliverList: deliverList,
+                      approvalList: approvalList1
+                    }}
+                  />
+                </div>
+              </div>
+            </Modal>
           </TabPane>
           <TabPane tab="已拒绝" key="已拒绝">
             <div style={{ height: 'calc(100vh - 60px)' }}>

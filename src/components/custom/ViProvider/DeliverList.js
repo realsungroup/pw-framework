@@ -112,31 +112,31 @@ class DeliverList extends React.Component {
     this.columns = [
       {
         title: '单位',
-        dataIndex: 'C3_605716301557',
+        dataIndex: 'C3_605719242129',
         editable: true,
         width: '20%'
       },
       {
         title: '司机姓名',
-        dataIndex: 'C3_605716828937',
+        dataIndex: 'C3_605719242294',
         editable: true,
         width: '10%'
       },
       {
         title: '证件类型',
-        dataIndex: 'C3_605716867680',
+        dataIndex: 'C3_605719242802',
         editable: true,
         width: '10%'
       },
       {
         title: '证件号码',
-        dataIndex: 'C3_614704116070',
+        dataIndex: 'C3_605719242955',
         editable: true,
         width: '30%'
       },
       {
         title: '车辆号码',
-        dataIndex: 'C3_645723303105',
+        dataIndex: 'carNum',
         editable: true,
         width: '20%'
       },
@@ -179,15 +179,15 @@ class DeliverList extends React.Component {
         const newInfo = {};
         newInfo.key = count + index;
         console.log('state', ctx.state.dataSource);
-        newInfo.C3_645723303105 = item.车辆号码;
-        newInfo.C3_605716828937 = item.司机姓名;
-        newInfo.C3_605716867680 = item.证件类型;
-        newInfo.C3_614704116070 = item.证件号码;
-        newInfo.C3_605716301557 = item.单位;
+        newInfo.carNum = item.车辆号码;
+        newInfo.C3_605719242294 = item.司机姓名;
+        newInfo.C3_605719242802 = item.证件类型;
+        newInfo.C3_605719242955 = item.证件号码;
+        newInfo.C3_605719242129 = item.单位;
         importData.push(newInfo);
       });
       ctx.setState({
-        dataSource: [...importData]
+        dataSource: [...importData, ...dataSource]
       });
     };
     reader.readAsArrayBuffer(file);
@@ -207,11 +207,11 @@ class DeliverList extends React.Component {
     const { count, dataSource } = this.state;
     const newData = {
       key: count,
-      C3_645723303105: ' ',
-      C3_605716828937: ' ',
-      C3_605716867680: ' ',
-      C3_614704116070: ' ',
-      C3_605716301557: ' '
+      carNum: ' ',
+      C3_605719242294: ' ',
+      C3_605719242802: ' ',
+      C3_605719242955: ' ',
+      C3_605719242129: ' '
     };
     this.setState({
       dataSource: [...dataSource, newData],
