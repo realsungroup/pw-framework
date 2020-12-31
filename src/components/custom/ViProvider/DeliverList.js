@@ -187,6 +187,7 @@ class DeliverList extends React.Component {
         importData.push(newInfo);
       });
       ctx.setState({
+        count: count + importData.length,
         dataSource: [...importData, ...dataSource]
       });
     };
