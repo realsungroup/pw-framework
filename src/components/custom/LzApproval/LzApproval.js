@@ -93,6 +93,7 @@ export default class LzApproval extends React.Component {
       this.setState({ showDeliverModal: true, record: record });
     } else {
       message.info('当前申请为一般访客，点击行内审批或拒绝即可审批');
+      this.setState({ isPrint: false });
     }
     //获取人员清单
     let peopleList;

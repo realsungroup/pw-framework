@@ -175,7 +175,7 @@ export const approved = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowModify: true,
+        hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
         subtractH: 196,

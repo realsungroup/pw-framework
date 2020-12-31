@@ -86,8 +86,7 @@ export const inApplication = {
         recordFormTabsWidth: '60%',
         isSetColumnWidth: true
       }
-    },
-
+    }
   ]
 };
 // 审批中
@@ -127,8 +126,8 @@ export const inExaminationAndApproval = {
         hasRowDelete: false,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 200,
-        noWidthFieldsIndex: [1]
+        actionBarWidth: 200
+        // noWidthFieldsIndex: [1]
       }
     },
     {
@@ -138,9 +137,31 @@ export const inExaminationAndApproval = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
-        hasRowView: true
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        height: 500,
+        subtractH: 196
       }
     }
+    // {
+    //   subTableName: '审批记录',
+    //   subResid: 605989494375,
+    //   tableProps: {
+    //     hasAdd: false,
+    //     hasModify: false,
+    //     hasDelete: false,
+    //     hasRowModify: false,
+    //     hasRowView: false,
+    //     hasRowDelete: false,
+    //     height: 500,
+    //     subtractH: 196
+    //     // hasAdd: false,
+    //     // hasModify: false,
+    //     // hasDelete: false,
+    //     // hasRowView: true
+    //   }
+    // }
   ]
 };
 // 已审批
@@ -191,9 +212,11 @@ export const approved = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
+        hasRowModify: false,
         hasRowView: false,
+        hasRowDelete: false,
         height: 400,
-        subtractH: 196,
+        subtractH: 196
       }
     }
   ]
@@ -247,9 +270,11 @@ export const refused = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
+        hasRowModify: false,
         hasRowView: false,
+        hasRowDelete: false,
         subtractH: 220,
-        height: 400,
+        height: 400
       }
     }
   ]
@@ -303,10 +328,11 @@ export const history = {
         hasAdd: false,
         hasModify: false,
         hasDelete: false,
+        hasRowModify: false,
         hasRowView: false,
+        hasRowDelete: false,
         subtractH: 196,
-        height: 400,
-
+        height: 400
       }
     }
   ]

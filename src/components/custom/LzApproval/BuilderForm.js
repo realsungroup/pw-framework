@@ -603,37 +603,40 @@ class BuildApprovlForm extends React.Component {
                   </label>
                 </th>
               </tr>
-              <tr>
-                <th colSpan="2">
-                  <label>40-厂务经理审批</label>
-                </th>
-                <th>
-                  <label>FAC_Manager</label>
-                </th>
-                <th className="thCss">
-                  <label>{approvalInfo.FAC_Manager}</label>
-                  {/* {getFieldDecorator('FAC_Manager', {
+              {approvalList.length > 1 &&
+                (approvalList[3].C3_605718009813 !== '' && (
+                  <tr>
+                    <th colSpan="2">
+                      <label>40-厂务经理审批</label>
+                    </th>
+                    <th>
+                      <label>FAC_Manager</label>
+                    </th>
+                    <th className="thCss">
+                      <label>{approvalInfo.FAC_Manager}</label>
+                      {/* {getFieldDecorator('FAC_Manager', {
                     initialValue: approvalInfo.FAC_Manager
                   })(<Input disabled />)} */}
-                </th>
-                <th className="thCss">
-                  <label>
-                    {approvalList.length > 1
-                      ? approvalList[3].C3_605718009813
-                      : null}
-                  </label>
-                </th>
-                <th>
-                  <label></label>
-                </th>
-                <th colSpan="3">
-                  <label>
-                    {approvalList.length > 1
-                      ? approvalList[3].C3_605718014873
-                      : null}
-                  </label>
-                </th>
-              </tr>
+                    </th>
+                    <th className="thCss">
+                      <label>
+                        {approvalList.length > 1
+                          ? approvalList[3].C3_605718009813
+                          : null}
+                      </label>
+                    </th>
+                    <th>
+                      <label></label>
+                    </th>
+                    <th colSpan="3">
+                      <label>
+                        {approvalList.length > 1
+                          ? approvalList[3].C3_605718014873
+                          : null}
+                      </label>
+                    </th>
+                  </tr>
+                ))}
               <tr>
                 <th colSpan="2">
                   <label>30-厂务工程师审批</label>

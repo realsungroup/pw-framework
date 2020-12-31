@@ -201,7 +201,7 @@ class LzAFFOSPeopleList extends React.Component {
       });
       // console.log('import', importData);
       ctx.setState({
-        dataSource: [...importData]
+        dataSource: [...importData, ...dataSource]
       });
     };
     // console.log('外面import', importData);
