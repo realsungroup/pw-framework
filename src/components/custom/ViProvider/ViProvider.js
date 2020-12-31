@@ -179,6 +179,7 @@ export default class ViProvider extends React.Component {
       console.log(error);
       message.info(error);
     }
+    this.tableDataRef.handleRefresh();
   };
 
   render() {

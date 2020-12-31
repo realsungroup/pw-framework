@@ -257,6 +257,7 @@ class DeliverPeopleList extends React.Component {
       });
       // console.log('import', importData);
       ctx.setState({
+        count: count + importData.length,
         dataSource: [...importData, ...dataSource]
       });
     };
