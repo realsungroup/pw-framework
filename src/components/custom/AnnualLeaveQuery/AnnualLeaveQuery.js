@@ -29,9 +29,9 @@ class AnnualLeaveQuery extends React.Component {
 				<TabPane tab="使用概括" key="1">
 					<Summary baseURL={baseURL} subResid={员工年假使用明细表} resid={员工年假季度账户表} userCode={UserCode} />
 				</TabPane>
-				{/* <TabPane tab="使用明细" key="2">
+				<TabPane tab="使用明细" key="2">
 					<Detail baseURL={baseURL} resid={员工年假使用明细表} userCode={UserCode} />
-				</TabPane> */}
+				</TabPane>
 			</Tabs>
 		</div>
 	}
@@ -49,7 +49,6 @@ const styles = {
 // 输出base64编码
 const base64 = s => window.btoa(unescape(encodeURIComponent(s)));
 const tableToExcel = (str) => {
-	console.log(str)
 	// Worksheet名
 	const worksheet = '员工年假'
 	const uri = 'data:application/vnd.ms-excel;base64,';
@@ -96,7 +95,18 @@ class Summary extends React.PureComponent {
 			key: 'hjky',
 			// width: 120,
 		},
-
+		{
+			title: '剩余可用年假',
+			dataIndex: 'synj',
+			key: 'synj',
+			// width: 120,
+		},
+		{
+			title: '累积申请',
+			dataIndex: 'ljsq',
+			key: 'ljsq',
+			// width: 120,
+		},
 		{
 			title: '当季分配年假天数',
 			children: [
@@ -167,11 +177,18 @@ class Summary extends React.PureComponent {
 			title: '操作',
 			key: 'action',
 			render: (text, record) => (
-				<span className="table-action--view" onClick={() => {
-					this.setState({ selectedRecord: record, subTableModalVisible: true })
-				}}>
-					查看明细
+				<>
+					<span className="table-action--view" onClick={() => {
+						this.setState({ selectedRecord: record, subTableModalVisible: true })
+					}}>
+						使用明细
+					</span>
+					<span className="table-action--view" onClick={() => {
+						this.setState({ selectedRecord: record, subTableModalVisible: true })
+					}}>
+						交易明细
 				</span>
+				</>
 			),
 		},
 	];
@@ -209,13 +226,12 @@ class Summary extends React.PureComponent {
 			message.error(error.message)
 		}
 	}
+
 	calcAnnualLeaves = memoize((startYear, startQuarter, endYear, endQuarter, allAnnualLeaveQuery = []) => {
 		return allAnnualLeaveQuery.filter((item) => {
 			return item.year >= startYear && item.quarter >= startQuarter && item.year <= endYear && item.quarter <= endQuarter
 		})
 	})
-
-
 
 	render() {
 		const { selectedRecord, allAnnualLeaveQuery, years, startQuarter, startYear, endQuarter, endYear, subTableModalVisible } = this.state;
@@ -355,6 +371,8 @@ class Detail extends React.PureComponent {
 					let cmswhere = this.state.cmswhere;
 					if (dateString[0] && dateString[1]) {
 						cmswhere = ` and startBreak >= '${dateString[0]}' and startBreak <= '${dateString[1]}'`
+					} else {
+						cmswhere = ''
 					}
 					this.setState({
 						cmswhere
@@ -362,7 +380,21 @@ class Detail extends React.PureComponent {
 				}}></RangePicker>
 			</div>
 			<div>
-
+				<TableData
+					resid={resid}
+					baseURL={baseURL}
+					subtractH={200}
+					hasAdd={false}
+					hasModify={false}
+					hasDelete={false}
+					hasRowEdit={false}
+					hasRowModify={false}
+					hasRowView={true}
+					hasRowDelete={false}
+					actionBarWidth={100}
+					height={500}
+					cmswhere={`numberID = '${userCode}' ${cmswhere}`}
+				/>
 			</div>
 		</div>
 	}

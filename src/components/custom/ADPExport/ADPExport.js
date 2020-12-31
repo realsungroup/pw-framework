@@ -149,26 +149,26 @@ class ADPExport extends React.Component {
                 if (record[column.filed]) {
                   let row = `P${column.number2}|"${
                     record.personnuumber
-                  }|"CN|"|"INS|"${column.number2}|"${column.number1}|"${
+                    }|"CN|"|"INS|"${column.number2}|"${column.number1}|"${
                     record.C3_659465238204
-                  }|"${
+                    }|"${
                     column.isSameBegin ? record.C3_659465238204 : '99991231'
-                  }|"|"|"|"|"${column.number1}|"`;
+                    }|"|"|"|"|"${column.number1}|"`;
                   if (column.isFront) {
                     row += `${
                       record[column.filed] ? record[column.filed] : ''
-                    }|"CNY|"|"|"|"|"|"|"|"|"\n`;
+                      }|"CNY|"|"|"|"|"|"|"|"|"\n`;
                   } else {
                     row += `|"|"|"|"CNY|"${
                       record[column.filed] ? record[column.filed] : ''
-                    }|"|"|"|"|"\n`;
+                      }|"|"|"|"|"\n`;
                   }
                   data += row;
                   counts++;
                 }
               });
-              // data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"|"${record.C3_659465238204}|"99991231|"|"|"|"|"|"|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"\n`;
-              // counts++;
+              data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"|"${record.C3_659465238204}|"99991231|"|"|"|"|"|"|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"\n`;
+              counts++;
             }
           });
           data += `TRAIL|"${counts}`;
@@ -205,8 +205,8 @@ class ADPExport extends React.Component {
             cmswhere={
               yearMonth
                 ? `YEARMONTH = '${yearMonth.format(
-                    'YYYYMM'
-                  )}' and DEPT1ID = '${company}' and C3_429786712779 = 'Y'`
+                  'YYYYMM'
+                )}' and DEPT1ID = '${company}' and C3_429786712779 = 'Y'`
                 : ''
             }
             subtractH={200}
