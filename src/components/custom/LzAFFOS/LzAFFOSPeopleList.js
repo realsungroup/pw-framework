@@ -249,7 +249,21 @@ class LzAFFOSPeopleList extends React.Component {
 
   //向父组件发送施工人员名单
   sendBuilderList = () => {
-    this.props.parent.getBuilderList(this, this.state.dataSource);
+    this.state.dataSource.map((item, index) => {
+      if (!/^1[345678]\d{9}$/.test(item.C3_606412134505)) {
+        message.info(`${item.C3_605716828937}的手机号码有误，请重新填写`);
+        return;
+      } else if (
+        !/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(
+          item.C3_614704116070
+        )
+      ) {
+        message.info(`${item.C3_605716828937}的证件号码有误，请重新填写`);
+        return;
+      } else {
+        this.props.parent.getBuilderList(this, this.state.dataSource);
+      }
+    });
   };
 
   render() {

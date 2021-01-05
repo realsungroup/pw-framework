@@ -55,8 +55,8 @@ export default class ViProvider extends React.Component {
       showDeliverModal: false,
       deliverList: [],
       showDeliverPeopleListModal: false,
-      C3_605719340594: '',
-      C3_605719340781: '',
+      C3_605719340594: moment(),
+      C3_605719340781: moment(),
       C3_605718146773: '',
       C3_605718133807: '送货人员'
     };
@@ -202,7 +202,7 @@ export default class ViProvider extends React.Component {
             </div>
           </TabPane> */}
 
-          <TabPane tab="审批中" key="审批中">
+          <TabPane tab="申请中" key="审批中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
                 {...inExaminationAndApproval}
@@ -294,16 +294,18 @@ export default class ViProvider extends React.Component {
                         </th>
                       </tr>
                       <tr>
-                        <th colSpan="2">
+                        <th colSpan="3">
                           <label>
-                            有效开始时间<font color="red">*</font>
+                            有效开始时间(时长为3个月)<font color="red">*</font>
                           </label>
                         </th>
-                        <th colSpan="3">
+                        <th colSpan="2">
                           <DatePicker
+                            defaultValue={this.state.C3_605719340594}
                             onChange={date => {
                               this.setState({
-                                C3_605719340594: moment(date).format('HH:mm')
+                                C3_605719340594: moment(date),
+                                C3_605719340781: moment(date).add(3, 'month')
                               });
                             }}
                           />
@@ -315,11 +317,8 @@ export default class ViProvider extends React.Component {
                         </th>
                         <th colSpan="2">
                           <DatePicker
-                            onChange={date => {
-                              this.setState({
-                                C3_605719340781: moment(date).format('HH:mm')
-                              });
-                            }}
+                            value={this.state.C3_605719340781}
+                            disabled
                           />
                         </th>
                       </tr>

@@ -100,6 +100,7 @@ export default class LzAFFOS extends React.Component {
       approvalList1: [],
       builderList: [],
       deliverList: [],
+      cms: '', //选择审批人员时额外添加的条件
       record: {},
       approvalPeopleList: [
         {
@@ -514,7 +515,8 @@ export default class LzAFFOS extends React.Component {
   changeConductor = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 5
+      selectApprovalKey: 5,
+      cms: 'S10'
     });
   };
 
@@ -522,7 +524,8 @@ export default class LzAFFOS extends React.Component {
   changeManagerSpecial = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 4
+      selectApprovalKey: 4,
+      cms: 'S8'
     });
   };
 
@@ -998,7 +1001,7 @@ export default class LzAFFOS extends React.Component {
             </div>
           </TabPane> */}
 
-          <TabPane tab="审批中" key="审批中">
+          <TabPane tab="申请中" key="审批中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
                 {...inExaminationAndApproval}
@@ -1040,11 +1043,11 @@ export default class LzAFFOS extends React.Component {
                       <Button
                         onClick={() => {
                           this.getapplyInfo();
-                          this.setState({ showJungleLongDeliverModal: true });
-                          // console.log(
-                          //   '访客',
-                          //   this.state.showDeliverApprovalModal
-                          // );
+                          this.setState({
+                            showJungleLongDeliverModal: true,
+                            isLongDeliver: false,
+                            showDeliverApprovalModal: true
+                          });
                         }}
                       >
                         请填写送货人员基本信息
@@ -1084,7 +1087,7 @@ export default class LzAFFOS extends React.Component {
             </Modal>
 
             {/* 选择是否长期送货人员 */}
-            <Modal
+            {/* <Modal
               title="请选择是否长期送货人员"
               visible={this.state.showJungleLongDeliverModal}
               onOk={() => {
@@ -1125,7 +1128,7 @@ export default class LzAFFOS extends React.Component {
                   </Radio.Group>
                 </div>
               )}
-            </Modal>
+            </Modal> */}
 
             {/* 选择受影响部门模态框 */}
             <Modal

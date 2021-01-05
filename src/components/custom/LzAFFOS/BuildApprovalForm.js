@@ -37,13 +37,28 @@ class BuildApprovlForm extends React.Component {
   };
 
   //比较时间间隔是否超过15天
-  checkTime = () => {
+  disabledTime = current => {
+    const workDate1 = this.props.form.getFieldValue('C3_605703980025');
     if (this.props.form.getFieldValue('isLong') === '长期施工') {
-      const workDate1 = this.props.form.getFieldValue('C3_605703980025');
-      const workDate2 = this.props.form.getFieldValue('C3_605703992046');
+      const workDate3 = moment(workDate1).add(15, 'd');
+      return current && current > workDate3;
+    } else {
+      const workDate4 = moment(workDate1).add(7, 'd');
+      return current && current > workDate4;
+    }
+  };
+  checkTime = () => {
+    const workDate1 = this.props.form.getFieldValue('C3_605703980025');
+    const workDate2 = this.props.form.getFieldValue('C3_605703992046');
+    if (this.props.form.getFieldValue('isLong') === '长期施工') {
       const workDate3 = moment(workDate1).add(15, 'd');
       if (moment(workDate3).isBefore(workDate2, 'day')) {
         message.info('施工时间不得超过15天');
+      }
+    } else {
+      const workDate4 = moment(workDate1).add(7, 'd');
+      if (moment(workDate4).isBefore(workDate2, 'day')) {
+        message.info('施工时间不得超过7天');
       }
     }
   };
@@ -71,7 +86,7 @@ class BuildApprovlForm extends React.Component {
     return (
       <Modal
         title="施工申请"
-        width="61%"
+        width="90%"
         visible={showBuilderModal}
         destroyOnClose
         onCancel={() => {
@@ -111,7 +126,8 @@ class BuildApprovlForm extends React.Component {
                       ]
                     })(
                       <Input
-                        placeholder="请选择"
+                        disabled
+                        placeholder="自动获取"
                         onClick={() => {
                           this.props.changeApply();
                         }}
@@ -134,10 +150,16 @@ class BuildApprovlForm extends React.Component {
                           message: '请输入该信息'
                         }
                       ]
-                    })(<Input autoComplete="off" />)}
+                    })(
+                      <Input
+                        disabled
+                        placeholder="自动获取"
+                        autoComplete="off"
+                      />
+                    )}
                   </th>
                 </tr>
-                <tr>
+                {/* <tr>
                   <th colSpan="2">
                     <label>
                       来访单位<font color="red">*</font>
@@ -170,7 +192,7 @@ class BuildApprovlForm extends React.Component {
                       ]
                     })(<Input autoComplete="off" />)}
                   </th>
-                </tr>
+                </tr> */}
                 <tr>
                   <th>
                     <label>
@@ -192,28 +214,12 @@ class BuildApprovlForm extends React.Component {
                 <tr>
                   <th colSpan="2">
                     <label>
-                      机台名称或作业地点<font color="red">*</font>
+                      施工管理部门<font color="red">*</font>
                     </label>
                   </th>
                   <th>
-                    {getFieldDecorator('platformOrPlace', {
-                      initialValue: '',
-                      rules: [
-                        {
-                          required: true,
-                          message: '请输入该信息'
-                        }
-                      ]
-                    })(<Input autoComplete="off" />)}
-                  </th>
-                  <th colSpan="2">
-                    <label>
-                      是否为长期作业(最长十四日)<font color="red">*</font>
-                    </label>
-                  </th>
-                  <th colSpan="1">
-                    {getFieldDecorator('isLong', {
-                      initialValue: '',
+                    {getFieldDecorator('buildArrangeDept', {
+                      initialValue: dept,
                       rules: [
                         {
                           required: true,
@@ -221,10 +227,25 @@ class BuildApprovlForm extends React.Component {
                         }
                       ]
                     })(
-                      <Select className="selectCss">
-                        <Option value="长期施工">长期施工</Option>
-                        <Option value="临时施工">临时施工</Option>
-                      </Select>
+                      <Input
+                        placeholder="请选择"
+                        onClick={this.props.openDeptModal}
+                        autoComplete="off"
+                      />
+                    )}
+                  </th>
+                  <th colSpan="2">
+                    <label>受施工影响部门</label>
+                  </th>
+                  <th>
+                    {getFieldDecorator('influentedDepa', {
+                      initialValue: ''
+                    })(
+                      <Input
+                        placeholder="请选择"
+                        onClick={this.props.openDeptModal}
+                        autoComplete="off"
+                      />
                     )}
                   </th>
                   <th colSpan="2">
@@ -248,6 +269,34 @@ class BuildApprovlForm extends React.Component {
                 <tr>
                   <th colSpan="2">
                     <label>
+                      机台名称或作业地点<font color="red">*</font>
+                    </label>
+                  </th>
+                  <th colSpan="3">
+                    {getFieldDecorator('platformOrPlace', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入该信息'
+                        }
+                      ]
+                    })(<Input autoComplete="off" />)}
+                  </th>
+                  <th colSpan="2">
+                    <label>
+                      是否为长期作业(最长十四日)<font color="red">*</font>
+                    </label>
+                  </th>
+                  <th colSpan="2">
+                    {getFieldDecorator('isLong', {
+                      initialValue: isLongBuilder ? '长期施工' : '临时施工'
+                    })(<Input disabled></Input>)}
+                  </th>
+                </tr>
+                <tr>
+                  <th colSpan="2">
+                    <label>
                       申请作业时间<font color="red">*</font>
                     </label>
                   </th>
@@ -260,7 +309,12 @@ class BuildApprovlForm extends React.Component {
                           message: '请输入该信息'
                         }
                       ]
-                    })(<DatePicker style={{ width: '45%' }} />)}
+                    })(
+                      <DatePicker
+                        onOpenChange={this.checkTime()}
+                        style={{ width: '45%' }}
+                      />
+                    )}
                     ~
                     {getFieldDecorator('C3_605703992046', {
                       initialValue: initialMoment,
@@ -272,6 +326,7 @@ class BuildApprovlForm extends React.Component {
                       ]
                     })(
                       <DatePicker
+                        disabledDate={this.disabledTime}
                         onOpenChange={this.checkTime()}
                         style={{ width: '45%' }}
                       />
@@ -309,31 +364,9 @@ class BuildApprovlForm extends React.Component {
                   </th>
                 </tr>
                 <tr>
-                  <th colSpan="2">
-                    <label>
-                      施工管理部门<font color="red">*</font>
-                    </label>
-                  </th>
-                  <th>
-                    {getFieldDecorator('buildArrangeDept', {
-                      initialValue: dept,
-                      rules: [
-                        {
-                          required: true,
-                          message: '请输入该信息'
-                        }
-                      ]
-                    })(
-                      <Input
-                        placeholder="请选择"
-                        onClick={this.props.openDeptModal}
-                        autoComplete="off"
-                      />
-                    )}
-                  </th>
                   <th colSpan="1">
                     <label>
-                      Finisar施工/作业负责人<font color="red">*</font>
+                      厂务负责工程师<font color="red">*</font>
                     </label>
                   </th>
                   <th>
@@ -363,6 +396,20 @@ class BuildApprovlForm extends React.Component {
                   </th>
                   <th colSpan="3">
                     {getFieldDecorator('factoryEngineerTel', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入该信息'
+                        }
+                      ]
+                    })(<Input autoComplete="off" />)}
+                  </th>
+                  <th>
+                    <label>负责人邮箱</label>
+                  </th>
+                  <th colSpan="3">
+                    {getFieldDecorator('factoryMail', {
                       initialValue: '',
                       rules: [
                         {
@@ -643,11 +690,72 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
                     </tr>
+                    {this.props.form.getFieldValue('specialLicence') ===
+                    '是' ? (
+                      <>
+                        <tr>
+                          <th colSpan="2">
+                            <label>涉及特种作业许可证1</label>
+                          </th>
+                          <th>
+                            {getFieldDecorator('specialOne', {
+                              initialValue: ''
+                            })(
+                              <Select className="selectCss">
+                                <Option value="登高作业">登高作业</Option>
+                                <Option value="吊装作业">吊装作业</Option>
+                                <Option value="动火作业">动火作业</Option>
+                                <Option value="挂牌作业">挂牌作业</Option>
+                                <Option value="密封空间作业">
+                                  密封空间作业
+                                </Option>
+                              </Select>
+                            )}
+                          </th>
+                          <th colSpan="2">
+                            <label>涉及特种作业许可证2</label>
+                          </th>
+                          <th>
+                            {getFieldDecorator('specialTwo', {
+                              initialValue: ''
+                            })(
+                              <Select className="selectCss">
+                                <Option value="登高作业">登高作业</Option>
+                                <Option value="吊装作业">吊装作业</Option>
+                                <Option value="动火作业">动火作业</Option>
+                                <Option value="挂牌作业">挂牌作业</Option>
+                                <Option value="密封空间作业">
+                                  密封空间作业
+                                </Option>
+                              </Select>
+                            )}
+                          </th>
+                          <th colSpan="2">
+                            <label>涉及特种作业许可证3</label>
+                          </th>
+                          <th>
+                            {getFieldDecorator('specialThree', {
+                              initialValue: ''
+                            })(
+                              <Select className="selectCss">
+                                <Option value="登高作业">登高作业</Option>
+                                <Option value="吊装作业">吊装作业</Option>
+                                <Option value="动火作业">动火作业</Option>
+                                <Option value="挂牌作业">挂牌作业</Option>
+                                <Option value="密封空间作业">
+                                  密封空间作业
+                                </Option>
+                              </Select>
+                            )}
+                          </th>
+                        </tr>
+                      </>
+                    ) : null}
+
                     <tr>
                       <th colSpan="3">
                         <label>
