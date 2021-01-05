@@ -132,8 +132,8 @@ class TableDataVisitorG extends React.Component {
         this.props.closeRecordForm();
       },
       recordFormContainerProps: {
-        height: 600,
-        placement: 'bottom',
+        placement: 'right',
+        width: 820,
         onClose: () => {
           this.setState({
             record: null
@@ -141,6 +141,7 @@ class TableDataVisitorG extends React.Component {
           this.props.closeRecordForm();
         }
       },
+      useAbsolute: true,
       formProps: {
         height: 500
       },
@@ -153,7 +154,8 @@ class TableDataVisitorG extends React.Component {
             height: 600,
             hasAdd: true,
             hasModify: false,
-            hasDelete: false
+            hasDelete: false,
+            subtractH: 185
           }
         }
       ],
@@ -204,6 +206,7 @@ class TableDataVisitorG extends React.Component {
               </Button>
             );
           }}
+          recordFormUseAbsolute={true}
         />
         <Modal
           title="填写登记单"

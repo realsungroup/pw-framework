@@ -516,7 +516,7 @@ export default class LzAFFOS extends React.Component {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 5,
-      cms: 'S10'
+      cms: 663098123864
     });
   };
 
@@ -525,7 +525,7 @@ export default class LzAFFOS extends React.Component {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 4,
-      cms: 'S8'
+      cms: 663097802792
     });
   };
 
@@ -533,7 +533,8 @@ export default class LzAFFOS extends React.Component {
   changeManager = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 3
+      selectApprovalKey: 3,
+      cms: 227186227531
     });
   };
 
@@ -541,7 +542,8 @@ export default class LzAFFOS extends React.Component {
   changeEngineer = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 2
+      selectApprovalKey: 2,
+      cms: 227186227531
     });
   };
 
@@ -549,7 +551,8 @@ export default class LzAFFOS extends React.Component {
   changeEffect = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 1
+      selectApprovalKey: 1,
+      cms: 227186227531
     });
   };
 
@@ -557,7 +560,8 @@ export default class LzAFFOS extends React.Component {
   changeApply = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 0
+      selectApprovalKey: 0,
+      cms: 227186227531
     });
   };
 
@@ -1004,6 +1008,7 @@ export default class LzAFFOS extends React.Component {
           <TabPane tab="申请中" key="审批中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
+                recordFormUseAbsolute={true}
                 {...inExaminationAndApproval}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
@@ -1460,7 +1465,7 @@ export default class LzAFFOS extends React.Component {
                 }}
               >
                 <TableData
-                  resid={227186227531}
+                  resid={this.state.cms}
                   hasRowView={false}
                   subtractH={220}
                   hasAdd={false}
