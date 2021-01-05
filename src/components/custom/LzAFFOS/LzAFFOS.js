@@ -40,6 +40,19 @@ import {
 const TabPane = Tabs.TabPane;
 const { RangePicker } = DatePicker;
 const { Option } = Select;
+const emptyApprovalPeopleList = []; //存放审批人员的空数组
+for (let i = 0; i < 6; i++) {
+  emptyApprovalPeopleList.push({
+    C3_227212499515: '',
+    C3_605717998409: '',
+    C3_605718032582: '',
+    C3_607445034147: '',
+    C3_607445035535: '',
+    C3_607445036471: '',
+    C3_607445037719: '',
+    C3_607445040215: ''
+  });
+}
 // const {format} = moment;
 
 //申请人员数据
@@ -91,7 +104,6 @@ export default class LzAFFOS extends React.Component {
       deliverTime: '', //长期送过货时间
       searchDepaV: false, //控制选择部门模态框按钮
       applyNum: '', //审批人编号，从localStorage获取
-      searchDepaV: false, //选择受影响部门的模态框
       loading: false, //是否处于缓冲状态
       isPrint: false, //是否打印
       printDeliverModal: false, //打印模态框
@@ -102,69 +114,11 @@ export default class LzAFFOS extends React.Component {
       deliverList: [],
       cms: '', //选择审批人员时额外添加的条件
       record: {},
-      approvalPeopleList: [
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        }
-      ], //审批人清单
+      approvalPeopleList: emptyApprovalPeopleList, //审批人清单
       changeApproveModal: false, //选择审批人模态框
+      kindOfDept: '', //受影响部门还是施工管理部门
+      dept: '', //受影响部门
+      influentedDepa: '', //受影响部门
       selectApprovalKey: 0 //选择审批人的序号
     };
     this.abnormalRef = React.createRef();
@@ -179,9 +133,10 @@ export default class LzAFFOS extends React.Component {
     this.setState({ activeKey });
   };
 
-  openDeptModal = () => {
+  openDeptModal = value => {
     this.setState({
-      searchDepaV: true
+      searchDepaV: true,
+      kindOfDept: value
     });
   };
 
@@ -252,21 +207,12 @@ export default class LzAFFOS extends React.Component {
       this.setState({
         approvalList: approvalList.data
       });
-      // console.log('审批信息', approvalList.data);
       approvalPeopleList.map((item, index) => {
         const current = item.C3_607445035535;
         const data = approvalList.data.filter(
           item1 => item1.C3_607445035535 === current
         );
-        // console.log('data', data);
-        // return {
-        //   item: { ...data }
-        // };
         if (data.length === 1) {
-          // console.log('111');
-          // return {
-          //   item: data[0]
-          // };
           item.C3_605718014873 = data[0].C3_605718014873;
           item.C3_605718009813 = data[0].C3_605718009813;
           item.C3_227192472953 = data[0].C3_227192472953;
@@ -275,7 +221,6 @@ export default class LzAFFOS extends React.Component {
     } catch (error) {
       message.error(error.message);
     }
-    // console.log('approvalPeopleList', approvalPeopleList);
     this.setState({
       approvalList1: approvalPeopleList
     });
@@ -290,7 +235,6 @@ export default class LzAFFOS extends React.Component {
         let bdHtml = window.document.getElementById('printDeliverForm')
           .innerHTML;
         window.document.body.innerHTML = bdHtml;
-        // console.log('获取打印');
         window.print();
         this.setState({
           isPrint: false
@@ -303,7 +247,6 @@ export default class LzAFFOS extends React.Component {
         let bdHtml = window.document.getElementById('printBuilderForm')
           .innerHTML;
         window.document.body.innerHTML = bdHtml;
-        // console.log('获取打印');
         window.print();
         this.setState({
           isPrint: false
@@ -328,8 +271,9 @@ export default class LzAFFOS extends React.Component {
       applyarr.C3_605718032582 = apply.data[0].C3_305737857578;
       applyarr.C3_607445035535 = '申请人';
       applyarr.num = apply.data[0].C3_227192472953;
-      const newapprovalPeopleList = [
-        {
+      const newapprovalPeopleList = [];
+      for (let i = 0; i < 5; i++) {
+        newapprovalPeopleList.push({
           C3_227212499515: '',
           C3_605717998409: '',
           C3_605718032582: '',
@@ -338,48 +282,8 @@ export default class LzAFFOS extends React.Component {
           C3_607445036471: '',
           C3_607445037719: '',
           C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        }
-      ];
+        });
+      }
       this.setState({
         approvalPeopleList: [applyarr, ...newapprovalPeopleList]
       });
@@ -460,7 +364,6 @@ export default class LzAFFOS extends React.Component {
       dataSource: msg,
       showPeopleListModal: false
     });
-    // console.log(result, msg);
   };
 
   //获取施工申请表单数据
@@ -468,18 +371,12 @@ export default class LzAFFOS extends React.Component {
     this.setState({
       value: values
     });
-    // console.log('触发获取values');
-    // console.log('父result', result, '父state', this.state.value);
-    // console.log('this.state.value:', this.state.value);
   };
   //获取送货申请表单数据
   getValuesDeliver = async (result, values) => {
     await this.setState({
       value: values
     });
-    // console.log('触发获取values');
-    // console.log('父result', result, '父state', this.state.value);
-    // console.log('this.state.value:', this.state.value);
     this.submitAllDeliverData();
   };
 
@@ -574,49 +471,35 @@ export default class LzAFFOS extends React.Component {
 
   // 审批人确认时更改
   changeAppMem = v => {
-    // console.log(this.state.selectApprovalKey, v, this.state.approvalPeopleList);
     var obj = this.state.approvalPeopleList;
     obj[this.state.selectApprovalKey].C3_227212499515 = v.C3_227212499515; //所属部门
     obj[this.state.selectApprovalKey].C3_605717998409 = v.C3_227192484125; //姓名
     obj[this.state.selectApprovalKey].C3_605718032582 = v.C3_305737857578; //人员编号
-    // obj[this.state.selectApprovalKey].C3_607445036471 =
-    //   this.state.selectApprovalKey + 1; //序号
-    // obj[
-    //   this.state.selectApprovalKey
-    // ].C3_607445037719 = this.state.selectApprovalKey; //上级序号
     obj[this.state.selectApprovalKey].num = v.C3_227192472953; //工号
     obj[this.state.selectApprovalKey].C3_607445040215 = v.C3_227192496109;
+    obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
     switch (this.state.selectApprovalKey) {
       case 0:
-        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
         obj[this.state.selectApprovalKey].C3_607445035535 = '申请人';
         break;
       case 1:
-        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
         obj[this.state.selectApprovalKey].C3_607445035535 =
           '受施工影响部门负责人';
         break;
       case 2:
-        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
         obj[this.state.selectApprovalKey].C3_607445035535 = '厂务负责工程师';
         break;
       case 3:
-        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
         obj[this.state.selectApprovalKey].C3_607445035535 = '厂务经理';
         break;
       case 4:
-        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
         obj[this.state.selectApprovalKey].C3_607445035535 = '经理';
         break;
       case 5:
-        obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
         obj[this.state.selectApprovalKey].C3_607445035535 = '总监';
         break;
     }
     this.setState({ approvalPeopleList: obj, changeApproveModal: false });
-    // console.log(this.state.approvalPeopleList);
-    // console.log('this.state.dataSource:', this.state.dataSource);
-    // console.log('this.state.value:', this.state.value);
   };
 
   submitAllData = async () => {
@@ -705,72 +588,9 @@ export default class LzAFFOS extends React.Component {
       message.info(err.message);
       return err.message;
     }
-
-    console.log(res2);
     this.setState({
       value: {},
-      approvalPeopleList: [
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        }
-      ]
+      approvalPeopleList: emptyApprovalPeopleList
     });
     this.tableDataRef.handleRefresh();
     this.setState({
@@ -791,7 +611,6 @@ export default class LzAFFOS extends React.Component {
       deliverList: msg,
       showDeliverPeopleListModal: false
     });
-    // console.log(result, 'msg', msg);
   };
 
   //打开送货人员清单编辑页面
@@ -811,8 +630,8 @@ export default class LzAFFOS extends React.Component {
     const isApply = ({ C3_607445035535 }) => C3_607445035535 !== '申请人';
     const newAppList1 = this.state.approvalPeopleList.filter(isEmpty);
     const newAppList = newAppList1.filter(isApply);
+
     //审批表需要额外添加数据
-    // console.log('是否已获取value', this.state.value);
     const extra = {};
     extra.maxProcess = newAppList.length; //最大审批节点
     extra.C3_605703779087 = this.state.value.C3_605703779087; //申请人姓名
@@ -824,7 +643,6 @@ export default class LzAFFOS extends React.Component {
     extra.C3_605703930741 = this.state.value.C3_605703930741; //访问区域
     extra.C3_605703980025 = this.state.value.C3_605703980025; //有效开始日期
     extra.C3_605703992046 = this.state.value.C3_605703980025; //有效结束日期
-    // console.log('extra', extra);
     const list = newAppList.map((item, index) => {
       if (index === 0) {
         item.C3_605718009813 = 'waiting';
@@ -893,71 +711,9 @@ export default class LzAFFOS extends React.Component {
       message.info(err.message);
       return err.message;
     }
-    console.log(res2);
     this.setState({
       value: {},
-      approvalPeopleList: [
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        },
-        {
-          C3_227212499515: '',
-          C3_605717998409: '',
-          C3_605718032582: '',
-          C3_607445034147: '',
-          C3_607445035535: '',
-          C3_607445036471: '',
-          C3_607445037719: '',
-          C3_607445040215: ''
-        }
-      ]
+      approvalPeopleList: emptyApprovalPeopleList
     });
     this.tableDataRef.handleRefresh();
     this.setState({
@@ -1081,7 +837,6 @@ export default class LzAFFOS extends React.Component {
                 </label>
                 <Radio.Group
                   onChange={e => {
-                    // console.log('是否长期施工人员', e.target.value);
                     this.setState({ isLongBuilder: e.target.value });
                   }}
                 >
@@ -1171,11 +926,19 @@ export default class LzAFFOS extends React.Component {
                       return (
                         <Button
                           onClick={() => {
-                            // console.log('record', record.DEP_NAME);
-                            this.setState({
-                              searchDepaV: false,
-                              dept: record.DEP_NAME
-                            });
+                            if (this.state.kindOfDept === 'dept') {
+                              this.setState({
+                                searchDepaV: false,
+                                dept: record.DEP_NAME
+                              });
+                            } else if (
+                              this.state.kindOfDept === 'influentedDepa'
+                            ) {
+                              this.setState({
+                                searchDepaV: false,
+                                influentedDepa: record.DEP_NAME
+                              });
+                            }
                           }}
                         >
                           选择
@@ -1197,7 +960,8 @@ export default class LzAFFOS extends React.Component {
                   isLongBuilder: this.state.isLongBuilder,
                   approvalPeopleList: this.state.approvalPeopleList,
                   isControl: this.state.isControl,
-                  dept: this.state.dept
+                  dept: this.state.dept,
+                  influentedDepa: this.state.influentedDepa
                 }}
                 getValues={this.getValues}
                 openApprovalModal={this.openApprovalModal}

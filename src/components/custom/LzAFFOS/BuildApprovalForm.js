@@ -80,7 +80,8 @@ class BuildApprovlForm extends React.Component {
       dataSource,
       showData,
       isControl,
-      dept
+      dept,
+      influentedDepa
     } = this.props.toFormMsg;
 
     return (
@@ -229,7 +230,9 @@ class BuildApprovlForm extends React.Component {
                     })(
                       <Input
                         placeholder="请选择"
-                        onClick={this.props.openDeptModal}
+                        onClick={() => {
+                          this.props.openDeptModal('dept');
+                        }}
                         autoComplete="off"
                       />
                     )}
@@ -239,11 +242,13 @@ class BuildApprovlForm extends React.Component {
                   </th>
                   <th>
                     {getFieldDecorator('influentedDepa', {
-                      initialValue: ''
+                      initialValue: influentedDepa
                     })(
                       <Input
                         placeholder="请选择"
-                        onClick={this.props.openDeptModal}
+                        onClick={() => {
+                          this.props.openDeptModal('influentedDepa');
+                        }}
                         autoComplete="off"
                       />
                     )}
@@ -410,13 +415,7 @@ class BuildApprovlForm extends React.Component {
                   </th>
                   <th colSpan="3">
                     {getFieldDecorator('factoryMail', {
-                      initialValue: '',
-                      rules: [
-                        {
-                          required: true,
-                          message: '请输入该信息'
-                        }
-                      ]
+                      initialValue: ''
                     })(<Input autoComplete="off" />)}
                   </th>
                 </tr>

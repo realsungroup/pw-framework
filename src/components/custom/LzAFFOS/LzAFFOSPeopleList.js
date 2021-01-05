@@ -168,7 +168,6 @@ class LzAFFOSPeopleList extends React.Component {
     const file = info.file.originFileObj;
     const reader = new FileReader();
     const ctx = this;
-    // this.setState({ fileInfo: info });
     const { count, dataSource } = ctx.state;
     const importData = [];
     reader.onload = function(e) {
@@ -178,12 +177,8 @@ class LzAFFOSPeopleList extends React.Component {
       // 只读取 sheet1 中的 excel 数据
       ctx._sheet1 = workbook.Sheets[workbook.SheetNames[0]];
       var sheetJson = XLSX.utils.sheet_to_json(ctx._sheet1);
-      // console.log(sheetJson);
-      // console.log(ctx._sheet1);
-      // ctx.setState({ isSelectFile: true });
 
       sheetJson.map((item, index) => {
-        // console.log(index, item);
         const newInfo = {};
         newInfo.key = count + index;
         console.log('state', ctx.state.dataSource);
@@ -193,11 +188,6 @@ class LzAFFOSPeopleList extends React.Component {
         newInfo.C3_606412134505 = item.访客手机号码;
         newInfo.C3_605717318503 = item.备注;
         importData.push(newInfo);
-        // console.log('要添加的', newInfo);
-        // ctx.setState({
-        //   dataSource: [newInfo, ...dataSource],
-        //   count: count + 1
-        // });
       });
       // console.log('import', importData);
       ctx.setState({
