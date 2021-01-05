@@ -213,7 +213,7 @@ class VisitorApplyVIP extends React.Component {
         <Modal
           visible={addModal}
           title="添加VIP访客"
-          width={600}
+          width="80%"
           destroyOnClose
           okText={'申请'}
           cancelText={'取消'}
@@ -249,34 +249,210 @@ class VisitorApplyVIP extends React.Component {
           centered
         >
           <Form {...formItemLayout} className="VisitorApplyVIP-form">
-            <Form.Item
-              label="来访单位"
-              hasFeedback={mode === 'check' ? false : true}
-            >
-              {getFieldDecorator('C3_605703828345', {
-                initialValue: record && record.C3_605703828345,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入来访单位!'
-                  }
-                ]
-              })(<Input disabled={mode === 'check' ? true : false} />)}
-            </Form.Item>
+            <div>
+              <div className="changeFormItem">
+                <Form.Item
+                  label="来访单位"
+                  hasFeedback={mode === 'check' ? false : true}
+                >
+                  {getFieldDecorator('C3_605703828345', {
+                    initialValue: record && record.C3_605703828345,
+                    rules: [
+                      {
+                        required: true,
+                        message: '请输入来访单位!'
+                      }
+                    ]
+                  })(<Input disabled={mode === 'check' ? true : false} />)}
+                </Form.Item>
+              </div>
+              <div className="changeFormItem">
+                <Form.Item
+                  label="来访日期"
+                  hasFeedback={mode === 'check' ? false : true}
+                >
+                  {getFieldDecorator('visitDate', {
+                    initialValue: record && moment(record.visitDate),
+                    rules: [
+                      {
+                        required: true,
+                        message: '请输入来访日期!'
+                      }
+                    ]
+                  })(<DatePicker disabled={mode === 'check' ? true : false} />)}
+                </Form.Item>
+              </div>
+              <div className="changeFormItem">
+                <Form.Item
+                  label="离开日期"
+                  hasFeedback={mode === 'check' ? false : true}
+                >
+                  {getFieldDecorator('Enddate', {
+                    initialValue: record && moment(record.Enddate),
+                    rules: [
+                      {
+                        required: true,
+                        message: '请输入离开日期!'
+                      }
+                    ]
+                  })(<DatePicker disabled={mode === 'check' ? true : false} />)}
+                </Form.Item>
+              </div>
+            </div>
 
+            <div>
+              <div className="changeFormItem">
+                <Form.Item
+                  label="接机/接站"
+                  className="fix-form-feedback-bug"
+                  hasFeedback={mode === 'check' ? false : true}
+                >
+                  {getFieldDecorator('airportOrstation', {
+                    initialValue: record && record.airportOrstation,
+                    rules: [
+                      {
+                        required: true,
+                        message: '请选择接机/接站!'
+                      }
+                    ]
+                  })(
+                    <Radio.Group disabled={mode === 'check' ? true : false}>
+                      <Radio value={'是'}>需要</Radio>
+                      <Radio value={'否'}>不需要</Radio>
+                    </Radio.Group>
+                  )}
+                </Form.Item>
+              </div>
+              <div className="changeFormItem">
+                <Form.Item
+                  label="日常用车"
+                  className="fix-form-feedback-bug"
+                  hasFeedback={mode === 'check' ? false : true}
+                >
+                  {getFieldDecorator('everydayCar', {
+                    initialValue: record && record.everydayCar,
+                    rules: [
+                      {
+                        required: true,
+                        message: '请选择日常用车!'
+                      }
+                    ]
+                  })(
+                    <Radio.Group disabled={mode === 'check' ? true : false}>
+                      <Radio value={'是'}>需要</Radio>
+                      <Radio value={'否'}>不需要</Radio>
+                    </Radio.Group>
+                  )}
+                </Form.Item>
+              </div>
+
+              <div className="changeFormItem">
+                <Form.Item
+                  label="茶歇"
+                  className="fix-form-feedback-bug"
+                  hasFeedback={mode === 'check' ? false : true}
+                >
+                  {getFieldDecorator('TeaBreak', {
+                    initialValue: record && record.TeaBreak,
+                    rules: [
+                      {
+                        required: true,
+                        message: '请选择茶歇!'
+                      }
+                    ]
+                  })(
+                    <Radio.Group disabled={mode === 'check' ? true : false}>
+                      <Radio value={'是'}>需要</Radio>
+                      <Radio value={'否'}>不需要</Radio>
+                    </Radio.Group>
+                  )}
+                </Form.Item>
+              </div>
+            </div>
+            <div>
+              <div className="changeFormItem">
+                <Form.Item
+                  label="来访目的"
+                  hasFeedback={mode === 'check' ? false : true}
+                >
+                  {getFieldDecorator('visitPurpose', {
+                    initialValue: record && record.visitPurpose,
+                    rules: [
+                      {
+                        required: true,
+                        message: '请输入来访目的!'
+                      }
+                    ]
+                  })(<Input disabled={mode === 'check' ? true : false} />)}
+                </Form.Item>
+              </div>
+
+              <div className="changeFormItem1">
+                <Form.Item
+                  label="审批人"
+                  hasFeedback={mode === 'check' ? false : true}
+                >
+                  {getFieldDecorator('approver', {
+                    initialValue: record && record.approver,
+                    rules: [
+                      {
+                        required: true,
+                        message: '请选择审批人!'
+                      }
+                    ]
+                  })(
+                    <Select
+                      disabled={mode === 'check' ? true : false}
+                      placeholder="请选择审批人"
+                    >
+                      {options.length > 0 &&
+                        options.map(item => {
+                          return (
+                            <Option value={item.C3_614880295520}>
+                              {item.C3_614880295762}
+                            </Option>
+                          );
+                        })}
+                    </Select>
+                  )}
+                </Form.Item>
+              </div>
+              <div className="changeFormItem">
+                <Form.Item
+                  label="来访人数"
+                  hasFeedback={mode === 'check' ? false : true}
+                >
+                  {getFieldDecorator('countVisitors', {
+                    initialValue: record && record.countVisitors,
+                    rules: [
+                      {
+                        required: true,
+                        message: '请输入来访人数!'
+                      }
+                    ]
+                  })(<Input disabled={mode === 'check' ? true : false} />)}
+                </Form.Item>
+              </div>
+            </div>
             <Form.Item
-              label="来访人数"
+              label="VIP餐(仅限外部审核及重要访客)"
+              className="fix-form-feedback-bug"
               hasFeedback={mode === 'check' ? false : true}
             >
-              {getFieldDecorator('countVisitors', {
-                initialValue: record && record.countVisitors,
+              {getFieldDecorator('VIPMeal', {
+                initialValue: record && record.VIPMeal,
                 rules: [
                   {
                     required: true,
-                    message: '请输入来访人数!'
+                    message: '请选择VIP餐!'
                   }
                 ]
-              })(<Input disabled={mode === 'check' ? true : false} />)}
+              })(
+                <Radio.Group disabled={mode === 'check' ? true : false}>
+                  <Radio value={'否'}>不需要</Radio>
+                  <Radio value={'是'}>需要</Radio>
+                </Radio.Group>
+              )}
             </Form.Item>
 
             {mode === 'check' ? (
@@ -324,164 +500,6 @@ class VisitorApplyVIP extends React.Component {
                 );
               }
             })}
-
-            <Form.Item
-              label="VIP餐"
-              className="fix-form-feedback-bug"
-              hasFeedback={mode === 'check' ? false : true}
-            >
-              {getFieldDecorator('VIPMeal', {
-                initialValue: record && record.VIPMeal,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择VIP餐!'
-                  }
-                ]
-              })(
-                <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'否'}>不需要</Radio>
-                  <Radio value={'是'}>需要</Radio>
-                </Radio.Group>
-              )}
-              <div>仅限外部审核及重要访客</div>
-            </Form.Item>
-            <Form.Item
-              label="来访日期"
-              hasFeedback={mode === 'check' ? false : true}
-            >
-              {getFieldDecorator('visitDate', {
-                initialValue: record && moment(record.visitDate),
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入来访日期!'
-                  }
-                ]
-              })(<DatePicker disabled={mode === 'check' ? true : false} />)}
-            </Form.Item>
-
-            <Form.Item
-              label="离开日期"
-              hasFeedback={mode === 'check' ? false : true}
-            >
-              {getFieldDecorator('Enddate', {
-                initialValue: record && moment(record.Enddate),
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入离开日期!'
-                  }
-                ]
-              })(<DatePicker disabled={mode === 'check' ? true : false} />)}
-            </Form.Item>
-
-            <Form.Item
-              label="来访目的"
-              hasFeedback={mode === 'check' ? false : true}
-            >
-              {getFieldDecorator('visitPurpose', {
-                initialValue: record && record.visitPurpose,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入来访目的!'
-                  }
-                ]
-              })(<Input disabled={mode === 'check' ? true : false} />)}
-            </Form.Item>
-
-            <Form.Item
-              label="接机/接站"
-              className="fix-form-feedback-bug"
-              hasFeedback={mode === 'check' ? false : true}
-            >
-              {getFieldDecorator('airportOrstation', {
-                initialValue: record && record.airportOrstation,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择接机/接站!'
-                  }
-                ]
-              })(
-                <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'是'}>需要</Radio>
-                  <Radio value={'否'}>不需要</Radio>
-                </Radio.Group>
-              )}
-            </Form.Item>
-
-            <Form.Item
-              label="日常用车"
-              className="fix-form-feedback-bug"
-              hasFeedback={mode === 'check' ? false : true}
-            >
-              {getFieldDecorator('everydayCar', {
-                initialValue: record && record.everydayCar,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择日常用车!'
-                  }
-                ]
-              })(
-                <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'是'}>需要</Radio>
-                  <Radio value={'否'}>不需要</Radio>
-                </Radio.Group>
-              )}
-            </Form.Item>
-
-            <Form.Item
-              label="审批人"
-              hasFeedback={mode === 'check' ? false : true}
-            >
-              {getFieldDecorator('approver', {
-                initialValue: record && record.approver,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择审批人!'
-                  }
-                ]
-              })(
-                <Select
-                  disabled={mode === 'check' ? true : false}
-                  placeholder="请选择审批人"
-                >
-                  {options.length > 0 &&
-                    options.map(item => {
-                      return (
-                        <Option value={item.C3_614880295520}>
-                          {item.C3_614880295762}
-                        </Option>
-                      );
-                    })}
-                </Select>
-              )}
-            </Form.Item>
-
-            <Form.Item
-              label="茶歇"
-              className="fix-form-feedback-bug"
-              hasFeedback={mode === 'check' ? false : true}
-            >
-              {getFieldDecorator('TeaBreak', {
-                initialValue: record && record.TeaBreak,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择茶歇!'
-                  }
-                ]
-              })(
-                <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'是'}>需要</Radio>
-                  <Radio value={'否'}>不需要</Radio>
-                </Radio.Group>
-              )}
-            </Form.Item>
 
             <Form.Item
               label="备注"

@@ -28,6 +28,13 @@ class DeliverApprovalForm extends React.Component {
       this.props.changeControl(false);
     }
   };
+
+  disabledTime = current => {
+    const workDate1 = this.props.form.getFieldValue('C3_605703980025');
+    const workDate3 = moment(workDate1).add(15, 'd');
+    return current && current > workDate3;
+  };
+
   //检查时间间隔是否超过15天
   checkTime = () => {
     if (!this.props.toDeliverApprovalFormData.isLongDeliver) {
@@ -67,7 +74,7 @@ class DeliverApprovalForm extends React.Component {
     return (
       <Modal
         title="送货申请"
-        width="61%"
+        width="90%"
         visible={showDeliverApprovalModal}
         destroyOnClose
         onCancel={() => {
@@ -105,6 +112,7 @@ class DeliverApprovalForm extends React.Component {
                       ]
                     })(
                       <Input
+                        disabled
                         placeholder="请选择"
                         onClick={() => {
                           this.props.changeApply();
@@ -128,7 +136,7 @@ class DeliverApprovalForm extends React.Component {
                           message: '请输入该信息'
                         }
                       ]
-                    })(<Input autoComplete="off" />)}
+                    })(<Input disabled autoComplete="off" />)}
                   </th>
                 </tr>
                 <tr>
@@ -229,7 +237,7 @@ class DeliverApprovalForm extends React.Component {
                               message: '请输入该信息'
                             }
                           ]
-                        })(<Input autoComplete="off" />)}
+                        })(<Input disabled autoComplete="off" />)}
                       </th>
                       <th colSpan="2">
                         <label>
@@ -246,7 +254,7 @@ class DeliverApprovalForm extends React.Component {
                               message: '请输入该信息'
                             }
                           ]
-                        })(<Input autoComplete="off" />)}
+                        })(<Input disabled autoComplete="off" />)}
                       </th>
                     </tr>
                   </>
@@ -292,7 +300,7 @@ class DeliverApprovalForm extends React.Component {
                           message: '请输入该信息'
                         }
                       ]
-                    })(<Input autoComplete="off" />)}
+                    })(<Input disabled autoComplete="off" />)}
                   </th>
                   <th colSpan="2">
                     <label>
@@ -309,7 +317,7 @@ class DeliverApprovalForm extends React.Component {
                           message: '请输入该信息'
                         }
                       ]
-                    })(<Input autoComplete="off" />)}
+                    })(<Input disabled autoComplete="off" />)}
                   </th>
                 </tr>
                 <tr>
@@ -374,7 +382,7 @@ class DeliverApprovalForm extends React.Component {
                           message: '请输入该信息'
                         }
                       ]
-                    })(<DatePicker />)}
+                    })(<DatePicker onOpenChange={this.checkTime()} />)}
                   </th>
                   <th colSpan="2">
                     <label>
@@ -390,7 +398,12 @@ class DeliverApprovalForm extends React.Component {
                           message: '请输入该信息'
                         }
                       ]
-                    })(<DatePicker onOpenChange={this.checkTime()} />)}
+                    })(
+                      <DatePicker
+                        disabledDate={this.disabledTime}
+                        onOpenChange={this.checkTime()}
+                      />
+                    )}
                   </th>
                 </tr>
 

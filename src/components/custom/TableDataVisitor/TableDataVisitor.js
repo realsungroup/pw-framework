@@ -141,8 +141,8 @@ class TableDataVisitor extends React.Component {
         this.props.closeRecordForm();
       },
       recordFormContainerProps: {
-        height: 600,
-        placement: 'bottom',
+        placement: 'right',
+        width: 820,
         onClose: () => {
           this.setState({
             record: null
@@ -150,6 +150,7 @@ class TableDataVisitor extends React.Component {
           this.props.closeRecordForm();
         }
       },
+      useAbsolute: true,
       formProps: {
         height: 500
       },

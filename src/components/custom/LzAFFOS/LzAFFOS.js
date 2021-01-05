@@ -100,6 +100,7 @@ export default class LzAFFOS extends React.Component {
       approvalList1: [],
       builderList: [],
       deliverList: [],
+      cms: '', //选择审批人员时额外添加的条件
       record: {},
       approvalPeopleList: [
         {
@@ -514,7 +515,8 @@ export default class LzAFFOS extends React.Component {
   changeConductor = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 5
+      selectApprovalKey: 5,
+      cms: 663098123864
     });
   };
 
@@ -522,7 +524,8 @@ export default class LzAFFOS extends React.Component {
   changeManagerSpecial = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 4
+      selectApprovalKey: 4,
+      cms: 663097802792
     });
   };
 
@@ -530,7 +533,8 @@ export default class LzAFFOS extends React.Component {
   changeManager = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 3
+      selectApprovalKey: 3,
+      cms: 227186227531
     });
   };
 
@@ -538,7 +542,8 @@ export default class LzAFFOS extends React.Component {
   changeEngineer = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 2
+      selectApprovalKey: 2,
+      cms: 227186227531
     });
   };
 
@@ -546,7 +551,8 @@ export default class LzAFFOS extends React.Component {
   changeEffect = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 1
+      selectApprovalKey: 1,
+      cms: 227186227531
     });
   };
 
@@ -554,7 +560,8 @@ export default class LzAFFOS extends React.Component {
   changeApply = () => {
     this.setState({
       changeApproveModal: true,
-      selectApprovalKey: 0
+      selectApprovalKey: 0,
+      cms: 227186227531
     });
   };
 
@@ -998,9 +1005,10 @@ export default class LzAFFOS extends React.Component {
             </div>
           </TabPane> */}
 
-          <TabPane tab="审批中" key="审批中">
+          <TabPane tab="申请中" key="审批中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
+                recordFormUseAbsolute={true}
                 {...inExaminationAndApproval}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
@@ -1040,11 +1048,11 @@ export default class LzAFFOS extends React.Component {
                       <Button
                         onClick={() => {
                           this.getapplyInfo();
-                          this.setState({ showJungleLongDeliverModal: true });
-                          // console.log(
-                          //   '访客',
-                          //   this.state.showDeliverApprovalModal
-                          // );
+                          this.setState({
+                            showJungleLongDeliverModal: true,
+                            isLongDeliver: false,
+                            showDeliverApprovalModal: true
+                          });
                         }}
                       >
                         请填写送货人员基本信息
@@ -1084,7 +1092,7 @@ export default class LzAFFOS extends React.Component {
             </Modal>
 
             {/* 选择是否长期送货人员 */}
-            <Modal
+            {/* <Modal
               title="请选择是否长期送货人员"
               visible={this.state.showJungleLongDeliverModal}
               onOk={() => {
@@ -1125,7 +1133,7 @@ export default class LzAFFOS extends React.Component {
                   </Radio.Group>
                 </div>
               )}
-            </Modal>
+            </Modal> */}
 
             {/* 选择受影响部门模态框 */}
             <Modal
@@ -1457,7 +1465,7 @@ export default class LzAFFOS extends React.Component {
                 }}
               >
                 <TableData
-                  resid={227186227531}
+                  resid={this.state.cms}
                   hasRowView={false}
                   subtractH={220}
                   hasAdd={false}

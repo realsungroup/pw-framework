@@ -109,8 +109,8 @@ export const inExaminationAndApproval = {
   recordFormFormWidth: '40%',
   recordFormTabsWidth: '60%',
   recordFormContainerProps: {
-    placement: 'bottom',
-    height: 600
+    placement: 'right',
+    width: 820
   },
   subTableArrProps: [
     {
@@ -120,7 +120,7 @@ export const inExaminationAndApproval = {
         hasAdd: true,
         hasModify: false,
         hasDelete: true,
-        subtractH: 196,
+        subtractH: 185,
         hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,

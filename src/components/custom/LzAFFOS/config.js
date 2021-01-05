@@ -99,8 +99,8 @@ export const inExaminationAndApproval = {
   //  },
   recordFormType: 'drawer',
   recordFormContainerProps: {
-    placement: 'bottom',
-    height: 600
+    placement: 'right',
+    width: 820
   },
   addText: '请填写一般人员基本信息',
   subTableArrProps: [
@@ -120,10 +120,11 @@ export const inExaminationAndApproval = {
         height: 400,
         defaultColumnWidth: 100,
         actionBarWidth: 100,
-        subtractH: 196,
+        subtractH: 185,
         actionBarFixed: false,
         rowEditAddPosition: 'start',
         hasRowEditAdd: true,
+        size: 'small',
         storeWay: 'fe',
         formProps: { saveReopen: true, saveOpenText: '保存并继续添加人员' }
       }
