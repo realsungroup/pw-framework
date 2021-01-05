@@ -74,6 +74,7 @@ class Summary extends React.PureComponent {
 		endYear: undefined,
 		endQuarter: 4,
 		subTableModalVisible: false,
+		usesubTableModalVisible: false,
 		selectedRecord: {}
 	}
 	columns = [
@@ -179,7 +180,7 @@ class Summary extends React.PureComponent {
 			render: (text, record) => (
 				<>
 					<span className="table-action--view" onClick={() => {
-						this.setState({ selectedRecord: record, subTableModalVisible: true })
+						this.setState({ selectedRecord: record, usesubTableModalVisible: true })
 					}}>
 						使用明细
 					</span>
@@ -234,7 +235,7 @@ class Summary extends React.PureComponent {
 	})
 
 	render() {
-		const { selectedRecord, allAnnualLeaveQuery, years, startQuarter, startYear, endQuarter, endYear, subTableModalVisible } = this.state;
+		const { usesubTableModalVisible, selectedRecord, allAnnualLeaveQuery, years, startQuarter, startYear, endQuarter, endYear, subTableModalVisible } = this.state;
 		const { subResid, resid, baseURL } = this.props
 		const annualLeaves = this.calcAnnualLeaves(startYear, startQuarter, endYear, endQuarter, allAnnualLeaveQuery);
 		return <div className="alq-summary">
@@ -326,6 +327,33 @@ class Summary extends React.PureComponent {
 			</div>
 			<Modal
 				title="年假使用明细"
+				visible={usesubTableModalVisible}
+				footer={null}
+				width="80vw"
+				onCancel={() => {
+					this.setState({ usesubTableModalVisible: false })
+				}}>
+				<TableData
+					key={selectedRecord.REC_ID}
+					dataMode="sub"
+					resid={resid}
+					subresid={'662737017622'}
+					hostrecid={selectedRecord.REC_ID}
+					baseURL={baseURL}
+					subtractH={200}
+					hasAdd={false}
+					hasModify={false}
+					hasDelete={false}
+					hasRowEdit={false}
+					hasRowModify={false}
+					hasRowView={true}
+					hasRowDelete={false}
+					actionBarWidth={100}
+					height={500}
+				/>
+			</Modal>
+			<Modal
+				title="年假交易明细"
 				visible={subTableModalVisible}
 				footer={null}
 				width="80vw"
