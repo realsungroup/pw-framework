@@ -55,7 +55,7 @@ class AbsoluteForm extends React.PureComponent {
                 title={item.initialValue}
                 style={{
                   position: 'absolute',
-                  minHeight:'3%',
+                  minHeight: '3%',
                   top: ((customStyle.top + 4) / containerHeight) * 100 + '%',
                   left: (customStyle.left / containerWidth) * 100 + '%',
                   width: (customStyle.width / containerWidth) * 100 + '%',
@@ -267,7 +267,8 @@ class AbsoluteForm extends React.PureComponent {
               position: 'absolute',
               top: containerHeight - 80,
               height: 60,
-              width: '100%'
+              width: '100%',
+              zIndex: 99
             }}
           >
             <PwFormFooter
