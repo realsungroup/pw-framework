@@ -534,7 +534,8 @@ class TableData extends React.Component {
     key = this._searchValue,
     // cmswhere= this.props.cmswhere,
     sortOrder = this._sortOrder,
-    sortField = this._sortField
+    sortField = this._sortField,
+    isRefresh = false
   }) => {
     const {
       dataMode,
@@ -670,21 +671,21 @@ class TableData extends React.Component {
     let dataSource = res.data;
 
     // 是否使用表格字段数据
-    let isUseTableFieldsData = false, cachedKey = [];
-    if (!isUseFormDefine || hasAdvSearch) {
-      isUseTableFieldsData = true;
-    }
-    if (isUseTableFieldsData) {
-      if (!isUseFormDefine) {
-        cachedKey.push(...['_dealedRowEditFormData', '_dealedRecordFormData',]);
+    if (!isRefresh) {
+      let isUseTableFieldsData = false, cachedKey = [];
+      if (!isUseFormDefine || hasAdvSearch) {
+        isUseTableFieldsData = true;
       }
-      if (hasAdvSearch) {
-        cachedKey.push(...['_dealedAdvSearchFormData',]);
+      if (isUseTableFieldsData) {
+        if (!isUseFormDefine) {
+          cachedKey.push(...['_dealedRowEditFormData', '_dealedRecordFormData',]);
+        }
+        if (hasAdvSearch) {
+          cachedKey.push(...['_dealedAdvSearchFormData',]);
+        }
+        this.dealTableDataFormData(res, cachedKey);
       }
-      this.dealTableDataFormData(res, cachedKey);
     }
-
-
 
     // if (!isUseFormDefine || hasAdvSearch && advSearch && (advSearch.searchComponent === 'both' || advSearch.searchComponent === 'PwForm')) {
     //   this.dealTableDataFormData(res);
@@ -1662,7 +1663,7 @@ class TableData extends React.Component {
         pageSize: pagination.pageSize
       };
     }
-    await this.getTableData(obj);
+    await this.getTableData({...obj, isRefresh: true});
     this.setState({
       loading: false,
       rowSelection: this.state.rowSelection
