@@ -281,10 +281,10 @@ class DeliverPeopleList extends React.Component {
     const { count, dataSource } = this.state;
     const newData = {
       key: count,
-      C3_605716828937: ' ',
-      C3_605716867680: ' ',
-      C3_614704116070: ' ',
-      C3_606412134505: ' '
+      C3_605716828937: '',
+      C3_605716867680: '',
+      C3_614704116070: '',
+      C3_606412134505: ''
     };
     this.setState({
       dataSource: [...dataSource, newData],

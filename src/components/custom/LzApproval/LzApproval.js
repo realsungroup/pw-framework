@@ -178,6 +178,7 @@ export default class LzApproval extends React.Component {
     this.setState({
       approvalList1: approvalPeopleList
     });
+    console.log('判定长期', this.state.isPrint);
   };
 
   doPrint = res => {
@@ -303,7 +304,8 @@ export default class LzApproval extends React.Component {
               title="施工申请审批"
               onCancel={() => {
                 this.setState({
-                  showBuilderModal: false
+                  showBuilderModal: false,
+                  isPrint: false
                 });
               }}
               footer={
@@ -369,7 +371,8 @@ export default class LzApproval extends React.Component {
                     toBuilderFormInfo={{
                       approvalInfo: record,
                       builderList: builderList,
-                      approvalList: approvalList1
+                      approvalList: approvalList1,
+                      isPrint: isPrint
                     }}
                   />
                 </div>
@@ -382,7 +385,8 @@ export default class LzApproval extends React.Component {
               title="送货申请审批"
               onCancel={() => {
                 this.setState({
-                  showDeliverModal: false
+                  showDeliverModal: false,
+                  isPrint: false
                 });
               }}
               footer={
@@ -445,7 +449,8 @@ export default class LzApproval extends React.Component {
                     toDeliverFormInfo={{
                       approvalInfo: record,
                       deliverList: deliverList,
-                      approvalList: approvalList1
+                      approvalList: approvalList1,
+                      isPrint: isPrint
                     }}
                   />
                 </div>

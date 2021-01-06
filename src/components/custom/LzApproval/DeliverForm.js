@@ -14,8 +14,10 @@ class DeliverApprovalForm extends React.Component {
     const {
       approvalInfo,
       deliverList,
-      approvalList
+      approvalList,
+      isPrint
     } = this.props.toDeliverFormInfo;
+    console.log('isPrint', isPrint);
     const isControl = approvalInfo.C3_605703930741 === '管控区' ? true : false;
     return (
       <Form>
@@ -141,51 +143,56 @@ class DeliverApprovalForm extends React.Component {
                 </th>
               </tr>
 
-              {/* 施工人员清单 */}
-              {/* <tr>
-                <th colSpan="9">
-                  <h3>施工人员清单</h3>
-                </th>
-              </tr>
-              <tr>
-                <th className="thCss">
-                  <label>访客姓名</label>
-                </th>
-                <th colSpan="2" className="thCss">
-                  <label>登记证件类型</label>
-                </th>
-                <th colSpan="2" className="thCss">
-                  <label>登记证件号码</label>
-                </th>
-                <th colSpan="2" className="thCss">
-                  <label>访客手机号码</label>
-                </th>
-                <th colSpan="2" className="thCss">
-                  <label>照片链接</label>
-                </th>
-              </tr>
-              {deliverList.map((item, index) => {
-                // console.log(item);
-                return (
+              {/* 送货人员清单 */}
+              {!isPrint && (
+                <>
                   <tr>
-                    <th className="thCss">
-                      <label>{item.C3_605716828937}</label>
-                    </th>
-                    <th colSpan="2" className="thCss">
-                      <label>{item.C3_605716867680}</label>
-                    </th>
-                    <th colSpan="2" className="thCss">
-                      <label>{item.C3_614704116070}</label>
-                    </th>
-                    <th colSpan="2" className="thCss">
-                      <label>{item.C3_606412134505}</label>
-                    </th>
-                    <th colSpan="2" className="thCss">
-                      <label>{item.photo}</label>
+                    <th colSpan="9">
+                      <h3>送货人员清单</h3>
                     </th>
                   </tr>
-                );
-              })} */}
+                  <tr>
+                    <th className="thCss">
+                      <label>访客姓名</label>
+                    </th>
+                    <th colSpan="2" className="thCss">
+                      <label>登记证件类型</label>
+                    </th>
+                    <th colSpan="2" className="thCss">
+                      <label>登记证件号码</label>
+                    </th>
+                    <th colSpan="2" className="thCss">
+                      <label>访客手机号码</label>
+                    </th>
+                    <th colSpan="2" className="thCss">
+                      <label>照片链接</label>
+                    </th>
+                  </tr>
+                  {deliverList.map((item, index) => {
+                    // console.log(item);
+                    return (
+                      <tr>
+                        <th className="thCss">
+                          <label>{item.C3_605716828937}</label>
+                        </th>
+                        <th colSpan="2" className="thCss">
+                          <label>{item.C3_605716867680}</label>
+                        </th>
+                        <th colSpan="2" className="thCss">
+                          <label>{item.C3_614704116070}</label>
+                        </th>
+                        <th colSpan="2" className="thCss">
+                          <label>{item.C3_606412134505}</label>
+                        </th>
+                        <th colSpan="2" className="thCss">
+                          <label>{item.photo}</label>
+                        </th>
+                      </tr>
+                    );
+                  })}
+                </>
+              )}
+
               {/* 审批记录 */}
               <tr>
                 <th colSpan="9">

@@ -17,7 +17,8 @@ class BuildApprovlForm extends React.Component {
       isLongBuilder,
       builderList,
       approvalInfo,
-      approvalList
+      approvalList,
+      isPrint
     } = this.props.toBuilderFormInfo;
     const isControl = approvalInfo.C3_605703930741 === '管控区' ? true : false;
     return (
@@ -189,7 +190,7 @@ class BuildApprovlForm extends React.Component {
                 )}
               </tr>
               {/* 长期施工 */}
-              {/* {isLongBuilder && (
+              {!isPrint && approvalInfo.isLong && (
                 <>
                   <tr>
                     <th colSpan="9">
@@ -244,6 +245,32 @@ class BuildApprovlForm extends React.Component {
                       <label>{approvalInfo.specialLicence}</label>
                     </th>
                   </tr>
+
+                  {approvalInfo.specialLicence === '是' ? (
+                    <>
+                      <tr>
+                        <th colSpan="2">
+                          <label>涉及特种作业许可证1</label>
+                        </th>
+                        <th>
+                          <label>{approvalInfo.specialOne}</label>
+                        </th>
+                        <th colSpan="2">
+                          <label>涉及特种作业许可证2</label>
+                        </th>
+                        <th>
+                          <label>{approvalInfo.specialTwo}</label>
+                        </th>
+                        <th colSpan="2">
+                          <label>涉及特种作业许可证3</label>
+                        </th>
+                        <th>
+                          <label>{approvalInfo.specialThree}</label>
+                        </th>
+                      </tr>
+                    </>
+                  ) : null}
+
                   <tr>
                     <th colSpan="3">
                       <label>是否是洁净室作业</label>
@@ -293,9 +320,9 @@ class BuildApprovlForm extends React.Component {
                     </th>
                   </tr>
                 </>
-              )} */}
+              )}
               {/* 临时施工 */}
-              {/* {!isLongBuilder && (
+              {!isPrint && !approvalInfo.isLong && (
                 <>
                   <tr>
                     <th colSpan="9">
@@ -361,53 +388,58 @@ class BuildApprovlForm extends React.Component {
                     </th>
                   </tr>
                 </>
-              )} */}
+              )}
 
               {/* 施工人员清单 */}
-              {/* <tr>
-                <th colSpan="9">
-                  <h3>施工人员清单</h3>
-                </th>
-              </tr>
-              <tr>
-                <th className="thCss">
-                  <label>访客姓名</label>
-                </th>
-                <th className="thCss">
-                  <label>登记证件类型</label>
-                </th>
-
-                <th colSpan="2" className="thCss">
-                  <label>登记证件号码</label>
-                </th>
-                <th colSpan="2" className="thCss">
-                  <label>访客手机号码</label>
-                </th>
-                <th colSpan="3" className="thCss">
-                  <label>备注</label>
-                </th>
-              </tr>
-              {builderList.map((item, index) => {
-                return (
+              {!isPrint && (
+                <>
                   <tr>
-                    <th className="thCss">
-                      <label>{item.C3_605716828937}</label>
-                    </th>
-                    <th className="thCss">
-                      <label>{item.C3_605716867680}</label>
-                    </th>
-                    <th colSpan="2" className="thCss">
-                      <label>{item.C3_614704116070}</label>
-                    </th>
-                    <th colSpan="2" className="thCss">
-                      <label>{item.C3_606412134505}</label>
-                    </th>
-                    <th colSpan="3" className="thCss">
-                      <label>{item.C3_605717318503}</label>
+                    <th colSpan="9">
+                      <h3>施工人员清单</h3>
                     </th>
                   </tr>
-                );
-              })} */}
+                  <tr>
+                    <th className="thCss">
+                      <label>访客姓名</label>
+                    </th>
+                    <th className="thCss">
+                      <label>登记证件类型</label>
+                    </th>
+
+                    <th colSpan="2" className="thCss">
+                      <label>登记证件号码</label>
+                    </th>
+                    <th colSpan="2" className="thCss">
+                      <label>访客手机号码</label>
+                    </th>
+                    <th colSpan="3" className="thCss">
+                      <label>备注</label>
+                    </th>
+                  </tr>
+                  {builderList.map((item, index) => {
+                    return (
+                      <tr>
+                        <th className="thCss">
+                          <label>{item.C3_605716828937}</label>
+                        </th>
+                        <th className="thCss">
+                          <label>{item.C3_605716867680}</label>
+                        </th>
+                        <th colSpan="2" className="thCss">
+                          <label>{item.C3_614704116070}</label>
+                        </th>
+                        <th colSpan="2" className="thCss">
+                          <label>{item.C3_606412134505}</label>
+                        </th>
+                        <th colSpan="3" className="thCss">
+                          <label>{item.C3_605717318503}</label>
+                        </th>
+                      </tr>
+                    );
+                  })}
+                </>
+              )}
+
               {/* 审批记录 */}
               <tr>
                 <th colSpan="9">
