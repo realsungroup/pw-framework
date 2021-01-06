@@ -205,6 +205,7 @@ export default class ViProvider extends React.Component {
           <TabPane tab="申请中" key="审批中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
+                recordFormUseAbsolute={true}
                 {...inExaminationAndApproval}
                 addText="请添加一般或施工人员"
                 actionBarExtra={({}) => {
