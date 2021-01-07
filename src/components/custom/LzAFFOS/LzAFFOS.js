@@ -89,7 +89,6 @@ export default class LzAFFOS extends React.Component {
       isLongBuilder: false, //是否长期施工人员
       showBuilderModal: false, //控制施工人员信息填写表单模态框
       showPeopleListModal: false, //控制施工人员编辑人员清单模态框
-      isPrint: true, //是否打印
       showLongApprovalModal: false, //长期施工审批流确认模态框
       showApprovalModal: false, //临时施工审批流确认模态框
       dataSource: [], //访客人员清单
@@ -735,7 +734,8 @@ export default class LzAFFOS extends React.Component {
       approvalList1,
       builderList,
       deliverList,
-      record
+      record,
+      isLongBuilder
     } = this.state;
     const { resids } = this.props;
 
@@ -1323,7 +1323,8 @@ export default class LzAFFOS extends React.Component {
                     toBuilderFormInfo={{
                       approvalInfo: record,
                       builderList: builderList,
-                      approvalList: approvalList1
+                      approvalList: approvalList1,
+                      isPrint: isPrint
                     }}
                   />
                 </div>
@@ -1367,7 +1368,9 @@ export default class LzAFFOS extends React.Component {
                     toDeliverFormInfo={{
                       approvalInfo: record,
                       deliverList: deliverList,
-                      approvalList: approvalList1
+                      approvalList: approvalList1,
+                      isPrint: isPrint,
+                      isLongBuilder: isLongBuilder
                     }}
                   />
                 </div>

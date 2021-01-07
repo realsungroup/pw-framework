@@ -861,6 +861,7 @@ window[606071626403] = {
   title: '保安访客登记', // 功能模块名称
   // hasBackBtn: true,// 是否有返回上一页的按钮，默认为 true
   props: {
+    recordFormUseAbsolute: true,
     resid: 606071751596,
     hasAdd: false,
     hasBeBtns: true,
@@ -876,8 +877,8 @@ window[606071626403] = {
     subtractH: 200,
     recordFormType: 'drawer',
     recordFormContainerProps: {
-      placement: 'bottom',
-      height: 600
+      placement: 'right',
+      width: 820
     },
     // recordFormFormWidth: '45%',
     subTableArrProps: [
@@ -905,6 +906,7 @@ window[606071640940] = {
   title: '前台访客登记', // 功能模块名称
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
+    recordFormUseAbsolute: true,
     resid: 606071814271,
     recordFormFormWidth: '90%',
     hasAdd: false,

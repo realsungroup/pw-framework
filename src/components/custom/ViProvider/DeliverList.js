@@ -209,10 +209,10 @@ class DeliverList extends React.Component {
     const newData = {
       key: count,
       carNum: ' ',
-      C3_605719242294: ' ',
-      C3_605719242802: ' ',
-      C3_605719242955: ' ',
-      C3_605719242129: ' '
+      C3_605719242294: '',
+      C3_605719242802: '',
+      C3_605719242955: '',
+      C3_605719242129: ''
     };
     this.setState({
       dataSource: [...dataSource, newData],
