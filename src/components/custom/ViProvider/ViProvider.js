@@ -56,7 +56,7 @@ export default class ViProvider extends React.Component {
       deliverList: [],
       showDeliverPeopleListModal: false,
       C3_605719340594: moment(),
-      C3_605719340781: moment(),
+      C3_605719340781: moment().add(3, 'month'),
       C3_605718146773: '',
       C3_605718133807: '送货人员'
     };
@@ -205,6 +205,8 @@ export default class ViProvider extends React.Component {
           <TabPane tab="申请中" key="审批中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
                 recordFormUseAbsolute={true}
                 {...inExaminationAndApproval}
                 addText="请添加一般或施工人员"
