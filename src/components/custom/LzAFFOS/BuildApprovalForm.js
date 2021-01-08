@@ -81,9 +81,11 @@ class BuildApprovlForm extends React.Component {
       showData,
       isControl,
       dept,
-      influentedDepa
+      influentedDepa,
+      influentedManage,
+      buildArrangeDept
     } = this.props.toFormMsg;
-
+    console.log(buildArrangeDept);
     return (
       <Modal
         title="施工申请"
@@ -220,7 +222,8 @@ class BuildApprovlForm extends React.Component {
                   </th>
                   <th>
                     {getFieldDecorator('buildArrangeDept', {
-                      initialValue: dept,
+                      // initialValue: dept,
+                      initialValue: buildArrangeDept,
                       rules: [
                         {
                           required: true,
@@ -229,6 +232,7 @@ class BuildApprovlForm extends React.Component {
                       ]
                     })(
                       <Input
+                        disabled
                         placeholder="请选择"
                         onClick={() => {
                           this.props.openDeptModal('dept');
@@ -258,10 +262,10 @@ class BuildApprovlForm extends React.Component {
                   </th>
                   <th>
                     {getFieldDecorator('influentedManage', {
-                      initialValue: this.props.toFormMsg.approvalPeopleList[1]
-                        .C3_605717998409
+                      initialValue: influentedManage
                     })(
                       <Input
+                        disabled
                         placeholder="请选择"
                         onClick={() => {
                           this.props.changeEffect();
@@ -673,7 +677,7 @@ class BuildApprovlForm extends React.Component {
                       </th>
                       <th colSpan="4">
                         <label>
-                          牵涉本作业之作业许可证<font color="red">*</font>
+                          牵涉本作业之特种作业许可证<font color="red">*</font>
                         </label>
                       </th>
                       <th>

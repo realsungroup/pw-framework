@@ -148,7 +148,7 @@ class DeliverApprovalForm extends React.Component {
                 <>
                   <tr>
                     <th colSpan="9">
-                      <h3>送货人员清单</h3>
+                      <h3>提送货人员清单</h3>
                     </th>
                   </tr>
                   <tr>

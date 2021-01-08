@@ -126,7 +126,10 @@ export const inExaminationAndApproval = {
         hasRowEditAdd: true,
         size: 'small',
         storeWay: 'fe',
-        formProps: { saveReopen: true, saveOpenText: '保存并继续添加人员' }
+        formProps: { saveReopen: true, saveOpenText: '保存并继续添加人员' },
+        importConfig: {
+          mode: 'fe'
+        }
       }
     },
     {

@@ -57,7 +57,7 @@ export default class ViProvider extends React.Component {
       showDeliverPeopleListModal: false,
       C3_605719340594: moment(),
       C3_605719340781: moment().add(3, 'month'),
-      C3_605718146773: '',
+      C3_605718146773: '非管控区',
       C3_605718133807: '送货人员'
     };
     this.abnormalRef = React.createRef();
@@ -239,7 +239,7 @@ export default class ViProvider extends React.Component {
             </Modal>
             <Modal
               width="61%"
-              title="添加送货人员"
+              title="添加提送货人员"
               visible={this.state.showDeliverModal}
               onCancel={() => {
                 this.setState({
@@ -275,7 +275,7 @@ export default class ViProvider extends React.Component {
                           </label>
                         </th>
                         <th colSpan="2">
-                          <label>送货人员</label>
+                          <label>提送货人员</label>
                         </th>
                         <th colSpan="2">
                           <label>
@@ -290,8 +290,8 @@ export default class ViProvider extends React.Component {
                               });
                             }}
                             className="selectCss"
+                            defaultValue="非管控区"
                           >
-                            <Option value="管控区">管控区</Option>
                             <Option value="非管控区">非管控区</Option>
                           </Select>
                         </th>

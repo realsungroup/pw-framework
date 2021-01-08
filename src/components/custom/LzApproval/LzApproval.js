@@ -382,7 +382,7 @@ export default class LzApproval extends React.Component {
             <Modal
               width="61%"
               visible={showDeliverModal}
-              title="送货申请审批"
+              title="提送货申请审批"
               onCancel={() => {
                 this.setState({
                   showDeliverModal: false,

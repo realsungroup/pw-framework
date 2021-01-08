@@ -234,18 +234,21 @@ class DeliverList extends React.Component {
 
   //向父组件发送施工人员名单
   sendBuilderList = () => {
-    this.state.dataSource.map((item, index) => {
-      if (
-        !/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(
-          item.C3_605719242955
-        )
-      ) {
-        message.info(`${item.C3_605719242294}的证件号码有误，请重新填写`);
-        return false;
-      } else {
-        this.props.getBuilderList(this.state.dataSource);
-      }
-    });
+    if (
+      this.state.dataSource.find(item => {
+        if (
+          !/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(
+            item.C3_605719242955
+          )
+        ) {
+          message.info(`${item.C3_605719242294}的证件号码有误，请重新填写`);
+          return false;
+        }
+        return true;
+      })
+    ) {
+      this.props.getBuilderList(this.state.dataSource);
+    }
   };
 
   render() {

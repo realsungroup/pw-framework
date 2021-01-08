@@ -118,6 +118,8 @@ export default class LzAFFOS extends React.Component {
       kindOfDept: '', //受影响部门还是施工管理部门
       dept: '', //受影响部门
       influentedDepa: '', //受影响部门
+      influentedManage: '', //受影响部门负责人
+      buildArrangeDept: '', //施工管理部门负责人
       selectApprovalKey: 0 //选择审批人的序号
     };
     this.abnormalRef = React.createRef();
@@ -264,6 +266,10 @@ export default class LzAFFOS extends React.Component {
         resid: 227186227531,
         cmswhere: `C3_227192472953=${newapplyInfo.UserInfo.EMP_ID}`
       });
+      this.setState({
+        buildArrangeDept: apply.data[0].C3_476814654271
+      });
+      console.log('部门经理', this.state.buildArrangeDept);
       const applyarr = {};
       applyarr.C3_227212499515 = apply.data[0].C3_227212499515;
       applyarr.C3_605717998409 = apply.data[0].C3_227192484125;
@@ -811,7 +817,7 @@ export default class LzAFFOS extends React.Component {
                           });
                         }}
                       >
-                        请填写送货人员基本信息
+                        请填写提送货人员基本信息
                       </Button>
                     </>
                   );
@@ -934,9 +940,11 @@ export default class LzAFFOS extends React.Component {
                             } else if (
                               this.state.kindOfDept === 'influentedDepa'
                             ) {
+                              console.log(record);
                               this.setState({
                                 searchDepaV: false,
-                                influentedDepa: record.DEP_NAME
+                                influentedDepa: record.DEP_NAME,
+                                influentedManage: record.C3_475851099125
                               });
                             }
                           }}
@@ -961,7 +969,9 @@ export default class LzAFFOS extends React.Component {
                   approvalPeopleList: this.state.approvalPeopleList,
                   isControl: this.state.isControl,
                   dept: this.state.dept,
-                  influentedDepa: this.state.influentedDepa
+                  influentedDepa: this.state.influentedDepa,
+                  influentedManage: this.state.influentedManage,
+                  buildArrangeDept: this.state.buildArrangeDept
                 }}
                 getValues={this.getValues}
                 openApprovalModal={this.openApprovalModal}
@@ -1019,7 +1029,7 @@ export default class LzAFFOS extends React.Component {
 
             {/* 送货人员编辑Modal */}
             <Modal
-              title="送货人员清单"
+              title="提送货人员清单"
               width="90%"
               visible={this.state.showDeliverPeopleListModal}
               onCancel={() => {
@@ -1334,7 +1344,7 @@ export default class LzAFFOS extends React.Component {
             <Modal
               width="61%"
               visible={printDeliverModal}
-              title="送货申请审批"
+              title="提送货申请审批"
               onCancel={() => {
                 this.setState({
                   printDeliverModal: false

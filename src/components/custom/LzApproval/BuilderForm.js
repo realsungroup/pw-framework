@@ -239,7 +239,7 @@ class BuildApprovlForm extends React.Component {
                       <label>{approvalInfo.isTall}</label>
                     </th>
                     <th colSpan="4">
-                      <label>牵涉本作业之作业许可证</label>
+                      <label>牵涉本作业之特种作业许可证</label>
                     </th>
                     <th>
                       <label>{approvalInfo.specialLicence}</label>

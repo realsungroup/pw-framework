@@ -70,7 +70,7 @@ class DeliverApprovalForm extends React.Component {
         ? moment().add(3, 'M')
         : moment().add(6, 'M')
       : moment(); //结束时间初始值
-
+    console.log(isControl);
     return (
       <Modal
         title="送货申请"
@@ -177,6 +177,7 @@ class DeliverApprovalForm extends React.Component {
                   </th>
                   <th colSpan="2">
                     {getFieldDecorator('C3_605703930741', {
+                      initialValue: '非管控区',
                       rules: [
                         {
                           required: true,
@@ -188,7 +189,6 @@ class DeliverApprovalForm extends React.Component {
                         onChange={this.changeIsControl}
                         className="selectCss"
                       >
-                        <Option value="管控区">管控区</Option>
                         <Option value="非管控区">非管控区</Option>
                       </Select>
                     )}
