@@ -70,7 +70,9 @@ export const defaultProps = {
   importConfig: {
     mode: 'be',
     saveState: 'editoradd',
-    containerType: 'drawer'
+    containerType: 'drawer',
+    containerProps: {},
+    saveFE: false,
   },
   tableComponent: 'antdTable',
   rowSelectionAg: 'multiple',
@@ -633,13 +635,14 @@ export const propTypes = {
 
   /**
    * 导入功能配置
-   * 默认：{ mode: 'be', saveState: 'editoradd', containerType: 'drawer' }
+   * 默认：{ mode: 'be', saveState: 'editoradd', containerType: 'drawer', containerProps: {}, saveFE: false }
    */
   importConfig: PropTypes.shape({
     mode: PropTypes.oneOf(['fe', 'be']).isRequired, // 处理 Excel 数据的模式：'fe' 表示前端处理 Excel；'be' 表示后端处理Excel
     saveState: PropTypes.oneOf(['editoradd', 'added']).isRequired, // 保存数据时的状态：'editoradd' 表示表中如果已存在该记录，则更新记录，不会报错；'added' 表示如果已存在该记录，则不能够插入该记录，而是抛出错误给前端
     containerType: PropTypes.oneOf(['modal', 'drawer']), // 导入控件所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉
-    containerProps: PropTypes.object // 容器（'modal' | 'drawer'）接收的 props（参考 ant-design Modal/Drawer 组件的 props）
+    containerProps: PropTypes.object, // 容器（'modal' | 'drawer'）接收的 props（参考 ant-design Modal/Drawer 组件的 props）
+    saveFE: PropTypes.bool, // 是否将导入的 excel 记录保存到前端表格中
   }),
 
   /**

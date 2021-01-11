@@ -117,7 +117,7 @@ export const inExaminationAndApproval = {
         hasRowDelete: false,
         hasRowEdit: true,
         rowEditFormName: 'default',
-        height: 400,
+        height: 600,
         defaultColumnWidth: 100,
         actionBarWidth: 100,
         subtractH: 185,
@@ -128,7 +128,8 @@ export const inExaminationAndApproval = {
         storeWay: 'fe',
         formProps: { saveReopen: true, saveOpenText: '保存并继续添加人员' },
         importConfig: {
-          mode: 'fe'
+          mode: 'fe',
+          saveFE: true
         }
       }
     },
