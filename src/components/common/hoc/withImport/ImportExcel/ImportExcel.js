@@ -82,9 +82,23 @@ export default class Import extends React.Component {
     /**
      * 导入请求的基地址
      */
-    baseURL: PropTypes.string
+    baseURL: PropTypes.string,
+
+    /**
+     * 是否禁止向后端保存数据
+     * 默认：false
+     */
+    disabledSave: PropTypes.bool,
+
+    /**
+     * 导入的 excel 文件改变时的回调。(records) => void; records 表示从 excel 中提取的记录
+     * 默认：-
+     */
+    onChange: PropTypes.func,
   };
-  static defaultProps = {};
+  static defaultProps = {
+    disabledSave: false
+  };
   constructor(props) {
     super(props);
 
@@ -355,7 +369,9 @@ export default class Import extends React.Component {
       fixedFields,
       strict,
       beforeImport,
-      fileNameField
+      fileNameField,
+      disabledSave,
+      onChange
     } = this.props;
     const { columninfo } = this.state;
     const resultArr = XLSX.utils.sheet_to_json(sheetData, {
@@ -401,6 +417,13 @@ export default class Import extends React.Component {
       }
       return { ...obj, ...fixedFields };
     });
+
+    onChange && onChange(records);
+
+    if (disabledSave) {
+      return;
+    }
+
     let excelError = false;
     if (beforeImport) {
       try {

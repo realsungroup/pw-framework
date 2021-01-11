@@ -989,20 +989,41 @@ class TableData extends React.Component {
   onSearchChange = value => {
     this._searchValue = value;
   };
+
+  handleExcelChange = (records) => {
+    const dataSource = [...records];
+    this.setState({dataSource});
+  }
+
   // 导入
   handleImport = () => {
     const { openImportView, baseURL, importConfig, dblinkname } = this.props;
     const url = baseURL || window.pwConfig[process.env.NODE_ENV].baseURL;
+
+    const { mode = 'be', containerType = 'drawer', saveState = 'editoradd', containerProps = {}, saveFE = false } = importConfig;
+
+    let disabledSave = false;
+    if (saveFE) {
+      disabledSave = true;
+    }
 
     openImportView &&
       openImportView(
         dblinkname,
         url,
         this._id,
-        importConfig.mode,
-        importConfig.containerType,
-        importConfig.saveState,
-        importConfig.containerProps
+        mode,
+        containerType,
+        saveState,
+        containerProps,
+        null,
+        {},
+        {},
+        false,
+        null,
+        null,
+        disabledSave,
+        this.handleExcelChange
       );
   };
 
