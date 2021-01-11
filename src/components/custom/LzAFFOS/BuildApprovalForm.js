@@ -85,7 +85,7 @@ class BuildApprovlForm extends React.Component {
       influentedManage,
       buildArrangeDept
     } = this.props.toFormMsg;
-    console.log(buildArrangeDept);
+
     return (
       <Modal
         title="施工申请"

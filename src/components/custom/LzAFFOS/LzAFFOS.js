@@ -120,6 +120,7 @@ export default class LzAFFOS extends React.Component {
       influentedDepa: '', //受影响部门
       influentedManage: '', //受影响部门负责人
       buildArrangeDept: '', //施工管理部门负责人
+      influentedManageNum: '', //施工管理部门负责人编号
       selectApprovalKey: 0 //选择审批人的序号
     };
     this.abnormalRef = React.createRef();
@@ -139,6 +140,23 @@ export default class LzAFFOS extends React.Component {
       searchDepaV: true,
       kindOfDept: value
     });
+  };
+
+  getInfluentedManageInfo = async num => {
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 227186227531,
+        cmswhere: `C3_227192472953 = ${num}`
+      });
+      this.setState({
+        selectApprovalKey: 1
+      });
+      this.changeAppMem(res.data[0]);
+    } catch (err) {
+      console.error(err.message);
+      return err.message;
+    }
   };
 
   //根据人员类型不同，打开不同的模态框
@@ -267,9 +285,8 @@ export default class LzAFFOS extends React.Component {
         cmswhere: `C3_227192472953=${newapplyInfo.UserInfo.EMP_ID}`
       });
       this.setState({
-        buildArrangeDept: apply.data[0].C3_476814654271
+        buildArrangeDept: apply.data[0].C3_476814654271 //部门经理
       });
-      console.log('部门经理', this.state.buildArrangeDept);
       const applyarr = {};
       applyarr.C3_227212499515 = apply.data[0].C3_227212499515;
       applyarr.C3_605717998409 = apply.data[0].C3_227192484125;
@@ -303,13 +320,12 @@ export default class LzAFFOS extends React.Component {
   };
 
   reApply = async record => {
-    console.log('当前记录', record);
     // 根据当前记录，找到与之对应的访客信息。
     let res;
     try {
       res = await http().getTable({
         resid: 606066688508,
-        cmswhere: `C3_606070812241=${record.C3_605718092628}`
+        cmswhere: `C3_606070812241 = ${record.C3_605718092628}`
       });
     } catch (err) {
       console.error(err.message);
@@ -474,7 +490,7 @@ export default class LzAFFOS extends React.Component {
     });
   };
 
-  // 审批人确认时更改
+  // 审批人更改
   changeAppMem = v => {
     var obj = this.state.approvalPeopleList;
     obj[this.state.selectApprovalKey].C3_227212499515 = v.C3_227212499515; //所属部门
@@ -910,12 +926,13 @@ export default class LzAFFOS extends React.Component {
               <div
                 style={{
                   width: '100%',
-                  height: 'calc(80vh - 104px)',
+                  height: 'calc(100vh - 104px)',
                   position: 'relative'
                 }}
               >
                 <TableData
-                  resid={632327119162}
+                  // resid={632327119162}
+                  resid={663672607380}
                   cmswhere={`C3_419339113187 != '' and C3_419448436728 = '菲尼萨光电通讯科技(无锡)有限公司'`}
                   hasRowView={false}
                   subtractH={220}
@@ -940,12 +957,15 @@ export default class LzAFFOS extends React.Component {
                             } else if (
                               this.state.kindOfDept === 'influentedDepa'
                             ) {
-                              console.log(record);
                               this.setState({
                                 searchDepaV: false,
                                 influentedDepa: record.DEP_NAME,
-                                influentedManage: record.C3_475851099125
+                                influentedManage: record.C3_475851099125,
+                                influentedManageNum: record.C3_450479321413
                               });
+                              this.getInfluentedManageInfo(
+                                record.C3_450479321413
+                              );
                             }
                           }}
                         >
@@ -1234,7 +1254,7 @@ export default class LzAFFOS extends React.Component {
               <div
                 style={{
                   width: '100%',
-                  height: 'calc(80vh - 104px)',
+                  height: 'calc(100vh - 104px)',
                   position: 'relative'
                 }}
               >

@@ -177,7 +177,6 @@ class DeliverPeopleList extends React.Component {
                   item.photo = res;
                 }
               });
-              console.log('this.state.dataSource', this.state.dataSource);
               message.info('照片上传成功');
             }}
           >
@@ -223,7 +222,6 @@ class DeliverPeopleList extends React.Component {
   checkNumLength = () => {};
   //导入人员
   readWorkbookFromLocalFile = info => {
-    console.log('点击导入');
     const file = info.file.originFileObj;
     const reader = new FileReader();
     const ctx = this;
@@ -236,34 +234,20 @@ class DeliverPeopleList extends React.Component {
       // 只读取 sheet1 中的 excel 数据
       ctx._sheet1 = workbook.Sheets[workbook.SheetNames[0]];
       var sheetJson = XLSX.utils.sheet_to_json(ctx._sheet1);
-      // console.log(sheetJson);
-      // console.log(ctx._sheet1);
-      // ctx.setState({ isSelectFile: true });
-
       sheetJson.map((item, index) => {
-        // console.log(index, item);
         const newInfo = {};
         newInfo.key = count + index;
-        console.log('state', ctx.state.dataSource);
         newInfo.C3_605716828937 = item.访客姓名;
         newInfo.C3_605716867680 = item.登记证件类型;
         newInfo.C3_614704116070 = item.登记证件号码;
         newInfo.C3_606412134505 = item.访客手机号码;
-
         importData.push(newInfo);
-        // console.log('要添加的', newInfo);
-        // ctx.setState({
-        //   dataSource: [newInfo, ...dataSource],
-        //   count: count + 1
-        // });
       });
-      // console.log('import', importData);
       ctx.setState({
         count: count + importData.length,
         dataSource: [...importData, ...dataSource]
       });
     };
-    // console.log('外面import', importData);
     reader.readAsArrayBuffer(file);
     this.setState({
       showDragger: false
@@ -323,12 +307,10 @@ class DeliverPeopleList extends React.Component {
       })
     ) {
       this.props.parent.getDelivererList(this, this.state.dataSource);
-      console.log('人员名单', this.state.dataSource);
     }
   };
 
   render() {
-    console.log('chushihua', this.state.dataSource);
     this.setState({
       dataSource: {}
     });

@@ -128,7 +128,8 @@ export const inExaminationAndApproval = {
         storeWay: 'fe',
         formProps: { saveReopen: true, saveOpenText: '保存并继续添加人员' },
         importConfig: {
-          mode: 'fe'
+          mode: 'fe',
+          saveFE: true
         }
       }
     },
