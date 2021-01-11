@@ -991,8 +991,18 @@ class TableData extends React.Component {
   };
 
   handleExcelChange = (records) => {
-    const dataSource = [...records];
-    this.setState({dataSource});
+    const { dataMode, closeImportView, importConfig } = this.props;
+    const { saveFE = false } = importConfig;
+
+    if (dataMode === 'sub' && saveFE) {
+      if (Array.isArray(records) && records.length) {
+        closeImportView && closeImportView();
+        message.success('导入成功');
+        const dataSource = [...records];
+        return this.setState({dataSource});
+      }
+      message.error('文件中无记录');
+    }  
   }
 
   // 导入
