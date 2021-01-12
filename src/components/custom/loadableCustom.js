@@ -888,3 +888,9 @@ export const AnnualLeaveQuery = Loadable({
     return minLoading;
   }
 });
+export const AnnualLeaveManage = Loadable({
+  loader: () => import('./AnnualLeaveManage'),
+  loading() {
+    return minLoading;
+  }
+});

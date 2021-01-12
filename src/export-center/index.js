@@ -179,5 +179,6 @@ export {
   ADPExport,
   HRManagerProbation,
   ChiefInspectorProbation,
-  AnnualLeaveQuery
+  AnnualLeaveQuery,
+  AnnualLeaveManage
 } from '../components/custom/loadableCustom';

@@ -75,7 +75,9 @@ class Summary extends React.PureComponent {
 		endQuarter: 4,
 		subTableModalVisible: false,
 		usesubTableModalVisible: false,
-		selectedRecord: {}
+		applyRecordsModalVisible: false,
+		selectedRecord: {},
+		selectedSubRecord: {}
 	}
 	columns = [
 		{
@@ -235,7 +237,7 @@ class Summary extends React.PureComponent {
 	})
 
 	render() {
-		const { usesubTableModalVisible, selectedRecord, allAnnualLeaveQuery, years, startQuarter, startYear, endQuarter, endYear, subTableModalVisible } = this.state;
+		const { selectedSubRecord, applyRecordsModalVisible, usesubTableModalVisible, selectedRecord, allAnnualLeaveQuery, years, startQuarter, startYear, endQuarter, endYear, subTableModalVisible } = this.state;
 		const { subResid, resid, baseURL } = this.props
 		const annualLeaves = this.calcAnnualLeaves(startYear, startQuarter, endYear, endQuarter, allAnnualLeaveQuery);
 		return <div className="alq-summary">
@@ -326,7 +328,7 @@ class Summary extends React.PureComponent {
 				/>
 			</div>
 			<Modal
-				title="年假使用明细"
+				title="年假月度使用情况"
 				visible={usesubTableModalVisible}
 				footer={null}
 				width="80vw"
@@ -339,6 +341,38 @@ class Summary extends React.PureComponent {
 					resid={resid}
 					subresid={'662737017622'}
 					hostrecid={selectedRecord.REC_ID}
+					baseURL={baseURL}
+					subtractH={200}
+					hasAdd={false}
+					hasModify={false}
+					hasDelete={false}
+					hasRowEdit={false}
+					hasRowModify={false}
+					hasRowView={true}
+					hasRowDelete={false}
+					actionBarWidth={100}
+					height={500}
+					customRowBtns={[
+						(record, btnSize) => {
+							return <Button onClick={() => { this.setState({ selectedSubRecord: record }) }} size={btnSize}>申请记录</Button>
+						},
+					]}
+				/>
+			</Modal>
+			<Modal
+				title="申请记录"
+				visible={applyRecordsModalVisible}
+				footer={null}
+				width="70vw"
+				onCancel={() => {
+					this.setState({ applyRecordsModalVisible: false })
+				}}>
+				<TableData
+					key={selectedSubRecord.REC_ID}
+					dataMode="sub"
+					resid={resid}
+					subresid={'662737017622'}
+					hostrecid={selectedSubRecord.REC_ID}
 					baseURL={baseURL}
 					subtractH={200}
 					hasAdd={false}
