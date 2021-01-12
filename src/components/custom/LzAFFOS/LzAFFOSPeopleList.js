@@ -164,7 +164,6 @@ class LzAFFOSPeopleList extends React.Component {
   }
 
   readWorkbookFromLocalFile = info => {
-    console.log('点击导入');
     const file = info.file.originFileObj;
     const reader = new FileReader();
     const ctx = this;
@@ -181,7 +180,6 @@ class LzAFFOSPeopleList extends React.Component {
       sheetJson.map((item, index) => {
         const newInfo = {};
         newInfo.key = count + index;
-        console.log('state', ctx.state.dataSource);
         newInfo.C3_605716828937 = item.访客姓名;
         newInfo.C3_605716867680 = item.登记证件类型;
         newInfo.C3_614704116070 = item.登记证件号码;
@@ -189,13 +187,11 @@ class LzAFFOSPeopleList extends React.Component {
         newInfo.C3_605717318503 = item.备注;
         importData.push(newInfo);
       });
-      // console.log('import', importData);
       ctx.setState({
         count: count + importData.length,
         dataSource: [...importData, ...dataSource]
       });
     };
-    // console.log('外面import', importData);
     reader.readAsArrayBuffer(file);
     this.setState({
       showDragger: false
@@ -257,6 +253,8 @@ class LzAFFOSPeopleList extends React.Component {
     ) {
       this.props.parent.getBuilderList(this, this.state.dataSource);
     }
+    const { dataSource } = this.state;
+    console.table(dataSource);
   };
 
   render() {

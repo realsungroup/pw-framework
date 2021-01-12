@@ -126,7 +126,11 @@ export const inExaminationAndApproval = {
         hasRowDelete: false,
         height: 500,
         defaultColumnWidth: 100,
-        actionBarWidth: 200
+        actionBarWidth: 200,
+        importConfig: {
+          mode: 'fe',
+          saveFE: true
+        }
         // noWidthFieldsIndex: [1]
       }
     },

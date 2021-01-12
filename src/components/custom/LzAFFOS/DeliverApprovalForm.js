@@ -70,7 +70,6 @@ class DeliverApprovalForm extends React.Component {
         ? moment().add(3, 'M')
         : moment().add(6, 'M')
       : moment(); //结束时间初始值
-    console.log(isControl);
     return (
       <Modal
         title="送货申请"
