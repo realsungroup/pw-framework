@@ -56,7 +56,7 @@ export const inApplication = {
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   addText: '请填写一般人员基本信息',
   subTableArrProps: [
@@ -170,7 +170,7 @@ export const approved = {
   // },
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {
@@ -245,7 +245,7 @@ export const refused = {
   recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {
@@ -303,7 +303,7 @@ export const history = {
   recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {

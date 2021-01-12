@@ -311,9 +311,6 @@ class DeliverPeopleList extends React.Component {
   };
 
   render() {
-    this.setState({
-      dataSource: {}
-    });
     const { dataSource } = this.state;
     const components = {
       body: {

@@ -65,7 +65,7 @@ export const inApplication = {
   recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {
@@ -189,7 +189,7 @@ export const approved = {
   recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {
@@ -248,7 +248,7 @@ export const refused = {
   recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {
@@ -306,7 +306,7 @@ export const history = {
   recordFormTabsWidth: '60%',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {

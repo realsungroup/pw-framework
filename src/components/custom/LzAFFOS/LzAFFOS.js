@@ -569,6 +569,12 @@ export default class LzAFFOS extends React.Component {
         ...extra
       };
     });
+    for (let i = 1; i < list.length; i++) {
+      if (list[i].C3_605717998409 === list[0].C3_605717998409) {
+        list[0].C3_605718009813 = 'Y';
+        list[1].C3_605718009813 = 'waiting';
+      }
+    }
     const appList = list.map((item, index) => {
       return {
         resid: '605717968873',
@@ -1093,7 +1099,7 @@ export default class LzAFFOS extends React.Component {
                     this.changeEffect();
                   }}
                 >
-                  查找人员
+                  更改审批人
                 </Button>
               </div>
               <div className="approval_modal">
