@@ -253,8 +253,6 @@ class LzAFFOSPeopleList extends React.Component {
     ) {
       this.props.parent.getBuilderList(this, this.state.dataSource);
     }
-    const { dataSource } = this.state;
-    console.table(dataSource);
   };
 
   render() {

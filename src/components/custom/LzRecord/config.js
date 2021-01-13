@@ -7,7 +7,7 @@ import { modRecord } from 'Util/api';
 export const inApplication = {
   resid: 605892972967,
   formProps: {
-    height: 550,
+    height: 550
   },
   recordFormFormWidth: '40%',
   recordFormTabsWidth: '60%',
@@ -18,26 +18,28 @@ export const inApplication = {
   hasRowView: true,
   hasRowDelete: false,
   hasBeBtns: true,
-  subtractH:196,
+  subtractH: 196,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
-  subTableArrProps: [{
-    subTableName: '前台登记记录',
-    subResid: 606058778224,
-    tableProps: {
-      hasAdd: false,
-      hasModify: false,
-      hasDelete: false,
-      hasRowModify: true,
-      hasRowView: false,
-      hasRowDelete: false,
-      height: 500,
-      subtractH: 196,
+  subTableArrProps: [
+    {
+      subTableName: '前台登记记录',
+      subResid: 606058778224,
+      tableProps: {
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        height: 500,
+        subtractH: 196
+      }
     }
-  }]
+  ]
 };
 
 // 已处理
@@ -55,24 +57,26 @@ export const applyForAbnormal = {
   hasRowView: true,
   hasRowDelete: false,
   hasBeBtns: true,
-  subtractH:200,
+  subtractH: 200,
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
-  subTableArrProps: [{
-    subTableName: '前台登记记录',
-    subResid: 606058778224,
-    tableProps: {
-      hasAdd: false,
-      hasModify: false,
-      hasDelete: false,
-      hasRowModify: true,
-      hasRowView: false,
-      hasRowDelete: false,
-      height: 500,
-      subtractH: 196,
+  subTableArrProps: [
+    {
+      subTableName: '前台登记记录',
+      subResid: 606058778224,
+      tableProps: {
+        hasAdd: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        height: 500,
+        subtractH: 196
+      }
     }
-  }]
+  ]
 };

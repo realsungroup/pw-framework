@@ -356,7 +356,11 @@ class BuildApprovlForm extends React.Component {
                         }
                       ]
                     })(
-                      <TimePicker format={'HH:mm'} style={{ width: '45%' }} />
+                      <TimePicker
+                        minuteStep={30}
+                        format={'HH:mm'}
+                        style={{ width: '45%' }}
+                      />
                     )}
                     ~
                     {getFieldDecorator('workTime2', {
@@ -368,7 +372,11 @@ class BuildApprovlForm extends React.Component {
                         }
                       ]
                     })(
-                      <TimePicker format={'HH:mm'} style={{ width: '45%' }} />
+                      <TimePicker
+                        minuteStep={30}
+                        format={'HH:mm'}
+                        style={{ width: '45%' }}
+                      />
                     )}
                   </th>
                 </tr>

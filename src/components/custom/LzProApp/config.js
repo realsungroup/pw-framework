@@ -24,7 +24,7 @@ export const inApplication = {
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {
@@ -63,7 +63,7 @@ export const applyForAbnormal = {
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {
@@ -102,7 +102,7 @@ export const refused = {
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {
@@ -141,7 +141,7 @@ export const history = {
   recordFormType: 'drawer',
   recordFormContainerProps: {
     placement: 'bottom',
-    height: 600
+    height: 'calc(100vh - 30px)'
   },
   subTableArrProps: [
     {

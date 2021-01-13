@@ -16,6 +16,7 @@ import {
   history,
   inExaminationAndApproval
 } from './config';
+import { isWhiteSpaceLike } from 'typescript';
 
 const TabPane = Tabs.TabPane;
 
@@ -284,14 +285,29 @@ export default class LzApproval extends React.Component {
                 customRowBtns={[
                   record => {
                     return (
-                      <Button
-                        style={{ width: '104px' }}
-                        onClick={() => {
-                          this.showRecord(record);
+                      <div
+                        style={{
+                          width: '300px',
+                          zIndex: '3',
+                          background: 'white',
+                          position: 'absolute',
+                          left: 0,
+                          top: 0
                         }}
+                        className={
+                          record.C3_605703913037 !== '一般访客'
+                            ? 'lonelyButton'
+                            : 'noBuilderButton'
+                        }
                       >
-                        施工与送货审批
-                      </Button>
+                        <Button
+                          onClick={() => {
+                            this.showRecord(record);
+                          }}
+                        >
+                          施工与送货审批
+                        </Button>
+                      </div>
                     );
                   }
                 ]}
