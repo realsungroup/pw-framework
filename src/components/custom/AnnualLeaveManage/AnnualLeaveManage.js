@@ -6,8 +6,24 @@ import SelectPersonnel from 'Common/data/SelectPersonnel';
 import debounce from 'lodash/debounce';
 import http from 'Util20/api';
 import SelectPersonSecond from '../SelectPersonSecond';
+import moment from 'moment';
 
 const { Option } = Select;
+const months = [
+  { label: 1, value: '01' },
+  { label: 2, value: '02' },
+  { label: 3, value: '03' },
+  { label: 4, value: '04' },
+  { label: 5, value: '05' },
+  { label: 6, value: '06' },
+  { label: 7, value: '07' },
+  { label: 8, value: '08' },
+  { label: 9, value: '09' },
+  { label: 10, value: '10' },
+  { label: 11, value: '11' },
+  { label: 12, value: '12' },
+];
+const quarters = [{ title: '第1季度', value: 1 }, { title: '第2季度', value: 2 }, { title: '第3季度', value: 3 }, { title: '第4季度', value: 4 }]
 
 class AnnualLeaveManage extends React.Component {
   menus = [{
@@ -23,7 +39,7 @@ class AnnualLeaveManage extends React.Component {
     tip: '上年结转提示',
     render: () => {
       const { baseURL } = this.props;
-      return <ShangNianJieZhuan baseURL={baseURL} />
+      return <ShangNianJieZhuan baseURL={baseURL} onOpenSelectPerson={this.handleOpenSelectPerson} />
     }
   },
   {
@@ -31,7 +47,7 @@ class AnnualLeaveManage extends React.Component {
     tip: '月度新增提示',
     render: () => {
       const { baseURL } = this.props;
-      return <YueDuXinZeng baseURL={baseURL} />
+      return <YueDuXinZeng baseURL={baseURL} onOpenSelectPerson={this.handleOpenSelectPerson} />
     }
   },
   {
@@ -39,7 +55,7 @@ class AnnualLeaveManage extends React.Component {
     tip: '月度使用提示',
     render: () => {
       const { baseURL } = this.props;
-      return <YueDuShiYong baseURL={baseURL} />
+      return <YueDuShiYong baseURL={baseURL} onOpenSelectPerson={this.handleOpenSelectPerson} />
     }
   },
   {
@@ -47,7 +63,7 @@ class AnnualLeaveManage extends React.Component {
     tip: '季度结算提示',
     render: () => {
       const { baseURL } = this.props;
-      return <JiDuJieSuan baseURL={baseURL} />
+      return <JiDuJieSuan baseURL={baseURL} onOpenSelectPerson={this.handleOpenSelectPerson} />
     }
   },
   {
@@ -55,7 +71,7 @@ class AnnualLeaveManage extends React.Component {
     tip: '入职分配提示',
     render: () => {
       const { baseURL } = this.props;
-      return <RuZhiFenPei baseURL={baseURL} />
+      return <RuZhiFenPei baseURL={baseURL} onOpenSelectPerson={this.handleOpenSelectPerson} />
     }
   },
   {
@@ -71,6 +87,7 @@ class AnnualLeaveManage extends React.Component {
     selectedKeys: [this.menus[0].title],
     selectedMenu: this.menus[0],
     selectPersonVisible: false,
+    spinning: false,
     persons: [],
     refreshCallback: () => { }
   }
@@ -81,106 +98,111 @@ class AnnualLeaveManage extends React.Component {
     this.setState({ persons: personList });
   };
   handleComplete = () => {
-    const { refreshCallback } = this.state
+    const { refreshCallback } = this.state;
+    this.setState({ selectPersonVisible: false, spinning: true });
     setTimeout(() => {
-      this.setState({ selectPersonVisible: false })
+      this.setState({ spinning: false })
       refreshCallback && refreshCallback()
     }, 2000);
   }
   render() {
-    const { selectedKeys, selectedMenu, selectPersonVisible } = this.state;
-    return <div className="page-annualLeaveManage">
-      <Menu
-        onClick={this.handleClick}
-        className="annual-leave-manage__menu"
-        selectedKeys={selectedKeys}
-        mode="inline"
-        onSelect={({ selectedKeys }) => {
-          this.setState({ selectedKeys, selectedMenu: this.menus.find(item => item.title === selectedKeys[0]) });
-        }}
-      >
-        {this.menus.map((menu) => {
-          return <Menu.Item key={menu.title}>
-            <div className="menu-item__body">
-              {menu.title}
-              {selectedKeys[0] === menu.title && <span onClick={() => {
-                Modal.info({
-                  title: '提示',
-                  content: menu.tip
-                })
-              }} className="menu-item-tip-container">
-                <Icon style={{ color: '#faad14', margin: 0 }} type="info-circle" theme="filled" />
-              </span>}
-            </div>
-          </Menu.Item>
-        })}
-      </Menu>
-      <div className="annual-leave-manage__content">
-        {selectedMenu.render()}
-      </div>
-      <Modal destroyOnClose onCancel={() => { this.setState({ selectPersonVisible: false }) }} width="80vw" visible={selectPersonVisible} footer={null}>
-        <div style={{ height: 600 }}>
-          <SelectPersonnel
-            radioGroupConfig={[
-              {
-                type: 'list',
-                title: '按级别添加',
-                resid: 449335746776,
-                nameField: 'C3_587136281870'
-              },
-              {
-                type: 'tree',
-                title: '按部门添加',
-                resid: 466282405067,
-                nameField: 'DEP_NAME',
-                idField: 'DEP_ID',
-                pidField: 'DEP_PID'
-              },
-              {
-                type: 'search',
-                title: '输入关键词搜索'
-              },
-              {
-                type: 'file',
-                title: '请选择要上传的文件'
-              }
-            ]}
-            subResid={609599795438}
-            secondFilterInputPlaceholder="输入关键词搜索"
-            personFields={[
-              '',
-              'C3_227192472953',
-              'C3_227192484125',
-              'C3_227212499515'
-            ]}
-            personPrimaryKeyField="C3_227192472953"
-            stepList={[
-              {
-                stepTitle: '验证',
-                renderContent: current => {
-                  return (
-                    <SelectPersonSecond
-                      persons={this.state.persons}
-                      onCheckboxChange={this.handleCheckboxChange}
-                    />
-                  );
-                }
-              }
-            ]}
-            completeText="完成"
-            onSelectPerson={this.handleSelectPerson}
-            onComplete={this.handleComplete}
-          />
+    const { selectedKeys, selectedMenu, selectPersonVisible, spinning } = this.state;
+    return <Spin spinning={spinning}>
+      <div className="page-annualLeaveManage">
+        <Menu
+          onClick={this.handleClick}
+          className="annual-leave-manage__menu"
+          selectedKeys={selectedKeys}
+          mode="inline"
+          onSelect={({ selectedKeys }) => {
+            this.setState({ selectedKeys, selectedMenu: this.menus.find(item => item.title === selectedKeys[0]) });
+          }}
+        >
+          {this.menus.map((menu) => {
+            return <Menu.Item key={menu.title}>
+              <div className="menu-item__body">
+                {menu.title}
+                {selectedKeys[0] === menu.title && <span onClick={() => {
+                  Modal.info({
+                    title: '提示',
+                    content: menu.tip
+                  })
+                }} className="menu-item-tip-container">
+                  <Icon style={{ color: '#faad14', margin: 0 }} type="info-circle" theme="filled" />
+                </span>}
+              </div>
+            </Menu.Item>
+          })}
+        </Menu>
+        <div className="annual-leave-manage__content">
+          {selectedMenu.render()}
         </div>
-      </Modal>
-    </div>
+        <Modal destroyOnClose onCancel={() => { this.setState({ selectPersonVisible: false }) }} width="80vw" visible={selectPersonVisible} footer={null}>
+          <div style={{ height: 600 }}>
+            <SelectPersonnel
+              radioGroupConfig={[
+                {
+                  type: 'list',
+                  title: '按级别添加',
+                  resid: 449335746776,
+                  nameField: 'C3_587136281870'
+                },
+                {
+                  type: 'tree',
+                  title: '按部门添加',
+                  resid: 466282405067,
+                  nameField: 'DEP_NAME',
+                  idField: 'DEP_ID',
+                  pidField: 'DEP_PID'
+                },
+                {
+                  type: 'search',
+                  title: '输入关键词搜索'
+                },
+                {
+                  type: 'file',
+                  title: '请选择要上传的文件'
+                }
+              ]}
+              subResid={609599795438}
+              secondFilterInputPlaceholder="输入关键词搜索"
+              personFields={[
+                '',
+                'C3_227192472953',
+                'C3_227192484125',
+                'C3_227212499515'
+              ]}
+              personPrimaryKeyField="C3_227192472953"
+              stepList={[
+                {
+                  stepTitle: '确认',
+                  renderContent: current => {
+                    return (
+                      <SelectPersonSecond
+                        persons={this.state.persons}
+                        onCheckboxChange={this.handleCheckboxChange}
+                      />
+                    );
+                  }
+                }
+              ]}
+              completeText="完成"
+              onSelectPerson={this.handleSelectPerson}
+              onComplete={this.handleComplete}
+            />
+          </div>
+        </Modal>
+      </div>
+    </Spin>
   }
 }
 
 class NianChuChuangJian extends React.PureComponent {
   state = {
+    selectedCalculationRule: 'old'
   }
   actionBarExtra = ({ dataSource = [], selectedRowKeys = [], data = [], recordFormData, size }) => {
+    const { selectedCalculationRule } = this.state;
     return <div style={{ display: 'flex' }}>
       <div style={{ marginRight: 12 }}>
         <span>财年：</span>
@@ -190,23 +212,31 @@ class NianChuChuangJian extends React.PureComponent {
       </div>
       <div style={{ marginRight: 12 }}>
         <span>年假计算规则：</span>
-        <Select size="small" style={{ width: 120 }}>
-          <Select.Option value="老员工">老员工</Select.Option>
+        <Select
+          value={selectedCalculationRule}
+          onChange={(v) => { this.setState({ selectedCalculationRule: v }) }}
+          size="small"
+          style={{ width: 120 }}
+        >
+          <Select.Option value="old">老员工</Select.Option>
+          <Select.Option value="new">新员工</Select.Option>
         </Select>
       </div>
       <Button onClick={() => { this.props.onOpenSelectPerson(this.handleRefresh) }} type="primary" size="small">添加人员</Button>
     </div>
   }
   handleRefresh = () => {
-    console.log('refresh')
+    this.tableDataRef.handleRefresh();
   }
   render() {
     const { baseURL } = this.props;
     return <TableData
       key="NianChuChuangJian"
+      wrappedComponentRef={element => (this.tableDataRef = element)}
+      refTargetComponentName="TableData"
       resid={662169346288}
       baseURL={baseURL}
-      subtractH={170}
+      subtractH={190}
       hasAdd={false}
       hasModify={false}
       hasDelete={false}
@@ -228,16 +258,21 @@ class ShangNianJieZhuan extends React.PureComponent {
           <Select.Option value="FY2021">FY2021</Select.Option>
         </Select>
       </div>
-      <Button type="primary" size="small">添加人员</Button>
+      <Button onClick={() => { this.props.onOpenSelectPerson(this.handleRefresh) }} type="primary" size="small">添加人员</Button>
     </div>
+  }
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
   }
   render() {
     const { baseURL } = this.props;
     return <TableData
       key="shangNianJieZhuan"
+      wrappedComponentRef={element => (this.tableDataRef = element)}
+      refTargetComponentName="TableData"
       resid={662169346288}
       baseURL={baseURL}
-      subtractH={170}
+      subtractH={190}
       hasAdd={false}
       hasModify={false}
       hasDelete={false}
@@ -252,7 +287,14 @@ class ShangNianJieZhuan extends React.PureComponent {
 }
 
 class YueDuXinZeng extends React.PureComponent {
+  state = {
+    selectedMonth: moment().format('MM')
+  }
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
+  }
   actionBarExtra = ({ dataSource = [], selectedRowKeys = [], data = [], recordFormData, size }) => {
+    const { selectedMonth } = this.state;
     return <div style={{ display: 'flex' }}>
       <div style={{ marginRight: 12 }}>
         <span>财年：</span>
@@ -262,20 +304,24 @@ class YueDuXinZeng extends React.PureComponent {
       </div>
       <div style={{ marginRight: 12 }}>
         <span>月份：</span>
-        <Select size="small" style={{ width: 120 }}>
-          <Select.Option value="2">2</Select.Option>
+        <Select onChange={(v) => { this.setState({ selectedMonth: v }) }} value={selectedMonth} size="small" style={{ width: 120 }}>
+          {months.map((month => {
+            return <Select.Option value={month.value}>{month.label}</Select.Option>
+          }))}
         </Select>
       </div>
-      <Button type="primary" size="small">添加人员</Button>
+      <Button onClick={() => { this.props.onOpenSelectPerson(this.handleRefresh) }} type="primary" size="small">添加人员</Button>
     </div>
   }
   render() {
     const { baseURL } = this.props;
     return <TableData
       key="YueDuXinZeng"
+      wrappedComponentRef={element => (this.tableDataRef = element)}
+      refTargetComponentName="TableData"
       resid={662169346288}
       baseURL={baseURL}
-      subtractH={170}
+      subtractH={190}
       hasAdd={false}
       hasModify={false}
       hasDelete={false}
@@ -290,7 +336,14 @@ class YueDuXinZeng extends React.PureComponent {
 }
 
 class YueDuShiYong extends React.PureComponent {
+  state = {
+    selectedMonth: moment().format('MM')
+  }
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
+  }
   actionBarExtra = ({ dataSource = [], selectedRowKeys = [], data = [], recordFormData, size }) => {
+    const { selectedMonth } = this.state;
     return <div style={{ display: 'flex' }}>
       <div style={{ marginRight: 12 }}>
         <span>财年：</span>
@@ -300,20 +353,24 @@ class YueDuShiYong extends React.PureComponent {
       </div>
       <div style={{ marginRight: 12 }}>
         <span>月份：</span>
-        <Select size="small" style={{ width: 120 }}>
-          <Select.Option value="2">2</Select.Option>
+        <Select onChange={(v) => { this.setState({ selectedMonth: v }) }} value={selectedMonth} size="small" style={{ width: 120 }}>
+          {months.map((month => {
+            return <Select.Option value={month.value}>{month.label}</Select.Option>
+          }))}
         </Select>
       </div>
-      <Button type="primary" size="small">添加人员</Button>
+      <Button onClick={() => { this.props.onOpenSelectPerson(this.handleRefresh) }} type="primary" size="small">添加人员</Button>
     </div>
   }
   render() {
     const { baseURL } = this.props;
     return <TableData
       key="YueDuShiYong"
+      wrappedComponentRef={element => (this.tableDataRef = element)}
+      refTargetComponentName="TableData"
       resid={662169346288}
       baseURL={baseURL}
-      subtractH={170}
+      subtractH={190}
       hasAdd={false}
       hasModify={false}
       hasDelete={false}
@@ -326,8 +383,13 @@ class YueDuShiYong extends React.PureComponent {
     />
   }
 }
+
 class JiDuJieSuan extends React.PureComponent {
+  state = {
+    selectedQuarter: moment().quarter()
+  }
   actionBarExtra = ({ dataSource = [], selectedRowKeys = [], data = [], recordFormData, size }) => {
+    const { selectedQuarter } = this.state;
     return <div style={{ display: 'flex' }}>
       <div style={{ marginRight: 12 }}>
         <span>财年：</span>
@@ -337,20 +399,27 @@ class JiDuJieSuan extends React.PureComponent {
       </div>
       <div style={{ marginRight: 12 }}>
         <span>季度：</span>
-        <Select size="small" style={{ width: 120 }}>
-          <Select.Option value="2">2</Select.Option>
+        <Select value={selectedQuarter} onChange={v => { this.setState({ selectedQuarter: v }) }} size="small" style={{ width: 120 }}>
+          {quarters.map(item => {
+            return <Option value={item.value}>{item.title}</Option>
+          })}
         </Select>
       </div>
-      <Button type="primary" size="small">添加人员</Button>
+      <Button onClick={() => { this.props.onOpenSelectPerson(this.handleRefresh) }} type="primary" size="small">添加人员</Button>
     </div>
+  }
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
   }
   render() {
     const { baseURL } = this.props;
     return <TableData
       key="JiDuJieSuan"
+      wrappedComponentRef={element => (this.tableDataRef = element)}
+      refTargetComponentName="TableData"
       resid={662169346288}
       baseURL={baseURL}
-      subtractH={170}
+      subtractH={190}
       hasAdd={false}
       hasModify={false}
       hasDelete={false}
@@ -366,16 +435,21 @@ class JiDuJieSuan extends React.PureComponent {
 class RuZhiFenPei extends React.PureComponent {
   actionBarExtra = ({ dataSource = [], selectedRowKeys = [], data = [], recordFormData, size }) => {
     return <div style={{ display: 'flex' }}>
-      <Button type="primary" size="small">添加人员</Button>
+      <Button onClick={() => { this.props.onOpenSelectPerson(this.handleRefresh) }} type="primary" size="small">添加人员</Button>
     </div>
+  }
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
   }
   render() {
     const { baseURL } = this.props;
     return <TableData
       key="RuZhiFenPei"
+      wrappedComponentRef={element => (this.tableDataRef = element)}
+      refTargetComponentName="TableData"
       resid={662169346288}
       baseURL={baseURL}
-      subtractH={170}
+      subtractH={190}
       hasAdd={false}
       hasModify={false}
       hasDelete={false}
@@ -389,7 +463,6 @@ class RuZhiFenPei extends React.PureComponent {
   }
 }
 const years = [2021];
-const quarters = [{ title: '第1季度', value: 1 }, { title: '第2季度', value: 2 }, { title: '第3季度', value: 3 }, { title: '第4季度', value: 4 }]
 const styles = {
   selectStyle: {
     width: 120,
@@ -552,7 +625,7 @@ class NianJiaChaXun extends React.PureComponent {
           key="NianJiaChaXun"
           resid={662169346288}
           baseURL={baseURL}
-          subtractH={170}
+          subtractH={190}
           hasAdd={false}
           hasModify={false}
           hasDelete={false}

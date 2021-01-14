@@ -26,7 +26,7 @@ class AnnualLeaveQuery extends React.Component {
 		const { UserCode } = this.state;
 		return <div className="page-annual-leave-query">
 			<Tabs >
-				<TabPane tab="使用概括" key="1">
+				<TabPane tab="账户明细" key="1">
 					<Summary baseURL={baseURL} subResid={员工年假使用明细表} resid={员工年假季度账户表} userCode={UserCode} />
 				</TabPane>
 				<TabPane tab="使用明细" key="2">
@@ -354,7 +354,7 @@ class Summary extends React.PureComponent {
 					height={500}
 					customRowBtns={[
 						(record, btnSize) => {
-							return <Button onClick={() => { this.setState({ selectedSubRecord: record }) }} size={btnSize}>申请记录</Button>
+							return <Button onClick={() => { this.setState({ selectedSubRecord: record, applyRecordsModalVisible: true }) }} size={btnSize}>申请记录</Button>
 						},
 					]}
 				/>
