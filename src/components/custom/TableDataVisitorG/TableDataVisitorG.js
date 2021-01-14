@@ -26,8 +26,9 @@ class TableDataVisitorG extends React.Component {
         try {
           res = await http().getTable({
             resid: 605719206028,
-            cmswhere: `C3_605719242955 = ${card.cardno}`
+            cmswhere: `C3_605719242955 = '${card.cardno}'`
           });
+          console.table(res.data);
           if (res.data.length > 0) {
             message.success('查询成功！');
             await this.setState({
