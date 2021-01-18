@@ -894,3 +894,10 @@ export const AnnualLeaveManage = Loadable({
     return minLoading;
   }
 });
+
+export const OnDutyTrainingApp = Loadable({
+  loader: () => import('./OnDutyTrainingApp'),
+  loading() {
+    return minLoading;
+  }
+});

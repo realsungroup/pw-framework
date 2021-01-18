@@ -180,5 +180,6 @@ export {
   HRManagerProbation,
   ChiefInspectorProbation,
   AnnualLeaveQuery,
-  AnnualLeaveManage
+  AnnualLeaveManage,
+  OnDutyTrainingApp
 } from '../components/custom/loadableCustom';
