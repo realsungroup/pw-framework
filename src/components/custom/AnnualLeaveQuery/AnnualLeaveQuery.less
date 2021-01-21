@@ -1,25 +1,36 @@
-.page-annual-leave-query{
-    background: #ffffff;
-    min-height: 100vh;
-    .alq-summary{
-			padding: 0px 24px 16px;
-        .alq-summary__header{
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					margin-bottom: 12px;
-
-				}
-				.table-action--view{
-					color: #1890ff;
-					cursor: pointer;
-					padding:0 8px;
-				}
-		}
-		.alq-detail{
-			padding: 0px 24px 16px;
-			&__header{
-				margin-bottom: 12px;
-			}
-		}
+.page-annual-leave-query {
+  background: #ffffff;
+  min-height: 100vh;
+  .alq-summary {
+    padding: 0px 24px 16px;
+    span:nth-child(odd) {
+      margin-right: 1vw;
+    }
+    span:nth-child(even) {
+      margin-right: 4vw;
+    }
+    .collapseStyle {
+      width: 97vw;
+      border-radius: 4;
+      margin-top: 2vh;
+      margin-bottom: 2vh;
+    }
+    .alq-summary__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .table-action--view {
+      color: #1890ff;
+      cursor: pointer;
+      padding: 0 8px;
+    }
+  }
+  .alq-detail {
+    padding: 0px 24px 16px;
+    &__header {
+      margin-bottom: 12px;
+    }
+  }
 }

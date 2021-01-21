@@ -215,7 +215,12 @@ class EmployeeInformation extends React.Component {
               </span>
               {employeeInformation.regStatus}
               {employeeInformation.C3_622649502021 === 'Y' &&
-                (roleName === 'HR' || roleName === '员工') && (
+                (roleName === 'HR' ||
+                  roleName === '员工' ||
+                  roleName === '主管' ||
+                  roleName === '经理' ||
+                  roleName === 'HR经理' ||
+                  roleName === '总监') && (
                   <Popover
                     placement="right"
                     content={

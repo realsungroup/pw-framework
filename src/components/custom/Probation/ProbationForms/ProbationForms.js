@@ -2181,7 +2181,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试用期主管评价  Director Evaluate',
+              text: '试用期主管评价 Supervisor Evaluate',
               color: '000000'
             })
           ]
