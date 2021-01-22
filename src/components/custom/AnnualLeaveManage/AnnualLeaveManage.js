@@ -83,8 +83,8 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
-      title: '季度新增',
-      tip: '季度新增提示',
+      title: '月度新增',
+      tip: '月度新增提示',
       render: () => {
         const { baseURL } = this.props;
         return (
@@ -96,8 +96,8 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
-      title: '月度使用',
-      tip: '月度使用提示',
+      title: '季度使用',
+      tip: '季度使用提示',
       render: () => {
         const { baseURL } = this.props;
         return (
@@ -325,7 +325,7 @@ class AnnualLeaveManage extends React.Component {
 class NianChuChuangJian extends React.PureComponent {
   state = {
     selectedCalculationRule: 'old',
-    cms: '',
+    cms: `Type = '年初创建'`,
     selectedYear: curYear
   };
   actionBarExtra = ({
@@ -350,17 +350,11 @@ class NianChuChuangJian extends React.PureComponent {
               });
               if (selectedCalculationRule === 'old') {
                 this.setState({
-                  cms: `joinData <= ${moment(
-                    '20201231',
-                    'YYYYMMDD'
-                  )} and year = ${v}`
+                  cms: `joinDate <= '2020-12-31' and Year = ${v} and Type = '年初创建'`
                 });
               } else {
                 this.setState({
-                  cms: `joinData > ${moment(
-                    '20201231',
-                    'YYYYMMDD'
-                  )} and year = ${v}`
+                  cms: `joinDate > '2020-12-31' and Year = ${v} and Type = '年初创建'`
                 });
               }
             }}
@@ -380,17 +374,11 @@ class NianChuChuangJian extends React.PureComponent {
               this.setState({ selectedCalculationRule: v });
               if (v === 'old') {
                 this.setState({
-                  cms: `joinData <= ${moment(
-                    '20201231',
-                    'YYYYMMDD'
-                  )} and year = ${selectedYear}`
+                  cms: `joinDate <= '2020-12-31' and Year = ${selectedYear} and Type = '年初创建'`
                 });
               } else {
                 this.setState({
-                  cms: `joinData > ${moment(
-                    '20201231',
-                    'YYYYMMDD'
-                  )} and year = ${selectedYear}`
+                  cms: `joinDate > '2020-12-31' and Year = ${selectedYear} and Type = '年初创建'`
                 });
               }
             }}
@@ -419,12 +407,13 @@ class NianChuChuangJian extends React.PureComponent {
   render() {
     const { baseURL } = this.props;
     const { cms } = this.state;
+    console.table({ cms });
     return (
       <TableData
         key="NianChuChuangJian"
         wrappedComponentRef={element => (this.tableDataRef = element)}
         refTargetComponentName="TableData"
-        resid={662169346288}
+        resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
         hasAdd={false}
@@ -443,7 +432,7 @@ class NianChuChuangJian extends React.PureComponent {
 }
 class ShangNianJieZhuan extends React.PureComponent {
   state = {
-    cms: '',
+    cms: `Type = '上年转入' or Type = '当年转出'`,
     selectedYear: curYear
   };
   actionBarExtra = ({
@@ -465,7 +454,7 @@ class ShangNianJieZhuan extends React.PureComponent {
             onChange={v => {
               this.setState({
                 selectedYear: v,
-                cms: `year = ${v}`
+                cms: `Year = ${v} and Type = '上年转入' or Type = '当年转出'`
               });
             }}
           >
@@ -499,7 +488,7 @@ class ShangNianJieZhuan extends React.PureComponent {
         key="shangNianJieZhuan"
         wrappedComponentRef={element => (this.tableDataRef = element)}
         refTargetComponentName="TableData"
-        resid={662169346288}
+        resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
         hasAdd={false}
@@ -562,7 +551,7 @@ class YueDuXinZeng extends React.PureComponent {
             onChange={v => {
               this.setState({
                 selectedQuarter: v,
-                cms: `Year = '${selectedYear}' and Quarter = '${v}' and Type = '季度新增'`
+                cms: `Year = '${selectedYear}' and Quarter = '${v}' and Type = '月度新增'`
               });
             }}
             value={selectedQuarter}
@@ -1024,7 +1013,8 @@ class NianJiaChaXun extends React.PureComponent {
     employeeResult: [],
     fetching: false,
     selectedEmpolyee: undefined,
-    cms: ''
+    cmssymx: `Year >= '${curYear}' and Year <= '${curYear}' and Quarter >= '${1}' and Quarter <= '${4}'`,
+    cmszhmx: `year >= ${curYear} and year <= ${curYear} and quarter >= ${1} and quarter <= ${4}`
   };
   actionBarExtra = ({
     dataSource = [],
@@ -1033,7 +1023,13 @@ class NianJiaChaXun extends React.PureComponent {
     recordFormData,
     size
   }) => {
-    const { startQuarter, startYear, endQuarter, endYear } = this.state;
+    const {
+      startQuarter,
+      startYear,
+      endQuarter,
+      endYear,
+      selectedEmpolyee
+    } = this.state;
     return (
       <div style={{ display: 'flex' }}>
         <div>
@@ -1042,7 +1038,8 @@ class NianJiaChaXun extends React.PureComponent {
             onChange={value => {
               this.setState({
                 startYear: value,
-                cms: `year >= ${value} and year <= ${endYear} and quarter >= ${startQuarter} and quarter <= ${endQuarter}`
+                cmssymx: `Year >= '${value}' and Year <= '${endYear}' and Quarter >= '${startQuarter}' and Quarter <= '${endQuarter}'`,
+                cmszhmx: `year >= ${value} and year <= ${endYear} and quarter >= ${startQuarter} and quarter <= ${endQuarter}`
               });
             }}
             value={startYear}
@@ -1057,7 +1054,8 @@ class NianJiaChaXun extends React.PureComponent {
             onChange={value => {
               this.setState({
                 startQuarter: value,
-                cms: `year >= ${startYear} and year <= ${endYear} and quarter >= ${value} and quarter <= ${endQuarter}`
+                cmssymx: `Year >= '${startYear}' and Year <= '${value}' and Quarter >= '${startQuarter}' and Quarter <= '${endQuarter}'`,
+                cmszhmx: `year >= ${startYear} and year <= ${endYear} and quarter >= ${value} and quarter <= ${endQuarter}`
               });
             }}
             value={startQuarter}
@@ -1073,7 +1071,8 @@ class NianJiaChaXun extends React.PureComponent {
             onChange={value => {
               this.setState({
                 endYear: value,
-                cms: `year >= ${startYear} and year <= ${value} and quarter >= ${startQuarter} and quarter <= ${endQuarter}`
+                cmssymx: `Year >= '${startYear}' and Year <= '${endYear}' and Quarter >= '${value}' and Quarter <= '${endQuarter}'`,
+                cmszhmx: `year >= ${startYear} and year <= ${value} and quarter >= ${startQuarter} and quarter <= ${endQuarter}`
               });
             }}
             value={endYear}
@@ -1088,7 +1087,8 @@ class NianJiaChaXun extends React.PureComponent {
             onChange={value => {
               this.setState({
                 endQuarter: value,
-                cms: `year >= ${startYear} and year <= ${endYear} and quarter >= ${startQuarter} and quarter <= ${value}`
+                cmssymx: `Year >= '${startYear}' and Year <= '${endYear}' and Quarter >= '${startQuarter}' and Quarter <= '${value}'`,
+                cmszhmx: `year >= ${startYear} and year <= ${endYear} and quarter >= ${startQuarter} and quarter <= ${value}`
               });
             }}
             value={endQuarter}
@@ -1132,8 +1132,11 @@ class NianJiaChaXun extends React.PureComponent {
   handleEmployeeChange = value => {
     console.log(value);
     //
+    const { startYear, endYear, startQuarter, endQuarter } = this.state;
     this.setState({
       selectedEmpolyee: value,
+      // cmssymx: `Year >= '${startYear}' and Year <= '${endYear}' and Quarter >= '${startQuarter}' and Quarter <= '${endQuarter}' and NumberID = '${value.key}'`,
+      // cmszhmx: `year >= ${startYear} and year <= ${endYear} and quarter >= ${startQuarter} and quarter <= ${endQuarter} and numberID = ${value.key}`,
       employeeResult: [],
       fetching: false
     });
@@ -1146,8 +1149,10 @@ class NianJiaChaXun extends React.PureComponent {
       fetching,
       employeeResult,
       selectedEmpolyee,
-      cms
+      cmszhmx,
+      cmssymx
     } = this.state;
+    console.table({ cmszhmx, cmssymx, selectedRadio });
     return (
       <div style={styles.nianJiaChaXun}>
         <div style={styles.header}>
@@ -1188,7 +1193,7 @@ class NianJiaChaXun extends React.PureComponent {
         <div style={styles.tableDataContainer}>
           <TableData
             key="NianJiaChaXun"
-            resid={662169346288}
+            resid={selectedRadio === 'zhmx' ? 662169346288 : 662169358054}
             baseURL={baseURL}
             subtractH={190}
             hasAdd={false}
@@ -1200,7 +1205,15 @@ class NianJiaChaXun extends React.PureComponent {
             hasRowDelete={false}
             actionBarWidth={100}
             actionBarExtra={this.actionBarExtra}
-            cmswhere={cms}
+            cmswhere={
+              selectedRadio === 'zhmx'
+                ? selectedEmpolyee
+                  ? cmszhmx + ` and numberID = ${selectedEmpolyee.key}`
+                  : cmszhmx
+                : selectedEmpolyee
+                ? cmssymx + ` and NumberID = '${selectedEmpolyee.key}'`
+                : cmssymx
+            }
           />
         </div>
       </div>
