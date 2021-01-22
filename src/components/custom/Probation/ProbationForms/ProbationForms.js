@@ -18,7 +18,7 @@ import {
   Row,
   Col,
   Input,
-  Popconfirm
+  Popconfirm,
 } from 'antd';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
@@ -471,31 +471,31 @@ class ProbationForms extends React.Component {
               ...employeeInformation,
               instructor:
                 this.state.employeeInformation.instructor &&
-                this.state.employeeInformation.instructor.indexOf('-') > -1
+                  this.state.employeeInformation.instructor.indexOf('-') > -1
                   ? this.state.employeeInformation.instructor.split('-')[0]
                   : this.state.employeeInformation.instructor,
               instructorDirectorName:
                 this.state.employeeInformation.instructorDirectorName &&
-                this.state.employeeInformation.instructorDirectorName.indexOf(
-                  '-'
-                ) > -1
+                  this.state.employeeInformation.instructorDirectorName.indexOf(
+                    '-'
+                  ) > -1
                   ? this.state.employeeInformation.instructorDirectorName.split(
-                      '-'
-                    )[0]
+                    '-'
+                  )[0]
                   : this.state.employeeInformation.instructorDirectorName,
               C3_637084539039:
                 this.state.employeeInformation.C3_637084539039 &&
-                this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
+                  this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
                   ? this.state.employeeInformation.C3_637084539039.split('-')[0]
                   : this.state.employeeInformation.C3_637084539039,
               instructorDirectorName2:
                 this.state.employeeInformation.instructorDirectorName2 &&
-                this.state.employeeInformation.instructorDirectorName2.indexOf(
-                  '-'
-                ) > -1
+                  this.state.employeeInformation.instructorDirectorName2.indexOf(
+                    '-'
+                  ) > -1
                   ? this.state.employeeInformation.instructorDirectorName2.split(
-                      '-'
-                    )[0]
+                    '-'
+                  )[0]
                   : this.state.employeeInformation.instructorDirectorName2,
               _state: 'modified',
               _id: 1
@@ -631,7 +631,7 @@ class ProbationForms extends React.Component {
           return Modal.info({
             title: '提示',
             content: '没有试用期信息。',
-            onOk: () => {}
+            onOk: () => { }
           });
         }
         let probationObjectives = data[viewableTable.objectiveResid].filter(
@@ -1282,7 +1282,7 @@ class ProbationForms extends React.Component {
           console.log(error);
         }
       },
-      onCancel() {}
+      onCancel() { }
     });
   };
 
@@ -1414,7 +1414,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '个人信息  Employee Information',
+              text: '个 人 信 息  Employee Information',
               color: '000000'
             })
           ]
@@ -1498,7 +1498,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试用期工作目标  Probation Objectives',
+              text: '试 用 期 工 作 目 标  Probation Objectives',
               color: '000000'
             })
           ]
@@ -1736,7 +1736,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '入职培训（必修）  Orientation Training',
+              text: '入 职 培 训（必 修）  Orientation Training',
               color: '000000'
             })
           ]
@@ -1835,7 +1835,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '内训课程  Internal Training',
+              text: '内 训 课 程  Internal Training',
               color: '000000'
             })
           ]
@@ -1938,7 +1938,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '在岗培训  On-the-job Training',
+              text: '在 岗 培 训  On-the-job Training',
               color: '000000'
             })
           ]
@@ -2039,7 +2039,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '辅导记录  Mentorship Record',
+              text: '辅 导 记 录  Mentorship Record',
               color: '000000'
             })
           ]
@@ -2144,32 +2144,34 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试用期个人小结Individual Summary',
+              text: '试 用 期 个 人 小 结  Individual Summary',
               color: '000000'
             })
           ]
         }),
 
         new Table({
-          width: {
-            size: 9070,
-            type: WidthType.DXA
-          },
           rows: [
             new TableRow({
               children: [
                 new TableCell({
                   children: [
                     new Paragraph({
-                      children: [new TextRun(employeeInformation.smmary || '')]
+                      children: [
+                        new TextRun({ text: employeeInformation.smmary || '', })
+                      ]
                     })
-                  ]
+                  ],
+                  width: {
+                    size: employeeInformation.smmary && employeeInformation.smmary.length > 61 ? 4535 : 9070,
+                    type: WidthType.DXA
+                  }
                 })
               ],
               cantSplit: true,
               height: {
                 height: 1000
-              }
+              },
             })
           ]
         }),
@@ -2181,16 +2183,12 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试用期主管评价 Supervisor Evaluate',
+              text: '试 用 期 主 管 评 价 Supervisor Evaluate',
               color: '000000'
             })
           ]
         }),
         new Table({
-          width: {
-            size: 9070,
-            type: WidthType.DXA
-          },
           rows: [
             new TableRow({
               children: [
@@ -2201,7 +2199,11 @@ class ProbationForms extends React.Component {
                         new TextRun(employeeInformation.directorEvaluate || '')
                       ]
                     })
-                  ]
+                  ],
+                  width: {
+                    size: employeeInformation.directorEvaluate && employeeInformation.directorEvaluate.length > 61 ? 4535 : 9070,
+                    type: WidthType.DXA
+                  }
                 })
               ],
               cantSplit: true,
@@ -2219,17 +2221,14 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试用期经理/总监评价  Manager Evaluate',
+              text: '试 用 期 经 理 / 总 监 评 价  Manager Evaluate',
               color: '000000'
             })
           ]
         }),
 
         new Table({
-          width: {
-            size: 9070,
-            type: WidthType.DXA
-          },
+
           rows: [
             new TableRow({
               children: [
@@ -2240,7 +2239,11 @@ class ProbationForms extends React.Component {
                         new TextRun(employeeInformation.ManagerEvaluate || '')
                       ]
                     })
-                  ]
+                  ],
+                  width: {
+                    size: employeeInformation.ManagerEvaluate && employeeInformation.ManagerEvaluate.length > 61 ? 4535 : 9070,
+                    type: WidthType.DXA
+                  }
                 })
               ],
               cantSplit: true,
@@ -2258,17 +2261,13 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试用期HR经理评价HR  Manager Evaluate',
+              text: '试 用 期 HR 经 理 评 价  HR Manager Evaluate',
               color: '000000'
             })
           ]
         }),
-
         new Table({
-          width: {
-            size: 9070,
-            type: WidthType.DXA
-          },
+
           rows: [
             new TableRow({
               children: [
@@ -2279,7 +2278,11 @@ class ProbationForms extends React.Component {
                         new TextRun(employeeInformation.hrManagerEvaluate || '')
                       ]
                     })
-                  ]
+                  ],
+                  width: {
+                    size: employeeInformation.hrManagerEvaluate && employeeInformation.hrManagerEvaluate.length > 61 ? 4535 : 9070,
+                    type: WidthType.DXA
+                  }
                 })
               ],
               cantSplit: true,
@@ -2288,7 +2291,7 @@ class ProbationForms extends React.Component {
               }
             })
           ]
-        })
+        }),
       ]
     });
     Packer.toBlob(doc).then(blob => {
@@ -2436,22 +2439,22 @@ class ProbationForms extends React.Component {
                     保存
                   </Button>
                   {roleName === 'HR' &&
-                  this.state.flagHitBack == true &&
-                  this.state.flagAlreadyHit == 0 ? (
-                    <span>
-                      <Button
-                        style={{ marginRight: '8px' }}
-                        onClick={this.agreeApply}
-                      >
-                        同意自定义辅导员
+                    this.state.flagHitBack == true &&
+                    this.state.flagAlreadyHit == 0 ? (
+                      <span>
+                        <Button
+                          style={{ marginRight: '8px' }}
+                          onClick={this.agreeApply}
+                        >
+                          同意自定义辅导员
                       </Button>
-                      <Button onClick={this.disagreeApply} type="danger">
-                        驳回自定义辅导员
+                        <Button onClick={this.disagreeApply} type="danger">
+                          驳回自定义辅导员
                       </Button>
-                    </span>
-                  ) : (
-                    ''
-                  )}
+                      </span>
+                    ) : (
+                      ''
+                    )}
                   {
                     <span style={{ color: 'red' }}>
                       {this.state.flagAlreadyHit == 2
@@ -2555,7 +2558,7 @@ class ProbationForms extends React.Component {
                 style={{ width: 300 }}
                 placeholder="请选择课程"
                 optionFilterProp="children"
-                onSearch={val => {}}
+                onSearch={val => { }}
                 filterOption={(input, option) =>
                   option.props.children
                     .toLowerCase()
@@ -2610,7 +2613,7 @@ class ProbationForms extends React.Component {
                 style={{ width: 300 }}
                 placeholder="请选择课程"
                 optionFilterProp="children"
-                onSearch={val => {}}
+                onSearch={val => { }}
                 value={this.state.modifyInternalCourseData.course}
                 filterOption={(input, option) =>
                   option.props.children
