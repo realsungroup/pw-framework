@@ -15,6 +15,7 @@ import { getItem } from 'Util20/util';
 import http from 'Util20/api';
 import TableData from 'Common/data/TableData';
 import memoize from 'memoize-one';
+import moment from 'moment';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -27,7 +28,10 @@ class AnnualLeaveQuery extends React.Component {
     const userInfoJson = JSON.parse(getItem('userInfo'));
     this.state = {
       UserCode: userInfoJson.UserCode,
-      UserName: userInfoJson.Data
+      UserName: userInfoJson.Data,
+      synj: null, //抬头上的信息
+      snsy: null, //抬头上的信息
+      djfp: null //抬头上的信息
     };
   }
 
@@ -238,6 +242,25 @@ class Summary extends React.PureComponent {
   }
   fetchAnnualLeaves = async () => {
     const { resid, userCode, baseURL } = this.props;
+    const numID = JSON.parse(localStorage.getItem('userInfo')).UserInfo.EMP_ID;
+    const curYear = parseInt(moment().year());
+    const curQuarter = parseInt(moment().quarter());
+    let res;
+    try {
+      res = await http({ baseURL }).getTable({
+        resid: '662169346288',
+        cmswhere: `numberID = ${numID} and year = ${curYear} and quarter = ${curQuarter}`
+      });
+      console.log(res.data);
+      this.setState({
+        synj: res.data[0].synj,
+        djfp: res.data[0].djfp,
+        snsy: res.data[0].snsy
+      });
+    } catch (err) {
+      message.error(err.message);
+      console.log(err);
+    }
     try {
       const res = await http({ baseURL }).getTable({
         resid,
@@ -299,7 +322,10 @@ class Summary extends React.PureComponent {
       startYear,
       endQuarter,
       endYear,
-      subTableModalVisible
+      subTableModalVisible,
+      snsy,
+      synj,
+      djfp
     } = this.state;
     const { subResid, resid, baseURL } = this.props;
     const annualLeaves = this.calcAnnualLeaves(
@@ -313,11 +339,11 @@ class Summary extends React.PureComponent {
       <div className="alq-summary">
         <div>
           <span>当季可用年假</span>
-          <span>2.5天</span>
+          <span>{djfp}天</span>
           <span>总结余</span>
-          <span>10天</span>
+          <span>{synj}天</span>
           <span>上年转结年假</span>
-          <span>0天</span>
+          <span>{snsy}天</span>
         </div>
         <div className="collapseStyle">
           <Collapse
