@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Select, Button, Radio, Spin, Modal, Icon } from 'antd';
+import { Menu, Select, Button, Radio, Spin, Modal, Icon, message } from 'antd';
 import './AnnualLeaveManage.less';
 import TableData from 'Common/data/TableData';
 import SelectPersonnel from 'Common/data/SelectPersonnel';
@@ -7,6 +7,7 @@ import debounce from 'lodash/debounce';
 import http from 'Util20/api';
 import SelectPersonSecond from '../SelectPersonSecond';
 import moment from 'moment';
+import { reject } from 'lodash';
 
 const { Option } = Select;
 const months = [
@@ -183,17 +184,74 @@ class AnnualLeaveManage extends React.Component {
     selectPersonVisible: false,
     spinning: false,
     persons: [],
+    numList: [],
+    selectQuarterModal: false,
+    jiesuanQuarter: curQuarter,
     refreshCallback: () => {}
   };
   handleOpenSelectPerson = callback => {
     this.setState({ selectPersonVisible: true, refreshCallback: callback });
   };
   handleSelectPerson = personList => {
-    this.setState({ persons: personList });
+    //获取工号，API传入工号数组，批量添加
+    const numList = personList.map(item => {
+      return item.C3_227192472953;
+    });
+    this.setState({ numList: numList, persons: personList });
+  };
+  handleJiDuJieSuan = () => {
+    const { jiesuanQuarter, numList, refreshCallback } = this.state;
+    numList.map(item => {
+      const url = `http://10.108.21.43/api/QuarterSmeettlent/settlement?numberID=${item}&year=${curYear}&quarter=${jiesuanQuarter}`;
+      fetch(url)
+        .then(response => {
+          return response.json();
+        })
+        .then(res => {
+          if (res.error === 0) {
+            console.log(res);
+          } else {
+            message.info(res.message);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          message.info(error.message);
+        });
+    });
+    setTimeout(() => {
+      this.setState({ spinning: false });
+      refreshCallback && refreshCallback();
+    }, 2000);
   };
   handleComplete = () => {
-    const { refreshCallback } = this.state;
+    const { refreshCallback, selectedKeys, numList } = this.state;
     this.setState({ selectPersonVisible: false, spinning: true });
+    if (selectedKeys[0] === '入职分配') {
+      numList.map(item => {
+        const url = `http://10.108.21.43/api/EntryAssignment/assignment?numberID=${item}`;
+        fetch(url)
+          .then(response => {
+            return response.json();
+          })
+          .then(res => {
+            if (res.error === 0) {
+              console.log(res);
+            } else {
+              message.info(res.message);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            message.info(error.message);
+          });
+      });
+    }
+    if (selectedKeys[0] === '季度结算') {
+      this.setState({
+        selectQuarterModal: true
+      });
+    }
     setTimeout(() => {
       this.setState({ spinning: false });
       refreshCallback && refreshCallback();
@@ -253,6 +311,40 @@ class AnnualLeaveManage extends React.Component {
           <div className="annual-leave-manage__content">
             {selectedMenu.render()}
           </div>
+          <Modal
+            title="选择季度"
+            visible={this.state.selectQuarterModal}
+            onCancel={() => {
+              this.setState({
+                selectQuarterModal: false
+              });
+            }}
+            onOk={() => {
+              this.handleJiDuJieSuan();
+              this.setState({
+                selectQuarterModal: false
+              });
+            }}
+          >
+            <Select
+              onChange={v => {
+                this.setState({
+                  jiesuanQuarter: v
+                });
+              }}
+              value={this.state.jiesuanQuarter}
+              size="small"
+              style={{ width: 120 }}
+            >
+              {quarters.map(quarter => {
+                return (
+                  <Select.Option value={quarter.value}>
+                    {quarter.title}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </Modal>
           <Modal
             destroyOnClose
             onCancel={() => {
@@ -338,7 +430,7 @@ class NianChuChuangJian extends React.PureComponent {
     const { selectedCalculationRule, cms, selectedYear } = this.state;
     return (
       <div style={{ display: 'flex' }}>
-        <div style={{ marginRight: 12 }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>财年：</span>
           <Select
             size="small"
@@ -366,7 +458,7 @@ class NianChuChuangJian extends React.PureComponent {
             })}
           </Select>
         </div>
-        <div style={{ marginRight: 12 }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>年假计算规则：</span>
           <Select
             value={selectedCalculationRule}
@@ -389,7 +481,7 @@ class NianChuChuangJian extends React.PureComponent {
             <Select.Option value="new">新员工</Select.Option>
           </Select>
         </div>
-        <Button
+        {/* <Button
           onClick={() => {
             this.props.onOpenSelectPerson(this.handleRefresh);
           }}
@@ -397,7 +489,7 @@ class NianChuChuangJian extends React.PureComponent {
           size="small"
         >
           添加人员
-        </Button>
+        </Button> */}
       </div>
     );
   };
@@ -416,7 +508,7 @@ class NianChuChuangJian extends React.PureComponent {
         resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={false}
+        hasAdd={true}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -445,7 +537,7 @@ class ShangNianJieZhuan extends React.PureComponent {
     const { selectedYear } = this.state;
     return (
       <div style={{ display: 'flex' }}>
-        <div style={{ marginRight: 12 }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>财年：</span>
           <Select
             size="small"
@@ -465,7 +557,7 @@ class ShangNianJieZhuan extends React.PureComponent {
             })}
           </Select>
         </div>
-        <Button
+        {/* <Button
           onClick={() => {
             this.props.onOpenSelectPerson(this.handleRefresh);
           }}
@@ -473,7 +565,7 @@ class ShangNianJieZhuan extends React.PureComponent {
           size="small"
         >
           添加人员
-        </Button>
+        </Button> */}
       </div>
     );
   };
@@ -491,7 +583,7 @@ class ShangNianJieZhuan extends React.PureComponent {
         resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={false}
+        hasAdd={true}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -525,7 +617,7 @@ class YueDuXinZeng extends React.PureComponent {
     const { selectedQuarter, selectedYear } = this.state;
     return (
       <div style={{ display: 'flex' }}>
-        <div style={{ marginRight: 12 }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>财年：</span>
           <Select
             size="small"
@@ -545,7 +637,7 @@ class YueDuXinZeng extends React.PureComponent {
             })}
           </Select>
         </div>
-        <div style={{ marginRight: 12 }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>季度：</span>
           <Select
             onChange={v => {
@@ -567,7 +659,7 @@ class YueDuXinZeng extends React.PureComponent {
             })}
           </Select>
         </div>
-        <Button
+        {/* <Button
           onClick={() => {
             this.props.onOpenSelectPerson(this.handleRefresh);
           }}
@@ -575,7 +667,7 @@ class YueDuXinZeng extends React.PureComponent {
           size="small"
         >
           添加人员
-        </Button>
+        </Button> */}
       </div>
     );
   };
@@ -591,7 +683,7 @@ class YueDuXinZeng extends React.PureComponent {
         resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={false}
+        hasAdd={true}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -625,7 +717,7 @@ class YueDuShiYong extends React.PureComponent {
     const { selectedQuarter, selectedYear } = this.state;
     return (
       <div style={{ display: 'flex' }}>
-        <div style={{ marginRight: 12 }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>财年：</span>
           <Select
             size="small"
@@ -645,7 +737,7 @@ class YueDuShiYong extends React.PureComponent {
             })}
           </Select>
         </div>
-        <div style={{ marginRight: 12 }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>季度：</span>
           <Select
             onChange={v => {
@@ -667,7 +759,7 @@ class YueDuShiYong extends React.PureComponent {
             })}
           </Select>
         </div>
-        <Button
+        {/* <Button
           onClick={() => {
             this.props.onOpenSelectPerson(this.handleRefresh);
           }}
@@ -675,7 +767,7 @@ class YueDuShiYong extends React.PureComponent {
           size="small"
         >
           添加人员
-        </Button>
+        </Button> */}
       </div>
     );
   };
@@ -691,7 +783,7 @@ class YueDuShiYong extends React.PureComponent {
         resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={false}
+        hasAdd={true}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -722,7 +814,7 @@ class JiDuJieSuan extends React.PureComponent {
     const { selectedQuarter, selectedYear } = this.state;
     return (
       <div style={{ display: 'flex' }}>
-        <div style={{ marginRight: 12 }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>财年：</span>
           <Select
             size="small"
@@ -742,7 +834,7 @@ class JiDuJieSuan extends React.PureComponent {
             })}
           </Select>
         </div>
-        <div style={{ marginRight: 12 }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>季度：</span>
           <Select
             value={selectedQuarter}
@@ -866,7 +958,7 @@ class LaoYuanGongSheBao extends React.PureComponent {
   }) => {
     return (
       <div style={{ display: 'flex' }}>
-        <Button
+        {/* <Button
           onClick={() => {
             this.props.onOpenSelectPerson(this.handleRefresh);
           }}
@@ -874,7 +966,7 @@ class LaoYuanGongSheBao extends React.PureComponent {
           size="small"
         >
           添加人员
-        </Button>
+        </Button> */}
       </div>
     );
   };
@@ -891,7 +983,7 @@ class LaoYuanGongSheBao extends React.PureComponent {
         resid={663860930064}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={false}
+        hasAdd={true}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -915,7 +1007,7 @@ class XinYuanGongSheBao extends React.PureComponent {
   }) => {
     return (
       <div style={{ display: 'flex' }}>
-        <Button
+        {/* <Button
           onClick={() => {
             this.props.onOpenSelectPerson(this.handleRefresh);
           }}
@@ -923,7 +1015,7 @@ class XinYuanGongSheBao extends React.PureComponent {
           size="small"
         >
           添加人员
-        </Button>
+        </Button> */}
       </div>
     );
   };
@@ -940,7 +1032,7 @@ class XinYuanGongSheBao extends React.PureComponent {
         resid={663860903672}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={false}
+        hasAdd={true}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -964,7 +1056,7 @@ class JiDuJieSuanBaoCuo extends React.PureComponent {
   }) => {
     return (
       <div style={{ display: 'flex' }}>
-        <Button
+        {/* <Button
           onClick={() => {
             this.props.onOpenSelectPerson(this.handleRefresh);
           }}
@@ -972,7 +1064,7 @@ class JiDuJieSuanBaoCuo extends React.PureComponent {
           size="small"
         >
           添加人员
-        </Button>
+        </Button> */}
       </div>
     );
   };
@@ -989,7 +1081,7 @@ class JiDuJieSuanBaoCuo extends React.PureComponent {
         resid={663967392209}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={false}
+        hasAdd={true}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -1032,7 +1124,7 @@ class NianJiaChaXun extends React.PureComponent {
     } = this.state;
     return (
       <div style={{ display: 'flex' }}>
-        <div>
+        <div style={{ marginLeft: 35 }}>
           从
           <Select
             onChange={value => {
@@ -1196,7 +1288,7 @@ class NianJiaChaXun extends React.PureComponent {
             resid={selectedRadio === 'zhmx' ? 662169346288 : 662169358054}
             baseURL={baseURL}
             subtractH={190}
-            hasAdd={false}
+            hasAdd={true}
             hasModify={false}
             hasDelete={false}
             hasRowEdit={false}
