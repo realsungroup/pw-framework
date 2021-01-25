@@ -337,219 +337,219 @@ class Summary extends React.PureComponent {
     );
     return (
       <div className="alq-summary">
-        <div>
+        {/* <div>
           <span>当季可用年假</span>
           <span>{djfp}天</span>
           <span>总结余</span>
           <span>{synj}天</span>
           <span>上年转结年假</span>
           <span>{snsy}天</span>
-        </div>
+        </div> */}
         <div className="collapseStyle">
-          <Collapse
+          {/* <Collapse
             bordered={false}
             style={{ background: '#f7f7f7', border: 0, overflow: 'hidden' }}
+          > */}
+          {/* <Panel header="更多信息" key="1"> */}
+          <header className="alq-summary__header">
+            <div>
+              从
+              <Select
+                onChange={value => {
+                  this.setState({
+                    startYear: value
+                  });
+                }}
+                value={startYear}
+                size="small"
+                style={styles.selectStyle}
+              >
+                {years.map(item => {
+                  return <Option value={item}>{item}</Option>;
+                })}
+              </Select>
+              <Select
+                onChange={value => {
+                  this.setState({
+                    startQuarter: value
+                  });
+                }}
+                value={startQuarter}
+                size="small"
+                style={styles.selectStyle}
+              >
+                {quarters.map(item => {
+                  return <Option value={item.value}>{item.title}</Option>;
+                })}
+              </Select>
+              至
+              <Select
+                onChange={value => {
+                  this.setState({
+                    endYear: value
+                  });
+                }}
+                value={endYear}
+                size="small"
+                style={styles.selectStyle}
+              >
+                {years.map(item => {
+                  return <Option value={item}>{item}</Option>;
+                })}
+              </Select>
+              <Select
+                onChange={value => {
+                  this.setState({
+                    endQuarter: value
+                  });
+                }}
+                value={endQuarter}
+                size="small"
+                style={styles.selectStyle}
+              >
+                {quarters.map(item => {
+                  return <Option value={item.value}>{item.title}</Option>;
+                })}
+              </Select>
+              <Button
+                icon="download"
+                size="small"
+                onClick={() => {
+                  tableToExcel(
+                    document.querySelector('.annual-leave .ant-table-body')
+                      .innerHTML
+                  );
+                }}
+              >
+                下载
+              </Button>
+            </div>
+            <Icon
+              onClick={() => {
+                Modal.info({
+                  title: '提示',
+                  content:
+                    '1.在每个季度（或者年）的第一天，上个季度（或者年）剩余的年假将会被结算至当前季度。'
+                });
+              }}
+              type="question-circle"
+              style={{ color: '#1890ff' }}
+            />
+          </header>
+          <div>
+            <Table
+              className="annual-leave"
+              columns={this.columns}
+              dataSource={annualLeaves}
+              bordered
+              size="small"
+              pagination={false}
+              // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
+            />
+          </div>
+          <Modal
+            title="年假月度使用情况"
+            visible={usesubTableModalVisible}
+            footer={null}
+            width="80vw"
+            onCancel={() => {
+              this.setState({ usesubTableModalVisible: false });
+            }}
           >
-            <Panel header="更多信息" key="1">
-              <header className="alq-summary__header">
-                <div>
-                  从
-                  <Select
-                    onChange={value => {
-                      this.setState({
-                        startYear: value
-                      });
-                    }}
-                    value={startYear}
-                    size="small"
-                    style={styles.selectStyle}
-                  >
-                    {years.map(item => {
-                      return <Option value={item}>{item}</Option>;
-                    })}
-                  </Select>
-                  <Select
-                    onChange={value => {
-                      this.setState({
-                        startQuarter: value
-                      });
-                    }}
-                    value={startQuarter}
-                    size="small"
-                    style={styles.selectStyle}
-                  >
-                    {quarters.map(item => {
-                      return <Option value={item.value}>{item.title}</Option>;
-                    })}
-                  </Select>
-                  至
-                  <Select
-                    onChange={value => {
-                      this.setState({
-                        endYear: value
-                      });
-                    }}
-                    value={endYear}
-                    size="small"
-                    style={styles.selectStyle}
-                  >
-                    {years.map(item => {
-                      return <Option value={item}>{item}</Option>;
-                    })}
-                  </Select>
-                  <Select
-                    onChange={value => {
-                      this.setState({
-                        endQuarter: value
-                      });
-                    }}
-                    value={endQuarter}
-                    size="small"
-                    style={styles.selectStyle}
-                  >
-                    {quarters.map(item => {
-                      return <Option value={item.value}>{item.title}</Option>;
-                    })}
-                  </Select>
-                  <Button
-                    icon="download"
-                    size="small"
-                    onClick={() => {
-                      tableToExcel(
-                        document.querySelector('.annual-leave .ant-table-body')
-                          .innerHTML
-                      );
-                    }}
-                  >
-                    下载
-                  </Button>
-                </div>
-                <Icon
-                  onClick={() => {
-                    Modal.info({
-                      title: '提示',
-                      content:
-                        '1.在每个季度（或者年）的第一天，上个季度（或者年）剩余的年假将会被结算至当前季度。'
-                    });
-                  }}
-                  type="question-circle"
-                  style={{ color: '#1890ff' }}
-                />
-              </header>
-              <div>
-                <Table
-                  className="annual-leave"
-                  columns={this.columns}
-                  dataSource={annualLeaves}
-                  bordered
-                  size="small"
-                  pagination={false}
-                  // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
-                />
-              </div>
-              <Modal
-                title="年假月度使用情况"
-                visible={usesubTableModalVisible}
-                footer={null}
-                width="80vw"
-                onCancel={() => {
-                  this.setState({ usesubTableModalVisible: false });
-                }}
-              >
-                <TableData
-                  key={selectedRecord.REC_ID}
-                  dataMode="sub"
-                  resid={resid}
-                  subresid={'662737017622'}
-                  hostrecid={selectedRecord.REC_ID}
-                  baseURL={baseURL}
-                  subtractH={200}
-                  hasAdd={false}
-                  hasModify={false}
-                  hasDelete={false}
-                  hasRowEdit={false}
-                  hasRowModify={false}
-                  hasRowView={true}
-                  hasRowDelete={false}
-                  actionBarWidth={100}
-                  height={500}
-                  customRowBtns={[
-                    (record, btnSize) => {
-                      return (
-                        <Button
-                          onClick={() => {
-                            this.setState({
-                              selectedSubRecord: record,
-                              applyRecordsModalVisible: true
-                            });
-                          }}
-                          size={btnSize}
-                        >
-                          申请记录
-                        </Button>
-                      );
-                    }
-                  ]}
-                />
-              </Modal>
-              <Modal
-                title="申请记录"
-                visible={applyRecordsModalVisible}
-                footer={null}
-                width="70vw"
-                onCancel={() => {
-                  this.setState({ applyRecordsModalVisible: false });
-                }}
-              >
-                <TableData
-                  key={selectedSubRecord.REC_ID}
-                  dataMode="sub"
-                  resid={resid}
-                  subresid={'662737017622'}
-                  hostrecid={selectedSubRecord.REC_ID}
-                  baseURL={baseURL}
-                  subtractH={200}
-                  hasAdd={false}
-                  hasModify={false}
-                  hasDelete={false}
-                  hasRowEdit={false}
-                  hasRowModify={false}
-                  hasRowView={true}
-                  hasRowDelete={false}
-                  actionBarWidth={100}
-                  height={500}
-                />
-              </Modal>
-              <Modal
-                title="年假交易明细"
-                visible={subTableModalVisible}
-                footer={null}
-                width="80vw"
-                onCancel={() => {
-                  this.setState({ subTableModalVisible: false });
-                }}
-              >
-                <TableData
-                  key={selectedRecord.REC_ID}
-                  dataMode="sub"
-                  resid={resid}
-                  subresid={subResid}
-                  hostrecid={selectedRecord.REC_ID}
-                  baseURL={baseURL}
-                  subtractH={200}
-                  hasAdd={false}
-                  hasModify={false}
-                  hasDelete={false}
-                  hasRowEdit={false}
-                  hasRowModify={false}
-                  hasRowView={true}
-                  hasRowDelete={false}
-                  actionBarWidth={100}
-                  height={500}
-                />
-              </Modal>
-            </Panel>
-          </Collapse>
+            <TableData
+              key={selectedRecord.REC_ID}
+              dataMode="sub"
+              resid={resid}
+              subresid={'662737017622'}
+              hostrecid={selectedRecord.REC_ID}
+              baseURL={baseURL}
+              subtractH={200}
+              hasAdd={false}
+              hasModify={false}
+              hasDelete={false}
+              hasRowEdit={false}
+              hasRowModify={false}
+              hasRowView={true}
+              hasRowDelete={false}
+              actionBarWidth={100}
+              height={500}
+              customRowBtns={[
+                (record, btnSize) => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          selectedSubRecord: record,
+                          applyRecordsModalVisible: true
+                        });
+                      }}
+                      size={btnSize}
+                    >
+                      申请记录
+                    </Button>
+                  );
+                }
+              ]}
+            />
+          </Modal>
+          <Modal
+            title="申请记录"
+            visible={applyRecordsModalVisible}
+            footer={null}
+            width="70vw"
+            onCancel={() => {
+              this.setState({ applyRecordsModalVisible: false });
+            }}
+          >
+            <TableData
+              key={selectedSubRecord.REC_ID}
+              dataMode="sub"
+              resid={resid}
+              subresid={'662737017622'}
+              hostrecid={selectedSubRecord.REC_ID}
+              baseURL={baseURL}
+              subtractH={200}
+              hasAdd={false}
+              hasModify={false}
+              hasDelete={false}
+              hasRowEdit={false}
+              hasRowModify={false}
+              hasRowView={true}
+              hasRowDelete={false}
+              actionBarWidth={100}
+              height={500}
+            />
+          </Modal>
+          <Modal
+            title="年假交易明细"
+            visible={subTableModalVisible}
+            footer={null}
+            width="80vw"
+            onCancel={() => {
+              this.setState({ subTableModalVisible: false });
+            }}
+          >
+            <TableData
+              key={selectedRecord.REC_ID}
+              dataMode="sub"
+              resid={resid}
+              subresid={subResid}
+              hostrecid={selectedRecord.REC_ID}
+              baseURL={baseURL}
+              subtractH={200}
+              hasAdd={false}
+              hasModify={false}
+              hasDelete={false}
+              hasRowEdit={false}
+              hasRowModify={false}
+              hasRowView={true}
+              hasRowDelete={false}
+              actionBarWidth={100}
+              height={500}
+            />
+          </Modal>
+          {/* </Panel> */}
+          {/* </Collapse> */}
         </div>
       </div>
     );
