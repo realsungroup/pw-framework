@@ -199,6 +199,10 @@ class AnnualLeaveManage extends React.Component {
     });
     this.setState({ numList: numList, persons: personList });
   };
+
+  /**
+   * 季度结算
+   */
   handleJiDuJieSuan = () => {
     const { jiesuanQuarter, numList, refreshCallback } = this.state;
     numList.map(item => {
@@ -224,6 +228,9 @@ class AnnualLeaveManage extends React.Component {
       refreshCallback && refreshCallback();
     }, 2000);
   };
+  /**
+   *
+   */
   handleComplete = () => {
     const { refreshCallback, selectedKeys, numList } = this.state;
     this.setState({ selectPersonVisible: false, spinning: true });
@@ -246,16 +253,16 @@ class AnnualLeaveManage extends React.Component {
             message.info(error.message);
           });
       });
+      setTimeout(() => {
+        this.setState({ spinning: false });
+        refreshCallback && refreshCallback();
+      }, 2000);
     }
     if (selectedKeys[0] === '季度结算') {
       this.setState({
         selectQuarterModal: true
       });
     }
-    setTimeout(() => {
-      this.setState({ spinning: false });
-      refreshCallback && refreshCallback();
-    }, 2000);
   };
   render() {
     const {
@@ -1041,6 +1048,8 @@ class XinYuanGongSheBao extends React.PureComponent {
         hasRowDelete={false}
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
+        hasBeBtns={true}
+        hasRowSelection={true}
       />
     );
   }
@@ -1105,6 +1114,12 @@ class NianJiaChaXun extends React.PureComponent {
     employeeResult: [],
     fetching: false,
     selectedEmpolyee: undefined,
+    selectedRecord: {},
+    selectedSubRecord: {},
+    subTableModalVisible: false,
+    usesubTableModalVisible: false,
+    applyRecordsModalVisible: false,
+
     cmssymx: `Year >= '${curYear}' and Year <= '${curYear}' and Quarter >= '${1}' and Quarter <= '${4}'`,
     cmszhmx: `year >= ${curYear} and year <= ${curYear} and quarter >= ${1} and quarter <= ${4}`
   };
@@ -1242,7 +1257,12 @@ class NianJiaChaXun extends React.PureComponent {
       employeeResult,
       selectedEmpolyee,
       cmszhmx,
-      cmssymx
+      cmssymx,
+      subTableModalVisible,
+      usesubTableModalVisible,
+      applyRecordsModalVisible,
+      selectedRecord,
+      selectedSubRecord
     } = this.state;
     console.table({ cmszhmx, cmssymx, selectedRadio });
     return (
@@ -1282,6 +1302,107 @@ class NianJiaChaXun extends React.PureComponent {
             <Radio.Button value="symx">使用明细</Radio.Button>
           </Radio.Group>
         </div>
+        <Modal
+          title="年假月度使用情况"
+          visible={usesubTableModalVisible}
+          footer={null}
+          width="80vw"
+          onCancel={() => {
+            this.setState({ usesubTableModalVisible: false });
+          }}
+        >
+          <TableData
+            key={selectedRecord.REC_ID}
+            dataMode="sub"
+            resid={662169346288}
+            subresid={'662737017622'}
+            hostrecid={selectedRecord.REC_ID}
+            baseURL={baseURL}
+            subtractH={200}
+            hasAdd={false}
+            hasModify={false}
+            hasDelete={false}
+            hasRowEdit={false}
+            hasRowModify={false}
+            hasRowView={true}
+            hasRowDelete={false}
+            actionBarWidth={100}
+            height={500}
+            customRowBtns={[
+              (record, btnSize) => {
+                return (
+                  <Button
+                    onClick={() => {
+                      this.setState({
+                        selectedSubRecord: record,
+                        applyRecordsModalVisible: true
+                      });
+                    }}
+                    size={btnSize}
+                  >
+                    申请记录
+                  </Button>
+                );
+              }
+            ]}
+          />
+        </Modal>
+        <Modal
+          title="申请记录"
+          visible={applyRecordsModalVisible}
+          footer={null}
+          width="70vw"
+          onCancel={() => {
+            this.setState({ applyRecordsModalVisible: false });
+          }}
+        >
+          <TableData
+            key={selectedSubRecord.REC_ID}
+            dataMode="sub"
+            resid={662169346288}
+            subresid={'662737017622'}
+            hostrecid={selectedSubRecord.REC_ID}
+            baseURL={baseURL}
+            subtractH={200}
+            hasAdd={false}
+            hasModify={false}
+            hasDelete={false}
+            hasRowEdit={false}
+            hasRowModify={false}
+            hasRowView={true}
+            hasRowDelete={false}
+            actionBarWidth={100}
+            height={500}
+          />
+        </Modal>
+        <Modal
+          title="年假交易明细"
+          visible={subTableModalVisible}
+          footer={null}
+          width="80vw"
+          onCancel={() => {
+            this.setState({ subTableModalVisible: false });
+          }}
+        >
+          <TableData
+            key={selectedRecord.REC_ID}
+            dataMode="sub"
+            resid={662169346288}
+            subresid={'662737017622'}
+            hostrecid={selectedRecord.REC_ID}
+            baseURL={baseURL}
+            subtractH={200}
+            hasAdd={false}
+            hasModify={false}
+            hasDelete={false}
+            hasRowEdit={false}
+            hasRowModify={false}
+            hasRowView={true}
+            hasRowDelete={false}
+            actionBarWidth={100}
+            height={500}
+          />
+        </Modal>
         <div style={styles.tableDataContainer}>
           <TableData
             key="NianJiaChaXun"
@@ -1293,10 +1414,38 @@ class NianJiaChaXun extends React.PureComponent {
             hasDelete={false}
             hasRowEdit={false}
             hasRowModify={false}
-            hasRowView={true}
+            hasRowView={false}
             hasRowDelete={false}
             actionBarWidth={100}
             actionBarExtra={this.actionBarExtra}
+            customRowBtns={[
+              record => {
+                return (
+                  <div>
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          selectedRecord: record,
+                          usesubTableModalVisible: true
+                        });
+                      }}
+                    >
+                      使用明细
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          selectedRecord: record,
+                          subTableModalVisible: true
+                        });
+                      }}
+                    >
+                      交易明细
+                    </Button>
+                  </div>
+                );
+              }
+            ]}
             cmswhere={
               selectedRadio === 'zhmx'
                 ? selectedEmpolyee
