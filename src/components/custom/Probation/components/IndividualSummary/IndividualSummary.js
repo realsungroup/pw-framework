@@ -56,7 +56,7 @@ const IndividualSummary = React.memo(props => {
         title={
           <React.Fragment>
             <span className="card_title_name__zh">试用期主管评价</span>
-            <span className="card_title_name__en">Director Evaluate</span>
+            <span className="card_title_name__en">Supervisor Evaluate</span>
           </React.Fragment>
         }
         style={{ marginBottom: 24 }}
