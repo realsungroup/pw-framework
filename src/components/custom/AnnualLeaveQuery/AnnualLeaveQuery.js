@@ -49,13 +49,13 @@ class AnnualLeaveQuery extends React.Component {
               userCode={UserCode}
             />
           </TabPane>
-          <TabPane tab="使用明细" key="2">
+          {/* <TabPane tab="使用明细" key="2">
             <Detail
               baseURL={baseURL}
               resid={员工年假使用明细表}
               userCode={UserCode}
             />
-          </TabPane>
+          </TabPane> */}
         </Tabs>
       </div>
     );
@@ -222,7 +222,7 @@ class Summary extends React.PureComponent {
           >
             使用明细
           </span>
-          <span
+          {/* <span
             className="table-action--view"
             onClick={() => {
               this.setState({
@@ -232,7 +232,7 @@ class Summary extends React.PureComponent {
             }}
           >
             交易明细
-          </span>
+          </span> */}
         </>
       )
     }
