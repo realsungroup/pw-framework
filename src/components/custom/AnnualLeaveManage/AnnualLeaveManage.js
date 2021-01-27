@@ -61,7 +61,8 @@ class AnnualLeaveManage extends React.Component {
   menus = [
     {
       title: '年初创建',
-      tip: '年初创建提示',
+      tip:
+        '每年年初，系统会将今年的年假平均分配给四个季度。前三个季度会根据平均分配值向上进0.5（例：1.3变成1.5;1.6变成2），第四季度分配到的年假数量等同于总年假数量扣除前三个季度进0.5的年假数量之和后的数值。',
       render: () => {
         const { baseURL } = this.props;
         return (
@@ -73,8 +74,9 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
-      title: '上年结转',
-      tip: '上年结转提示',
+      title: '系统上年结转',
+      tip:
+        '每年年末将当年剩余年假转出，移入下一年。每年系统将会把上年剩余的年假转入当年',
       render: () => {
         const { baseURL } = this.props;
         return (
@@ -86,8 +88,9 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
-      title: '月度新增',
-      tip: '月度新增提示',
+      title: '社保新增月份',
+      tip:
+        '当2021年后入职的员工的社会工龄发生了变化导致可用年假数量增加的场合，系统会将这些年假平均分配给当年剩余季度。除最后一个季度外，所有季度实际分配到的年假数量是平均数进0.5（例：1.3变成1.5，1.6变成2）。最后一个季度分配到的年假数量等同于新增年假数量扣除自己以外应当分配剩余年假的季度所实际分配到的年假数量之和后的数值。',
       render: () => {
         const { baseURL } = this.props;
         return (
@@ -112,8 +115,9 @@ class AnnualLeaveManage extends React.Component {
     //   }
     // },
     {
-      title: '季度结算',
-      tip: '季度结算提示',
+      title: '季度结转',
+      tip:
+        '季度转入是由上季度转入的可用年假。季度转出是将季度的可用年假全部转到下个季度。',
       render: () => {
         const { baseURL } = this.props;
         return (
@@ -126,7 +130,8 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '入职分配',
-      tip: '入职分配提示',
+      tip:
+        '员工入职时分配的年假，其数值等同于当年员工剩余服务天数除以365乘以对应社会工龄应得年假后取整的值。',
       render: () => {
         const { baseURL } = this.props;
         return (
@@ -139,7 +144,7 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '季度分配',
-      tip: '季度分配提示',
+      tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
       render: () => {
         const { baseURL } = this.props;
         return (
@@ -151,8 +156,8 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
-      title: '上年剩余',
-      tip: '上年剩余提示',
+      title: '调整上年剩余',
+      tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
       render: () => {
         const { baseURL } = this.props;
         return (
@@ -165,7 +170,7 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '年假查询',
-      tip: '年假查询提示',
+      tip: '查询年假具体信息',
       render: () => {
         const { baseURL } = this.props;
         return <NianJiaChaXun baseURL={baseURL} />;
@@ -198,7 +203,7 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
-      title: '考勤月度结算',
+      title: '年假每月使用明细',
       tip: '考勤月度结算提示',
       render: () => {
         const { baseURL } = this.props;
@@ -265,7 +270,7 @@ class AnnualLeaveManage extends React.Component {
     }, 2000);
   };
   /**
-   *
+   *根据交易类型不同调用API
    */
   handleComplete = () => {
     const { refreshCallback, selectedKeys, numList } = this.state;
@@ -289,16 +294,38 @@ class AnnualLeaveManage extends React.Component {
             message.info(error.message);
           });
       });
-      setTimeout(() => {
-        this.setState({ spinning: false });
-        refreshCallback && refreshCallback();
-      }, 2000);
     }
     if (selectedKeys[0] === '季度结算') {
       this.setState({
         selectQuarterModal: true
       });
     }
+    if (selectedKeys[0] === '年初创建') {
+      numList.map(item => {
+        const url = `http://10.108.21.43/api/MonthlyIncrease/CreatYearBeginningAndIntoYearLeft?year=${curYear}&numberIDs=${item}`;
+        fetch(url)
+          .then(response => {
+            console.log(typeof response);
+            // return response.json();
+            return response;
+          })
+          .then(res => {
+            if (res.error === 0) {
+              console.log(res);
+            } else {
+              message.info(res.message);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            message.info(error.message);
+          });
+      });
+    }
+    setTimeout(() => {
+      this.setState({ spinning: false });
+      refreshCallback && refreshCallback();
+    }, 2000);
   };
   render() {
     const {
@@ -325,34 +352,66 @@ class AnnualLeaveManage extends React.Component {
             }}
           >
             <SubMenu key="submenu1" title="交易明细">
-              {this.menus.map((menu, index) => {
-                if (index < 7) {
-                  return (
-                    <Menu.Item key={menu.title}>
-                      <div className="menu-item__body">
-                        {menu.title}
-                        {selectedKeys[0] === menu.title && (
-                          <span
-                            onClick={() => {
-                              Modal.info({
-                                title: '提示',
-                                content: menu.tip
-                              });
-                            }}
-                            className="menu-item-tip-container"
-                          >
-                            <Icon
-                              style={{ color: '#faad14', margin: 0 }}
-                              type="info-circle"
-                              theme="filled"
-                            />
-                          </span>
-                        )}
-                      </div>
-                    </Menu.Item>
-                  );
-                }
-              })}
+              <SubMenu key="submenu2" title="系统行为">
+                {this.menus.map((menu, index) => {
+                  if (index < 4) {
+                    return (
+                      <Menu.Item key={menu.title}>
+                        <div className="menu-item__body">
+                          {menu.title}
+                          {selectedKeys[0] === menu.title && (
+                            <span
+                              onClick={() => {
+                                Modal.info({
+                                  title: '提示',
+                                  content: menu.tip
+                                });
+                              }}
+                              className="menu-item-tip-container"
+                            >
+                              <Icon
+                                style={{ color: '#faad14', margin: 0 }}
+                                type="info-circle"
+                                theme="filled"
+                              />
+                            </span>
+                          )}
+                        </div>
+                      </Menu.Item>
+                    );
+                  }
+                })}
+              </SubMenu>
+              <SubMenu key="submenu3" title="日常维护">
+                {this.menus.map((menu, index) => {
+                  if (index >= 4 && index < 7) {
+                    return (
+                      <Menu.Item key={menu.title}>
+                        <div className="menu-item__body">
+                          {menu.title}
+                          {selectedKeys[0] === menu.title && (
+                            <span
+                              onClick={() => {
+                                Modal.info({
+                                  title: '提示',
+                                  content: menu.tip
+                                });
+                              }}
+                              className="menu-item-tip-container"
+                            >
+                              <Icon
+                                style={{ color: '#faad14', margin: 0 }}
+                                type="info-circle"
+                                theme="filled"
+                              />
+                            </span>
+                          )}
+                        </div>
+                      </Menu.Item>
+                    );
+                  }
+                })}
+              </SubMenu>
             </SubMenu>
             {this.menus.map((menu, index) => {
               if (index >= 7) {
@@ -391,7 +450,8 @@ class AnnualLeaveManage extends React.Component {
             visible={this.state.selectQuarterModal}
             onCancel={() => {
               this.setState({
-                selectQuarterModal: false
+                selectQuarterModal: false,
+                spinning: false
               });
             }}
             onOk={() => {
@@ -505,6 +565,15 @@ class NianChuChuangJian extends React.PureComponent {
     const { selectedCalculationRule, cms, selectedYear } = this.state;
     return (
       <div style={{ display: 'flex' }}>
+        <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          添加人员
+        </Button>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>财年：</span>
           <Select
@@ -556,15 +625,6 @@ class NianChuChuangJian extends React.PureComponent {
             <Select.Option value="new">新员工</Select.Option>
           </Select>
         </div>
-        {/* <Button
-          onClick={() => {
-            this.props.onOpenSelectPerson(this.handleRefresh);
-          }}
-          type="primary"
-          size="small"
-        >
-          添加人员
-        </Button> */}
       </div>
     );
   };
@@ -583,7 +643,7 @@ class NianChuChuangJian extends React.PureComponent {
         resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={true}
+        hasAdd={false}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -758,7 +818,7 @@ class YueDuXinZeng extends React.PureComponent {
         resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={true}
+        hasAdd={false}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -889,6 +949,15 @@ class JiDuJieSuan extends React.PureComponent {
     const { selectedQuarter, selectedYear } = this.state;
     return (
       <div style={{ display: 'flex' }}>
+        <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          添加人员
+        </Button>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>财年：</span>
           <Select
@@ -927,15 +996,6 @@ class JiDuJieSuan extends React.PureComponent {
             })}
           </Select>
         </div>
-        <Button
-          onClick={() => {
-            this.props.onOpenSelectPerson(this.handleRefresh);
-          }}
-          type="primary"
-          size="small"
-        >
-          添加人员
-        </Button>
       </div>
     );
   };
