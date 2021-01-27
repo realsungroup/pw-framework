@@ -161,6 +161,7 @@ class ProbationForms extends React.Component {
         cmswhere: `C3_613941384832 = '${memIDOrg}'`
       });
       // res.data.length && this.setState({  });
+      
     } catch (error) {
       console.error(error);
     }
@@ -184,7 +185,16 @@ class ProbationForms extends React.Component {
         resid: 618591268064,
         cmswhere: `C3_659451908745 = '${id}'`
       });
-      res.data.length && this.setState({ approveNodes: res.data });
+//       res.data.length && this.setState({ approveNodes: res.data });
+      let n=0;
+      let arr = res.data
+      while(n<arr.length){
+        if(arr[n].C3_659447231160=='部门主管审批'){
+            arr[n].C3_659447231160='直接主管审批'
+        }
+        n++;
+      }
+      res.data.length && this.setState({ approveNodes: arr });
     } catch (error) {
       console.error(error);
     }
