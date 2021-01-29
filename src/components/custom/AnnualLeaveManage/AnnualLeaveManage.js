@@ -64,10 +64,11 @@ class AnnualLeaveManage extends React.Component {
       tip:
         '每年年初，系统会将今年的年假平均分配给四个季度。前三个季度会根据平均分配值向上进0.5（例：1.3变成1.5;1.6变成2），第四季度分配到的年假数量等同于总年假数量扣除前三个季度进0.5的年假数量之和后的数值。',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <NianChuChuangJian
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
@@ -78,10 +79,25 @@ class AnnualLeaveManage extends React.Component {
       tip:
         '每年年末将当年剩余年假转出，移入下一年。每年系统将会把上年剩余的年假转入当年',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <ShangNianJieZhuan
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    {
+      title: '季度分配',
+      tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <JiDuFenPei
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
@@ -92,10 +108,11 @@ class AnnualLeaveManage extends React.Component {
       tip:
         '当2021年后入职的员工的社会工龄发生了变化导致可用年假数量增加的场合，系统会将这些年假平均分配给当年剩余季度。除最后一个季度外，所有季度实际分配到的年假数量是平均数进0.5（例：1.3变成1.5，1.6变成2）。最后一个季度分配到的年假数量等同于新增年假数量扣除自己以外应当分配剩余年假的季度所实际分配到的年假数量之和后的数值。',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <YueDuXinZeng
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
@@ -105,51 +122,55 @@ class AnnualLeaveManage extends React.Component {
     //   title: '季度使用',
     //   tip: '季度使用提示',
     //   render: () => {
-    //     const { baseURL } = this.props;
+    //     const { baseURL,baseURLFromAppConfig } = this.props;
     //     return (
     //       <YueDuShiYong
     //         baseURL={baseURL}
+    // baseURLFromAppConfig={baseURLFromAppConfig}
     //         onOpenSelectPerson={this.handleOpenSelectPerson}
     //       />
     //     );
     //   }
     // },
     {
-      title: '季度结转',
-      tip:
-        '季度转入是由上季度转入的可用年假。季度转出是将季度的可用年假全部转到下个季度。',
-      render: () => {
-        const { baseURL } = this.props;
-        return (
-          <JiDuJieSuan
-            baseURL={baseURL}
-            onOpenSelectPerson={this.handleOpenSelectPerson}
-          />
-        );
-      }
-    },
-    {
       title: '入职分配',
       tip:
         '员工入职时分配的年假，其数值等同于当年员工剩余服务天数除以365乘以对应社会工龄应得年假后取整的值。',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <RuZhiFenPei
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
       }
     },
     {
-      title: '季度分配',
-      tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
+      title: '季度结转',
+      tip:
+        '季度转入是由上季度转入的可用年假。季度转出是将季度的可用年假全部转到下个季度。',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
-          <JiDuFenPei
+          <JiDuJieSuan
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    {
+      title: '上年年假结转清零',
+      tip: '每年7月1日，系统将会清空上年未使用的年假。',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <ShengYuQingLing
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
@@ -159,10 +180,11 @@ class AnnualLeaveManage extends React.Component {
       title: '调整上年剩余',
       tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <ShangNianShengYu
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
@@ -172,18 +194,24 @@ class AnnualLeaveManage extends React.Component {
       title: '年假查询',
       tip: '查询年假具体信息',
       render: () => {
-        const { baseURL } = this.props;
-        return <NianJiaChaXun baseURL={baseURL} />;
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <NianJiaChaXun
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+          />
+        );
       }
     },
     {
       title: '老员工社保信息查询',
       tip: '老员工社保信息查询提示',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <LaoYuanGongSheBao
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
@@ -193,10 +221,11 @@ class AnnualLeaveManage extends React.Component {
       title: '新员工社保信息维护',
       tip: '新员工社保信息维护提示',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <XinYuanGongSheBao
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
@@ -206,16 +235,26 @@ class AnnualLeaveManage extends React.Component {
       title: '年假每月使用明细',
       tip: '考勤月度结算提示',
       render: () => {
-        const { baseURL } = this.props;
-        return <KaoQinYueDuJieSuan baseURL={baseURL} />;
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <KaoQinYueDuJieSuan
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+          />
+        );
       }
     },
     {
       title: '季度结算报错信息',
       tip: '季度结算报错信息提示',
       render: () => {
-        const { baseURL } = this.props;
-        return <JiDuJieSuanBaoCuo baseURL={baseURL} />;
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <JiDuJieSuanBaoCuo
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+          />
+        );
       }
     }
   ];
@@ -255,6 +294,7 @@ class AnnualLeaveManage extends React.Component {
         .then(res => {
           if (res.error === 0) {
             console.log(res);
+            message.info('操作成功');
           } else {
             message.info(res.message);
           }
@@ -285,6 +325,7 @@ class AnnualLeaveManage extends React.Component {
           .then(res => {
             if (res.error === 0) {
               console.log(res);
+              message.info('操作成功');
             } else {
               message.info(res.message);
             }
@@ -295,19 +336,40 @@ class AnnualLeaveManage extends React.Component {
           });
       });
     }
-    if (selectedKeys[0] === '季度结算') {
+    if (selectedKeys[0] === '季度结转') {
       this.setState({
         selectQuarterModal: true
       });
     }
     if (selectedKeys[0] === '年初创建') {
       numList.map(item => {
-        const url = `http://10.108.21.43/api/MonthlyIncrease/CreatYearBeginningAndIntoYearLeft?year=${curYear}&numberIDs=${item}`;
+        const url = `http://10.108.21.43/api/CreatYearBeginningAndIntoYearLeft?year=${curYear}&numberIDs=${item}`;
         fetch(url)
           .then(response => {
             console.log(typeof response);
-            // return response.json();
-            return response;
+            return response.json();
+          })
+          .then(res => {
+            if (res.error === 0) {
+              console.log(res);
+              message.info('操作成功');
+            } else {
+              message.info(res.message);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            message.info(error.message);
+          });
+      });
+    }
+    if (selectedKeys[0] === '上年年假结转清零') {
+      numList.map(item => {
+        const url = `http://10.108.21.43/api/AnnualLeaveResidueReset?year=${curYear}&numberIDs=${item}`;
+        fetch(url)
+          .then(response => {
+            return response.json();
+            // return response;
           })
           .then(res => {
             if (res.error === 0) {
@@ -384,7 +446,7 @@ class AnnualLeaveManage extends React.Component {
               </SubMenu>
               <SubMenu key="submenu3" title="日常维护">
                 {this.menus.map((menu, index) => {
-                  if (index >= 4 && index < 7) {
+                  if (index >= 4 && index < 8) {
                     return (
                       <Menu.Item key={menu.title}>
                         <div className="menu-item__body">
@@ -414,12 +476,12 @@ class AnnualLeaveManage extends React.Component {
               </SubMenu>
             </SubMenu>
             {this.menus.map((menu, index) => {
-              if (index >= 7) {
+              if (index >= 8) {
                 return (
                   <Menu.Item key={menu.title}>
                     <div className="menu-item__body">
                       {menu.title}
-                      {selectedKeys[0] === menu.title && (
+                      {/* {selectedKeys[0] === menu.title && (
                         <span
                           onClick={() => {
                             Modal.info({
@@ -428,14 +490,8 @@ class AnnualLeaveManage extends React.Component {
                             });
                           }}
                           className="menu-item-tip-container"
-                        >
-                          <Icon
-                            style={{ color: '#faad14', margin: 0 }}
-                            type="info-circle"
-                            theme="filled"
-                          />
-                        </span>
-                      )}
+                        ></span>
+                      )} */}
                     </div>
                   </Menu.Item>
                 );
@@ -632,7 +688,7 @@ class NianChuChuangJian extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.table({ cms });
     return (
@@ -653,6 +709,7 @@ class NianChuChuangJian extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -708,7 +765,7 @@ class ShangNianJieZhuan extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     return (
       <TableData
@@ -728,6 +785,7 @@ class ShangNianJieZhuan extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -807,7 +865,7 @@ class YueDuXinZeng extends React.PureComponent {
     );
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.log(cms);
     return (
@@ -828,6 +886,7 @@ class YueDuXinZeng extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -907,7 +966,7 @@ class YueDuShiYong extends React.PureComponent {
     );
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.log(cms);
     return (
@@ -928,6 +987,7 @@ class YueDuShiYong extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1003,7 +1063,7 @@ class JiDuJieSuan extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.log({ cms });
     return (
@@ -1024,6 +1084,7 @@ class JiDuJieSuan extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1057,7 +1118,7 @@ class RuZhiFenPei extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.log({ cms });
     return (
@@ -1078,6 +1139,7 @@ class RuZhiFenPei extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1153,7 +1215,7 @@ class JiDuFenPei extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.log({ cms });
     return (
@@ -1174,6 +1236,104 @@ class JiDuFenPei extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
+      />
+    );
+  }
+}
+
+class ShengYuQingLing extends React.PureComponent {
+  state = {
+    selectedYear: curYear,
+    selectedQuarter: curQuarter,
+    cms: `Type = '剩余清零'`
+  };
+  actionBarExtra = ({
+    dataSource = [],
+    selectedRowKeys = [],
+    data = [],
+    recordFormData,
+    size
+  }) => {
+    const { selectedQuarter, selectedYear } = this.state;
+    return (
+      <div style={{ display: 'flex' }}>
+        {/* <div style={{ marginRight: 12, marginLeft: 35 }}>
+          <span>财年：</span>
+          <Select
+            size="small"
+            style={{ width: 120 }}
+            value={selectedYear}
+            onChange={v => {
+              this.setState({
+                selectedYear: v,
+                cms: `C3_663257630622 = ${v} and C3_663257633669 = ${selectedQuarter}`
+              });
+            }}
+          >
+            {years.map(year => {
+              return (
+                <Select.Option value={year.value}>{year.title}</Select.Option>
+              );
+            })}
+          </Select>
+        </div>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
+          <span>季度：</span>
+          <Select
+            value={selectedQuarter}
+            onChange={v => {
+              this.setState({
+                selectedQuarter: v,
+                cms: `C3_663257630622 = ${selectedYear} and C3_663257633669 = ${v}`
+              });
+            }}
+            size="small"
+            style={{ width: 120 }}
+          >
+            {quarters.map(item => {
+              return <Option value={item.value}>{item.title}</Option>;
+            })}
+          </Select>
+        </div> */}
+        <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          剩余清零
+        </Button>
+      </div>
+    );
+  };
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
+  };
+  render() {
+    const { baseURL, baseURLFromAppConfig } = this.props;
+    const { cms } = this.state;
+    console.log({ cms });
+    return (
+      <TableData
+        key="ShengYuQingLing"
+        wrappedComponentRef={element => (this.tableDataRef = element)}
+        refTargetComponentName="TableData"
+        resid={662169358054}
+        baseURL={baseURL}
+        subtractH={190}
+        hasAdd={false}
+        hasModify={false}
+        hasDelete={false}
+        hasRowEdit={false}
+        hasRowModify={false}
+        hasRowView={true}
+        hasRowDelete={false}
+        actionBarWidth={100}
+        actionBarExtra={this.actionBarExtra}
+        cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1249,7 +1409,7 @@ class ShangNianShengYu extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.log({ cms });
     return (
@@ -1270,6 +1430,7 @@ class ShangNianShengYu extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1301,7 +1462,7 @@ class LaoYuanGongSheBao extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     return (
       <TableData
         key="LaoYuanGongSheBao"
@@ -1319,6 +1480,7 @@ class LaoYuanGongSheBao extends React.PureComponent {
         hasRowDelete={false}
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1350,7 +1512,7 @@ class XinYuanGongSheBao extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     return (
       <TableData
         key="XinYuanGongSheBao"
@@ -1370,6 +1532,7 @@ class XinYuanGongSheBao extends React.PureComponent {
         actionBarExtra={this.actionBarExtra}
         hasBeBtns={true}
         hasRowSelection={true}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1401,7 +1564,7 @@ class KaoQinYueDuJieSuan extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     return (
       <TableData
         key="KaoQinYueDuJieSuan"
@@ -1419,6 +1582,7 @@ class KaoQinYueDuJieSuan extends React.PureComponent {
         hasRowDelete={false}
         actionBarWidth={100}
         // actionBarExtra={this.actionBarExtra}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1450,7 +1614,7 @@ class JiDuJieSuanBaoCuo extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     return (
       <TableData
         key="JiDuJieSuanBaoCuo"
@@ -1459,7 +1623,7 @@ class JiDuJieSuanBaoCuo extends React.PureComponent {
         resid={663967392209}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={true}
+        hasAdd={false}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -1468,6 +1632,7 @@ class JiDuJieSuanBaoCuo extends React.PureComponent {
         hasRowDelete={false}
         actionBarWidth={100}
         // actionBarExtra={this.actionBarExtra}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1619,7 +1784,7 @@ class NianJiaChaXun extends React.PureComponent {
   };
 
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const {
       selectedRadio,
       fetching,
