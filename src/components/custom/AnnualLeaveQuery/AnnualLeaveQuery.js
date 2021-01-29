@@ -392,13 +392,19 @@ class Summary extends React.PureComponent {
       djfp
     } = this.state;
     const { subResid, resid, baseURL } = this.props;
-    const annualLeaves = this.calcAnnualLeaves(
+    const annualLeaves1 = this.calcAnnualLeaves(
       startYear,
       startQuarter,
       endYear,
       endQuarter,
       allAnnualLeaveQuery
     );
+    const annualLeaves = annualLeaves1.map(item => {
+      if (item.synj < 0) {
+        item.synj = 0;
+      }
+      return item;
+    });
     return (
       <div className="alq-summary">
         <div>
@@ -408,6 +414,7 @@ class Summary extends React.PureComponent {
           <span>{synj}天</span>
           <span>上年转结年假</span>
           <span>{snsy}天</span>
+          <p style={{ color: 'red' }}>每年7月1日会清空上年结转年假；</p>
         </div>
         <div className="collapseStyle">
           <Collapse
@@ -514,18 +521,6 @@ class Summary extends React.PureComponent {
                 <p style={{ marginTop: 16 }}>
                   <span style={{ fontWeight: 'bold' }}>说明：</span>
                   按季度划分后，每季度的年假明细作为一行数据。
-                </p>
-                <p>
-                  <span style={{ fontWeight: 'bold' }}>当季分配</span>
-                  是指每年按季初始分配的年假；
-                </p>
-                <p>
-                  <span style={{ fontWeight: 'bold' }}>往季分配</span>
-                  是指之前所有季度未使用完的结余年假；
-                </p>
-                <p>
-                  <span style={{ fontWeight: 'bold' }}>往年分配</span>
-                  是指去年结余的年假；
                 </p>
               </div>
               <Modal
@@ -1057,6 +1052,18 @@ class CopySummary extends React.PureComponent {
               // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
             />
             <p style={{ marginTop: 16 }}>本表数据每季度刷新一次</p>
+            <p>
+              <span style={{ fontWeight: 'bold' }}>当季分配</span>
+              是指每年按季初始分配的年假；
+            </p>
+            <p>
+              <span style={{ fontWeight: 'bold' }}>往季分配</span>
+              是指之前所有季度未使用完的结余年假；
+            </p>
+            <p>
+              <span style={{ fontWeight: 'bold' }}>往年分配</span>
+              是指去年结余的年假；
+            </p>
           </div>
           <Modal
             title="年假月度使用情况"

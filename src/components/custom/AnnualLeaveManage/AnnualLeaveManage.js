@@ -90,12 +90,42 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
-      title: '季度分配',
-      tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
+      title: '入职分配',
+      tip:
+        '员工入职时分配的年假，其数值等同于当年员工剩余服务天数除以365乘以对应社会工龄应得年假后取整的值。',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
         return (
-          <JiDuFenPei
+          <RuZhiFenPei
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    {
+      title: '季度结转',
+      tip:
+        '季度转入是由上季度转入的可用年假。季度转出是将季度的可用年假全部转到下个季度。',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <JiDuJieSuan
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    {
+      title: '上年年假结转清零',
+      tip: '每年7月1日，系统将会清空上年未使用的年假。',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <ShengYuQingLing
             baseURL={baseURL}
             baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
@@ -133,42 +163,12 @@ class AnnualLeaveManage extends React.Component {
     //   }
     // },
     {
-      title: '入职分配',
-      tip:
-        '员工入职时分配的年假，其数值等同于当年员工剩余服务天数除以365乘以对应社会工龄应得年假后取整的值。',
+      title: '调整季度剩余',
+      tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
         return (
-          <RuZhiFenPei
-            baseURL={baseURL}
-            baseURLFromAppConfig={baseURLFromAppConfig}
-            onOpenSelectPerson={this.handleOpenSelectPerson}
-          />
-        );
-      }
-    },
-    {
-      title: '季度结转',
-      tip:
-        '季度转入是由上季度转入的可用年假。季度转出是将季度的可用年假全部转到下个季度。',
-      render: () => {
-        const { baseURL, baseURLFromAppConfig } = this.props;
-        return (
-          <JiDuJieSuan
-            baseURL={baseURL}
-            baseURLFromAppConfig={baseURLFromAppConfig}
-            onOpenSelectPerson={this.handleOpenSelectPerson}
-          />
-        );
-      }
-    },
-    {
-      title: '上年年假结转清零',
-      tip: '每年7月1日，系统将会清空上年未使用的年假。',
-      render: () => {
-        const { baseURL, baseURLFromAppConfig } = this.props;
-        return (
-          <ShengYuQingLing
+          <JiDuFenPei
             baseURL={baseURL}
             baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
@@ -284,9 +284,10 @@ class AnnualLeaveManage extends React.Component {
    * 季度结算
    */
   handleJiDuJieSuan = () => {
+    const { baseURLAPI } = this.props;
     const { jiesuanQuarter, numList, refreshCallback } = this.state;
     numList.map(item => {
-      const url = `http://10.108.21.43/api/QuarterSmeettlent/settlement?numberID=${item}&year=${curYear}&quarter=${jiesuanQuarter}`;
+      const url = `${baseURLAPI}/api/QuarterSmeettlent/settlement?numberID=${item}&year=${curYear}&quarter=${jiesuanQuarter}`;
       fetch(url)
         .then(response => {
           return response.json();
@@ -313,11 +314,12 @@ class AnnualLeaveManage extends React.Component {
    *根据交易类型不同调用API
    */
   handleComplete = () => {
+    const { baseURLAPI } = this.props;
     const { refreshCallback, selectedKeys, numList } = this.state;
     this.setState({ selectPersonVisible: false, spinning: true });
     if (selectedKeys[0] === '入职分配') {
       numList.map(item => {
-        const url = `http://10.108.21.43/api/EntryAssignment/assignment?numberID=${item}`;
+        const url = `${baseURLAPI}/api/EntryAssignment/assignment?numberID=${item}`;
         fetch(url)
           .then(response => {
             return response.json();
@@ -343,7 +345,7 @@ class AnnualLeaveManage extends React.Component {
     }
     if (selectedKeys[0] === '年初创建') {
       numList.map(item => {
-        const url = `http://10.108.21.43/api/CreatYearBeginningAndIntoYearLeft?year=${curYear}&numberIDs=${item}`;
+        const url = `${baseURLAPI}/api/CreatYearBeginningAndIntoYearLeft?year=${curYear}&numberIDs=${item}`;
         fetch(url)
           .then(response => {
             console.log(typeof response);
@@ -365,7 +367,7 @@ class AnnualLeaveManage extends React.Component {
     }
     if (selectedKeys[0] === '上年年假结转清零') {
       numList.map(item => {
-        const url = `http://10.108.21.43/api/AnnualLeaveResidueReset?year=${curYear}&numberIDs=${item}`;
+        const url = `${baseURLAPI}/api/AnnualLeaveResidueReset?year=${curYear}&numberIDs=${item}`;
         fetch(url)
           .then(response => {
             return response.json();
@@ -416,7 +418,7 @@ class AnnualLeaveManage extends React.Component {
             <SubMenu key="submenu1" title="交易明细">
               <SubMenu key="submenu2" title="系统行为">
                 {this.menus.map((menu, index) => {
-                  if (index < 4) {
+                  if (index < 6) {
                     return (
                       <Menu.Item key={menu.title}>
                         <div className="menu-item__body">
@@ -446,7 +448,7 @@ class AnnualLeaveManage extends React.Component {
               </SubMenu>
               <SubMenu key="submenu3" title="日常维护">
                 {this.menus.map((menu, index) => {
-                  if (index >= 4 && index < 8) {
+                  if (index >= 6 && index < 8) {
                     return (
                       <Menu.Item key={menu.title}>
                         <div className="menu-item__body">
@@ -775,7 +777,7 @@ class ShangNianJieZhuan extends React.PureComponent {
         resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={true}
+        hasAdd={false}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -1940,7 +1942,7 @@ class NianJiaChaXun extends React.PureComponent {
         <div style={styles.tableDataContainer}>
           <TableData
             key="NianJiaChaXun"
-            resid={selectedRadio === 'zhmx' ? 662169346288 : 662169358054}
+            resid={selectedRadio === 'zhmx' ? 662169346288 : 448999733055}
             baseURL={baseURL}
             subtractH={190}
             hasAdd={true}
@@ -1955,28 +1957,30 @@ class NianJiaChaXun extends React.PureComponent {
             customRowBtns={[
               record => {
                 return (
-                  <div>
-                    <Button
-                      onClick={() => {
-                        this.setState({
-                          selectedRecord: record,
-                          usesubTableModalVisible: true
-                        });
-                      }}
-                    >
-                      使用明细
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        this.setState({
-                          selectedRecord: record,
-                          subTableModalVisible: true
-                        });
-                      }}
-                    >
-                      交易明细
-                    </Button>
-                  </div>
+                  selectedRadio === 'zhmx' && (
+                    <div>
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            selectedRecord: record,
+                            usesubTableModalVisible: true
+                          });
+                        }}
+                      >
+                        使用明细
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            selectedRecord: record,
+                            subTableModalVisible: true
+                          });
+                        }}
+                      >
+                        交易明细
+                      </Button>
+                    </div>
+                  )
                 );
               }
             ]}
@@ -1985,9 +1989,7 @@ class NianJiaChaXun extends React.PureComponent {
                 ? selectedEmpolyee
                   ? cmszhmx + ` and numberID = ${selectedEmpolyee.key}`
                   : cmszhmx
-                : selectedEmpolyee
-                ? cmssymx + ` and NumberID = '${selectedEmpolyee.key}'`
-                : cmssymx
+                : `C3_449349153817 = 23 and C3_449011111447 = 'Y'`
             }
           />
         </div>
