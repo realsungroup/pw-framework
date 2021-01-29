@@ -16,6 +16,7 @@ import http from 'Util20/api';
 import TableData from 'Common/data/TableData';
 import memoize from 'memoize-one';
 import moment from 'moment';
+import ExportJsonExcel from 'js-export-excel';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -56,7 +57,7 @@ class AnnualLeaveQuery extends React.Component {
               userCode={UserCode}
             />
           </TabPane> */}
-          <TabPane tab="年假月度结算" key="3">
+          <TabPane tab="年假季度结算" key="3">
             <CopySummary
               baseURL={baseURL}
               subResid={员工年假使用明细表}
@@ -87,6 +88,7 @@ const styles = {
 // 输出base64编码
 const base64 = s => window.btoa(unescape(encodeURIComponent(s)));
 const tableToExcel = str => {
+  console.log(str);
   // Worksheet名
   const worksheet = '员工年假';
   const uri = 'data:application/vnd.ms-excel;base64,';
@@ -143,7 +145,7 @@ class Summary extends React.PureComponent {
       // width: 120,
     },
     {
-      title: '累积申请',
+      title: '累积使用',
       dataIndex: 'ljsq',
       key: 'ljsq'
       // width: 120,
@@ -341,6 +343,37 @@ class Summary extends React.PureComponent {
     }
   );
 
+  handleDownloadExcel = async () => {
+    var option = {};
+    const { allAnnualLeaveQuery } = this.state;
+    const exportData = allAnnualLeaveQuery.map(item => {
+      return {
+        year: item.year,
+        quarter: item.quarter,
+        hjky: item.hjky,
+        synj: item.synj,
+        ljsq: item.ljsq
+      };
+    });
+
+    option.fileName = '年假账户明细';
+    option.datas = [
+      {
+        sheetData: exportData,
+        sheetName: '年假账户明细',
+        sheetHeader: [
+          '年份',
+          '季度',
+          '合计可用年假',
+          '剩余可用年假',
+          '累积使用'
+        ]
+      }
+    ];
+    var toExcel = new ExportJsonExcel(option);
+    toExcel.saveExcel();
+  };
+
   render() {
     const {
       selectedSubRecord,
@@ -446,16 +479,17 @@ class Summary extends React.PureComponent {
                     icon="download"
                     size="small"
                     onClick={() => {
-                      tableToExcel(
-                        document.querySelector('.annual-leave .ant-table-body')
-                          .innerHTML
-                      );
+                      // tableToExcel(
+                      //   document.querySelector('.annual-leave .ant-table-body')
+                      //     .innerHTML
+                      // );
+                      this.handleDownloadExcel();
                     }}
                   >
                     下载
                   </Button>
                 </div>
-                <Icon
+                {/* <Icon
                   onClick={() => {
                     Modal.info({
                       title: '提示',
@@ -465,7 +499,7 @@ class Summary extends React.PureComponent {
                   }}
                   type="question-circle"
                   style={{ color: '#1890ff' }}
-                />
+                /> */}
               </header>
               <div>
                 <Table
@@ -477,6 +511,22 @@ class Summary extends React.PureComponent {
                   pagination={false}
                   // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
                 />
+                <p style={{ marginTop: 16 }}>
+                  <span style={{ fontWeight: 'bold' }}>说明：</span>
+                  按季度划分后，每季度的年假明细作为一行数据。
+                </p>
+                <p>
+                  <span style={{ fontWeight: 'bold' }}>当季分配</span>
+                  是指每年按季初始分配的年假；
+                </p>
+                <p>
+                  <span style={{ fontWeight: 'bold' }}>往季分配</span>
+                  是指之前所有季度未使用完的结余年假；
+                </p>
+                <p>
+                  <span style={{ fontWeight: 'bold' }}>往年分配</span>
+                  是指去年结余的年假；
+                </p>
               </div>
               <Modal
                 title="年假月度使用情况"
@@ -627,7 +677,7 @@ class CopySummary extends React.PureComponent {
     //   // width: 120,
     // },
     // {
-    //   title: '累积申请',
+    //   title: '累积使用',
     //   dataIndex: 'ljsq',
     //   key: 'ljsq'
     //   // width: 120,
@@ -825,6 +875,49 @@ class CopySummary extends React.PureComponent {
     }
   );
 
+  handleDownloadExcel = async () => {
+    var option = {};
+    const { allAnnualLeaveQuery } = this.state;
+    const exportData = allAnnualLeaveQuery.map(item => {
+      return {
+        year: item.year,
+        quarter: item.quarter,
+        sydjfp: item.sydjfp,
+        djfp: item.djfp,
+        djhj: item.djhj, //当季合计
+        ljsysjsy: item.ljsysjsy,
+        sjsy: item.sjsy,
+        wjhj: item.wjhj, //往季合计
+        ljsysnsy: item.ljsysnsy,
+        snsy: item.snsy,
+        wnhj: item.wnhj //往年合计
+      };
+    });
+
+    option.fileName = '年假季度结算';
+    option.datas = [
+      {
+        sheetData: exportData,
+        sheetName: '年假季度结算',
+        sheetHeader: [
+          '年份',
+          '季度',
+          '当季-已用',
+          '当季-未用',
+          '当季-合计',
+          '往季-已用',
+          '往季-未用',
+          '往季-合计',
+          '往年-已用',
+          '往年-未用',
+          '往年-合计'
+        ]
+      }
+    ];
+    var toExcel = new ExportJsonExcel(option);
+    toExcel.saveExcel();
+  };
+
   render() {
     const {
       selectedSubRecord,
@@ -850,6 +943,7 @@ class CopySummary extends React.PureComponent {
       endQuarter,
       allAnnualLeaveQuery
     );
+    console.log(this.state.allAnnualLeaveQuery);
     return (
       <div className="alq-summary">
         {/* <div>
@@ -930,10 +1024,11 @@ class CopySummary extends React.PureComponent {
                 icon="download"
                 size="small"
                 onClick={() => {
-                  tableToExcel(
-                    document.querySelector('.annual-leave .ant-table-body')
-                      .innerHTML
-                  );
+                  // tableToExcel(
+                  //   document.querySelector('.annual-leave .ant-table-body')
+                  //     .innerHTML
+                  // );
+                  this.handleDownloadExcel();
                 }}
               >
                 下载
@@ -961,6 +1056,7 @@ class CopySummary extends React.PureComponent {
               pagination={false}
               // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
             />
+            <p style={{ marginTop: 16 }}>本表数据每季度刷新一次</p>
           </div>
           <Modal
             title="年假月度使用情况"
