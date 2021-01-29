@@ -8,8 +8,10 @@ import http from 'Util20/api';
 import SelectPersonSecond from '../SelectPersonSecond';
 import moment from 'moment';
 import { reject } from 'lodash';
+// import { SubMenu, MenuItem } from 'react-contextmenu';
 
 const { Option } = Select;
+const { SubMenu } = Menu;
 const months = [
   { label: 1, value: '01' },
   { label: 2, value: '02' },
@@ -59,64 +61,29 @@ class AnnualLeaveManage extends React.Component {
   menus = [
     {
       title: '年初创建',
-      tip: '年初创建提示',
+      tip:
+        '每年年初，系统会将今年的年假平均分配给四个季度。前三个季度会根据平均分配值向上进0.5（例：1.3变成1.5;1.6变成2），第四季度分配到的年假数量等同于总年假数量扣除前三个季度进0.5的年假数量之和后的数值。',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <NianChuChuangJian
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
       }
     },
     {
-      title: '上年结转',
-      tip: '上年结转提示',
+      title: '系统上年结转',
+      tip:
+        '每年年末将当年剩余年假转出，移入下一年。每年系统将会把上年剩余的年假转入当年',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <ShangNianJieZhuan
             baseURL={baseURL}
-            onOpenSelectPerson={this.handleOpenSelectPerson}
-          />
-        );
-      }
-    },
-    {
-      title: '月度新增',
-      tip: '月度新增提示',
-      render: () => {
-        const { baseURL } = this.props;
-        return (
-          <YueDuXinZeng
-            baseURL={baseURL}
-            onOpenSelectPerson={this.handleOpenSelectPerson}
-          />
-        );
-      }
-    },
-    {
-      title: '季度使用',
-      tip: '季度使用提示',
-      render: () => {
-        const { baseURL } = this.props;
-        return (
-          <YueDuShiYong
-            baseURL={baseURL}
-            onOpenSelectPerson={this.handleOpenSelectPerson}
-          />
-        );
-      }
-    },
-    {
-      title: '季度结算',
-      tip: '季度结算提示',
-      render: () => {
-        const { baseURL } = this.props;
-        return (
-          <JiDuJieSuan
-            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
@@ -124,12 +91,100 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '入职分配',
-      tip: '入职分配提示',
+      tip:
+        '员工入职时分配的年假，其数值等同于当年员工剩余服务天数除以365乘以对应社会工龄应得年假后取整的值。',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <RuZhiFenPei
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    {
+      title: '季度结转',
+      tip:
+        '季度转入是由上季度转入的可用年假。季度转出是将季度的可用年假全部转到下个季度。',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <JiDuJieSuan
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    {
+      title: '上年年假结转清零',
+      tip: '每年7月1日，系统将会清空上年未使用的年假。',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <ShengYuQingLing
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    {
+      title: '社保新增月份',
+      tip:
+        '当2021年后入职的员工的社会工龄发生了变化导致可用年假数量增加的场合，系统会将这些年假平均分配给当年剩余季度。除最后一个季度外，所有季度实际分配到的年假数量是平均数进0.5（例：1.3变成1.5，1.6变成2）。最后一个季度分配到的年假数量等同于新增年假数量扣除自己以外应当分配剩余年假的季度所实际分配到的年假数量之和后的数值。',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <YueDuXinZeng
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    // {
+    //   title: '季度使用',
+    //   tip: '季度使用提示',
+    //   render: () => {
+    //     const { baseURL,baseURLFromAppConfig } = this.props;
+    //     return (
+    //       <YueDuShiYong
+    //         baseURL={baseURL}
+    // baseURLFromAppConfig={baseURLFromAppConfig}
+    //         onOpenSelectPerson={this.handleOpenSelectPerson}
+    //       />
+    //     );
+    //   }
+    // },
+    {
+      title: '调整季度剩余',
+      tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <JiDuFenPei
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    {
+      title: '调整上年剩余',
+      tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <ShangNianShengYu
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
@@ -137,20 +192,26 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '年假查询',
-      tip: '年假查询提示',
+      tip: '查询年假具体信息',
       render: () => {
-        const { baseURL } = this.props;
-        return <NianJiaChaXun baseURL={baseURL} />;
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <NianJiaChaXun
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+          />
+        );
       }
     },
     {
-      title: '老员工社保信息维护',
-      tip: '老员工社保信息维护提示',
+      title: '老员工社保信息查询',
+      tip: '老员工社保信息查询提示',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <LaoYuanGongSheBao
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
           />
         );
@@ -160,11 +221,25 @@ class AnnualLeaveManage extends React.Component {
       title: '新员工社保信息维护',
       tip: '新员工社保信息维护提示',
       render: () => {
-        const { baseURL } = this.props;
+        const { baseURL, baseURLFromAppConfig } = this.props;
         return (
           <XinYuanGongSheBao
             baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
             onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    {
+      title: '年假每月使用明细',
+      tip: '考勤月度结算提示',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <KaoQinYueDuJieSuan
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
           />
         );
       }
@@ -173,8 +248,13 @@ class AnnualLeaveManage extends React.Component {
       title: '季度结算报错信息',
       tip: '季度结算报错信息提示',
       render: () => {
-        const { baseURL } = this.props;
-        return <JiDuJieSuanBaoCuo baseURL={baseURL} />;
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <JiDuJieSuanBaoCuo
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+          />
+        );
       }
     }
   ];
@@ -199,10 +279,15 @@ class AnnualLeaveManage extends React.Component {
     });
     this.setState({ numList: numList, persons: personList });
   };
+
+  /**
+   * 季度结算
+   */
   handleJiDuJieSuan = () => {
+    const { baseURLAPI } = this.props;
     const { jiesuanQuarter, numList, refreshCallback } = this.state;
     numList.map(item => {
-      const url = `http://10.108.21.43/api/QuarterSmeettlent/settlement?numberID=${item}&year=${curYear}&quarter=${jiesuanQuarter}`;
+      const url = `${baseURLAPI}/api/QuarterSmeettlent/settlement?numberID=${item}&year=${curYear}&quarter=${jiesuanQuarter}`;
       fetch(url)
         .then(response => {
           return response.json();
@@ -210,6 +295,7 @@ class AnnualLeaveManage extends React.Component {
         .then(res => {
           if (res.error === 0) {
             console.log(res);
+            message.info('操作成功');
           } else {
             message.info(res.message);
           }
@@ -224,15 +310,68 @@ class AnnualLeaveManage extends React.Component {
       refreshCallback && refreshCallback();
     }, 2000);
   };
+  /**
+   *根据交易类型不同调用API
+   */
   handleComplete = () => {
+    const { baseURLAPI } = this.props;
     const { refreshCallback, selectedKeys, numList } = this.state;
     this.setState({ selectPersonVisible: false, spinning: true });
     if (selectedKeys[0] === '入职分配') {
       numList.map(item => {
-        const url = `http://10.108.21.43/api/EntryAssignment/assignment?numberID=${item}`;
+        const url = `${baseURLAPI}/api/EntryAssignment/assignment?numberID=${item}`;
         fetch(url)
           .then(response => {
             return response.json();
+          })
+          .then(res => {
+            if (res.error === 0) {
+              console.log(res);
+              message.info('操作成功');
+            } else {
+              message.info(res.message);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            message.info(error.message);
+          });
+      });
+    }
+    if (selectedKeys[0] === '季度结转') {
+      this.setState({
+        selectQuarterModal: true
+      });
+    }
+    if (selectedKeys[0] === '年初创建') {
+      numList.map(item => {
+        const url = `${baseURLAPI}/api/CreatYearBeginningAndIntoYearLeft?year=${curYear}&numberIDs=${item}`;
+        fetch(url)
+          .then(response => {
+            console.log(typeof response);
+            return response.json();
+          })
+          .then(res => {
+            if (res.error === 0) {
+              console.log(res);
+              message.info('操作成功');
+            } else {
+              message.info(res.message);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            message.info(error.message);
+          });
+      });
+    }
+    if (selectedKeys[0] === '上年年假结转清零') {
+      numList.map(item => {
+        const url = `${baseURLAPI}/api/AnnualLeaveResidueReset?year=${curYear}&numberIDs=${item}`;
+        fetch(url)
+          .then(response => {
+            return response.json();
+            // return response;
           })
           .then(res => {
             if (res.error === 0) {
@@ -245,11 +384,6 @@ class AnnualLeaveManage extends React.Component {
             console.log(error);
             message.info(error.message);
           });
-      });
-    }
-    if (selectedKeys[0] === '季度结算') {
-      this.setState({
-        selectQuarterModal: true
       });
     }
     setTimeout(() => {
@@ -281,31 +415,89 @@ class AnnualLeaveManage extends React.Component {
               });
             }}
           >
-            {this.menus.map(menu => {
-              return (
-                <Menu.Item key={menu.title}>
-                  <div className="menu-item__body">
-                    {menu.title}
-                    {selectedKeys[0] === menu.title && (
-                      <span
-                        onClick={() => {
-                          Modal.info({
-                            title: '提示',
-                            content: menu.tip
-                          });
-                        }}
-                        className="menu-item-tip-container"
-                      >
-                        <Icon
-                          style={{ color: '#faad14', margin: 0 }}
-                          type="info-circle"
-                          theme="filled"
-                        />
-                      </span>
-                    )}
-                  </div>
-                </Menu.Item>
-              );
+            <SubMenu key="submenu1" title="交易明细">
+              <SubMenu key="submenu2" title="系统行为">
+                {this.menus.map((menu, index) => {
+                  if (index < 6) {
+                    return (
+                      <Menu.Item key={menu.title}>
+                        <div className="menu-item__body">
+                          {menu.title}
+                          {selectedKeys[0] === menu.title && (
+                            <span
+                              onClick={() => {
+                                Modal.info({
+                                  title: '提示',
+                                  content: menu.tip
+                                });
+                              }}
+                              className="menu-item-tip-container"
+                            >
+                              <Icon
+                                style={{ color: '#faad14', margin: 0 }}
+                                type="info-circle"
+                                theme="filled"
+                              />
+                            </span>
+                          )}
+                        </div>
+                      </Menu.Item>
+                    );
+                  }
+                })}
+              </SubMenu>
+              <SubMenu key="submenu3" title="日常维护">
+                {this.menus.map((menu, index) => {
+                  if (index >= 6 && index < 8) {
+                    return (
+                      <Menu.Item key={menu.title}>
+                        <div className="menu-item__body">
+                          {menu.title}
+                          {selectedKeys[0] === menu.title && (
+                            <span
+                              onClick={() => {
+                                Modal.info({
+                                  title: '提示',
+                                  content: menu.tip
+                                });
+                              }}
+                              className="menu-item-tip-container"
+                            >
+                              <Icon
+                                style={{ color: '#faad14', margin: 0 }}
+                                type="info-circle"
+                                theme="filled"
+                              />
+                            </span>
+                          )}
+                        </div>
+                      </Menu.Item>
+                    );
+                  }
+                })}
+              </SubMenu>
+            </SubMenu>
+            {this.menus.map((menu, index) => {
+              if (index >= 8) {
+                return (
+                  <Menu.Item key={menu.title}>
+                    <div className="menu-item__body">
+                      {menu.title}
+                      {/* {selectedKeys[0] === menu.title && (
+                        <span
+                          onClick={() => {
+                            Modal.info({
+                              title: '提示',
+                              content: menu.tip
+                            });
+                          }}
+                          className="menu-item-tip-container"
+                        ></span>
+                      )} */}
+                    </div>
+                  </Menu.Item>
+                );
+              }
             })}
           </Menu>
           <div className="annual-leave-manage__content">
@@ -316,7 +508,8 @@ class AnnualLeaveManage extends React.Component {
             visible={this.state.selectQuarterModal}
             onCancel={() => {
               this.setState({
-                selectQuarterModal: false
+                selectQuarterModal: false,
+                spinning: false
               });
             }}
             onOk={() => {
@@ -417,7 +610,7 @@ class AnnualLeaveManage extends React.Component {
 class NianChuChuangJian extends React.PureComponent {
   state = {
     selectedCalculationRule: 'old',
-    cms: `Type = '年初创建'`,
+    cms: `joinDate <= '2020-12-31' and Year = ${curYear} and Type = '年初创建'`,
     selectedYear: curYear
   };
   actionBarExtra = ({
@@ -430,6 +623,15 @@ class NianChuChuangJian extends React.PureComponent {
     const { selectedCalculationRule, cms, selectedYear } = this.state;
     return (
       <div style={{ display: 'flex' }}>
+        <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          添加人员
+        </Button>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>财年：</span>
           <Select
@@ -481,15 +683,6 @@ class NianChuChuangJian extends React.PureComponent {
             <Select.Option value="new">新员工</Select.Option>
           </Select>
         </div>
-        {/* <Button
-          onClick={() => {
-            this.props.onOpenSelectPerson(this.handleRefresh);
-          }}
-          type="primary"
-          size="small"
-        >
-          添加人员
-        </Button> */}
       </div>
     );
   };
@@ -497,7 +690,7 @@ class NianChuChuangJian extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.table({ cms });
     return (
@@ -508,7 +701,7 @@ class NianChuChuangJian extends React.PureComponent {
         resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={true}
+        hasAdd={false}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -518,13 +711,14 @@ class NianChuChuangJian extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
 }
 class ShangNianJieZhuan extends React.PureComponent {
   state = {
-    cms: `Type = '上年转入' or Type = '当年转出'`,
+    cms: `Year = ${curYear} and Type = '上年转入' or Type = '当年转出'`,
     selectedYear: curYear
   };
   actionBarExtra = ({
@@ -573,7 +767,7 @@ class ShangNianJieZhuan extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     return (
       <TableData
@@ -583,7 +777,7 @@ class ShangNianJieZhuan extends React.PureComponent {
         resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={true}
+        hasAdd={false}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -593,6 +787,7 @@ class ShangNianJieZhuan extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -602,7 +797,7 @@ class YueDuXinZeng extends React.PureComponent {
   state = {
     selectedYear: curYear,
     selectedQuarter: moment().quarter(),
-    cms: `Type = '月度新增'`
+    cms: `Type = '月度新增' and Year = '${curYear}' and Quarter = '${curQuarter}'`
   };
   handleRefresh = () => {
     this.tableDataRef.handleRefresh();
@@ -626,7 +821,7 @@ class YueDuXinZeng extends React.PureComponent {
             onChange={v => {
               this.setState({
                 selectedYear: v,
-                cms: `Year = '${v}' and Quarter = '${selectedQuarter}' and Type = '月度新增'`
+                cms: `Type = '月度新增' and Year = '${v}' and Quarter = '${selectedQuarter}'`
               });
             }}
           >
@@ -672,7 +867,7 @@ class YueDuXinZeng extends React.PureComponent {
     );
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.log(cms);
     return (
@@ -683,7 +878,7 @@ class YueDuXinZeng extends React.PureComponent {
         resid={662169358054}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={true}
+        hasAdd={false}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -693,6 +888,7 @@ class YueDuXinZeng extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -702,7 +898,7 @@ class YueDuShiYong extends React.PureComponent {
   state = {
     selectedYear: curYear,
     selectedQuarter: moment().quarter(),
-    cms: `Type = '季度使用'`
+    cms: `Year = '${curYear}' and Quarter = '${curQuarter}' and Type = '季度使用'`
   };
   handleRefresh = () => {
     this.tableDataRef.handleRefresh();
@@ -772,7 +968,7 @@ class YueDuShiYong extends React.PureComponent {
     );
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.log(cms);
     return (
@@ -793,6 +989,7 @@ class YueDuShiYong extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -814,6 +1011,15 @@ class JiDuJieSuan extends React.PureComponent {
     const { selectedQuarter, selectedYear } = this.state;
     return (
       <div style={{ display: 'flex' }}>
+        <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          添加人员
+        </Button>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
           <span>财年：</span>
           <Select
@@ -852,15 +1058,6 @@ class JiDuJieSuan extends React.PureComponent {
             })}
           </Select>
         </div>
-        <Button
-          onClick={() => {
-            this.props.onOpenSelectPerson(this.handleRefresh);
-          }}
-          type="primary"
-          size="small"
-        >
-          添加人员
-        </Button>
       </div>
     );
   };
@@ -868,7 +1065,7 @@ class JiDuJieSuan extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.log({ cms });
     return (
@@ -889,6 +1086,7 @@ class JiDuJieSuan extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -922,7 +1120,7 @@ class RuZhiFenPei extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const { cms } = this.state;
     console.log({ cms });
     return (
@@ -943,6 +1141,298 @@ class RuZhiFenPei extends React.PureComponent {
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
         cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
+      />
+    );
+  }
+}
+
+class JiDuFenPei extends React.PureComponent {
+  state = {
+    selectedYear: curYear,
+    selectedQuarter: curQuarter,
+    cms: `C3_663257630622 = ${curYear} and C3_663257633669 = ${curQuarter}`
+  };
+  actionBarExtra = ({
+    dataSource = [],
+    selectedRowKeys = [],
+    data = [],
+    recordFormData,
+    size
+  }) => {
+    const { selectedQuarter, selectedYear } = this.state;
+    return (
+      <div style={{ display: 'flex' }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
+          <span>财年：</span>
+          <Select
+            size="small"
+            style={{ width: 120 }}
+            value={selectedYear}
+            onChange={v => {
+              this.setState({
+                selectedYear: v,
+                cms: `C3_663257630622 = ${v} and C3_663257633669 = ${selectedQuarter}`
+              });
+            }}
+          >
+            {years.map(year => {
+              return (
+                <Select.Option value={year.value}>{year.title}</Select.Option>
+              );
+            })}
+          </Select>
+        </div>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
+          <span>季度：</span>
+          <Select
+            value={selectedQuarter}
+            onChange={v => {
+              this.setState({
+                selectedQuarter: v,
+                cms: `C3_663257630622 = ${selectedYear} and C3_663257633669 = ${v}`
+              });
+            }}
+            size="small"
+            style={{ width: 120 }}
+          >
+            {quarters.map(item => {
+              return <Option value={item.value}>{item.title}</Option>;
+            })}
+          </Select>
+        </div>
+        {/* <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          添加人员
+        </Button> */}
+      </div>
+    );
+  };
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
+  };
+  render() {
+    const { baseURL, baseURLFromAppConfig } = this.props;
+    const { cms } = this.state;
+    console.log({ cms });
+    return (
+      <TableData
+        key="JiDuFenPei"
+        wrappedComponentRef={element => (this.tableDataRef = element)}
+        refTargetComponentName="TableData"
+        resid={663257512519}
+        baseURL={baseURL}
+        subtractH={190}
+        hasAdd={true}
+        hasModify={false}
+        hasDelete={false}
+        hasRowEdit={false}
+        hasRowModify={false}
+        hasRowView={true}
+        hasRowDelete={false}
+        actionBarWidth={100}
+        actionBarExtra={this.actionBarExtra}
+        cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
+      />
+    );
+  }
+}
+
+class ShengYuQingLing extends React.PureComponent {
+  state = {
+    selectedYear: curYear,
+    selectedQuarter: curQuarter,
+    cms: `Type = '剩余清零'`
+  };
+  actionBarExtra = ({
+    dataSource = [],
+    selectedRowKeys = [],
+    data = [],
+    recordFormData,
+    size
+  }) => {
+    const { selectedQuarter, selectedYear } = this.state;
+    return (
+      <div style={{ display: 'flex' }}>
+        {/* <div style={{ marginRight: 12, marginLeft: 35 }}>
+          <span>财年：</span>
+          <Select
+            size="small"
+            style={{ width: 120 }}
+            value={selectedYear}
+            onChange={v => {
+              this.setState({
+                selectedYear: v,
+                cms: `C3_663257630622 = ${v} and C3_663257633669 = ${selectedQuarter}`
+              });
+            }}
+          >
+            {years.map(year => {
+              return (
+                <Select.Option value={year.value}>{year.title}</Select.Option>
+              );
+            })}
+          </Select>
+        </div>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
+          <span>季度：</span>
+          <Select
+            value={selectedQuarter}
+            onChange={v => {
+              this.setState({
+                selectedQuarter: v,
+                cms: `C3_663257630622 = ${selectedYear} and C3_663257633669 = ${v}`
+              });
+            }}
+            size="small"
+            style={{ width: 120 }}
+          >
+            {quarters.map(item => {
+              return <Option value={item.value}>{item.title}</Option>;
+            })}
+          </Select>
+        </div> */}
+        <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          剩余清零
+        </Button>
+      </div>
+    );
+  };
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
+  };
+  render() {
+    const { baseURL, baseURLFromAppConfig } = this.props;
+    const { cms } = this.state;
+    console.log({ cms });
+    return (
+      <TableData
+        key="ShengYuQingLing"
+        wrappedComponentRef={element => (this.tableDataRef = element)}
+        refTargetComponentName="TableData"
+        resid={662169358054}
+        baseURL={baseURL}
+        subtractH={190}
+        hasAdd={false}
+        hasModify={false}
+        hasDelete={false}
+        hasRowEdit={false}
+        hasRowModify={false}
+        hasRowView={true}
+        hasRowDelete={false}
+        actionBarWidth={100}
+        actionBarExtra={this.actionBarExtra}
+        cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
+      />
+    );
+  }
+}
+
+class ShangNianShengYu extends React.PureComponent {
+  state = {
+    selectedYear: curYear,
+    selectedQuarter: curQuarter,
+    cms: `C3_663248496440 = '${curYear}' and C3_663248505925 = '${curQuarter}'`
+  };
+  actionBarExtra = ({
+    dataSource = [],
+    selectedRowKeys = [],
+    data = [],
+    recordFormData,
+    size
+  }) => {
+    const { selectedYear, selectedQuarter } = this.state;
+    return (
+      <div style={{ display: 'flex' }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
+          <span>财年：</span>
+          <Select
+            size="small"
+            style={{ width: 120 }}
+            value={selectedYear}
+            onChange={v => {
+              this.setState({
+                selectedYear: v,
+                cms: `C3_663248496440 = '${v}' and C3_663248505925 = '${selectedQuarter}'`
+              });
+            }}
+          >
+            {years.map(year => {
+              return (
+                <Select.Option value={year.value}>{year.title}</Select.Option>
+              );
+            })}
+          </Select>
+        </div>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
+          <span>季度：</span>
+          <Select
+            value={selectedQuarter}
+            onChange={v => {
+              this.setState({
+                selectedQuarter: v,
+                cms: `C3_663248496440 = '${selectedYear}' and C3_663248505925 = '${v}'`
+              });
+            }}
+            size="small"
+            style={{ width: 120 }}
+          >
+            {quarters.map(item => {
+              return <Option value={item.value}>{item.title}</Option>;
+            })}
+          </Select>
+        </div>
+        {/* <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          添加人员
+        </Button> */}
+      </div>
+    );
+  };
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
+  };
+  render() {
+    const { baseURL, baseURLFromAppConfig } = this.props;
+    const { cms } = this.state;
+    console.log({ cms });
+    return (
+      <TableData
+        key="ShangNianShengYu"
+        wrappedComponentRef={element => (this.tableDataRef = element)}
+        refTargetComponentName="TableData"
+        resid={663248318082}
+        baseURL={baseURL}
+        subtractH={190}
+        hasAdd={true}
+        hasModify={false}
+        hasDelete={false}
+        hasRowEdit={false}
+        hasRowModify={false}
+        hasRowView={true}
+        hasRowDelete={false}
+        actionBarWidth={100}
+        actionBarExtra={this.actionBarExtra}
+        cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -974,7 +1464,7 @@ class LaoYuanGongSheBao extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     return (
       <TableData
         key="LaoYuanGongSheBao"
@@ -983,7 +1473,7 @@ class LaoYuanGongSheBao extends React.PureComponent {
         resid={663860930064}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={true}
+        hasAdd={false}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -992,6 +1482,7 @@ class LaoYuanGongSheBao extends React.PureComponent {
         hasRowDelete={false}
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1023,7 +1514,7 @@ class XinYuanGongSheBao extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     return (
       <TableData
         key="XinYuanGongSheBao"
@@ -1033,14 +1524,67 @@ class XinYuanGongSheBao extends React.PureComponent {
         baseURL={baseURL}
         subtractH={190}
         hasAdd={true}
-        hasModify={false}
-        hasDelete={false}
+        hasModify={true}
+        hasDelete={true}
         hasRowEdit={false}
         hasRowModify={false}
         hasRowView={true}
         hasRowDelete={false}
         actionBarWidth={100}
         actionBarExtra={this.actionBarExtra}
+        hasBeBtns={true}
+        hasRowSelection={true}
+        downloadBaseURL={baseURLFromAppConfig}
+      />
+    );
+  }
+}
+
+class KaoQinYueDuJieSuan extends React.PureComponent {
+  actionBarExtra = ({
+    dataSource = [],
+    selectedRowKeys = [],
+    data = [],
+    recordFormData,
+    size
+  }) => {
+    return (
+      <div style={{ display: 'flex' }}>
+        {/* <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          添加人员
+        </Button> */}
+      </div>
+    );
+  };
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
+  };
+  render() {
+    const { baseURL, baseURLFromAppConfig } = this.props;
+    return (
+      <TableData
+        key="KaoQinYueDuJieSuan"
+        wrappedComponentRef={element => (this.tableDataRef = element)}
+        refTargetComponentName="TableData"
+        resid={664997954195}
+        baseURL={baseURL}
+        subtractH={190}
+        hasAdd={false}
+        hasModify={false}
+        hasDelete={false}
+        hasRowEdit={false}
+        hasRowModify={false}
+        hasRowView={false}
+        hasRowDelete={false}
+        actionBarWidth={100}
+        // actionBarExtra={this.actionBarExtra}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1072,7 +1616,7 @@ class JiDuJieSuanBaoCuo extends React.PureComponent {
     this.tableDataRef.handleRefresh();
   };
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     return (
       <TableData
         key="JiDuJieSuanBaoCuo"
@@ -1081,7 +1625,7 @@ class JiDuJieSuanBaoCuo extends React.PureComponent {
         resid={663967392209}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={true}
+        hasAdd={false}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
@@ -1090,6 +1634,7 @@ class JiDuJieSuanBaoCuo extends React.PureComponent {
         hasRowDelete={false}
         actionBarWidth={100}
         // actionBarExtra={this.actionBarExtra}
+        downloadBaseURL={baseURLFromAppConfig}
       />
     );
   }
@@ -1105,6 +1650,12 @@ class NianJiaChaXun extends React.PureComponent {
     employeeResult: [],
     fetching: false,
     selectedEmpolyee: undefined,
+    selectedRecord: {},
+    selectedSubRecord: {},
+    subTableModalVisible: false,
+    usesubTableModalVisible: false,
+    applyRecordsModalVisible: false,
+
     cmssymx: `Year >= '${curYear}' and Year <= '${curYear}' and Quarter >= '${1}' and Quarter <= '${4}'`,
     cmszhmx: `year >= ${curYear} and year <= ${curYear} and quarter >= ${1} and quarter <= ${4}`
   };
@@ -1235,14 +1786,19 @@ class NianJiaChaXun extends React.PureComponent {
   };
 
   render() {
-    const { baseURL } = this.props;
+    const { baseURL, baseURLFromAppConfig } = this.props;
     const {
       selectedRadio,
       fetching,
       employeeResult,
       selectedEmpolyee,
       cmszhmx,
-      cmssymx
+      cmssymx,
+      subTableModalVisible,
+      usesubTableModalVisible,
+      applyRecordsModalVisible,
+      selectedRecord,
+      selectedSubRecord
     } = this.state;
     console.table({ cmszhmx, cmssymx, selectedRadio });
     return (
@@ -1282,13 +1838,24 @@ class NianJiaChaXun extends React.PureComponent {
             <Radio.Button value="symx">使用明细</Radio.Button>
           </Radio.Group>
         </div>
-        <div style={styles.tableDataContainer}>
+        <Modal
+          title="年假月度使用情况"
+          visible={usesubTableModalVisible}
+          footer={null}
+          width="80vw"
+          onCancel={() => {
+            this.setState({ usesubTableModalVisible: false });
+          }}
+        >
           <TableData
-            key="NianJiaChaXun"
-            resid={selectedRadio === 'zhmx' ? 662169346288 : 662169358054}
+            key={selectedRecord.REC_ID}
+            dataMode="sub"
+            resid={662169346288}
+            subresid={'662737017622'}
+            hostrecid={selectedRecord.REC_ID}
             baseURL={baseURL}
-            subtractH={190}
-            hasAdd={true}
+            subtractH={200}
+            hasAdd={false}
             hasModify={false}
             hasDelete={false}
             hasRowEdit={false}
@@ -1296,15 +1863,133 @@ class NianJiaChaXun extends React.PureComponent {
             hasRowView={true}
             hasRowDelete={false}
             actionBarWidth={100}
+            height={500}
+            customRowBtns={[
+              (record, btnSize) => {
+                return (
+                  <Button
+                    onClick={() => {
+                      this.setState({
+                        selectedSubRecord: record,
+                        applyRecordsModalVisible: true
+                      });
+                    }}
+                    size={btnSize}
+                  >
+                    申请记录
+                  </Button>
+                );
+              }
+            ]}
+          />
+        </Modal>
+        <Modal
+          title="申请记录"
+          visible={applyRecordsModalVisible}
+          footer={null}
+          width="70vw"
+          onCancel={() => {
+            this.setState({ applyRecordsModalVisible: false });
+          }}
+        >
+          <TableData
+            key={selectedSubRecord.REC_ID}
+            dataMode="sub"
+            resid={662169346288}
+            subresid={'662737017622'}
+            hostrecid={selectedSubRecord.REC_ID}
+            baseURL={baseURL}
+            subtractH={200}
+            hasAdd={false}
+            hasModify={false}
+            hasDelete={false}
+            hasRowEdit={false}
+            hasRowModify={false}
+            hasRowView={true}
+            hasRowDelete={false}
+            actionBarWidth={100}
+            height={500}
+          />
+        </Modal>
+        <Modal
+          title="年假交易明细"
+          visible={subTableModalVisible}
+          footer={null}
+          width="80vw"
+          onCancel={() => {
+            this.setState({ subTableModalVisible: false });
+          }}
+        >
+          <TableData
+            key={selectedRecord.REC_ID}
+            dataMode="sub"
+            resid={662169346288}
+            subresid={'662737017622'}
+            hostrecid={selectedRecord.REC_ID}
+            baseURL={baseURL}
+            subtractH={200}
+            hasAdd={false}
+            hasModify={false}
+            hasDelete={false}
+            hasRowEdit={false}
+            hasRowModify={false}
+            hasRowView={true}
+            hasRowDelete={false}
+            actionBarWidth={100}
+            height={500}
+          />
+        </Modal>
+        <div style={styles.tableDataContainer}>
+          <TableData
+            key="NianJiaChaXun"
+            resid={selectedRadio === 'zhmx' ? 662169346288 : 448999733055}
+            baseURL={baseURL}
+            subtractH={190}
+            hasAdd={true}
+            hasModify={false}
+            hasDelete={false}
+            hasRowEdit={false}
+            hasRowModify={false}
+            hasRowView={false}
+            hasRowDelete={false}
+            actionBarWidth={100}
             actionBarExtra={this.actionBarExtra}
+            customRowBtns={[
+              record => {
+                return (
+                  selectedRadio === 'zhmx' && (
+                    <div>
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            selectedRecord: record,
+                            usesubTableModalVisible: true
+                          });
+                        }}
+                      >
+                        使用明细
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            selectedRecord: record,
+                            subTableModalVisible: true
+                          });
+                        }}
+                      >
+                        交易明细
+                      </Button>
+                    </div>
+                  )
+                );
+              }
+            ]}
             cmswhere={
               selectedRadio === 'zhmx'
                 ? selectedEmpolyee
                   ? cmszhmx + ` and numberID = ${selectedEmpolyee.key}`
                   : cmszhmx
-                : selectedEmpolyee
-                ? cmssymx + ` and NumberID = '${selectedEmpolyee.key}'`
-                : cmssymx
+                : `C3_449349153817 = 23 and C3_449011111447 = 'Y'`
             }
           />
         </div>

@@ -185,7 +185,6 @@ class ProbationForms extends React.Component {
         resid: 618591268064,
         cmswhere: `C3_659451908745 = '${id}'`
       });
-//       res.data.length && this.setState({ approveNodes: res.data });
       let n=0;
       let arr = res.data
       while(n<arr.length){
