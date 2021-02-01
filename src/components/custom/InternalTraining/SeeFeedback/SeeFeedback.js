@@ -15,6 +15,8 @@ import {
   Collapse
 } from 'antd';
 import http from 'Util20/api';
+import BraftEditor from 'braft-editor';
+import 'braft-editor/dist/index.css';
 
 const InnerTrainID = '615549231946';
 const InnerTrainPersonID = '616073391736';
@@ -41,7 +43,7 @@ class SeeFeedback extends React.Component {
       rate8: null
     },
     selectedCourseId: '',
-    selectedCourse: {},
+    selectedCourse: { C3_622485660010: BraftEditor.createEditorState(null) },
     selectedCourseFeedbacks: [],
     otherAdvice: {
       advantages: '',
@@ -171,9 +173,19 @@ class SeeFeedback extends React.Component {
                 <Button
                   onClick={() => {
                     this.getFeedbacks(record.CourseArrangeID);
+                    record.C3_622485660010 = BraftEditor.createEditorState(
+                      record.C3_622485660010
+                    );
+                    record.C3_622485682264 = BraftEditor.createEditorState(
+                      record.C3_622485682264
+                    );
+
                     this.setState({
                       feedbackOverallVisible: true,
                       selectedCourse: record
+                      // selectedCourse.C3_622485660010: BraftEditor.createEditorState(
+                      //   selectedCourse.C3_622485660010
+                      // ),
                     });
                   }}
                 >
@@ -369,10 +381,15 @@ class SeeFeedback extends React.Component {
             <Popconfirm
               title="确认发送？"
               onConfirm={() => {
+                console.table(this.state.selectedCourse);
                 this.sendToTrainer({
                   REC_ID: selectedCourse.REC_ID,
-                  C3_622485660010: selectedCourse.C3_622485660010,
-                  C3_622485682264: selectedCourse.C3_622485682264,
+                  C3_622485660010: BraftEditor.createEditorState(
+                    selectedCourse.C3_622485660010
+                  ).toHTML(),
+                  C3_622485682264: BraftEditor.createEditorState(
+                    selectedCourse.C3_622485682264
+                  ).toHTML(),
                   C3_622485773574: 'Y'
                 });
               }}
@@ -455,7 +472,19 @@ class SeeFeedback extends React.Component {
               </Panel>
             </Collapse>
             <Form.Item required label="收益内容总结" labelCol={4}>
-              <TextArea
+              <BraftEditor
+                value={selectedCourse.C3_622485660010}
+                onChange={e => {
+                  this.setState({
+                    selectedCourse: {
+                      ...selectedCourse,
+                      C3_622485660010: e
+                    }
+                  });
+                }}
+              />
+
+              {/* <TextArea
                 placeholder="收益内容总结"
                 rows={4}
                 value={selectedCourse.C3_622485660010}
@@ -467,7 +496,7 @@ class SeeFeedback extends React.Component {
                     }
                   });
                 }}
-              />
+              /> */}
             </Form.Item>
             <Collapse>
               <Panel header="改进内容汇总" key="改进内容汇总">
@@ -477,7 +506,18 @@ class SeeFeedback extends React.Component {
               </Panel>
             </Collapse>
             <Form.Item required label="改进内容总结" labelCol={4}>
-              <TextArea
+              <BraftEditor
+                value={selectedCourse.C3_622485682264}
+                onChange={e => {
+                  this.setState({
+                    selectedCourse: {
+                      ...selectedCourse,
+                      C3_622485682264: e
+                    }
+                  });
+                }}
+              />
+              {/* <TextArea
                 placeholder="改进内容总结"
                 rows={4}
                 value={selectedCourse.C3_622485682264}
@@ -489,7 +529,7 @@ class SeeFeedback extends React.Component {
                     }
                   });
                 }}
-              />
+              /> */}
             </Form.Item>
           </div>
         </Modal>
