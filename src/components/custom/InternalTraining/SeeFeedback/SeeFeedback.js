@@ -48,7 +48,10 @@ class SeeFeedback extends React.Component {
     otherAdvice: {
       advantages: '',
       shortcommings: ''
-    }
+    },
+    copied: false,
+    allNotAdvantageData: '',
+    allAdvantageData: ''
   };
 
   /**
@@ -131,11 +134,76 @@ class SeeFeedback extends React.Component {
     }
   };
 
+  copy = id => {
+    const copyEle = document.getElementById(id); // 获取要复制的节点
+    const range = document.createRange(); // 创造range
+    window.getSelection().removeAllRanges(); //清除页面中已有的selection
+    range.selectNode(copyEle); // 选中需要复制的节点
+    window.getSelection().addRange(range); // 执行选中元素
+    const copyStatus = document.execCommand('Copy'); // 执行copy操作
+    // 对成功与否定进行提示
+    if (copyStatus) {
+      message.success('复制成功');
+    } else {
+      message.fail('复制失败');
+    }
+    window.getSelection().removeAllRanges(); //清除页面中已有的selection
+  };
+
+  copyAll = async (selectedCourseFeedbacks, type = 'advantage') => {
+    let pasteData = '';
+    if (type === 'advantage') {
+      selectedCourseFeedbacks.map(feedback => {
+        pasteData = pasteData + '\n' + feedback.C3_622216706104;
+      });
+      await this.setState({
+        allAdvantageData: pasteData
+      });
+    } else {
+      selectedCourseFeedbacks.map(feedback => {
+        pasteData = pasteData + '\n' + feedback.C3_622216725340;
+      });
+      await this.setState({
+        allNotAdvantageData: pasteData
+      });
+    }
+    var textNode = document.createElement('textarea');
+    textNode.value = pasteData;
+    document.body.appendChild(textNode);
+    textNode.select();
+    var res = document.execCommand('copy');
+    document.body.removeChild(textNode);
+    if (res) {
+      message.success('复制成功');
+    } else {
+      message.fail('复制失败');
+    }
+  };
+
   renderFeedbackText = (feedback, type = 'advantage') => {
     return (
       <Row key={feedback.REC_ID}>
+        <Col span={2}>
+          <span
+            style={{ color: 'blue' }}
+            onClick={() => {
+              this.copy(
+                type === 'advantage'
+                  ? feedback.REC_ID + 'a'
+                  : feedback.REC_ID + 'b'
+              );
+            }}
+          >
+            复制
+          </span>
+        </Col>
         <Col span={2}>{feedback.C3_478368118915}</Col>
-        <Col span={16}>
+        <Col
+          span={14}
+          id={
+            type === 'advantage' ? feedback.REC_ID + 'a' : feedback.REC_ID + 'b'
+          }
+        >
           {type === 'advantage'
             ? feedback.C3_622216706104
             : feedback.C3_622216725340}
@@ -381,7 +449,6 @@ class SeeFeedback extends React.Component {
             <Popconfirm
               title="确认发送？"
               onConfirm={() => {
-                console.table(this.state.selectedCourse);
                 this.sendToTrainer({
                   REC_ID: selectedCourse.REC_ID,
                   C3_622485660010: BraftEditor.createEditorState(
@@ -466,6 +533,14 @@ class SeeFeedback extends React.Component {
             </div>
             <Collapse>
               <Panel header="收益内容汇总" key="收益内容汇总">
+                <span
+                  style={{ color: 'blue' }}
+                  onClick={() => {
+                    this.copyAll(selectedCourseFeedbacks, 'advantage');
+                  }}
+                >
+                  复制所有
+                </span>
                 {selectedCourseFeedbacks.map(feedback =>
                   this.renderFeedbackText(feedback, 'advantage')
                 )}
@@ -500,6 +575,14 @@ class SeeFeedback extends React.Component {
             </Form.Item>
             <Collapse>
               <Panel header="改进内容汇总" key="改进内容汇总">
+                <span
+                  style={{ color: 'blue' }}
+                  onClick={() => {
+                    this.copyAll(selectedCourseFeedbacks, 'notAdvantage');
+                  }}
+                >
+                  复制所有
+                </span>
                 {selectedCourseFeedbacks.map(feedback =>
                   this.renderFeedbackText(feedback, 'shortcomming')
                 )}
