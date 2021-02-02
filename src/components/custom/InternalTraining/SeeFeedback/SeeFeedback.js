@@ -15,6 +15,8 @@ import {
   Collapse
 } from 'antd';
 import http from 'Util20/api';
+import BraftEditor from 'braft-editor';
+import 'braft-editor/dist/index.css';
 
 const InnerTrainID = '615549231946';
 const InnerTrainPersonID = '616073391736';
@@ -41,12 +43,15 @@ class SeeFeedback extends React.Component {
       rate8: null
     },
     selectedCourseId: '',
-    selectedCourse: {},
+    selectedCourse: { C3_622485660010: BraftEditor.createEditorState(null) },
     selectedCourseFeedbacks: [],
     otherAdvice: {
       advantages: '',
       shortcommings: ''
-    }
+    },
+    copied: false,
+    allNotAdvantageData: '',
+    allAdvantageData: ''
   };
 
   /**
@@ -129,11 +134,76 @@ class SeeFeedback extends React.Component {
     }
   };
 
+  copy = id => {
+    const copyEle = document.getElementById(id); // 获取要复制的节点
+    const range = document.createRange(); // 创造range
+    window.getSelection().removeAllRanges(); //清除页面中已有的selection
+    range.selectNode(copyEle); // 选中需要复制的节点
+    window.getSelection().addRange(range); // 执行选中元素
+    const copyStatus = document.execCommand('Copy'); // 执行copy操作
+    // 对成功与否定进行提示
+    if (copyStatus) {
+      message.success('复制成功');
+    } else {
+      message.fail('复制失败');
+    }
+    window.getSelection().removeAllRanges(); //清除页面中已有的selection
+  };
+
+  copyAll = async (selectedCourseFeedbacks, type = 'advantage') => {
+    let pasteData = '';
+    if (type === 'advantage') {
+      selectedCourseFeedbacks.map(feedback => {
+        pasteData = pasteData + '\n' + feedback.C3_622216706104;
+      });
+      await this.setState({
+        allAdvantageData: pasteData
+      });
+    } else {
+      selectedCourseFeedbacks.map(feedback => {
+        pasteData = pasteData + '\n' + feedback.C3_622216725340;
+      });
+      await this.setState({
+        allNotAdvantageData: pasteData
+      });
+    }
+    var textNode = document.createElement('textarea');
+    textNode.value = pasteData;
+    document.body.appendChild(textNode);
+    textNode.select();
+    var res = document.execCommand('copy');
+    document.body.removeChild(textNode);
+    if (res) {
+      message.success('复制成功');
+    } else {
+      message.fail('复制失败');
+    }
+  };
+
   renderFeedbackText = (feedback, type = 'advantage') => {
     return (
       <Row key={feedback.REC_ID}>
+        <Col span={2}>
+          <span
+            style={{ color: 'blue' }}
+            onClick={() => {
+              this.copy(
+                type === 'advantage'
+                  ? feedback.REC_ID + 'a'
+                  : feedback.REC_ID + 'b'
+              );
+            }}
+          >
+            复制
+          </span>
+        </Col>
         <Col span={2}>{feedback.C3_478368118915}</Col>
-        <Col span={16}>
+        <Col
+          span={14}
+          id={
+            type === 'advantage' ? feedback.REC_ID + 'a' : feedback.REC_ID + 'b'
+          }
+        >
           {type === 'advantage'
             ? feedback.C3_622216706104
             : feedback.C3_622216725340}
@@ -171,9 +241,19 @@ class SeeFeedback extends React.Component {
                 <Button
                   onClick={() => {
                     this.getFeedbacks(record.CourseArrangeID);
+                    record.C3_622485660010 = BraftEditor.createEditorState(
+                      record.C3_622485660010
+                    );
+                    record.C3_622485682264 = BraftEditor.createEditorState(
+                      record.C3_622485682264
+                    );
+
                     this.setState({
                       feedbackOverallVisible: true,
                       selectedCourse: record
+                      // selectedCourse.C3_622485660010: BraftEditor.createEditorState(
+                      //   selectedCourse.C3_622485660010
+                      // ),
                     });
                   }}
                 >
@@ -371,8 +451,12 @@ class SeeFeedback extends React.Component {
               onConfirm={() => {
                 this.sendToTrainer({
                   REC_ID: selectedCourse.REC_ID,
-                  C3_622485660010: selectedCourse.C3_622485660010,
-                  C3_622485682264: selectedCourse.C3_622485682264,
+                  C3_622485660010: BraftEditor.createEditorState(
+                    selectedCourse.C3_622485660010
+                  ).toHTML(),
+                  C3_622485682264: BraftEditor.createEditorState(
+                    selectedCourse.C3_622485682264
+                  ).toHTML(),
                   C3_622485773574: 'Y'
                 });
               }}
@@ -449,13 +533,33 @@ class SeeFeedback extends React.Component {
             </div>
             <Collapse>
               <Panel header="收益内容汇总" key="收益内容汇总">
+                <span
+                  style={{ color: 'blue' }}
+                  onClick={() => {
+                    this.copyAll(selectedCourseFeedbacks, 'advantage');
+                  }}
+                >
+                  复制所有
+                </span>
                 {selectedCourseFeedbacks.map(feedback =>
                   this.renderFeedbackText(feedback, 'advantage')
                 )}
               </Panel>
             </Collapse>
             <Form.Item required label="收益内容总结" labelCol={4}>
-              <TextArea
+              <BraftEditor
+                value={selectedCourse.C3_622485660010}
+                onChange={e => {
+                  this.setState({
+                    selectedCourse: {
+                      ...selectedCourse,
+                      C3_622485660010: e
+                    }
+                  });
+                }}
+              />
+
+              {/* <TextArea
                 placeholder="收益内容总结"
                 rows={4}
                 value={selectedCourse.C3_622485660010}
@@ -467,17 +571,36 @@ class SeeFeedback extends React.Component {
                     }
                   });
                 }}
-              />
+              /> */}
             </Form.Item>
             <Collapse>
               <Panel header="改进内容汇总" key="改进内容汇总">
+                <span
+                  style={{ color: 'blue' }}
+                  onClick={() => {
+                    this.copyAll(selectedCourseFeedbacks, 'notAdvantage');
+                  }}
+                >
+                  复制所有
+                </span>
                 {selectedCourseFeedbacks.map(feedback =>
                   this.renderFeedbackText(feedback, 'shortcomming')
                 )}
               </Panel>
             </Collapse>
             <Form.Item required label="改进内容总结" labelCol={4}>
-              <TextArea
+              <BraftEditor
+                value={selectedCourse.C3_622485682264}
+                onChange={e => {
+                  this.setState({
+                    selectedCourse: {
+                      ...selectedCourse,
+                      C3_622485682264: e
+                    }
+                  });
+                }}
+              />
+              {/* <TextArea
                 placeholder="改进内容总结"
                 rows={4}
                 value={selectedCourse.C3_622485682264}
@@ -489,7 +612,7 @@ class SeeFeedback extends React.Component {
                     }
                   });
                 }}
-              />
+              /> */}
             </Form.Item>
           </div>
         </Modal>
