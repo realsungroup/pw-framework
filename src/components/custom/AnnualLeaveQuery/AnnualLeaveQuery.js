@@ -8,7 +8,9 @@ import {
   Modal,
   Icon,
   Button,
-  Collapse
+  Collapse,
+  TreeSelect,
+  Spin
 } from 'antd';
 import './AnnualLeaveQuery.less';
 import { getItem } from 'Util20/util';
@@ -22,6 +24,7 @@ const { TabPane } = Tabs;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const { Panel } = Collapse;
+const { TreeNode } = TreeSelect;
 
 class AnnualLeaveQuery extends React.Component {
   constructor(props) {
@@ -81,7 +84,7 @@ const quarters = [
 ];
 const styles = {
   selectStyle: {
-    width: 120,
+    width: 100,
     margin: '0 4px'
   }
 };
@@ -117,7 +120,10 @@ class Summary extends React.PureComponent {
     usesubTableModalVisible: false,
     applyRecordsModalVisible: false,
     selectedRecord: {},
-    selectedSubRecord: {}
+    selectedSubRecord: {},
+    treeData: [],
+    selectValue: '',
+    loading: false
   };
   columns = [
     {
@@ -249,7 +255,73 @@ class Summary extends React.PureComponent {
   ];
   componentDidMount() {
     this.fetchAnnualLeaves();
+    this.getData();
   }
+
+  getData = async () => {
+    const bianhao = JSON.parse(localStorage.getItem('userInfo')).UserInfo
+      .EMP_USERCODE;
+    this.setState({
+      selectValue: bianhao
+    });
+    try {
+      let res = await http({ baseURL: 'http://10.108.2.66:2001' }).postTreeData(
+        {
+          resid: '609599795438',
+          Levels: 3,
+          MoveDirection: 1,
+          MoveLevels: 1,
+          ColumnOfID: 'C3_305737857578', //人员编号
+          ColumnOfPID: 'C3_417993417686', //直接主管编号
+          ProductIDs: bianhao //当前人员编号1751
+        }
+      );
+      let arr = [];
+      let n = 0;
+      while (n < res.nodes.length) {
+        if (n === 0) {
+          arr.push({
+            title: res.nodes[n].C3_227192484125 || '',
+            value: res.nodes[n].C3_305737857578,
+            key: res.nodes[n].C3_305737857578,
+            pid: 'cur'
+          });
+          n++;
+        } else {
+          arr.push({
+            title: res.nodes[n].C3_227192484125 || '',
+            value: res.nodes[n].C3_305737857578,
+            key: res.nodes[n].C3_305737857578,
+            pid: res.nodes[n].C3_417993417686
+          });
+          n++;
+        }
+      }
+      this.setState({ treeData: this.toTree(arr, 'cur') });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  toTree = (list, ppid) => {
+    if (
+      list.some(node => {
+        return node.pid === ppid;
+      })
+    ) {
+      return list
+        .filter(item => item.pid === ppid)
+        .map(item => {
+          return {
+            ...item,
+            children: this.toTree(list, item.key)
+          };
+        });
+    } else {
+      return;
+    }
+  };
+
   fetchAnnualLeaves = async () => {
     const { resid, userCode, baseURL } = this.props;
     const numID = JSON.parse(localStorage.getItem('userInfo')).UserInfo.EMP_ID;
@@ -283,7 +355,6 @@ class Summary extends React.PureComponent {
         }
         if (item.quarter === curQuarter) {
           hjky = item.hjky;
-          console.table({ hjky });
         }
       });
       this.setState({
@@ -322,6 +393,92 @@ class Summary extends React.PureComponent {
       console.error(error);
       message.error(error.message);
     }
+  };
+
+  fetchAnnualLeavesCopy = async value => {
+    const { resid, baseURL } = this.props;
+    const curYear = parseInt(moment().year());
+    const curQuarter = parseInt(moment().quarter());
+    let numID;
+    try {
+      let res3 = await http({ baseURL }).getTable({
+        resid: '227186227531',
+        cmswhere: `C3_305737857578 = '${value}'`
+      });
+      numID = res3.data[0].C3_227192472953;
+    } catch (error) {
+      console.log(error.message);
+      message.info(error.message);
+    }
+
+    let res1;
+    try {
+      res1 = await http({ baseURL }).getTable({
+        resid: '662169383744',
+        cmswhere: `NumberID = '${numID}' and Quarter = '${curYear}'`
+      });
+      this.setState({
+        snsy: res1.data.length !== 0 ? res1.data[0].Residue : 0
+      });
+    } catch (error) {
+      console.log(error.message);
+      message.info(error.message);
+    }
+    let res;
+    try {
+      res = await http({ baseURL }).getTable({
+        resid: '662169346288',
+        cmswhere: `numberID = ${numID} and year = ${curYear}`
+      });
+      let synj1 = 0;
+      let hjky = 0;
+      res.data.map(item => {
+        if (item.synj >= 0) {
+          synj1 = item.synj + synj1;
+        }
+        if (item.quarter === curQuarter) {
+          hjky = item.hjky;
+        }
+      });
+      this.setState({
+        synj: synj1,
+        djfp: hjky
+      });
+    } catch (err) {
+      message.error(err.message);
+      console.log(err);
+    }
+    try {
+      const res = await http({ baseURL }).getTable({
+        resid,
+        cmswhere: `numberID = '${numID}'`
+      });
+      const yearSet = new Set();
+      res.data.forEach(item => {
+        item.sydjfp = item.sydjfp || 0;
+        item.djhj = item.sydjfp + item.djfp; //当季合计
+
+        item.ljsysjsy = item.ljsysjsy || 0;
+        item.wjhj = item.ljsysjsy + item.sjsy; //往季合计
+
+        item.ljsysnsy = item.ljsysnsy || 0;
+        item.wnhj = item.ljsysnsy + item.snsy; //往年合计
+        yearSet.add(item.year);
+      });
+      const years = [...yearSet];
+      this.setState({
+        allAnnualLeaveQuery: res.data,
+        years,
+        startYear: years[0],
+        endYear: years[0]
+      });
+    } catch (error) {
+      console.error(error);
+      message.error(error.message);
+    }
+    this.setState({
+      loading: false
+    });
   };
 
   calcAnnualLeaves = memoize(
@@ -407,96 +564,110 @@ class Summary extends React.PureComponent {
     });
     return (
       <div className="alq-summary">
-        <div>
-          <span>当季可用年假</span>
-          <span>{djfp}天</span>
-          <span>总结余</span>
-          <span>{synj}天</span>
-          <span>上年转结年假</span>
-          <span>{snsy}天</span>
-          <p style={{ color: 'red' }}>每年7月1日会清空上年结转年假；</p>
-        </div>
-        <div className="collapseStyle">
-          <Collapse
-            bordered={false}
-            style={{ background: '#f7f7f7', border: 0, overflow: 'hidden' }}
-          >
-            <Panel header="更多信息" key="1">
-              <header className="alq-summary__header">
-                <div>
-                  从
-                  <Select
-                    onChange={value => {
-                      this.setState({
-                        startYear: value
-                      });
-                    }}
-                    value={startYear}
-                    size="small"
-                    style={styles.selectStyle}
-                  >
-                    {years.map(item => {
-                      return <Option value={item}>{item}</Option>;
-                    })}
-                  </Select>
-                  <Select
-                    onChange={value => {
-                      this.setState({
-                        startQuarter: value
-                      });
-                    }}
-                    value={startQuarter}
-                    size="small"
-                    style={styles.selectStyle}
-                  >
-                    {quarters.map(item => {
-                      return <Option value={item.value}>{item.title}</Option>;
-                    })}
-                  </Select>
-                  至
-                  <Select
-                    onChange={value => {
-                      this.setState({
-                        endYear: value
-                      });
-                    }}
-                    value={endYear}
-                    size="small"
-                    style={styles.selectStyle}
-                  >
-                    {years.map(item => {
-                      return <Option value={item}>{item}</Option>;
-                    })}
-                  </Select>
-                  <Select
-                    onChange={value => {
-                      this.setState({
-                        endQuarter: value
-                      });
-                    }}
-                    value={endQuarter}
-                    size="small"
-                    style={styles.selectStyle}
-                  >
-                    {quarters.map(item => {
-                      return <Option value={item.value}>{item.title}</Option>;
-                    })}
-                  </Select>
-                  <Button
-                    icon="download"
-                    size="small"
-                    onClick={() => {
-                      // tableToExcel(
-                      //   document.querySelector('.annual-leave .ant-table-body')
-                      //     .innerHTML
-                      // );
-                      this.handleDownloadExcel();
-                    }}
-                  >
-                    下载
-                  </Button>
-                </div>
-                {/* <Icon
+        <Spin spinning={this.state.loading}>
+          <div>
+            <span>当季可用年假</span>
+            <span>{djfp}天</span>
+            <span>总结余</span>
+            <span>{synj}天</span>
+            <span>上年转结年假</span>
+            <span>{snsy}天</span>
+            <TreeSelect
+              style={{ width: '250px' }}
+              value={this.state.selectValue}
+              dropdownStyle={{ overflow: 'auto' }}
+              placeholder={
+                JSON.parse(localStorage.getItem('userInfo')).EMP_NAME
+              }
+              treeData={this.state.treeData}
+              onChange={value => {
+                this.setState({ selectValue: value, loading: true });
+                this.fetchAnnualLeavesCopy(value);
+              }}
+            ></TreeSelect>
+            <p style={{ color: 'red' }}>每年7月1日会清空上年结转年假；</p>
+          </div>
+          <div className="collapseStyle">
+            <Collapse
+              bordered={false}
+              style={{ background: '#f7f7f7', border: 0, overflow: 'hidden' }}
+            >
+              <Panel header="更多信息" key="1">
+                <header className="alq-summary__header">
+                  <div>
+                    从
+                    <Select
+                      onChange={value => {
+                        this.setState({
+                          startYear: value
+                        });
+                      }}
+                      value={startYear}
+                      size="small"
+                      style={styles.selectStyle}
+                    >
+                      {years.map(item => {
+                        return <Option value={item}>{item}</Option>;
+                      })}
+                    </Select>
+                    <Select
+                      onChange={value => {
+                        this.setState({
+                          startQuarter: value
+                        });
+                      }}
+                      value={startQuarter}
+                      size="small"
+                      style={styles.selectStyle}
+                    >
+                      {quarters.map(item => {
+                        return <Option value={item.value}>{item.title}</Option>;
+                      })}
+                    </Select>
+                    至
+                    <Select
+                      onChange={value => {
+                        this.setState({
+                          endYear: value
+                        });
+                      }}
+                      value={endYear}
+                      size="small"
+                      style={styles.selectStyle}
+                    >
+                      {years.map(item => {
+                        return <Option value={item}>{item}</Option>;
+                      })}
+                    </Select>
+                    <Select
+                      onChange={value => {
+                        this.setState({
+                          endQuarter: value
+                        });
+                      }}
+                      value={endQuarter}
+                      size="small"
+                      style={styles.selectStyle}
+                    >
+                      {quarters.map(item => {
+                        return <Option value={item.value}>{item.title}</Option>;
+                      })}
+                    </Select>
+                    <Button
+                      icon="download"
+                      size="small"
+                      onClick={() => {
+                        // tableToExcel(
+                        //   document.querySelector('.annual-leave .ant-table-body')
+                        //     .innerHTML
+                        // );
+                        this.handleDownloadExcel();
+                      }}
+                    >
+                      下载
+                    </Button>
+                  </div>
+                  {/* <Icon
                   onClick={() => {
                     Modal.info({
                       title: '提示',
@@ -507,126 +678,127 @@ class Summary extends React.PureComponent {
                   type="question-circle"
                   style={{ color: '#1890ff' }}
                 /> */}
-              </header>
-              <div>
-                <Table
-                  className="annual-leave"
-                  columns={this.columns}
-                  dataSource={annualLeaves}
-                  bordered
-                  size="small"
-                  pagination={false}
-                  // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
-                />
-                <p style={{ marginTop: 16 }}>
-                  <span style={{ fontWeight: 'bold' }}>说明：</span>
-                  按季度划分后，每季度的年假明细作为一行数据。
-                </p>
-              </div>
-              <Modal
-                title="年假月度使用情况"
-                visible={usesubTableModalVisible}
-                footer={null}
-                width="80vw"
-                onCancel={() => {
-                  this.setState({ usesubTableModalVisible: false });
-                }}
-              >
-                <TableData
-                  key={selectedRecord.REC_ID}
-                  dataMode="sub"
-                  resid={resid}
-                  subresid={'662737017622'}
-                  hostrecid={selectedRecord.REC_ID}
-                  baseURL={baseURL}
-                  subtractH={200}
-                  hasAdd={false}
-                  hasModify={false}
-                  hasDelete={false}
-                  hasRowEdit={false}
-                  hasRowModify={false}
-                  hasRowView={true}
-                  hasRowDelete={false}
-                  actionBarWidth={100}
-                  height={500}
-                  customRowBtns={[
-                    (record, btnSize) => {
-                      return (
-                        <Button
-                          onClick={() => {
-                            this.setState({
-                              selectedSubRecord: record,
-                              applyRecordsModalVisible: true
-                            });
-                          }}
-                          size={btnSize}
-                        >
-                          申请记录
-                        </Button>
-                      );
-                    }
-                  ]}
-                />
-              </Modal>
-              <Modal
-                title="申请记录"
-                visible={applyRecordsModalVisible}
-                footer={null}
-                width="70vw"
-                onCancel={() => {
-                  this.setState({ applyRecordsModalVisible: false });
-                }}
-              >
-                <TableData
-                  key={selectedSubRecord.REC_ID}
-                  dataMode="sub"
-                  resid={resid}
-                  subresid={'662737017622'}
-                  hostrecid={selectedSubRecord.REC_ID}
-                  baseURL={baseURL}
-                  subtractH={200}
-                  hasAdd={false}
-                  hasModify={false}
-                  hasDelete={false}
-                  hasRowEdit={false}
-                  hasRowModify={false}
-                  hasRowView={true}
-                  hasRowDelete={false}
-                  actionBarWidth={100}
-                  height={500}
-                />
-              </Modal>
-              <Modal
-                title="年假交易明细"
-                visible={subTableModalVisible}
-                footer={null}
-                width="80vw"
-                onCancel={() => {
-                  this.setState({ subTableModalVisible: false });
-                }}
-              >
-                <TableData
-                  key={selectedRecord.REC_ID}
-                  dataMode="sub"
-                  resid={resid}
-                  subresid={subResid}
-                  hostrecid={selectedRecord.REC_ID}
-                  baseURL={baseURL}
-                  subtractH={200}
-                  hasAdd={false}
-                  hasModify={false}
-                  hasDelete={false}
-                  hasRowEdit={false}
-                  hasRowModify={false}
-                  hasRowView={true}
-                  hasRowDelete={false}
-                  actionBarWidth={100}
-                  height={500}
-                />
-              </Modal>
-            </Panel>
-          </Collapse>
-        </div>
+                </header>
+                <div>
+                  <Table
+                    className="annual-leave"
+                    columns={this.columns}
+                    dataSource={annualLeaves}
+                    bordered
+                    size="small"
+                    pagination={false}
+                    // scroll={{ x: 'calc(700px + 50%)', y: 240 }}
+                  />
+                  <p style={{ marginTop: 16 }}>
+                    <span style={{ fontWeight: 'bold' }}>说明：</span>
+                    按季度划分后，每季度的年假明细作为一行数据。
+                  </p>
+                </div>
+                <Modal
+                  title="年假月度使用情况"
+                  visible={usesubTableModalVisible}
+                  footer={null}
+                  width="80vw"
+                  onCancel={() => {
+                    this.setState({ usesubTableModalVisible: false });
+                  }}
+                >
+                  <TableData
+                    key={selectedRecord.REC_ID}
+                    dataMode="sub"
+                    resid={resid}
+                    subresid={'662737017622'}
+                    hostrecid={selectedRecord.REC_ID}
+                    baseURL={baseURL}
+                    subtractH={200}
+                    hasAdd={false}
+                    hasModify={false}
+                    hasDelete={false}
+                    hasRowEdit={false}
+                    hasRowModify={false}
+                    hasRowView={true}
+                    hasRowDelete={false}
+                    actionBarWidth={100}
+                    height={500}
+                    customRowBtns={[
+                      (record, btnSize) => {
+                        return (
+                          <Button
+                            onClick={() => {
+                              this.setState({
+                                selectedSubRecord: record,
+                                applyRecordsModalVisible: true
+                              });
+                            }}
+                            size={btnSize}
+                          >
+                            申请记录
+                          </Button>
+                        );
+                      }
+                    ]}
+                  />
+                </Modal>
+                <Modal
+                  title="申请记录"
+                  visible={applyRecordsModalVisible}
+                  footer={null}
+                  width="70vw"
+                  onCancel={() => {
+                    this.setState({ applyRecordsModalVisible: false });
+                  }}
+                >
+                  <TableData
+                    key={selectedSubRecord.REC_ID}
+                    dataMode="sub"
+                    resid={resid}
+                    subresid={'662737017622'}
+                    hostrecid={selectedSubRecord.REC_ID}
+                    baseURL={baseURL}
+                    subtractH={200}
+                    hasAdd={false}
+                    hasModify={false}
+                    hasDelete={false}
+                    hasRowEdit={false}
+                    hasRowModify={false}
+                    hasRowView={true}
+                    hasRowDelete={false}
+                    actionBarWidth={100}
+                    height={500}
+                  />
+                </Modal>
+                <Modal
+                  title="年假交易明细"
+                  visible={subTableModalVisible}
+                  footer={null}
+                  width="80vw"
+                  onCancel={() => {
+                    this.setState({ subTableModalVisible: false });
+                  }}
+                >
+                  <TableData
+                    key={selectedRecord.REC_ID}
+                    dataMode="sub"
+                    resid={resid}
+                    subresid={subResid}
+                    hostrecid={selectedRecord.REC_ID}
+                    baseURL={baseURL}
+                    subtractH={200}
+                    hasAdd={false}
+                    hasModify={false}
+                    hasDelete={false}
+                    hasRowEdit={false}
+                    hasRowModify={false}
+                    hasRowView={true}
+                    hasRowDelete={false}
+                    actionBarWidth={100}
+                    height={500}
+                  />
+                </Modal>
+              </Panel>
+            </Collapse>
+          </div>
+        </Spin>
       </div>
     );
   }
@@ -810,7 +982,6 @@ class CopySummary extends React.PureComponent {
         }
         if (item.quarter === curQuarter) {
           hjky = item.hjky;
-          console.table({ hjky });
         }
       });
       this.setState({
@@ -938,7 +1109,6 @@ class CopySummary extends React.PureComponent {
       endQuarter,
       allAnnualLeaveQuery
     );
-    console.log(this.state.allAnnualLeaveQuery);
     return (
       <div className="alq-summary">
         {/* <div>
