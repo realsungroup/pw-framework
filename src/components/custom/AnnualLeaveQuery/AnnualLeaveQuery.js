@@ -84,7 +84,7 @@ const quarters = [
 ];
 const styles = {
   selectStyle: {
-    width: 120,
+    width: 100,
     margin: '0 4px'
   }
 };
