@@ -597,6 +597,7 @@ export default class LzAFFOS extends React.Component {
         resid: '605703697147',
         maindata: {
           ...this.state.value,
+          C3_605703896083: '施工',
           C3_605703913037: '施工人员',
           _state: 'added',
           _id: 1
@@ -789,7 +790,7 @@ export default class LzAFFOS extends React.Component {
             </div>
           </TabPane> */}
 
-          <TabPane tab="申请中" key="审批中">
+          <TabPane tab="填写申请" key="审批中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
                 recordFormUseAbsolute={true}
@@ -822,14 +823,16 @@ export default class LzAFFOS extends React.Component {
                   return (
                     <>
                       <Button
+                        type="primary"
                         onClick={() => {
                           this.getapplyInfo();
                           this.setState({ showModalJungleBuild: true });
                         }}
                       >
-                        请填写施工人员基本信息
+                        填写施工人员基本信息
                       </Button>
                       <Button
+                        type="primary"
                         onClick={() => {
                           this.getapplyInfo();
                           this.setState({
@@ -839,7 +842,7 @@ export default class LzAFFOS extends React.Component {
                           });
                         }}
                       >
-                        请填写提送货人员基本信息
+                        填写提送货人员基本信息
                       </Button>
                     </>
                   );
@@ -1112,7 +1115,7 @@ export default class LzAFFOS extends React.Component {
                     this.changeEngineer();
                   }}
                 >
-                  查找人员
+                  更改审批人
                 </Button>
               </div>
               <div className="approval_modal">
@@ -1125,7 +1128,7 @@ export default class LzAFFOS extends React.Component {
                     this.changeManager();
                   }}
                 >
-                  查找人员
+                  更改审批人
                 </Button>
               </div>
               <div className="approval_modal">
@@ -1138,7 +1141,7 @@ export default class LzAFFOS extends React.Component {
                     this.changeManagerSpecial();
                   }}
                 >
-                  查找人员
+                  更改审批人
                 </Button>
               </div>
               {this.state.isControl && (
@@ -1152,7 +1155,7 @@ export default class LzAFFOS extends React.Component {
                       this.changeConductor();
                     }}
                   >
-                    查找人员
+                    更改审批人
                   </Button>
                 </div>
               )}
