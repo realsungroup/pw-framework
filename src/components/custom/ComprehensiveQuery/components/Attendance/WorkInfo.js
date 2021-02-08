@@ -197,17 +197,17 @@ class WorkInfo extends React.Component {
                             日报明细
                           </Button>
                         );
-                      },
-                      (record, btnSize) => {
-                        return (
-                          <Button
-                            size="small"
-                            onClick={this.openModal('year', record)}
-                          >
-                            年假明细
-                          </Button>
-                        );
                       }
+                      // (record, btnSize) => {
+                      //   return (
+                      //     <Button
+                      //       size="small"
+                      //       onClick={this.openModal('year', record)}
+                      //     >
+                      //       年假明细
+                      //     </Button>
+                      //   );
+                      // }
                     ]}
                   />
                 )}
