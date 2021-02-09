@@ -540,7 +540,8 @@ class ProbationForms extends React.Component {
         ]
       });
       if (chara == '主管') {
-        delete this.state.employeeInformation.summary;
+        delete this.state.employeeInformation.C3_656696089140;
+        delete this.state.employeeInformation.probationNoticeEmail;
         this.setState({
           employeeInformation: {
             ...this.state.employeeInformation,
