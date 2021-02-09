@@ -1165,7 +1165,7 @@ class NianJiaShiYong extends React.PureComponent {
   state = {
     selectedYear: curYear,
     selectedQuarter: curQuarter,
-    cms: `year = ${curYear} and quarter = ${curQuarter}`
+    cms: `year = '${curYear}' and quarter = '${curQuarter}'`
   };
   actionBarExtra = ({
     dataSource = [],
@@ -1186,7 +1186,7 @@ class NianJiaShiYong extends React.PureComponent {
             onChange={v => {
               this.setState({
                 selectedYear: v,
-                cms: `year = ${v} and quarter = ${selectedQuarter}`
+                cms: `year = '${v}' and quarter = '${selectedQuarter}'`
               });
             }}
           >
@@ -1204,7 +1204,7 @@ class NianJiaShiYong extends React.PureComponent {
             onChange={v => {
               this.setState({
                 selectedQuarter: v,
-                cms: `year = ${selectedYear} and quarter = ${v}`
+                cms: `year = '${selectedYear}' and quarter = '${v}'`
               });
             }}
             size="small"
