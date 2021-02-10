@@ -61,6 +61,8 @@ class IDLTransferHr extends Component {
     super(props);
     this.url80 =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.downloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
     this.state = {
       right: {
         location: '',
@@ -115,6 +117,26 @@ class IDLTransferHr extends Component {
     }
     this.setState({ streamChange: arrAfter });
   };
+  //修改JOBCODE
+  handlemodiJobCode = async (value, recid) => {
+    try {
+      let res = await http().modifyRecords({
+        resid: 632255761674,
+        data: [
+          {
+            REC_ID: recid,
+            iiviJobCode: value
+          }
+        ]
+      });
+      this.tableDataRef.handleRefresh();
+      message.success('修改成功');
+      this.setState({ toModi: '', modiJobCode: false });
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   //生成审批流
   StreamGenerate = async (resid, recid) => {
     try {
@@ -973,9 +995,7 @@ class IDLTransferHr extends Component {
             width={'90vw'}
             visible={this.state.visibleHC}
             footer={
-              this.state.C3_637425449725 &&
-              this.state.C3_637425470106 &&
-              this.state.iiviJobCode ? (
+              this.state.C3_637425449725 && this.state.C3_637425470106 ? (
                 <>
                   <Button
                     type="danger"
@@ -1541,6 +1561,53 @@ class IDLTransferHr extends Component {
               </div>
             </div>
           </Modal>
+          <Modal
+            title={'修改Job Code'}
+            width={'90vw'}
+            visible={this.state.modiJobCode}
+            footer={null}
+            onCancel={() => this.setState({ modiJobCode: false })}
+          >
+            <div
+              style={{
+                width: '100%',
+                height: 'calc(80vh - 104px)',
+                position: 'relative'
+              }}
+            >
+              <TableData
+                resid={662164687438}
+                baseURL={this.url80}
+                downloadURL={this.downloadURL}
+                hasRowView={false}
+                subtractH={220}
+                hasAdd={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                style={{ height: '100%' }}
+                hasRowView={false}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <Button
+                        onClick={() => {
+                          this.handlemodiJobCode(
+                            record.C3_662164707799,
+                            this.state.toModi
+                          );
+                        }}
+                      >
+                        选择
+                      </Button>
+                    );
+                  }
+                ]}
+              />
+            </div>
+          </Modal>
           <Spin spinning={this.state.loading}>
             <div style={{ height: 'calc(100vh - 48px)' }}>
               {this.state.cms != `` ? (
@@ -1584,14 +1651,30 @@ class IDLTransferHr extends Component {
                     customRowBtns={[
                       record => {
                         return (
-                          <Button
-                            style={{ width: '104px' }}
-                            onClick={() => {
-                              this.showOverlay(record);
-                            }}
-                          >
-                            确认信息
-                          </Button>
+                          <>
+                            <Button
+                              style={{ width: '104px' }}
+                              onClick={() => {
+                                this.showOverlay(record);
+                              }}
+                            >
+                              确认信息
+                            </Button>
+                            {this.state.cms ==
+                            `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
+                              <Button
+                                style={{ width: '104px' }}
+                                onClick={() => {
+                                  this.setState({
+                                    modiJobCode: true,
+                                    toModi: record.REC_ID
+                                  });
+                                }}
+                              >
+                                修改Job Code
+                              </Button>
+                            ) : null}
+                          </>
                         );
                       }
                     ]}
