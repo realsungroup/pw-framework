@@ -465,7 +465,7 @@ class ProbationForms extends React.Component {
       });
       console.log(onTheJobTraining);
       mentorshipRecord.forEach(item => {
-        delete item.instructEmailIsSend;
+        delete item.isConfirm;
         subdata.push({
           resid: resid6,
           maindata: {
