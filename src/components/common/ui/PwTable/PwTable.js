@@ -39,8 +39,8 @@ class PwTable extends React.Component {
     this.props.onImport && this.props.onImport();
   };
 
-  handleDownload = () => {
-    this.props.onDownload && this.props.onDownload();
+  handleDownload = (downloadColumns) => {
+    this.props.onDownload && this.props.onDownload(downloadColumns);
   };
 
   handleRefresh = () => {
@@ -185,6 +185,7 @@ class PwTable extends React.Component {
                   size={size}
                   isShowGrid={isShowGrid}
                   zoomStatus={this.props.zoomStatus}
+                  columns={restProps.columns}
                 />
                 {headerExtra && (
                   <React.Fragment>

@@ -1037,8 +1037,11 @@ class TableData extends React.Component {
       );
   };
 
-  // 下载
-  handleDownload = async () => {
+  /**
+   * 下载 excel 表格数据
+   * @param {array} downloadColumns 指定下载的列
+   */
+  handleDownload = async (downloadColumns = []) => {
     this.setState({ loading: true });
     const {
       title,
@@ -1097,7 +1100,8 @@ class TableData extends React.Component {
       cparm4,
       cparm5,
       cparm6,
-      this._searchValue
+      this._searchValue,
+      downloadColumns
     );
     this.setState({ loading: false });
   };

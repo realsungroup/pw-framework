@@ -60,4 +60,34 @@
     background: #fff;
     z-index: 100;
   }
+
+  &__columns-wrapper {
+    width: 240px;
+    max-height: 328px;
+    overflow: auto;
+    padding: 16px;
+  }
+
+  &__columns-title {
+    margin: 8px 0;
+  }
+
+  &__columns-item {
+    display: flex;
+    margin: 4px 0;
+    height: 24px;
+    align-items: center;
+    &:hover {
+      cursor: pointer;
+      background-color: #e9f6fe;
+    }
+  }
+
+  &__columns-item-title {
+    margin-left: 4px;
+  }
+
+  &__columns-footer {
+    margin-top: 16px;
+  }
 }
