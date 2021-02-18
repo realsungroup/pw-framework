@@ -23,7 +23,7 @@ class ContractApproval extends React.Component {
     refuseReson: '',
     refuseConfirmLoading: false,
     selectedRecord: {},
-    loading:false
+    loading: false
   };
   waitingCustomRowBtns = [
     (record, btnSize) => {
@@ -85,55 +85,48 @@ class ContractApproval extends React.Component {
       this.setState({ refuseConfirmLoading: false });
     }
   };
-  multiApproval = async (dataSource, selectedRowKeys,val) =>{
+  multiApproval = async (dataSource, selectedRowKeys, val) => {
     // console.log(dataSource, selectedRowKeys,val)
     if (selectedRowKeys.length) {
-    this.setState({loading:true});
+      this.setState({ loading: true });
 
-      let selectedRecords = selectedRowKeys.map(
-        key => {
-          return {
-            ...dataSource.find(item => {
-              return item.REC_ID === key;
-            })
-          };
-        }
-      );
-      let n=0;
-      while(n<selectedRecords.length){
-        if(val){
-        selectedRecords[n].C3_640779681600='Y'
-        }else{
-        selectedRecords[n].C3_640785923825='Y'
+      let selectedRecords = selectedRowKeys.map(key => {
+        return {
+          ...dataSource.find(item => {
+            return item.REC_ID === key;
+          })
+        };
+      });
+      let n = 0;
+      while (n < selectedRecords.length) {
+        if (val) {
+          selectedRecords[n].C3_640779681600 = 'Y';
+        } else {
+          selectedRecords[n].C3_640785923825 = 'Y';
         }
         n++;
       }
-      try{
+      try {
         let res = http().modifyRecords({
-          resid:waitingResid,
-          data:selectedRecords
+          resid: waitingResid,
+          data: selectedRecords
         });
-        var _this=this;
+        var _this = this;
         message.success('操作成功');
-        var t =setTimeout(function(){
+        var t = setTimeout(function() {
           _this.tableDataRef.handleRefresh();
-          _this.setState({loading:false});
-        },2000)
-       
-        
-      }catch(e){
+          _this.setState({ loading: false });
+        }, 2000);
+      } catch (e) {
         console.log(e.message);
-        this.setState({loading:false});
+        this.setState({ loading: false });
       }
       console.log(selectedRecords);
-    this.setState({loading:false});
-
+      this.setState({ loading: false });
     } else {
       message.info('请勾选记录！');
-
     }
-  
-  }
+  };
 
   render() {
     const {
@@ -164,16 +157,29 @@ class ContractApproval extends React.Component {
                 hasModify={false}
                 hasBeBtns={false}
                 hasRowSelection={true}
-              recordFormUseAbsolute={true}
-
+                recordFormUseAbsolute={true}
                 customRowBtns={this.waitingCustomRowBtns}
                 actionBarExtra={({ dataSource, selectedRowKeys }) => {
                   return (
                     <>
-                      
-                          <Button type='primary' loading={this.state.loading} onClick={()=>this.multiApproval(dataSource,selectedRowKeys,true)}>批量同意</Button>
-                          <Button type='danger' loading={this.state.loading} onClick={()=>this.multiApproval(dataSource,selectedRowKeys,false)}>批量拒绝</Button>
-                    
+                      <Button
+                        type="primary"
+                        loading={this.state.loading}
+                        onClick={() =>
+                          this.multiApproval(dataSource, selectedRowKeys, true)
+                        }
+                      >
+                        批量同意
+                      </Button>
+                      <Button
+                        type="danger"
+                        loading={this.state.loading}
+                        onClick={() =>
+                          this.multiApproval(dataSource, selectedRowKeys, false)
+                        }
+                      >
+                        批量拒绝
+                      </Button>
                     </>
                   );
                 }}
@@ -192,14 +198,12 @@ class ContractApproval extends React.Component {
                 hasRowView={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
-              recordFormUseAbsolute={true}
-
+                recordFormUseAbsolute={true}
                 hasRowModify={false}
                 hasDelete={false}
                 hasModify={false}
                 hasBeBtns={false}
                 hasRowSelection={false}
-                isUseFormDefine={false}
               />
             </div>
           </TabPane>
@@ -213,8 +217,7 @@ class ContractApproval extends React.Component {
                 hasAdvSearch={true}
                 hasAdd={false}
                 hasRowView={true}
-              recordFormUseAbsolute={true}
-
+                recordFormUseAbsolute={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
                 hasRowModify={false}
