@@ -56,7 +56,7 @@ export default class IconBtns extends React.PureComponent {
         .filter(Boolean);
 
       return {
-        columns: newColumns,
+        columns: [...newColumns],
         showColumns: [...newColumns],
         columnsCheckedMap,
         columnsTitleMap
@@ -216,25 +216,29 @@ export default class IconBtns extends React.PureComponent {
                         ></Checkbox>
                         <div className="pw-table__columns-item-title">全选</div>
                       </label>
-                      {showColumns.map(columnItem => (
-                        <label
-                          className="pw-table__columns-item"
-                          key={columnItem.fieldName}
-                        >
-                          <Checkbox
-                            checked={columnsCheckedMap[columnItem.fieldName]}
-                            onChange={e =>
-                              this.handleCheckboxChange(
-                                e.target.checked,
-                                columnItem.fieldName
-                              )
-                            }
-                          ></Checkbox>
-                          <div className="pw-table__columns-item-title">
-                            {columnItem.title}
-                          </div>
-                        </label>
-                      ))}
+
+                      <div className="pw-table__columns-list">
+                        {showColumns.map(columnItem => (
+                          <label
+                            className="pw-table__columns-item"
+                            key={columnItem.fieldName}
+                            title={columnItem.title}
+                          >
+                            <Checkbox
+                              checked={columnsCheckedMap[columnItem.fieldName]}
+                              onChange={e =>
+                                this.handleCheckboxChange(
+                                  e.target.checked,
+                                  columnItem.fieldName
+                                )
+                              }
+                            ></Checkbox>
+                            <div className="pw-table__columns-item-title">
+                              {columnItem.title}
+                            </div>
+                          </label>
+                        ))}
+                      </div>
                     </div>
 
                     <div className="pw-table__columns-footer">

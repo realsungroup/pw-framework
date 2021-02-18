@@ -63,7 +63,7 @@
 
   &__columns-wrapper {
     width: 240px;
-    max-height: 328px;
+    max-height: 378px;
     overflow: auto;
     padding: 16px;
   }
@@ -85,9 +85,18 @@
 
   &__columns-item-title {
     margin-left: 4px;
+    width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__columns-footer {
     margin-top: 16px;
+  }
+
+  &__columns-list {
+    max-height: 200px;
+    overflow: auto;
   }
 }
