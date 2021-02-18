@@ -69,21 +69,24 @@ class ViewRate extends React.Component {
   };
   renderSelect = () => {
     return (
-      <Select
-        style={{ width: 120, margin: '8px 8px 8px 0' }}
-        placeholder="选择财年"
-        value={this.state.selectYear}
-        onSelect={selectValue => {
-          this.setState({ selectYear: selectValue });
-        }}
-        labelInValue
-      >
-        {this.state.years.map(target => (
-          <Option value={target.C3_420297595131}>
-            {target.C3_420150922019}
-          </Option>
-        ))}
-      </Select>
+      <div>
+        <span>财年：</span>
+        <Select
+          style={{ width: 120, margin: '8px 8px 8px 0' }}
+          placeholder="选择财年"
+          value={this.state.selectYear}
+          onSelect={selectValue => {
+            this.setState({ selectYear: selectValue });
+          }}
+          labelInValue
+        >
+          {this.state.years.map(target => (
+            <Option value={target.C3_420297595131}>
+              {target.C3_420150922019}
+            </Option>
+          ))}
+        </Select>
+      </div>
     );
   };
   render() {
@@ -109,7 +112,7 @@ class ViewRate extends React.Component {
               hasRowModify={false}
               hasRowSelection={true}
               actionBarWidth={100}
-              noWidthFields='C3_420297595131'
+              noWidthFields="C3_420297595131"
               cparm1={id}
               cparm2={selectYear.label}
               dblinkname="ehr"
