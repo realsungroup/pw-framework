@@ -162,7 +162,7 @@ export default class IconBtns extends React.PureComponent {
       isShowGrid
     } = this.props;
 
-    const { showColumns, columnValue, columnsCheckedMap } = this.state;
+    const { columns, showColumns, columnValue, columnsCheckedMap } = this.state;
 
     const { isCheckedAll, isSomeChecked } = this.getChecked(columnsCheckedMap);
 
@@ -208,14 +208,18 @@ export default class IconBtns extends React.PureComponent {
                     <div className="pw-table__columns-title">请勾选导出项</div>
 
                     <div className="pw-table__columns">
-                      <label className="pw-table__columns-item" key="全选">
-                        <Checkbox
-                          checked={isCheckedAll}
-                          indeterminate={isSomeChecked && !isCheckedAll}
-                          onChange={this.handleCheckAllChange}
-                        ></Checkbox>
-                        <div className="pw-table__columns-item-title">全选</div>
-                      </label>
+                      {showColumns.length === columns.length && (
+                        <label className="pw-table__columns-item" key="全选">
+                          <Checkbox
+                            checked={isCheckedAll}
+                            indeterminate={isSomeChecked && !isCheckedAll}
+                            onChange={this.handleCheckAllChange}
+                          ></Checkbox>
+                          <div className="pw-table__columns-item-title">
+                            全选
+                          </div>
+                        </label>
+                      )}
 
                       <div className="pw-table__columns-list">
                         {showColumns.map(columnItem => (
@@ -238,6 +242,12 @@ export default class IconBtns extends React.PureComponent {
                             </div>
                           </label>
                         ))}
+
+                        {!showColumns.length && (
+                          <div className="pw-table__columns-no-data">
+                            无数据
+                          </div>
+                        )}
                       </div>
                     </div>
 
