@@ -1,5 +1,15 @@
 import React from 'react';
-import { Table, Button, Input, Pagination } from 'antd';
+import {
+  Table,
+  Button,
+  Input,
+  Pagination,
+  Dropdown,
+  Checkbox,
+  Menu,
+  Tooltip,
+  message
+} from 'antd';
 import pureRender from 'pure-render-deepcompare-decorator';
 import ButtonWithConfirm from '../ButtonWithConfirm';
 import { propTypes, defaultProps } from './propTypes';
@@ -16,6 +26,9 @@ import 'react-resizable/css/styles.css';
 import { getIntlVal } from 'Util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import { BIGrid } from 'lz-components-and-utils/lib/index';
+import fixedPng from './assets/冻结@2x.png';
+import fixedListPng from './assets/冻结列表@2x.png';
+import { debounce } from 'lodash';
 
 const Search = Input.Search;
 
@@ -31,15 +44,44 @@ class PwTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      zoomStatus: 0 // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
+      zoomStatus: 0, // 缩放状态：0 表示处于缩小状态 | 1 表示处于放大状态
+      columnValue: '',
+      columnsCheckedMap: {},
+      showColumns: [], // 选择固定列时，显示的列名列表
+      columns: [] // 所有的列名（不包含操作栏的列名）
     };
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if ('columns' in props && !state.columns.length) {
+      const { columns } = props;
+      const columnsCheckedMap = {};
+      const columnsTitleMap = {};
+      columns.forEach(column => {
+        if (column.dataIndex !== '操作') {
+          columnsCheckedMap[column.fieldName] = !!column.fixed;
+          columnsTitleMap[column.fieldName] = column.title;
+        }
+      });
+
+      const newColumns = columns.filter(
+        columnsItem => columnsItem.dataIndex !== '操作'
+      );
+
+      return {
+        columns: [...newColumns],
+        showColumns: [...newColumns],
+        columnsCheckedMap,
+        columnsTitleMap
+      };
+    }
   }
 
   handleImport = () => {
     this.props.onImport && this.props.onImport();
   };
 
-  handleDownload = (downloadColumns) => {
+  handleDownload = downloadColumns => {
     this.props.onDownload && this.props.onDownload(downloadColumns);
   };
 
@@ -107,6 +149,46 @@ class PwTable extends React.Component {
     this.props.onSearch && this.props.onSearch(value, e);
   };
 
+  handleSearchColumn = debounce(value => {
+    const { columns } = this.state;
+    const showColumns = columns
+      .map(column => {
+        if (column.title.includes(value)) {
+          return column;
+        }
+        return false;
+      })
+      .filter(Boolean);
+
+    this.setState({ showColumns });
+  }, 300);
+
+  handleColumnValueChange = e => {
+    const value = e.target.value;
+    this.setState({ columnValue: value });
+    this.handleSearchColumn(value);
+  };
+
+  handleCheckboxChange = (checked, fieldName) => {
+    this.setState({
+      columnsCheckedMap: {
+        ...this.state.columnsCheckedMap,
+        [fieldName]: checked
+      }
+    });
+  };
+
+  handleFixedColumn = () => {
+    const { onFixedColumns } = this.props;
+    const { columnsCheckedMap } = this.state;
+
+    const fixedColumns = Object.keys(columnsCheckedMap).filter(
+      key => columnsCheckedMap[key]
+    );
+
+    onFixedColumns && onFixedColumns(fixedColumns);
+  };
+
   render() {
     const {
       size,
@@ -141,13 +223,8 @@ class PwTable extends React.Component {
       gridProps,
       ...restProps
     } = this.props;
-    const hasActionBar =
-      hasAdd ||
-      hasModify ||
-      hasDelete ||
-      renderOtherBtns ||
-      hasSearch ||
-      actionBarExtra;
+
+    const { showColumns, columnValue, columnsCheckedMap } = this.state;
 
     const hasIconBtns =
       hasDownload || hasRefresh || hasAdvSearch || hasZoomInOut || headerExtra;
@@ -205,11 +282,84 @@ class PwTable extends React.Component {
 
         {!isShowGrid ? (
           <>
-            {hasActionBar && (
+            {
               <div
                 className={`pw-table__action-bar pw-table__action-bar--${size}`}
               >
                 <div className="pw-table__action-btns">
+                  <Tooltip title="固定列">
+                    <img
+                      src={fixedPng}
+                      className="pw-table__fixed-column"
+                      onClick={this.handleFixedColumn}
+                    ></img>
+                  </Tooltip>
+
+                  <Dropdown
+                    overlay={
+                      <Menu>
+                        <div className="pw-table__fixed-columns-wrapper">
+                          <Input
+                            placeholder="输入关键字搜索表格列名"
+                            value={columnValue}
+                            onChange={this.handleColumnValueChange}
+                          ></Input>
+                          <div className="pw-table__columns-title">
+                            请勾选锁定项
+                          </div>
+
+                          <div className="pw-table__columns">
+                            <div className="pw-table__columns-list">
+                              {showColumns.map(columnItem => (
+                                <label
+                                  className="pw-table__fixed-columns-item"
+                                  key={columnItem.fieldName}
+                                  title={columnItem.title}
+                                >
+                                  <Checkbox
+                                    checked={
+                                      columnsCheckedMap[columnItem.fieldName]
+                                    }
+                                    onChange={e =>
+                                      this.handleCheckboxChange(
+                                        e.target.checked,
+                                        columnItem.fieldName
+                                      )
+                                    }
+                                  ></Checkbox>
+                                  <div className="pw-table__fixed-columns-item-title">
+                                    {columnItem.title}
+                                  </div>
+                                </label>
+                              ))}
+
+                              {!showColumns.length && (
+                                <div className="pw-table__fixed-columns-no-data">
+                                  无数据
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* <div className="pw-table__fixed-columns-footer">
+                            <Button
+                              block
+                              type="primary"
+                              onClick={this.handleSaveFixedColumn}
+                            >
+                              保存
+                            </Button>
+                          </div> */}
+                        </div>
+                      </Menu>
+                    }
+                  >
+                    <img
+                      src={fixedListPng}
+                      className="pw-table__fixed-column-list"
+                    ></img>
+                  </Dropdown>
+
                   {renderOtherBtns && renderOtherBtns()}
                   {hasAdd && (
                     <Button size={btnSizeMap[size]} onClick={this.handleAdd}>
@@ -271,7 +421,7 @@ class PwTable extends React.Component {
                   )}
                 </div>
               </div>
-            )}
+            }
 
             <Table
               dataSource={dataSource}

@@ -687,10 +687,6 @@ class TableData extends React.Component {
       }
     }
 
-    // if (!isUseFormDefine || hasAdvSearch && advSearch && (advSearch.searchComponent === 'both' || advSearch.searchComponent === 'PwForm')) {
-    //   this.dealTableDataFormData(res);
-    // }
-
     if (storeWay === 'fe') {
       secondParams.hasBeSort = false;
       dataSource = [];
@@ -726,17 +722,23 @@ class TableData extends React.Component {
       _noWidthFieldsIndex = [noWidthFieldsIndex];
     }
 
-    const { columns, components } = getColumns(
-      res.cmscolumninfo,
-      secondParams,
-      cmscolumns,
-      hasRowEdit,
-      isUseBESize,
-      isSetColumnWidth,
-      _noWidthFields,
-      _noWidthFieldsIndex,
-    );
-
+    let columns = this.state.columns, components = this.state.components;
+    // 列数据已存在时，不再去计算得到 columns
+    if (!this.state.columns.length) {
+      const result = getColumns(
+        res.cmscolumninfo,
+        secondParams,
+        cmscolumns,
+        hasRowEdit,
+        isUseBESize,
+        isSetColumnWidth,
+        _noWidthFields,
+        _noWidthFieldsIndex,
+      );
+      columns = result.columns;
+      components = result.components;
+    }
+    
     this._dealedColumns = columns;
 
     this.setState({ originalColumn: res.cmscolumninfo });
@@ -1773,6 +1775,42 @@ class TableData extends React.Component {
     this.setState({ zoomStatus: 0 }, this.handleResize);
   };
 
+  // 固定列
+  handleFixedColumns = (fixedColumns) => {
+    const { columns } = this.state;
+    const newColumns = [];
+
+    columns.forEach(column => {
+      if (column.dataIndex !== '操作') {
+        if (fixedColumns.length) {
+          let flag = false;
+          fixedColumns.forEach(fixedColumn => {
+            if (column.fieldName === fixedColumn) {
+              column.fixed = 'left';
+              newColumns.push(column);
+              flag = true;
+            }
+          });
+          if (!flag) {
+            delete column.fixed;
+          }
+        } else {
+          delete column.fixed;
+        }
+      }
+    });
+
+    // 将非固定的列推入 newColumns 中
+    columns.forEach(column => {
+      if (!column.fixed) {
+        newColumns.push(column);
+      }
+    })
+
+    this.setState({ columns: newColumns });
+    message.success('固定列成功！');
+  }
+
   _cmsWhere = '';
   getCmsWhere = (cmsWhere, isAdvSearch, isRefreshTable = true) => {
     console.log({isRefreshTable})
@@ -2445,6 +2483,7 @@ class TableData extends React.Component {
         headerExtra={headerExtra}
         isShowGrid={isShowGrid}
         gridProps={gridProps}
+        onFixedColumns={this.handleFixedColumns}
       />
     );
   };
