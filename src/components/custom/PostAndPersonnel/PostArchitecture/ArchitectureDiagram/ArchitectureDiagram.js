@@ -14,7 +14,9 @@ import {
   Button,
   DatePicker,
   Tree,
-  Progress
+  Progress,
+  Tabs,
+  Input
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -43,6 +45,8 @@ import PWSpin from 'Common/ui/Spin';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
+const { TabPane } = Tabs;
+const { Search } = Input;
 
 function childCount(id, nodes) {
   let count = 0;
@@ -174,7 +178,8 @@ class ArchitectureDiagram extends React.Component {
       parentKeys: [],
       filtedNodes: [],
       importRecords: [],
-      importProgressVisible: false
+      importProgressVisible: false,
+      searchRes: []
     };
   }
 
@@ -281,7 +286,7 @@ class ArchitectureDiagram extends React.Component {
         return false;
       }
     });
-    this.chart.on('exportstart', function(sender, args) {
+    this.chart.on('exportstart', function (sender, args) {
       args.content += `
       <style type="text/css">
         .created > rect {
@@ -342,10 +347,10 @@ class ArchitectureDiagram extends React.Component {
     const newParentNode = this.chart.get(newNode.pid);
     const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${
       newParentNode[displayFileds.firstField]
-    } 下面吗？`;
+      } 下面吗？`;
     const enTip = `Are you sure you want to drag ${
       newNode[displayFileds.firstField]
-    } under ${newParentNode[displayFileds.firstField]}`;
+      } under ${newParentNode[displayFileds.firstField]}`;
     Modal.confirm({
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
       content: (
@@ -1375,7 +1380,7 @@ class ArchitectureDiagram extends React.Component {
                 item[secondaryField] || item[secondaryField] >= 0
                   ? item[secondaryField]
                   : 'N/A'
-              })`}
+                })`}
             </Breadcrumb.Item>
           );
         })}
@@ -1482,11 +1487,31 @@ class ArchitectureDiagram extends React.Component {
     if (selectedKeys.length) {
       const id = parseInt(selectedKeys[0]);
       this.setRootNode(id);
+      console.log(selectedKeys, id)
       const parentKeys = [];
       this.getParentKeys(this.chart.get(id), parentKeys);
       this.setState({ rootKey: selectedKeys, parentKeys });
     }
   };
+  searchPeople = async (v) => {
+    const { resid, baseURL, dblinkname, historyResid } = this.props;
+    this.setState({ searchP: true })
+    let res;
+    try {
+      res = await http({ baseURL: baseURL }).getTable({
+        resid: '638459489229',
+        cmswhere: `C3_227192472953 = '${v}' or C3_227192484125 = '${v}'`
+      })
+      this.setState({ searchRes: res.data })
+      console.log(res)
+      this.setState({ searchP: false })
+
+    } catch (e) {
+      console.log(e);
+      this.setState({ searchP: false })
+
+    }
+  }
   onExpand = expandedKeys => {
     this.setState({
       parentKeys: expandedKeys
@@ -1592,46 +1617,85 @@ class ArchitectureDiagram extends React.Component {
                   flexDirection: 'column'
                 }}
               >
-                <div style={{ padding: 8 }}>
-                  <Select
-                    showSearch
-                    disabled={fetchingData}
-                    style={{ width: '100%' }}
-                    filterOption={false}
-                    notFoundContent={null}
-                    onSearch={this.filterNodes}
-                    showArrow={false}
-                    allowClear
-                    defaultActiveFirstOption={false}
-                    onSelect={v => {
-                      this.setRootNode(v);
-                    }}
-                    placeholder="岗位名搜索"
-                  >
-                    {filtedNodes.map(job => {
-                      return (
-                        <Option
-                          value={job.id}
-                        >{`${job.orgName}(${job[idField]})`}</Option>
-                      );
-                    })}
-                  </Select>
-                </div>
-                <div style={{ flex: 1, overflow: 'auto' }}>
-                  {fetchingData && <PWSpin />}
-                  <Tree
-                    onSelect={this.onTreeNodeSelect}
-                    checkable={false}
-                    defaultExpandAll
-                    size="small"
-                    selectedKeys={rootKey}
-                    expandedKeys={parentKeys}
-                    autoExpandParent={true}
-                    onExpand={this.onExpand}
-                  >
-                    {this.renderTree(treeData)}
-                  </Tree>
-                </div>
+                <Tabs defaultActiveKey='1'>
+                  <TabPane key='1' tab='岗位'>
+                    <div style={{ padding: 8 }}>
+                      <Select
+                        showSearch
+                        disabled={fetchingData}
+                        style={{ width: '100%' }}
+                        filterOption={false}
+                        notFoundContent={null}
+                        onSearch={this.filterNodes}
+                        showArrow={false}
+                        allowClear
+                        defaultActiveFirstOption={false}
+                        onSelect={v => {
+                          this.setRootNode(v);
+                        }}
+                        placeholder="岗位名搜索"
+                      >
+                        {filtedNodes.map(job => {
+                          return (
+                            <Option
+                              value={job.id}
+                            >{`${job.orgName}(${job[idField]})`}</Option>
+                          );
+                        })}
+                      </Select>
+                    </div>
+                    <div style={{ flex: 1, overflow: 'auto' }}>
+                      {fetchingData && <PWSpin />}
+                      <Tree
+                        onSelect={this.onTreeNodeSelect}
+                        checkable={false}
+                        defaultExpandAll
+                        size="small"
+                        selectedKeys={rootKey}
+                        expandedKeys={parentKeys}
+                        autoExpandParent={true}
+                        onExpand={this.onExpand}
+                      >
+                        {this.renderTree(treeData)}
+                      </Tree>
+                    </div>
+                  </TabPane>
+                  <TabPane key='2' tab='人员'>
+                    <Search
+                      style={{ padding: 8 }}
+                      placeholder='工号或者姓名'
+                      allowClear
+                      onSearch={(v) => {
+                        this.searchPeople(v)
+
+                      }}
+                    />
+                    <div>
+                      {this.state.searchP ? <div className='peopleInfo' > 搜索中...</div> : null}
+                      {this.state.searchRes.map(item => {
+                        return (
+                          <>
+                            {item.C3_465142349966 ? (
+                              <div className='peopleInfo'
+                                onClick={
+                                  () => {
+                                    this.setRootNode(item.orgcode)
+                                  }
+                                }
+                              >
+                                {item.C3_227192484125 + '-' + item.C3_227192472953}
+                                <br />
+                                岗位代码:{item.C3_465142349966}
+                                <br />
+                                岗位名:{item.C3_466455145903}
+                              </div>)
+                              : null}
+                          </>
+                        )
+                      })}
+                    </div>
+                  </TabPane>
+                </Tabs>
               </div>
               <div className="architecture-diagram__content__main__container">
                 <div
@@ -1717,14 +1781,14 @@ class ArchitectureDiagram extends React.Component {
                           })}
                         </div>
                       ) : (
-                        <div className="architecture-diagram_unselect-tip">
-                          <Alert
-                            message="尚未选中任何卡片！"
-                            type="info"
-                            showIcon
-                          />
-                        </div>
-                      )}
+                          <div className="architecture-diagram_unselect-tip">
+                            <Alert
+                              message="尚未选中任何卡片！"
+                              type="info"
+                              showIcon
+                            />
+                          </div>
+                        )}
                     </div>
                   )}
                   {!historyMin && (
@@ -1765,23 +1829,23 @@ class ArchitectureDiagram extends React.Component {
                               })}
                             </Timeline>
                           ) : (
+                              <div className="architecture-diagram_unselect-tip">
+                                <Alert
+                                  message="无历史记录"
+                                  type="info"
+                                  showIcon
+                                />
+                              </div>
+                            )
+                        ) : (
                             <div className="architecture-diagram_unselect-tip">
                               <Alert
-                                message="无历史记录"
+                                message="尚未选中任何卡片！"
                                 type="info"
                                 showIcon
                               />
                             </div>
-                          )
-                        ) : (
-                          <div className="architecture-diagram_unselect-tip">
-                            <Alert
-                              message="尚未选中任何卡片！"
-                              type="info"
-                              showIcon
-                            />
-                          </div>
-                        )}
+                          )}
                       </div>
                     </div>
                   )}
@@ -1821,7 +1885,7 @@ class ArchitectureDiagram extends React.Component {
                       if (!error) {
                         await http({ baseURL: this.props.baseURL }).addRecords({
                           resid: this.props.resid,
-                          data: [{ ...value, isScrap: 'N' ,isCreated:'N'}]
+                          data: [{ ...value, isScrap: 'N', isCreated: 'N' }]
                         });
                         this.closeBroModal();
                         this.handleRefresh();
@@ -2062,18 +2126,20 @@ class ArchitectureDiagram extends React.Component {
             }}
           />
         </Drawer>
-        {importProgressVisible && (
-          <ImportProgress
-            records={importRecords}
-            resid={638459489229}
-            baseURL={baseURL}
-            onClose={() => {
-              this.setState({ importProgressVisible: false });
-              this.handleRefresh();
-            }}
-          />
-        )}
-      </div>
+        {
+          importProgressVisible && (
+            <ImportProgress
+              records={importRecords}
+              resid={638459489229}
+              baseURL={baseURL}
+              onClose={() => {
+                this.setState({ importProgressVisible: false });
+                this.handleRefresh();
+              }}
+            />
+          )
+        }
+      </div >
     );
   }
 }
