@@ -179,7 +179,8 @@ class ArchitectureDiagram extends React.Component {
       filtedNodes: [],
       importRecords: [],
       importProgressVisible: false,
-      searchRes: []
+      searchRes: [],
+      newSupNumber: '' //拖拽后的上级岗位代码
     };
   }
 
@@ -286,7 +287,7 @@ class ArchitectureDiagram extends React.Component {
         return false;
       }
     });
-    this.chart.on('exportstart', function (sender, args) {
+    this.chart.on('exportstart', function(sender, args) {
       args.content += `
       <style type="text/css">
         .created > rect {
@@ -345,12 +346,15 @@ class ArchitectureDiagram extends React.Component {
   handleDragNode = (sender, oldNode, newNode) => {
     const { displayFileds, intl } = this.props;
     const newParentNode = this.chart.get(newNode.pid);
+    this.setState({
+      newSupNumber: newParentNode.orgNumber
+    });
     const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${
       newParentNode[displayFileds.firstField]
-      } 下面吗？`;
+    } 下面吗？`;
     const enTip = `Are you sure you want to drag ${
       newNode[displayFileds.firstField]
-      } under ${newParentNode[displayFileds.firstField]}`;
+    } under ${newParentNode[displayFileds.firstField]}`;
     Modal.confirm({
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
       content: (
@@ -914,6 +918,7 @@ class ArchitectureDiagram extends React.Component {
   updateNode = async newNode => {
     this.setState({ loading: true });
     const { resid, idField, pidField, dblinkname, baseURL } = this.props;
+    const { newSupNumber } = this.state;
     let httpParams = {};
     // 使用传入的 baseURL
     if (baseURL) {
@@ -927,7 +932,8 @@ class ArchitectureDiagram extends React.Component {
           {
             REC_ID: newNode.REC_ID,
             updateDate: this.state.selectedDate,
-            [pidField]: newNode.pid
+            [pidField]: newNode.pid,
+            orgSupNumber: newSupNumber
           }
         ],
         dblinkname
@@ -1380,7 +1386,7 @@ class ArchitectureDiagram extends React.Component {
                 item[secondaryField] || item[secondaryField] >= 0
                   ? item[secondaryField]
                   : 'N/A'
-                })`}
+              })`}
             </Breadcrumb.Item>
           );
         })}
@@ -1487,31 +1493,29 @@ class ArchitectureDiagram extends React.Component {
     if (selectedKeys.length) {
       const id = parseInt(selectedKeys[0]);
       this.setRootNode(id);
-      console.log(selectedKeys, id)
+      console.log(selectedKeys, id);
       const parentKeys = [];
       this.getParentKeys(this.chart.get(id), parentKeys);
       this.setState({ rootKey: selectedKeys, parentKeys });
     }
   };
-  searchPeople = async (v) => {
+  searchPeople = async v => {
     const { resid, baseURL, dblinkname, historyResid } = this.props;
-    this.setState({ searchP: true })
+    this.setState({ searchP: true });
     let res;
     try {
       res = await http({ baseURL: baseURL }).getTable({
         resid: '638459489229',
         cmswhere: `C3_227192472953 = '${v}' or C3_227192484125 = '${v}'`
-      })
-      this.setState({ searchRes: res.data })
-      console.log(res)
-      this.setState({ searchP: false })
-
+      });
+      this.setState({ searchRes: res.data });
+      console.log(res);
+      this.setState({ searchP: false });
     } catch (e) {
       console.log(e);
-      this.setState({ searchP: false })
-
+      this.setState({ searchP: false });
     }
-  }
+  };
   onExpand = expandedKeys => {
     this.setState({
       parentKeys: expandedKeys
@@ -1617,8 +1621,8 @@ class ArchitectureDiagram extends React.Component {
                   flexDirection: 'column'
                 }}
               >
-                <Tabs defaultActiveKey='1'>
-                  <TabPane key='1' tab='岗位'>
+                <Tabs defaultActiveKey="1">
+                  <TabPane key="1" tab="岗位">
                     <div style={{ padding: 8 }}>
                       <Select
                         showSearch
@@ -1660,38 +1664,40 @@ class ArchitectureDiagram extends React.Component {
                       </Tree>
                     </div>
                   </TabPane>
-                  <TabPane key='2' tab='人员'>
+                  <TabPane key="2" tab="人员">
                     <Search
                       style={{ padding: 8 }}
-                      placeholder='工号或者姓名'
+                      placeholder="工号或者姓名"
                       allowClear
-                      onSearch={(v) => {
-                        this.searchPeople(v)
-
+                      onSearch={v => {
+                        this.searchPeople(v);
                       }}
                     />
                     <div>
-                      {this.state.searchP ? <div className='peopleInfo' > 搜索中...</div> : null}
+                      {this.state.searchP ? (
+                        <div className="peopleInfo"> 搜索中...</div>
+                      ) : null}
                       {this.state.searchRes.map(item => {
                         return (
                           <>
                             {item.C3_465142349966 ? (
-                              <div className='peopleInfo'
-                                onClick={
-                                  () => {
-                                    this.setRootNode(item.orgcode)
-                                  }
-                                }
+                              <div
+                                className="peopleInfo"
+                                onClick={() => {
+                                  this.setRootNode(item.orgcode);
+                                }}
                               >
-                                {item.C3_227192484125 + '-' + item.C3_227192472953}
+                                {item.C3_227192484125 +
+                                  '-' +
+                                  item.C3_227192472953}
                                 <br />
                                 岗位代码:{item.C3_465142349966}
                                 <br />
                                 岗位名:{item.C3_466455145903}
-                              </div>)
-                              : null}
+                              </div>
+                            ) : null}
                           </>
-                        )
+                        );
                       })}
                     </div>
                   </TabPane>
@@ -1781,14 +1787,14 @@ class ArchitectureDiagram extends React.Component {
                           })}
                         </div>
                       ) : (
-                          <div className="architecture-diagram_unselect-tip">
-                            <Alert
-                              message="尚未选中任何卡片！"
-                              type="info"
-                              showIcon
-                            />
-                          </div>
-                        )}
+                        <div className="architecture-diagram_unselect-tip">
+                          <Alert
+                            message="尚未选中任何卡片！"
+                            type="info"
+                            showIcon
+                          />
+                        </div>
+                      )}
                     </div>
                   )}
                   {!historyMin && (
@@ -1829,23 +1835,23 @@ class ArchitectureDiagram extends React.Component {
                               })}
                             </Timeline>
                           ) : (
-                              <div className="architecture-diagram_unselect-tip">
-                                <Alert
-                                  message="无历史记录"
-                                  type="info"
-                                  showIcon
-                                />
-                              </div>
-                            )
-                        ) : (
                             <div className="architecture-diagram_unselect-tip">
                               <Alert
-                                message="尚未选中任何卡片！"
+                                message="无历史记录"
                                 type="info"
                                 showIcon
                               />
                             </div>
-                          )}
+                          )
+                        ) : (
+                          <div className="architecture-diagram_unselect-tip">
+                            <Alert
+                              message="尚未选中任何卡片！"
+                              type="info"
+                              showIcon
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
@@ -2126,20 +2132,18 @@ class ArchitectureDiagram extends React.Component {
             }}
           />
         </Drawer>
-        {
-          importProgressVisible && (
-            <ImportProgress
-              records={importRecords}
-              resid={638459489229}
-              baseURL={baseURL}
-              onClose={() => {
-                this.setState({ importProgressVisible: false });
-                this.handleRefresh();
-              }}
-            />
-          )
-        }
-      </div >
+        {importProgressVisible && (
+          <ImportProgress
+            records={importRecords}
+            resid={638459489229}
+            baseURL={baseURL}
+            onClose={() => {
+              this.setState({ importProgressVisible: false });
+              this.handleRefresh();
+            }}
+          />
+        )}
+      </div>
     );
   }
 }

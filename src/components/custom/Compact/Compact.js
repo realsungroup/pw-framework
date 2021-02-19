@@ -18,7 +18,7 @@ import http from 'Util20/api';
 const contractHistoryResid = '436624421847'; //合同历史记录
 const mailHis = '641216663667'; //邮件提醒历史记录
 const { TabPane } = Tabs;
-const {RangePicker} = DatePicker
+const { RangePicker } = DatePicker;
 const CheckboxOptions = ['DL', 'IDL'];
 const filterTab1 = [
   {
@@ -34,8 +34,8 @@ const filterTab1 = [
     resid: '436624135588'
   },
   {
-    label:'合同历史信息',
-    resid:'436624421847'
+    label: '合同历史信息',
+    resid: '436624421847'
   }
 ];
 const filterTab2A = [
@@ -82,16 +82,19 @@ class Compact extends Component {
       signingDate: null,
       signingVisible: false,
       signingLoading: false,
-      showCheck:false,
-      checkMem:'',
-      checkType:'',
-      loading:false
+      showCheck: false,
+      checkMem: '',
+      checkType: '',
+      loading: false
     };
   }
-  changeDate=(v)=>{
-    let str = moment(v[0]).format('YYYY-MM-DD hh:mm:ss')+' ~ '+moment(v[1]).format('YYYY-MM-DD hh:mm:ss');
-      this.setState({ signingDate: v , meetTime:str});
-  }
+  changeDate = v => {
+    let str =
+      moment(v[0]).format('YYYY-MM-DD hh:mm:ss') +
+      ' ~ ' +
+      moment(v[1]).format('YYYY-MM-DD hh:mm:ss');
+    this.setState({ signingDate: v, meetTime: str });
+  };
   /**
    * 发送签约邮件
    */
@@ -119,23 +122,23 @@ class Compact extends Component {
   // sendMail=async(data)=>{
   //   this.setState({loading:true});
   //   console.log(data)
-    // 工号
-    // 姓名
-    // 合同类别
-    // 合同期开始
-    // 合同期结束
-    // var obj={
-    //   C3_641217561996:'Y',//发送邮件
-    //   C3_641218070825:data.C3_532015785778,//工号
-    //   C3_641218081651:data.C3_532015800738,//姓名
-    //   C3_641218091102:data.C3_640790367952,//合同类别
-    //   C3_641218115536:data.C3_640790368615,//合同期开始
-    //   C3_641218133499:data.C3_640790368858,//合同期截止
-    //   C3_641218180355:data.C3_640790990665,//审批人工号
-    //   C3_641218158590:'',//审批人邮箱
-    //   C3_641218180355:'',//审批人工号
-    //   C3_641218170823:'',//审批人编号
-    // }
+  // 工号
+  // 姓名
+  // 合同类别
+  // 合同期开始
+  // 合同期结束
+  // var obj={
+  //   C3_641217561996:'Y',//发送邮件
+  //   C3_641218070825:data.C3_532015785778,//工号
+  //   C3_641218081651:data.C3_532015800738,//姓名
+  //   C3_641218091102:data.C3_640790367952,//合同类别
+  //   C3_641218115536:data.C3_640790368615,//合同期开始
+  //   C3_641218133499:data.C3_640790368858,//合同期截止
+  //   C3_641218180355:data.C3_640790990665,//审批人工号
+  //   C3_641218158590:'',//审批人邮箱
+  //   C3_641218180355:'',//审批人工号
+  //   C3_641218170823:'',//审批人编号
+  // }
 
   //   try{
   //     let res = http().addRecords({
@@ -179,16 +182,17 @@ class Compact extends Component {
       }
     });
   };
-refre=()=>{
-  if(this.tableDataRef){
-    this.tableDataRef.handleRefresh();
-  }
-  if(this.tableDataRef2){
-    this.tableDataRef2.handleRefresh();
-  } if(this.tableDataRef3){
-    this.tableDataRef3.handleRefresh();
-  }
-}
+  refre = () => {
+    if (this.tableDataRef) {
+      this.tableDataRef.handleRefresh();
+    }
+    if (this.tableDataRef2) {
+      this.tableDataRef2.handleRefresh();
+    }
+    if (this.tableDataRef3) {
+      this.tableDataRef3.handleRefresh();
+    }
+  };
   render() {
     const {
       selectedPerson,
@@ -205,11 +209,13 @@ refre=()=>{
       <div className="Compact">
         <Tabs
           defaultActiveKey="1"
-      onTabClick={()=>{this.refre();}} 
+          onTabClick={() => {
+            this.refre();
+          }}
           style={{ width: '100%', height: '100%', backgroundColor: '#fff' }}
         >
           <TabPane
-          // forceRender={true}
+            // forceRender={true}
             tab="合同信息"
             key="1"
             style={{ width: '100%', height: 'calc(100vh - 64px)' }}
@@ -234,160 +240,163 @@ refre=()=>{
               })}
             </div>
             <div className="Tab1Outer">
-            {this.state.residTab1=='440237518278'?<TableData
-                resid={440237518278}
-                subtractH={180}
-                // tableComponent="ag-grid"
-                // sideBarAg={true}
-                hasAdvSearch={true}
-                hasAdd={false}
-                hasRowView={true}
-                recordFormUseAbsolute={true}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasRowModify={true}
-                hasDelete={false}
-                hasModify={false}
-                hasBeBtns={false}
-                hasRowSelection={false}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
+              {this.state.residTab1 == '440237518278' ? (
+                <TableData
+                  resid={440237518278}
+                  subtractH={180}
+                  // tableComponent="ag-grid"
+                  // sideBarAg={true}
+                  hasAdvSearch={true}
+                  hasAdd={false}
+                  hasRowView={true}
+                  recordFormUseAbsolute={true}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasRowModify={true}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasBeBtns={false}
+                  hasRowSelection={false}
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  customRowBtns={[
+                    (record, btnSize) => {
+                      return (
+                        <Button
+                          size={btnSize}
+                          onClick={() => {
+                            this.setState({
+                              selectedPerson: record,
+                              contractHistoryVisible: true
+                            });
+                          }}
+                        >
+                          查看历史信息
+                        </Button>
+                      );
+                    }
+                  ]}
+                />
+              ) : null}
+              {this.state.residTab1 == '437092525908' ? (
+                <TableData
+                  resid={437092525908}
+                  subtractH={180}
+                  // tableComponent="ag-grid"
+                  // sideBarAg={true}
+                  hasAdvSearch={true}
+                  hasAdd={false}
+                  hasRowView={true}
+                  recordFormUseAbsolute={true}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasRowModify={true}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasBeBtns={false}
+                  hasRowSelection={false}
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  customRowBtns={[
+                    (record, btnSize) => {
+                      return (
+                        <Button
+                          size={btnSize}
+                          onClick={() => {
+                            this.setState({
+                              selectedPerson: record,
+                              contractHistoryVisible: true
+                            });
+                          }}
+                        >
+                          查看历史信息
+                        </Button>
+                      );
+                    }
+                  ]}
+                />
+              ) : null}
 
-                customRowBtns={[
-                  (record, btnSize) => {
-                    return (
-                      <Button
-                        size={btnSize}
-                        onClick={() => {
-                          this.setState({
-                            selectedPerson: record,
-                            contractHistoryVisible: true
-                          });
-                        }}
-                      >
-                        查看历史信息
-                      </Button>
-                    );
-                  }
-                ]}
-              />:null}
-              {this.state.residTab1=='437092525908'?<TableData
-                resid={437092525908}
-                subtractH={180}
-                // tableComponent="ag-grid"
-                // sideBarAg={true}
-                hasAdvSearch={true}
-                hasAdd={false}
-                hasRowView={true}
-                recordFormUseAbsolute={true}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasRowModify={true}
-                hasDelete={false}
-                hasModify={false}
-                hasBeBtns={false}
-                hasRowSelection={false}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
-                
-                customRowBtns={[
-                  (record, btnSize) => {
-                    return (
-                      <Button
-                        size={btnSize}
-                        onClick={() => {
-                          this.setState({
-                            selectedPerson: record,
-                            contractHistoryVisible: true
-                          });
-                        }}
-                      >
-                        查看历史信息
-                      </Button>
-                    );
-                  }
-                ]}
-              />:null}
-              
-              {this.state.residTab1=='436624421847'?<TableData
-                resid={436624421847}
-                subtractH={180}
-                // tableComponent="ag-grid"
-                // sideBarAg={true}
-                hasAdvSearch={true}
-                hasAdd={false}
-                hasRowView={true}
-                recordFormUseAbsolute={true}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasRowModify={true}
-                hasDelete={false}
-                hasModify={false}
-                hasBeBtns={false}
-                hasRowSelection={false}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
+              {this.state.residTab1 == '436624421847' ? (
+                <TableData
+                  resid={436624421847}
+                  subtractH={180}
+                  // tableComponent="ag-grid"
+                  // sideBarAg={true}
+                  hasAdvSearch={true}
+                  hasAdd={false}
+                  hasRowView={true}
+                  recordFormUseAbsolute={true}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasRowModify={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasBeBtns={false}
+                  hasRowSelection={false}
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
 
-                // customRowBtns={[
-                //   (record, btnSize) => {
-                //     return (
-                //       <Button
-                //         size={btnSize}
-                //         onClick={() => {
-                          
-                //           this.setState({
-                //             selectedPerson: record,
-                //             contractHistoryVisible: true
-                //           });
-                //           console.log(record)
-                //         }}
-                //       >
-                //         查看历史信息
-                //       </Button>
-                //     );
-                //   }
-                // ]}
-              />:null}
+                  // customRowBtns={[
+                  //   (record, btnSize) => {
+                  //     return (
+                  //       <Button
+                  //         size={btnSize}
+                  //         onClick={() => {
 
-              {this.state.residTab1=='436624135588'?<TableData
-                resid={436624135588}
-                subtractH={180}
-                // tableComponent="ag-grid"
-                // sideBarAg={true}
-                hasAdvSearch={true}
-                hasAdd={false}
-                hasRowView={true}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasRowModify={true}
-                hasDelete={false}
-                recordFormUseAbsolute={true}
+                  //           this.setState({
+                  //             selectedPerson: record,
+                  //             contractHistoryVisible: true
+                  //           });
+                  //           console.log(record)
+                  //         }}
+                  //       >
+                  //         查看历史信息
+                  //       </Button>
+                  //     );
+                  //   }
+                  // ]}
+                />
+              ) : null}
 
-                hasModify={false}
-                hasBeBtns={false}
-                hasRowSelection={false}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
-
-                customRowBtns={[
-                  (record, btnSize) => {
-                    return (
-                      <Button
-                        size={btnSize}
-                        onClick={() => {
-                          this.setState({
-                            selectedPerson: record,
-                            contractHistoryVisible: true
-                          });
-                        }}
-                      >
-                        查看历史信息
-                      </Button>
-                    );
-                  }
-                ]}
-              />:null}
-
+              {this.state.residTab1 == '436624135588' ? (
+                <TableData
+                  resid={436624135588}
+                  subtractH={180}
+                  // tableComponent="ag-grid"
+                  // sideBarAg={true}
+                  hasAdvSearch={true}
+                  hasAdd={false}
+                  hasRowView={true}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasRowModify={true}
+                  hasDelete={false}
+                  recordFormUseAbsolute={true}
+                  hasModify={false}
+                  hasBeBtns={false}
+                  hasRowSelection={false}
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  customRowBtns={[
+                    (record, btnSize) => {
+                      return (
+                        <Button
+                          size={btnSize}
+                          onClick={() => {
+                            this.setState({
+                              selectedPerson: record,
+                              contractHistoryVisible: true
+                            });
+                          }}
+                        >
+                          查看历史信息
+                        </Button>
+                      );
+                    }
+                  ]}
+                />
+              ) : null}
             </div>
           </TabPane>
           <TabPane
-          // forceRender={true}
+            // forceRender={true}
 
             tab="人员续签"
             key="2"
@@ -431,234 +440,266 @@ refre=()=>{
               className="Tab1Outer"
               style={{ height: 'calc(100vh - 125px)' }}
             >
-              {residTab2==640264082868?
-              
-              <TableData
-                resid={640264082868}
-                subtractH={220}
-                hasAdd={false}
-                hasRowView={true}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasBeBtns={true}
-                recordFormUseAbsolute={true}
-
-                hasRowModify={false}
-                hasRowSelection={true}
-                wrappedComponentRef={element => (this.tableDataRef2 = element)}
-                refTargetComponentName="TableData"
-                cmswhere={
-                  checkboxOptions.length !== 1
-                    ? checkboxOptions.length === 2
-                      ? ''
-                      : `1 = 2`
-                    : `C3_640119278050 = '${checkboxOptions[0]}'`
-                }
-                actionBarExtra={({ dataSource, selectedRowKeys }) => {
-                  return (
-                    <>
-                      {key1 == '_0A' ? (
-                        <>
-                          <Button
-                            size="small"
-                            type="primary"
-                            onClick={() => {
-                              if (selectedRowKeys.length) {
-                                let selectedRecords = selectedRowKeys.map(
-                                  key => {
-                                    return {
-                                      ...dataSource.find(item => {
-                                        return item.REC_ID === key;
-                                      })
-                                    };
-                                  }
-                                );
-                                this.setState({
-                                  signingVisible: true,
-                                  selectedPersons: selectedRecords
-                                });
-                              } else {
-                                message.info('请勾选记录！');
-                              }
-                            }}
-                          >
-                            发送通知邮件
-                          </Button>
-                        </>
-                      ) : null}
-                    </>
-                  );
-                }}
-                customRowBtns={
-                  key1 === '_0A'
-                    ? [
-                        (record, btnSize) => {
-                          return (
-                            <>
+              {residTab2 == 640264082868 ? (
+                <TableData
+                  resid={640264082868}
+                  subtractH={220}
+                  hasAdd={false}
+                  hasRowView={true}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasBeBtns={true}
+                  recordFormUseAbsolute={true}
+                  hasRowModify={false}
+                  hasRowSelection={true}
+                  wrappedComponentRef={element =>
+                    (this.tableDataRef2 = element)
+                  }
+                  refTargetComponentName="TableData"
+                  cmswhere={
+                    checkboxOptions.length !== 1
+                      ? checkboxOptions.length === 2
+                        ? ''
+                        : `1 = 2`
+                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                  }
+                  actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                    return (
+                      <>
+                        {key1 == '_0A' ? (
+                          <>
                             <Button
-                              size={btnSize}
-                              onClick={() => {
-                                this.setState({
-                                  selectedPersons: [record],
-                                  signingVisible: true
-                                });
-                              }}
+                              size="small"
                               type="primary"
+                              onClick={() => {
+                                if (selectedRowKeys.length) {
+                                  let selectedRecords = selectedRowKeys.map(
+                                    key => {
+                                      return {
+                                        ...dataSource.find(item => {
+                                          return item.REC_ID === key;
+                                        })
+                                      };
+                                    }
+                                  );
+                                  this.setState({
+                                    signingVisible: true,
+                                    selectedPersons: selectedRecords
+                                  });
+                                } else {
+                                  message.info('请勾选记录！');
+                                }
+                              }}
                             >
                               发送通知邮件
                             </Button>
+                          </>
+                        ) : null}
+                      </>
+                    );
+                  }}
+                  customRowBtns={
+                    key1 === '_0A'
+                      ? [
+                          (record, btnSize) => {
+                            return (
+                              <>
+                                <Button
+                                  size={btnSize}
+                                  onClick={() => {
+                                    this.setState({
+                                      selectedPersons: [record],
+                                      signingVisible: true
+                                    });
+                                  }}
+                                  type="primary"
+                                >
+                                  发送通知邮件
+                                </Button>
 
-                            <Button size='small' style={{marginLeft:'4px'}} onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137,checkType:record.C3_640119278050})}}>查看审批节点</Button>
-</>
-                          );
-                        }
-                      ]
-                    : []
-                }
-              />
-
-              :null}
-              {residTab2==640264102764?
-              
-              <TableData
-                resid={640264102764}
-                subtractH={220}
-                hasAdd={false}
-                hasRowView={true}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                recordFormUseAbsolute={true}
-
-                hasDelete={false}
-                hasModify={false}
-                hasBeBtns={true}
-                hasRowModify={false}
-                hasRowSelection={true}
-                wrappedComponentRef={element => (this.tableDataRef2 = element)}
-                refTargetComponentName="TableData"
-                cmswhere={
-                  checkboxOptions.length !== 1
-                    ? checkboxOptions.length === 2
-                      ? ''
-                      : `1 = 2`
-                    : `C3_640119278050 = '${checkboxOptions[0]}'`
-                }
-                actionBarExtra={({ dataSource, selectedRowKeys }) => {
-                  return (
-                    <>
-                      {key1 == '_0A' ? (
-                        <>
-                          <Button
-                            size="small"
-                            type="primary"
-                            onClick={() => {
-                              if (selectedRowKeys.length) {
-                                let selectedRecords = selectedRowKeys.map(
-                                  key => {
-                                    return {
-                                      ...dataSource.find(item => {
-                                        return item.REC_ID === key;
-                                      })
-                                    };
-                                  }
-                                );
-                                this.setState({
-                                  signingVisible: true,
-                                  selectedPersons: selectedRecords
-                                });
-                              } else {
-                                message.info('请勾选记录！');
-                              }
-                            }}
-                          >
-                            发送通知邮件
-                          </Button>
-                        </>
-                      ) : null}
-                    </>
-                  );
-                }}
-                customRowBtns={[(record)=>{return(
-                  <Button size='small' onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137,checkType:record.C3_640119278050})}}>查看审批节点</Button>
-
-
-                )}]
-                }
-              />
-
-              :null}
-              {residTab2==640264137935?
-              
-              <TableData
-                resid={640264137935}
-                subtractH={220}
-                hasAdd={false}
-                hasRowView={true}
-                recordFormUseAbsolute={true}
-
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasBeBtns={true}
-                hasRowModify={false}
-                hasRowSelection={true}
-                wrappedComponentRef={element => (this.tableDataRef2 = element)}
-                refTargetComponentName="TableData"
-                cmswhere={
-                  checkboxOptions.length !== 1
-                    ? checkboxOptions.length === 2
-                      ? ''
-                      : `1 = 2`
-                    : `C3_640119278050 = '${checkboxOptions[0]}'`
-                }
-                actionBarExtra={({ dataSource, selectedRowKeys }) => {
-                  return (
-                    <>
-                      {key1 == '_0A' ? (
-                        <>
-                          <Button
-                            size="small"
-                            type="primary"
-                            onClick={() => {
-                              if (selectedRowKeys.length) {
-                                let selectedRecords = selectedRowKeys.map(
-                                  key => {
-                                    return {
-                                      ...dataSource.find(item => {
-                                        return item.REC_ID === key;
-                                      })
-                                    };
-                                  }
-                                );
-                                this.setState({
-                                  signingVisible: true,
-                                  selectedPersons: selectedRecords
-                                });
-                              } else {
-                                message.info('请勾选记录！');
-                              }
-                            }}
-                          >
-                            发送通知邮件
-                          </Button>
-                        </>
-                      ) : null}
-                    
-                    </>
-                  );
-                }}
-                customRowBtns={[(record)=>{return(
-                  <Button size='small'  onClick={()=>{this.setState({showCheck:true,checkMem:record.C3_436624212137,checkType:record.C3_640119278050})}}>查看审批节点</Button>
-
-                )}]
-                }
-              />
-
-              :null}
-              
+                                <Button
+                                  size="small"
+                                  style={{ marginLeft: '4px' }}
+                                  onClick={() => {
+                                    this.setState({
+                                      showCheck: true,
+                                      checkMem: record.C3_436624212137,
+                                      checkType: record.C3_640119278050
+                                    });
+                                  }}
+                                >
+                                  查看审批节点
+                                </Button>
+                              </>
+                            );
+                          }
+                        ]
+                      : []
+                  }
+                />
+              ) : null}
+              {residTab2 == 640264102764 ? (
+                <TableData
+                  resid={640264102764}
+                  subtractH={220}
+                  hasAdd={false}
+                  hasRowView={true}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  recordFormUseAbsolute={true}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasBeBtns={true}
+                  hasRowModify={false}
+                  hasRowSelection={true}
+                  wrappedComponentRef={element =>
+                    (this.tableDataRef2 = element)
+                  }
+                  refTargetComponentName="TableData"
+                  cmswhere={
+                    checkboxOptions.length !== 1
+                      ? checkboxOptions.length === 2
+                        ? ''
+                        : `1 = 2`
+                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                  }
+                  actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                    return (
+                      <>
+                        {key1 == '_0A' ? (
+                          <>
+                            <Button
+                              size="small"
+                              type="primary"
+                              onClick={() => {
+                                if (selectedRowKeys.length) {
+                                  let selectedRecords = selectedRowKeys.map(
+                                    key => {
+                                      return {
+                                        ...dataSource.find(item => {
+                                          return item.REC_ID === key;
+                                        })
+                                      };
+                                    }
+                                  );
+                                  this.setState({
+                                    signingVisible: true,
+                                    selectedPersons: selectedRecords
+                                  });
+                                } else {
+                                  message.info('请勾选记录！');
+                                }
+                              }}
+                            >
+                              发送通知邮件
+                            </Button>
+                          </>
+                        ) : null}
+                      </>
+                    );
+                  }}
+                  customRowBtns={[
+                    record => {
+                      return (
+                        <Button
+                          size="small"
+                          onClick={() => {
+                            this.setState({
+                              showCheck: true,
+                              checkMem: record.C3_436624212137,
+                              checkType: record.C3_640119278050
+                            });
+                          }}
+                        >
+                          查看审批节点
+                        </Button>
+                      );
+                    }
+                  ]}
+                />
+              ) : null}
+              {residTab2 == 640264137935 ? (
+                <TableData
+                  resid={640264137935}
+                  subtractH={220}
+                  hasAdd={false}
+                  hasRowView={true}
+                  recordFormUseAbsolute={true}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasBeBtns={true}
+                  hasRowModify={false}
+                  hasRowSelection={true}
+                  wrappedComponentRef={element =>
+                    (this.tableDataRef2 = element)
+                  }
+                  refTargetComponentName="TableData"
+                  cmswhere={
+                    checkboxOptions.length !== 1
+                      ? checkboxOptions.length === 2
+                        ? ''
+                        : `1 = 2`
+                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                  }
+                  actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                    return (
+                      <>
+                        {key1 == '_0A' ? (
+                          <>
+                            <Button
+                              size="small"
+                              type="primary"
+                              onClick={() => {
+                                if (selectedRowKeys.length) {
+                                  let selectedRecords = selectedRowKeys.map(
+                                    key => {
+                                      return {
+                                        ...dataSource.find(item => {
+                                          return item.REC_ID === key;
+                                        })
+                                      };
+                                    }
+                                  );
+                                  this.setState({
+                                    signingVisible: true,
+                                    selectedPersons: selectedRecords
+                                  });
+                                } else {
+                                  message.info('请勾选记录！');
+                                }
+                              }}
+                            >
+                              发送通知邮件
+                            </Button>
+                          </>
+                        ) : null}
+                      </>
+                    );
+                  }}
+                  customRowBtns={[
+                    record => {
+                      return (
+                        <Button
+                          size="small"
+                          onClick={() => {
+                            this.setState({
+                              showCheck: true,
+                              checkMem: record.C3_436624212137,
+                              checkType: record.C3_640119278050
+                            });
+                          }}
+                        >
+                          查看审批节点
+                        </Button>
+                      );
+                    }
+                  ]}
+                />
+              ) : null}
             </div>
           </TabPane>
           {/* <TabPane
@@ -693,37 +734,34 @@ refre=()=>{
           footer={null}
           onCancel={() => {
             this.setState({
-             showCheck:false,
-             checkMem:'',
-             checkType:'',
+              showCheck: false,
+              checkMem: '',
+              checkType: ''
             });
           }}
         >
-          <div style={{height:'80vh'}}>
-
-          <TableData
-                resid={640899304937}
-                subtractH={220}
-                hasAdd={false}
-                recordFormUseAbsolute={true}
-
-                hasRowView={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasBeBtns={true}
-                hasRowModify={false}
-                hasRowSelection={true}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
-                cmswhere={`C3_532015785778 = '${this.state.checkMem}' and C3_641241582139 = '${this.state.checkType}'`}
-                // customRowBtns={[(record)=>{return(
-                //   <Button size='small' loading={this.state.loading} onClick={()=>{this.sendMail(record)}}>发送邮件提醒审批</Button>
-                // )}]
-                // }
-              />
-
-            </div>
+          <div style={{ height: '80vh' }}>
+            <TableData
+              resid={640899304937}
+              subtractH={220}
+              hasAdd={false}
+              recordFormUseAbsolute={true}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasBeBtns={true}
+              hasRowModify={false}
+              hasRowSelection={true}
+              wrappedComponentRef={element => (this.tableDataRef = element)}
+              cmswhere={`C3_532015785778 = '${this.state.checkMem}' and C3_641241582139 = '${this.state.checkType}'`}
+              // customRowBtns={[(record)=>{return(
+              //   <Button size='small' loading={this.state.loading} onClick={()=>{this.sendMail(record)}}>发送邮件提醒审批</Button>
+              // )}]
+              // }
+            />
+          </div>
         </Modal>
         <Modal
           title="合同历史信息"
@@ -753,7 +791,6 @@ refre=()=>{
               hasDelete={false}
               hasModify={false}
               recordFormUseAbsolute={true}
-
               hasBeBtns={false}
               hasRowSelection={false}
               cmswhere={`C3_436624448098 = '${selectedPerson.C3_436624212137}'`}
@@ -792,7 +829,6 @@ refre=()=>{
             onChange={v => this.changeDate(v)}
           />
         </Modal>
-       
       </div>
     );
   }

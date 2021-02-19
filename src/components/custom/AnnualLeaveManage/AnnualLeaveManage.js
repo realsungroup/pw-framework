@@ -281,7 +281,7 @@ class AnnualLeaveManage extends React.Component {
     numList: [],
     selectQuarterModal: false,
     jiesuanQuarter: curQuarter,
-    refreshCallback: () => { }
+    refreshCallback: () => {}
   };
   handleOpenSelectPerson = callback => {
     this.setState({ selectPersonVisible: true, refreshCallback: callback });
@@ -1242,7 +1242,7 @@ class NianJiaShiYong extends React.PureComponent {
         resid={666181543960}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={false}
+        hasAdd={true}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}

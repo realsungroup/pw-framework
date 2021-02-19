@@ -255,7 +255,8 @@ class ArchitectureDiagram extends React.Component {
       transferDate: moment(),
       DLImportResultVisible: false,
       chumingVisible: false,
-      contrastResultVisible: false
+      contrastResultVisible: false,
+      newSupNumber: '' //拖拽后的上级岗位代码
     };
   }
 
@@ -402,7 +403,7 @@ class ArchitectureDiagram extends React.Component {
         return false;
       }
     });
-    this.chart.on('exportstart', function (sender, args) {
+    this.chart.on('exportstart', function(sender, args) {
       args.content += `
       <style type="text/css">
         .created > rect {
@@ -461,12 +462,15 @@ class ArchitectureDiagram extends React.Component {
   handleDragNode = (sender, oldNode, newNode) => {
     const { displayFileds, intl } = this.props;
     const newParentNode = this.chart.get(newNode.pid);
+    this.setState({
+      newSupNumber: newParentNode.orgNumber
+    });
     const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${
       newParentNode[displayFileds.firstField]
-      } 下面吗？`;
+    } 下面吗？`;
     const enTip = `Are you sure you want to drag ${
       newNode[displayFileds.firstField]
-      } under ${newParentNode[displayFileds.firstField]}`;
+    } under ${newParentNode[displayFileds.firstField]}`;
     Modal.confirm({
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
       content: (
@@ -1781,6 +1785,7 @@ class ArchitectureDiagram extends React.Component {
   updateNode = async newNode => {
     this.setState({ loading: true });
     const { resid, idField, pidField, dblinkname, baseURL } = this.props;
+    const { newSupNumber } = this.state;
     let httpParams = {};
     // 使用传入的 baseURL
     if (baseURL) {
@@ -1794,7 +1799,8 @@ class ArchitectureDiagram extends React.Component {
           {
             REC_ID: newNode.REC_ID,
             updateDate: this.state.selectedDate,
-            [pidField]: newNode.pid
+            [pidField]: parseInt(newNode.pid),
+            orgSupNumber: newSupNumber
           }
         ],
         dblinkname
@@ -2458,7 +2464,7 @@ class ArchitectureDiagram extends React.Component {
                 item.memberCN && item.memberCN !== 'N/A'
                   ? item.memberCN
                   : '无任职人'
-                })`}
+              })`}
             </Breadcrumb.Item>
           );
         })}
@@ -2487,7 +2493,7 @@ class ArchitectureDiagram extends React.Component {
     if (selectedResult && selectedResult !== '全部') {
       cmswhere += `${
         cmswhere ? ' and ' : ''
-        } importStatus = '${selectedResult}'`;
+      } importStatus = '${selectedResult}'`;
     }
     return (
       <div
@@ -3020,14 +3026,14 @@ class ArchitectureDiagram extends React.Component {
                           })}
                         </div>
                       ) : (
-                          <div className="architecture-diagram_unselect-tip">
-                            <Alert
-                              message="尚未选中任何卡片！"
-                              type="info"
-                              showIcon
-                            />
-                          </div>
-                        )}
+                        <div className="architecture-diagram_unselect-tip">
+                          <Alert
+                            message="尚未选中任何卡片！"
+                            type="info"
+                            showIcon
+                          />
+                        </div>
+                      )}
                     </div>
                   )}
                   {hasHistory && !historyMin && (
@@ -3090,8 +3096,8 @@ class ArchitectureDiagram extends React.Component {
                                                   )}
                                                   {showMore &&
                                                     ind + 1 ===
-                                                    this._historyColinfo
-                                                      .length && (
+                                                      this._historyColinfo
+                                                        .length && (
                                                       <span
                                                         style={{
                                                           color: '#1890ff',
@@ -3120,23 +3126,23 @@ class ArchitectureDiagram extends React.Component {
                                   })}
                                 </Timeline>
                               ) : (
-                                  <div className="architecture-diagram_unselect-tip">
-                                    <Alert
-                                      message="无历史记录"
-                                      type="info"
-                                      showIcon
-                                    />
-                                  </div>
-                                )
-                            ) : (
                                 <div className="architecture-diagram_unselect-tip">
                                   <Alert
-                                    message="尚未选中任何卡片！"
+                                    message="无历史记录"
                                     type="info"
                                     showIcon
                                   />
                                 </div>
-                              )}
+                              )
+                            ) : (
+                              <div className="architecture-diagram_unselect-tip">
+                                <Alert
+                                  message="尚未选中任何卡片！"
+                                  type="info"
+                                  showIcon
+                                />
+                              </div>
+                            )}
                           </Tabs.TabPane>
                           <Tabs.TabPane tab="历史兼职记录" key="2">
                             {selectedNode.REC_ID ? (
@@ -3183,8 +3189,8 @@ class ArchitectureDiagram extends React.Component {
                                                   )}
                                                   {showMore &&
                                                     ind + 1 ===
-                                                    this._partHistoryColinfo
-                                                      .length && (
+                                                      this._partHistoryColinfo
+                                                        .length && (
                                                       <span
                                                         style={{
                                                           color: '#1890ff',
@@ -3213,23 +3219,23 @@ class ArchitectureDiagram extends React.Component {
                                   })}
                                 </Timeline>
                               ) : (
-                                  <div className="architecture-diagram_unselect-tip">
-                                    <Alert
-                                      message="无历史记录"
-                                      type="info"
-                                      showIcon
-                                    />
-                                  </div>
-                                )
-                            ) : (
                                 <div className="architecture-diagram_unselect-tip">
                                   <Alert
-                                    message="尚未选中任何卡片！"
+                                    message="无历史记录"
                                     type="info"
                                     showIcon
                                   />
                                 </div>
-                              )}
+                              )
+                            ) : (
+                              <div className="architecture-diagram_unselect-tip">
+                                <Alert
+                                  message="尚未选中任何卡片！"
+                                  type="info"
+                                  showIcon
+                                />
+                              </div>
+                            )}
                           </Tabs.TabPane>
                         </Tabs>
                       </div>
@@ -3848,7 +3854,7 @@ class DLImportResult extends React.PureComponent {
         data: [{ REC_ID: record.REC_ID }]
       });
       this.tableDataRef1.handleRefresh();
-    } catch (error) { }
+    } catch (error) {}
     this.setState({ spinnig: false });
   };
   handleActiveKeyChange = activeKey => {
@@ -3956,7 +3962,7 @@ class DLImportResult extends React.PureComponent {
       // });
       this.tableDataRef2.handleRefresh();
       this.props.openContrastResult();
-    } catch (error) { }
+    } catch (error) {}
     this.setState({ spinnig: false });
   };
 }
@@ -4046,7 +4052,7 @@ class ContrastResult extends React.PureComponent {
           item.includes(this.state.yearMonth.format('YYYY-MM'))
         )
       });
-    } catch (error) { }
+    } catch (error) {}
   }
   render() {
     const { baseURL, onClose } = this.props;
