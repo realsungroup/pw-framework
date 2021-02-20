@@ -35,7 +35,7 @@ const courseArrangmentResid = '613959525708'; //课程安排表id
 const courseDetailId = '615054661547';
 const OutCourseId = '624970414826'; //外训课程表ID
 const YEAR_RESID = '420161931474'; //财年表id
-const streamId='615663201836'//审批流ID
+const streamId = '615663201836'; //审批流ID
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -63,11 +63,11 @@ const selectStyle = { width: 100, marginRight: 5 };
 
 class ArrangingCourses extends React.Component {
   state = {
-    isShowStream:false,
-    streamData:{
-      name:'',
-      recid:''
-    },//获取审批流用到的数据
+    isShowStream: false,
+    streamData: {
+      name: '',
+      recid: ''
+    }, //获取审批流用到的数据
     loading: false,
     courseArrangment: [], //课程安排
     isShowModifyModal: false, //是否显示修改课程安排模态窗
@@ -1099,12 +1099,12 @@ class ArrangingCourses extends React.Component {
 
               <Form.Item label="讲师">
                 {getFieldDecorator('modifyTeacher', {
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入讲师姓名!'
-                    }
-                  ],
+                  // rules: [
+                  //   {
+                  //     required: true,
+                  //     message: '请输入讲师姓名!'
+                  //   }
+                  // ],
                   initialValue: selectedCourseArrangment.Teacher
                 })(<Input />)}
               </Form.Item>
@@ -1183,34 +1183,75 @@ class ArrangingCourses extends React.Component {
                   </Button>
                 </Upload>
               </Form.Item>
+              {selectedCourseArrangment.courseAccessory && (
+                <Form.Item label="培训机构附件一">
+                  {getFieldDecorator('courseAccessory', {
+                    initialValue: selectedCourseArrangment.courseAccessory
+                  })(
+                    <a
+                      href={selectedCourseArrangment.courseAccessory}
+                      target="_blank"
+                    >
+                      {selectedCourseArrangment.courseAccessory}
+                    </a>
+                  )}
+                </Form.Item>
+              )}
+              {selectedCourseArrangment.otherFile1 && (
+                <Form.Item label="培训机构附件二">
+                  {getFieldDecorator('otherFile1', {
+                    initialValue: selectedCourseArrangment.otherFile1
+                  })(
+                    <a
+                      href={selectedCourseArrangment.otherFile1}
+                      target="_blank"
+                    >
+                      {selectedCourseArrangment.otherFile1}
+                    </a>
+                  )}
+                </Form.Item>
+              )}
+              {selectedCourseArrangment.otherFile2 && (
+                <Form.Item label="培训机构附件三">
+                  {getFieldDecorator('otherFile2', {
+                    initialValue: selectedCourseArrangment.otherFile2
+                  })(
+                    <a
+                      href={selectedCourseArrangment.otherFile2}
+                      target="_blank"
+                    >
+                      {selectedCourseArrangment.otherFile2}
+                    </a>
+                  )}
+                </Form.Item>
+              )}
             </Form>
           </Modal>
         ) : null}
         <Modal
           visible={this.state.isShowStream}
-          onCancel={
-           ()=>this.setState({
-              isShowStream:false
+          onCancel={() =>
+            this.setState({
+              isShowStream: false
             })
           }
-          width='70%'
-          title={this.state.streamData.name+'申请单审批流'}
+          width="70%"
+          title={this.state.streamData.name + '申请单审批流'}
           centered={true}
           destroyOnClose
         >
-          <div style={{width:'100%',height:'80vh'}}>
+          <div style={{ width: '100%', height: '80vh' }}>
             <TableData
-                resid={streamId}
-                cmswhere={`C3_615657103208 = '${this.state.streamData.recid}'`}
-                height={'100%'}
-                subtractH={240}
-                hasRowView={false}
-                hasModify={false}
-                hasDelete={false}
-                hasAdd={false}
-                hasRowDelete={false}
-                hasRowSelection={false}
-            
+              resid={streamId}
+              cmswhere={`C3_615657103208 = '${this.state.streamData.recid}'`}
+              height={'100%'}
+              subtractH={240}
+              hasRowView={false}
+              hasModify={false}
+              hasDelete={false}
+              hasAdd={false}
+              hasRowDelete={false}
+              hasRowSelection={false}
             />
           </div>
         </Modal>
@@ -1250,16 +1291,19 @@ class ArrangingCourses extends React.Component {
               (record, btnSize) => {
                 return (
                   <>
-                    <Button onClick={()=>{
-                      this.setState({
-                        isShowStream:true,
-                        streamData:{
-                          name:record.C3_613941385305,
-                          recid:record.REC_ID
-                        }
-                      })
-
-                    }}>查看申请单审批流</Button>
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          isShowStream: true,
+                          streamData: {
+                            name: record.C3_613941385305,
+                            recid: record.REC_ID
+                          }
+                        });
+                      }}
+                    >
+                      查看申请单审批流
+                    </Button>
                     <Popconfirm
                       title="确认放弃吗？"
                       onConfirm={() => {

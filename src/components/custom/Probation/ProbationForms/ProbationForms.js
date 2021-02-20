@@ -803,7 +803,9 @@ class ProbationForms extends React.Component {
       });
       const trainerData = res.data.map(user => ({
         label: `${user.C3_227192484125}`,
-        key: user.C3_305737857578
+        key: user.C3_305737857578,
+        memberId: user.C3_227192472953
+
       }));
 
       this.setState({
@@ -2710,8 +2712,8 @@ class ProbationForms extends React.Component {
             </Col>
             <Col span={12}>
               <Select
-                style={{ width: 150 }}
-                placeholder="请输入培训师工号"
+                style={{ width: 200 }}
+                placeholder="请输入培训师工号或姓名"
                 showSearch
                 filterOption={false}
                 onSearch={this.fetchUser}
@@ -2728,7 +2730,7 @@ class ProbationForms extends React.Component {
                 loading={this.state.fetching}
               >
                 {this.state.trainerData.map(d => (
-                  <Option key={d.key}>{d.label}</Option>
+                  <Option key={d.key}>{d.label + ' - ' + d.memberId}</Option>
                 ))}
               </Select>
             </Col>
@@ -2739,8 +2741,8 @@ class ProbationForms extends React.Component {
             </Col>
             <Col span={12}>
               <Select
-                style={{ width: 150 }}
-                placeholder="请输入培训师2工号"
+                style={{ width: 200 }}
+                placeholder="请输入培训师2工号或姓名"
                 showSearch
                 filterOption={false}
                 onSearch={this.fetchUser}
@@ -2757,7 +2759,7 @@ class ProbationForms extends React.Component {
                 loading={this.state.fetching}
               >
                 {this.state.trainerData.map(d => (
-                  <Option key={d.key}>{d.label}</Option>
+                  <Option key={d.key}>{d.label + ' - ' + d.memberId}</Option>
                 ))}
               </Select>
             </Col>
@@ -2796,8 +2798,8 @@ class ProbationForms extends React.Component {
             </Col>
             <Col span={12}>
               <Select
-                style={{ width: 150 }}
-                placeholder="请输入培训师工号"
+                style={{ width: 200 }}
+                placeholder="请输入培训师工号或姓名"
                 showSearch
                 filterOption={false}
                 onSearch={this.fetchUser}
@@ -2818,7 +2820,40 @@ class ProbationForms extends React.Component {
                 loading={this.state.fetching}
               >
                 {this.state.trainerData.map(d => (
-                  <Option key={d.key}>{d.label}</Option>
+                  <Option key={d.key}>{d.label + ' - ' + d.memberId}</Option>
+                ))}
+              </Select>
+            </Col>
+          </Row>
+          <Row className="probation-forms_modal_inputrow">
+            <Col span={4} offset={4}>
+              培训师2(选填):
+            </Col>
+            <Col span={12}>
+              <Select
+                style={{ width: 200 }}
+                placeholder="请输入培训师2工号或姓名"
+                showSearch
+                filterOption={false}
+                onSearch={this.fetchUser}
+                value={{
+                  label: this.state.modifyOnJobTrainingData.trainMember,
+                  key: this.state.modifyOnJobTrainingData.trainMemberId2
+                }}
+                onChange={v => {
+                  this.setState({
+                    modifyOnJobTrainingData: {
+                      ...this.state.modifyOnJobTrainingData,
+                      trainMember: v.label,
+                      trainMemberId2: v.key
+                    }
+                  });
+                }}
+                labelInValue
+                loading={this.state.fetching}
+              >
+                {this.state.trainerData.map(d => (
+                  <Option key={d.key}>{d.label + ' - ' + d.memberId}</Option>
                 ))}
               </Select>
             </Col>
