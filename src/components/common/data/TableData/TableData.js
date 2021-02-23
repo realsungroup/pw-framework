@@ -687,10 +687,6 @@ class TableData extends React.Component {
       }
     }
 
-    // if (!isUseFormDefine || hasAdvSearch && advSearch && (advSearch.searchComponent === 'both' || advSearch.searchComponent === 'PwForm')) {
-    //   this.dealTableDataFormData(res);
-    // }
-
     if (storeWay === 'fe') {
       secondParams.hasBeSort = false;
       dataSource = [];
@@ -726,17 +722,23 @@ class TableData extends React.Component {
       _noWidthFieldsIndex = [noWidthFieldsIndex];
     }
 
-    const { columns, components } = getColumns(
-      res.cmscolumninfo,
-      secondParams,
-      cmscolumns,
-      hasRowEdit,
-      isUseBESize,
-      isSetColumnWidth,
-      _noWidthFields,
-      _noWidthFieldsIndex,
-    );
-
+    let columns = this.state.columns, components = this.state.components;
+    // 列数据已存在时，不再去计算得到 columns
+    if (!this.state.columns.length) {
+      const result = getColumns(
+        res.cmscolumninfo,
+        secondParams,
+        cmscolumns,
+        hasRowEdit,
+        isUseBESize,
+        isSetColumnWidth,
+        _noWidthFields,
+        _noWidthFieldsIndex,
+      );
+      columns = result.columns;
+      components = result.components;
+    }
+    
     this._dealedColumns = columns;
 
     this.setState({ originalColumn: res.cmscolumninfo });
@@ -1037,8 +1039,11 @@ class TableData extends React.Component {
       );
   };
 
-  // 下载
-  handleDownload = async () => {
+  /**
+   * 下载 excel 表格数据
+   * @param {array} downloadColumns 指定下载的列
+   */
+  handleDownload = async (downloadColumns = []) => {
     this.setState({ loading: true });
     const {
       title,
@@ -1097,7 +1102,8 @@ class TableData extends React.Component {
       cparm4,
       cparm5,
       cparm6,
-      this._searchValue
+      this._searchValue,
+      downloadColumns
     );
     this.setState({ loading: false });
   };
@@ -1768,6 +1774,42 @@ class TableData extends React.Component {
     // this.props.hasResizeableBox || this.props.zoomOut();
     this.setState({ zoomStatus: 0 }, this.handleResize);
   };
+
+  // 固定列
+  handleFixedColumns = (fixedColumns) => {
+    const { columns } = this.state;
+    const newColumns = [];
+
+    columns.forEach(column => {
+      if (column.dataIndex !== '操作') {
+        if (fixedColumns.length) {
+          let flag = false;
+          fixedColumns.forEach(fixedColumn => {
+            if (column.fieldName === fixedColumn) {
+              column.fixed = 'left';
+              newColumns.push(column);
+              flag = true;
+            }
+          });
+          if (!flag) {
+            delete column.fixed;
+          }
+        } else {
+          delete column.fixed;
+        }
+      }
+    });
+
+    // 将非固定的列推入 newColumns 中
+    columns.forEach(column => {
+      if (!column.fixed) {
+        newColumns.push(column);
+      }
+    })
+
+    this.setState({ columns: newColumns });
+    message.success('固定列成功！');
+  }
 
   _cmsWhere = '';
   getCmsWhere = (cmsWhere, isAdvSearch, isRefreshTable = true) => {
@@ -2441,6 +2483,7 @@ class TableData extends React.Component {
         headerExtra={headerExtra}
         isShowGrid={isShowGrid}
         gridProps={gridProps}
+        onFixedColumns={this.handleFixedColumns}
       />
     );
   };

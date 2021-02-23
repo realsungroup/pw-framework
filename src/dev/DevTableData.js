@@ -24,7 +24,12 @@ class DevTableData extends Component {
   render() {
     return (
       <div>
-        <TableData resid="609868074490" />
+        <TableData
+          resid="609868074490"
+          baseURL="http://powerworks.realsun.me:5051/"
+          fixedColumns={['工号']}
+          isWrap={false}
+        />
         {/* <TableData
           resid="609868074490"
           wrappedComponentRef={element => (this.tableDataRef = element)}

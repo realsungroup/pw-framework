@@ -82,6 +82,9 @@ export const getColumns = (
       _editWidth: item[item.id] && item[item.id].Minieditorwidth, // 在行内编辑状态下的宽度
       _editHeight: item[item.id] && item[item.id].Minieditorheight // 在行内编辑状态下的高度
     };
+    column.onCell = function(record) {
+      return { title: record[this.fieldName] };
+    }
 
     if (isSetColumnWidth) {
       let columnWidth;
