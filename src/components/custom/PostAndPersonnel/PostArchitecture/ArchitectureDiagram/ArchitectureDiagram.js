@@ -180,7 +180,8 @@ class ArchitectureDiagram extends React.Component {
       importRecords: [],
       importProgressVisible: false,
       searchRes: [],
-      newSupNumber: '' //拖拽后的上级岗位代码
+      newSupNumber: '', //拖拽后的上级岗位代码
+      selectedData: [] //表格模式批量选择的数据
     };
   }
 
@@ -1365,6 +1366,46 @@ class ArchitectureDiagram extends React.Component {
     );
   };
 
+  renderBeBtns = () => {
+    return (
+      <div>
+        <Button
+          type="primary"
+          onClick={() => {
+            this.handleBatchStop();
+          }}
+        >
+          批量作废岗位
+        </Button>
+      </div>
+    );
+  };
+
+  getSelectedData = pwAddrudSelectedData => {
+    this.setState({
+      selectedData: pwAddrudSelectedData
+    });
+  };
+
+  handleBatchStop = async () => {
+    const { selectedData } = this.state;
+    if (!selectedData.length) {
+      return message.info('请先选择岗位');
+    }
+    selectedData.map(item => {
+      try {
+        http({ baseURL: this.props.baseURL }).modifyRecords({
+          resid: '638632769633',
+          data: [{ REC_ID: item.REC_ID, isScrap: 'Y' }]
+        });
+        message.info('岗位已停用');
+      } catch (error) {
+        console.log(error.message);
+        message.info(error.message);
+      }
+    });
+  };
+
   renderBreadcrumb = () => {
     const { breadcrumb, firstField, secondaryField } = this.state;
     // const { displayFileds } = this.props;
@@ -1725,6 +1766,9 @@ class ArchitectureDiagram extends React.Component {
                     hasRefresh={false}
                     hasAdvSearch={false}
                     hasDownload={false}
+                    renderOtherBtns={this.renderBeBtns}
+                    rowSelectionAg={'multiple'}
+                    getSelectedData={this.getSelectedData}
                   />
                 </div>
                 <div
