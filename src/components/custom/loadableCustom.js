@@ -901,3 +901,10 @@ export const OnDutyTrainingApp = Loadable({
     return minLoading;
   }
 });
+
+export const IIVIInfo = Loadable({
+  loader: () => import('./IIVIInfo'),
+  loading() {
+    return minLoading;
+  }
+});

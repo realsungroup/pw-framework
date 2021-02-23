@@ -181,5 +181,6 @@ export {
   ChiefInspectorProbation,
   AnnualLeaveQuery,
   AnnualLeaveManage,
-  OnDutyTrainingApp
+  OnDutyTrainingApp,
+  IIVIInfo
 } from '../components/custom/loadableCustom';
