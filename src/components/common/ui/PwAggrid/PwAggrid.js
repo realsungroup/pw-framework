@@ -409,6 +409,8 @@ class PwAggrid extends React.Component {
     const { onAgGridSelectionChanged } = this.props;
     onAgGridSelectionChanged &&
       onAgGridSelectionChanged(e.api.getSelectedRows());
+    let tableSelectedData = this.gridApi.getSelectedRows();
+    this.props.getSelectedData(tableSelectedData);
   };
 
   render() {
