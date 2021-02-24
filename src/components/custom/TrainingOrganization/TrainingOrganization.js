@@ -4,7 +4,8 @@ import TabsTableData from '../TabsTableData';
 import TableData from '../../common/data/TableData';
 // import { Modal, Button, message, Tabs, Popconfirm } from 'antd';
 // import http from '../../../../util20/api';
-const uploadConfig =  window.pwConfig[process.env.NODE_ENV].trainingClubUploadConfig;
+// const uploadConfig =
+//   window.pwConfig[process.env.NODE_ENV].trainingClubUploadConfig;
 
 class TrainingOrganization extends React.Component {
   constructor(props) {
@@ -12,10 +13,18 @@ class TrainingOrganization extends React.Component {
   }
   state = {
     SquareCardArr: [],
-    val: null
+    val: null,
+    uploadConfig: {
+      ...window.pwConfig[process.env.NODE_ENV].trainingClubUploadConfig,
+      url:
+        'https://finisar.realsun.me:8082/rispweb/rispservice/SvcUploadFile2.aspx?savepath=c:\\web\\web\\rispweb\\upfiles&httppath=https://finisar.realsun.me:8082/upfiles'
+    }
   };
-  
+
+  componentDidMount = () => {};
+
   render() {
+    const { uploadConfig } = this.state;
     return (
       // <TableData
       //         resid="625156286269"
@@ -33,11 +42,11 @@ class TrainingOrganization extends React.Component {
       //         // dblinkname="ehr"
       //         height={'600px'}
       //       />
-            <TabsTableData
+      <TabsTableData
         arr={[
           {
-            wrappedComponentRef:(element => this.tableDataRef = element),
-            refTargetComponentName:"TableData",
+            wrappedComponentRef: element => (this.tableDataRef = element),
+            refTargetComponentName: 'TableData',
             resid: 625156286269,
             TabsTitle: '维护课程信息',
             OutHeight: '80vh',
@@ -49,12 +58,12 @@ class TrainingOrganization extends React.Component {
             hasRowDelete: false,
             hasRowModify: true,
             hasRowView: false,
-            hasRowSelection:false,
+            hasRowSelection: false,
             subtractH: 220,
             recordFormType: 'modal',
             formProps: {
               height: 650
-            },
+            }
           },
           {
             resid: 627065901638,
@@ -73,7 +82,7 @@ class TrainingOrganization extends React.Component {
               height: 880
             },
             recordFormType: 'modal',
-            uploadConfig:uploadConfig
+            uploadConfig: uploadConfig
           }
         ]}
       />
