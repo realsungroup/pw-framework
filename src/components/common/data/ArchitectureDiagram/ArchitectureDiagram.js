@@ -2782,7 +2782,7 @@ class ArchitectureDiagram extends React.Component {
           }}
           loading={this.state.buttonLoading}
         >
-          批量修改手机号码
+          提醒员工手机号已改变
         </Button>
       </div>
     );
@@ -2823,7 +2823,7 @@ class ArchitectureDiagram extends React.Component {
         message.info(error.message);
       }
     });
-    message.info('手机号码已经改变');
+    message.info('已提醒');
     this.setState({
       buttonLoading: false
     });
