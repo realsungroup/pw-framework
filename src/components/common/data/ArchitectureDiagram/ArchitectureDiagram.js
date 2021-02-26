@@ -256,7 +256,9 @@ class ArchitectureDiagram extends React.Component {
       DLImportResultVisible: false,
       chumingVisible: false,
       contrastResultVisible: false,
-      newSupNumber: '' //拖拽后的上级岗位代码
+      newSupNumber: '', //拖拽后的上级岗位代码
+      selectedData: [], //批量选中的表格数据
+      buttonLoading: false //批量修改号码按钮
     };
   }
 
@@ -2770,6 +2772,63 @@ class ArchitectureDiagram extends React.Component {
     }
   };
 
+  renderBeBtns = () => {
+    return (
+      <div>
+        <Button
+          type="primary"
+          onClick={() => {
+            this.handlePhoneChange();
+          }}
+          loading={this.state.buttonLoading}
+        >
+          提醒员工手机号已改变
+        </Button>
+      </div>
+    );
+  };
+
+  getSelectedData = pwAddrudSelectedData => {
+    this.setState({
+      selectedData: pwAddrudSelectedData
+    });
+  };
+
+  handlePhoneChange = () => {
+    const { selectedData } = this.state;
+    if (!selectedData.length) {
+      return message.info('请先选择岗位');
+    }
+    this.setState({
+      buttonLoading: true
+    });
+    selectedData.map(async item => {
+      let res;
+      try {
+        res = await http({ baseURL: this.props.baseURL }).getTable({
+          resid: '638459489229',
+          cmswhere: `C3_227192472953 = ${item.memberID}`
+        });
+        try {
+          await http({ baseURL: this.props.baseURL }).modifyRecords({
+            resid: '638459489229',
+            data: [{ REC_ID: res.data[0].REC_ID, phoneChanged: 'waiting' }]
+          });
+        } catch (error) {
+          console.log(error.message);
+          message.info(error.message);
+        }
+      } catch (error) {
+        console.log(error.message);
+        message.info(error.message);
+      }
+    });
+    message.info('已提醒');
+    this.setState({
+      buttonLoading: false
+    });
+  };
+
   onExpand = expandedKeys => {
     this.setState({
       parentKeys: expandedKeys
@@ -2947,6 +3006,9 @@ class ArchitectureDiagram extends React.Component {
                     hasRefresh={false}
                     hasAdvSearch={false}
                     hasDownload={false}
+                    renderOtherBtns={this.renderBeBtns}
+                    rowSelectionAg={'multiple'}
+                    getSelectedData={this.getSelectedData}
                   />
                 </div>
                 <div

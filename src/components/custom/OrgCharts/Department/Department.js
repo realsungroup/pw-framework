@@ -232,10 +232,10 @@ class Department extends React.Component {
     const newParentNode = this.chart.get(newNode.pid);
     const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${
       newParentNode[displayFileds.firstField]
-      } 下面吗？`;
+    } 下面吗？`;
     const enTip = `Are you sure you want to drag ${
       newNode[displayFileds.firstField]
-      } under ${newParentNode[displayFileds.firstField]}`;
+    } under ${newParentNode[displayFileds.firstField]}`;
     Modal.confirm({
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
       content: (
@@ -340,7 +340,7 @@ class Department extends React.Component {
     record.C3_417654796647 = 0;
     this.getFormData(record, createWindowName);
     this.setState({ addBroVisible: true, operation: 'add', record });
-  }
+  };
   /**
    * 添加节点
    */
@@ -351,7 +351,7 @@ class Department extends React.Component {
       return message.info('请选择一个卡片');
     }
     let record = {};
-    console.log(selectedNode, pidField)
+    console.log(selectedNode, pidField);
     if (level === 'sub') {
       record[pidField] = selectedNode[idField];
       record.updateDate = selectedDate;
@@ -372,7 +372,6 @@ class Department extends React.Component {
       this.getFormData(record, createWindowName);
     }
     this.setState({ addBroVisible: true, operation: 'add', record });
-
   };
   //审核部门
   handleShenhe = () => {
@@ -394,14 +393,16 @@ class Department extends React.Component {
           }
           const res = await http(httpParams).modifyRecords({
             resid,
-            data: [{ REC_ID: selectedNode.REC_ID, C3_417731575935: 'N', shenhe: 'Y' }]
+            data: [
+              { REC_ID: selectedNode.REC_ID, C3_417731575935: 'N', shenhe: 'Y' }
+            ]
           });
           message.success('审核成功');
           this.setState({ loading: false });
-          let _this = this
-          let timer = setImmediate(function () {
+          let _this = this;
+          let timer = setImmediate(function() {
             _this.handleRefresh();
-          }, 1000)
+          }, 1000);
         } catch (error) {
           this.setState({ loading: false });
           message.error(error.message);
@@ -409,7 +410,7 @@ class Department extends React.Component {
         }
       }
     });
-  }
+  };
   // 节点作废
   handleVoid = () => {
     // const { pidField, idField, createWindowName } = this.props;
@@ -441,10 +442,10 @@ class Department extends React.Component {
           this.setState({ selectedNode: {}, breadcrumb: [] });
           message.success('作废成功');
           this.setState({ loading: false });
-          let _this = this
-          let timer = setImmediate(function () {
+          let _this = this;
+          let timer = setImmediate(function() {
             _this.handleRefresh();
-          }, 1000)
+          }, 1000);
         } catch (error) {
           this.setState({ loading: false });
           message.error(error.message);
@@ -452,7 +453,7 @@ class Department extends React.Component {
         }
       }
     });
-  }
+  };
   /**
    * 修改节点
    */
@@ -717,7 +718,6 @@ class Department extends React.Component {
    * 保存成功后的回调函数
    */
   afterSave = (operation, formData, record, form) => {
-
     const { pidField, idField } = this.props;
     this.closeBroModal();
     if (operation === 'add') {
@@ -728,8 +728,8 @@ class Department extends React.Component {
         pid: record[pidField],
         tags
       };
-      let _this = this
-      let timer = setImmediate(function () {
+      let _this = this;
+      let timer = setImmediate(function() {
         _this.setState({ selectedNode: node }, () => {
           _this.getData();
           _this.handleRefresh();
@@ -746,9 +746,8 @@ class Department extends React.Component {
         tags: [selected]
       };
 
-
-      let _this = this
-      let timer = setImmediate(function () {
+      let _this = this;
+      let timer = setImmediate(function() {
         _this.setState({ selectedNode: node }, () => {
           _this.getData();
           _this.handleRefresh();
@@ -896,8 +895,6 @@ class Department extends React.Component {
               </>
             )}
 
-
-
             <div
               className="department-chart_header_icon-button"
               onClick={() => this.handleVoid()}
@@ -906,11 +903,10 @@ class Department extends React.Component {
                 type="dropbox"
                 className="department-chart_header_icon-button__icon"
               />
-                  作废
-                </div>
+              作废
+            </div>
 
-
-            <div
+            {/* <div
               className="department-chart_header_icon-button"
               onClick={() => this.handleShenhe()}
             >
@@ -919,7 +915,7 @@ class Department extends React.Component {
                 className="department-chart_header_icon-button__icon"
               />
                   审核
-                </div>
+                </div> */}
             <div
               className="department-chart_header_icon-button"
               onClick={this.handleModify}
@@ -988,7 +984,7 @@ class Department extends React.Component {
             >
               {`${item[firstField]}(${
                 item[secondaryField] ? item[secondaryField] : 'N/A'
-                })`}
+              })`}
             </Breadcrumb.Item>
           );
         })}
@@ -1239,14 +1235,14 @@ class Department extends React.Component {
                         })}
                       </div>
                     ) : (
-                        <div className="department-chart_unselect-tip">
-                          <Alert
-                            message="尚未选中任何卡片！"
-                            type="info"
-                            showIcon
-                          />
-                        </div>
-                      )}
+                      <div className="department-chart_unselect-tip">
+                        <Alert
+                          message="尚未选中任何卡片！"
+                          type="info"
+                          showIcon
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

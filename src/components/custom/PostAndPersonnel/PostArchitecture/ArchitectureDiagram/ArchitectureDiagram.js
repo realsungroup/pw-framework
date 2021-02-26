@@ -1398,12 +1398,12 @@ class ArchitectureDiagram extends React.Component {
           resid: '638632769633',
           data: [{ REC_ID: item.REC_ID, isScrap: 'Y' }]
         });
-        message.info('岗位已停用');
       } catch (error) {
         console.log(error.message);
         message.info(error.message);
       }
     });
+    message.info('岗位已停用');
   };
 
   renderBreadcrumb = () => {
