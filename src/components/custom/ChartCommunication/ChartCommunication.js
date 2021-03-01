@@ -32,11 +32,12 @@ class ChartCommunication extends React.Component {
   constructor(props) {
     super(props);
     this.baseURL = window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainning;
-    this.downloadURL=window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainningDownload;
+    this.downloadURL = window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainningDownload;
     this.state = {
-      customDate:null,//自定义筛选的日期
+      cmsRes: ``,//自定义筛选的拼接
+      customDate: null,//自定义筛选的日期
       customCms: ``,//自定义筛选的cmswhere
-      customDate2:null,//自定义筛选的日期
+      customDate2: null,//自定义筛选的日期
       customCms2: ``,//自定义筛选的cmswhere
       title: '',//报表标题名
       reportType: '月报',//报表种类
@@ -69,8 +70,8 @@ class ChartCommunication extends React.Component {
       ingQiuzhu: 0,//处理中求助
       ingJianyi: 0,//处理中建议
       range: '-- -- 至 -- --',//报表显示的时间范围
-      stTime:'',//开始日期
-      edTime:'',//结束日期
+      stTime: '',//开始日期
+      edTime: '',//结束日期
     };
   }
   changeRepo = (v) => {
@@ -82,6 +83,28 @@ class ChartCommunication extends React.Component {
     } else if (v == '年报') {
       this.getData('year', this.state.month, this.state.year, this.state.season);
     }
+  }
+  calCms = (cms1, cms2, cms3) => {
+    let cms = ``;
+    if (cms1) {
+      cms = cms1;
+    };
+    if (cms2) {
+      if (cms1) {
+        cms += ` and ` + cms2;
+      } else {
+        cms = cms2;
+      }
+    };
+    if (cms3) {
+      if (cms1 || cms2) {
+        cms += ` and ` + cms3;
+      } else {
+        cms = cms3;
+      }
+
+    };
+    this.setState({ cmsRes: cms });
   }
   getTime = () => {
     let myDate = new Date();
@@ -127,8 +150,8 @@ class ChartCommunication extends React.Component {
     this.setState({ season: v });
     this.getData('season', this.state.month, this.state.year, v);
   }
-  getData = async (stTime,edTime) => {
-    console.log(stTime,edTime)
+  getData = async (stTime, edTime) => {
+    console.log(stTime, edTime)
     this.setState({
       loading: true,//是否在获取数据
       total: 0,//总记录
@@ -157,12 +180,12 @@ class ChartCommunication extends React.Component {
       complainTypeData: {}
     })
 
-    let cms=`REC_CRTTIME > "${stTime}" and REC_CRTTIME < "${edTime}"`
+    let cms = `REC_CRTTIME > "${stTime}" and REC_CRTTIME < "${edTime}"`
     let str = '';
-    str += stTime||'-- --';
+    str += stTime || '-- --';
     str += '至';
-    str += edTime||'-- --'
-    this.setState({ title: '员工沟通统计报告', range: str});
+    str += edTime || '-- --'
+    this.setState({ title: '员工沟通统计报告', range: str });
 
     // if (type == 'month') {
     //   if (mm) {
@@ -229,38 +252,38 @@ class ChartCommunication extends React.Component {
       let ingTousu = 0;
       let ingQiuzhu = 0;
       let ingJianyi = 0;
-      
+
       const complainTypeData = {};
       const adviceTypeData = {};
       res.cmscolumninfo.find((item) => item.id === 'typeComplaint').typeComplaint.DisplayOptions.filter(item => item).forEach((item) => {
-        complainTypeData[item] = { brid:item,count: 0, pending: 0, processing: 0, processed: 0 }
+        complainTypeData[item] = { brid: item, count: 0, pending: 0, processing: 0, processed: 0 }
       })
       res.cmscolumninfo.find((item) => item.id === 'typeAdvice').typeAdvice.DisplayOptions.filter(item => item).forEach((item) => {
         adviceTypeData[item] = { count: 0, pending: 0, processed: 0 }
       })
 
-let tousuBrid=Object.keys(complainTypeData);
-let jianyiBrid=Object.keys(adviceTypeData);
-let bridC=0;
-let psdTousu=[];
-let psgTousu=[];
-let pdgTousu=[];
-let psdJianyi=[];
-let psgJianyi=[];
-let pdgJianyi=[];
-while(bridC<tousuBrid.length){
-psdTousu.push(0);
-psgTousu.push(0);
-pdgTousu.push(0);
-bridC++;
-}
-bridC=0;
-while(bridC<tousuBrid.length){
-psdJianyi.push(0);
-psgJianyi.push(0);
-pdgJianyi.push(0);
-bridC++;
-}
+      let tousuBrid = Object.keys(complainTypeData);
+      let jianyiBrid = Object.keys(adviceTypeData);
+      let bridC = 0;
+      let psdTousu = [];
+      let psgTousu = [];
+      let pdgTousu = [];
+      let psdJianyi = [];
+      let psgJianyi = [];
+      let pdgJianyi = [];
+      while (bridC < tousuBrid.length) {
+        psdTousu.push(0);
+        psgTousu.push(0);
+        pdgTousu.push(0);
+        bridC++;
+      }
+      bridC = 0;
+      while (bridC < tousuBrid.length) {
+        psdJianyi.push(0);
+        psgJianyi.push(0);
+        pdgJianyi.push(0);
+        bridC++;
+      }
       while (n < res.data.length) {
         const item = res.data[n]
         if (res.data[n].offline == 'Y') {
@@ -273,13 +296,13 @@ bridC++;
           complainTypeData[item.typeComplaint].count++;
           if (res.data[n].HRReplyTime) {
             tousuCount = tousuCount + 1;
-            bridC=0;
-		while(bridC<tousuBrid.length){
-			if(res.data[n].typeComplaint==tousuBrid[bridC]){
-				psdTousu[bridC]=psdTousu[bridC]+1;
-			}
-			bridC++;
-		}
+            bridC = 0;
+            while (bridC < tousuBrid.length) {
+              if (res.data[n].typeComplaint == tousuBrid[bridC]) {
+                psdTousu[bridC] = psdTousu[bridC] + 1;
+              }
+              bridC++;
+            }
             complainTypeData[item.typeComplaint].processed++;
             let t1 = res.data[n].HRReplyTime;
             let d1 = t1.replace(/\-/g, "/");
@@ -291,22 +314,22 @@ bridC++;
           } else if (res.data[n].mailed == 'N') {
             waitTousu = waitTousu + 1;
             complainTypeData[item.typeComplaint].pending++;
-		bridC=0;
-		while(bridC<tousuBrid.length){
-			if(res.data[n].typeComplaint==tousuBrid[bridC]){
-				pdgTousu[bridC]=pdgTousu[bridC]+1;
-			}
-			bridC++;
-		}
+            bridC = 0;
+            while (bridC < tousuBrid.length) {
+              if (res.data[n].typeComplaint == tousuBrid[bridC]) {
+                pdgTousu[bridC] = pdgTousu[bridC] + 1;
+              }
+              bridC++;
+            }
           } else {
             ingTousu = ingTousu + 1;
-		bridC=0;
-		while(bridC<tousuBrid.length){
-			if(res.data[n].typeComplaint==tousuBrid[bridC]){
-				psgTousu[bridC]=psgTousu[bridC]+1;
-			}
-			bridC++;
-		}
+            bridC = 0;
+            while (bridC < tousuBrid.length) {
+              if (res.data[n].typeComplaint == tousuBrid[bridC]) {
+                psgTousu[bridC] = psgTousu[bridC] + 1;
+              }
+              bridC++;
+            }
             complainTypeData[item.typeComplaint].processing++;
           }
         } else if (res.data[n].type == '求助/申诉') {
@@ -330,13 +353,13 @@ bridC++;
           if (res.data[n].HRReplyTime) {
             jianyiCount = jianyiCount + 1;
 
-		bridC=0;
-		while(bridC<jianyiBrid.length){
-			if(res.data[n].typeAdvice==jianyiBrid[bridC]){
-				psdJianyi[bridC]=psdJianyi[bridC]+1;
-			}
-			bridC++;
-		}
+            bridC = 0;
+            while (bridC < jianyiBrid.length) {
+              if (res.data[n].typeAdvice == jianyiBrid[bridC]) {
+                psdJianyi[bridC] = psdJianyi[bridC] + 1;
+              }
+              bridC++;
+            }
 
             let t1 = res.data[n].HRReplyTime;
             let d1 = t1.replace(/\-/g, "/");
@@ -347,22 +370,22 @@ bridC++;
             replyJianyi = replyJianyi + (parseInt(date1 - date2) / 1000)
           } else if (res.data[n].mailed == 'N') {
             waitJianyi = waitJianyi + 1;
-		bridC=0;
-		while(bridC<jianyiBrid.length){
-			if(res.data[n].typeAdvice==jianyiBrid[bridC]){
-				pdgJianyi[bridC]=pdgJianyi[bridC]+1;
-			}
-			bridC++;
-		}
+            bridC = 0;
+            while (bridC < jianyiBrid.length) {
+              if (res.data[n].typeAdvice == jianyiBrid[bridC]) {
+                pdgJianyi[bridC] = pdgJianyi[bridC] + 1;
+              }
+              bridC++;
+            }
           } else {
             ingJianyi = ingJianyi + 1;
-		bridC=0;
-		while(bridC<jianyiBrid.length){
-			if(res.data[n].typeAdvice==jianyiBrid[bridC]){
-				psgJianyi[bridC]=psgJianyi[bridC]+1;
-			}
-			bridC++;
-		}
+            bridC = 0;
+            while (bridC < jianyiBrid.length) {
+              if (res.data[n].typeAdvice == jianyiBrid[bridC]) {
+                psgJianyi[bridC] = psgJianyi[bridC] + 1;
+              }
+              bridC++;
+            }
           }
         }
         n++;
@@ -417,133 +440,133 @@ bridC++;
         ingTousu,
         complainTypeData
       })
-	let myChart = echarts.init(document.getElementById('mycharts'));
-	let myChart2 = echarts.init(document.getElementById('mycharts2'));
-	let option = {
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+      let myChart = echarts.init(document.getElementById('mycharts'));
+      let myChart2 = echarts.init(document.getElementById('mycharts2'));
+      let option = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-        }
-    },
-    legend: {
-        data: ['未处理', '处理中', '已处理']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    yAxis: [
-        {
+          }
+        },
+        legend: {
+          data: ['未处理', '处理中', '已处理']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        yAxis: [
+          {
             type: 'category',
             data: tousuBrid
-        }
-    ],
-    xAxis: [
-        {
+          }
+        ],
+        xAxis: [
+          {
             type: 'value'
-        }
-    ],
-    series: [
-        {
+          }
+        ],
+        series: [
+          {
             name: '未处理',
             type: 'bar',
             barWidth: 16,
             stack: 'default',
             data: pdgTousu,
-label: {
-                show: true,
-                position: 'inside'
+            label: {
+              show: true,
+              position: 'inside'
             },
-        },
-        {
+          },
+          {
             name: '处理中',
             type: 'bar',
             stack: 'default',
             data: psgTousu,
-label: {
-                show: true,
-                position: 'inside'
+            label: {
+              show: true,
+              position: 'inside'
             },
-        },
-        {
+          },
+          {
             name: '已处理',
             type: 'bar',
             stack: 'default',
             data: psdTousu,
-label: {
-                show: true,
-                position: 'inside'
+            label: {
+              show: true,
+              position: 'inside'
             },
-        }
-    ]
-};
- let option2 = {
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+          }
+        ]
+      };
+      let option2 = {
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-        }
-    },
-    legend: {
-        data: ['未处理', '处理中', '已处理']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    yAxis: [
-        {
+          }
+        },
+        legend: {
+          data: ['未处理', '处理中', '已处理']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        yAxis: [
+          {
             type: 'category',
             data: jianyiBrid
-        }
-    ],
-    xAxis: [
-        {
+          }
+        ],
+        xAxis: [
+          {
             type: 'value'
-        }
-    ],
-    series: [
-        {
+          }
+        ],
+        series: [
+          {
             name: '未处理',
             type: 'bar',
             barWidth: 16,
             stack: 'default2',
-	label: {
-                show: true,
-                position: 'inside'
+            label: {
+              show: true,
+              position: 'inside'
             },
             data: pdgJianyi
-        },
-        {
+          },
+          {
             name: '处理中',
             type: 'bar',
             stack: 'default2',
             data: psgJianyi,
-label: {
-                show: true,
-                position: 'inside'
+            label: {
+              show: true,
+              position: 'inside'
             },
-        },
-        {
+          },
+          {
             name: '已处理',
             type: 'bar',
             stack: 'default2',
             data: psdJianyi,
-label: {
-                show: true,
-                position: 'inside'
+            label: {
+              show: true,
+              position: 'inside'
             },
-        }
-    ]
-};
- 	myChart.setOption(option);
-myChart2.setOption(option2);
-	
+          }
+        ]
+      };
+      myChart.setOption(option);
+      myChart2.setOption(option2);
+
     } catch (e) { console.log(e.message); this.setState({ loading: false }) }
   }
   componentWillMount() {
@@ -571,15 +594,15 @@ myChart2.setOption(option2);
     await this.refs.toPrint.classList.remove('printMode');
   };
   //改变日期
-  changeDate=(v)=>{
+  changeDate = (v) => {
     let stTime = moment(v[0]).format('YYYY-MM-DD HH:mm:ss');
     let edTime = moment(v[1]).format('YYYY-MM-DD HH:mm:ss');
-    console.log(stTime,edTime,'111')
-    this.getData(stTime,edTime)
+    console.log(stTime, edTime, '111')
+    this.getData(stTime, edTime)
   }
   render() {
     const { complainTypeData } = this.state
-    
+
     return (
       <div className='wrap'>
         <Tabs defaultActiveKey="1">
@@ -636,8 +659,8 @@ myChart2.setOption(option2);
                     </div>
                     : null} */}
                   <h3>选择时间段：</h3>
-                  <div style={{margin:'1rem 0'}}>
-                  <RangePicker allowClear={false} showTime onOk={(v)=>{this.changeDate(v)}}/>
+                  <div style={{ margin: '1rem 0' }}>
+                    <RangePicker allowClear={false} showTime onOk={(v) => { this.changeDate(v) }} />
                   </div>
                   <Button disabled={this.state.loading} onClick={() => this.exportPNG()}>导出PNG</Button>
                 </div>
@@ -733,71 +756,89 @@ myChart2.setOption(option2);
 
                     </div>
                     <div style={{ overflow: 'hidden', marginTop: "24px" }}>
-                      <p style={{fontWeight: 'bold' }}>投诉类型：</p>
-			<div id='mycharts' style={{width:'571px',height:'264px'}}></div>
+                      <p style={{ fontWeight: 'bold' }}>投诉类型：</p>
+                      <div id='mycharts' style={{ width: '571px', height: '264px' }}></div>
                     </div>
-		    <div style={{ overflow: 'hidden', marginTop: "24px" }}>
-                      <p style={{fontWeight: 'bold' }}>合理化建议类型：</p>
-			<div id='mycharts2' style={{width:'571px',height:'264px'}}></div>
+                    <div style={{ overflow: 'hidden', marginTop: "24px" }}>
+                      <p style={{ fontWeight: 'bold' }}>合理化建议类型：</p>
+                      <div id='mycharts2' style={{ width: '571px', height: '264px' }}></div>
                     </div>
                   </Spin>
                 </div>
               </div>
             </div>
           </TabPane>
-          
+
           <TabPane tab="自定义" key="2">
-          <div className='searchBar'>
-            <span>事件发生日期</span>
-            <RangePicker value={this.state.customDate}
-            allowClear={false}
-              onChange={
-                
-                (v)=>{
-                  let cms=`time >= '${moment(v[0]).format('YYYY-MM-DD')}' and time <= '${moment(v[1]).format('YYYY-MM-DD')}'`
-                  this.setState({customDate:v,customCms:cms});
+            <div className='searchBar'>
+              <span>事件发生日期</span>
+              <RangePicker value={this.state.customDate}
+                allowClear={false}
+                onChange={
+
+                  (v) => {
+                    let cms = `time >= '${moment(v[0]).format('YYYY-MM-DD')}' and time <= '${moment(v[1]).format('YYYY-MM-DD')}'`
+                    this.setState({ customDate: v, customCms: cms });
+                    this.calCms(cms, this.state.customCms2, this.state.customCms3);
+                  }
                 }
-              }
-              
+
               />
 
-          <span>HR回复时间</span>
-            <RangePicker showTime
-            allowClear={false}
-            value={this.state.customDate2}
-              onChange={
-                (v)=>{
-                  let cms=`HRReplyTime >= '${moment(v[0]).format('YYYY-MM-DD HH:mm:ss')}' and HRReplyTime <= '${moment(v[1]).format('YYYY-MM-DD HH:mm:ss')}'`
-                  this.setState({customDate2:v,customCms2:cms});
+              <span>HR回复时间</span>
+              <RangePicker showTime
+                allowClear={false}
+                value={this.state.customDate2}
+                onChange={
+                  (v) => {
+                    let cms = `HRReplyTime >= '${moment(v[0]).format('YYYY-MM-DD HH:mm:ss')}' and HRReplyTime <= '${moment(v[1]).format('YYYY-MM-DD HH:mm:ss')}'`
+                    this.setState({ customDate2: v, customCms2: cms });
+                    this.calCms(this.state.customCms, cms, this.state.customCms3);
+
+                  }
                 }
-              }
-              
+
               />
-            <Button type='primary'
-            onClick={
-              ()=>{this.setState({
-                customCms:``,
-                customCms2:``,
-                customDate:null,
-                customDate2:null
-              })}
-            }
-            >重置</Button>
-          </div>
-            
+              <br />
+              <br />
+              <span>员工提交时间</span>
+              <RangePicker showTime
+                allowClear={false}
+                value={this.state.customDate3}
+                onChange={
+                  (v) => {
+                    let cms = `addDate >= '${moment(v[0]).format('YYYY-MM-DD HH:mm:ss')}' and HRReplyTime <= '${moment(v[1]).format('YYYY-MM-DD HH:mm:ss')}'`
+                    this.setState({ customDate3: v, customCms3: cms });
+                    this.calCms(this.state.customCms, this.state.customCms2, cms);
+
+                  }
+                }
+
+              />
+              <Button type='primary'
+                onClick={
+                  () => {
+                    this.setState({
+                      customCms: ``,
+                      customCms2: ``,
+                      customCms3: ``,
+                      customDate: null,
+                      customDate2: null,
+                      customDate3: null,
+                      cmsRes: ``
+                    })
+                  }
+                }
+              >重置</Button>
+            </div>
+
             <div className='innerWrap'>
               <TableData
                 resid={648050843809}
                 baseURL={this.baseURL}
                 subtractH={220}
                 cmswhere={
-                  this.state.customCms?(
-                  this.state.customCms2?
-                  this.state.customCms2 + ` and `+this.state.customCms
-                  :this.state.customCms):(
-                    this.state.customCms2?
-                    this.state.customCms2
-                    :``)
+                  this.state.cmsRes
                 }
                 tableComponent="ag-grid"
                 sideBarAg={true}
