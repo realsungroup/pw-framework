@@ -36,12 +36,10 @@ const withDownloadFile = WrappedComponent => {
       cparm4 = '',
       cparm5 = '',
       cparm6 = '',
-      key = ''
+      key = '',
+      downloadColumns
     ) => {
       this.setState({ loading: true });
-      console.log('withDownloadFile');
-      console.log(hostresid);
-      console.log(hostrecid);
       const queryParams = {
         resid,
         hostresid,
@@ -56,12 +54,13 @@ const withDownloadFile = WrappedComponent => {
         cparm4,
         cparm5,
         cparm6,
-      }
+        alistColumnToExport: downloadColumns.join(',')
+      };
       Object.keys(queryParams).forEach(key => {
         if (!queryParams[key]) {
           delete queryParams[key];
         }
-      })
+      });
       this.p1 = makeCancelable(
         http({ baseURL: requestBaseURL }).exportTableData(queryParams)
       );

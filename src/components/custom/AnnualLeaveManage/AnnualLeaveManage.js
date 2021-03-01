@@ -163,6 +163,20 @@ class AnnualLeaveManage extends React.Component {
     //   }
     // },
     {
+      title: '年假使用调整',
+      tip: '管理员根据实际情况增加或扣除了年假使用信息。',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <NianJiaShiYong
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
+    {
       title: '调整季度剩余',
       tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
       render: () => {
@@ -448,7 +462,7 @@ class AnnualLeaveManage extends React.Component {
               </SubMenu>
               <SubMenu key="submenu3" title="日常维护">
                 {this.menus.map((menu, index) => {
-                  if (index >= 6 && index < 8) {
+                  if (index >= 6 && index < 9) {
                     return (
                       <Menu.Item key={menu.title}>
                         <div className="menu-item__body">
@@ -478,7 +492,7 @@ class AnnualLeaveManage extends React.Component {
               </SubMenu>
             </SubMenu>
             {this.menus.map((menu, index) => {
-              if (index >= 8) {
+              if (index >= 9) {
                 return (
                   <Menu.Item key={menu.title}>
                     <div className="menu-item__body">
@@ -1136,6 +1150,103 @@ class RuZhiFenPei extends React.PureComponent {
         hasDelete={false}
         hasRowEdit={false}
         hasRowModify={false}
+        hasRowView={true}
+        hasRowDelete={false}
+        actionBarWidth={100}
+        actionBarExtra={this.actionBarExtra}
+        cmswhere={cms}
+        downloadBaseURL={baseURLFromAppConfig}
+      />
+    );
+  }
+}
+
+class NianJiaShiYong extends React.PureComponent {
+  state = {
+    selectedYear: curYear,
+    selectedQuarter: curQuarter,
+    cms: `year = '${curYear}' and quarter = '${curQuarter}'`
+  };
+  actionBarExtra = ({
+    dataSource = [],
+    selectedRowKeys = [],
+    data = [],
+    recordFormData,
+    size
+  }) => {
+    const { selectedQuarter, selectedYear } = this.state;
+    return (
+      <div style={{ display: 'flex' }}>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
+          <span>财年：</span>
+          <Select
+            size="small"
+            style={{ width: 120 }}
+            value={selectedYear}
+            onChange={v => {
+              this.setState({
+                selectedYear: v,
+                cms: `year = '${v}' and quarter = '${selectedQuarter}'`
+              });
+            }}
+          >
+            {years.map(year => {
+              return (
+                <Select.Option value={year.value}>{year.title}</Select.Option>
+              );
+            })}
+          </Select>
+        </div>
+        <div style={{ marginRight: 12, marginLeft: 35 }}>
+          <span>季度：</span>
+          <Select
+            value={selectedQuarter}
+            onChange={v => {
+              this.setState({
+                selectedQuarter: v,
+                cms: `year = '${selectedYear}' and quarter = '${v}'`
+              });
+            }}
+            size="small"
+            style={{ width: 120 }}
+          >
+            {quarters.map(item => {
+              return <Option value={item.value}>{item.title}</Option>;
+            })}
+          </Select>
+        </div>
+        {/* <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          添加人员
+        </Button> */}
+      </div>
+    );
+  };
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
+  };
+  render() {
+    const { baseURL, baseURLFromAppConfig } = this.props;
+    const { cms } = this.state;
+    console.log({ cms });
+    return (
+      <TableData
+        key="NianJiaShiYong"
+        wrappedComponentRef={element => (this.tableDataRef = element)}
+        refTargetComponentName="TableData"
+        resid={666181543960}
+        baseURL={baseURL}
+        subtractH={190}
+        hasAdd={true}
+        hasModify={false}
+        hasDelete={false}
+        hasRowEdit={false}
+        hasRowModify={true}
         hasRowView={true}
         hasRowDelete={false}
         actionBarWidth={100}

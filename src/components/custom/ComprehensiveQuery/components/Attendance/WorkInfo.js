@@ -59,28 +59,33 @@ class WorkInfo extends React.Component {
 
   renderSelect = () => {
     return (
-      <Select
-        placeholder="月份"
-        style={{ width: 120 }}
-        value={this.state.selectMonth}
-        onSelect={selectValue => {
-          this.setState({ selectMonth: selectValue });
-        }}
-        size="small"
-        showSearch
-        filterOption={(input, option) => {
-          return (
-            option.props.children
-              .toString()
-              .toLowerCase()
-              .indexOf(input.toLowerCase()) >= 0
-          );
-        }}
-      >
-        {this.state.months.map(month => (
-          <Option value={month.C3_424358155202}>{month.C3_424358155202}</Option>
-        ))}
-      </Select>
+      <div>
+        <span>考勤月份：</span>
+        <Select
+          placeholder="月份"
+          style={{ width: 120 }}
+          value={this.state.selectMonth}
+          onSelect={selectValue => {
+            this.setState({ selectMonth: selectValue });
+          }}
+          size="small"
+          showSearch
+          filterOption={(input, option) => {
+            return (
+              option.props.children
+                .toString()
+                .toLowerCase()
+                .indexOf(input.toLowerCase()) >= 0
+            );
+          }}
+        >
+          {this.state.months.map(month => (
+            <Option value={month.C3_424358155202}>
+              {month.C3_424358155202}
+            </Option>
+          ))}
+        </Select>
+      </div>
     );
   };
 
@@ -197,17 +202,17 @@ class WorkInfo extends React.Component {
                             日报明细
                           </Button>
                         );
-                      },
-                      (record, btnSize) => {
-                        return (
-                          <Button
-                            size="small"
-                            onClick={this.openModal('year', record)}
-                          >
-                            年假明细
-                          </Button>
-                        );
                       }
+                      // (record, btnSize) => {
+                      //   return (
+                      //     <Button
+                      //       size="small"
+                      //       onClick={this.openModal('year', record)}
+                      //     >
+                      //       年假明细
+                      //     </Button>
+                      //   );
+                      // }
                     ]}
                   />
                 )}

@@ -14,7 +14,9 @@ import {
   Button,
   DatePicker,
   Tree,
-  Progress
+  Progress,
+  Tabs,
+  Input
 } from 'antd';
 import './ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
@@ -43,6 +45,8 @@ import PWSpin from 'Common/ui/Spin';
 
 const { TreeNode } = Tree;
 const { Option } = Select;
+const { TabPane } = Tabs;
+const { Search } = Input;
 
 function childCount(id, nodes) {
   let count = 0;
@@ -174,7 +178,10 @@ class ArchitectureDiagram extends React.Component {
       parentKeys: [],
       filtedNodes: [],
       importRecords: [],
-      importProgressVisible: false
+      importProgressVisible: false,
+      searchRes: [],
+      newSupNumber: '', //拖拽后的上级岗位代码
+      selectedData: [] //表格模式批量选择的数据
     };
   }
 
@@ -340,6 +347,9 @@ class ArchitectureDiagram extends React.Component {
   handleDragNode = (sender, oldNode, newNode) => {
     const { displayFileds, intl } = this.props;
     const newParentNode = this.chart.get(newNode.pid);
+    this.setState({
+      newSupNumber: newParentNode.orgNumber
+    });
     const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${
       newParentNode[displayFileds.firstField]
     } 下面吗？`;
@@ -909,6 +919,7 @@ class ArchitectureDiagram extends React.Component {
   updateNode = async newNode => {
     this.setState({ loading: true });
     const { resid, idField, pidField, dblinkname, baseURL } = this.props;
+    const { newSupNumber } = this.state;
     let httpParams = {};
     // 使用传入的 baseURL
     if (baseURL) {
@@ -922,7 +933,8 @@ class ArchitectureDiagram extends React.Component {
           {
             REC_ID: newNode.REC_ID,
             updateDate: this.state.selectedDate,
-            [pidField]: newNode.pid
+            [pidField]: newNode.pid,
+            orgSupNumber: newSupNumber
           }
         ],
         dblinkname
@@ -1354,6 +1366,46 @@ class ArchitectureDiagram extends React.Component {
     );
   };
 
+  renderBeBtns = () => {
+    return (
+      <div>
+        <Button
+          type="primary"
+          onClick={() => {
+            this.handleBatchStop();
+          }}
+        >
+          批量作废岗位
+        </Button>
+      </div>
+    );
+  };
+
+  getSelectedData = pwAddrudSelectedData => {
+    this.setState({
+      selectedData: pwAddrudSelectedData
+    });
+  };
+
+  handleBatchStop = async () => {
+    const { selectedData } = this.state;
+    if (!selectedData.length) {
+      return message.info('请先选择岗位');
+    }
+    selectedData.map(item => {
+      try {
+        http({ baseURL: this.props.baseURL }).modifyRecords({
+          resid: '638632769633',
+          data: [{ REC_ID: item.REC_ID, isScrap: 'Y' }]
+        });
+      } catch (error) {
+        console.log(error.message);
+        message.info(error.message);
+      }
+    });
+    message.info('岗位已停用');
+  };
+
   renderBreadcrumb = () => {
     const { breadcrumb, firstField, secondaryField } = this.state;
     // const { displayFileds } = this.props;
@@ -1482,9 +1534,27 @@ class ArchitectureDiagram extends React.Component {
     if (selectedKeys.length) {
       const id = parseInt(selectedKeys[0]);
       this.setRootNode(id);
+      console.log(selectedKeys, id);
       const parentKeys = [];
       this.getParentKeys(this.chart.get(id), parentKeys);
       this.setState({ rootKey: selectedKeys, parentKeys });
+    }
+  };
+  searchPeople = async v => {
+    const { resid, baseURL, dblinkname, historyResid } = this.props;
+    this.setState({ searchP: true });
+    let res;
+    try {
+      res = await http({ baseURL: baseURL }).getTable({
+        resid: '638459489229',
+        cmswhere: `C3_227192472953 = '${v}' or C3_227192484125 = '${v}'`
+      });
+      this.setState({ searchRes: res.data });
+      console.log(res);
+      this.setState({ searchP: false });
+    } catch (e) {
+      console.log(e);
+      this.setState({ searchP: false });
     }
   };
   onExpand = expandedKeys => {
@@ -1592,46 +1662,87 @@ class ArchitectureDiagram extends React.Component {
                   flexDirection: 'column'
                 }}
               >
-                <div style={{ padding: 8 }}>
-                  <Select
-                    showSearch
-                    disabled={fetchingData}
-                    style={{ width: '100%' }}
-                    filterOption={false}
-                    notFoundContent={null}
-                    onSearch={this.filterNodes}
-                    showArrow={false}
-                    allowClear
-                    defaultActiveFirstOption={false}
-                    onSelect={v => {
-                      this.setRootNode(v);
-                    }}
-                    placeholder="岗位名搜索"
-                  >
-                    {filtedNodes.map(job => {
-                      return (
-                        <Option
-                          value={job.id}
-                        >{`${job.orgName}(${job[idField]})`}</Option>
-                      );
-                    })}
-                  </Select>
-                </div>
-                <div style={{ flex: 1, overflow: 'auto' }}>
-                  {fetchingData && <PWSpin />}
-                  <Tree
-                    onSelect={this.onTreeNodeSelect}
-                    checkable={false}
-                    defaultExpandAll
-                    size="small"
-                    selectedKeys={rootKey}
-                    expandedKeys={parentKeys}
-                    autoExpandParent={true}
-                    onExpand={this.onExpand}
-                  >
-                    {this.renderTree(treeData)}
-                  </Tree>
-                </div>
+                <Tabs defaultActiveKey="1">
+                  <TabPane key="1" tab="岗位">
+                    <div style={{ padding: 8 }}>
+                      <Select
+                        showSearch
+                        disabled={fetchingData}
+                        style={{ width: '100%' }}
+                        filterOption={false}
+                        notFoundContent={null}
+                        onSearch={this.filterNodes}
+                        showArrow={false}
+                        allowClear
+                        defaultActiveFirstOption={false}
+                        onSelect={v => {
+                          this.setRootNode(v);
+                        }}
+                        placeholder="岗位名搜索"
+                      >
+                        {filtedNodes.map(job => {
+                          return (
+                            <Option
+                              value={job.id}
+                            >{`${job.orgName}(${job[idField]})`}</Option>
+                          );
+                        })}
+                      </Select>
+                    </div>
+                    <div style={{ flex: 1, overflow: 'auto' }}>
+                      {fetchingData && <PWSpin />}
+                      <Tree
+                        onSelect={this.onTreeNodeSelect}
+                        checkable={false}
+                        defaultExpandAll
+                        size="small"
+                        selectedKeys={rootKey}
+                        expandedKeys={parentKeys}
+                        autoExpandParent={true}
+                        onExpand={this.onExpand}
+                      >
+                        {this.renderTree(treeData)}
+                      </Tree>
+                    </div>
+                  </TabPane>
+                  <TabPane key="2" tab="人员">
+                    <Search
+                      style={{ padding: 8 }}
+                      placeholder="工号或者姓名"
+                      allowClear
+                      onSearch={v => {
+                        this.searchPeople(v);
+                      }}
+                    />
+                    <div>
+                      {this.state.searchP ? (
+                        <div className="peopleInfo"> 搜索中...</div>
+                      ) : null}
+                      {this.state.searchRes.map(item => {
+                        return (
+                          <>
+                            {item.C3_465142349966 ? (
+                              <div
+                                className="peopleInfo"
+                                onClick={() => {
+                                  this.setRootNode(item.orgcode);
+                                }}
+                              >
+                                {item.C3_227192484125 +
+                                  '-' +
+                                  item.C3_227192472953}
+                                <br />
+                                岗位代码:{item.C3_465142349966}
+                                <br />
+                                岗位名:{item.C3_466455145903}
+                              </div>
+                            ) : null}
+                          </>
+                        );
+                      })}
+                    </div>
+                  </TabPane>
+                </Tabs>
               </div>
               <div className="architecture-diagram__content__main__container">
                 <div
@@ -1655,6 +1766,9 @@ class ArchitectureDiagram extends React.Component {
                     hasRefresh={false}
                     hasAdvSearch={false}
                     hasDownload={false}
+                    renderOtherBtns={this.renderBeBtns}
+                    rowSelectionAg={'multiple'}
+                    getSelectedData={this.getSelectedData}
                   />
                 </div>
                 <div
@@ -1821,7 +1935,7 @@ class ArchitectureDiagram extends React.Component {
                       if (!error) {
                         await http({ baseURL: this.props.baseURL }).addRecords({
                           resid: this.props.resid,
-                          data: [{ ...value, isScrap: 'N' ,isCreated:'N'}]
+                          data: [{ ...value, isScrap: 'N', isCreated: 'N' }]
                         });
                         this.closeBroModal();
                         this.handleRefresh();

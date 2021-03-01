@@ -150,6 +150,25 @@ class PersonnelInformation extends React.Component {
               rootId={60867}
             />
           </TabPane>
+          <TabPane key="4" tab="人员岗位信息" style={tabPaneStyle}>
+            <TableData
+              baseURL={baseURL}
+              resid={665600662172}
+              wrappedComponentRef={element => (this.tableDataRef = element)}
+              refTargetComponentName="TableData"
+              subtractH={180}
+              hasAdd={false}
+              hasRowView={true}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={false}
+              actionBarWidth={200}
+              downloadBaseURL={downloadBaseURL}
+            />
+          </TabPane>
         </Tabs>
       </div>
     );

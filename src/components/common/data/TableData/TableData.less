@@ -13,7 +13,6 @@
       table-layout: fixed;
     }
     td {
-      width: 100%;
       word-break: keep-all;
       /* 不换行 */
       white-space: nowrap;
@@ -57,6 +56,11 @@
     z-index: 2 !important;
   }
 
+  .ant-table-fixed-left table,
+  .ant-table-fixed-right table {
+    width: min-content !important;
+  }
+
   &__action-btn {
     margin: 0 4px;
   }
@@ -91,11 +95,7 @@
       }
     }
   }
-  
-  .anticon svg {
-    // color:#fff!important;
-    color: #333 !important; //在改完主题色之前先用这个颜色
-  }
+
   th,
   td {
     height: 32px;
@@ -120,8 +120,8 @@
       }
     }
   }
-  thead{
-    background:#f1f1fa;
+  thead {
+    background: #f1f1fa;
   }
 }
 

@@ -71,7 +71,6 @@ class PerformanceQuery extends React.Component {
     } catch (error) {
       message.error(error.message);
       console.log(error);
-
     }
   };
   handleNavChange = key => {
@@ -112,22 +111,25 @@ class PerformanceQuery extends React.Component {
 
   renderSelect = () => {
     return (
-      <Select
-        style={{ width: 120 }}
-        placeholder="选择财年"
-        value={this.state.selectYear}
-        onSelect={selectValue => {
-          this.setState({ selectYear: selectValue });
-        }}
-        labelInValue
-        size="small"
-      >
-        {this.state.years.map(target => (
-          <Option value={target.C3_420297595131}>
-            {target.C3_420150922019}
-          </Option>
-        ))}
-      </Select>
+      <div>
+        <span>财年：</span>
+        <Select
+          style={{ width: 120 }}
+          placeholder="选择财年"
+          value={this.state.selectYear}
+          onSelect={selectValue => {
+            this.setState({ selectYear: selectValue });
+          }}
+          labelInValue
+          size="small"
+        >
+          {this.state.years.map(target => (
+            <Option value={target.C3_420297595131}>
+              {target.C3_420150922019}
+            </Option>
+          ))}
+        </Select>
+      </div>
     );
   };
   render() {
@@ -247,7 +249,7 @@ class PerformanceQuery extends React.Component {
                     person={person}
                     type="年中"
                     selectYear={selectYear}
-                    isExpand={(v) => this.props.isExpand(v)}
+                    isExpand={v => this.props.isExpand(v)}
                   ></AdvantageShortcoming>
                 )}
               </div>
@@ -287,7 +289,7 @@ class PerformanceQuery extends React.Component {
                     person={person}
                     type="年末"
                     selectYear={selectYear}
-                    isExpand={(v) => this.props.isExpand(v)}
+                    isExpand={v => this.props.isExpand(v)}
                   ></AdvantageShortcoming>
                 )}
               </div>
