@@ -287,14 +287,6 @@ class PwTable extends React.Component {
                 className={`pw-table__action-bar pw-table__action-bar--${size}`}
               >
                 <div className="pw-table__action-btns">
-                  <Tooltip title="固定列">
-                    <img
-                      src={fixedPng}
-                      className="pw-table__fixed-column"
-                      onClick={this.handleFixedColumn}
-                    ></img>
-                  </Tooltip>
-
                   <Dropdown
                     overlay={
                       <Menu>
@@ -341,15 +333,15 @@ class PwTable extends React.Component {
                             </div>
                           </div>
 
-                          {/* <div className="pw-table__fixed-columns-footer">
+                          <div className="pw-table__fixed-columns-footer">
                             <Button
                               block
                               type="primary"
-                              onClick={this.handleSaveFixedColumn}
+                              onClick={this.handleFixedColumn}
                             >
-                              保存
+                              确定
                             </Button>
-                          </div> */}
+                          </div>
                         </div>
                       </Menu>
                     }

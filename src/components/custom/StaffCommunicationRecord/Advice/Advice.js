@@ -72,7 +72,7 @@ class Advice extends React.Component {
     backReason: '', //退回理由
     backLoading: '', //
     noNo: 0,//未处理数量
-    modalVisbile:false,
+    modalVisbile: false,
     adminRemark: '', //管理员备注
     adminRemarkVis: false
   };
@@ -82,9 +82,9 @@ class Advice extends React.Component {
     this.getNo();
   };
 
-  closeImg = ()=>{
+  closeImg = () => {
     this.setState({
-      modalVisbile:false
+      modalVisbile: false
     })
   }
   getNo = async () => {
@@ -195,25 +195,25 @@ class Advice extends React.Component {
   };
   handleSubmitRemark = async () => {
     const { selectedRecords, adminRemark } = this.state;
-    const data = selectedRecords.length>1
-        ? selectedRecords.map(item => ({
-            REC_ID: item.recordID,
-            adminRemark: adminRemark,
-          }))
-        : [
-            {
-              REC_ID: selectedRecords[0].recordID,
-              adminRemark: adminRemark,
-            }
-          ];
+    const data = selectedRecords.length > 1
+      ? selectedRecords.map(item => ({
+        REC_ID: item.recordID,
+        adminRemark: adminRemark,
+      }))
+      : [
+        {
+          REC_ID: selectedRecords[0].recordID,
+          adminRemark: adminRemark,
+        }
+      ];
     try {
-      let res = await http({baseURL:this.baseURL}).modifyRecords({
+      let res = await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
         data
       });
       message.success("备注添加成功")
       this.setState({
-        adminRemarkVis:false
+        adminRemarkVis: false
       })
       this.tableDataRef.handleRefresh();
     } catch (error) {
@@ -461,7 +461,7 @@ class Advice extends React.Component {
             </Select>
           </div>
           <div className="staff-contain_menu_headerMenu">
-            <span>时间起止:</span>
+            <span>事件发生时间:</span>
             <RangePicker
               size="small"
               style={{ marginLeft: 5 }}
@@ -540,20 +540,20 @@ class Advice extends React.Component {
                       </Button>
                     </>
                   )}
-                  {userType === "admin" &&(<Button
-                        size="small"
-                        onClick={() => {
-                          if (!selectedRecords.length) {
-                            return message.info('请选择记录');
-                          }
-                          this.setState({
-                            selectedRecords,
-                            adminRemarkVis: true,
-                          });
-                        }}
-                      >
-                        添加备注
-                      </Button>)}
+                  {userType === "admin" && (<Button
+                    size="small"
+                    onClick={() => {
+                      if (!selectedRecords.length) {
+                        return message.info('请选择记录');
+                      }
+                      this.setState({
+                        selectedRecords,
+                        adminRemarkVis: true,
+                      });
+                    }}
+                  >
+                    添加备注
+                  </Button>)}
                 </div>
               );
             }}
@@ -670,35 +670,35 @@ class Advice extends React.Component {
           className="changeAntCSS"
           visible={this.state.enlargePic}
           width={'90vw'}
-          style={{ 
+          style={{
             height: '90vh',
             marginBottom: 0,
             paddingBottom: 0,
             textAlign: 'center',
-            backgroundColor:'transparent',
+            backgroundColor: 'transparent',
           }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
-        >  
+        >
           <img
-            ref = {this.pic}
+            ref={this.pic}
             id="pic"
             src={this.state.picKey}
             style={{
-              transformOrigin:'top left',
+              transformOrigin: 'top left',
               transform: `scale(${this.state.imgDeatilSize})`,
               height: 'calc(100vh - 48px)',
               width: 'auto',
             }}
-          />         
+          />
           <Slider
             style={{
               position: 'fixed',
-              left:'0',
-              right:'0',
-              margin:'auto',
+              left: '0',
+              right: '0',
+              margin: 'auto',
               bottom: '5vh',
               width: '1000px',
             }}
@@ -782,7 +782,7 @@ class Advice extends React.Component {
                 <h4>图片证据：</h4>
                 {imgProofRecord.length ? (
                   imgProofRecord.map(item => {
-                    return <img src={item.fileURL} alt="" onClick={() => { this.setState({ modalVisbile:true,enlargePic: true, picKey: item.fileURL }) }} />;
+                    return <img src={item.fileURL} alt="" onClick={() => { this.setState({ modalVisbile: true, enlargePic: true, picKey: item.fileURL }) }} />;
                   })
                 ) : (
                     <span>暂无图片</span>
@@ -817,13 +817,13 @@ class Advice extends React.Component {
               </div>
               <hr />
               {userType === 'admin' && (
-                <div style = {{fontWeight:"bold"}}>
-                <p>管理员备注：</p>
-                <TextArea
-                  disabled
-                  value={selectRecord.adminRemark}
-                  style = {{marginBottom:'5px',color:'#000',backgroundColor:'#fff'}}
-                />
+                <div style={{ fontWeight: "bold" }}>
+                  <p>管理员备注：</p>
+                  <TextArea
+                    disabled
+                    value={selectRecord.adminRemark}
+                    style={{ marginBottom: '5px', color: '#000', backgroundColor: '#fff' }}
+                  />
                 </div>
               )}
               {selectKey === '1' && (
@@ -889,7 +889,7 @@ class Advice extends React.Component {
           title="填写管理员备注"
           width={500}
           onCancel={() => {
-            this.setState({ adminRemarkVis: false, adminRemark:''});
+            this.setState({ adminRemarkVis: false, adminRemark: '' });
           }}
           onOk={this.handleSubmitRemark}
         >
