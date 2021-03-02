@@ -35,9 +35,11 @@ const getImportFailCount = arr => {
 
 // 导入文件
 export const importFile = (baseURL, resid, cfgid, srctype, file) => {
-  const upUrlStr =
-    baseURL +
-    `api/Resource/ImportFileByConfig?resid=${resid}&cfgid=${cfgid}&srctype=xls`;
+  let upUrlStr = baseURL;
+  if (!/\/$/.test(upUrlStr)) {
+    upUrlStr += '/';
+  }
+  upUrlStr += `api/Resource/ImportFileByConfig?resid=${resid}&cfgid=${cfgid}&srctype=xls`;
   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
   return new Promise((resolve, reject) => {
     let fd = new FormData();
