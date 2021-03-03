@@ -778,7 +778,7 @@ class StaffComplain extends React.Component {
             </Select>
           </div>
           <div className="staff-contain_menu_headerMenu">
-            <span>事件发生时间:</span>
+            <span>员工提交时间:</span>
             <RangePicker
               size="small"
               style={{ marginLeft: 5 }}
