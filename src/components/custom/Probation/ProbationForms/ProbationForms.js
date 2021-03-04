@@ -531,15 +531,15 @@ class ProbationForms extends React.Component {
       // if (this.props.roleName !== '员工') {
       //   this.props.setIsShowTable(true);
       // }
-      await http().modifyRecords({
-        resid: resid1,
-        data: [
-          {
-            REC_ID: this.state.employeeInformation.REC_ID,
-            instructorIsPass: ''
-          }
-        ]
-      });
+      // await http().modifyRecords({
+      //   resid: resid1,
+      //   data: [
+      //     {
+      //       REC_ID: this.state.employeeInformation.REC_ID,
+      //       instructorIsPass: ''
+      //     }
+      //   ]
+      // });
       if (chara == '主管') {
         delete this.state.employeeInformation.C3_656696089140;
         delete this.state.employeeInformation.probationNoticeEmail;
@@ -939,6 +939,14 @@ class ProbationForms extends React.Component {
       message.error(error.message);
       console.log(error);
     }
+    await http().modifyRecords({
+      resid: resid1,
+      data: [
+        {
+          REC_ID: this.state.employeeInformation.REC_ID
+        }
+      ]
+    });
   };
 
   /**
