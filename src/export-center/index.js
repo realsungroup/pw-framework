@@ -182,5 +182,6 @@ export {
   AnnualLeaveQuery,
   AnnualLeaveManage,
   OnDutyTrainingApp,
-  IIVIInfo
+  IIVIInfo,
+  BUCODEInfo
 } from '../components/custom/loadableCustom';

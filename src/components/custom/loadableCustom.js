@@ -908,3 +908,10 @@ export const IIVIInfo = Loadable({
     return minLoading;
   }
 });
+
+export const BUCODEInfo = Loadable({
+  loader: () => import('./BUCODEInfo'),
+  loading() {
+    return minLoading;
+  }
+});

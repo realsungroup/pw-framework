@@ -674,7 +674,7 @@ class IDLTransferHr extends Component {
       <div className="IDLTransferHR">
         <sider>
           <ul>
-            {this.state.right.HCPreApprove == 'Y' ? (
+            {this.state.right.HRPreApprove == 'Y' ? (
               <>
                 <li
                   className={
@@ -1216,6 +1216,9 @@ class IDLTransferHr extends Component {
                 <Button
                   type="primary"
                   onClick={() => this.setState({ visibleHC: true })}
+                  disabled={
+                    this.state.right.HCPreApprove === 'Y' ? false : true
+                  }
                 >
                   填写HC审批信息
                 </Button>
