@@ -13,7 +13,7 @@ import {
   Spin,
   Row,
   Col,
-  Slider,
+  Slider
 } from 'antd';
 import TableData from '../../../common/data/TableData';
 import downloadImg from './下载.png';
@@ -71,7 +71,7 @@ class Advice extends React.Component {
     backVisible: false, //退回模态窗是否显示
     backReason: '', //退回理由
     backLoading: '', //
-    noNo: 0,//未处理数量
+    noNo: 0, //未处理数量
     modalVisbile: false,
     adminRemark: '', //管理员备注
     adminRemarkVis: false
@@ -85,8 +85,8 @@ class Advice extends React.Component {
   closeImg = () => {
     this.setState({
       modalVisbile: false
-    })
-  }
+    });
+  };
   getNo = async () => {
     let res;
     try {
@@ -99,7 +99,7 @@ class Advice extends React.Component {
     } catch (error) {
       message.error(error.message);
     }
-  }
+  };
   fetchAdviceTypes = async () => {
     let res;
     const { adviceTypes } = this.state;
@@ -195,26 +195,27 @@ class Advice extends React.Component {
   };
   handleSubmitRemark = async () => {
     const { selectedRecords, adminRemark } = this.state;
-    const data = selectedRecords.length > 1
-      ? selectedRecords.map(item => ({
-        REC_ID: item.recordID,
-        adminRemark: adminRemark,
-      }))
-      : [
-        {
-          REC_ID: selectedRecords[0].recordID,
-          adminRemark: adminRemark,
-        }
-      ];
+    const data =
+      selectedRecords.length > 1
+        ? selectedRecords.map(item => ({
+            REC_ID: item.recordID,
+            adminRemark: adminRemark
+          }))
+        : [
+            {
+              REC_ID: selectedRecords[0].recordID,
+              adminRemark: adminRemark
+            }
+          ];
     try {
       let res = await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
         data
       });
-      message.success("备注添加成功")
+      message.success('备注添加成功');
       this.setState({
         adminRemarkVis: false
-      })
+      });
       this.tableDataRef.handleRefresh();
     } catch (error) {
       message.error(error.message);
@@ -225,21 +226,21 @@ class Advice extends React.Component {
     try {
       const data = isBatchReply
         ? selectedRecords.map(item => ({
-          REC_ID: item.recordID,
-          replication: this.state.replyContent,
-          replicationHR: 'Y',
-          status: '已处理',
-          renew: 'Y'
-        }))
-        : [
-          {
-            REC_ID: this.state.selectRecord.recordID,
+            REC_ID: item.recordID,
             replication: this.state.replyContent,
             replicationHR: 'Y',
             status: '已处理',
             renew: 'Y'
-          }
-        ];
+          }))
+        : [
+            {
+              REC_ID: this.state.selectRecord.recordID,
+              replication: this.state.replyContent,
+              replicationHR: 'Y',
+              status: '已处理',
+              renew: 'Y'
+            }
+          ];
       this.setState({ replyButtonLoading: true });
       await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
@@ -346,12 +347,12 @@ class Advice extends React.Component {
     if (selectedAdviceType !== '全部') {
       cmsWhere += `${
         cmsWhere ? ' and ' : ''
-        }typeAdvice = '${selectedAdviceType}'`;
+      }typeAdvice = '${selectedAdviceType}'`;
     }
     if (beginTime !== '') {
       cmsWhere += `${
         cmsWhere ? ' and ' : ''
-        }REC_CRTTIME > '${beginTime}' and REC_CRTTIME < '${endTime}'`;
+      }REC_CRTTIME > '${beginTime}' and REC_CRTTIME < '${endTime}'`;
     }
     this.setState({
       cmswhere: cmsWhere
@@ -423,7 +424,7 @@ class Advice extends React.Component {
       adviceTypes,
       selectedAdviceType
     } = this.state;
-    const userType = this.props.userType
+    const userType = this.props.userType;
     return (
       <div>
         <div className="staff-contain_menu">
@@ -499,7 +500,15 @@ class Advice extends React.Component {
             hasRowDelete={false}
             subtractH={200}
             cmswhere={cmswhere}
-            columnsWidth={{ '状态': 100, '是否实名': 20, '是否撤回': 20, 'HR是否通知了负责人': 20, '负责人是否回复完毕': 20, 'HR是否回复了员工': 20, '同意HR将投诉内容分享给上级领导': 20 }}
+            columnsWidth={{
+              状态: 100,
+              是否实名: 20,
+              是否撤回: 20,
+              HR是否通知了负责人: 20,
+              负责人是否回复完毕: 20,
+              HR是否回复了员工: 20,
+              同意HR将投诉内容分享给上级领导: 20
+            }}
             actionBarWidth={200}
             actionBarExtra={({
               dataSource = [],
@@ -540,20 +549,22 @@ class Advice extends React.Component {
                       </Button>
                     </>
                   )}
-                  {userType === "admin" && (<Button
-                    size="small"
-                    onClick={() => {
-                      if (!selectedRecords.length) {
-                        return message.info('请选择记录');
-                      }
-                      this.setState({
-                        selectedRecords,
-                        adminRemarkVis: true,
-                      });
-                    }}
-                  >
-                    添加备注
-                  </Button>)}
+                  {userType === 'admin' && (
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        if (!selectedRecords.length) {
+                          return message.info('请选择记录');
+                        }
+                        this.setState({
+                          selectedRecords,
+                          adminRemarkVis: true
+                        });
+                      }}
+                    >
+                      添加备注
+                    </Button>
+                  )}
                 </div>
               );
             }}
@@ -570,17 +581,17 @@ class Advice extends React.Component {
                 );
               },
               hasButton &&
-              (record => {
-                return (
-                  <Button
-                    onClick={() => {
-                      this.reply(record);
-                    }}
-                  >
-                    回复
-                  </Button>
-                );
-              })
+                (record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.reply(record);
+                      }}
+                    >
+                      回复
+                    </Button>
+                  );
+                })
             ]}
           />
         </div>
@@ -618,10 +629,10 @@ class Advice extends React.Component {
       picKey,
       adminRemarkVis
     } = this.state;
-    const userType = this.props.userType
+    const userType = this.props.userType;
     return (
       <div className="staff-contain" style={{ display: 'flex' }}>
-        <div style={{ width: (this.state.noNo > 0 ? '160px' : '100px') }}>
+        <div style={{ width: this.state.noNo > 0 ? '160px' : '100px' }}>
           <Menu
             style={{ height: '100vh' }}
             defaultSelectedKeys={['1']}
@@ -629,7 +640,13 @@ class Advice extends React.Component {
             onSelect={this.onSelect}
           >
             <Menu.Item key="1">
-              <span> 未处理{this.state.noNo > 0 ? '（' + this.state.noNo + '）' : null} </span>
+              <span>
+                {' '}
+                未处理
+                {this.state.noNo > 0
+                  ? '（' + this.state.noNo + '）'
+                  : null}{' '}
+              </span>
             </Menu.Item>
             <Menu.Item key="3">
               <span> 已处理</span>
@@ -675,7 +692,7 @@ class Advice extends React.Component {
             marginBottom: 0,
             paddingBottom: 0,
             textAlign: 'center',
-            backgroundColor: 'transparent',
+            backgroundColor: 'transparent'
           }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
@@ -690,7 +707,7 @@ class Advice extends React.Component {
               transformOrigin: 'top left',
               transform: `scale(${this.state.imgDeatilSize})`,
               height: 'calc(100vh - 48px)',
-              width: 'auto',
+              width: 'auto'
             }}
           />
           <Slider
@@ -700,7 +717,7 @@ class Advice extends React.Component {
               right: '0',
               margin: 'auto',
               bottom: '5vh',
-              width: '1000px',
+              width: '1000px'
             }}
             defaultValue={1}
             step={0.1}
@@ -782,11 +799,23 @@ class Advice extends React.Component {
                 <h4>图片证据：</h4>
                 {imgProofRecord.length ? (
                   imgProofRecord.map(item => {
-                    return <img src={item.fileURL} alt="" onClick={() => { this.setState({ modalVisbile: true, enlargePic: true, picKey: item.fileURL }) }} />;
+                    return (
+                      <img
+                        src={item.fileURL}
+                        alt=""
+                        onClick={() => {
+                          this.setState({
+                            modalVisbile: true,
+                            enlargePic: true,
+                            picKey: item.fileURL
+                          });
+                        }}
+                      />
+                    );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
               <div className="videoProof">
                 <h4>视频证据：</h4>
@@ -804,7 +833,7 @@ class Advice extends React.Component {
                           src={downloadImg}
                           onClick={() => {
                             this.downloadVideo(index);
-                            window.open(item.fileURL)
+                            window.open(item.fileURL);
                           }}
                           alt=""
                         />
@@ -812,17 +841,21 @@ class Advice extends React.Component {
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
               <hr />
               {userType === 'admin' && (
-                <div style={{ fontWeight: "bold" }}>
+                <div style={{ fontWeight: 'bold' }}>
                   <p>管理员备注：</p>
                   <TextArea
                     disabled
                     value={selectRecord.adminRemark}
-                    style={{ marginBottom: '5px', color: '#000', backgroundColor: '#fff' }}
+                    style={{
+                      marginBottom: '5px',
+                      color: '#000',
+                      backgroundColor: '#fff'
+                    }}
                   />
                 </div>
               )}

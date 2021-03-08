@@ -331,15 +331,15 @@ class StaffComplain extends React.Component {
     const data =
       selectedRecords.length > 1
         ? selectedRecords.map(item => ({
-          REC_ID: item.recordID,
-          adminRemark: adminRemark
-        }))
-        : [
-          {
-            REC_ID: selectedRecords[0].recordID,
+            REC_ID: item.recordID,
             adminRemark: adminRemark
-          }
-        ];
+          }))
+        : [
+            {
+              REC_ID: selectedRecords[0].recordID,
+              adminRemark: adminRemark
+            }
+          ];
     try {
       let res = await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
@@ -367,23 +367,23 @@ class StaffComplain extends React.Component {
       });
       const data = isBatchReply
         ? selectedRecords.map(item => ({
-          REC_ID: item.recordID,
-          replyID: now,
-          replication: this.state.replyContent,
-          replicationHR: 'Y',
-          status: '已处理',
-          renew: 'Y'
-        }))
-        : [
-          {
-            REC_ID: this.state.selectRecord.recordID,
+            REC_ID: item.recordID,
             replyID: now,
             replication: this.state.replyContent,
             replicationHR: 'Y',
             status: '已处理',
             renew: 'Y'
-          }
-        ];
+          }))
+        : [
+            {
+              REC_ID: this.state.selectRecord.recordID,
+              replyID: now,
+              replication: this.state.replyContent,
+              replicationHR: 'Y',
+              status: '已处理',
+              renew: 'Y'
+            }
+          ];
       await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
         data
@@ -600,7 +600,7 @@ class StaffComplain extends React.Component {
     if (this.state.complainType !== '全部') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}typeComplaint = '${
         this.state.complainType
-        }' `;
+      }' `;
     }
     if (this.state.isAms !== '全部') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}signed = '${this.state.isAms}' `;
@@ -608,7 +608,7 @@ class StaffComplain extends React.Component {
     if (this.state.beginTime !== '') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}REC_CRTTIME > '${
         this.state.beginTime
-        }' and REC_CRTTIME < '${this.state.endTime}'`;
+      }' and REC_CRTTIME < '${this.state.endTime}'`;
     }
     console.log('cmsWhere', cmsWhere);
     this.setState({
@@ -759,8 +759,8 @@ class StaffComplain extends React.Component {
               <Option value="全部">全部</Option>
               {typeComplaint.length
                 ? typeComplaint.map((item, index) => {
-                  return <Option value={item}>{item}</Option>;
-                })
+                    return <Option value={item}>{item}</Option>;
+                  })
                 : null}
             </Select>
           </div>
@@ -866,7 +866,9 @@ class StaffComplain extends React.Component {
                         if (!selectedRecords.length) {
                           return message.info('请选择记录');
                         }
-                        const recordIDs = selectedRecords.map(item => item.recordID).join(",")
+                        const recordIDs = selectedRecords
+                          .map(item => item.recordID)
+                          .join(',');
                         this.setState({
                           selectedRecords,
                           isBatchReply: true,
@@ -910,17 +912,17 @@ class StaffComplain extends React.Component {
                 );
               },
               hasButton &&
-              (record => {
-                return (
-                  <Button
-                    onClick={() => {
-                      this.openProofList(record);
-                    }}
-                  >
-                    回复
-                  </Button>
-                );
-              })
+                (record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.openProofList(record);
+                      }}
+                    >
+                      回复
+                    </Button>
+                  );
+                })
             ]}
           />
         </div>
@@ -984,8 +986,8 @@ class StaffComplain extends React.Component {
             // defaultOpenKeys={['sub1']}
             mode={this.state.mode}
             onSelect={this.onSelect}
-          // inlineCollapsed={this.state.collapsed}
-          // selectedKeys = {selectKeys}
+            // inlineCollapsed={this.state.collapsed}
+            // selectedKeys = {selectKeys}
           >
             <Menu.Item key="1">
               <span>
@@ -1045,7 +1047,7 @@ class StaffComplain extends React.Component {
             marginBottom: 0,
             paddingBottom: 0,
             textAlign: 'center',
-            backgroundColor: 'transparent',
+            backgroundColor: 'transparent'
           }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
@@ -1060,7 +1062,7 @@ class StaffComplain extends React.Component {
               transformOrigin: 'top left',
               transform: `scale(${this.state.imgDeatilSize})`,
               height: 'calc(100vh - 48px)',
-              width: 'auto',
+              width: 'auto'
             }}
           />
           <Slider
@@ -1070,7 +1072,7 @@ class StaffComplain extends React.Component {
               right: '0',
               margin: 'auto',
               bottom: '5vh',
-              width: '1000px',
+              width: '1000px'
             }}
             defaultValue={1}
             step={0.1}
@@ -1190,8 +1192,8 @@ class StaffComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
               <div className="videoProof">
                 <h4>视频证据：</h4>
@@ -1218,8 +1220,8 @@ class StaffComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
               <hr />
               <h3>负责部门信息</h3>
@@ -1299,8 +1301,8 @@ class StaffComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
 
               <div className="videoProof">
@@ -1327,8 +1329,8 @@ class StaffComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
               <hr />
               <h3>HR回复</h3>
@@ -1369,8 +1371,8 @@ class StaffComplain extends React.Component {
                       );
                     })
                   ) : (
-                      <span>暂无图片</span>
-                    )}
+                    <span>暂无图片</span>
+                  )}
                 </div>
                 <div className="videoProof">
                   <h4>视频证据：</h4>
@@ -1396,8 +1398,8 @@ class StaffComplain extends React.Component {
                       );
                     })
                   ) : (
-                      <span style={{ textAlign: 'center' }}>暂无视频</span>
-                    )}
+                    <span style={{ textAlign: 'center' }}>暂无视频</span>
+                  )}
                 </div>
               </div>
               <hr />
