@@ -69,7 +69,7 @@ class HelpAndAppeal extends React.Component {
     backVisible: false, //退回模态窗是否显示
     backReason: '', //退回理由
     backLoading: '',
-    noNo: 0,//未处理数量
+    noNo: 0, //未处理数量
     modalVisbile: false,
     noNo: 0, //未处理数量
     adminRemark: '', //管理员备注
@@ -83,8 +83,8 @@ class HelpAndAppeal extends React.Component {
   closeImg = () => {
     this.setState({
       modalVisbile: false
-    })
-  }
+    });
+  };
   getNo = async () => {
     let res;
     try {
@@ -146,26 +146,27 @@ class HelpAndAppeal extends React.Component {
 
   handleSubmitRemark = async () => {
     const { selectedRecords, adminRemark } = this.state;
-    const data = selectedRecords.length > 1
-      ? selectedRecords.map(item => ({
-        REC_ID: item.recordID,
-        adminRemark: adminRemark,
-      }))
-      : [
-        {
-          REC_ID: selectedRecords[0].recordID,
-          adminRemark: adminRemark,
-        }
-      ];
+    const data =
+      selectedRecords.length > 1
+        ? selectedRecords.map(item => ({
+            REC_ID: item.recordID,
+            adminRemark: adminRemark
+          }))
+        : [
+            {
+              REC_ID: selectedRecords[0].recordID,
+              adminRemark: adminRemark
+            }
+          ];
     try {
       let res = await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
         data
       });
-      message.success("备注添加成功")
+      message.success('备注添加成功');
       this.setState({
         adminRemarkVis: false
-      })
+      });
       this.tableDataRef.handleRefresh();
     } catch (error) {
       message.error(error.message);
@@ -207,21 +208,21 @@ class HelpAndAppeal extends React.Component {
     try {
       const data = isBatchReply
         ? selectedRecords.map(item => ({
-          REC_ID: item.recordID,
-          replication: this.state.replyContent,
-          replicationHR: 'Y',
-          status: '已处理',
-          renew: 'Y'
-        }))
-        : [
-          {
-            REC_ID: this.state.selectRecord.recordID,
+            REC_ID: item.recordID,
             replication: this.state.replyContent,
             replicationHR: 'Y',
             status: '已处理',
             renew: 'Y'
-          }
-        ];
+          }))
+        : [
+            {
+              REC_ID: this.state.selectRecord.recordID,
+              replication: this.state.replyContent,
+              replicationHR: 'Y',
+              status: '已处理',
+              renew: 'Y'
+            }
+          ];
       this.setState({ replyButtonLoading: true });
       await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
@@ -327,7 +328,7 @@ class HelpAndAppeal extends React.Component {
     if (this.state.beginTime !== '') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}REC_CRTTIME > '${
         this.state.beginTime
-        }' and REC_CRTTIME < '${this.state.endTime}'`;
+      }' and REC_CRTTIME < '${this.state.endTime}'`;
     }
     console.log('cmsWhere', cmsWhere);
     this.setState({
@@ -392,7 +393,7 @@ class HelpAndAppeal extends React.Component {
   };
   renderContentBody = (resid, hasButton) => {
     const { cmswhere, markReadLoading, selectKey, readFilter } = this.state;
-    const userType = this.props.userType
+    const userType = this.props.userType;
     return (
       <div>
         <div className="staff-contain_menu">
@@ -413,7 +414,7 @@ class HelpAndAppeal extends React.Component {
             </Select>
           </div>
           <div className="staff-contain_menu_headerMenu">
-            <span>事件发生时间:</span>
+            <span>员工提交时间:</span>
             <RangePicker
               size="small"
               style={{ marginLeft: 5 }}
@@ -498,20 +499,22 @@ class HelpAndAppeal extends React.Component {
                       >
                         批量回复
                       </Button>
-                      {userType === "admin" && (<Button
-                        size="small"
-                        onClick={() => {
-                          if (!selectedRecords.length) {
-                            return message.info('请选择记录');
-                          }
-                          this.setState({
-                            selectedRecords,
-                            adminRemarkVis: true,
-                          });
-                        }}
-                      >
-                        添加备注
-                      </Button>)}
+                      {userType === 'admin' && (
+                        <Button
+                          size="small"
+                          onClick={() => {
+                            if (!selectedRecords.length) {
+                              return message.info('请选择记录');
+                            }
+                            this.setState({
+                              selectedRecords,
+                              adminRemarkVis: true
+                            });
+                          }}
+                        >
+                          添加备注
+                        </Button>
+                      )}
                     </>
                   )}
                 </div>
@@ -530,17 +533,17 @@ class HelpAndAppeal extends React.Component {
                 );
               },
               hasButton &&
-              (record => {
-                return (
-                  <Button
-                    onClick={() => {
-                      this.reply(record);
-                    }}
-                  >
-                    回复
-                  </Button>
-                );
-              })
+                (record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.reply(record);
+                      }}
+                    >
+                      回复
+                    </Button>
+                  );
+                })
             ]}
           />
         </div>
@@ -576,7 +579,7 @@ class HelpAndAppeal extends React.Component {
       backLoading,
       modalVisbile,
       picKey,
-      adminRemarkVis,
+      adminRemarkVis
     } = this.state;
     const userType = this.props.userType;
     return (
@@ -619,7 +622,6 @@ class HelpAndAppeal extends React.Component {
         >
           {this.renderContent()}
         </div>
-
 
         <Modal
           visible={this.state.showRecord}
@@ -681,7 +683,19 @@ class HelpAndAppeal extends React.Component {
                 <h4>图片证据：</h4>
                 {imgProofRecord.length ? (
                   imgProofRecord.map(item => {
-                    return <img src={item.fileURL} alt="" onClick={() => { this.setState({ modalVisbile: true, enlargePic: true, picKey: item.fileURL }) }} />;
+                    return (
+                      <img
+                        src={item.fileURL}
+                        alt=""
+                        onClick={() => {
+                          this.setState({
+                            modalVisbile: true,
+                            enlargePic: true,
+                            picKey: item.fileURL
+                          });
+                        }}
+                      />
+                    );
                     return (
                       <img
                         src={item.fileURL}
@@ -696,8 +710,8 @@ class HelpAndAppeal extends React.Component {
                     );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
 
               <div className="videoProof">
@@ -716,7 +730,7 @@ class HelpAndAppeal extends React.Component {
                           src={downloadImg}
                           onClick={() => {
                             this.downloadVideo(index);
-                            window.open(item.fileURL)
+                            window.open(item.fileURL);
                           }}
                           alt=""
                         />
@@ -724,8 +738,8 @@ class HelpAndAppeal extends React.Component {
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
               <hr />
               {userType === 'admin' && (
@@ -799,7 +813,7 @@ class HelpAndAppeal extends React.Component {
             marginBottom: 0,
             paddingBottom: 0,
             textAlign: 'center',
-            backgroundColor: 'transparent',
+            backgroundColor: 'transparent'
           }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
@@ -814,7 +828,7 @@ class HelpAndAppeal extends React.Component {
               transformOrigin: 'top left',
               transform: `scale(${this.state.imgDeatilSize})`,
               height: 'calc(100vh - 48px)',
-              width: 'auto',
+              width: 'auto'
             }}
           />
           <Slider
@@ -824,7 +838,7 @@ class HelpAndAppeal extends React.Component {
               right: '0',
               margin: 'auto',
               bottom: '5vh',
-              width: '1000px',
+              width: '1000px'
             }}
             defaultValue={1}
             step={0.1}
