@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Select, Button, Radio, Spin, Modal, Icon, message } from 'antd';
+import { Pagination, Tabs, Menu, Select, Button, Radio, Spin, Modal, Icon, message, Input, Table } from 'antd';
 import './AnnualLeaveManage.less';
 import TableData from 'Common/data/TableData';
 import SelectPersonnel from 'Common/data/SelectPersonnel';
@@ -8,10 +8,143 @@ import http from 'Util20/api';
 import SelectPersonSecond from '../SelectPersonSecond';
 import moment from 'moment';
 import { reject } from 'lodash';
+import { TabStop } from 'docx';
+import { constants } from 'os';
 // import { SubMenu, MenuItem } from 'react-contextmenu';
-
+const { TabPane } = Tabs;
 const { Option } = Select;
 const { SubMenu } = Menu;
+const NJGLColums = [
+  {
+    title: '工号',
+    dataIndex: 'number',
+    key: 'number',
+  },
+  {
+    title: '姓名',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: '上年剩余',
+    dataIndex: 'snsy',
+    key: 'snsy',
+  },
+  {
+    title: '当年新增',
+    dataIndex: 'dnxz',
+    key: 'dnxz',
+  },
+  {
+    title: '第1季度分配',
+    dataIndex: 'q1fenpei',
+    key: 'q1fenpei',
+  },
+  {
+    title: '第2季度分配',
+    dataIndex: 'q2fenpei',
+    key: 'q2fenpei',
+  },
+  {
+    title: '第3季度分配',
+    dataIndex: 'q3fenpei',
+    key: 'q3fenpei',
+  },
+  {
+    title: '第4季度分配',
+    dataIndex: 'q4fenpei',
+    key: 'q4fenpei',
+  },
+  {
+    title: '1月使用',
+    dataIndex: 'january',
+    key: 'january',
+  },
+  {
+    title: '2月使用',
+    dataIndex: 'february',
+    key: 'february',
+  },
+  {
+    title: '3月使用',
+    dataIndex: 'march',
+    key: 'march',
+  },
+  {
+    title: '4月使用',
+    dataIndex: 'april',
+    key: 'april',
+  },
+  {
+    title: '5月使用',
+    dataIndex: 'may',
+    key: 'may',
+  },
+  {
+    title: '6月使用',
+    dataIndex: 'june',
+    key: 'june',
+  },
+  {
+    title: '7月使用',
+    dataIndex: 'july',
+    key: 'july',
+  },
+  {
+    title: '8月使用',
+    dataIndex: 'august',
+    key: 'august',
+  }, {
+    title: '9月使用',
+    dataIndex: 'september',
+    key: 'september',
+  }, {
+    title: '10月使用',
+    dataIndex: 'october',
+    key: 'october',
+  }, {
+    title: '11月使用',
+    dataIndex: 'november',
+    key: 'november',
+  },
+  , {
+    title: '12月使用',
+    dataIndex: 'december',
+    key: 'december',
+  }, {
+    title: '第1季度剩余',
+    dataIndex: 'q1sy',
+    key: 'q1sy',
+  },
+  {
+    title: '第2季度剩余',
+    dataIndex: 'q2sy',
+    key: 'q2sy',
+  },
+  {
+    title: '第3季度剩余',
+    dataIndex: 'q3sy',
+    key: 'q3sy',
+  },
+  {
+    title: '第4季度剩余',
+    dataIndex: 'q4sy',
+    key: 'q4sy',
+  },
+  {
+    title: '上年结余',
+    dataIndex: 'snjy',
+    key: 'snjy',
+  }, {
+    title: '当年结余',
+    dataIndex: 'dnjy',
+    key: 'dnjy',
+  }, {
+    title: '总结余',
+    dataIndex: 'zjy',
+    key: 'zjy',
+  },
+]
 const months = [
   { label: 1, value: '01' },
   { label: 2, value: '02' },
@@ -270,18 +403,33 @@ class AnnualLeaveManage extends React.Component {
           />
         );
       }
-    }
+    },
+    {
+      title: '年假概览',
+      tip: '年假概览',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <NianJiaGaiLan
+            baseURL={baseURL}
+            resid="668272811088"
+            baseURLFromAppConfig={baseURLFromAppConfig}
+            onOpenSelectPerson={this.handleOpenSelectPerson}
+          />
+        );
+      }
+    },
   ];
   state = {
-    selectedKeys: [this.menus[0].title],
-    selectedMenu: this.menus[0],
+    selectedKeys: [this.menus[14].title],
+    selectedMenu: this.menus[14],
     selectPersonVisible: false,
     spinning: false,
     persons: [],
     numList: [],
     selectQuarterModal: false,
     jiesuanQuarter: curQuarter,
-    refreshCallback: () => {}
+    refreshCallback: () => { }
   };
   handleOpenSelectPerson = callback => {
     this.setState({ selectPersonVisible: true, refreshCallback: callback });
@@ -429,7 +577,13 @@ class AnnualLeaveManage extends React.Component {
               });
             }}
           >
+            <Menu.Item key='年假概览'>
+              <div className="menu-item__body">
+                年假概览
+                    </div>
+            </Menu.Item>
             <SubMenu key="submenu1" title="交易明细">
+
               <SubMenu key="submenu2" title="系统行为">
                 {this.menus.map((menu, index) => {
                   if (index < 6) {
@@ -494,22 +648,28 @@ class AnnualLeaveManage extends React.Component {
             {this.menus.map((menu, index) => {
               if (index >= 9) {
                 return (
-                  <Menu.Item key={menu.title}>
-                    <div className="menu-item__body">
-                      {menu.title}
-                      {/* {selectedKeys[0] === menu.title && (
-                        <span
-                          onClick={() => {
-                            Modal.info({
-                              title: '提示',
-                              content: menu.tip
-                            });
-                          }}
-                          className="menu-item-tip-container"
-                        ></span>
-                      )} */}
-                    </div>
-                  </Menu.Item>
+
+                  menu.title === '年假概览' ? null :
+
+                    <Menu.Item key={menu.title}>
+                      <div className="menu-item__body">
+                        {menu.title}
+                        {/* {selectedKeys[0] === menu.title && (
+                      <span
+                        onClick={() => {
+                          Modal.info({
+                            title: '提示',
+                            content: menu.tip
+                          });
+                        }}
+                        className="menu-item-tip-container"
+                      ></span>
+                    )} */}
+                      </div>
+                    </Menu.Item>
+
+
+
                 );
               }
             })}
@@ -1650,6 +1810,379 @@ class XinYuanGongSheBao extends React.PureComponent {
     );
   }
 }
+function exportExcel(data, headerData = [], fileName) {
+  //要导出的json数据
+
+  let header = '';
+  headerData.forEach(item => {
+    header += item.title + ',';
+  });
+  header = header.substring(0, header.length - 1);
+  header += `\n`;
+  //列标题，逗号隔开，每一个逗号就是隔开一个单元格
+  // let str = `姓名,电话,邮箱\n`;
+  let str = header;
+  //增加\t为了不让表格显示科学计数法或者其他格式
+  // for (let i = 0; i < data.length; i++) {
+  //   for (let item in data[i]) {
+  //     str += `${data[i][item] + '\t'},`;
+  //   }
+  //   str += '\n';
+  // }
+  data.forEach(_data => {
+    headerData.forEach(item => {
+      const value = _data[item.dataIndex];
+      if (value !== null && value !== undefined) {
+        str += `${value + '\t'},`;
+      } else {
+        str += ',';
+      }
+    });
+    str += '\n';
+  });
+
+  //encodeURIComponent解决中文乱码
+  let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+  //通过创建a标签实现
+  let link = document.createElement('a');
+  link.href = uri;
+  //对下载的文件命名
+  link.download = fileName + '.csv';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+const monthArr = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+class NianJiaGaiLan extends React.PureComponent {
+  state = {
+    data: [],
+    total: 100,
+    current: 1,
+    year: moment().year(),
+    spinning: false,
+    downloading: false,
+    selectedData: {},
+    downloadData: [],
+    pageSize: 10
+  }
+  componentDidMount() {
+    this.getData({ pageIndex: this.state.current - 1 });
+  }
+  handlePageChange = (page) => {
+    this.setState({ current: page }, () => {
+      this.getData({ pageIndex: this.state.current - 1 })
+    })
+  }
+  handleSearch = (key) => {
+    this.setState({ current: 1 }, () => {
+      this.getData({ pageIndex: this.state.current - 1, key })
+    });
+  }
+  render() {
+    const { baseURL, baseURLFromAppConfig } = this.props;
+    const { data, total, current, spinning, selectedData, pageSize, downloading, downloadData } = this.state;
+    return (
+      <div className='NJGL'>
+        <div className='tools'>
+          <Input.Search
+            size="small"
+            onSearch={this.handleSearch}
+            className="search"
+            enterButton={true}
+            placeholder={'输入关键字搜索'}
+          />
+          <div className='page'>
+            <Pagination onChange={this.handlePageChange} pageSize={pageSize} size="small" style={{ width: '480px' }} current={current} showQuickJumper defaultCurrent={2} total={total} />
+          </div>
+          <div className='down'>
+
+            <Button loading={downloading} onClick={this.downloadExcel} size="small" style={{ marginRight: 8 }}>
+              {downloading ? `${downloadData.length} / ${total}` : "下载"}
+            </Button>
+            <Button onClick={() => { this.getData({ pageIndex: this.state.current - 1 }) }} size="small">
+              刷新
+            </Button>
+          </div>
+        </div>
+        <Spin spinning={spinning}>
+          <div className='maindata'>
+            <ul>
+              {NJGLColums.map((item) => {
+                return (
+                  <li key={item.dataIndex} className='head'>
+                    {item.title}
+                  </li>
+                )
+              })}
+            </ul>
+            {data.map((item) => {
+              return <ul key={item.number} className={item.number == selectedData.number ? 'selected' : ''}
+                onClick={() => { this.setState({ selectedData: item }) }}>
+                {NJGLColums.map((col) => {
+                  return (
+                    <li key={col.dataIndex}>
+                      {item[col.dataIndex]}
+                    </li>
+                  )
+                })}
+              </ul>
+            })}
+          </div>
+        </Spin>
+        <div className='subdata'>
+          <Tabs defaultActiveKey="1" tabPosition='left'>
+            <TabPane tab="上年剩余调整" key="1">
+              <div className='outer'>
+                <TableData
+                  key="ShangNianShengYu"
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  refTargetComponentName="TableData"
+                  resid={663248318082}
+                  baseURL={baseURL}
+                  subtractH={190}
+                  hasAdd={true}
+                  hasModify={false}
+                  hasDelete={false}
+                  hasRowEdit={false}
+                  hasRowModify={false}
+                  hasRowView={true}
+                  hasRowDelete={false}
+                  actionBarWidth={100}
+                  defaultAddRecord={{ C3_663248494033: selectedData.number }}
+                  // actionBarExtra={this.actionBarExtra}
+                  cmswhere={selectedData.number ? `C3_663248494033 = ${selectedData.number}` : '1 != 1'}
+                  downloadBaseURL={baseURLFromAppConfig}
+                />
+              </div>
+            </TabPane>
+            <TabPane tab="每月使用调整" key="2">
+              <div className='outer'>
+
+                <TableData
+                  key="NianJiaShiYong"
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  refTargetComponentName="TableData"
+                  resid={666181543960}
+                  baseURL={baseURL}
+                  subtractH={190}
+                  hasAdd={true}
+                  hasModify={false}
+                  hasDelete={false}
+                  hasRowEdit={false}
+                  hasRowModify={true}
+                  hasRowView={true}
+                  hasRowDelete={false}
+                  actionBarWidth={100}
+                  downloadBaseURL={baseURLFromAppConfig}
+                  defaultAddRecord={{ numberID: selectedData.number }}
+                  cmswhere={selectedData.number ? `numberID = ${selectedData.number}` : '1 != 1'}
+                />
+              </div>
+
+            </TabPane>
+            <TabPane tab="季度分配调整" key="3">
+              <div className='outer'>
+
+                <TableData
+                  key="JiDuFenPei"
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  refTargetComponentName="TableData"
+                  resid={663257512519}
+                  baseURL={baseURL}
+                  subtractH={190}
+                  hasAdd={true}
+                  hasModify={false}
+                  hasDelete={false}
+                  hasRowEdit={false}
+                  hasRowModify={false}
+                  hasRowView={true}
+                  hasRowDelete={false}
+                  actionBarWidth={100}
+                  defaultAddRecord={{ C3_663257630012: selectedData.number }}
+                  cmswhere={selectedData.number ? `C3_663257630012 = ${selectedData.number}` : '1 != 1'}
+                  downloadBaseURL={baseURLFromAppConfig}
+                />
+              </div>
+
+            </TabPane>
+          </Tabs>
+        </div>
+      </div>
+    );
+  }
+
+  getData = async ({ pageIndex = 0, key = '' }) => {
+    const { baseURL, resid } = this.props;
+    const { year, pageSize } = this.state;
+    try {
+      this.setState({ spinning: true });
+      const employeeRes = await http({ baseURL }).getTable({
+        resid,
+        pageSize,
+        pageIndex,
+        cmswhere: `year = ${year}`,
+        key
+      });
+      if (employeeRes.data.length <= 0) {
+        this.setState({
+          data: [],
+          total: employeeRes.total,
+          spinning: false
+        });
+        return;
+      }
+      const data = employeeRes.data.map(item => ({
+        number: item.numberID,
+        name: item.name,
+        snsy: item.snsy,
+        dnxz: item.dnxz,
+        zjy: item.zjy,
+        snjy: item.snjy,
+        dnjy: item.dnjy,
+        q1fenpei: item.season1fp,
+        q1sy: item.season1sy,
+        q2fenpei: item.season2fp,
+        q2sy: item.season2sy,
+        q3fenpei: item.season3fp,
+        q3sy: item.season3sy,
+        q4fenpei: item.season4fp,
+        q4sy: item.season4sy,
+        january: item.use1,
+        february: item.use2,
+        march: item.use3,
+        april: item.use4,
+        may: item.use5,
+        june: item.use6,
+        july: item.use7,
+        august: item.use8,
+        september: item.use9,
+        october: item.use10,
+        november: item.use11,
+        december: item.use12
+      }));
+      // const indexMap = {};
+      // data.forEach((item, index) => {
+      //   indexMap[item.number] = index;
+      // });
+      // const numbers = data.map(item => item.number).join(',');
+      // const reqArr = [
+      //   http({ baseURL }).getTable({
+      //     resid: 662169346288,
+      //     cmswhere: `year = ${year} and numberID in (${numbers})`
+      //   }),
+      //   http({ baseURL }).getTable({
+      //     resid: 662169383744,
+      //     cmswhere: `Quarter = ${year} and NumberID in (${numbers})`
+      //   }),
+      //   http({ baseURL }).getTable({
+      //     resid: 311025002785,
+      //     cmswhere: `C3_424652509987 = ${year} and YGNO in (${numbers})`
+      //   })
+      // ]
+      // const [res, res1, res2] = await Promise.all(reqArr);
+      // res.data.forEach(item => {
+      //   const index = indexMap[item.numberID];
+      //   const mainData = data[index];
+      //   mainData.snsy += item.snsy;
+      //   mainData.dnxz += item.djfp + item.sydjfp;
+      //   mainData.zjy += item.hjky;
+      //   switch (item.quarter) {
+      //     case 1:
+      //       mainData.q1fenpei = item.djfp;
+      //       mainData.q1sy = item.synj;
+      //       break;
+      //     case 2:
+      //       mainData.q2fenpei = item.djfp;
+      //       mainData.q2sy = item.synj;
+      //       break;
+      //     case 3:
+      //       mainData.q3fenpei = item.djfp;
+      //       mainData.q3sy = item.synj;
+      //       break;
+      //     case 4:
+      //       mainData.q4fenpei = item.djfp;
+      //       mainData.q4sy = item.synj;
+      //       break;
+      //     default:
+      //       break;
+      //   }
+      // });
+      // //计算上年结余
+      // res1.data.forEach(item => {
+      //   const index = indexMap[item.NumberID];
+      //   const mainData = data[index];
+      //   mainData.snjy = item.Residue;
+      //   mainData.dnjy = mainData.zjy - item.Residue;
+      // });
+      // res2.data.forEach((item) => {
+      //   const index = indexMap[item.YGNO];
+      //   const mainData = data[index];
+      //   mainData[monthArr[item.C3_469046133471 - 1]] = item.F_23 / 8
+      // });
+      this.setState({
+        data,
+        total: employeeRes.total,
+        spinning: false
+      });
+    } catch (error) {
+      this.setState({ spinning: false });
+      message.error(error.message);
+    }
+  }
+  downloadExcel = async ({ pageIndex = 0, }) => {
+    const { baseURL, resid } = this.props;
+    const { year } = this.state;
+    try {
+      this.setState({ downloading: true });
+      const employeeRes = await http({ baseURL }).getTable({
+        resid,
+        pageSize: 100,
+        pageIndex,
+        cmswhere: `year = ${year}`,
+      });
+      const data = employeeRes.data.map(item => ({
+        number: item.numberID,
+        name: item.name,
+        snsy: item.snsy,
+        dnxz: item.dnxz,
+        zjy: item.zjy,
+        snjy: item.snjy,
+        dnjy: item.dnjy,
+        q1fenpei: item.season1fp,
+        q1sy: item.season1sy,
+        q2fenpei: item.season2fp,
+        q2sy: item.season2sy,
+        q3fenpei: item.season3fp,
+        q3sy: item.season3sy,
+        q4fenpei: item.season4fp,
+        q4sy: item.season4sy,
+        january: item.use1,
+        february: item.use2,
+        march: item.use3,
+        april: item.use4,
+        may: item.use5,
+        june: item.use6,
+        july: item.use7,
+        august: item.use8,
+        september: item.use9,
+        october: item.use10,
+        november: item.use11,
+        december: item.use12
+      }));
+      const downloadData = this.state.downloadData.concat(data);
+      this.setState({ downloadData });
+      if (data.length == 100) {
+        this.downloadExcel({ pageIndex: pageIndex + 1 });
+      } else {
+        exportExcel(downloadData, NJGLColums, "年假");
+        this.setState({ downloading: false, downloadData: [] });
+      }
+    } catch (error) {
+      this.setState({ downloading: false });
+      message.error(error.message);
+    }
+  }
+}
 
 class KaoQinYueDuJieSuan extends React.PureComponent {
   actionBarExtra = ({
@@ -2109,3 +2642,14 @@ class NianJiaChaXun extends React.PureComponent {
   }
 }
 export default AnnualLeaveManage;
+
+//拼接表的数据来源（80后台）： 424537954415
+// 表 662169346288 里面的员工姓名、工号、四个季度的当季分配余额、四个季度的剩余可用年假。
+// 上年剩余是表 662169346288 四个季度的上年剩余之和
+// 当年新增是表 662169346288 四个季度的当季分配余额之和加累上四个季度的计使用当季分配之和
+// 总结余是表 662169346288 四个季度的累计可用年假之和
+
+// 表 311025002785 里面的根据考勤月份进行拼接。例：202101到202112的记录里的年假拼到同一条记录里。
+// 上年结余要取表 662169383744 里对应年份交易名称是‘上年转入’的上年剩余年假
+
+//最后拼接出来的记录应该是一个人一年一条记录
