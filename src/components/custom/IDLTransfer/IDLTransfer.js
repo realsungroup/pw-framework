@@ -117,7 +117,8 @@ class IDLTransfer extends Component {
       curPeopleId: '',
       curPeopleKey: 0,
       showCraft: false,
-      bucodeGroup: []
+      bucodeGroup: [],
+      isDirector: false //是否是主管，主管才可以提交
     };
   }
   componentWillMount() {}
@@ -126,6 +127,7 @@ class IDLTransfer extends Component {
     this.getCompany();
     this.getBucode();
     this.getTypeAndTitle();
+    this.handleIsDirector();
   }
   getCompany = async () => {
     let res;
@@ -344,6 +346,25 @@ class IDLTransfer extends Component {
     } catch (e) {
       console.log(e);
       this.setState({ loading: false });
+    }
+  };
+  //判定是否是主管身份，主管才有权限提交
+  handleIsDirector = async () => {
+    const currentUsercode = this.getAppInfo();
+    let res;
+    try {
+      res = await http({ baseURL: WuxiHr03BaseURL }).getTable({
+        resid: 620151840444,
+        cmswhere: `C3_417993417686 = '${currentUsercode}'`
+      });
+      if (res.data.length > 0) {
+        this.setState({
+          isDirector: true
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+      message.info(error.message);
     }
   };
   //获取申请人信息
@@ -914,6 +935,7 @@ class IDLTransfer extends Component {
     }
   };
   render() {
+    const { isDirector } = this.state;
     return (
       <div className="IDLTransfer">
         <Tabs activeKey={this.state.page} onChange={k => this.callBack(k)}>
@@ -1973,7 +1995,14 @@ class IDLTransfer extends Component {
                       <Button
                         style={!this.state.isSub ? {} : { display: 'none' }}
                         type="primary"
-                        onClick={() => this.subData()}
+                        onClick={() => {
+                          if (isDirector) {
+                            this.subData();
+                          } else {
+                            message.info('您无权提交申请');
+                            return;
+                          }
+                        }}
                       >
                         提交
                       </Button>
