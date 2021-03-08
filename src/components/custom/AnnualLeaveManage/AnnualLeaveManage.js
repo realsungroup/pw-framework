@@ -1883,7 +1883,7 @@ class NianJiaGaiLan extends React.PureComponent {
     const { data, total, current, spinning, selectedData, pageSize, downloading, downloadData } = this.state;
     return (
       <div className='NJGL'>
-        <div className='tools'>
+        {/* <div className='tools'>
           <Input.Search
             size="small"
             onSearch={this.handleSearch}
@@ -1903,9 +1903,37 @@ class NianJiaGaiLan extends React.PureComponent {
               刷新
             </Button>
           </div>
-        </div>
-        <Spin spinning={spinning}>
-          <div className='maindata'>
+        </div> */}
+        <div className='maindata'>
+          <TableData
+            key="xinYueBao"
+            wrappedComponentRef={element => (this.tableDataRef = element)}
+            refTargetComponentName="TableData"
+            resid={668272811088}
+            baseURL={baseURL}
+            subtractH={190}
+            isUseBESize={true}
+            onRowClick={(v) => {
+              console.log(v, v.numberID);
+              this.setState({
+                selectedData: {
+                  number: v.numberID
+                }
+              })
+            }}
+            hasAdd={false}
+            hasModify={false}
+            hasDelete={false}
+            hasRowEdit={false}
+            hasRowModify={false}
+            hasRowView={false}
+            hasRowDelete={false}
+            actionBarWidth={100}
+            // actionBarExtra={this.actionBarExtra}
+            downloadBaseURL={baseURLFromAppConfig}
+
+          />
+          {/* <div className='maindata'>
             <ul>
               {NJGLColums.map((item) => {
                 return (
@@ -1927,8 +1955,9 @@ class NianJiaGaiLan extends React.PureComponent {
                 })}
               </ul>
             })}
-          </div>
-        </Spin>
+          </div> */}
+        </div>
+
         <div className='subdata'>
           <Tabs defaultActiveKey="1" tabPosition='left'>
             <TabPane tab="上年剩余调整" key="1">
