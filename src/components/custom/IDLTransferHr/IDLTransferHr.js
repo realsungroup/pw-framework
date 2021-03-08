@@ -21,6 +21,7 @@ import http from 'Util20/api';
 import moment from 'moment';
 import IDLTransferVerify from '../IDLTransferVerify';
 import IDLTransferVerifyAction from '../IDLTransferVerifyAction';
+import ChangedInfoForm from './ChangedInfoForm';
 import { async } from 'q';
 import Sider from 'antd/lib/layout/Sider';
 function compare(property) {
@@ -101,7 +102,8 @@ class IDLTransferHr extends Component {
       commandVisible: false,
       changeApprove: false, //审批人选择
       changeKey: null, //变更审批的序号
-      curStep: 0
+      curStep: 0,
+      allValues: {} //HR预审批时可以修改变动信息，此state用来存放子组件传递来的值
     };
   }
   //删除审批节点
@@ -196,6 +198,7 @@ class IDLTransferHr extends Component {
           n++;
         }
         console.log('stream', arr2);
+        console.table(recid);
         this.setState({ stream: arr2, streamChange: arr2 });
       } catch (e) {
         console.log(e);
@@ -373,6 +376,7 @@ class IDLTransferHr extends Component {
           data: [
             {
               REC_ID: this.state.toCheckFront.REC_ID,
+              ...this.state.allValues,
               Approve: ps,
               ApproveRemark: this.state.C3_632503853105,
               hrPreAprrove: 'Y',
@@ -662,6 +666,36 @@ class IDLTransferHr extends Component {
       });
     }
     this.setState({ right: obj });
+  };
+  //获取表单更改后的值(HR预审可以修改变动信息)
+  sendFormDataToFather = allValues => {
+    this.setState(allValues);
+    console.log(allValues);
+  };
+  //HR预审时，通知申请人他提交的变动信息已更改
+  handleNoticePorposal = async (dataSource, selectedRowKeys) => {
+    const arr = [];
+    dataSource.map(item => {
+      if (selectedRowKeys.includes(item.REC_ID)) {
+        arr.push(item);
+      }
+    });
+    arr.map(item => {
+      try {
+        http().modifyRecords({
+          resid: 632255761674,
+          data: [
+            {
+              REC_ID: item.REC_ID,
+              C3_668536687126: 'Y'
+            }
+          ]
+        });
+      } catch (error) {
+        message.info(error.message);
+        console.log(error.message);
+      }
+    });
   };
   componentWillMount() {
     this.getRightGroup();
@@ -1366,7 +1400,7 @@ class IDLTransferHr extends Component {
                   ) : null}
                   <div className="tableWrap">
                     <Spin spinning={this.state.loading}>
-                      <div style={{ float: 'left' }}>
+                      {/* <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0' }}>
                           <li>
                             {' '}
@@ -1504,7 +1538,7 @@ class IDLTransferHr extends Component {
                             )}
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
                       {this.state.toCheckFront.ApproveRemark ? (
                         <>
                           <br />
@@ -1512,7 +1546,7 @@ class IDLTransferHr extends Component {
                           <p>{this.state.toCheckFront.ApproveRemark}</p>
                         </>
                       ) : null}
-                      <div style={{ float: 'left' }}>
+                      {/* <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0', marginLeft: '-1px' }}>
                           <li>
                             <b>是否有Headcount：</b>
@@ -1557,7 +1591,18 @@ class IDLTransferHr extends Component {
                             </span>
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
+                      <ChangedInfoForm
+                        toCheckFront={this.state.toCheckFront}
+                        toCheck={this.state.toCheck}
+                        isShowButton={
+                          this.state.cms ===
+                          `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`
+                            ? true
+                            : false
+                        }
+                        sendFormDataToFather={this.sendFormDataToFather}
+                      />
                     </Spin>
                   </div>
                 </div>
@@ -1636,19 +1681,38 @@ class IDLTransferHr extends Component {
                     actionBarFixed={true}
                     hasRowSelection={true}
                     actionBarExtra={({ dataSource, selectedRowKeys }) => {
-                      return this.state.cms ==
-                        `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
-                        <Button
-                          type="primary"
-                          disabled={!(selectedRowKeys.length > 0)}
-                          style={{ padding: '0 8px' }}
-                          onClick={() => {
-                            this.approveGroup(dataSource, selectedRowKeys);
-                          }}
-                        >
-                          批量审批通过
-                        </Button>
-                      ) : null;
+                      return (
+                        <>
+                          {this.state.cms ==
+                          `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
+                            <Button
+                              type="primary"
+                              disabled={!(selectedRowKeys.length > 0)}
+                              style={{ padding: '0 8px' }}
+                              onClick={() => {
+                                this.approveGroup(dataSource, selectedRowKeys);
+                              }}
+                            >
+                              批量审批通过
+                            </Button>
+                          ) : null}
+                          {this.state.cms ===
+                          `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
+                            <Button
+                              type="primary"
+                              width={'160px'}
+                              onClick={() => {
+                                this.handleNoticePorposal(
+                                  dataSource,
+                                  selectedRowKeys
+                                );
+                              }}
+                            >
+                              通知申请人信息已变动
+                            </Button>
+                          ) : null}
+                        </>
+                      );
                     }}
                     // approveGroup
                     customRowBtns={[
