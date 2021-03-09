@@ -103,7 +103,8 @@ class IDLTransferHr extends Component {
       changeApprove: false, //审批人选择
       changeKey: null, //变更审批的序号
       curStep: 0,
-      allValues: {} //HR预审批时可以修改变动信息，此state用来存放子组件传递来的值
+      allValues: {}, //HR预审批时可以修改变动信息，此state用来存放子组件传递来的值
+      applyNum: '' //申请人编号，审批流中申请人自动审批通过
     };
   }
   //删除审批节点
@@ -198,7 +199,19 @@ class IDLTransferHr extends Component {
           n++;
         }
         console.log('stream', arr2);
-        console.table(recid);
+        let proposal;
+        try {
+          proposal = await http().getTable({
+            resid: 632255761674,
+            cmswhere: `changeID = '${recid}'`
+          });
+          this.setState({
+            applyNum: proposal.data[0].applyPersonId
+          });
+        } catch (error) {
+          message.info(error.message);
+          console.log(error.message);
+        }
         this.setState({ stream: arr2, streamChange: arr2 });
       } catch (e) {
         console.log(e);
@@ -308,9 +321,19 @@ class IDLTransferHr extends Component {
         });
         n++;
       }
+      //申请人如果也是审批人，自动通过
+      let applyHasPass = [];
+      streamRec.map(item => {
+        if (item.C3_635255573464.toString() === this.state.applyNum) {
+          applyHasPass.push({ ...item, C3_634660565837: 'Y' });
+        } else {
+          applyHasPass.push({ ...item });
+        }
+      });
+      console.log('更新后审批流', applyHasPass);
       let res2 = await http().addRecords({
         resid: 634660498796,
-        data: streamRec
+        data: applyHasPass
       });
       let res3 = await http().modifyRecords({
         resid: 632255761674,
@@ -406,9 +429,19 @@ class IDLTransferHr extends Component {
             });
             n++;
           }
-          var res2 = await http().addRecords({
+          //申请人如果也是审批人，自动通过
+          let applyHasPass = [];
+          streamRec.map(item => {
+            if (item.C3_635255573464.toString() === this.state.applyNum) {
+              applyHasPass.push({ ...item, C3_634660565837: 'Y' });
+            } else {
+              applyHasPass.push({ ...item });
+            }
+          });
+          console.log('更新后审批流', applyHasPass);
+          let res2 = await http().addRecords({
             resid: 634660498796,
-            data: streamRec
+            data: applyHasPass
           });
         }
 
@@ -550,7 +583,7 @@ class IDLTransferHr extends Component {
     console.log(this.state.changeKey, v, this.state.stream);
     var obj = this.state.streamChange;
     obj[this.state.changeKey].stepPeople = v.C3_227192484125;
-    obj[this.state.changeKey].stepPeopleID = v.C3_305737857578;
+    obj[this.state.changeKey].stepPeopleID = v.C3_305737857578.toString();
     this.setState({ stream: obj, changeApprove: false });
   };
   getStream = async (v, id) => {
