@@ -27,6 +27,15 @@ const { Option } = Select;
 const { TabPane } = Tabs;
 const { Step } = Steps;
 const subresid = 632314794466; //子表resid
+const WuxiHr03BaseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03BaseURL;
+
+//正式环境与测试环境分别建表，resid不一致
+const bucodeResid =
+  WuxiHr03BaseURL !== 'http://10.108.2.66:7001/'
+    ? '668190417178'
+    : '668189585712';
+
 class IDLTransfer extends Component {
   constructor(props) {
     super(props);
@@ -108,7 +117,8 @@ class IDLTransfer extends Component {
       curPeopleId: '',
       curPeopleKey: 0,
       showCraft: false,
-      bucodeGroup: []
+      bucodeGroup: [],
+      isDirector: false //是否是主管，主管才可以提交
     };
   }
   componentWillMount() {}
@@ -117,6 +127,7 @@ class IDLTransfer extends Component {
     this.getCompany();
     this.getBucode();
     this.getTypeAndTitle();
+    this.handleIsDirector();
   }
   getCompany = async () => {
     let res;
@@ -125,7 +136,7 @@ class IDLTransfer extends Component {
     });
     this.setState({ companyArr: res.data });
     if (res.data) {
-      this.setState({ depaFilter: res.data[0].C3_419448436728 });
+      this.setState({ depaFilter: res.data[1].C3_419448436728 });
     }
   };
   //获取地址栏参数跳转页面
@@ -335,6 +346,25 @@ class IDLTransfer extends Component {
     } catch (e) {
       console.log(e);
       this.setState({ loading: false });
+    }
+  };
+  //判定是否是主管身份，主管才有权限提交
+  handleIsDirector = async () => {
+    const currentUsercode = this.getAppInfo();
+    let res;
+    try {
+      res = await http({ baseURL: WuxiHr03BaseURL }).getTable({
+        resid: 620151840444,
+        cmswhere: `C3_417993417686 = '${currentUsercode}'`
+      });
+      if (res.data.length > 0) {
+        this.setState({
+          isDirector: true
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+      message.info(error.message);
     }
   };
   //获取申请人信息
@@ -566,15 +596,17 @@ class IDLTransfer extends Component {
         memData.push({
           title:
             arr[n].C3_227192484125 + '(工号:' + arr[n].C3_227192472953 + ')',
-          value: arr[n].C3_305737857578,
-          key: arr[n].C3_305737857578,
-          parent_value: arr[n].C3_417993417686
+          // value: arr[n].C3_305737857578,
+          // key: arr[n].C3_305737857578,
+          // parent_value: arr[n].C3_417993417686
+          value: arr[n].C3_227192472953,
+          key: arr[n].C3_227192472953,
+          parent_value: arr[n].C3_429966115761
         });
         n++;
       }
 
       memData = listToTree(memData);
-
       this.setState({
         depaMember: memData,
         loading: false
@@ -593,7 +625,7 @@ class IDLTransfer extends Component {
     try {
       let res = await http({ baseURL: this.baseURL }).getTable({
         resid: 666203805903,
-        cmswhere: `C3_305737857578 = '${v}'`
+        cmswhere: `C3_227192472953 = '${v}'`
       });
       var data2 = [];
       // 存部门的第一部门第二部门第三部门第四部门
@@ -903,6 +935,7 @@ class IDLTransfer extends Component {
     }
   };
   render() {
+    const { isDirector } = this.state;
     return (
       <div className="IDLTransfer">
         <Tabs activeKey={this.state.page} onChange={k => this.callBack(k)}>
@@ -1086,7 +1119,7 @@ class IDLTransfer extends Component {
                           treeData={this.state.depaMember}
                           placeholder="请先选择人员"
                           showSearch={true}
-                          searchPlaceholder="输入人员编号搜索"
+                          searchPlaceholder="输入人员工号搜索"
                           onChange={this.onChangeDepaMem}
                         />
 
@@ -1137,8 +1170,10 @@ class IDLTransfer extends Component {
                     hasAdd={false}
                     cmswhere={
                       this.state.selMemberV
-                        ? `C3_305737857578 = '${this.state.selMemberV}'`
-                        : `C3_417993417686 = '${this.state.depaMemberV}'`
+                        ? `C3_227192472953 = '${this.state.selMemberV}'`
+                        : `C3_429966115761 = '${this.state.depaMemberV}'`
+                      // ? `C3_305737857578 = '${this.state.selMemberV}'`
+                      // : `C3_417993417686 = '${this.state.depaMemberV}'`
                     }
                     hasRowSelection={false}
                     hasRowDelete={false}
@@ -1259,7 +1294,7 @@ class IDLTransfer extends Component {
                     </div>
                     <div className="form">
                       <h3>变更后：</h3>
-                      <Checkbox
+                      {/* <Checkbox
                         checked={
                           this.state.selectMem[this.state.curPeopleKey]
                             .checkGroup.date
@@ -1285,7 +1320,7 @@ class IDLTransfer extends Component {
                           }
                           onChange={v => this.setValue(v, 'activeDate')}
                         />
-                      </span>
+                      </span> */}
                       {/* <br/>
                   <br/>
                   <b>变更类型：</b>
@@ -1466,7 +1501,7 @@ class IDLTransfer extends Component {
                             .C3_227192484125 +
                           ' - ' +
                           this.state.selectMem[this.state.curPeopleKey].newSuper
-                            .C3_305737857578
+                            .C3_227192472953
                         ) : (
                           <span
                             style={
@@ -1634,7 +1669,7 @@ class IDLTransfer extends Component {
                       >
                         BU CODE:
                       </Checkbox>
-                      <span style={{ width: 'auto' }}>
+                      {/* <span style={{ width: 'auto' }}>
                         <Select
                           disabled={
                             !this.state.selectMem[this.state.curPeopleKey]
@@ -1657,7 +1692,40 @@ class IDLTransfer extends Component {
                             );
                           })}
                         </Select>
+                      </span> */}
+                      <span
+                        style={{
+                          minWidth: '248px',
+                          marginRight: '16px',
+                          minWidth: '0'
+                        }}
+                      >
+                        {this.state.selectMem[this.state.curPeopleKey]
+                          .bucode ? (
+                          this.state.selectMem[this.state.curPeopleKey].bucode
+                        ) : (
+                          <span
+                            style={
+                              this.state.selectMem[this.state.curPeopleKey]
+                                .checkGroup.bucode
+                                ? { color: '#f5222d' }
+                                : { color: '#999' }
+                            }
+                          >
+                            请点击右侧按钮BU CODE
+                          </span>
+                        )}
                       </span>
+                      <Button
+                        disabled={
+                          !this.state.selectMem[this.state.curPeopleKey]
+                            .checkGroup.bucode
+                        }
+                        icon="search"
+                        onClick={() => this.setState({ searchBucode: true })}
+                      >
+                        选择BU CODE
+                      </Button>
                       <br />
                       <br />
                       <b>变动原因</b>
@@ -1855,6 +1923,58 @@ class IDLTransfer extends Component {
                         />
                       </div>
                     </Modal>
+                    <Modal
+                      title="BU CODE列表"
+                      visible={this.state.searchBucode}
+                      footer={null}
+                      onCancel={() => {
+                        this.setState({ searchBucode: false });
+                      }}
+                      width={'80vw'}
+                      height={'80vh'}
+                    >
+                      <div
+                        style={{
+                          width: '100%',
+                          height: 'calc(80vh - 104px)',
+                          position: 'relative'
+                        }}
+                      >
+                        <TableData
+                          baseURL={WuxiHr03BaseURL}
+                          resid={bucodeResid}
+                          hasRowView={false}
+                          subtractH={220}
+                          hasAdd={false}
+                          hasRowSelection={false}
+                          hasRowDelete={false}
+                          hasRowModify={false}
+                          hasModify={false}
+                          hasDelete={false}
+                          style={{ height: '100%' }}
+                          hasRowView={false}
+                          customRowBtns={[
+                            record => {
+                              return (
+                                <Button
+                                  onClick={() => {
+                                    var rec = this.state.selectMem;
+                                    rec[this.state.curPeopleKey].bucode =
+                                      record.C3_668189623493;
+                                    this.setState({
+                                      selectMem: rec,
+                                      searchBucode: false
+                                    });
+                                  }}
+                                >
+                                  选择
+                                </Button>
+                              );
+                            }
+                          ]}
+                        />
+                      </div>
+                    </Modal>
                     <footer>
                       <Button onClick={() => this.setState({ step: 0 })}>
                         上一步
@@ -1875,7 +1995,14 @@ class IDLTransfer extends Component {
                       <Button
                         style={!this.state.isSub ? {} : { display: 'none' }}
                         type="primary"
-                        onClick={() => this.subData()}
+                        onClick={() => {
+                          if (isDirector) {
+                            this.subData();
+                          } else {
+                            message.info('您无权提交申请');
+                            return;
+                          }
+                        }}
                       >
                         提交
                       </Button>
