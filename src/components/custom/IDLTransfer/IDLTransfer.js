@@ -136,7 +136,7 @@ class IDLTransfer extends Component {
     });
     this.setState({ companyArr: res.data });
     if (res.data) {
-      this.setState({ depaFilter: res.data[0].C3_419448436728 });
+      this.setState({ depaFilter: res.data[1].C3_419448436728 });
     }
   };
   //获取地址栏参数跳转页面

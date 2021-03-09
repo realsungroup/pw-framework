@@ -21,6 +21,7 @@ import http from 'Util20/api';
 import moment from 'moment';
 import IDLTransferVerify from '../IDLTransferVerify';
 import IDLTransferVerifyAction from '../IDLTransferVerifyAction';
+import ChangedInfoForm from './ChangedInfoForm';
 import { async } from 'q';
 import Sider from 'antd/lib/layout/Sider';
 function compare(property) {
@@ -101,7 +102,9 @@ class IDLTransferHr extends Component {
       commandVisible: false,
       changeApprove: false, //审批人选择
       changeKey: null, //变更审批的序号
-      curStep: 0
+      curStep: 0,
+      allValues: {}, //HR预审批时可以修改变动信息，此state用来存放子组件传递来的值
+      applyNum: '' //申请人编号，审批流中申请人自动审批通过
     };
   }
   //删除审批节点
@@ -196,6 +199,19 @@ class IDLTransferHr extends Component {
           n++;
         }
         console.log('stream', arr2);
+        let proposal;
+        try {
+          proposal = await http().getTable({
+            resid: 632255761674,
+            cmswhere: `changeID = '${recid}'`
+          });
+          this.setState({
+            applyNum: proposal.data[0].applyPersonId
+          });
+        } catch (error) {
+          message.info(error.message);
+          console.log(error.message);
+        }
         this.setState({ stream: arr2, streamChange: arr2 });
       } catch (e) {
         console.log(e);
@@ -305,9 +321,19 @@ class IDLTransferHr extends Component {
         });
         n++;
       }
+      //申请人如果也是审批人，自动通过
+      let applyHasPass = [];
+      streamRec.map(item => {
+        if (item.C3_635255573464.toString() === this.state.applyNum) {
+          applyHasPass.push({ ...item, C3_634660565837: 'Y' });
+        } else {
+          applyHasPass.push({ ...item });
+        }
+      });
+      console.log('更新后审批流', applyHasPass);
       let res2 = await http().addRecords({
         resid: 634660498796,
-        data: streamRec
+        data: applyHasPass
       });
       let res3 = await http().modifyRecords({
         resid: 632255761674,
@@ -373,6 +399,7 @@ class IDLTransferHr extends Component {
           data: [
             {
               REC_ID: this.state.toCheckFront.REC_ID,
+              ...this.state.allValues,
               Approve: ps,
               ApproveRemark: this.state.C3_632503853105,
               hrPreAprrove: 'Y',
@@ -402,9 +429,19 @@ class IDLTransferHr extends Component {
             });
             n++;
           }
-          var res2 = await http().addRecords({
+          //申请人如果也是审批人，自动通过
+          let applyHasPass = [];
+          streamRec.map(item => {
+            if (item.C3_635255573464.toString() === this.state.applyNum) {
+              applyHasPass.push({ ...item, C3_634660565837: 'Y' });
+            } else {
+              applyHasPass.push({ ...item });
+            }
+          });
+          console.log('更新后审批流', applyHasPass);
+          let res2 = await http().addRecords({
             resid: 634660498796,
-            data: streamRec
+            data: applyHasPass
           });
         }
 
@@ -546,7 +583,7 @@ class IDLTransferHr extends Component {
     console.log(this.state.changeKey, v, this.state.stream);
     var obj = this.state.streamChange;
     obj[this.state.changeKey].stepPeople = v.C3_227192484125;
-    obj[this.state.changeKey].stepPeopleID = v.C3_305737857578;
+    obj[this.state.changeKey].stepPeopleID = v.C3_305737857578.toString();
     this.setState({ stream: obj, changeApprove: false });
   };
   getStream = async (v, id) => {
@@ -662,6 +699,36 @@ class IDLTransferHr extends Component {
       });
     }
     this.setState({ right: obj });
+  };
+  //获取表单更改后的值(HR预审可以修改变动信息)
+  sendFormDataToFather = allValues => {
+    this.setState(allValues);
+    console.log(allValues);
+  };
+  //HR预审时，通知申请人他提交的变动信息已更改
+  handleNoticePorposal = async (dataSource, selectedRowKeys) => {
+    const arr = [];
+    dataSource.map(item => {
+      if (selectedRowKeys.includes(item.REC_ID)) {
+        arr.push(item);
+      }
+    });
+    arr.map(item => {
+      try {
+        http().modifyRecords({
+          resid: 632255761674,
+          data: [
+            {
+              REC_ID: item.REC_ID,
+              C3_668536687126: 'Y'
+            }
+          ]
+        });
+      } catch (error) {
+        message.info(error.message);
+        console.log(error.message);
+      }
+    });
   };
   componentWillMount() {
     this.getRightGroup();
@@ -1366,7 +1433,7 @@ class IDLTransferHr extends Component {
                   ) : null}
                   <div className="tableWrap">
                     <Spin spinning={this.state.loading}>
-                      <div style={{ float: 'left' }}>
+                      {/* <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0' }}>
                           <li>
                             {' '}
@@ -1504,7 +1571,7 @@ class IDLTransferHr extends Component {
                             )}
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
                       {this.state.toCheckFront.ApproveRemark ? (
                         <>
                           <br />
@@ -1512,7 +1579,7 @@ class IDLTransferHr extends Component {
                           <p>{this.state.toCheckFront.ApproveRemark}</p>
                         </>
                       ) : null}
-                      <div style={{ float: 'left' }}>
+                      {/* <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0', marginLeft: '-1px' }}>
                           <li>
                             <b>是否有Headcount：</b>
@@ -1557,7 +1624,18 @@ class IDLTransferHr extends Component {
                             </span>
                           </li>
                         </ul>
-                      </div>
+                      </div> */}
+                      <ChangedInfoForm
+                        toCheckFront={this.state.toCheckFront}
+                        toCheck={this.state.toCheck}
+                        isShowButton={
+                          this.state.cms ===
+                          `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`
+                            ? true
+                            : false
+                        }
+                        sendFormDataToFather={this.sendFormDataToFather}
+                      />
                     </Spin>
                   </div>
                 </div>
@@ -1636,19 +1714,38 @@ class IDLTransferHr extends Component {
                     actionBarFixed={true}
                     hasRowSelection={true}
                     actionBarExtra={({ dataSource, selectedRowKeys }) => {
-                      return this.state.cms ==
-                        `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
-                        <Button
-                          type="primary"
-                          disabled={!(selectedRowKeys.length > 0)}
-                          style={{ padding: '0 8px' }}
-                          onClick={() => {
-                            this.approveGroup(dataSource, selectedRowKeys);
-                          }}
-                        >
-                          批量审批通过
-                        </Button>
-                      ) : null;
+                      return (
+                        <>
+                          {this.state.cms ==
+                          `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
+                            <Button
+                              type="primary"
+                              disabled={!(selectedRowKeys.length > 0)}
+                              style={{ padding: '0 8px' }}
+                              onClick={() => {
+                                this.approveGroup(dataSource, selectedRowKeys);
+                              }}
+                            >
+                              批量审批通过
+                            </Button>
+                          ) : null}
+                          {this.state.cms ===
+                          `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
+                            <Button
+                              type="primary"
+                              width={'160px'}
+                              onClick={() => {
+                                this.handleNoticePorposal(
+                                  dataSource,
+                                  selectedRowKeys
+                                );
+                              }}
+                            >
+                              通知申请人信息已变动
+                            </Button>
+                          ) : null}
+                        </>
+                      );
                     }}
                     // approveGroup
                     customRowBtns={[
