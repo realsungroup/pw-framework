@@ -803,6 +803,7 @@ class StaffComplain extends React.Component {
             downloadBaseURL={this.downloadURL}
             resid={resid}
             key={resid}
+            isUseBESize={true}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
             hasAdd={false}

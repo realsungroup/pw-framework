@@ -738,7 +738,7 @@ class TableData extends React.Component {
       columns = result.columns;
       components = result.components;
     }
-    
+
     this._dealedColumns = columns;
 
     this.setState({ originalColumn: res.cmscolumninfo });
@@ -1001,10 +1001,10 @@ class TableData extends React.Component {
         closeImportView && closeImportView();
         message.success('导入成功');
         const dataSource = [...records];
-        return this.setState({dataSource});
+        return this.setState({ dataSource });
       }
       message.error('文件中无记录');
-    }  
+    }
   }
 
   // 导入
@@ -1422,7 +1422,7 @@ class TableData extends React.Component {
 
   // 点击添加按钮
   handleAdd = () => {
-    const { hasRowEdit, hasRowEditAdd, rowEditAddPosition } = this.props;
+    const { hasRowEdit, hasRowEditAdd, rowEditAddPosition, defaultAddRecord } = this.props;
     if (!hasRowEdit || !hasRowEditAdd) {
       return this.setState(
         {
@@ -1430,7 +1430,7 @@ class TableData extends React.Component {
           selectedRecord: {}
         },
         () => {
-          this.openRecordForm();
+          this.openRecordForm("multiple", 'add', defaultAddRecord || {});
         }
       );
     }
@@ -1700,7 +1700,7 @@ class TableData extends React.Component {
         pageSize: pagination.pageSize
       };
     }
-    await this.getTableData({...obj, isRefresh: true});
+    await this.getTableData({ ...obj, isRefresh: true });
     this.setState({
       loading: false,
       rowSelection: this.state.rowSelection
@@ -1813,7 +1813,7 @@ class TableData extends React.Component {
 
   _cmsWhere = '';
   getCmsWhere = (cmsWhere, isAdvSearch, isRefreshTable = true) => {
-    console.log({isRefreshTable})
+    console.log({ isRefreshTable })
     if (isAdvSearch) {
       this._cmsWhere = cmsWhere;
     } else {

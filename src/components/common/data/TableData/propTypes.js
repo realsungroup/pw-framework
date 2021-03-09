@@ -86,7 +86,8 @@ export const defaultProps = {
   successMessageComponent: 'message',
   isSetColumnWidth: true,
   isWrap: false,
-  backendButtonPopConfirmProps: {}
+  backendButtonPopConfirmProps: {},
+  defaultAddRecord: {}
 };
 
 export const propTypes = {
@@ -911,5 +912,10 @@ export const propTypes = {
    * 记录表单隐藏的 label（绝对定位的记录表单需要配置），数组元素为 label 名称。如 ["姓名", "年龄"]
    * 默认：-
    */
-  recordFormHideLables: PropTypes.array
+  recordFormHideLables: PropTypes.array,
+  /**
+   * 添加记录时的默认对象，如{number:'1234'}
+   * 默认：-
+   */
+  defaultAddRecord: PropTypes.object
 };
