@@ -325,7 +325,11 @@ class IDLTransferHr extends Component {
       let applyHasPass = [];
       streamRec.map(item => {
         if (item.C3_635255573464.toString() === this.state.applyNum) {
-          applyHasPass.push({ ...item, C3_634660565837: 'Y' });
+          applyHasPass.push({
+            ...item,
+            C3_634660565837: 'Y',
+            edit_time: moment().format('YYYY-MM-DD HH:mm:ss')
+          });
         } else {
           applyHasPass.push({ ...item });
         }
@@ -433,7 +437,11 @@ class IDLTransferHr extends Component {
           let applyHasPass = [];
           streamRec.map(item => {
             if (item.C3_635255573464.toString() === this.state.applyNum) {
-              applyHasPass.push({ ...item, C3_634660565837: 'Y' });
+              applyHasPass.push({
+                ...item,
+                C3_634660565837: 'Y',
+                edit_time: moment().format('YYYY-MM-DD HH:mm:ss')
+              });
             } else {
               applyHasPass.push({ ...item });
             }
@@ -1310,7 +1318,8 @@ class IDLTransferHr extends Component {
 
                     {this.state.cms ==
                     `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
-                      this.state.toCheckFront.effortDate ? (
+                      this.state.toCheckFront.effortDate &&
+                      this.state.toCheckFront.jobId ? (
                         <Button
                           type="primary"
                           style={{ padding: '0 8px' }}
