@@ -77,8 +77,8 @@ class IDLTransferVerifyAction extends Component {
       selection: 1,
       canApprove: false, //是否为当前审批人
       userId: jobNum,
-      cms: `C3_634660565837 = 'Waiting' and C3_634660565295 = '${jobNum}'`,
-
+      // cms: `C3_634660565837 = 'Waiting' and C3_634660565295 = '${jobNum}'`,
+      cms: `C3_634660565837 = 'Waiting' and C3_634660565295 = '${jobNum}' and C3_637177232366 = 'Y'`,
       visible: false,
       C3_632503844784: '', //记录编号
       toCheck: [],
@@ -189,6 +189,7 @@ class IDLTransferVerifyAction extends Component {
         if (res2.data[n].C3_634660565295 == this.state.userId) {
           var objitem = res2.data[n];
           objitem.C3_634660565837 = 'Y';
+          objitem.edit_time = moment().format('YYYY-MM-DD HH:mm:ss');
           objGroup.push(objitem);
         }
         n++;
@@ -226,6 +227,7 @@ class IDLTransferVerifyAction extends Component {
     while (n < arr.length) {
       if (this.state.userId == arr[n].C3_634660565295) {
         arr[n].C3_634660565837 = v;
+        arr[n].edit_time = moment().format('YYYY-MM-DD HH:mm:ss');
         objGroup.push(arr[n]);
       }
       n++;
@@ -731,7 +733,7 @@ class IDLTransferVerifyAction extends Component {
               onClick={() => {
                 this.setState({
                   selection: '1',
-                  cms: `C3_634660565837 = 'Waiting' and C3_634660565295 = '${this.state.userId}'`
+                  cms: `C3_634660565837 = 'Waiting' and C3_634660565295 = '${this.state.userId}' and C3_637177232366 = 'Y'`
                 });
               }}
             >
