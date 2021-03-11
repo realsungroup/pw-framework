@@ -81,73 +81,98 @@ class ChangedInfoForm extends React.Component {
   };
 
   render() {
-    const { toCheckFront, toCheck, isShowButton } = this.props;
+    const { toCheckFront, toCheck, isShowButton, HCPreApprove } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { lvList, currentLevel, canChangeProCode } = this.state;
     this.props.form.getFieldDecorator('nDriectorCode', { preserve: true });
     this.props.form.getFieldDecorator('nDepartCode', { preserve: true });
+    console.log('HCPre', HCPreApprove);
     return (
       <Form className="formClass" {...formItemLayout}>
-        <Form.Item
-          label="是否有Headcount"
-          style={{ display: 'flex', marginBottom: '5px' }}
-        >
-          {getFieldDecorator('C3_637425449725', {
-            initialValue: toCheckFront.C3_637425449725
-          })(
-            <Input
-              style={{ width: 200, pointerEvents: 'none', textAlign: 'center' }}
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="headcount变更类型"
-          style={{ display: 'flex', marginBottom: '5px' }}
-        >
-          {getFieldDecorator('C3_637425577105', {
-            initialValue: toCheckFront.C3_637425577105
-          })(
-            <Input
-              style={{ width: 200, pointerEvents: 'none', textAlign: 'center' }}
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="替代人"
-          style={{ display: 'flex', marginBottom: '5px' }}
-        >
-          {getFieldDecorator('C3_637617454519', {
-            initialValue: toCheckFront.C3_637617454519
-          })(
-            <Input
-              style={{ width: 200, pointerEvents: 'none', textAlign: 'center' }}
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="招聘人员备注"
-          style={{ display: 'flex', marginBottom: '5px' }}
-        >
-          {getFieldDecorator('C3_637425470106', {
-            initialValue: toCheckFront.C3_637425470106
-          })(
-            <Input
-              style={{ width: 200, pointerEvents: 'none', textAlign: 'center' }}
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="招聘人员确认人姓名"
-          style={{ display: 'flex', marginBottom: '5px' }}
-        >
-          {getFieldDecorator('C3_637425935795', {
-            initialValue: toCheckFront.C3_637425935795
-          })(
-            <Input
-              style={{ width: 200, pointerEvents: 'none', textAlign: 'center' }}
-            />
-          )}
-        </Form.Item>
+        {HCPreApprove !== 'Y' && (
+          <>
+            <Form.Item
+              label="是否有Headcount"
+              style={{ display: 'flex', marginBottom: '5px' }}
+            >
+              {getFieldDecorator('C3_637425449725', {
+                initialValue: toCheckFront.C3_637425449725
+              })(
+                <Input
+                  style={{
+                    width: 200,
+                    pointerEvents: 'none',
+                    textAlign: 'center'
+                  }}
+                />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="headcount变更类型"
+              style={{ display: 'flex', marginBottom: '5px' }}
+            >
+              {getFieldDecorator('C3_637425577105', {
+                initialValue: toCheckFront.C3_637425577105
+              })(
+                <Input
+                  style={{
+                    width: 200,
+                    pointerEvents: 'none',
+                    textAlign: 'center'
+                  }}
+                />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="替代人"
+              style={{ display: 'flex', marginBottom: '5px' }}
+            >
+              {getFieldDecorator('C3_637617454519', {
+                initialValue: toCheckFront.C3_637617454519
+              })(
+                <Input
+                  style={{
+                    width: 200,
+                    pointerEvents: 'none',
+                    textAlign: 'center'
+                  }}
+                />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="招聘人员备注"
+              style={{ display: 'flex', marginBottom: '5px' }}
+            >
+              {getFieldDecorator('C3_637425470106', {
+                initialValue: toCheckFront.C3_637425470106
+              })(
+                <Input
+                  style={{
+                    width: 200,
+                    pointerEvents: 'none',
+                    textAlign: 'center'
+                  }}
+                />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="招聘人员确认人姓名"
+              style={{ display: 'flex', marginBottom: '5px' }}
+            >
+              {getFieldDecorator('C3_637425935795', {
+                initialValue: toCheckFront.C3_637425935795
+              })(
+                <Input
+                  style={{
+                    width: 200,
+                    pointerEvents: 'none',
+                    textAlign: 'center'
+                  }}
+                />
+              )}
+            </Form.Item>
+          </>
+        )}
         <Form.Item
           label="姓名"
           style={{ display: 'flex', marginBottom: '5px' }}
