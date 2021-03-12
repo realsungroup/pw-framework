@@ -32,8 +32,6 @@ class ChangedInfoForm extends React.Component {
       searchSuperV: false,
       searchBucode: false,
       depaFilter: '', //选择部门时的公司筛选
-      nDepartCode: '', //变动后部门编号,后台根据此计算变动后部门
-      nDriectorCode: '', //变动后主管编号,后台根据此计算变动后主管
       companyArr: [],
       lvList: [], //级别数组
       currentLevel: '请选择级别', //当前级别
@@ -83,73 +81,98 @@ class ChangedInfoForm extends React.Component {
   };
 
   render() {
-    const { toCheckFront, toCheck, isShowButton } = this.props;
+    const { toCheckFront, toCheck, isShowButton, HCPreApprove } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { lvList, currentLevel, canChangeProCode } = this.state;
     this.props.form.getFieldDecorator('nDriectorCode', { preserve: true });
     this.props.form.getFieldDecorator('nDepartCode', { preserve: true });
+    console.log('HCPre', HCPreApprove);
     return (
       <Form className="formClass" {...formItemLayout}>
-        <Form.Item
-          label="是否有Headcount"
-          style={{ display: 'flex', marginBottom: '5px' }}
-        >
-          {getFieldDecorator('C3_637425449725', {
-            initialValue: toCheckFront.C3_637425449725
-          })(
-            <Input
-              style={{ width: 200, pointerEvents: 'none', textAlign: 'center' }}
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="headcount变更类型"
-          style={{ display: 'flex', marginBottom: '5px' }}
-        >
-          {getFieldDecorator('C3_637425577105', {
-            initialValue: toCheckFront.C3_637425577105
-          })(
-            <Input
-              style={{ width: 200, pointerEvents: 'none', textAlign: 'center' }}
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="替代人"
-          style={{ display: 'flex', marginBottom: '5px' }}
-        >
-          {getFieldDecorator('C3_637617454519', {
-            initialValue: toCheckFront.C3_637617454519
-          })(
-            <Input
-              style={{ width: 200, pointerEvents: 'none', textAlign: 'center' }}
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="招聘人员备注"
-          style={{ display: 'flex', marginBottom: '5px' }}
-        >
-          {getFieldDecorator('C3_637425470106', {
-            initialValue: toCheckFront.C3_637425470106
-          })(
-            <Input
-              style={{ width: 200, pointerEvents: 'none', textAlign: 'center' }}
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label="招聘人员确认人姓名"
-          style={{ display: 'flex', marginBottom: '5px' }}
-        >
-          {getFieldDecorator('C3_637425935795', {
-            initialValue: toCheckFront.C3_637425935795
-          })(
-            <Input
-              style={{ width: 200, pointerEvents: 'none', textAlign: 'center' }}
-            />
-          )}
-        </Form.Item>
+        {HCPreApprove !== 'Y' && (
+          <>
+            <Form.Item
+              label="是否有Headcount"
+              style={{ display: 'flex', marginBottom: '5px' }}
+            >
+              {getFieldDecorator('C3_637425449725', {
+                initialValue: toCheckFront.C3_637425449725
+              })(
+                <Input
+                  style={{
+                    width: 200,
+                    pointerEvents: 'none',
+                    textAlign: 'center'
+                  }}
+                />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="headcount变更类型"
+              style={{ display: 'flex', marginBottom: '5px' }}
+            >
+              {getFieldDecorator('C3_637425577105', {
+                initialValue: toCheckFront.C3_637425577105
+              })(
+                <Input
+                  style={{
+                    width: 200,
+                    pointerEvents: 'none',
+                    textAlign: 'center'
+                  }}
+                />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="替代人"
+              style={{ display: 'flex', marginBottom: '5px' }}
+            >
+              {getFieldDecorator('C3_637617454519', {
+                initialValue: toCheckFront.C3_637617454519
+              })(
+                <Input
+                  style={{
+                    width: 200,
+                    pointerEvents: 'none',
+                    textAlign: 'center'
+                  }}
+                />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="招聘人员备注"
+              style={{ display: 'flex', marginBottom: '5px' }}
+            >
+              {getFieldDecorator('C3_637425470106', {
+                initialValue: toCheckFront.C3_637425470106
+              })(
+                <Input
+                  style={{
+                    width: 200,
+                    pointerEvents: 'none',
+                    textAlign: 'center'
+                  }}
+                />
+              )}
+            </Form.Item>
+            <Form.Item
+              label="招聘人员确认人姓名"
+              style={{ display: 'flex', marginBottom: '5px' }}
+            >
+              {getFieldDecorator('C3_637425935795', {
+                initialValue: toCheckFront.C3_637425935795
+              })(
+                <Input
+                  style={{
+                    width: 200,
+                    pointerEvents: 'none',
+                    textAlign: 'center'
+                  }}
+                />
+              )}
+            </Form.Item>
+          </>
+        )}
         <Form.Item
           label="姓名"
           style={{ display: 'flex', marginBottom: '5px' }}
@@ -271,52 +294,6 @@ class ChangedInfoForm extends React.Component {
               </InputGroup>
             ))
           }
-
-          {/* <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('jobName', {
-              initialValue: toCheckFront.jobName
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block'
-            }}
-          >
-            <span style={{ color: '#f5222d' }}>{'>>'}</span>
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('nJobName', {
-              initialValue: toCheck[1]
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: '16px'
-            }}
-          >
-            {isShowButton && (
-              <Button
-                icon="search"
-                onClick={() => this.setState({ searchJobV: true })}
-                type="primary"
-              >
-                变更岗位
-              </Button>
-            )}
-          </Form.Item> */}
         </Form.Item>
         <Form.Item
           label="级别"
@@ -385,66 +362,6 @@ class ChangedInfoForm extends React.Component {
               </InputGroup>
             ))
           }
-
-          {/* <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('level', {
-              initialValue: toCheckFront.level
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block'
-            }}
-          >
-            <span style={{ color: '#f5222d' }}>{'>>'}</span>
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('nLevel', {
-              initialValue: toCheck[2]
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: '16px'
-            }}
-          >
-            {isShowButton && (
-              <Select
-                placeholder="请选择级别"
-                style={{ width: 160 }}
-                value={currentLevel}
-                onChange={v => {
-                  this.props.form.setFieldsValue({
-                    nLevel: v
-                  });
-                  this.setState({
-                    currentLevel: v
-                  });
-                }}
-              >
-                {lvList.map(item => {
-                  return (
-                    <Option value={item.value} key={item.key}>
-                      {item.value}
-                    </Option>
-                  );
-                })}
-              </Select>
-            )}
-          </Form.Item> */}
         </Form.Item>
         <Form.Item
           label="主管"
@@ -499,52 +416,6 @@ class ChangedInfoForm extends React.Component {
               </InputGroup>
             ))
           }
-
-          {/* <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('driectorName', {
-              initialValue: toCheckFront.driectorName
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block'
-            }}
-          >
-            <span style={{ color: '#f5222d' }}>{'>>'}</span>
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('nDriectorName', {
-              initialValue: toCheck[3]
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: '16px'
-            }}
-          >
-            {isShowButton && (
-              <Button
-                icon="search"
-                onClick={() => this.setState({ searchSuperV: true })}
-                type="primary"
-              >
-                变更主管
-              </Button>
-            )}
-          </Form.Item> */}
         </Form.Item>
         <Form.Item
           label="项目代码"
@@ -679,52 +550,6 @@ class ChangedInfoForm extends React.Component {
               </InputGroup>
             ))
           }
-
-          {/* <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('bucode', {
-              initialValue: toCheckFront.bucode
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block'
-            }}
-          >
-            <span style={{ color: '#f5222d' }}>{'>>'}</span>
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('nBuCode', {
-              initialValue: toCheck[5]
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: '16px'
-            }}
-          >
-            {isShowButton && (
-              <Button
-                type="primary"
-                icon="search"
-                onClick={() => this.setState({ searchBucode: true })}
-              >
-                变更BU CODE
-              </Button>
-            )}
-          </Form.Item> */}
         </Form.Item>
         <Form.Item
           label="一级部门"
@@ -770,36 +595,6 @@ class ChangedInfoForm extends React.Component {
               </InputGroup>
             ))
           }
-
-          {/* <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('firstDepart', {
-              initialValue: toCheckFront.firstDepart
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block'
-            }}
-          >
-            <span style={{ color: '#f5222d' }}>{'>>'}</span>
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('nFirstDepart', {
-              initialValue: toCheck[6]
-            })(<Input disabled />)}
-          </Form.Item> */}
         </Form.Item>
         <Form.Item
           label="二级部门"
@@ -845,36 +640,6 @@ class ChangedInfoForm extends React.Component {
               </InputGroup>
             ))
           }
-
-          {/* <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('secondDepart', {
-              initialValue: toCheckFront.secondDepart
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block'
-            }}
-          >
-            <span style={{ color: '#f5222d' }}>{'>>'}</span>
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('nSecondDepart', {
-              initialValue: toCheck[7]
-            })(<Input disabled />)}
-          </Form.Item> */}
         </Form.Item>
         <Form.Item
           label="三级部门"
@@ -920,35 +685,6 @@ class ChangedInfoForm extends React.Component {
               </InputGroup>
             ))
           }
-          {/* <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('thirdDepart', {
-              initialValue: toCheckFront.thirdDepart
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block'
-            }}
-          >
-            <span style={{ color: '#f5222d' }}>{'>>'}</span>
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('nThirdDepart', {
-              initialValue: toCheck[8]
-            })(<Input disabled />)}
-          </Form.Item> */}
         </Form.Item>
         <Form.Item
           label="四级部门"
@@ -994,35 +730,6 @@ class ChangedInfoForm extends React.Component {
               </InputGroup>
             ))
           }
-          {/* <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('fourthDepart', {
-              initialValue: toCheckFront.fourthDepart
-            })(<Input disabled />)}
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block'
-            }}
-          >
-            <span style={{ color: '#f5222d' }}>{'>>'}</span>
-          </Form.Item>
-          <Form.Item
-            style={{
-              display: 'inline-block',
-              width: 'calc(30% - 12px)',
-              marginRight: '8px'
-            }}
-          >
-            {getFieldDecorator('nFourthDepart', {
-              initialValue: toCheck[9]
-            })(<Input disabled />)}
-          </Form.Item> */}
         </Form.Item>
         <Modal
           title="部门列表"
@@ -1086,7 +793,6 @@ class ChangedInfoForm extends React.Component {
                           nFourthDepart: record.C3_461011989771
                         });
                         this.setState({
-                          nDepartCode: record.DEP_ID,
                           searchDepaV: false
                         });
                       }}
@@ -1191,7 +897,6 @@ class ChangedInfoForm extends React.Component {
                         });
 
                         this.setState({
-                          nDriectorCode: record.C3_305737857578,
                           searchSuperV: false
                         });
                       }}

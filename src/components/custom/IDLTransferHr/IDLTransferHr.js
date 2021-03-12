@@ -325,7 +325,11 @@ class IDLTransferHr extends Component {
       let applyHasPass = [];
       streamRec.map(item => {
         if (item.C3_635255573464.toString() === this.state.applyNum) {
-          applyHasPass.push({ ...item, C3_634660565837: 'Y' });
+          applyHasPass.push({
+            ...item,
+            C3_634660565837: 'Y',
+            edit_time: moment().format('YYYY-MM-DD HH:mm:ss')
+          });
         } else {
           applyHasPass.push({ ...item });
         }
@@ -433,7 +437,11 @@ class IDLTransferHr extends Component {
           let applyHasPass = [];
           streamRec.map(item => {
             if (item.C3_635255573464.toString() === this.state.applyNum) {
-              applyHasPass.push({ ...item, C3_634660565837: 'Y' });
+              applyHasPass.push({
+                ...item,
+                C3_634660565837: 'Y',
+                edit_time: moment().format('YYYY-MM-DD HH:mm:ss')
+              });
             } else {
               applyHasPass.push({ ...item });
             }
@@ -729,6 +737,8 @@ class IDLTransferHr extends Component {
         console.log(error.message);
       }
     });
+    message.info('提醒成功');
+    this.tableDataRef.handleRefresh();
   };
   componentWillMount() {
     this.getRightGroup();
@@ -1062,7 +1072,7 @@ class IDLTransferHr extends Component {
             width={'90vw'}
             visible={this.state.visibleHC}
             footer={
-              this.state.C3_637425449725 && this.state.C3_637425470106 ? (
+              this.state.C3_637425449725 && this.state.iiviJobCode ? (
                 <>
                   <Button
                     type="danger"
@@ -1084,12 +1094,14 @@ class IDLTransferHr extends Component {
                   </Button>
                 </>
               ) : (
-                '至少全部填选完第1、3、5项才能提交'
+                '至少全部填选完第1、3项才能提交'
               )
             }
             onCancel={() => this.setState({ visibleHC: false })}
           >
-            <b>是否有Headcount：</b>
+            <b>
+              <span style={{ color: 'red' }}>*</span>是否有Headcount：
+            </b>
             <Select
               style={{ width: '200px' }}
               value={this.state.C3_637425449725}
@@ -1129,7 +1141,9 @@ class IDLTransferHr extends Component {
             </Select>
             <div style={{ width: '100%', height: '1rem' }}></div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <b>Job Code：</b>
+              <b>
+                <span style={{ color: 'red' }}>*</span>Job Code：
+              </b>
               <Input
                 style={{ width: 200 }}
                 value={this.state.iiviJobCode}
@@ -1310,7 +1324,8 @@ class IDLTransferHr extends Component {
 
                     {this.state.cms ==
                     `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
-                      this.state.toCheckFront.effortDate ? (
+                      this.state.toCheckFront.effortDate &&
+                      this.state.toCheckFront.jobId ? (
                         <Button
                           type="primary"
                           style={{ padding: '0 8px' }}
@@ -1628,6 +1643,7 @@ class IDLTransferHr extends Component {
                       <ChangedInfoForm
                         toCheckFront={this.state.toCheckFront}
                         toCheck={this.state.toCheck}
+                        HCPreApprove={this.state.right.HCPreApprove}
                         isShowButton={
                           this.state.cms ===
                           `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`

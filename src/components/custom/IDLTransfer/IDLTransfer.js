@@ -936,7 +936,13 @@ class IDLTransfer extends Component {
   };
   render() {
     const { isDirector } = this.state;
-    return (
+    return !isDirector ? (
+      <div>
+        <h3 style={{ textAlign: 'center', marginTop: '64px' }}>
+          您无权提交人事变动申请
+        </h3>
+      </div>
+    ) : (
       <div className="IDLTransfer">
         <Tabs activeKey={this.state.page} onChange={k => this.callBack(k)}>
           <TabPane tab="填写申请单" key="1">
