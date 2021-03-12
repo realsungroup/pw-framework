@@ -136,7 +136,7 @@ class IDLTransfer extends Component {
     });
     this.setState({ companyArr: res.data });
     if (res.data) {
-      this.setState({ depaFilter: res.data[0].C3_419448436728 });
+      this.setState({ depaFilter: res.data[1].C3_419448436728 });
     }
   };
   //获取地址栏参数跳转页面
@@ -936,7 +936,13 @@ class IDLTransfer extends Component {
   };
   render() {
     const { isDirector } = this.state;
-    return (
+    return !isDirector ? (
+      <div>
+        <h3 style={{ textAlign: 'center', marginTop: '64px' }}>
+          您无权提交人事变动申请
+        </h3>
+      </div>
+    ) : (
       <div className="IDLTransfer">
         <Tabs activeKey={this.state.page} onChange={k => this.callBack(k)}>
           <TabPane tab="填写申请单" key="1">

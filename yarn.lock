@@ -3929,10 +3929,10 @@ doctrine@^2.1.0:
   dependencies:
     esutils "^2.0.2"
 
-docx@^5.4.1:
-  version "5.4.1"
-  resolved "https://registry.npm.taobao.org/docx/download/docx-5.4.1.tgz#5a5a5988877ac0c1d7309f9775232339ec631918"
-  integrity sha1-WlpZiId6wMHXMJ+XdSMjOexjGRg=
+docx@^5.5.0:
+  version "5.5.0"
+  resolved "https://registry.npm.taobao.org/docx/download/docx-5.5.0.tgz#708002eaecf7bfeb07405fd50e15fa01083463ba"
+  integrity sha1-cIAC6uz3v+sHQF/VDhX6AQg0Y7o=
   dependencies:
     "@types/jszip" "^3.1.4"
     "@types/node" "^14.0.5"
