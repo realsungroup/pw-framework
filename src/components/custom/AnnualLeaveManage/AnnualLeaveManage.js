@@ -1968,17 +1968,18 @@ class NianJiaGaiLan extends React.PureComponent {
                   refTargetComponentName="TableData"
                   resid={663248318082}
                   baseURL={baseURL}
-                  subtractH={220}
-                  hasAdvSearch={true}
+                  subtractH={190}
                   hasAdd={true}
-                  hasRowView={false}
-                  hasRowDelete={false}
-                  hasRowEdit={false}
-                  hasDelete={false}
+                  hasAdvSearch={true}
+
                   hasModify={false}
-                  hasBeBtns={false}
+                  hasDelete={false}
+                  hasRowEdit={false}
                   hasRowModify={false}
-                  hasRowSelection={false}
+                  hasRowView={true}
+                  hasRowDelete={false}
+                  actionBarWidth={100}
+                  defaultAddRecord={{ C3_663248494033: selectedData.number }}
                   // actionBarExtra={this.actionBarExtra}
                   cmswhere={selectedData.number ? `C3_663248494033 = ${selectedData.number}` : '1 != 1'}
                   downloadBaseURL={baseURLFromAppConfig}
