@@ -133,6 +133,107 @@ class Compact extends Component {
     this.setState({ signingDate: v, meetTime: str });
   };
   /**
+    * 重新发送提醒邮件=清空后台已发送邮件的字段
+    */
+  handleRemail = async (record) => {
+
+    this.setState({ loading: true })
+    if (record.selectedRowKeys.length < 1) {
+      message.error('请先选择要打印的记录！');
+      this.setState({ loading: false });
+
+    } else {
+      const data = record.dataSource;
+      let Reldata = [];
+      data.map(item => {
+        record.selectedRowKeys.map(items => {
+          if (item.REC_ID === items) {
+            Reldata.push(item);
+          }
+        });
+      });
+      let obj = {};
+      let resid;
+      let toChange;
+      //C3_640795239364 咨询员工意向已发
+      //C3_489008835622提醒第一审批人已发
+      //C3_641226096054部门总监审批已发
+
+      //C3_640820671962是否已经发送(表640820603954)
+
+      if (this.state.key3 === '_03A') {
+        resid = '436624135588'
+      } else {
+        resid = '640820603954'
+      };
+
+      if (this.state.key4 === '_03B') {
+        toChange = 'C3_640795239364'
+      } else if (this.state.key4 === '_13B') {
+        toChange = 'C3_489008835622'
+      } else if (this.state.key4 === '_23B') {
+        toChange = 'C3_641226096054'
+      } else {
+        toChange = 'C3_640820671962'
+      };
+      let toSend = [];
+      let n = 0;
+      if (this.state.key3 === '_03A') {
+        while (n < Reldata.length) {
+          toSend.push({
+            REC_ID: Reldata[n].REC_ID,
+            [toChange]: ''
+          }
+          )
+          n++;
+        }
+        obj = {
+          resid,
+          data: toSend
+        }
+      } else {
+        let string = ``
+        while (n < Reldata.length) {
+          if (n == 0) {
+            string = string + Reldata[n].REC_ID
+
+          } else {
+            string = string + ' or ' + Reldata[n].REC_ID
+          }
+          n++;
+        }
+        let res2 = await http().getTable({
+          resid: 640820603954,
+          cmswhere: `C3_640820672212 = '${string}'`
+        })
+        while (n < res2.data.length) {
+          toSend.push({
+            REC_ID: res2.data[n].C3_491590137418,
+            [toChange]: ''
+          }
+          )
+          n++;
+        }
+        obj = {
+          resid,
+          data: toSend
+        }
+        console.log(obj)
+      }
+      // try {
+      //   let res = await http().modifyRecords(obj);
+      //   this.setState({ loading: false });
+      //   message.success('操作成功');
+      //   this.tableDataRef3.handleRefresh();
+
+      // } catch (e) {
+      //   console.log(e.message);
+      //   this.setState({ loading: false });
+      // }
+    }
+
+  }
+  /**
    * 发送签约邮件
    */
   handleSendEmail = async persons => {
@@ -821,11 +922,17 @@ class Compact extends Component {
                 hasBeBtns={true}
                 hasRowModify={false}
                 hasRowSelection={true}
+                wrappedComponentRef={element => (this.tableDataRef3 = element)}
+                refTargetComponentName="TableData"
                 actionBarExtra={
                   (record) => {
                     return (
                       <Button
                         type="primary"
+                        loading={this.state.loading}
+                        onClick={() => {
+                          this.handleRemail(record);
+                        }}
                       >
                         再次发送提醒邮件
                       </Button>
