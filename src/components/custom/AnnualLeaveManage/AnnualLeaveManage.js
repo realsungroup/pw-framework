@@ -405,8 +405,8 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
-      title: '年假概览',
-      tip: '年假概览',
+      title: '年假台账管理',
+      tip: '年假台账管理',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
         return (
@@ -577,9 +577,9 @@ class AnnualLeaveManage extends React.Component {
               });
             }}
           >
-            <Menu.Item key='年假概览'>
+            <Menu.Item key='年假台账管理'>
               <div className="menu-item__body">
-                年假概览
+                年假台账管理
                     </div>
             </Menu.Item>
             <SubMenu key="submenu1" title="交易明细">
@@ -649,7 +649,7 @@ class AnnualLeaveManage extends React.Component {
               if (index >= 9) {
                 return (
 
-                  menu.title === '年假概览' ? null :
+                  menu.title === '年假台账管理' ? null :
 
                     <Menu.Item key={menu.title}>
                       <div className="menu-item__body">
@@ -1970,6 +1970,8 @@ class NianJiaGaiLan extends React.PureComponent {
                   baseURL={baseURL}
                   subtractH={190}
                   hasAdd={true}
+                  hasAdvSearch={true}
+
                   hasModify={false}
                   hasDelete={false}
                   hasRowEdit={false}
@@ -1996,12 +1998,12 @@ class NianJiaGaiLan extends React.PureComponent {
                   subtractH={190}
                   hasAdd={true}
                   hasModify={false}
-                  hasDelete={false}
-                  hasRowEdit={false}
+                  hasDelete={true}
+                  hasRowEdit={true}
                   hasRowModify={true}
                   hasRowView={true}
                   hasRowDelete={false}
-                  actionBarWidth={100}
+                  actionBarWidth={180}
                   downloadBaseURL={baseURLFromAppConfig}
                   defaultAddRecord={{ numberID: selectedData.number }}
                   cmswhere={selectedData.number ? `numberID = ${selectedData.number}` : '1 != 1'}

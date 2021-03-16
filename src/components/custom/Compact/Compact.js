@@ -62,6 +62,40 @@ const filterTab2B = [
     cms: `C3_640119278050= 'IDL'`
   }
 ];
+const filterTab3A = [
+  {
+    label: 'IDL'
+
+  }, {
+    label: 'DL'
+  }
+]
+const filterTab3B = [
+  {
+    condition: 'DL',
+    label: '员工意向确认',
+    resid: '668712593119'
+  },
+  {
+    condition: 'DL',
+    label: '一级部门经理审批',
+    resid: '668710715266'
+  }, {
+    condition: 'DL',
+    label: '部门总监审批',
+    resid: '668712440510'
+  },
+  {
+    condition: 'IDL',
+    label: '主管审批',
+    resid: '668709373267'
+  },
+  {
+    condition: 'IDL',
+    label: '经理审批',
+    resid: '668710368892'
+  }
+]
 class Compact extends Component {
   constructor(props) {
     super(props);
@@ -71,6 +105,9 @@ class Compact extends Component {
       jobId: jobId,
       key1: '_0A',
       ke2: '_0B',
+      key3: '_03A',
+      key4: '_03B',
+      residTab3: '668712593119',
       residTab1: '440237518278',
       residTab2: '640264082868',
       cms: `C3_532015901062 != 'N' and C3_532015901062 != 'Y' and C3_532015785778 = '${jobId}'`,
@@ -95,6 +132,107 @@ class Compact extends Component {
       moment(v[1]).format('YYYY-MM-DD hh:mm:ss');
     this.setState({ signingDate: v, meetTime: str });
   };
+  /**
+    * 重新发送提醒邮件=清空后台已发送邮件的字段
+    */
+  handleRemail = async (record) => {
+
+    this.setState({ loading: true })
+    if (record.selectedRowKeys.length < 1) {
+      message.error('请先选择要打印的记录！');
+      this.setState({ loading: false });
+
+    } else {
+      const data = record.dataSource;
+      let Reldata = [];
+      data.map(item => {
+        record.selectedRowKeys.map(items => {
+          if (item.REC_ID === items) {
+            Reldata.push(item);
+          }
+        });
+      });
+      let obj = {};
+      let resid;
+      let toChange;
+      //C3_640795239364 咨询员工意向已发
+      //C3_489008835622提醒第一审批人已发
+      //C3_641226096054部门总监审批已发
+
+      //C3_640820671962是否已经发送(表640820603954)
+
+      if (this.state.key3 === '_03A') {
+        resid = '436624135588'
+      } else {
+        resid = '640820603954'
+      };
+
+      if (this.state.key4 === '_03B') {
+        toChange = 'C3_640795239364'
+      } else if (this.state.key4 === '_13B') {
+        toChange = 'C3_489008835622'
+      } else if (this.state.key4 === '_23B') {
+        toChange = 'C3_641226096054'
+      } else {
+        toChange = 'C3_640820671962'
+      };
+      let toSend = [];
+      let n = 0;
+      if (this.state.key3 === '_03A') {
+        while (n < Reldata.length) {
+          toSend.push({
+            REC_ID: Reldata[n].REC_ID,
+            [toChange]: ''
+          }
+          )
+          n++;
+        }
+        obj = {
+          resid,
+          data: toSend
+        }
+      } else {
+        let string = ``
+        while (n < Reldata.length) {
+          if (n == 0) {
+            string = string + Reldata[n].REC_ID
+
+          } else {
+            string = string + ' or ' + Reldata[n].REC_ID
+          }
+          n++;
+        }
+        let res2 = await http().getTable({
+          resid: 640820603954,
+          cmswhere: `C3_640820672212 = '${string}'`
+        })
+        while (n < res2.data.length) {
+          toSend.push({
+            REC_ID: res2.data[n].C3_491590137418,
+            [toChange]: ''
+          }
+          )
+          n++;
+        }
+        obj = {
+          resid,
+          data: toSend
+        }
+        console.log(obj)
+      }
+      // try {
+      //   let res = await http().modifyRecords(obj);
+      //   this.setState({ loading: false });
+      //   message.success('操作成功');
+      //   this.tableDataRef3.handleRefresh();
+
+      // } catch (e) {
+      //   console.log(e.message);
+      //   this.setState({ loading: false });
+      // }
+    }
+
+  }
   /**
    * 发送签约邮件
    */
@@ -244,6 +382,7 @@ class Compact extends Component {
                 <TableData
                   resid={440237518278}
                   subtractH={180}
+                  isUseBESize={true}
                   // tableComponent="ag-grid"
                   // sideBarAg={true}
                   hasAdvSearch={true}
@@ -280,6 +419,7 @@ class Compact extends Component {
               {this.state.residTab1 == '437092525908' ? (
                 <TableData
                   resid={437092525908}
+                  isUseBESize={true}
                   subtractH={180}
                   // tableComponent="ag-grid"
                   // sideBarAg={true}
@@ -319,6 +459,7 @@ class Compact extends Component {
                 <TableData
                   resid={436624421847}
                   subtractH={180}
+                  isUseBESize={true}
                   // tableComponent="ag-grid"
                   // sideBarAg={true}
                   hasAdvSearch={true}
@@ -334,31 +475,32 @@ class Compact extends Component {
                   hasRowSelection={false}
                   wrappedComponentRef={element => (this.tableDataRef = element)}
 
-                  // customRowBtns={[
-                  //   (record, btnSize) => {
-                  //     return (
-                  //       <Button
-                  //         size={btnSize}
-                  //         onClick={() => {
+                // customRowBtns={[
+                //   (record, btnSize) => {
+                //     return (
+                //       <Button
+                //         size={btnSize}
+                //         onClick={() => {
 
-                  //           this.setState({
-                  //             selectedPerson: record,
-                  //             contractHistoryVisible: true
-                  //           });
-                  //           console.log(record)
-                  //         }}
-                  //       >
-                  //         查看历史信息
-                  //       </Button>
-                  //     );
-                  //   }
-                  // ]}
+                //           this.setState({
+                //             selectedPerson: record,
+                //             contractHistoryVisible: true
+                //           });
+                //           console.log(record)
+                //         }}
+                //       >
+                //         查看历史信息
+                //       </Button>
+                //     );
+                //   }
+                // ]}
                 />
               ) : null}
 
               {this.state.residTab1 == '436624135588' ? (
                 <TableData
                   resid={436624135588}
+                  isUseBESize={true}
                   subtractH={180}
                   // tableComponent="ag-grid"
                   // sideBarAg={true}
@@ -443,6 +585,7 @@ class Compact extends Component {
               {residTab2 == 640264082868 ? (
                 <TableData
                   resid={640264082868}
+                  isUseBESize={true}
                   subtractH={220}
                   hasAdd={false}
                   hasRowView={true}
@@ -503,39 +646,39 @@ class Compact extends Component {
                   customRowBtns={
                     key1 === '_0A'
                       ? [
-                          (record, btnSize) => {
-                            return (
-                              <>
-                                <Button
-                                  size={btnSize}
-                                  onClick={() => {
-                                    this.setState({
-                                      selectedPersons: [record],
-                                      signingVisible: true
-                                    });
-                                  }}
-                                  type="primary"
-                                >
-                                  发送通知邮件
+                        (record, btnSize) => {
+                          return (
+                            <>
+                              <Button
+                                size={btnSize}
+                                onClick={() => {
+                                  this.setState({
+                                    selectedPersons: [record],
+                                    signingVisible: true
+                                  });
+                                }}
+                                type="primary"
+                              >
+                                发送通知邮件
                                 </Button>
 
-                                <Button
-                                  size="small"
-                                  style={{ marginLeft: '4px' }}
-                                  onClick={() => {
-                                    this.setState({
-                                      showCheck: true,
-                                      checkMem: record.C3_436624212137,
-                                      checkType: record.C3_640119278050
-                                    });
-                                  }}
-                                >
-                                  查看审批节点
+                              <Button
+                                size="small"
+                                style={{ marginLeft: '4px' }}
+                                onClick={() => {
+                                  this.setState({
+                                    showCheck: true,
+                                    checkMem: record.C3_436624212137,
+                                    checkType: record.C3_640119278050
+                                  });
+                                }}
+                              >
+                                查看审批节点
                                 </Button>
-                              </>
-                            );
-                          }
-                        ]
+                            </>
+                          );
+                        }
+                      ]
                       : []
                   }
                 />
@@ -545,6 +688,7 @@ class Compact extends Component {
                   resid={640264102764}
                   subtractH={220}
                   hasAdd={false}
+                  isUseBESize={true}
                   hasRowView={true}
                   hasRowDelete={false}
                   hasRowEdit={false}
@@ -625,6 +769,7 @@ class Compact extends Component {
                   resid={640264137935}
                   subtractH={220}
                   hasAdd={false}
+                  isUseBESize={true}
                   hasRowView={true}
                   recordFormUseAbsolute={true}
                   hasRowDelete={false}
@@ -702,6 +847,102 @@ class Compact extends Component {
               ) : null}
             </div>
           </TabPane>
+          <TabPane
+            tab="审批节点一览"
+            key="3"
+            style={{ width: '100%', height: 'calc(100vh - 64px)' }}
+          >
+            <div className="filterLine">
+              {filterTab3A.map((item, key) => {
+                return (
+                  <span
+                    className={
+                      this.state.key3 == '_' + key + '3A' ? 'filter current' : 'filter'
+                    }
+                    key={'_' + key + '3A'}
+                    onClick={() => {
+                      if (this.state.key3 != '_' + key + '3A') {
+                        if (item.label == 'DL') {
+                          this.setState({
+                            key4: '_33B',
+                            residTab3: '668709373267'
+                          })
+                        } else {
+
+                          this.setState({
+                            key4: '_03B',
+                            residTab3: '668712593119'
+                          })
+                        }
+                      }
+                      this.setState({
+                        key3: '_' + key + '3A',
+                      });
+
+
+                    }}
+                  >
+                    {item.label}
+                  </span>
+                );
+              })}
+            </div>
+            <div className="filterLine">
+              {filterTab3B.map((item, key) => {
+                return (
+                  <span
+                    className={
+                      this.state.key4 == '_' + key + '3B' ? 'filter current' : 'filter'
+                    }
+                    style={{ display: (this.state.key3 === ('_03A' || '_13A') && item.condition == 'DL') || (this.state.key3 != ('_03A' || '_13A') && item.condition == 'IDL') ? 'inline' : 'none' }}
+                    key={'_' + key + '3B'}
+                    onClick={() => {
+                      this.setState({
+                        key4: '_' + key + '3B',
+                        residTab3: item.resid
+                      });
+                    }}
+                  >
+                    {item.label}
+                  </span>
+                );
+              })}
+            </div>
+            <div style={{ width: '100%', height: 'calc(100vh - 128px)' }}>
+              <TableData
+                resid={this.state.residTab3}
+                subtractH={220}
+                isUseBESize={true}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={true}
+                hasRowModify={false}
+                hasRowSelection={true}
+                wrappedComponentRef={element => (this.tableDataRef3 = element)}
+                refTargetComponentName="TableData"
+                actionBarExtra={
+                  (record) => {
+                    return (
+                      <Button
+                        type="primary"
+                        loading={this.state.loading}
+                        onClick={() => {
+                          this.handleRemail(record);
+                        }}
+                      >
+                        再次发送提醒邮件
+                      </Button>
+                    );
+                  }
+                }
+              />
+            </div>
+
+          </TabPane>
           {/* <TabPane
           // forceRender={true}
 
@@ -756,10 +997,10 @@ class Compact extends Component {
               hasRowSelection={true}
               wrappedComponentRef={element => (this.tableDataRef = element)}
               cmswhere={`C3_532015785778 = '${this.state.checkMem}' and C3_641241582139 = '${this.state.checkType}'`}
-              // customRowBtns={[(record)=>{return(
-              //   <Button size='small' loading={this.state.loading} onClick={()=>{this.sendMail(record)}}>发送邮件提醒审批</Button>
-              // )}]
-              // }
+            // customRowBtns={[(record)=>{return(
+            //   <Button size='small' loading={this.state.loading} onClick={()=>{this.sendMail(record)}}>发送邮件提醒审批</Button>
+            // )}]
+            // }
             />
           </div>
         </Modal>
@@ -780,6 +1021,7 @@ class Compact extends Component {
             <TableData
               resid={contractHistoryResid}
               subtractH={220}
+              isUseBESize={true}
               // tableComponent="ag-grid"
               // sideBarAg={true}
               hasAdvSearch={false}
