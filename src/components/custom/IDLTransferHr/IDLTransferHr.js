@@ -32,6 +32,9 @@ function compare(property) {
 const { Step } = Steps;
 const { Option } = Select;
 
+const WuxiHr03BaseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03BaseURL;
+
 const attr = [
   '部门名',
   '岗位名',
@@ -104,7 +107,8 @@ class IDLTransferHr extends Component {
       changeKey: null, //变更审批的序号
       curStep: 0,
       allValues: {}, //HR预审批时可以修改变动信息，此state用来存放子组件传递来的值
-      applyNum: '' //申请人编号，审批流中申请人自动审批通过
+      applyNum: '', //申请人编号，审批流中申请人自动审批通过
+      selectJobcodeModal: false //当HC预审的headcount类型为new时,有按钮可以打开模态框选择jobcode
     };
   }
   //删除审批节点
@@ -740,6 +744,23 @@ class IDLTransferHr extends Component {
     message.info('提醒成功');
     this.tableDataRef.handleRefresh();
   };
+
+  getReplacementJobcode = async record => {
+    let jobcode;
+    try {
+      jobcode = await http({ baseURL: WuxiHr03BaseURL }).getTable({
+        resid: 660756647720,
+        cmswhere: `C3_660756674254 = '${record.C3_227192472953}'`
+      });
+      this.setState({
+        iiviJobCode: jobcode.data[0].C3_660756702537
+      });
+    } catch (error) {
+      console.log(error.message);
+      message.info(error.message);
+    }
+  };
+
   componentWillMount() {
     this.getRightGroup();
   }
@@ -978,6 +999,7 @@ class IDLTransferHr extends Component {
                             C3_637425666513: record,
                             memberD: false
                           });
+                          this.getReplacementJobcode(record);
                         }}
                       >
                         选择
@@ -1072,7 +1094,17 @@ class IDLTransferHr extends Component {
             width={'90vw'}
             visible={this.state.visibleHC}
             footer={
-              this.state.C3_637425449725 && this.state.iiviJobCode ? (
+              this.state.C3_637425449725 === '无' ? (
+                <Button
+                  type="danger"
+                  style={{ marginLeft: '8px' }}
+                  onClick={() => {
+                    this.approveHC('N');
+                  }}
+                >
+                  不通过审核
+                </Button>
+              ) : this.state.C3_637425449725 && this.state.iiviJobCode ? (
                 <>
                   <Button
                     type="danger"
@@ -1140,23 +1172,6 @@ class IDLTransferHr extends Component {
               })}
             </Select>
             <div style={{ width: '100%', height: '1rem' }}></div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <b>
-                <span style={{ color: 'red' }}>*</span>Job Code：
-              </b>
-              <Input
-                style={{ width: 200 }}
-                value={this.state.iiviJobCode}
-                onChange={e => {
-                  this.setState({
-                    iiviJobCode: e.target.value
-                  });
-                }}
-              />
-            </div>
-
-            <div style={{ width: '100%', height: '1rem' }}></div>
-
             <b>
               替代人：
               {this.state.C3_637425666513
@@ -1175,6 +1190,32 @@ class IDLTransferHr extends Component {
             >
               选择人员
             </Button>
+            <div style={{ width: '100%', height: '1rem' }}></div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <b>
+                <span style={{ color: 'red' }}>*</span>Job Code：
+              </b>
+              <Input
+                style={{ width: 200 }}
+                value={this.state.iiviJobCode}
+                onChange={e => {
+                  this.setState({
+                    iiviJobCode: e.target.value
+                  });
+                }}
+              />
+              {this.state.C3_637425577105 === 'New' && (
+                <Button
+                  style={{ marginLeft: '8px' }}
+                  type="primary"
+                  onClick={() => {
+                    this.setState({ selectJobcodeModal: true });
+                  }}
+                >
+                  选择Job Code
+                </Button>
+              )}
+            </div>
             <div style={{ width: '100%', height: '1rem' }}></div>
 
             <b>备注：</b>
@@ -1656,6 +1697,53 @@ class IDLTransferHr extends Component {
                   </div>
                 </div>
               </div>
+            </div>
+          </Modal>
+          <Modal
+            title={'选择Job Code'}
+            width={'90vw'}
+            visible={this.state.selectJobcodeModal}
+            footer={null}
+            onCancel={() => this.setState({ selectJobcodeModal: false })}
+          >
+            <div
+              style={{
+                width: '100%',
+                height: 'calc(80vh - 104px)',
+                position: 'relative'
+              }}
+            >
+              <TableData
+                resid={659552172710}
+                baseURL={WuxiHr03BaseURL}
+                downloadURL={this.downloadURL}
+                hasRowView={false}
+                subtractH={220}
+                hasAdd={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                style={{ height: '100%' }}
+                hasRowView={false}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            selectJobcodeModal: false,
+                            iiviJobCode: record.JobCode
+                          });
+                        }}
+                      >
+                        选择
+                      </Button>
+                    );
+                  }
+                ]}
+              />
             </div>
           </Modal>
           <Modal

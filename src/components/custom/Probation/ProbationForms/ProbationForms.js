@@ -403,10 +403,6 @@ class ProbationForms extends React.Component {
         onTheJobTraining,
         mentorshipRecord
       } = this.state;
-      //删除三月\五月提醒邮件已发字段,避免重复发送邮件
-      // delete employeeInformation.noticeDirector;
-      // delete employeeInformation.fiveNoticeDirector;
-      // console.log(employeeInformation);
       let index = 1;
       const _memberSemiId = employeeInformation[memberSemiId];
       probationObjectives.forEach(item => {
@@ -468,7 +464,6 @@ class ProbationForms extends React.Component {
           }
         });
       });
-      // console.log(onTheJobTraining);
       mentorshipRecord.forEach(item => {
         delete item.instructEmailIsSend;
         delete item.C3_625594433726;
