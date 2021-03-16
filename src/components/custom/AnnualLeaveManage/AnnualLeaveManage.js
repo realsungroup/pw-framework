@@ -1,5 +1,18 @@
 import React from 'react';
-import { Pagination, Tabs, Menu, Select, Button, Radio, Spin, Modal, Icon, message, Input, Table } from 'antd';
+import {
+  Pagination,
+  Tabs,
+  Menu,
+  Select,
+  Button,
+  Radio,
+  Spin,
+  Modal,
+  Icon,
+  message,
+  Input,
+  Table
+} from 'antd';
 import './AnnualLeaveManage.less';
 import TableData from 'Common/data/TableData';
 import SelectPersonnel from 'Common/data/SelectPersonnel';
@@ -18,133 +31,140 @@ const NJGLColums = [
   {
     title: '工号',
     dataIndex: 'number',
-    key: 'number',
+    key: 'number'
   },
   {
     title: '姓名',
     dataIndex: 'name',
-    key: 'name',
+    key: 'name'
   },
   {
     title: '上年剩余',
     dataIndex: 'snsy',
-    key: 'snsy',
+    key: 'snsy'
   },
   {
     title: '当年新增',
     dataIndex: 'dnxz',
-    key: 'dnxz',
+    key: 'dnxz'
   },
   {
     title: '第1季度分配',
     dataIndex: 'q1fenpei',
-    key: 'q1fenpei',
+    key: 'q1fenpei'
   },
   {
     title: '第2季度分配',
     dataIndex: 'q2fenpei',
-    key: 'q2fenpei',
+    key: 'q2fenpei'
   },
   {
     title: '第3季度分配',
     dataIndex: 'q3fenpei',
-    key: 'q3fenpei',
+    key: 'q3fenpei'
   },
   {
     title: '第4季度分配',
     dataIndex: 'q4fenpei',
-    key: 'q4fenpei',
+    key: 'q4fenpei'
   },
   {
     title: '1月使用',
     dataIndex: 'january',
-    key: 'january',
+    key: 'january'
   },
   {
     title: '2月使用',
     dataIndex: 'february',
-    key: 'february',
+    key: 'february'
   },
   {
     title: '3月使用',
     dataIndex: 'march',
-    key: 'march',
+    key: 'march'
   },
   {
     title: '4月使用',
     dataIndex: 'april',
-    key: 'april',
+    key: 'april'
   },
   {
     title: '5月使用',
     dataIndex: 'may',
-    key: 'may',
+    key: 'may'
   },
   {
     title: '6月使用',
     dataIndex: 'june',
-    key: 'june',
+    key: 'june'
   },
   {
     title: '7月使用',
     dataIndex: 'july',
-    key: 'july',
+    key: 'july'
   },
   {
     title: '8月使用',
     dataIndex: 'august',
-    key: 'august',
-  }, {
+    key: 'august'
+  },
+  {
     title: '9月使用',
     dataIndex: 'september',
-    key: 'september',
-  }, {
+    key: 'september'
+  },
+  {
     title: '10月使用',
     dataIndex: 'october',
-    key: 'october',
-  }, {
+    key: 'october'
+  },
+  {
     title: '11月使用',
     dataIndex: 'november',
-    key: 'november',
+    key: 'november'
   },
-  , {
+  ,
+  {
     title: '12月使用',
     dataIndex: 'december',
-    key: 'december',
-  }, {
+    key: 'december'
+  },
+  {
     title: '第1季度剩余',
     dataIndex: 'q1sy',
-    key: 'q1sy',
+    key: 'q1sy'
   },
   {
     title: '第2季度剩余',
     dataIndex: 'q2sy',
-    key: 'q2sy',
+    key: 'q2sy'
   },
   {
     title: '第3季度剩余',
     dataIndex: 'q3sy',
-    key: 'q3sy',
+    key: 'q3sy'
   },
   {
     title: '第4季度剩余',
     dataIndex: 'q4sy',
-    key: 'q4sy',
+    key: 'q4sy'
   },
   {
     title: '上年结余',
     dataIndex: 'snjy',
-    key: 'snjy',
-  }, {
+    key: 'snjy'
+  },
+  {
     title: '当年结余',
     dataIndex: 'dnjy',
-    key: 'dnjy',
-  }, {
+    key: 'dnjy'
+  },
+  {
     title: '总结余',
     dataIndex: 'zjy',
-    key: 'zjy',
-  },
-]
+    key: 'zjy'
+  }
+];
 const months = [
   { label: 1, value: '01' },
   { label: 2, value: '02' },
@@ -418,7 +438,7 @@ class AnnualLeaveManage extends React.Component {
           />
         );
       }
-    },
+    }
   ];
   state = {
     selectedKeys: [this.menus[14].title],
@@ -429,7 +449,7 @@ class AnnualLeaveManage extends React.Component {
     numList: [],
     selectQuarterModal: false,
     jiesuanQuarter: curQuarter,
-    refreshCallback: () => { }
+    refreshCallback: () => {}
   };
   handleOpenSelectPerson = callback => {
     this.setState({ selectPersonVisible: true, refreshCallback: callback });
@@ -577,13 +597,10 @@ class AnnualLeaveManage extends React.Component {
               });
             }}
           >
-            <Menu.Item key='年假台账管理'>
-              <div className="menu-item__body">
-                年假台账管理
-                    </div>
+            <Menu.Item key="年假台账管理">
+              <div className="menu-item__body">年假台账管理</div>
             </Menu.Item>
             <SubMenu key="submenu1" title="交易明细">
-
               <SubMenu key="submenu2" title="系统行为">
                 {this.menus.map((menu, index) => {
                   if (index < 6) {
@@ -647,14 +664,11 @@ class AnnualLeaveManage extends React.Component {
             </SubMenu>
             {this.menus.map((menu, index) => {
               if (index >= 9) {
-                return (
-
-                  menu.title === '年假台账管理' ? null :
-
-                    <Menu.Item key={menu.title}>
-                      <div className="menu-item__body">
-                        {menu.title}
-                        {/* {selectedKeys[0] === menu.title && (
+                return menu.title === '年假台账管理' ? null : (
+                  <Menu.Item key={menu.title}>
+                    <div className="menu-item__body">
+                      {menu.title}
+                      {/* {selectedKeys[0] === menu.title && (
                       <span
                         onClick={() => {
                           Modal.info({
@@ -665,11 +679,8 @@ class AnnualLeaveManage extends React.Component {
                         className="menu-item-tip-container"
                       ></span>
                     )} */}
-                      </div>
-                    </Menu.Item>
-
-
-
+                    </div>
+                  </Menu.Item>
                 );
               }
             })}
@@ -1852,7 +1863,20 @@ function exportExcel(data, headerData = [], fileName) {
   link.click();
   document.body.removeChild(link);
 }
-const monthArr = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+const monthArr = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december'
+];
 class NianJiaGaiLan extends React.PureComponent {
   state = {
     data: [],
@@ -1864,25 +1888,34 @@ class NianJiaGaiLan extends React.PureComponent {
     selectedData: {},
     downloadData: [],
     pageSize: 10
-  }
+  };
   componentDidMount() {
     this.getData({ pageIndex: this.state.current - 1 });
   }
-  handlePageChange = (page) => {
+  handlePageChange = page => {
     this.setState({ current: page }, () => {
-      this.getData({ pageIndex: this.state.current - 1 })
-    })
-  }
-  handleSearch = (key) => {
-    this.setState({ current: 1 }, () => {
-      this.getData({ pageIndex: this.state.current - 1, key })
+      this.getData({ pageIndex: this.state.current - 1 });
     });
-  }
+  };
+  handleSearch = key => {
+    this.setState({ current: 1 }, () => {
+      this.getData({ pageIndex: this.state.current - 1, key });
+    });
+  };
   render() {
     const { baseURL, baseURLFromAppConfig } = this.props;
-    const { data, total, current, spinning, selectedData, pageSize, downloading, downloadData } = this.state;
+    const {
+      data,
+      total,
+      current,
+      spinning,
+      selectedData,
+      pageSize,
+      downloading,
+      downloadData
+    } = this.state;
     return (
-      <div className='NJGL'>
+      <div className="NJGL">
         {/* <div className='tools'>
           <Input.Search
             size="small"
@@ -1904,7 +1937,7 @@ class NianJiaGaiLan extends React.PureComponent {
             </Button>
           </div>
         </div> */}
-        <div className='maindata'>
+        <div className="maindata">
           <TableData
             key="xinYueBao"
             wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -1913,13 +1946,13 @@ class NianJiaGaiLan extends React.PureComponent {
             baseURL={baseURL}
             subtractH={190}
             isUseBESize={true}
-            onRowClick={(v) => {
+            onRowClick={v => {
               console.log(v, v.numberID);
               this.setState({
                 selectedData: {
                   number: v.numberID
                 }
-              })
+              });
             }}
             hasAdd={false}
             hasModify={false}
@@ -1931,7 +1964,6 @@ class NianJiaGaiLan extends React.PureComponent {
             actionBarWidth={100}
             // actionBarExtra={this.actionBarExtra}
             downloadBaseURL={baseURLFromAppConfig}
-
           />
           {/* <div className='maindata'>
             <ul>
@@ -1958,10 +1990,10 @@ class NianJiaGaiLan extends React.PureComponent {
           </div> */}
         </div>
 
-        <div className='subdata'>
-          <Tabs defaultActiveKey="1" tabPosition='left'>
+        <div className="subdata">
+          <Tabs defaultActiveKey="1" tabPosition="left">
             <TabPane tab="上年剩余调整" key="1">
-              <div className='outer'>
+              <div className="outer">
                 <TableData
                   key="ShangNianShengYu"
                   wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -1971,7 +2003,6 @@ class NianJiaGaiLan extends React.PureComponent {
                   subtractH={190}
                   hasAdd={true}
                   hasAdvSearch={true}
-
                   hasModify={false}
                   hasDelete={false}
                   hasRowEdit={false}
@@ -1981,14 +2012,17 @@ class NianJiaGaiLan extends React.PureComponent {
                   actionBarWidth={100}
                   defaultAddRecord={{ C3_663248494033: selectedData.number }}
                   // actionBarExtra={this.actionBarExtra}
-                  cmswhere={selectedData.number ? `C3_663248494033 = ${selectedData.number}` : '1 != 1'}
+                  cmswhere={
+                    selectedData.number
+                      ? `C3_663248494033 = ${selectedData.number}`
+                      : '1 != 1'
+                  }
                   downloadBaseURL={baseURLFromAppConfig}
                 />
               </div>
             </TabPane>
             <TabPane tab="每月使用调整" key="2">
-              <div className='outer'>
-
+              <div className="outer">
                 <TableData
                   key="NianJiaShiYong"
                   wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -2006,14 +2040,16 @@ class NianJiaGaiLan extends React.PureComponent {
                   actionBarWidth={180}
                   downloadBaseURL={baseURLFromAppConfig}
                   defaultAddRecord={{ numberID: selectedData.number }}
-                  cmswhere={selectedData.number ? `numberID = ${selectedData.number}` : '1 != 1'}
+                  cmswhere={
+                    selectedData.number
+                      ? `numberID = ${selectedData.number}`
+                      : '1 != 1'
+                  }
                 />
               </div>
-
             </TabPane>
             <TabPane tab="季度分配调整" key="3">
-              <div className='outer'>
-
+              <div className="outer">
                 <TableData
                   key="JiDuFenPei"
                   wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -2030,11 +2066,14 @@ class NianJiaGaiLan extends React.PureComponent {
                   hasRowDelete={false}
                   actionBarWidth={100}
                   defaultAddRecord={{ C3_663257630012: selectedData.number }}
-                  cmswhere={selectedData.number ? `C3_663257630012 = ${selectedData.number}` : '1 != 1'}
+                  cmswhere={
+                    selectedData.number
+                      ? `C3_663257630012 = ${selectedData.number}`
+                      : '1 != 1'
+                  }
                   downloadBaseURL={baseURLFromAppConfig}
                 />
               </div>
-
             </TabPane>
           </Tabs>
         </div>
@@ -2159,8 +2198,8 @@ class NianJiaGaiLan extends React.PureComponent {
       this.setState({ spinning: false });
       message.error(error.message);
     }
-  }
-  downloadExcel = async ({ pageIndex = 0, }) => {
+  };
+  downloadExcel = async ({ pageIndex = 0 }) => {
     const { baseURL, resid } = this.props;
     const { year } = this.state;
     try {
@@ -2169,7 +2208,7 @@ class NianJiaGaiLan extends React.PureComponent {
         resid,
         pageSize: 100,
         pageIndex,
-        cmswhere: `year = ${year}`,
+        cmswhere: `year = ${year}`
       });
       const data = employeeRes.data.map(item => ({
         number: item.numberID,
@@ -2205,14 +2244,14 @@ class NianJiaGaiLan extends React.PureComponent {
       if (data.length == 100) {
         this.downloadExcel({ pageIndex: pageIndex + 1 });
       } else {
-        exportExcel(downloadData, NJGLColums, "年假");
+        exportExcel(downloadData, NJGLColums, '年假');
         this.setState({ downloading: false, downloadData: [] });
       }
     } catch (error) {
       this.setState({ downloading: false });
       message.error(error.message);
     }
-  }
+  };
 }
 
 class KaoQinYueDuJieSuan extends React.PureComponent {
@@ -2682,5 +2721,3 @@ export default AnnualLeaveManage;
 
 // 表 311025002785 里面的根据考勤月份进行拼接。例：202101到202112的记录里的年假拼到同一条记录里。
 // 上年结余要取表 662169383744 里对应年份交易名称是‘上年转入’的上年剩余年假
-
-//最后拼接出来的记录应该是一个人一年一条记录
