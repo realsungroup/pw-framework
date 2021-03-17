@@ -613,7 +613,7 @@ class IDLTransferVerify extends Component {
                       <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0', marginLeft: '-1px' }}>
                           <li>
-                            <b>是否有Headcount：</b>
+                            <b>是否涉及Headcount：</b>
                             <span>
                               {this.state.toCheckFront.C3_637425449725
                                 ? this.state.toCheckFront.C3_637425449725

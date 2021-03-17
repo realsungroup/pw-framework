@@ -92,7 +92,7 @@ class ChangedInfoForm extends React.Component {
         {HCPreApprove !== 'Y' && (
           <>
             <Form.Item
-              label="是否有Headcount"
+              label="是否涉及Headcount"
               style={{ display: 'flex', marginBottom: '5px' }}
             >
               {getFieldDecorator('C3_637425449725', {
