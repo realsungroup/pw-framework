@@ -978,7 +978,7 @@ class IDLTransferHr extends Component {
               }}
             >
               <TableData
-                resid={609599795438}
+                resid={422485234051}
                 hasRowView={false}
                 subtractH={220}
                 hasAdd={false}
@@ -1094,16 +1094,26 @@ class IDLTransferHr extends Component {
             width={'90vw'}
             visible={this.state.visibleHC}
             footer={
-              this.state.C3_637425449725 === '无' ? (
-                <Button
-                  type="danger"
-                  style={{ marginLeft: '8px' }}
-                  onClick={() => {
-                    this.approveHC('N');
-                  }}
-                >
-                  不通过审核
-                </Button>
+              this.state.C3_637425449725 === '否' ? (
+                <>
+                  <Button
+                    type="danger"
+                    style={{ marginLeft: '8px' }}
+                    onClick={() => {
+                      this.approveHC('N');
+                    }}
+                  >
+                    不通过审核
+                  </Button>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      this.approveHC('Y');
+                    }}
+                  >
+                    保存并通过HC审核
+                  </Button>
+                </>
               ) : this.state.C3_637425449725 && this.state.iiviJobCode ? (
                 <>
                   <Button
@@ -1120,7 +1130,7 @@ class IDLTransferHr extends Component {
                     onClick={() => {
                       this.approveHC('Y');
                     }}
-                    disabled={this.state.C3_637425449725 == '无' ? true : false}
+                    disabled={this.state.C3_637425449725 == '否' ? true : false}
                   >
                     保存并通过HC审核
                   </Button>
@@ -1129,10 +1139,19 @@ class IDLTransferHr extends Component {
                 '至少全部填选完第1、3项才能提交'
               )
             }
-            onCancel={() => this.setState({ visibleHC: false })}
+            onCancel={() =>
+              this.setState({
+                visibleHC: false,
+                C3_637425449725: '',
+                iiviJobCode: '',
+                C3_637425470106: '',
+                C3_637425577105: '',
+                C3_637425666513: ''
+              })
+            }
           >
             <b>
-              <span style={{ color: 'red' }}>*</span>是否有Headcount：
+              <span style={{ color: 'red' }}>*</span>是否涉及Headcount：
             </b>
             <Select
               style={{ width: '200px' }}
@@ -1141,21 +1160,20 @@ class IDLTransferHr extends Component {
                 this.setState({ C3_637425449725: v });
               }}
             >
-              {this.state.list725.map((item, key) => {
-                return (
-                  <Option key={key} value={item}>
-                    {item}
-                  </Option>
-                );
-              })}
+              <Option key="是" value="是">
+                {'是'}
+              </Option>
+              <Option key="否" value="否">
+                {'否'}
+              </Option>
             </Select>
             <div style={{ width: '100%', height: '1rem' }}></div>
             <b>Headcount类型：</b>
             <Select
-              disabled={this.state.C3_637425449725 == '无' ? true : false}
+              disabled={this.state.C3_637425449725 == '否' ? true : false}
               style={{ width: '200px' }}
               value={
-                this.state.C3_637425449725 == '无'
+                this.state.C3_637425449725 == '否'
                   ? null
                   : this.state.C3_637425577105
               }
@@ -1193,7 +1211,10 @@ class IDLTransferHr extends Component {
             <div style={{ width: '100%', height: '1rem' }}></div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <b>
-                <span style={{ color: 'red' }}>*</span>Job Code：
+                {this.state.C3_637425449725 !== '否' ? (
+                  <span style={{ color: 'red' }}>*</span>
+                ) : null}
+                Job Code：
               </b>
               <Input
                 style={{ width: 200 }}
@@ -1203,6 +1224,7 @@ class IDLTransferHr extends Component {
                     iiviJobCode: e.target.value
                   });
                 }}
+                disabled={this.state.C3_637425449725 == '否' ? true : false}
               />
               {this.state.C3_637425577105 === 'New' && (
                 <Button

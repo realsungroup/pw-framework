@@ -2045,6 +2045,7 @@ class NianJiaGaiLan extends React.PureComponent {
                       ? `numberID = ${selectedData.number}`
                       : '1 != 1'
                   }
+                  downloadBaseURL={baseURLFromAppConfig}
                 />
               </div>
             </TabPane>
