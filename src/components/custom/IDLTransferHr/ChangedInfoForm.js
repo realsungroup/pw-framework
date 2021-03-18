@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Modal, Select, Button, Input } from 'antd';
+import { Form, Modal, Select, Button, Input, DatePicker } from 'antd';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
 
@@ -31,6 +31,7 @@ class ChangedInfoForm extends React.Component {
       searchJobV: false,
       searchSuperV: false,
       searchBucode: false,
+      selectJobcodeModal: false,
       depaFilter: '', //选择部门时的公司筛选
       companyArr: [],
       lvList: [], //级别数组
@@ -81,16 +82,56 @@ class ChangedInfoForm extends React.Component {
   };
 
   render() {
-    const { toCheckFront, toCheck, isShowButton, HCPreApprove } = this.props;
+    const {
+      toCheckFront,
+      toCheck,
+      isShowButton,
+      HCPreApprove,
+      isHREnd
+    } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { lvList, currentLevel, canChangeProCode } = this.state;
+    const {
+      lvList,
+      currentLevel,
+      canChangeProCode,
+      selectJobcodeModal
+    } = this.state;
     this.props.form.getFieldDecorator('nDriectorCode', { preserve: true });
     this.props.form.getFieldDecorator('nDepartCode', { preserve: true });
-    console.log('HCPre', HCPreApprove);
     return (
       <Form className="formClass" {...formItemLayout}>
         {HCPreApprove !== 'Y' && (
           <>
+            {isHREnd && (
+              <Form.Item
+                label="Job Code"
+                style={{ display: 'flex', marginBottom: '5px' }}
+              >
+                {getFieldDecorator('iiviJobCode', {
+                  initialValue: toCheckFront.iiviJobCode
+                })(
+                  <>
+                    <Input
+                      style={{
+                        width: 200,
+                        pointerEvents: 'none',
+                        textAlign: 'center'
+                      }}
+                      value={getFieldValue('iiviJobCode')}
+                    />
+                    <Button
+                      icon="search"
+                      type="primary"
+                      onClick={() => {
+                        this.setState({ selectJobcodeModal: true });
+                      }}
+                    >
+                      选择Job Code
+                    </Button>
+                  </>
+                )}
+              </Form.Item>
+            )}
             <Form.Item
               label="是否涉及Headcount"
               style={{ display: 'flex', marginBottom: '5px' }}
@@ -949,6 +990,54 @@ class ChangedInfoForm extends React.Component {
                         });
                         this.setState({
                           searchBucode: false
+                        });
+                      }}
+                    >
+                      选择
+                    </Button>
+                  );
+                }
+              ]}
+            />
+          </div>
+        </Modal>
+        <Modal
+          title={'选择Job Code'}
+          width={'90vw'}
+          visible={this.state.selectJobcodeModal}
+          footer={null}
+          onCancel={() => this.setState({ selectJobcodeModal: false })}
+        >
+          <div
+            style={{
+              width: '100%',
+              height: 'calc(80vh - 104px)',
+              position: 'relative'
+            }}
+          >
+            <TableData
+              resid={659552172710}
+              baseURL={WuxiHr03BaseURL}
+              hasRowView={false}
+              subtractH={220}
+              hasAdd={false}
+              hasRowSelection={false}
+              hasRowDelete={false}
+              hasRowModify={false}
+              hasModify={false}
+              hasDelete={false}
+              style={{ height: '100%' }}
+              hasRowView={false}
+              customRowBtns={[
+                record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.props.form.setFieldsValue({
+                          iiviJobCode: record.JobCode
+                        });
+                        this.setState({
+                          selectJobcodeModal: false
                         });
                       }}
                     >
