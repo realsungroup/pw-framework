@@ -108,7 +108,8 @@ class IDLTransferHr extends Component {
       curStep: 0,
       allValues: {}, //HR预审批时可以修改变动信息，此state用来存放子组件传递来的值
       applyNum: '', //申请人编号，审批流中申请人自动审批通过
-      selectJobcodeModal: false //当HC预审的headcount类型为new时,有按钮可以打开模态框选择jobcode
+      selectJobcodeModal: false, //当HC预审的headcount类型为new时,有按钮可以打开模态框选择jobcode
+      HREndRecid: '' //待变更人员在新员工信息表中的REC-ID
     };
   }
   //删除审批节点
@@ -358,6 +359,11 @@ class IDLTransferHr extends Component {
   approve = async (v, end) => {
     this.setState({ loading: true });
 
+    //如果H终审通过，变更新员工信息表记录
+    if (v == 'Y' && end) {
+      console.log('HR终审通过');
+      this.hREndModify();
+    }
     var res = '';
     if (v == 'N') {
       var prev = 'N';
@@ -471,7 +477,7 @@ class IDLTransferHr extends Component {
       }
     }
   };
-  showOverlay = v => {
+  showOverlay = async v => {
     this.setState({ memberDetail: null, stream: [] });
     var n = 0;
     var arr = [];
@@ -501,11 +507,46 @@ class IDLTransferHr extends Component {
     // }else if(obj.changeType=='级别变更'){
     //   resid='634820028458';
     // }
+    try {
+      let HREndRecid = await http({
+        baseURL: WuxiHr03BaseURL
+      }).getTable({
+        resid: 638459489229,
+        cmswhere: `C3_227192472953 = '${v.personNum}'`
+      });
+      this.setState({ HREndRecid: HREndRecid.data[0].REC_ID });
+    } catch (error) {
+      message.info(error.message);
+      console.log(error.message);
+    }
     this.getStream(object.changeID, resid);
     this.getMem(object.changeID);
 
     this.setState({ toCheck: arr, toCheckFront: object, visible: true });
     console.log('v', v);
+  };
+
+  //hr终审更新岗位架构，修改新员工信息表信息
+  hREndModify = async () => {
+    const { allValues } = this.state;
+    let res;
+    try {
+      res = await http({ baseURL: WuxiHr03BaseURL }).modifyRecords({
+        resid: 638459489229,
+        data: [
+          {
+            REC_ID: this.state.HREndRecid,
+            C3_470524257391: this.state.toCheckFront.effortDate, //生效日期
+            C3_465142349966: this.state.toCheckFront.jobId, //岗位代码-可计算部门信息
+            jobCode: allValues.iiviJobCode, //jobcode
+            C3_581428109480: allValues.nBuCode //bucode
+          }
+        ]
+      });
+    } catch (error) {
+      message.info(error.message);
+      console.log(error.message);
+    }
   };
 
   approveHC = async v => {
@@ -714,7 +755,14 @@ class IDLTransferHr extends Component {
   };
   //获取表单更改后的值(HR预审可以修改变动信息)
   sendFormDataToFather = allValues => {
-    this.setState(allValues);
+    this.setState({
+      allValues,
+      iiviJobCode: allValues.iiviJobCode,
+      toCheckFront: {
+        ...this.state.toCheckFront,
+        iiviJobCode: allValues.iiviJobCode
+      }
+    });
     console.log(allValues);
   };
   //HR预审时，通知申请人他提交的变动信息已更改
@@ -1315,7 +1363,7 @@ class IDLTransferHr extends Component {
           >
             <div style={{ width: '100%', height: '80vh' }}>
               <TableData
-                baseURL={this.url80}
+                baseURL={WuxiHr03BaseURL}
                 resid="638305113445"
                 subtractH={200}
                 hasAdvSearch={false}
@@ -1707,9 +1755,17 @@ class IDLTransferHr extends Component {
                         toCheckFront={this.state.toCheckFront}
                         toCheck={this.state.toCheck}
                         HCPreApprove={this.state.right.HCPreApprove}
+                        isHREnd={
+                          this.state.cms ===
+                          `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
+                            ? true
+                            : false
+                        }
                         isShowButton={
                           this.state.cms ===
-                          `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`
+                            `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ||
+                          this.state.cms ===
+                            `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
                             ? true
                             : false
                         }
