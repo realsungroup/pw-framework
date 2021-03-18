@@ -1443,6 +1443,7 @@ class IDLTransferHr extends Component {
                           onClick={() => {
                             this.approve('Y', true);
                           }}
+                          loading={this.state.loading}
                         >
                           保存并通过审核
                         </Button>
