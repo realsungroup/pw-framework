@@ -239,7 +239,7 @@ class Control extends React.Component {
     }
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => { };
 
   shouldComponentUpdate = (nextProps, nextState) => {
     if (
@@ -257,12 +257,13 @@ class Control extends React.Component {
   };
 
   retFilterFieldValues = innerFieldNames => {
-    const { record } = this.props;
+    const { record, form } = this.props;
     const colValues = [];
     innerFieldNames.forEach(innerFieldName => {
       colValues.push({
         col1: innerFieldName.col1,
-        col1Value: record[innerFieldName.col1],
+        // col1Value: record[innerFieldName.col1],
+        col1Value: form.getFieldValue(innerFieldName.col1),
         col2: innerFieldName.col2
       });
     });
@@ -308,8 +309,8 @@ class Control extends React.Component {
     const advDicTableProps = {
       cmswhere: this.getAdvDicCmswhere(
         dataItem.controlData &&
-          dataItem.controlData.AdvDictionaryListData &&
-          dataItem.controlData.AdvDictionaryListData[0]
+        dataItem.controlData.AdvDictionaryListData &&
+        dataItem.controlData.AdvDictionaryListData[0]
       )
     };
     showAdvDicTable(
@@ -473,7 +474,7 @@ class Control extends React.Component {
         this.stream.getTracks().forEach(track => track.stop());
         this.stream = null;
         this.canvas = null;
-      } catch (err) {}
+      } catch (err) { }
 
       this.setState({
         takePictureVisible: false,
@@ -681,8 +682,8 @@ class Control extends React.Component {
               style={{ width: customStyle.width, height: customStyle.height }}
             ></img>
           ) : (
-            ''
-          );
+              ''
+            );
         }
 
         default: {
@@ -841,8 +842,8 @@ class Control extends React.Component {
               style={{ width: customStyle.width, height: customStyle.height }}
             ></img>
           ) : (
-            ''
-          );
+              ''
+            );
         }
 
         case 'RadioGroup': {
