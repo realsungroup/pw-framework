@@ -176,7 +176,7 @@ class ADPExport extends React.Component {
                   counts++;
                 }
               });
-              data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"0|"${record.C3_659465238204}|"99991231|"|"|"|"|"|"${record.YGNAMES}|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126.substring(0, 18)}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"${record.C3_661873440126.substring(18)}|"|"|"|"\n`;
+              data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"0|"${record.C3_659465238204}|"99991231|"|"|"|"|"|"${record.YGNAMES}|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126 ? record.C3_661873440126.substring(0, 18) : ''}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"${record.C3_661873440126 ? record.C3_661873440126.substring(18) : ''}|"|"|"|"\n`;
               counts++;
             }
           });

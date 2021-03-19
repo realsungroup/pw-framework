@@ -53,7 +53,7 @@ class PwAggrid extends React.Component {
       saveBtnLoading: false, //保存按钮loading状态
       deleteBtnLoading: false, //删除按钮loading状态
       rowClassRules: {
-        'pw-ag-grid-new-row': function(params) {
+        'pw-ag-grid-new-row': function (params) {
           return params.data ? params.data.isNew === true : null;
         }
       },
@@ -236,7 +236,7 @@ class PwAggrid extends React.Component {
         rowGroup: _column.rowGroup,
         // hide: true,
         // autoHeight: true,
-        cellStyle: function(params) {},
+        cellStyle: function (params) { },
         valueSetter: params => {
           if (params.oldValue == params.newValue) {
             return false;
@@ -273,7 +273,7 @@ class PwAggrid extends React.Component {
             aggridColumn.filter = 'agDateColumnFilter';
             aggridColumn.filterParams = {
               // provide comparator function
-              comparator: function(filterLocalDateAtMidnight, cellValue) {
+              comparator: function (filterLocalDateAtMidnight, cellValue) {
                 const dateAsString = cellValue;
                 if (dateAsString == null) return 0;
                 const cellDate = moment(dateAsString).toDate();
@@ -340,9 +340,9 @@ class PwAggrid extends React.Component {
     }
   };
 
-  onPasteStart = params => {};
+  onPasteStart = params => { };
 
-  onPasteEnd = params => {};
+  onPasteEnd = params => { };
 
   handleSaveButtonClick = async () => {
     this.setState({ saveBtnLoading: true });
@@ -406,12 +406,12 @@ class PwAggrid extends React.Component {
   };
 
   handleSelectionChanged = e => {
-    const { onAgGridSelectionChanged } = this.props;
+    const { onAgGridSelectionChanged, rowSelectionAg, getSelectedData } = this.props;
     onAgGridSelectionChanged &&
       onAgGridSelectionChanged(e.api.getSelectedRows());
-    if (this.props.rowSelectionAg && this.props.rowSelectionAg === 'multiple') {
+    if (getSelectedData && rowSelectionAg && rowSelectionAg === 'multiple') {
       let tableSelectedData = this.gridApi.getSelectedRows();
-      this.props.getSelectedData(tableSelectedData);
+      getSelectedData(tableSelectedData);
     }
   };
 
