@@ -84,6 +84,7 @@ class IDLTransferVerifyAction extends Component {
       toCheck: [],
       member: [], //同一审批单的人员
       C3_632503853105: '', //审批说明
+      HRTextModal: false, //HR部门经理填写审批记录
       toCheckFront: {
         C3_632503853105: null,
         effortDate: null, //生效日期
@@ -116,6 +117,14 @@ class IDLTransferVerifyAction extends Component {
         cmswhere: `C3_634660564341='${v}'`
       });
       this.setState({ approveRec: res2 });
+      res2.data.map(item => {
+        if (item.C3_634660565034 === 'HR部门经理审批') {
+          this.setState({
+            HRManagerNumId: item.C3_634660565295
+          });
+          console.log('HR部门经理工号', item.C3_634660565295);
+        }
+      });
       var n = 0;
       var arr = [];
       var c = 0;
@@ -252,7 +261,8 @@ class IDLTransferVerifyAction extends Component {
             data: [
               {
                 REC_ID: this.state.toCheckFront.REC_ID,
-                effortDate: date
+                effortDate: date,
+                C3_638617809632: this.state.C3_632503853105
               }
             ]
           });
@@ -438,6 +448,48 @@ class IDLTransferVerifyAction extends Component {
             />
           </Modal>
           <Modal
+            width={'60vw'}
+            visible={this.state.HRTextModal}
+            onCancel={() => this.setState({ HRTextModal: false })}
+            footer={
+              <>
+                <Button
+                  onClick={() => {
+                    this.setState({ HRTextModal: false });
+                  }}
+                >
+                  取消
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    this.approve('Y');
+                    this.setState({ HRTextModal: false });
+                  }}
+                >
+                  确认
+                </Button>
+              </>
+            }
+          >
+            <h3>请输入审核的相关备注</h3>
+            <p>({this.state.C3_632503853105.length}/200字)</p>
+            <Input.TextArea
+              maxLength={200}
+              style={{
+                marginTop: 16,
+                width: '60vw',
+                height: 120,
+                resize: 'none'
+              }}
+              value={this.state.C3_632503853105}
+              onChange={v => {
+                this.setState({ C3_632503853105: v.target.value });
+              }}
+              placeholder="最多输入200字"
+            />
+          </Modal>
+          <Modal
             width={'90vw'}
             visible={this.state.visible}
             footer={
@@ -452,7 +504,18 @@ class IDLTransferVerifyAction extends Component {
                   >
                     不通过审核
                   </Button>
-                  <Button type="primary" onClick={() => this.approve('Y')}>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      if (this.state.userId === this.state.HRManagerNumId) {
+                        this.setState({
+                          HRTextModal: true
+                        });
+                      } else {
+                        this.approve('Y');
+                      }
+                    }}
+                  >
                     保存并通过审核
                   </Button>
                 </>
@@ -480,18 +543,27 @@ class IDLTransferVerifyAction extends Component {
                     current={this.state.curStep - 1}
                   >
                     {this.state.stream.map((item, key) => {
-                      return (
-                        <Step
-                          title={item.stepName}
-                          description={
-                            <span>
-                              {item.stepPeople}
-                              <br />
-                              {item.stepTime}
-                            </span>
-                          }
-                        />
-                      );
+                      if (item.stepName === 'HR部门经理审批') {
+                        return (
+                          <Step
+                            title={item.stepName}
+                            description={
+                              <span>
+                                {item.stepPeople}
+                                <br />
+                                {item.stepTime}
+                              </span>
+                            }
+                          />
+                        );
+                      } else {
+                        return (
+                          <Step
+                            title={item.stepName}
+                            description={<span>{item.stepPeople}</span>}
+                          />
+                        );
+                      }
                     })}
                   </Steps>
                 )}

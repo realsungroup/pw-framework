@@ -416,18 +416,27 @@ class IDLTransferVerify extends Component {
                     current={this.state.curStep - 1}
                   >
                     {this.state.stream.map((item, key) => {
-                      return (
-                        <Step
-                          title={item.stepName}
-                          description={
-                            <span>
-                              {item.stepPeople}
-                              <br />
-                              {item.stepTime}
-                            </span>
-                          }
-                        />
-                      );
+                      if (item.stepName === 'HR部门经理审批') {
+                        return (
+                          <Step
+                            title={item.stepName}
+                            description={
+                              <span>
+                                {item.stepPeople}
+                                <br />
+                                {item.stepTime}
+                              </span>
+                            }
+                          />
+                        );
+                      } else {
+                        return (
+                          <Step
+                            title={item.stepName}
+                            description={<span>{item.stepPeople}</span>}
+                          />
+                        );
+                      }
                     })}
                   </Steps>
                 )}
