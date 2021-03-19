@@ -4895,7 +4895,7 @@ window[642855707652] = {
 };
 window[642855719230] = {
   // name: 'TableData', // 组件名称，
-  name: 'MainTableSubTables', // 组件名称，
+  name: 'RecruitmentNeeds', // 组件名称，
   title: '招聘需求管理', // 功能模块名称
   props: {
     baseURL: 'http://10.108.2.66:1001/',
