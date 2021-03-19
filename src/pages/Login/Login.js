@@ -1,6 +1,16 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { message, Button, Input, Form, Icon, Radio,Modal ,Checkbox,Popconfirm} from 'antd';
+import {
+  message,
+  Button,
+  Input,
+  Form,
+  Icon,
+  Radio,
+  Modal,
+  Checkbox,
+  Popconfirm
+} from 'antd';
 import { getItem, setItem } from 'Util20/util';
 import logoImg from '../../assets/logo-26.png';
 import { resetPassByEmail } from 'Util/api';
@@ -165,17 +175,17 @@ class Login extends React.Component {
       window.location.href = from.pathname + from.search || '';
     });
   };
-// subChangePSW = async ()=>{
-// 	let res;
-// 	try{
-// 		res =http().changePassword({
-// 			OldPass:'',
-// 			NewPass1:''
-// 		})
-// 	}catch(error){
-// 		console.error(error);
-// 	}
-// }
+  // subChangePSW = async ()=>{
+  // 	let res;
+  // 	try{
+  // 		res =http().changePassword({
+  // 			OldPass:'',
+  // 			NewPass1:''
+  // 		})
+  // 	}catch(error){
+  // 		console.error(error);
+  // 	}
+  // }
   getTablesConfigure = async () => {
     try {
       const configure = window.pwConfig[process.env.NODE_ENV].tablesConfig;
@@ -207,83 +217,79 @@ class Login extends React.Component {
       return usernameSuffix;
     }
   };
-mailResPSW = async() =>{
-	if(this.state.userNameLogin){
-		this.setState({loading:true});
-		let res;
-		try{
-			res=http().forgetPassword({
-				badgeno:this.state.userNameLogin,
-        enterprisecode:parseInt(100000*Math.random()^(Math.random())),
-        sendEmail:'Y'
-			})
-			
-			this.setState({loading:false,isSend:true});
-			message.success('已发送验证邮件到您到邮箱，请及时查收！')
-			var _this=this;
-			_this.setState({timer:5});
-			var t=5;
-			var timerC =setInterval(function(){
-				t=_this.state.timer-1;
-				_this.setState({timer:t});
-				if(t==0){
-					clearInterval(timerC);
-					_this.setState({timer:5,isSend:false});
-				}
-			},1000)
-		}catch(e){
-			//TODO handle the exception
-			message.error(e)
-			console.log(e);
-			this.setState({loading:false});
-		}
-	}else{
-		message.error('请先输入员工ID！')
-	}
-	
-}
-subResPSW = async() =>{
-	if(this.state.PSWNewEcho!=this.state.PSWNew){
-		message.error('两次密码输入不一致！')
-	}else if(!this.state.userNameLogin){
-		message.error('请输入用户ID！')
-	}else if(!this.state.OTP){
-		message.error('请输入验证码！')
-	}
-	else{
-	this.setState({loading:true});
-	let res;
-    try{
-      res = await http().getResetPassword({
-        userid:this.state.userNameLogin,
-        newpass1:this.state.PSWNew,
-        resetcode:this.state.OTP
-      })
-      
-      this.forgetPSW(false);
-      this.setState({loading:false});
-      message.success('已经成功重置密码！')
-    }catch(e){
-      if(e.message=='resetcode 不正确'){
-        message.error('验证码错误')
+  mailResPSW = async () => {
+    if (this.state.userNameLogin) {
+      this.setState({ loading: true });
+      let res;
+      try {
+        res = http().forgetPassword({
+          badgeno: this.state.userNameLogin,
+          enterprisecode: parseInt((100000 * Math.random()) ^ Math.random()),
+          sendEmail: 'Y'
+        });
 
-      }else{
-        message.error(e.message)
-
+        this.setState({ loading: false, isSend: true });
+        message.success('已发送验证邮件到您到邮箱，请及时查收！');
+        var _this = this;
+        _this.setState({ timer: 5 });
+        var t = 5;
+        var timerC = setInterval(function() {
+          t = _this.state.timer - 1;
+          _this.setState({ timer: t });
+          if (t == 0) {
+            clearInterval(timerC);
+            _this.setState({ timer: 5, isSend: false });
+          }
+        }, 1000);
+      } catch (e) {
+        //TODO handle the exception
+        message.error(e);
+        console.log(e);
+        this.setState({ loading: false });
       }
-      //TODO handle the exception
-      // console.log(e.error);
-      // this.forgetPSW(false);
-      // this.setState({loading:false});
+    } else {
+      message.error('请先输入员工ID！');
     }
-	}
-}
- resetPSW = (v) =>{
-	 this.setState({showReset:v});
- }
- forgetPSW = (v) =>{
- 	 this.setState({showForget:v});
- }
+  };
+  subResPSW = async () => {
+    if (this.state.PSWNewEcho != this.state.PSWNew) {
+      message.error('两次密码输入不一致！');
+    } else if (!this.state.userNameLogin) {
+      message.error('请输入用户ID！');
+    } else if (!this.state.OTP) {
+      message.error('请输入验证码！');
+    } else {
+      this.setState({ loading: true });
+      let res;
+      try {
+        res = await http().getResetPassword({
+          userid: this.state.userNameLogin,
+          newpass1: this.state.PSWNew,
+          resetcode: this.state.OTP
+        });
+
+        this.forgetPSW(false);
+        this.setState({ loading: false });
+        message.success('已经成功重置密码！');
+      } catch (e) {
+        if (e.message == 'resetcode 不正确') {
+          message.error('验证码错误');
+        } else {
+          message.error(e.message);
+        }
+        //TODO handle the exception
+        // console.log(e.error);
+        // this.forgetPSW(false);
+        // this.setState({loading:false});
+      }
+    }
+  };
+  resetPSW = v => {
+    this.setState({ showReset: v });
+  };
+  forgetPSW = v => {
+    this.setState({ showForget: v });
+  };
   render() {
     const { redirectToReferrer, loginMode, language, loading } = this.state;
     // 进入登录页的源路由
@@ -379,12 +385,34 @@ subResPSW = async() =>{
                 />
               )}
             </Form.Item>
-			<div style={{overflow:'hidden'}}>
-			<a style={{marginBottom:'8px',display:'block',float:'left',display:'none'}} onClick={()=>{this.resetPSW(true)}}>修改密码</a>
-			
-			<a style={{marginBottom:'8px',display:'block',float:'right'}} onClick={()=>{this.forgetPSW(true)}}>忘记密码</a>
-			
-			</div>
+            <div style={{ overflow: 'hidden' }}>
+              <a
+                style={{
+                  marginBottom: '8px',
+                  display: 'block',
+                  float: 'left',
+                  display: 'none'
+                }}
+                onClick={() => {
+                  this.resetPSW(true);
+                }}
+              >
+                修改密码
+              </a>
+
+              <a
+                style={{
+                  marginBottom: '8px',
+                  display: 'block',
+                  float: 'right'
+                }}
+                onClick={() => {
+                  this.forgetPSW(true);
+                }}
+              >
+                重置密码
+              </a>
+            </div>
             <Form.Item>
               <Button
                 block
@@ -399,23 +427,72 @@ subResPSW = async() =>{
           </Form>
           <div className="login__copyright">Copyright © 2008 ~ 2018 </div>
         </div>
-		
-		<Modal
-		  title="忘记密码"
-		  visible={this.state.showForget}
-		  onCancel={() => this.forgetPSW(false)}
-		  destroyOnClose
-		  width={'800px'}
-		  
-		  onOk={()=>this.subResPSW()}
-		>
-			<p style={{marginBottom:'8px'}}>员工ID</p><Input type='number' placeholder='请输入员工ID' style={{marginBottom:'8px'}} value={this.state.userNameLogin} onChange={v=>{this.setState({userNameLogin:v.target.value})}}/>
-			<p style={{marginBottom:'8px'}}>请先发送验证邮件，然后填写邮件中的验证码</p><Button type='normal' disabled={this.state.isSend} style={{verticalAlign:'top',width:'120px'}} onClick={this.mailResPSW}>{this.state.isSend?('等待'+this.state.timer+'秒'):'发送验证邮件'}</Button><Input type='text' style={{width:'calc(100% - 136px)',marginLeft:'16px'}}placeholder='请输入邮件中的验证码' value={this.state.OTP} onChange={v=>{this.setState({OTP:v.target.value})}}/>
-      <p style={{marginBottom:'8px',marginTop:'8px'}}>新密码</p><Input.Password placeholder='请输入新密码' style={{marginBottom:'8px'}} value={this.state.PSWNew} onChange={v=>{this.setState({PSWNew:v.target.value})}}/>
-			<p style={{marginBottom:'8px'}}>再次输入新密码</p><Input.Password placeholder='请再次输入新密码' value={this.state.PSWNewEcho} onChange={v=>{this.setState({PSWNewEcho:v.target.value})}} style={{marginBottom:'8px'}}/>
-			
-			<span style={{marginTop:'8px',color:'red'}}>{this.state.PSWNewEcho!=this.state.PSWNew?'两次输入的新密码不一致':null}</span>
-		</Modal>
+
+        <Modal
+          title="重置密码"
+          visible={this.state.showForget}
+          onCancel={() => this.forgetPSW(false)}
+          destroyOnClose
+          width={'800px'}
+          onOk={() => this.subResPSW()}
+        >
+          <p style={{ marginBottom: '8px' }}>员工ID</p>
+          <Input
+            type="number"
+            placeholder="请输入员工ID"
+            style={{ marginBottom: '8px' }}
+            value={this.state.userNameLogin}
+            onChange={v => {
+              this.setState({ userNameLogin: v.target.value });
+            }}
+          />
+          <p style={{ marginBottom: '8px' }}>
+            请先发送验证邮件，然后填写邮件中的验证码
+          </p>
+          <Button
+            type="normal"
+            disabled={this.state.isSend}
+            style={{ verticalAlign: 'top', width: '120px' }}
+            onClick={this.mailResPSW}
+          >
+            {this.state.isSend
+              ? '等待' + this.state.timer + '秒'
+              : '发送验证邮件'}
+          </Button>
+          <Input
+            type="text"
+            style={{ width: 'calc(100% - 136px)', marginLeft: '16px' }}
+            placeholder="请输入邮件中的验证码"
+            value={this.state.OTP}
+            onChange={v => {
+              this.setState({ OTP: v.target.value });
+            }}
+          />
+          <p style={{ marginBottom: '8px', marginTop: '8px' }}>新密码</p>
+          <Input.Password
+            placeholder="请输入新密码"
+            style={{ marginBottom: '8px' }}
+            value={this.state.PSWNew}
+            onChange={v => {
+              this.setState({ PSWNew: v.target.value });
+            }}
+          />
+          <p style={{ marginBottom: '8px' }}>再次输入新密码</p>
+          <Input.Password
+            placeholder="请再次输入新密码"
+            value={this.state.PSWNewEcho}
+            onChange={v => {
+              this.setState({ PSWNewEcho: v.target.value });
+            }}
+            style={{ marginBottom: '8px' }}
+          />
+
+          <span style={{ marginTop: '8px', color: 'red' }}>
+            {this.state.PSWNewEcho != this.state.PSWNew
+              ? '两次输入的新密码不一致'
+              : null}
+          </span>
+        </Modal>
       </div>
     );
   }
