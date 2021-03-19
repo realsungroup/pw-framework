@@ -915,3 +915,9 @@ export const BUCODEInfo = Loadable({
     return minLoading;
   }
 });
+export const RecruitmentNeeds = Loadable({
+  loader: () => import('./RecruitmentNeeds'),
+  loading() {
+    return minLoading;
+  }
+});
