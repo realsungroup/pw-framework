@@ -231,7 +231,9 @@ class CustomForm1 extends React.Component {
    * 提交表单
    */
   handleSubmit = async e => {
-    e.preventDefault();
+    this.setState({ submitting: true });
+
+    // e.preventDefault();
     let {
       filledData,
       selectedTypeId,
@@ -242,13 +244,16 @@ class CustomForm1 extends React.Component {
     } = this.state;
     for (let v of Object.values(errors)) {
       if (v) {
+        this.setState({ submitting: false });
+
         return message.info('信息未填写完整');
       }
     }
     if (isNeedAttachment && fileList.length === 0) {
+      this.setState({ submitting: false });
+
       return message.info('请上传附件');
     }
-    this.setState({ submitting: true });
     const { startTime, endTime, timeLength } = filledData;
     try {
       let result = await this.judgeCanSubmit(
@@ -282,10 +287,12 @@ class CustomForm1 extends React.Component {
         this.props.getNotices();
       } else {
         message.error(result.data);
+        this.setState({ submitting: false });
       }
     } catch (error) {
       console.log(error);
       message.error(error.message);
+      this.setState({ submitting: false });
     } finally {
       this.setState({ submitting: false });
     }
@@ -412,7 +419,7 @@ class CustomForm1 extends React.Component {
     }
     return (
       <div className="attendace-aplly_form__wrapper">
-        <Form className="attendace-aplly_form" onSubmit={this.handleSubmit}>
+        <Form className="attendace-aplly_form">
           <h2>请假/加班申请单</h2>
           <Row style={{ fontWeight: 600, marginBottom: 32 }}>
             <Col span={8}>填单人：{currentUser}</Col>
@@ -544,7 +551,10 @@ class CustomForm1 extends React.Component {
             <Button
               style={{ marginRight: 8 }}
               type="primary"
-              htmlType="submit"
+              // htmlType="submit"
+              onClick={() => {
+                this.handleSubmit();
+              }}
               loading={submitting}
             >
               提交
