@@ -14,7 +14,8 @@ import {
   Select,
   Checkbox,
   Switch,
-  Spin
+  Spin,
+  Pagination
 } from 'antd';
 import moment from 'moment';
 import './CourseArrangementInternal.less';
@@ -29,6 +30,7 @@ const courseArrangmentResid = '615549231946'; //课程安排表id
 const courseDetailId = '615054661547';
 const InternalCoursesResid = '616155060405';
 const courseTypeResid = '617189815964'; //安排类型表id
+const baseURL = window.pwConfig[process.env.NODE_ENV].attendanceMonthChangeUrl;
 
 const datetimeFormatString = 'YYYY-MM-DD HH:mm';
 const dateFormatString = 'YYYY-MM-DD';
@@ -87,7 +89,10 @@ class CourseArrangementInternal extends React.Component {
       // price: undefined,
       // classHour: undefined,
     },
-    employeeListVisible: false
+    employeeListVisible: false,
+    current: 1,
+    pageCourseArrangements: [],
+    syncdate: moment()
   };
 
   async componentDidMount() {
@@ -124,7 +129,6 @@ class CourseArrangementInternal extends React.Component {
       res = await http().getTable({
         resid: courseArrangmentResid
       });
-      console.log(res.data);
     } catch (error) {
       message.error(error.message);
       return console.log(error);
@@ -160,7 +164,12 @@ class CourseArrangementInternal extends React.Component {
           category_name: item.CourseName
         };
       });
-      this.setState({ courseArrangements, courses, calendarEvents });
+      this.setState({
+        courseArrangements,
+        courses,
+        calendarEvents,
+        pageCourseArrangements: courseArrangements.slice(0, 10)
+      });
     } else {
       message.error(res.message);
     }
@@ -358,8 +367,8 @@ class CourseArrangementInternal extends React.Component {
         key: searchKeyword,
         cmswhere: isHasPeriod
           ? `StartDatetime > '${searchPeriod[0]}'  and StartDatetime < '${
-              searchPeriod[1]
-            }'`
+          searchPeriod[1]
+          }'`
           : ''
       });
       let courseArrangements = res.data;
@@ -408,8 +417,47 @@ class CourseArrangementInternal extends React.Component {
       );
     }
   };
+  handleSync = async () => {
+    try {
+      const { syncdate } = this.state;
+      const date = syncdate.format('YYYY-MM-DD');
+      const httpParam = { baseURL }
+      this.setState({ syncing: true });
+      const res = await http(httpParam).getTable({
+        resid: '412433149535',
+        cmswhere: `C3_412433161639 = 917 and (C3_412433237587 between '${date + ' 00:00:00'}' and '${date + ' 23:59:59'}')`
+      });
+      if (res.data.length) {
+        await http(httpParam).modifyRecords({
+          resid: '412433149535',
+          data: res.data
+        });
+      }
+      const res1 = await http(httpParam).getTable({
+        resid: '650453389109',
+        cmswhere: `C3_412433237587 between '${date + ' 00:00:00'}' and '${date + ' 23:59:59'}'`
+      });
+      if (res1.data.length) {
+        await http(httpParam).modifyRecords({
+          resid: '650453389109',
+          data: res1.data
+        });
+      }
+      message.success('同步完成');
+      this.setState({ syncing: false });
+    } catch (error) {
+      this.setState({ syncing: false });
+      message.error(error.message);
+    }
+  }
   render() {
-    let { mode, courseArrangements, selectedCourseArrangement } = this.state;
+    let { mode,
+      courseArrangements,
+      pageCourseArrangements,
+      selectedCourseArrangement,
+      syncing,
+      current,
+      syncdate } = this.state;
     let modifiedCourseArrangement = { ...this.state.modifiedCourseArrangement };
     let internalCourses = [...this.state.internalCourses];
     let selectedCourse = { ...this.state.selectedCourse };
@@ -424,9 +472,21 @@ class CourseArrangementInternal extends React.Component {
                   this.setState({ isShowAddCourseArrangment: true });
                   return this.handleAddCourseArrangment;
                 }}
+                size="small"
                 style={{ marginRight: 8 }}
               >
                 添加课程安排
+              </Button>
+              <DatePicker
+                size="small"
+                value={syncdate} onChange={(date, dateString) => { this.setState({ syncdate: date }) }} />
+              <Button
+                loading={syncing}
+                onClick={this.handleSync}
+                style={{ marginRight: 8, marginLeft: 8 }}
+                size="small"
+              >
+                同步
               </Button>
               <span style={{ fontSize: 22, fontWeight: 700, marginRight: 6 }}>
                 显示模式:
@@ -471,9 +531,11 @@ class CourseArrangementInternal extends React.Component {
                 onOk={this.onOk}
                 onChange={this.onRangeSearchChange}
                 value={this.state.rangePickerValue}
+                size="small"
               />
               <Search
                 placeholder="输入课程关键字搜索"
+                size="small"
                 onSearch={value => {
                   this.setState(
                     { searchKeyword: value },
@@ -486,67 +548,68 @@ class CourseArrangementInternal extends React.Component {
             </div>
           </header>
           {this.state.mode === 'card' && (
-            <div className="arranging_courses-course_list">
-              {courseArrangements.length ? (
-                courseArrangements.map((item, key) => (
-                  <Card
-                    title={
-                      <div style={{overflow:'hidden'}}>
-                        <div style={{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',float:'left',maxWidth:'calc(50vw - 328px)'}}>{item.CourseName}</div>
-                        <div
-                          className="arranging_courses-course_list-course_type"
-                          style={
-                            item.innerArrangeType === '1'
-                              ? { backgroundColor: '#1787fb',float:'left' }
-                              : { backgroundColor: '#57c22d',float:'left' }
-                          }
-                        >
-                          {item.C3_616254048241}
-                        </div>
-                        <Spin
-                          className="spinoimg"
-                          spinning={this.state.loading}
-                        >
-                          <Switch
-                            defaultChecked={
-                              item.isDivisionCourse == 'Y' ? true : false
+            <>
+              <div className="arranging_courses-course_list">
+                {pageCourseArrangements.length ? (
+                  pageCourseArrangements.map((item, key) => (
+                    <Card
+                      title={
+                        <div style={{ overflow: 'hidden' }}>
+                          <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', float: 'left', maxWidth: 'calc(50vw - 328px)' }}>{item.CourseName}</div>
+                          <div
+                            className="arranging_courses-course_list-course_type"
+                            style={
+                              item.innerArrangeType === '1'
+                                ? { backgroundColor: '#1787fb', float: 'left' }
+                                : { backgroundColor: '#57c22d', float: 'left' }
                             }
-                            style={{ float: 'right', display: 'none' }}
-                            onChange={v => {
-                              this.autoSp(v, item, key);
-                            }}
-                          />
-                          <span
-                            style={{
-                              fontWeight: 'normal',
-                              float: 'right',
-                              marginRight: '8px',
-                              display: 'none'
-                            }}
                           >
-                            是否自动拆课
+                            {item.C3_616254048241}
+                          </div>
+                          <Spin
+                            className="spinoimg"
+                            spinning={this.state.loading}
+                          >
+                            <Switch
+                              defaultChecked={
+                                item.isDivisionCourse == 'Y' ? true : false
+                              }
+                              style={{ float: 'right', display: 'none' }}
+                              onChange={v => {
+                                this.autoSp(v, item, key);
+                              }}
+                            />
+                            <span
+                              style={{
+                                fontWeight: 'normal',
+                                float: 'right',
+                                marginRight: '8px',
+                                display: 'none'
+                              }}
+                            >
+                              是否自动拆课
                           </span>
-                        </Spin>
-                      </div>
-                    }
-                    className="arranging_courses_item"
-                    key={item.REC_ID}
-                    hoverable
-                    extra={
-                      <div>
-                        <span style={{ marginRight: '16px' }}>
-                          签到数：
+                          </Spin>
+                        </div>
+                      }
+                      className="arranging_courses_item"
+                      key={item.REC_ID}
+                      hoverable
+                      extra={
+                        <div>
+                          <span style={{ marginRight: '16px' }}>
+                            签到数：
                           {item.C3_625242875063 == 'undefined'
-                            ? '0'
-                            : item.C3_625242875063}
-                        </span>
-                        {/* <Icon style={{color:'#faad14'}}type="like" theme="filled" /> */}
+                              ? '0'
+                              : item.C3_625242875063}
+                          </span>
+                          {/* <Icon style={{color:'#faad14'}}type="like" theme="filled" /> */}
                         点赞数：{item.countLike}
-                      </div>
-                    }
-                    actions={
-                      item.innerArrangeType === '2'
-                        ? [
+                        </div>
+                      }
+                      actions={
+                        item.innerArrangeType === '2'
+                          ? [
                             <span
                               onClick={() => {
                                 console.log(item);
@@ -590,7 +653,7 @@ class CourseArrangementInternal extends React.Component {
                               学员通知及审核
                             </span>
                           ]
-                        : [
+                          : [
                             <span
                               onClick={() =>
                                 this.setState({
@@ -633,45 +696,60 @@ class CourseArrangementInternal extends React.Component {
                               查看人员
                             </span>
                           ]
-                    }
-                  >
-                    <div className="arranging_courses_item_content">
-                      <div
-                        className="view_sheet"
-                        style={!item.needSheet ? {} : { display: 'none' }}
-                        onClick={() => {
-                          window.open(
-                            'fnmodule?resid=%E9%97%AE%E5%8D%B7%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90&recid=610653889243&type=%E9%97%AE%E5%8D%B7%E7%B3%BB%E7%BB%9F&title=%E9%97%AE%E5%8D%B7%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90&questionnaireRecid=' +
+                      }
+                    >
+                      <div className="arranging_courses_item_content">
+                        <div
+                          className="view_sheet"
+                          style={!item.needSheet ? {} : { display: 'none' }}
+                          onClick={() => {
+                            window.open(
+                              'fnmodule?resid=%E9%97%AE%E5%8D%B7%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90&recid=610653889243&type=%E9%97%AE%E5%8D%B7%E7%B3%BB%E7%BB%9F&title=%E9%97%AE%E5%8D%B7%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90&questionnaireRecid=' +
                               item.sheetId
-                          );
-                        }}
-                      >
-                        <Icon type="file-text" />
-                        <span>查看问卷</span>
-                      </div>
+                            );
+                          }}
+                        >
+                          <Icon type="file-text" />
+                          <span>查看问卷</span>
+                        </div>
 
-                      <div className="content_item">主讲:{item.Teacher}</div>
-                      <div className="content_item">人数:{item.Attendees}</div>
-                      <div className="content_item">
-                        开课时间：{item.StartDatetime}
+                        <div className="content_item">主讲:{item.Teacher}</div>
+                        <div className="content_item">人数:{item.Attendees}</div>
+                        <div className="content_item">
+                          开课时间：{item.StartDatetime}
+                        </div>
+                        <div className="content_item">
+                          结束时间：{item.EndDatetime}
+                        </div>
+                        <div className="content_item">
+                          地点:{item.CourseLocation}
+                        </div>
+                        <div className="content_item">季度：{item.quarter}</div>
                       </div>
-                      <div className="content_item">
-                        结束时间：{item.EndDatetime}
-                      </div>
-                      <div className="content_item">
-                        地点:{item.CourseLocation}
-                      </div>
-                      <div className="content_item">季度：{item.quarter}</div>
-                    </div>
-                  </Card>
-                ))
-              ) : (
-                <List
-                  dataSource={courseArrangements}
-                  style={{ width: '100%' }}
-                ></List>
-              )}
-            </div>
+                    </Card>
+                  ))
+                ) : (
+                    <List
+                      dataSource={[]}
+                      style={{ width: '100%' }}
+                    ></List>
+                  )}
+
+              </div>
+              <Pagination
+                total={courseArrangements.length}
+                pageSize={10}
+                current={current}
+                onChange={(page, pageSize) => {
+                  const start = (page - 1) * pageSize;
+                  const end = start + pageSize;
+                  this.setState({
+                    current: page,
+                    pageCourseArrangements: courseArrangements.slice(start, end)
+                  })
+                }}
+                size="small" />
+            </>
           )}
           {this.state.mode === 'table' && (
             <div style={{ width: '100%', flex: 1 }}>
@@ -1094,7 +1172,7 @@ class CourseArrangementInternal extends React.Component {
                       课程类别:
                     </label>
                     <Select
-                      style={{minWidth:'200px'}}
+                      style={{ minWidth: '200px' }}
                       value={inputCourseArrangement.courseType}
                       onChange={e => {
                         this.setState({
@@ -1216,24 +1294,24 @@ class CourseArrangementInternal extends React.Component {
                                   已选择该问卷
                                 </span>
                               ) : (
-                                <Button
-                                  onClick={() => {
-                                    this.setState({
-                                      sheetId: record.query_id
-                                    });
-                                  }}
-                                  type="primary"
-                                  style={{ marginRight: 8 }}
-                                >
-                                  选择问卷
-                                </Button>
-                              )}
+                                  <Button
+                                    onClick={() => {
+                                      this.setState({
+                                        sheetId: record.query_id
+                                      });
+                                    }}
+                                    type="primary"
+                                    style={{ marginRight: 8 }}
+                                  >
+                                    选择问卷
+                                  </Button>
+                                )}
 
                               <Button
                                 onClick={() => {
                                   window.open(
                                     'fnmodule?resid=问卷设置&recid=608296075283&type=前端功能入口&title=问卷首页&id=' +
-                                      record.query_id
+                                    record.query_id
                                   );
                                 }}
                               >
@@ -1254,60 +1332,60 @@ class CourseArrangementInternal extends React.Component {
                 </div> */}
               </Card>
             ) : (
-              <List
-                bordered
-                dataSource={internalCourses}
-                header={
-                  <header style={{ display: 'flex' }}>
-                    <Input.Search
-                      style={{ width: 250, marginLeft: 12 }}
-                      placeholder="输入课程关键字搜索"
-                      value={this.state.searchCourseKey}
-                      onChange={e => {
-                        this.setState(
-                          { searchCourseKey: e.target.value },
-                          this.searchInternalCourses
-                        );
-                      }}
-                      onSearch={key => {
-                        this.setState(
-                          { searchCourseKey: key },
-                          this.searchInternalCourses
-                        );
-                      }}
-                    />
-                  </header>
-                }
-                renderItem={item => {
-                  return (
-                    <List.Item
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => {
-                        let obj= {
-                          teacher: item.C3_610390419677,
-                          startDate: '',
-                          endDate: '',
-                          courseType: item.C3_625849192541,
-                          places: 1,
-                          location: item.C3_610390410802
-                        }
-                        this.setState({
-                          isSelectedCourse: true,
-                          selectedCourse: item,
-                          inputCourseArrangement:obj
-                        });
-                      }}
-                    >
-                      <Radio>
-                        <span style={{ marginRight: 12 }}>
-                          {item.C3_609845305680}
-                        </span>
-                      </Radio>
-                    </List.Item>
-                  );
-                }}
-              />
-            )}
+                <List
+                  bordered
+                  dataSource={internalCourses}
+                  header={
+                    <header style={{ display: 'flex' }}>
+                      <Input.Search
+                        style={{ width: 250, marginLeft: 12 }}
+                        placeholder="输入课程关键字搜索"
+                        value={this.state.searchCourseKey}
+                        onChange={e => {
+                          this.setState(
+                            { searchCourseKey: e.target.value },
+                            this.searchInternalCourses
+                          );
+                        }}
+                        onSearch={key => {
+                          this.setState(
+                            { searchCourseKey: key },
+                            this.searchInternalCourses
+                          );
+                        }}
+                      />
+                    </header>
+                  }
+                  renderItem={item => {
+                    return (
+                      <List.Item
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          let obj = {
+                            teacher: item.C3_610390419677,
+                            startDate: '',
+                            endDate: '',
+                            courseType: item.C3_625849192541,
+                            places: 1,
+                            location: item.C3_610390410802
+                          }
+                          this.setState({
+                            isSelectedCourse: true,
+                            selectedCourse: item,
+                            inputCourseArrangement: obj
+                          });
+                        }}
+                      >
+                        <Radio>
+                          <span style={{ marginRight: 12 }}>
+                            {item.C3_609845305680}
+                          </span>
+                        </Radio>
+                      </List.Item>
+                    );
+                  }}
+                />
+              )}
           </div>
         </Modal>
         <Modal
