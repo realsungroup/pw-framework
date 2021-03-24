@@ -573,18 +573,23 @@ class IDLTransferVerifyAction extends Component {
                   className="showContent"
                   style={{ marginTop: 24, width: '100%', marginLeft: '0' }}
                 >
-                  <b>生效时间：</b>
-                  <DatePicker
-                    value={this.state.toCheckFront.effortDate}
-                    onChange={v =>
-                      this.setState({
-                        toCheckFront: {
-                          ...this.state.toCheckFront,
-                          effortDate: v
+                  {this.state.HRManagerNumId === this.state.userId ? (
+                    <>
+                      <b>生效时间：</b>
+                      <DatePicker
+                        value={this.state.toCheckFront.effortDate}
+                        onChange={v =>
+                          this.setState({
+                            toCheckFront: {
+                              ...this.state.toCheckFront,
+                              effortDate: v
+                            }
+                          })
                         }
-                      })
-                    }
-                  />
+                      />
+                    </>
+                  ) : null}
+
                   <b>变动类型：{this.state.toCheckFront.changeType}</b>
                   {/* <b>调动对象姓名：</b><span>{this.state.toCheckFront.C3_632503839336}</span>
                 <b>调动对象工号：</b><span>{this.state.toCheckFront.C3_632503839068}</span> */}
