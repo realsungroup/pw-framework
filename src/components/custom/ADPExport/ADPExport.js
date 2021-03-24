@@ -134,6 +134,7 @@ class ADPExport extends React.Component {
           if (!records.length) {
             return message.info('请选择记录');
           }
+          const monthFirstDay = this.state.yearMonth.format("YYYYMM") + '01';
           const now = moment().format('YYYYMMDDHHmmss');
           const fileName = `PP3104_${now}_CN2890_HRMD01_MUT8G2I.sap`;
           let data = `HEADR|"GVIIVI|"IIVIINC|"LEO_CHEN|"+86 591 88052823|"FZCN.Payroll@ii-vi.com|"${fileName}|"${moment().format(
@@ -154,6 +155,8 @@ class ADPExport extends React.Component {
                     //当月入职
                     if (record.C3_427590520804 == 'Y') {
                       startDate = record.JOINDATE;
+                    } else {
+                      startDate = monthFirstDay;
                     }
                   }
                   let row = `P${column.number2}|"${
@@ -176,7 +179,14 @@ class ADPExport extends React.Component {
                   counts++;
                 }
               });
-              data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"0|"${record.C3_659465238204}|"99991231|"|"|"|"|"|"${record.YGNAMES}|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126 ? record.C3_661873440126.substring(0, 18) : ''}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"${record.C3_661873440126 ? record.C3_661873440126.substring(18) : ''}|"|"|"|"\n`;
+              let startDate = "";
+              //当月入职
+              if (record.C3_427590520804 == 'Y') {
+                startDate = record.JOINDATE;
+              } else {
+                startDate = monthFirstDay;
+              }
+              data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"0|"${startDate}|"99991231|"|"|"|"|"|"${record.YGNAMES}|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126 ? record.C3_661873440126.substring(0, 18) : ''}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"${record.C3_661873440126 ? record.C3_661873440126.substring(18) : ''}|"|"|"|"\n`;
               counts++;
             }
           });
