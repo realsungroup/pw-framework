@@ -187,6 +187,9 @@ class Control extends React.Component {
     const { id, name, controlData } = dataItem;
     const { ColType } = controlData;
     if (name === 'Input' && ColType === 6) {
+      if (!record.REC_ID) {
+        return
+      }
       let httpParams = {};
       if (baseURL) {
         httpParams.baseURL = baseURL;
@@ -239,7 +242,7 @@ class Control extends React.Component {
     }
   };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => { };
 
   shouldComponentUpdate = (nextProps, nextState) => {
     if (
@@ -308,8 +311,8 @@ class Control extends React.Component {
     const advDicTableProps = {
       cmswhere: this.getAdvDicCmswhere(
         dataItem.controlData &&
-          dataItem.controlData.AdvDictionaryListData &&
-          dataItem.controlData.AdvDictionaryListData[0]
+        dataItem.controlData.AdvDictionaryListData &&
+        dataItem.controlData.AdvDictionaryListData[0]
       )
     };
     showAdvDicTable(
@@ -473,7 +476,7 @@ class Control extends React.Component {
         this.stream.getTracks().forEach(track => track.stop());
         this.stream = null;
         this.canvas = null;
-      } catch (err) {}
+      } catch (err) { }
 
       this.setState({
         takePictureVisible: false,
@@ -681,8 +684,8 @@ class Control extends React.Component {
               style={{ width: customStyle.width, height: customStyle.height }}
             ></img>
           ) : (
-            ''
-          );
+              ''
+            );
         }
 
         default: {
@@ -841,8 +844,8 @@ class Control extends React.Component {
               style={{ width: customStyle.width, height: customStyle.height }}
             ></img>
           ) : (
-            ''
-          );
+              ''
+            );
         }
 
         case 'RadioGroup': {
