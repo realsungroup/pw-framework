@@ -474,6 +474,14 @@ class IDLTransferVerify extends Component {
                       <span>{this.state.toCheckFront.C3_632503853105}</span>
                     </div>
                   ) : null}
+                  {this.state.toCheckFront.ApproveRemark ? (
+                    <>
+                      <br />
+                      <b>审批说明:</b>
+                      <p>{this.state.toCheckFront.ApproveRemark}</p>
+                    </>
+                  ) : null}
+
                   <div className="tableWrap">
                     <Spin spinning={this.state.loading}>
                       <div style={{ float: 'left' }}>
@@ -615,13 +623,7 @@ class IDLTransferVerify extends Component {
                           </li>
                         </ul>
                       </div>
-                      {this.state.toCheckFront.ApproveRemark ? (
-                        <>
-                          <br />
-                          <b>审批说明:</b>
-                          <p>{this.state.toCheckFront.ApproveRemark}</p>
-                        </>
-                      ) : null}
+
                       <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0', marginLeft: '-1px' }}>
                           <li>

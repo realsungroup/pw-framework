@@ -236,6 +236,7 @@ class IDLTransferVerifyAction extends Component {
     while (n < arr.length) {
       if (this.state.userId == arr[n].C3_634660565295) {
         arr[n].C3_634660565837 = v;
+        arr[n].C3_634660566283 = this.state.C3_632503853105;
         arr[n].edit_time = moment().format('YYYY-MM-DD HH:mm:ss');
         objGroup.push(arr[n]);
       }
@@ -262,7 +263,7 @@ class IDLTransferVerifyAction extends Component {
               {
                 REC_ID: this.state.toCheckFront.REC_ID,
                 effortDate: date,
-                C3_638617809632: this.state.C3_632503853105
+                // C3_638617809632: this.state.C3_632503853105
               }
             ]
           });
@@ -450,12 +451,13 @@ class IDLTransferVerifyAction extends Component {
           <Modal
             width={'60vw'}
             visible={this.state.HRTextModal}
-            onCancel={() => this.setState({ HRTextModal: false })}
+
+            onCancel={() => this.setState({ HRTextModal: false, C3_632503853105: '' })}
             footer={
               <>
                 <Button
                   onClick={() => {
-                    this.setState({ HRTextModal: false });
+                    this.setState({ HRTextModal: false, C3_632503853105: '' });
                   }}
                 >
                   取消
@@ -464,7 +466,7 @@ class IDLTransferVerifyAction extends Component {
                   type="primary"
                   onClick={() => {
                     this.approve('Y');
-                    this.setState({ HRTextModal: false });
+                    this.setState({ HRTextModal: false, C3_632503853105: '' });
                   }}
                 >
                   确认
@@ -605,6 +607,14 @@ class IDLTransferVerifyAction extends Component {
                       <b>审核反馈信息：</b>
                       <span>{this.state.toCheckFront.C3_632503853105}</span>
                     </div>
+                  ) : null}
+
+                  {this.state.toCheckFront.ApproveRemark ? (
+                    <>
+                      <br />
+                      <b>审批说明:</b>
+                      <p>{this.state.toCheckFront.ApproveRemark}</p>
+                    </>
                   ) : null}
                   <div className="tableWrap">
                     <Spin spinning={this.state.loading}>
@@ -747,13 +757,6 @@ class IDLTransferVerifyAction extends Component {
                           </li>
                         </ul>
                       </div>
-                      {this.state.toCheckFront.ApproveRemark ? (
-                        <>
-                          <br />
-                          <b>审批说明:</b>
-                          <p>{this.state.toCheckFront.ApproveRemark}</p>
-                        </>
-                      ) : null}
                       <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0', marginLeft: '-1px' }}>
                           <li>
