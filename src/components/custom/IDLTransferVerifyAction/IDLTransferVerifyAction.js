@@ -598,6 +598,8 @@ class IDLTransferVerifyAction extends Component {
                   <b>变动原因：</b>
                   <span>{this.state.toCheckFront.changeReason}</span>
                   <br />
+                  <Button style={{ width: '120px' }} onClick={() => { this.setState({ showMemo: true }) }}>查看审批备注</Button>
+                  <br />
                   {this.state.toCheckFront.C3_632503853105 ? (
                     <div>
                       <b>审核反馈信息：</b>
@@ -802,6 +804,29 @@ class IDLTransferVerifyAction extends Component {
                   </div>
                 </div>
               </div>
+            </div>
+          </Modal>
+          <Modal
+            width={'90vw'}
+            visible={this.state.showMemo}
+            destroyOnClose={true}
+            footer={null}
+            onCancel={() => { this.setState({ showMemo: false }) }}
+          >
+            <div style={{ width: "100%", height: '60vh' }}>
+              <TableData
+                resid={669982527179}
+                cmswhere={`C3_634660564341 = '${this.state.toCheckFront.REC_ID}'`}
+                hasRowView={false}
+                subtractH={220} REC_ID
+                hasAdd={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                hasRowView={false}
+              />
             </div>
           </Modal>
           <div className="sider">
