@@ -187,6 +187,9 @@ class Control extends React.Component {
     const { id, name, controlData } = dataItem;
     const { ColType } = controlData;
     if (name === 'Input' && ColType === 6) {
+      if (!record.REC_ID) {
+        return
+      }
       let httpParams = {};
       if (baseURL) {
         httpParams.baseURL = baseURL;

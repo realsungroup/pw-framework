@@ -2018,13 +2018,17 @@ window[619954194724] = {
 };
 window[620212364621] = {
   name: 'ComprehensiveQuery',
-  title: '综合查询'
+  title: '综合查询',
+  props: {
+    showAnnualLeaveDetail: false,//是否显示年假明细
+  }
 };
 window[642853831562] = {
   name: 'ComprehensiveQuery',
   title: '绩效查询',
   props: {
-    tabKey: 'performance'
+    tabKey: 'performance',
+    showAnnualLeaveDetail: false,//是否显示年假明细
   }
 };
 
@@ -2032,21 +2036,24 @@ window[642853818882] = {
   name: 'ComprehensiveQuery',
   title: '考勤查询',
   props: {
-    tabKey: 'attendance'
+    tabKey: 'attendance',
+    showAnnualLeaveDetail: true,//是否显示年假明细
   }
 };
 window[643372961628] = {
   name: 'ComprehensiveQuery',
   title: '评级评优查询',
   props: {
-    tabKey: 'rating'
+    tabKey: 'rating',
+    showAnnualLeaveDetail: false,//是否显示年假明细
   }
 };
 window[642853806554] = {
   name: 'ComprehensiveQuery',
   title: '人事查询',
   props: {
-    tabKey: 'personnel'
+    tabKey: 'personnel',
+    showAnnualLeaveDetail: false,//是否显示年假明细
   }
 };
 window[621257502796] = {
