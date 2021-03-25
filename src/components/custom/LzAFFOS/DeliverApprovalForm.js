@@ -462,6 +462,61 @@ class DeliverApprovalForm extends React.Component {
                     </tr>
                   );
                 })}
+                <tr>
+                  <th colSpan="9">
+                    <h3>带出厂物品信息</h3>
+                  </th>
+                </tr>
+                <tr>
+                  <th colSpan="9">
+                    <Button
+                      onClick={() => {
+                        this.props.showGoodsInfo1();
+                      }}
+                      type="primary"
+                    >
+                      变更信息
+                    </Button>
+                  </th>
+                </tr>
+                <tr>
+                  <th className="thCss">
+                    <label>物品名称</label>
+                  </th>
+                  <th className="thCss">
+                    <label>单位</label>
+                  </th>
+                  <th className="thCss">
+                    <label>数量</label>
+                  </th>
+                  <th colSpan="3" className="thCss">
+                    <label>带出原因</label>
+                  </th>
+                  <th colSpan="3" className="thCss">
+                    <label>物品图片</label>
+                  </th>
+                </tr>
+                {this.props.toDeliverApprovalFormData.goodsInfo.map(item => {
+                  return (
+                    <tr>
+                      <th className="thCss">
+                        <label>{item.goodsName}</label>
+                      </th>
+                      <th className="thCss">
+                        <label>{item.unit}</label>
+                      </th>
+                      <th className="thCss">
+                        <label>{item.quantity}</label>
+                      </th>
+                      <th colSpan="3" className="thCss">
+                        <label>{item.reason}</label>
+                      </th>
+                      <th colSpan="3" className="thCss">
+                        <label>{item.photo1}</label>
+                      </th>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
