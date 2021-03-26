@@ -2541,7 +2541,7 @@ class NianJiaChaXun extends React.PureComponent {
               <Option key={d.value}>{d.text}</Option>
             ))}
           </Select>
-          <Radio.Group
+          {/* <Radio.Group
             onChange={e => {
               this.setState({ selectedRadio: e.target.value });
             }}
@@ -2551,7 +2551,7 @@ class NianJiaChaXun extends React.PureComponent {
           >
             <Radio.Button value="zhmx">账户明细</Radio.Button>
             <Radio.Button value="symx">使用明细</Radio.Button>
-          </Radio.Group>
+          </Radio.Group> */}
         </div>
         <Modal
           title="年假月度使用情况"
