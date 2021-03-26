@@ -235,8 +235,54 @@ class IDLTransferHr extends Component {
         resid: 632314958317,
         cmswhere: `C3_632503844784='${v}'`
       });
-      this.setState({ member: res.data, loading: false });
-      console.log('resqq', res);
+      this.setState({ member: res.data });
+    } catch (e) {
+      console.log(e);
+      this.setState({ loading: false });
+    }
+
+    try {
+      let res2 = await http().getTable({
+        resid: 634660498796,
+        cmswhere: `C3_634660564341='${v}'`
+      });
+      this.setState({ approveRec: res2 });
+      var n = 0;
+      var arr = [];
+      var c = 0;
+      var isFin = 0;
+
+      while (n < res2.data.length) {
+        arr.push({
+          stepName: res2.data[n].C3_634660565034,
+          stepPeople: res2.data[n].C3_634660565583,
+          stepTime: res2.data[n].edit_time,
+          order: res2.data[n].C3_634660566076,
+          memo: res2.data[n].C3_634660566283,
+          current: res2.data[n].C3_637177232366
+        });
+        if (res2.data[n].C3_637177232366 == 'Y') {
+          var c = res2.data[n].C3_635250483297;
+        }
+        if (res2.data[n].C3_634660565837 == 'Y') {
+          isFin = isFin + 1;
+        }
+        arr = arr.sort(compare('order'));
+        n++;
+      }
+      if (isFin == res2.data.length) {
+        c = res2.data.length + 1;
+      }
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[i].stepPeople == arr[j].stepPeople) {         //第一个等同于第二个，splice方法删除第二个
+            arr.splice(j, 1);
+            j--;
+          }
+        }
+      }
+      console.log(arr)
+      this.setState({ loading: false, curStep: c, stream: arr });
     } catch (e) {
       console.log(e);
       this.setState({ loading: false });
@@ -1561,7 +1607,7 @@ class IDLTransferHr extends Component {
                   <span>{this.state.toCheckFront.changeReason}</span>
                   <b>Job Code：</b>
                   <span>{this.state.toCheckFront.iiviJobCode}</span>
-                  <Button style={{ width: '120px' }} onClick={() => { this.setState({ showMemo: true }) }}>查看审批备注</Button>
+                  {/* <Button style={{ width: '120px' }} onClick={() => { this.setState({ showMemo: true }) }}>查看审批备注</Button> */}
                   <br />
                   {this.state.cms ==
                     `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
@@ -1748,6 +1794,32 @@ class IDLTransferHr extends Component {
                           <p>{this.state.toCheckFront.ApproveRemark}</p>
                         </>
                       ) : null}
+                      <div style={{ float: 'right', marginRight: 16 }}>
+                        <b>审批备注：</b>
+                        <br />
+                        <div style={{ overflow: 'auto', height: '50vh' }}>
+                          {
+                            this.state.stream.length > 0 ?
+                              (
+                                this.state.stream.map((item) => {
+                                  return (
+                                    <>{item.memo ?
+                                      (<>
+                                        <span>{item.stepPeople}：</span>
+                                        <br /> <span>{item.memo}</span>
+                                        <br />
+                                        <br />
+                                      </>)
+                                      : null}
+                                    </>
+                                  )
+                                })
+                              )
+                              : '无'
+                          }
+
+                        </div>
+                      </div>
                       {/* <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0', marginLeft: '-1px' }}>
                           <li>
@@ -1794,6 +1866,7 @@ class IDLTransferHr extends Component {
                           </li>
                         </ul>
                       </div> */}
+
                       <ChangedInfoForm
                         toCheckFront={this.state.toCheckFront}
                         toCheck={this.state.toCheck}

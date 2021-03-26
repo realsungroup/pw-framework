@@ -16,6 +16,7 @@ import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
 import moment from 'moment';
 import { async } from 'q';
+import TextArea from 'antd/lib/input/TextArea';
 
 function compare(property) {
   return function (a, b) {
@@ -134,7 +135,9 @@ class IDLTransferVerifyAction extends Component {
           stepName: res2.data[n].C3_634660565034,
           stepPeople: res2.data[n].C3_634660565583,
           stepTime: res2.data[n].edit_time,
-          order: res2.data[n].C3_634660566076
+          order: res2.data[n].C3_634660566076,
+          memo: res2.data[n].C3_634660566283,
+          current: res2.data[n].C3_637177232366
         });
         if (res2.data[n].C3_637177232366 == 'Y') {
           var c = res2.data[n].C3_635250483297;
@@ -144,13 +147,42 @@ class IDLTransferVerifyAction extends Component {
         }
         n++;
       }
-      console.log('arr', arr, c);
       arr = arr.sort(compare('order'));
 
       if (isFin == res2.data.length) {
         c = res2.data.length + 1;
       }
-      this.setState({ loading: false, curStep: c, stream: arr });
+
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[i].stepPeople == arr[j].stepPeople) {         //第一个等同于第二个，splice方法删除第二个
+            arr.splice(j, 1);
+            j--;
+          }
+        }
+      }
+
+      n = 0;
+      let arrFin = [];
+      let fst;
+      while (n < arr.length) {
+        if (arr[n].current == 'Y') {
+          fst = arr[n];
+          arr.splice(n, 1);
+        }
+        n++;
+      }
+      if (fst) {
+        arrFin.push(fst);
+
+      }
+      n = 0;
+      while (n < arr.length) {
+        arrFin.push(arr[n]);
+        n++;
+      }
+
+      this.setState({ loading: false, curStep: c, stream: arrFin, C3_632503853105: '' });
     } catch (e) {
       console.log(e);
       this.setState({ loading: false });
@@ -501,7 +533,9 @@ class IDLTransferVerifyAction extends Component {
                     type="danger"
                     style={{ marginLeft: '8px' }}
                     onClick={() => {
-                      this.setState({ conUnpass: true });
+                      this.approve('N');
+
+                      // this.setState({ conUnpass: true });
                     }}
                   >
                     不通过审核
@@ -509,10 +543,12 @@ class IDLTransferVerifyAction extends Component {
                   <Button
                     type="primary"
                     onClick={() => {
+                      this.approve('Y');
+
                       // if (this.state.userId === this.state.HRManagerNumId) {
-                      this.setState({
-                        HRTextModal: true
-                      });
+                      // this.setState({
+                      //   HRTextModal: true
+                      // });
                       // } else {
                       //   this.approve('Y');
                       // }
@@ -530,7 +566,7 @@ class IDLTransferVerifyAction extends Component {
                 className="steps"
                 style={{ width: 'calc(100% - 48px)', marginLeft: '24px' }}
               >
-                {this.state.loading ? null : (
+                {/* {this.state.loading ? null : (
                   <Steps
                     size="small"
                     status={
@@ -568,7 +604,7 @@ class IDLTransferVerifyAction extends Component {
                       }
                     })}
                   </Steps>
-                )}
+                )} */}
 
                 {/* <div className='showContent' style={{height:'calc(80vh - 120px)',overflowY:'auto',marginTop:24,width:480,marginLeft:'calc(50% - 240px)'}}> */}
                 <div
@@ -599,9 +635,9 @@ class IDLTransferVerifyAction extends Component {
                   <br />
                   <b>变动原因：</b>
                   <span>{this.state.toCheckFront.changeReason}</span>
-                  <br />
+                  {/* <br />
                   <Button style={{ width: '120px' }} onClick={() => { this.setState({ showMemo: true }) }}>查看审批备注</Button>
-                  <br />
+                  <br /> */}
                   {this.state.toCheckFront.C3_632503853105 ? (
                     <div>
                       <b>审核反馈信息：</b>
@@ -804,6 +840,46 @@ class IDLTransferVerifyAction extends Component {
                         </ul>
                       </div>
                     </Spin>
+                  </div>
+
+                </div>
+                <div style={{ float: 'left', marginLeft: 16 }}>
+                  <b>审批备注：</b>
+                  <br />
+                  <div style={{ overflow: 'auto', height: '50vh' }}>
+                    {
+                      this.state.stream.length > 0 ?
+                        (
+                          this.state.stream.map((item) => {
+                            return (
+                              <>{item.memo || ((item.current === 'Y') && (this.state.selection == '1')) ?
+                                <>
+                                  <span>{item.stepPeople}：</span>
+                                  <br />
+                                  {
+                                    (item.current == 'Y') && (this.state.selection == '1') ? <Input.TextArea
+                                      maxLength={500}
+                                      style={{
+                                        marginTop: 16,
+                                        width: '400px',
+                                        height: 120,
+                                        resize: 'none'
+                                      }}
+                                      value={this.state.C3_632503853105}
+                                      onChange={v => {
+                                        this.setState({ C3_632503853105: v.target.value });
+                                      }} /> : <span>{item.memo}</span>
+
+                                  }<br />
+                                  <br /></> : null}
+                              </>
+                            )
+                          })
+
+                        )
+                        : '无'
+                    }
+
                   </div>
                 </div>
               </div>

@@ -119,7 +119,9 @@ class IDLTransferVerify extends Component {
           stepName: res2.data[n].C3_634660565034,
           stepPeople: res2.data[n].C3_634660565583,
           stepTime: res2.data[n].edit_time,
-          order: res2.data[n].C3_634660566076
+          order: res2.data[n].C3_634660566076,
+          memo: res2.data[n].C3_634660566283,
+          current: res2.data[n].C3_637177232366
         });
         if (res2.data[n].C3_637177232366 == 'Y') {
           var c = res2.data[n].C3_635250483297;
@@ -151,6 +153,15 @@ class IDLTransferVerify extends Component {
       if (isFin == res2.data.length) {
         c = res2.data.length + 1;
       }
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[i].stepPeople == arr[j].stepPeople) {         //第一个等同于第二个，splice方法删除第二个
+            arr.splice(j, 1);
+            j--;
+          }
+        }
+      }
+      console.log(arr)
       this.setState({ loading: false, curStep: c, stream: arr });
     } catch (e) {
       console.log(e);
@@ -403,7 +414,7 @@ class IDLTransferVerify extends Component {
                 className="steps"
                 style={{ width: 'calc(100% - 48px)', marginLeft: '24px' }}
               >
-                {this.state.loading ? null : (
+                {/* {this.state.loading ? null : (
                   <Steps
                     size="small"
                     status={
@@ -439,7 +450,7 @@ class IDLTransferVerify extends Component {
                       }
                     })}
                   </Steps>
-                )}
+                )} */}
 
                 <div
                   className="showContent"
@@ -465,7 +476,7 @@ class IDLTransferVerify extends Component {
                   <b>变动原因：</b>
                   <span>{this.state.toCheckFront.changeReason}</span>
                   <br />
-                  <Button style={{ width: '120px' }} onClick={() => { this.setState({ showMemo: true }) }}>查看审批备注</Button>
+                  {/* <Button style={{ width: '120px' }} onClick={() => { this.setState({ showMemo: true }) }}>查看审批备注</Button> */}
 
                   <br />
                   {this.state.toCheckFront.C3_632503853105 ? (
@@ -672,6 +683,32 @@ class IDLTransferVerify extends Component {
 
                       </div>
                     </Spin>
+                  </div>
+                </div>
+                <div style={{ float: 'left', marginLeft: 16 }}>
+                  <b>审批备注：</b>
+                  <br />
+                  <div style={{ overflow: 'auto', height: '50vh' }}>
+                    {
+                      this.state.stream.length > 0 ?
+                        (
+                          this.state.stream.map((item) => {
+                            return (
+                              <>{item.memo ?
+                                (<>
+                                  <span>{item.stepPeople}：</span>
+                                  <br /> <span>{item.memo}</span>
+                                  <br />
+                                  <br />
+                                </>)
+                                : null}
+                              </>
+                            )
+                          })
+                        )
+                        : '无'
+                    }
+
                   </div>
                 </div>
               </div>
