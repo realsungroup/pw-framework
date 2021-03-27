@@ -51,7 +51,7 @@ const vacateHours = [
   '23'
 ];
 const seconds = new Array(60).fill('1').map((item, index) => { return index < 10 ? '0' + index : '' + index });
-console.log(seconds)
+
 /**
  * 加班申请
  * @author 邓铭

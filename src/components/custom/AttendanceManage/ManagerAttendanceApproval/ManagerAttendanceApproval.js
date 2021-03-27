@@ -32,7 +32,7 @@ class ManagerAttendanceApproval extends React.Component {
           onClick={() => this.setState({ modalVisible: true })}
           size={record.size}
         >
-          下属加班汇总
+          {locale == 'en' ? 'Overtime Statistics' : "下属加班汇总"}
         </Button>
         <Popconfirm
           title={locale == 'en' ? "Are you Sure?" : "确认批准吗？"}
@@ -133,6 +133,7 @@ class ManagerAttendanceApproval extends React.Component {
 
   render() {
     const { modalVisible } = this.state;
+    const { intl: { locale } } = this.props;
     return (
       <div className="attendance-manage_tabledata__wrapper">
         <TableData
@@ -148,7 +149,7 @@ class ManagerAttendanceApproval extends React.Component {
           hasModify={false}
           hasRowModify={false}
           hasRowSelection={true}
-          actionBarWidth={350}
+          actionBarWidth={420}
           hasBeBtns={true}
           formProps={{ width: 1000 }}
           recordFormUseAbsolute={true}
@@ -166,14 +167,14 @@ class ManagerAttendanceApproval extends React.Component {
                     this.props.onOpenApprovalRecordModal(record);
                   }}
                 >
-                  查看审批记录
+                  {locale == 'en' ? 'Details' : "查看审批记录"}
                 </Button>
               );
             }
           ]}
           subTableArrProps={[
             {
-              subTableName: '加班明细', // 必选（若不选则标签页标题为子表的 resid）
+              subTableName: locale == 'en' ? 'Application Datails' : '加班明细', // 必选（若不选则标签页标题为子表的 resid）
               subResid: 485881703207, // 必选
               tableProps: {
                 hasAdvSearch: false,
