@@ -17,6 +17,7 @@ import ManagerAttendanceApprovalAuth from './ManagerAttendanceApprovalAuth';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
 import qs from 'qs';
+import { injectIntl } from 'react-intl';
 
 const { SubMenu } = Menu;
 
@@ -42,7 +43,8 @@ class AttendanceManage extends React.Component {
       [waitingApproval]: 0,
       [approvaling]: 0,
       [managerApproval]: 0
-    }
+    },
+    showApply: true
   };
 
   componentDidMount = () => {
@@ -57,6 +59,9 @@ class AttendanceManage extends React.Component {
         selectKey: qsObj.menuKey,
         summaryVisible: qsObj.summaryVisible ? true : false
       });
+    }
+    if (qsObj.showapply == 0) {
+      this.setState({ showApply: false })
     }
     this.getNotices();
   };
@@ -211,8 +216,10 @@ class AttendanceManage extends React.Component {
       selectRecord,
       loading,
       notices,
-      selectKey
+      selectKey,
+      showApply
     } = this.state;
+    const { intl: { locale } } = this.props;
     return (
       <Spin spinning={loading}>
         <div id="attendance-manage">
@@ -257,13 +264,12 @@ class AttendanceManage extends React.Component {
               onSelect={this.onSelect}
               inlineCollapsed={collapsed}
               selectedKeys={[selectKey]}
-              // selectedKeys = {this.selectedKeys}
+            // selectedKeys = {this.selectedKeys}
             >
-              <SubMenu
+              {showApply && <SubMenu
                 key="sub1"
                 title={
                   <span>
-                    <Icon type="appstore" />
                     <span className="attendance-manage_menu__level1">
                       我的考勤申请单
                     </span>
@@ -284,33 +290,31 @@ class AttendanceManage extends React.Component {
                 <Menu.Item key="sub1-4">已审批</Menu.Item>
                 <Menu.Item key="sub1-5">已作废</Menu.Item>
                 <Menu.Item key="sub1-6">已撤销</Menu.Item>
-              </SubMenu>
+              </SubMenu>}
               <SubMenu
                 key="sub2"
                 title={
                   <span>
-                    <Icon type="appstore" />
                     <span className="attendance-manage_menu__level1">
-                      经理人考勤审批
+                      {locale == 'en' ? 'Approval' : "经理人考勤审批"}
                     </span>
                   </span>
                 }
               >
                 <Menu.Item key="sub2-1">
-                  考勤审批
+                  {locale == 'en' ? 'Pending' : "考勤审批"}
                   <Badge count={notices[managerApproval]} />
                 </Menu.Item>
-                <Menu.Item key="sub2-2">当月审批记录</Menu.Item>
-                <Menu.Item key="sub2-3">历史审批记录</Menu.Item>
-                <Menu.Item key="sub2-4">已过期未审批记录</Menu.Item>
-                <Menu.Item key="sub2-5">考勤审批授权</Menu.Item>
+                <Menu.Item key="sub2-2">{locale == 'en' ? 'Current Month' : "当月审批记录"}</Menu.Item>
+                <Menu.Item key="sub2-3">{locale == 'en' ? 'History' : "历史审批记录"}</Menu.Item>
+                <Menu.Item key="sub2-4">{locale == 'en' ? 'Overdue Rec.' : "已过期未审批记录"}</Menu.Item>
+                <Menu.Item key="sub2-5">{locale == 'en' ? 'Authorization' : "考勤审批授权"}</Menu.Item>
               </SubMenu>
-              <Menu.Item key="departmentAuth">
-                <Icon type="calendar" />
+              {showApply && <Menu.Item key="departmentAuth">
                 <span className="attendance-manage_menu__level1">
-                  部门独立授权
+                  {locale == 'en' ? 'Dept. AUTH' : "部门独立授权"}
                 </span>
-              </Menu.Item>
+              </Menu.Item>}
             </Menu>
           </div>
           <div
@@ -324,7 +328,7 @@ class AttendanceManage extends React.Component {
             {this.renderContent()}
           </div>
           <Modal
-            title="审批记录"
+            title={locale == 'en' ? "Details" : "审批记录"}
             visible={approvalRecordVisible}
             width="90%"
             destroyOnClose
@@ -358,4 +362,4 @@ class AttendanceManage extends React.Component {
   }
 }
 
-export default AttendanceManage;
+export default injectIntl(AttendanceManage);

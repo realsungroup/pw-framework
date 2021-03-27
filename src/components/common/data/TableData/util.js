@@ -44,7 +44,8 @@ export const getColumns = (
     columnsWidth,
     fixedColumns,
     scrollX,
-    tableDataWidth
+    tableDataWidth,
+    locale = "zh"
   },
   cmscolumns,
   hasRowEdit,
@@ -73,7 +74,7 @@ export const getColumns = (
 
   columnsInfo.forEach((item, itemIndex) => {
     const column = {
-      title: item.text,
+      title: locale == 'en' ? item[item.id].ColDispName2 : item.text,
       dataIndex: item.id,
       key: item.id,
       fieldName: item.id,
@@ -82,7 +83,7 @@ export const getColumns = (
       _editWidth: item[item.id] && item[item.id].Minieditorwidth, // 在行内编辑状态下的宽度
       _editHeight: item[item.id] && item[item.id].Minieditorheight // 在行内编辑状态下的高度
     };
-    column.onCell = function(record) {
+    column.onCell = function (record) {
       return { title: record[this.fieldName] };
     }
 

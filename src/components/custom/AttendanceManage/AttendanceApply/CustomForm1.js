@@ -50,6 +50,7 @@ const vacateHours = [
   '22',
   '23'
 ];
+const seconds = new Array(60).fill('1').map((item, index) => { return index < 10 ? '0' + index : '' + index });
 
 /**
  * 加班申请
@@ -463,8 +464,7 @@ class CustomForm1 extends React.Component {
               onChange={this.handleStringChange('startMinute')}
               style={{ width: 100, marginLeft: 8 }}
             >
-              <Option value="00">00</Option>
-              <Option value="30">30</Option>
+              {seconds.map(item => <Option key={item} value={item}>{item}</Option>)}
             </Select>
           </Form.Item>
 
@@ -491,8 +491,7 @@ class CustomForm1 extends React.Component {
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('endMinute')}
             >
-              <Option value="00">00</Option>
-              <Option value="30">30</Option>
+              {seconds.map(item => <Option key={item} value={item}>{item}</Option>)}
             </Select>
           </Form.Item>
 
