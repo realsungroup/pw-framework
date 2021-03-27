@@ -2058,7 +2058,8 @@ window[642853806554] = {
 };
 window[621257502796] = {
   name: 'AttendanceManage',
-  title: '考勤申请'
+  title: '考勤申请',
+  props: { showAllminute: false }
 };
 window[622577431745] = {
   name: 'ReferenceCheck',

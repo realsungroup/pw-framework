@@ -50,7 +50,6 @@ const vacateHours = [
   '22',
   '23'
 ];
-const seconds = new Array(60).fill('1').map((item, index) => { return index < 10 ? '0' + index : '' + index });
 
 /**
  * 加班申请
@@ -89,8 +88,11 @@ class CustomForm1 extends React.Component {
     currentUserCode: JSON.parse(getItem('userInfo')).UserInfo.EMP_ID,
     fileList: [] //附件列表
   };
-
+  minute = []
   componentDidMount() {
+    const { showAllminute } = this.props;
+    this.minute = showAllminute ? new Array(60).fill('1').map((item, index) => { return index < 10 ? '0' + index : '' + index }) : ['00', 30];
+
     this.getType();
   }
 
@@ -464,7 +466,7 @@ class CustomForm1 extends React.Component {
               onChange={this.handleStringChange('startMinute')}
               style={{ width: 100, marginLeft: 8 }}
             >
-              {seconds.map(item => <Option key={item} value={item}>{item}</Option>)}
+              {this.minute.map(item => <Option key={item} value={item}>{item}</Option>)}
             </Select>
           </Form.Item>
 
@@ -491,7 +493,7 @@ class CustomForm1 extends React.Component {
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('endMinute')}
             >
-              {seconds.map(item => <Option key={item} value={item}>{item}</Option>)}
+              {this.minute.map(item => <Option key={item} value={item}>{item}</Option>)}
             </Select>
           </Form.Item>
 

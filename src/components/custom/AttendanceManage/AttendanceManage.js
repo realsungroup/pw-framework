@@ -108,6 +108,7 @@ class AttendanceManage extends React.Component {
 
   renderContent = () => {
     const { summaryVisible, selectKey } = this.state;
+    const { showAllminute } = this.props;
     let page = null;
     switch (selectKey) {
       // 我的考勤申请单
@@ -158,6 +159,7 @@ class AttendanceManage extends React.Component {
           <AttendanceApply
             setLoading={this.setLoading}
             getNotices={this.getNotices}
+            showAllminute={showAllminute}
           />
         );
         break;
