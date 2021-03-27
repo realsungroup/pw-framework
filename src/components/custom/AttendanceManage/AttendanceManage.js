@@ -17,6 +17,7 @@ import ManagerAttendanceApprovalAuth from './ManagerAttendanceApprovalAuth';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
 import qs from 'qs';
+import { injectIntl } from 'react-intl';
 
 const { SubMenu } = Menu;
 
@@ -213,6 +214,7 @@ class AttendanceManage extends React.Component {
       notices,
       selectKey
     } = this.state;
+    const { intl: { locale } } = this.props;
     return (
       <Spin spinning={loading}>
         <div id="attendance-manage">
@@ -257,7 +259,7 @@ class AttendanceManage extends React.Component {
               onSelect={this.onSelect}
               inlineCollapsed={collapsed}
               selectedKeys={[selectKey]}
-              // selectedKeys = {this.selectedKeys}
+            // selectedKeys = {this.selectedKeys}
             >
               <SubMenu
                 key="sub1"
@@ -297,7 +299,7 @@ class AttendanceManage extends React.Component {
                 }
               >
                 <Menu.Item key="sub2-1">
-                  考勤审批
+                  {locale == 'en' ? 'abc' : "考勤审批"}
                   <Badge count={notices[managerApproval]} />
                 </Menu.Item>
                 <Menu.Item key="sub2-2">当月审批记录</Menu.Item>
@@ -358,4 +360,4 @@ class AttendanceManage extends React.Component {
   }
 }
 
-export default AttendanceManage;
+export default injectIntl(AttendanceManage);

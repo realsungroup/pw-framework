@@ -665,7 +665,8 @@ class TableData extends React.Component {
       hasBeSort,
       defaultColumnWidth,
       columnsWidth,
-      fixedColumns
+      fixedColumns,
+      locale: this.props.intl.locale
     };
 
     let dataSource = res.data;
@@ -735,10 +736,11 @@ class TableData extends React.Component {
         _noWidthFields,
         _noWidthFieldsIndex,
       );
+      console.log(result)
+
       columns = result.columns;
       components = result.components;
     }
-
     this._dealedColumns = columns;
 
     this.setState({ originalColumn: res.cmscolumninfo });
