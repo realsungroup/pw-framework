@@ -36,6 +36,8 @@ class AttendanceApply extends React.Component {
 
   renderForm() {
     const { current } = this.state;
+    const { showAllminute } = this.props;
+
     let page = null;
     switch (current) {
       case 1:
@@ -44,6 +46,7 @@ class AttendanceApply extends React.Component {
           <CustomForm1
             goBack={this.goBack}
             getNotices={this.props.getNotices}
+            showAllminute={showAllminute}
           />
         );
         break;
@@ -101,8 +104,8 @@ class AttendanceApply extends React.Component {
             </Card>
           </div>
         ) : (
-          this.renderForm()
-        )}
+            this.renderForm()
+          )}
       </div>
     );
   }
