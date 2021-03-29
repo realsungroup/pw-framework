@@ -19,7 +19,11 @@ const contractHistoryResid = '436624421847'; //合同历史记录
 const mailHis = '641216663667'; //邮件提醒历史记录
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
-const CheckboxOptions = ['DL', 'IDL'];
+const CheckboxOptions = ['一线员工', '办公室员工'];
+const CheckboxOptionsMap = {
+  "一线员工": "DL",
+  "办公室员工": "IDL"
+}
 const filterTab1 = [
   {
     label: '在职人员',
@@ -64,10 +68,10 @@ const filterTab2B = [
 ];
 const filterTab3A = [
   {
-    label: 'IDL'
+    label: '办公室员工'
   },
   {
-    label: 'DL'
+    label: '一线员工'
   }
 ];
 const filterTab3B = [
@@ -443,25 +447,25 @@ class Compact extends Component {
                   hasRowSelection={false}
                   wrappedComponentRef={element => (this.tableDataRef = element)}
 
-                  // customRowBtns={[
-                  //   (record, btnSize) => {
-                  //     return (
-                  //       <Button
-                  //         size={btnSize}
-                  //         onClick={() => {
+                // customRowBtns={[
+                //   (record, btnSize) => {
+                //     return (
+                //       <Button
+                //         size={btnSize}
+                //         onClick={() => {
 
-                  //           this.setState({
-                  //             selectedPerson: record,
-                  //             contractHistoryVisible: true
-                  //           });
-                  //           console.log(record)
-                  //         }}
-                  //       >
-                  //         查看历史信息
-                  //       </Button>
-                  //     );
-                  //   }
-                  // ]}
+                //           this.setState({
+                //             selectedPerson: record,
+                //             contractHistoryVisible: true
+                //           });
+                //           console.log(record)
+                //         }}
+                //       >
+                //         查看历史信息
+                //       </Button>
+                //     );
+                //   }
+                // ]}
                 />
               ) : null}
 
@@ -574,7 +578,7 @@ class Compact extends Component {
                       ? checkboxOptions.length === 2
                         ? ''
                         : `1 = 2`
-                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                      : `C3_640119278050 = '${CheckboxOptionsMap[checkboxOptions[0]]}'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -614,39 +618,39 @@ class Compact extends Component {
                   customRowBtns={
                     key1 === '_0A'
                       ? [
-                          (record, btnSize) => {
-                            return (
-                              <>
-                                <Button
-                                  size={btnSize}
-                                  onClick={() => {
-                                    this.setState({
-                                      selectedPersons: [record],
-                                      signingVisible: true
-                                    });
-                                  }}
-                                  type="primary"
-                                >
-                                  发送通知邮件
+                        (record, btnSize) => {
+                          return (
+                            <>
+                              <Button
+                                size={btnSize}
+                                onClick={() => {
+                                  this.setState({
+                                    selectedPersons: [record],
+                                    signingVisible: true
+                                  });
+                                }}
+                                type="primary"
+                              >
+                                发送通知邮件
                                 </Button>
 
-                                <Button
-                                  size="small"
-                                  style={{ marginLeft: '4px' }}
-                                  onClick={() => {
-                                    this.setState({
-                                      showCheck: true,
-                                      checkMem: record.C3_436624212137,
-                                      checkType: record.C3_640119278050
-                                    });
-                                  }}
-                                >
-                                  查看审批节点
+                              <Button
+                                size="small"
+                                style={{ marginLeft: '4px' }}
+                                onClick={() => {
+                                  this.setState({
+                                    showCheck: true,
+                                    checkMem: record.C3_436624212137,
+                                    checkType: record.C3_640119278050
+                                  });
+                                }}
+                              >
+                                查看审批节点
                                 </Button>
-                              </>
-                            );
-                          }
-                        ]
+                            </>
+                          );
+                        }
+                      ]
                       : []
                   }
                 />
@@ -675,7 +679,7 @@ class Compact extends Component {
                       ? checkboxOptions.length === 2
                         ? ''
                         : `1 = 2`
-                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                      : `C3_640119278050 = '${CheckboxOptionsMap[checkboxOptions[0]]}'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -756,7 +760,7 @@ class Compact extends Component {
                       ? checkboxOptions.length === 2
                         ? ''
                         : `1 = 2`
-                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                      : `C3_640119278050 = '${CheckboxOptionsMap[checkboxOptions[0]]}'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -832,7 +836,7 @@ class Compact extends Component {
                     key={'_' + key + '3A'}
                     onClick={() => {
                       if (this.state.key3 != '_' + key + '3A') {
-                        if (item.label == 'DL') {
+                        if (item.label == '一线员工') {
                           this.setState({
                             key4: '_33B',
                             residTab3: '668709373267'
@@ -867,8 +871,8 @@ class Compact extends Component {
                       display:
                         (this.state.key3 === ('_03A' || '_13A') &&
                           item.condition == 'DL') ||
-                        (this.state.key3 != ('_03A' || '_13A') &&
-                          item.condition == 'IDL')
+                          (this.state.key3 != ('_03A' || '_13A') &&
+                            item.condition == 'IDL')
                           ? 'inline'
                           : 'none'
                     }}
@@ -971,10 +975,10 @@ class Compact extends Component {
               hasRowSelection={true}
               wrappedComponentRef={element => (this.tableDataRef = element)}
               cmswhere={`C3_532015785778 = '${this.state.checkMem}' and C3_641241582139 = '${this.state.checkType}'`}
-              // customRowBtns={[(record)=>{return(
-              //   <Button size='small' loading={this.state.loading} onClick={()=>{this.sendMail(record)}}>发送邮件提醒审批</Button>
-              // )}]
-              // }
+            // customRowBtns={[(record)=>{return(
+            //   <Button size='small' loading={this.state.loading} onClick={()=>{this.sendMail(record)}}>发送邮件提醒审批</Button>
+            // )}]
+            // }
             />
           </div>
         </Modal>
