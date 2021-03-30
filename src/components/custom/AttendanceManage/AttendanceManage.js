@@ -22,7 +22,7 @@ import { injectIntl } from 'react-intl';
 const { SubMenu } = Menu;
 
 const waitingApproval = 449449634592;
-const approvaling = 544795775918;
+const approvaling = 449449141530;
 const managerApproval = 449442699960;
 /**
  * 考勤审批
@@ -79,7 +79,7 @@ class AttendanceManage extends React.Component {
   getNotices = async () => {
     try {
       let res = await http().getRowCountOfResource({
-        resids: '449449634592,544795775918,449442699960',
+        resids: '449449634592,449449141530,449442699960',
         dblinkname: 'ehr'
       });
       let data = [...res.data];
