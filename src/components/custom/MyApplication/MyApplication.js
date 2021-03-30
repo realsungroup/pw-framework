@@ -25,23 +25,25 @@ class MyApplication extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-    };
-
+    this.state = {};
   }
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   render() {
     return (
       <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
-        <Tabs defaultActiveKey="1" >
+        <Tabs defaultActiveKey="1">
           <TabPane tab="未审批" key="1">
-            <div style={{ width: '100vw', height: 'calc(100vh - 60px)' }}>
+            <div
+              style={{
+                width: '100vw',
+                height: 'calc(100vh - 60px)',
+                overflow: 'auto'
+              }}
+            >
               <MainTableSubTables
                 resid={518442541615}
-                baseURL={baseURL}
+                // baseURL={baseURL}
                 downloadURL={downloadURL}
                 mainTableProps={{
                   actionBarWidth: 300,
@@ -75,22 +77,20 @@ class MyApplication extends Component {
                     hasRowDelete: false,
                     // isSetColumnWidth:false,
                     noWidthFields: 'C3_518436882584',
-                    baseURL: baseURL,
+                    // baseURL: baseURL,
                     downloadURL: downloadURL,
                     advSearch: {
-                      isRequestFormData: false,
-                    },
+                      isRequestFormData: false
+                    }
                   }
                 }}
-
               />
-
             </div>
           </TabPane>
           <TabPane tab="已审批" key="2">
             <div style={{ width: '100vw', height: 'calc(100vh - 60px)' }}>
               <TableData
-                baseURL={baseURL}
+                // baseURL={baseURL}
                 downloadURL={downloadURL}
                 resid={526752850957}
                 actionBarWidth={300}
@@ -104,7 +104,6 @@ class MyApplication extends Component {
                 hasRowDelete={false}
                 isUseFormDefine={false}
               />
-
             </div>
           </TabPane>
         </Tabs>
