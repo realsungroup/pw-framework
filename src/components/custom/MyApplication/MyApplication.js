@@ -38,7 +38,7 @@ class MyApplication extends Component {
       <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
         <Tabs defaultActiveKey="1" >
           <TabPane tab="未审批" key="1">
-            <div style={{ width: '100vw', height: 'calc(100vh - 60px)' }}>
+            <div style={{ width: '100vw', height: 'calc(100vh - 60px)', overflow: 'auto' }}>
               <MainTableSubTables
                 resid={518442541615}
                 baseURL={baseURL}
