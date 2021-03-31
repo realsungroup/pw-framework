@@ -734,6 +734,7 @@ class Control extends React.Component {
               onSearch={this.handleSearch}
               onBlur={this.handleBeforeSave}
               value={value}
+              disabled={props.disabled}
             />
           );
         }

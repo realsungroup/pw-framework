@@ -764,6 +764,7 @@ class FormData extends React.Component {
               recordFormHideFields={recordFormHideFields}
               recordFormHideLables={recordFormHideLables}
               extraButtons={extraButtons}
+              confirmLoading={confirmLoading}
             />
             {hasSubTables &&
               this.renderSubTablesAbsolute(containerHeight, containerWidth)}
