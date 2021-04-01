@@ -2059,7 +2059,16 @@ window[642853806554] = {
 window[621257502796] = {
   name: 'AttendanceManage',
   title: '考勤申请',
-  props: { showAllminute: false }
+  props: {
+    //上海配置
+    showAllminute: true, //是否显示所有分钟数
+    showBatchApply: false,//是否显示批量申请
+    showWorkOvertimeOptions: false, //是否显示加班选项
+    //无锡配置
+    // showAllminute: false, //是否显示所有分钟数
+    // showBatchApply: true,//是否显示批量申请
+    // showWorkOvertimeOptions: true, //是否显示加班选项
+  }
 };
 window[622577431745] = {
   name: 'ReferenceCheck',
