@@ -150,8 +150,8 @@ export default class LzAFFOS extends React.Component {
     let res;
     try {
       res = await http().getTable({
-        resid: 227186227531,
-        cmswhere: `C3_227192472953 = ${num}`
+        resid: 670091350112,
+        cmswhere: `jobNum = ${num}`
       });
       this.setState({
         selectApprovalKey: 1
@@ -433,21 +433,21 @@ export default class LzAFFOS extends React.Component {
     });
   };
 
-  //更改厂务总监
+  //更改部门总监
   changeConductor = () => {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 5,
-      cms: 663098123864
+      cms: 670091359835
     });
   };
 
-  //更改经理
+  //更改部门经理
   changeManagerSpecial = () => {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 4,
-      cms: 663097802792
+      cms: 670091357851
     });
   };
 
@@ -456,7 +456,7 @@ export default class LzAFFOS extends React.Component {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 3,
-      cms: 227186227531
+      cms: 670091353265
     });
   };
 
@@ -465,7 +465,7 @@ export default class LzAFFOS extends React.Component {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 2,
-      cms: 227186227531
+      cms: 670091351596
     });
   };
 
@@ -474,7 +474,7 @@ export default class LzAFFOS extends React.Component {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 1,
-      cms: 227186227531
+      cms: 670091350112
     });
   };
 
@@ -497,11 +497,11 @@ export default class LzAFFOS extends React.Component {
   // 审批人更改
   changeAppMem = v => {
     var obj = this.state.approvalPeopleList;
-    obj[this.state.selectApprovalKey].C3_227212499515 = v.C3_227212499515; //所属部门
-    obj[this.state.selectApprovalKey].C3_605717998409 = v.C3_227192484125; //姓名
-    obj[this.state.selectApprovalKey].C3_605718032582 = v.C3_305737857578; //人员编号
-    obj[this.state.selectApprovalKey].num = v.C3_227192472953; //工号
-    obj[this.state.selectApprovalKey].C3_607445040215 = v.C3_227192496109;
+    obj[this.state.selectApprovalKey].C3_227212499515 = v.partment; //所属部门
+    obj[this.state.selectApprovalKey].C3_605717998409 = v.name; //姓名
+    obj[this.state.selectApprovalKey].C3_605718032582 = v.peopleNum; //人员编号
+    obj[this.state.selectApprovalKey].num = v.jobNum; //工号
+    obj[this.state.selectApprovalKey].C3_607445040215 = v.englishName; //英文名
     obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
     switch (this.state.selectApprovalKey) {
       case 0:
@@ -993,9 +993,7 @@ export default class LzAFFOS extends React.Component {
                 }}
               >
                 <TableData
-                  // resid={632327119162}
-                  resid={663672607380}
-                  cmswhere={`C3_419339113187 != '' and C3_419448436728 = '菲尼萨光电通讯科技(无锡)有限公司'`}
+                  resid={670091350112}
                   hasRowView={false}
                   subtractH={220}
                   hasAdd={false}
@@ -1014,20 +1012,18 @@ export default class LzAFFOS extends React.Component {
                             if (this.state.kindOfDept === 'dept') {
                               this.setState({
                                 searchDepaV: false,
-                                dept: record.DEP_NAME
+                                dept: record.partment
                               });
                             } else if (
                               this.state.kindOfDept === 'influentedDepa'
                             ) {
                               this.setState({
                                 searchDepaV: false,
-                                influentedDepa: record.DEP_NAME,
-                                influentedManage: record.C3_475851099125,
-                                influentedManageNum: record.C3_450479321413
+                                influentedDepa: record.partment,
+                                influentedManage: record.name,
+                                influentedManageNum: record.jobNum
                               });
-                              this.getInfluentedManageInfo(
-                                record.C3_450479321413
-                              );
+                              this.getInfluentedManageInfo(record.jobNum);
                             }
                           }}
                         >
