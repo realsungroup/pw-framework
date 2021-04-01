@@ -24,6 +24,7 @@ import * as blobUtil from 'blob-util';
 import { getRadioGroupOptions } from './util';
 import './Control.less';
 import http from 'Util20/api';
+import ClearOnchangeContext from '../../contexts/clearOnchangeContext';
 
 const { TextArea, Search } = Input;
 const Option = Select.Option;
@@ -159,6 +160,7 @@ const getAutoCompleteDataSource = (res, key) => {
 class Control extends React.Component {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
+  static contextType = ClearOnchangeContext;
 
   constructor(props) {
     super(props);
@@ -171,7 +173,8 @@ class Control extends React.Component {
       takePictureCancelText: '取消', // 可选值：'取消' | '重拍'
       mediaFieldValue: '', // 媒体字段值
       isMediaField: false, // 是否为多媒体字段
-      dataSource: [] // AutoComplete 的下拉选项
+      dataSource: [], // AutoComplete 的下拉选项
+      clearOnChangeFileds: [] //value改变时需要清空的字段
     };
   }
 
@@ -240,8 +243,27 @@ class Control extends React.Component {
       const dataSource = getAutoCompleteDataSource(res, key);
       this.setState({ dataSource });
     }
+    const contextvalue = this.context;
+    const findRes = contextvalue.find(item => item.id == id);
+    if (findRes) {
+      this.setState({
+        clearOnChangeFileds: findRes.clearFileds
+      });
+    }
   };
 
+  componentDidUpdate(prevProps) {
+    const { clearOnChangeFileds } = this.state;
+    const preValue = prevProps.value;
+    const currentValue = this.props.value;
+    if (clearOnChangeFileds.length > 0 && preValue && preValue !== currentValue) {
+      let filedsValue = {};
+      clearOnChangeFileds.reduce((preV, currentV) => {
+        preV[currentV] = undefined;
+      }, filedsValue);
+      this.props.form.setFieldsValue(filedsValue);
+    }
+  }
   componentWillUnmount = () => { };
 
   shouldComponentUpdate = (nextProps, nextState) => {
