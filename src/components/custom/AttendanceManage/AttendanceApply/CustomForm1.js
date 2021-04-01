@@ -191,6 +191,7 @@ class CustomForm1 extends React.Component {
    * 获取加班类型数据
    */
   getType = async () => {
+    const { showWorkOvertimeOptions } = this.props;
     try {
       let res = await http().getRecordAndSubTables({
         resid: '621424834362',
@@ -221,7 +222,7 @@ class CustomForm1 extends React.Component {
         }
       });
       this.setState({
-        types: typesData,
+        types: showWorkOvertimeOptions ? typesData : [typesData[0]],
         typeSubData
       });
     } catch (error) {
@@ -404,6 +405,7 @@ class CustomForm1 extends React.Component {
       isNeedAttachment,
       errors
     } = this.state;
+    const { showWorkOvertimeOptions } = this.props;
     let startHours = [], //可选的开始时间点
       endHours = [], //可选的结束时间点
       disabled = true; //时间长度是否不可手动输入
@@ -423,7 +425,7 @@ class CustomForm1 extends React.Component {
     return (
       <div className="attendace-aplly_form__wrapper">
         <Form className="attendace-aplly_form">
-          <h2>请假/加班申请单</h2>
+          <h2>{showWorkOvertimeOptions ? "请假/加班申请单" : "考勤申请单"}</h2>
           <Row style={{ fontWeight: 600, marginBottom: 32 }}>
             <Col span={8}>填单人：{currentUser}</Col>
             <Col span={16}>
