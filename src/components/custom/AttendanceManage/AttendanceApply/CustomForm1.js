@@ -88,8 +88,11 @@ class CustomForm1 extends React.Component {
     currentUserCode: JSON.parse(getItem('userInfo')).UserInfo.EMP_ID,
     fileList: [] //附件列表
   };
-
+  minute = []
   componentDidMount() {
+    const { showAllminute } = this.props;
+    this.minute = showAllminute ? new Array(60).fill('1').map((item, index) => { return index < 10 ? '0' + index : '' + index }) : ['00', 30];
+
     this.getType();
   }
 
@@ -188,6 +191,7 @@ class CustomForm1 extends React.Component {
    * 获取加班类型数据
    */
   getType = async () => {
+    const { showWorkOvertimeOptions } = this.props;
     try {
       let res = await http().getRecordAndSubTables({
         resid: '621424834362',
@@ -218,7 +222,7 @@ class CustomForm1 extends React.Component {
         }
       });
       this.setState({
-        types: typesData,
+        types: showWorkOvertimeOptions ? typesData : [typesData[0]],
         typeSubData
       });
     } catch (error) {
@@ -231,7 +235,9 @@ class CustomForm1 extends React.Component {
    * 提交表单
    */
   handleSubmit = async e => {
-    e.preventDefault();
+    this.setState({ submitting: true });
+
+    // e.preventDefault();
     let {
       filledData,
       selectedTypeId,
@@ -242,13 +248,16 @@ class CustomForm1 extends React.Component {
     } = this.state;
     for (let v of Object.values(errors)) {
       if (v) {
+        this.setState({ submitting: false });
+
         return message.info('信息未填写完整');
       }
     }
     if (isNeedAttachment && fileList.length === 0) {
+      this.setState({ submitting: false });
+
       return message.info('请上传附件');
     }
-    this.setState({ submitting: true });
     const { startTime, endTime, timeLength } = filledData;
     try {
       let result = await this.judgeCanSubmit(
@@ -282,10 +291,12 @@ class CustomForm1 extends React.Component {
         this.props.getNotices();
       } else {
         message.error(result.data);
+        this.setState({ submitting: false });
       }
     } catch (error) {
       console.log(error);
       message.error(error.message);
+      this.setState({ submitting: false });
     } finally {
       this.setState({ submitting: false });
     }
@@ -394,6 +405,7 @@ class CustomForm1 extends React.Component {
       isNeedAttachment,
       errors
     } = this.state;
+    const { showWorkOvertimeOptions } = this.props;
     let startHours = [], //可选的开始时间点
       endHours = [], //可选的结束时间点
       disabled = true; //时间长度是否不可手动输入
@@ -412,8 +424,8 @@ class CustomForm1 extends React.Component {
     }
     return (
       <div className="attendace-aplly_form__wrapper">
-        <Form className="attendace-aplly_form" onSubmit={this.handleSubmit}>
-          <h2>请假/加班申请单</h2>
+        <Form className="attendace-aplly_form">
+          <h2>{showWorkOvertimeOptions ? "请假/加班申请单" : "考勤申请单"}</h2>
           <Row style={{ fontWeight: 600, marginBottom: 32 }}>
             <Col span={8}>填单人：{currentUser}</Col>
             <Col span={16}>
@@ -456,8 +468,7 @@ class CustomForm1 extends React.Component {
               onChange={this.handleStringChange('startMinute')}
               style={{ width: 100, marginLeft: 8 }}
             >
-              <Option value="00">00</Option>
-              <Option value="30">30</Option>
+              {this.minute.map(item => <Option key={item} value={item}>{item}</Option>)}
             </Select>
           </Form.Item>
 
@@ -484,8 +495,7 @@ class CustomForm1 extends React.Component {
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('endMinute')}
             >
-              <Option value="00">00</Option>
-              <Option value="30">30</Option>
+              {this.minute.map(item => <Option key={item} value={item}>{item}</Option>)}
             </Select>
           </Form.Item>
 
@@ -544,7 +554,10 @@ class CustomForm1 extends React.Component {
             <Button
               style={{ marginRight: 8 }}
               type="primary"
-              htmlType="submit"
+              // htmlType="submit"
+              onClick={() => {
+                this.handleSubmit();
+              }}
               loading={submitting}
             >
               提交

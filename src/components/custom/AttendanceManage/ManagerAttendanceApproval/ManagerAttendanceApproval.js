@@ -5,6 +5,7 @@ import { Button, Popconfirm, message, Modal } from 'antd';
 import WorkOvertimeChart from './WorkOvertimeChart';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
+import { injectIntl } from 'react-intl';
 
 /*
  * 经理考勤审批
@@ -23,6 +24,7 @@ class ManagerAttendanceApproval extends React.Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   actionBarExtra = record => {
+    const { intl: { locale } } = this.props;
     return (
       <div className="hr-probation_table-action-bar-extra">
         <Button
@@ -30,10 +32,10 @@ class ManagerAttendanceApproval extends React.Component {
           onClick={() => this.setState({ modalVisible: true })}
           size={record.size}
         >
-          下属加班汇总
+          {locale == 'en' ? 'Overtime Statistics' : "下属加班汇总"}
         </Button>
         <Popconfirm
-          title="确认批准吗？"
+          title={locale == 'en' ? "Are you Sure?" : "确认批准吗？"}
           onConfirm={() => {
             if (!record.selectedRowKeys.length) {
               return message.error('请选择一条记录');
@@ -50,11 +52,11 @@ class ManagerAttendanceApproval extends React.Component {
           }}
         >
           <Button type="primary" size={record.size}>
-            批准
+            {locale == 'en' ? "Approve" : "批准"}
           </Button>
         </Popconfirm>
         <Popconfirm
-          title="确认拒绝吗？"
+          title={locale == 'en' ? "Are you Sure?" : "确认拒绝吗？"}
           onConfirm={() => {
             if (!record.selectedRowKeys.length) {
               return message.error('请选择一条记录');
@@ -71,12 +73,12 @@ class ManagerAttendanceApproval extends React.Component {
           }}
         >
           <Button type="danger" size={record.size}>
-            拒绝
+            {locale == 'en' ? "Reject" : "拒绝"}
           </Button>
         </Popconfirm>
-        <Popconfirm title="确认一键审批吗？" onConfirm={this.approvalAll}>
+        <Popconfirm title={locale == 'en' ? "Are you Sure?" : "确认一键审批吗？"} onConfirm={this.approvalAll}>
           <Button type="primary" size={record.size}>
-            一键审批
+            {locale == 'en' ? "Approve All" : "一键审批"}
           </Button>
         </Popconfirm>
       </div>
@@ -131,6 +133,7 @@ class ManagerAttendanceApproval extends React.Component {
 
   render() {
     const { modalVisible } = this.state;
+    const { intl: { locale } } = this.props;
     return (
       <div className="attendance-manage_tabledata__wrapper">
         <TableData
@@ -146,7 +149,7 @@ class ManagerAttendanceApproval extends React.Component {
           hasModify={false}
           hasRowModify={false}
           hasRowSelection={true}
-          actionBarWidth={470}
+          actionBarWidth={420}
           hasBeBtns={true}
           formProps={{ width: 1000 }}
           recordFormUseAbsolute={true}
@@ -164,14 +167,14 @@ class ManagerAttendanceApproval extends React.Component {
                     this.props.onOpenApprovalRecordModal(record);
                   }}
                 >
-                  查看审批记录
+                  {locale == 'en' ? 'Details' : "查看审批记录"}
                 </Button>
               );
             }
           ]}
           subTableArrProps={[
             {
-              subTableName: '加班明细', // 必选（若不选则标签页标题为子表的 resid）
+              subTableName: locale == 'en' ? 'Application Datails' : '加班明细', // 必选（若不选则标签页标题为子表的 resid）
               subResid: 485881703207, // 必选
               tableProps: {
                 hasAdvSearch: false,
@@ -207,4 +210,4 @@ class ManagerAttendanceApproval extends React.Component {
   }
 }
 
-export default ManagerAttendanceApproval;
+export default injectIntl(ManagerAttendanceApproval);

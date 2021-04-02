@@ -7,6 +7,8 @@ import DeliverApprovalForm from './DeliverApprovalForm';
 import DeliverPeopleList from './DeliverPeopleList';
 import BuilderForm from '../LzApproval/BuilderForm';
 import DeliverForm from '../LzApproval/DeliverForm';
+import GoodsInfoForm from './GoodsInfoForm';
+import GoodsInfoForm1 from './GoodsInfoForm1';
 import {
   message,
   Tabs,
@@ -121,7 +123,9 @@ export default class LzAFFOS extends React.Component {
       influentedManage: '', //受影响部门负责人
       buildArrangeDept: '', //施工管理部门负责人
       influentedManageNum: '', //施工管理部门负责人编号
-      selectApprovalKey: 0 //选择审批人的序号
+      selectApprovalKey: 0, //选择审批人的序号
+      goodsInfo: [], //带出厂物品信息
+      goodsInfoModal: false //填写出厂物品信息的模态框
     };
     this.abnormalRef = React.createRef();
     this.inApplicationRef = React.createRef();
@@ -590,6 +594,15 @@ export default class LzAFFOS extends React.Component {
         maindata: item
       };
     });
+    //添加带出厂物品信息
+    const subdataGoods = this.state.goodsInfo.map((item, index) => {
+      item._state = 'added';
+      item._id = index + 50;
+      return {
+        resid: '669820837743',
+        maindata: item
+      };
+    });
     // 向申请中表加数据,主子表同时加
     let res2;
     const data = [
@@ -602,7 +615,7 @@ export default class LzAFFOS extends React.Component {
           _state: 'added',
           _id: 1
         },
-        subdata: [...appList, ...subdataPeople]
+        subdata: [...appList, ...subdataPeople, ...subdataGoods]
       }
     ];
     console.log('施工人员data', data);
@@ -611,6 +624,11 @@ export default class LzAFFOS extends React.Component {
         data
       });
       message.info('提交成功');
+      this.setState({
+        deliverList: [],
+        goodsInfo: []
+      });
+      Modal.destroyAll();
     } catch (err) {
       console.log(err.message);
       message.info(err.message);
@@ -708,6 +726,15 @@ export default class LzAFFOS extends React.Component {
         maindata: item
       };
     });
+    //添加带出厂物品信息
+    const subdataGoods = this.state.goodsInfo.map((item, index) => {
+      item._state = 'added';
+      item._id = index + 50;
+      return {
+        resid: '669820837743',
+        maindata: item
+      };
+    });
     // 向申请中表加数据,主子表同时加
     let res2;
     const data = [
@@ -725,7 +752,7 @@ export default class LzAFFOS extends React.Component {
           _state: 'added',
           _id: 1
         },
-        subdata: [...appList, ...subdataPeople]
+        subdata: [...subdataGoods, ...appList, ...subdataPeople]
       }
     ];
     console.log('送货data', data);
@@ -733,6 +760,11 @@ export default class LzAFFOS extends React.Component {
       res2 = await http().saveRecordAndSubTables({
         data
       });
+      this.setState({
+        deliverList: [],
+        goodsInfo: []
+      });
+      Modal.destroyAll();
       message.info('提交成功');
     } catch (err) {
       console.log(err.message);
@@ -746,6 +778,27 @@ export default class LzAFFOS extends React.Component {
     this.tableDataRef.handleRefresh();
     this.setState({
       loading: false
+    });
+  };
+
+  //打开出厂货物信息填写页面
+  showGoodsInfo = () => {
+    this.setState({
+      goodsInfoModal: true
+    });
+  };
+  showGoodsInfo1 = () => {
+    this.setState({
+      goodsInfoModal1: true
+    });
+  };
+
+  //获取子组件出场货物信息
+  getGoodsInfo = goodsInfo => {
+    this.setState({
+      goodsInfo: goodsInfo,
+      goodsInfoModal: false,
+      goodsInfoModal1: false
     });
   };
 
@@ -1000,13 +1053,15 @@ export default class LzAFFOS extends React.Component {
                   dept: this.state.dept,
                   influentedDepa: this.state.influentedDepa,
                   influentedManage: this.state.influentedManage,
-                  buildArrangeDept: this.state.buildArrangeDept
+                  buildArrangeDept: this.state.buildArrangeDept,
+                  goodsInfo: this.state.goodsInfo
                 }}
                 getValues={this.getValues}
                 openApprovalModal={this.openApprovalModal}
                 openShortApprovalModal={this.openShortApprovalModal}
                 closeBuildModal={this.closeBuildModal}
                 showPeopleList={this.showPeopleList}
+                showGoodsInfo={this.showGoodsInfo}
                 changeApply={this.changeApply}
                 changeEffect={this.changeEffect}
                 changeEngineer={this.changeEngineer}
@@ -1028,18 +1083,54 @@ export default class LzAFFOS extends React.Component {
                   approvalPeopleList: this.state.approvalPeopleList,
                   isControl: this.state.isControl,
                   isLongDeliver: this.state.isLongDeliver,
-                  deliverTime: this.state.deliverTime
+                  deliverTime: this.state.deliverTime,
+                  goodsInfo: this.state.goodsInfo
                 }}
                 getValuesDeliver={this.getValuesDeliver}
                 closeDeliverApprovalModal={this.closeDeliverApprovalModal}
                 changeManagerSpecial={this.changeManagerSpecial}
                 changeConductor={this.changeConductor}
+                showGoodsInfo1={this.showGoodsInfo1}
                 openDeliverPeopleListModal={this.openDeliverPeopleListModal}
                 changeControl={this.changeControl}
                 changeApply={this.changeApply}
                 submitAllDeliverData={this.submitAllDeliverData}
               />
             </Spin>
+            {/* 访客 */}
+            <Modal
+              title="出厂物品登记"
+              width="90%"
+              visible={this.state.goodsInfoModal}
+              onCancel={() => {
+                this.setState({
+                  goodsInfoModal: false
+                });
+              }}
+              footer={[]}
+            >
+              <GoodsInfoForm
+                getGoodsInfo={this.getGoodsInfo}
+                dataSource={this.state.goodsInfo}
+              />
+            </Modal>
+            {/* 送货 */}
+            <Modal
+              title="出厂物品登记"
+              width="90%"
+              visible={this.state.goodsInfoModal1}
+              onCancel={() => {
+                this.setState({
+                  goodsInfoModal1: false
+                });
+              }}
+              footer={[]}
+            >
+              <GoodsInfoForm1
+                getGoodsInfo={this.getGoodsInfo}
+                dataSource={this.state.goodsInfo}
+              />
+            </Modal>
 
             {/* 施工人员编辑Modal */}
             <Modal

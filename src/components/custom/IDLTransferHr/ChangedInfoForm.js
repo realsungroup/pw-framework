@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Modal, Select, Button, Input } from 'antd';
+import { Form, Modal, Select, Button, Input, DatePicker } from 'antd';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
 
@@ -31,6 +31,7 @@ class ChangedInfoForm extends React.Component {
       searchJobV: false,
       searchSuperV: false,
       searchBucode: false,
+      selectJobcodeModal: false,
       depaFilter: '', //选择部门时的公司筛选
       companyArr: [],
       lvList: [], //级别数组
@@ -81,18 +82,58 @@ class ChangedInfoForm extends React.Component {
   };
 
   render() {
-    const { toCheckFront, toCheck, isShowButton, HCPreApprove } = this.props;
+    const {
+      toCheckFront,
+      toCheck,
+      isShowButton,
+      HCPreApprove,
+      isHREnd
+    } = this.props;
     const { getFieldDecorator, getFieldValue } = this.props.form;
-    const { lvList, currentLevel, canChangeProCode } = this.state;
+    const {
+      lvList,
+      currentLevel,
+      canChangeProCode,
+      selectJobcodeModal
+    } = this.state;
     this.props.form.getFieldDecorator('nDriectorCode', { preserve: true });
     this.props.form.getFieldDecorator('nDepartCode', { preserve: true });
-    console.log('HCPre', HCPreApprove);
     return (
       <Form className="formClass" {...formItemLayout}>
         {HCPreApprove !== 'Y' && (
           <>
+            {isHREnd && (
+              <Form.Item
+                label="Job Code"
+                style={{ display: 'flex', marginBottom: '5px' }}
+              >
+                {getFieldDecorator('iiviJobCode', {
+                  initialValue: toCheckFront.iiviJobCode
+                })(
+                  <>
+                    <Input
+                      style={{
+                        width: 200,
+                        pointerEvents: 'none',
+                        textAlign: 'center'
+                      }}
+                      value={getFieldValue('iiviJobCode')}
+                    />
+                    <Button
+                      icon="search"
+                      type="primary"
+                      onClick={() => {
+                        this.setState({ selectJobcodeModal: true });
+                      }}
+                    >
+                      选择Job Code
+                    </Button>
+                  </>
+                )}
+              </Form.Item>
+            )}
             <Form.Item
-              label="是否有Headcount"
+              label="是否涉及Headcount"
               style={{ display: 'flex', marginBottom: '5px' }}
             >
               {getFieldDecorator('C3_637425449725', {
@@ -193,52 +234,52 @@ class ChangedInfoForm extends React.Component {
             (getFieldDecorator('nDepart', {
               initialValue: toCheck[0]
             }),
-            getFieldDecorator('depart', {
-              initialValue: toCheckFront.depart
-            })(
-              <InputGroup compact>
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderRight: 0
-                  }}
-                  value={getFieldValue('depart')}
-                />
-                <Input
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    backgroundColor: '#fff'
-                  }}
-                  placeholder=">>"
-                  disabled
-                />
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderLeft: 0
-                  }}
-                  value={getFieldValue('nDepart')}
-                />
-                {isShowButton && (
-                  <Button
-                    icon="search"
-                    type="primary"
-                    onClick={() => {
-                      this.setState({ searchDepaV: true });
+              getFieldDecorator('depart', {
+                initialValue: toCheckFront.depart
+              })(
+                <InputGroup compact>
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderRight: 0
                     }}
-                  >
-                    变更部门
-                  </Button>
-                )}
-              </InputGroup>
-            ))
+                    value={getFieldValue('depart')}
+                  />
+                  <Input
+                    style={{
+                      width: 30,
+                      borderLeft: 0,
+                      borderRight: 0,
+                      pointerEvents: 'none',
+                      backgroundColor: '#fff'
+                    }}
+                    placeholder=">>"
+                    disabled
+                  />
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderLeft: 0
+                    }}
+                    value={getFieldValue('nDepart')}
+                  />
+                  {isShowButton && (
+                    <Button
+                      icon="search"
+                      type="primary"
+                      onClick={() => {
+                        this.setState({ searchDepaV: true });
+                      }}
+                    >
+                      变更部门
+                    </Button>
+                  )}
+                </InputGroup>
+              ))
           }
         </Form.Item>
         <Form.Item
@@ -249,50 +290,50 @@ class ChangedInfoForm extends React.Component {
             (getFieldDecorator('jobName', {
               initialValue: toCheckFront.jobName
             }),
-            getFieldDecorator('nJobName', {
-              initialValue: toCheck[1]
-            })(
-              <InputGroup compact>
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderRight: 0
-                  }}
-                  value={getFieldValue('jobName')}
-                />
-                <Input
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    backgroundColor: '#fff'
-                  }}
-                  placeholder=">>"
-                  disabled
-                />
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderLeft: 0
-                  }}
-                  value={getFieldValue('nJobName')}
-                />
-                {isShowButton && (
-                  <Button
-                    icon="search"
-                    onClick={() => this.setState({ searchJobV: true })}
-                    type="primary"
-                  >
-                    变更岗位
-                  </Button>
-                )}
-              </InputGroup>
-            ))
+              getFieldDecorator('nJobName', {
+                initialValue: toCheck[1]
+              })(
+                <InputGroup compact>
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderRight: 0
+                    }}
+                    value={getFieldValue('jobName')}
+                  />
+                  <Input
+                    style={{
+                      width: 30,
+                      borderLeft: 0,
+                      borderRight: 0,
+                      pointerEvents: 'none',
+                      backgroundColor: '#fff'
+                    }}
+                    placeholder=">>"
+                    disabled
+                  />
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderLeft: 0
+                    }}
+                    value={getFieldValue('nJobName')}
+                  />
+                  {isShowButton && (
+                    <Button
+                      icon="search"
+                      onClick={() => this.setState({ searchJobV: true })}
+                      type="primary"
+                    >
+                      变更岗位
+                    </Button>
+                  )}
+                </InputGroup>
+              ))
           }
         </Form.Item>
         <Form.Item
@@ -303,64 +344,64 @@ class ChangedInfoForm extends React.Component {
             (getFieldDecorator('level', {
               initialValue: toCheckFront.level
             }),
-            getFieldDecorator('nLevel', {
-              initialValue: toCheck[2]
-            })(
-              <InputGroup compact>
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderRight: 0
-                  }}
-                  value={getFieldValue('level')}
-                />
-                <Input
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    backgroundColor: '#fff'
-                  }}
-                  placeholder=">>"
-                  disabled
-                />
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderLeft: 0
-                  }}
-                  value={getFieldValue('nLevel')}
-                />
-                {isShowButton && (
-                  <Select
-                    placeholder="请选择级别"
-                    style={{ width: 160 }}
-                    value={currentLevel}
-                    onChange={v => {
-                      this.props.form.setFieldsValue({
-                        nLevel: v
-                      });
-                      this.setState({
-                        currentLevel: v
-                      });
+              getFieldDecorator('nLevel', {
+                initialValue: toCheck[2]
+              })(
+                <InputGroup compact>
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderRight: 0
                     }}
-                  >
-                    {lvList.map(item => {
-                      return (
-                        <Option value={item.value} key={item.key}>
-                          {item.value}
-                        </Option>
-                      );
-                    })}
-                  </Select>
-                )}
-              </InputGroup>
-            ))
+                    value={getFieldValue('level')}
+                  />
+                  <Input
+                    style={{
+                      width: 30,
+                      borderLeft: 0,
+                      borderRight: 0,
+                      pointerEvents: 'none',
+                      backgroundColor: '#fff'
+                    }}
+                    placeholder=">>"
+                    disabled
+                  />
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderLeft: 0
+                    }}
+                    value={getFieldValue('nLevel')}
+                  />
+                  {isShowButton && (
+                    <Select
+                      placeholder="请选择级别"
+                      style={{ width: 160 }}
+                      value={currentLevel}
+                      onChange={v => {
+                        this.props.form.setFieldsValue({
+                          nLevel: v
+                        });
+                        this.setState({
+                          currentLevel: v
+                        });
+                      }}
+                    >
+                      {lvList.map(item => {
+                        return (
+                          <Option value={item.value} key={item.key}>
+                            {item.value}
+                          </Option>
+                        );
+                      })}
+                    </Select>
+                  )}
+                </InputGroup>
+              ))
           }
         </Form.Item>
         <Form.Item
@@ -371,50 +412,50 @@ class ChangedInfoForm extends React.Component {
             (getFieldDecorator('driectorName', {
               initialValue: toCheckFront.driectorName
             }),
-            getFieldDecorator('nDriectorName', {
-              initialValue: toCheck[3]
-            })(
-              <InputGroup compact>
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderRight: 0
-                  }}
-                  value={getFieldValue('driectorName')}
-                />
-                <Input
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    backgroundColor: '#fff'
-                  }}
-                  placeholder=">>"
-                  disabled
-                />
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderLeft: 0
-                  }}
-                  value={getFieldValue('nDriectorName')}
-                />
-                {isShowButton && (
-                  <Button
-                    icon="search"
-                    onClick={() => this.setState({ searchSuperV: true })}
-                    type="primary"
-                  >
-                    变更主管
-                  </Button>
-                )}
-              </InputGroup>
-            ))
+              getFieldDecorator('nDriectorName', {
+                initialValue: toCheck[3]
+              })(
+                <InputGroup compact>
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderRight: 0
+                    }}
+                    value={getFieldValue('driectorName')}
+                  />
+                  <Input
+                    style={{
+                      width: 30,
+                      borderLeft: 0,
+                      borderRight: 0,
+                      pointerEvents: 'none',
+                      backgroundColor: '#fff'
+                    }}
+                    placeholder=">>"
+                    disabled
+                  />
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderLeft: 0
+                    }}
+                    value={getFieldValue('nDriectorName')}
+                  />
+                  {isShowButton && (
+                    <Button
+                      icon="search"
+                      onClick={() => this.setState({ searchSuperV: true })}
+                      type="primary"
+                    >
+                      变更主管
+                    </Button>
+                  )}
+                </InputGroup>
+              ))
           }
         </Form.Item>
         <Form.Item
@@ -505,50 +546,50 @@ class ChangedInfoForm extends React.Component {
             (getFieldDecorator('bucode', {
               initialValue: toCheckFront.bucode
             }),
-            getFieldDecorator('nBuCode', {
-              initialValue: toCheck[5]
-            })(
-              <InputGroup compact>
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderRight: 0
-                  }}
-                  value={getFieldValue('bucode')}
-                />
-                <Input
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    backgroundColor: '#fff'
-                  }}
-                  placeholder=">"
-                  disabled
-                />
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderLeft: 0
-                  }}
-                  value={getFieldValue('nBuCode')}
-                />
-                {isShowButton && (
-                  <Button
-                    type="primary"
-                    icon="search"
-                    onClick={() => this.setState({ searchBucode: true })}
-                  >
-                    变更BU CODE
-                  </Button>
-                )}
-              </InputGroup>
-            ))
+              getFieldDecorator('nBuCode', {
+                initialValue: toCheck[5]
+              })(
+                <InputGroup compact>
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderRight: 0
+                    }}
+                    value={getFieldValue('bucode')}
+                  />
+                  <Input
+                    style={{
+                      width: 30,
+                      borderLeft: 0,
+                      borderRight: 0,
+                      pointerEvents: 'none',
+                      backgroundColor: '#fff'
+                    }}
+                    placeholder=">"
+                    disabled
+                  />
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderLeft: 0
+                    }}
+                    value={getFieldValue('nBuCode')}
+                  />
+                  {isShowButton && (
+                    <Button
+                      type="primary"
+                      icon="search"
+                      onClick={() => this.setState({ searchBucode: true })}
+                    >
+                      变更BU CODE
+                    </Button>
+                  )}
+                </InputGroup>
+              ))
           }
         </Form.Item>
         <Form.Item
@@ -559,41 +600,41 @@ class ChangedInfoForm extends React.Component {
             (getFieldDecorator('firstDepart', {
               initialValue: toCheckFront.firstDepart
             }),
-            getFieldDecorator('nFirstDepart', {
-              initialValue: toCheck[6]
-            })(
-              <InputGroup compact>
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderRight: 0
-                  }}
-                  value={getFieldValue('firstDepart')}
-                />
-                <Input
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    backgroundColor: '#fff'
-                  }}
-                  placeholder=">>"
-                  disabled
-                />
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderLeft: 0
-                  }}
-                  value={getFieldValue('nFirstDepart')}
-                />
-              </InputGroup>
-            ))
+              getFieldDecorator('nFirstDepart', {
+                initialValue: toCheck[6]
+              })(
+                <InputGroup compact>
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderRight: 0
+                    }}
+                    value={getFieldValue('firstDepart')}
+                  />
+                  <Input
+                    style={{
+                      width: 30,
+                      borderLeft: 0,
+                      borderRight: 0,
+                      pointerEvents: 'none',
+                      backgroundColor: '#fff'
+                    }}
+                    placeholder=">>"
+                    disabled
+                  />
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderLeft: 0
+                    }}
+                    value={getFieldValue('nFirstDepart')}
+                  />
+                </InputGroup>
+              ))
           }
         </Form.Item>
         <Form.Item
@@ -604,41 +645,41 @@ class ChangedInfoForm extends React.Component {
             (getFieldDecorator('secondDepart', {
               initialValue: toCheckFront.secondDepart
             }),
-            getFieldDecorator('nSecondDepart', {
-              initialValue: toCheck[7]
-            })(
-              <InputGroup compact>
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderRight: 0
-                  }}
-                  value={getFieldValue('secondDepart')}
-                />
-                <Input
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    backgroundColor: '#fff'
-                  }}
-                  placeholder=">>"
-                  disabled
-                />
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderLeft: 0
-                  }}
-                  value={getFieldValue('nSecondDepart')}
-                />
-              </InputGroup>
-            ))
+              getFieldDecorator('nSecondDepart', {
+                initialValue: toCheck[7]
+              })(
+                <InputGroup compact>
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderRight: 0
+                    }}
+                    value={getFieldValue('secondDepart')}
+                  />
+                  <Input
+                    style={{
+                      width: 30,
+                      borderLeft: 0,
+                      borderRight: 0,
+                      pointerEvents: 'none',
+                      backgroundColor: '#fff'
+                    }}
+                    placeholder=">>"
+                    disabled
+                  />
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderLeft: 0
+                    }}
+                    value={getFieldValue('nSecondDepart')}
+                  />
+                </InputGroup>
+              ))
           }
         </Form.Item>
         <Form.Item
@@ -649,41 +690,41 @@ class ChangedInfoForm extends React.Component {
             (getFieldDecorator('thirdDepart', {
               initialValue: toCheckFront.thirdDepart
             }),
-            getFieldDecorator('nThirdDepart', {
-              initialValue: toCheck[8]
-            })(
-              <InputGroup compact>
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderRight: 0
-                  }}
-                  value={getFieldValue('thirdDepart')}
-                />
-                <Input
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    backgroundColor: '#fff'
-                  }}
-                  placeholder=">>"
-                  disabled
-                />
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderLeft: 0
-                  }}
-                  value={getFieldValue('nThirdDepart')}
-                />
-              </InputGroup>
-            ))
+              getFieldDecorator('nThirdDepart', {
+                initialValue: toCheck[8]
+              })(
+                <InputGroup compact>
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderRight: 0
+                    }}
+                    value={getFieldValue('thirdDepart')}
+                  />
+                  <Input
+                    style={{
+                      width: 30,
+                      borderLeft: 0,
+                      borderRight: 0,
+                      pointerEvents: 'none',
+                      backgroundColor: '#fff'
+                    }}
+                    placeholder=">>"
+                    disabled
+                  />
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderLeft: 0
+                    }}
+                    value={getFieldValue('nThirdDepart')}
+                  />
+                </InputGroup>
+              ))
           }
         </Form.Item>
         <Form.Item
@@ -694,41 +735,41 @@ class ChangedInfoForm extends React.Component {
             (getFieldDecorator('fourthDepart', {
               initialValue: toCheckFront.fourthDepart
             }),
-            getFieldDecorator('nFourthDepart', {
-              initialValue: toCheck[9]
-            })(
-              <InputGroup compact>
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderRight: 0
-                  }}
-                  value={getFieldValue('fourthDepart')}
-                />
-                <Input
-                  style={{
-                    width: 30,
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    backgroundColor: '#fff'
-                  }}
-                  placeholder=">>"
-                  disabled
-                />
-                <Input
-                  style={{
-                    width: 200,
-                    pointerEvents: 'none',
-                    textAlign: 'center',
-                    borderLeft: 0
-                  }}
-                  value={getFieldValue('nFourthDepart')}
-                />
-              </InputGroup>
-            ))
+              getFieldDecorator('nFourthDepart', {
+                initialValue: toCheck[9]
+              })(
+                <InputGroup compact>
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderRight: 0
+                    }}
+                    value={getFieldValue('fourthDepart')}
+                  />
+                  <Input
+                    style={{
+                      width: 30,
+                      borderLeft: 0,
+                      borderRight: 0,
+                      pointerEvents: 'none',
+                      backgroundColor: '#fff'
+                    }}
+                    placeholder=">>"
+                    disabled
+                  />
+                  <Input
+                    style={{
+                      width: 200,
+                      pointerEvents: 'none',
+                      textAlign: 'center',
+                      borderLeft: 0
+                    }}
+                    value={getFieldValue('nFourthDepart')}
+                  />
+                </InputGroup>
+              ))
           }
         </Form.Item>
         <Modal
@@ -949,6 +990,54 @@ class ChangedInfoForm extends React.Component {
                         });
                         this.setState({
                           searchBucode: false
+                        });
+                      }}
+                    >
+                      选择
+                    </Button>
+                  );
+                }
+              ]}
+            />
+          </div>
+        </Modal>
+        <Modal
+          title={'选择Job Code'}
+          width={'90vw'}
+          visible={this.state.selectJobcodeModal}
+          footer={null}
+          onCancel={() => this.setState({ selectJobcodeModal: false })}
+        >
+          <div
+            style={{
+              width: '100%',
+              height: 'calc(80vh - 104px)',
+              position: 'relative'
+            }}
+          >
+            <TableData
+              resid={659552172710}
+              baseURL={WuxiHr03BaseURL}
+              hasRowView={false}
+              subtractH={220}
+              hasAdd={false}
+              hasRowSelection={false}
+              hasRowDelete={false}
+              hasRowModify={false}
+              hasModify={false}
+              hasDelete={false}
+              style={{ height: '100%' }}
+              hasRowView={false}
+              customRowBtns={[
+                record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.props.form.setFieldsValue({
+                          iiviJobCode: record.JobCode
+                        });
+                        this.setState({
+                          selectJobcodeModal: false
                         });
                       }}
                     >

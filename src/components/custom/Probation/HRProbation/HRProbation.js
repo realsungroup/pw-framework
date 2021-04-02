@@ -118,7 +118,7 @@ class HRProbation extends React.Component {
       onOk: () => {
         this.handleNotice(record, selectValue);
       },
-      onCancel() { }
+      onCancel() {}
     });
   };
 
@@ -296,6 +296,7 @@ class HRProbation extends React.Component {
             {this.state.isShowTable ? (
               <div style={{ height: '100vh' }}>
                 <TableData
+                  recordFormUseAbsolute={true}
                   key="1"
                   resid={resid}
                   subtractH={240}
@@ -328,14 +329,14 @@ class HRProbation extends React.Component {
                 />
               </div>
             ) : (
-                <ProbationForms
-                  memberId={this.state.selectedRecord.memberId}
-                  employedId={this.state.selectedRecord.C3_625051545181}
-                  goBack={this.goBack}
-                  roleName="HR"
-                  setIsShowTable={this.setIsShowTable}
-                />
-              )}
+              <ProbationForms
+                memberId={this.state.selectedRecord.memberId}
+                employedId={this.state.selectedRecord.C3_625051545181}
+                goBack={this.goBack}
+                roleName="HR"
+                setIsShowTable={this.setIsShowTable}
+              />
+            )}
           </div>
         );
       case '2':

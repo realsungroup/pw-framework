@@ -49,10 +49,10 @@ const withAdvDicTable = WrappedComponent => {
         this._afterSelect = afterSelect;
       }
 
-      if (!this.state.advDicTableProps.resid) {
-        state.advDicTableProps = { ...dataItem.advDicTableProps, ...advDicTableProps,  baseURL };
-      }
-
+      // if (!this.state.advDicTableProps.resid) {
+      //   state.advDicTableProps = { ...dataItem.advDicTableProps, ...advDicTableProps, baseURL };
+      // }
+      state.advDicTableProps = { ...dataItem.advDicTableProps, ...advDicTableProps, baseURL };
       this.setState(state);
     };
 

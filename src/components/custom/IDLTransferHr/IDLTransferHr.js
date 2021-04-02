@@ -25,12 +25,15 @@ import ChangedInfoForm from './ChangedInfoForm';
 import { async } from 'q';
 import Sider from 'antd/lib/layout/Sider';
 function compare(property) {
-  return function(a, b) {
+  return function (a, b) {
     return a[property] - b[property];
   };
 }
 const { Step } = Steps;
 const { Option } = Select;
+
+const WuxiHr03BaseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03BaseURL;
 
 const attr = [
   '部门名',
@@ -104,7 +107,9 @@ class IDLTransferHr extends Component {
       changeKey: null, //变更审批的序号
       curStep: 0,
       allValues: {}, //HR预审批时可以修改变动信息，此state用来存放子组件传递来的值
-      applyNum: '' //申请人编号，审批流中申请人自动审批通过
+      applyNum: '', //申请人编号，审批流中申请人自动审批通过
+      selectJobcodeModal: false, //当HC预审的headcount类型为new时,有按钮可以打开模态框选择jobcode
+      HREndRecid: '' //待变更人员在新员工信息表中的REC-ID
     };
   }
   //删除审批节点
@@ -230,8 +235,54 @@ class IDLTransferHr extends Component {
         resid: 632314958317,
         cmswhere: `C3_632503844784='${v}'`
       });
-      this.setState({ member: res.data, loading: false });
-      console.log('resqq', res);
+      this.setState({ member: res.data });
+    } catch (e) {
+      console.log(e);
+      this.setState({ loading: false });
+    }
+
+    try {
+      let res2 = await http().getTable({
+        resid: 634660498796,
+        cmswhere: `C3_634660564341='${v}'`
+      });
+      this.setState({ approveRec: res2 });
+      var n = 0;
+      var arr = [];
+      var c = 0;
+      var isFin = 0;
+
+      while (n < res2.data.length) {
+        arr.push({
+          stepName: res2.data[n].C3_634660565034,
+          stepPeople: res2.data[n].C3_634660565583,
+          stepTime: res2.data[n].edit_time,
+          order: res2.data[n].C3_634660566076,
+          memo: res2.data[n].C3_634660566283,
+          current: res2.data[n].C3_637177232366
+        });
+        if (res2.data[n].C3_637177232366 == 'Y') {
+          var c = res2.data[n].C3_635250483297;
+        }
+        if (res2.data[n].C3_634660565837 == 'Y') {
+          isFin = isFin + 1;
+        }
+        arr = arr.sort(compare('order'));
+        n++;
+      }
+      if (isFin == res2.data.length) {
+        c = res2.data.length + 1;
+      }
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[i].stepPeople == arr[j].stepPeople) {         //第一个等同于第二个，splice方法删除第二个
+            arr.splice(j, 1);
+            j--;
+          }
+        }
+      }
+      console.log(arr)
+      this.setState({ loading: false, curStep: c, stream: arr });
     } catch (e) {
       console.log(e);
       this.setState({ loading: false });
@@ -354,6 +405,11 @@ class IDLTransferHr extends Component {
   approve = async (v, end) => {
     this.setState({ loading: true });
 
+    //如果H终审通过，变更新员工信息表记录
+    if (v == 'Y' && end) {
+      console.log('HR终审通过');
+      this.hREndModify();
+    }
     var res = '';
     if (v == 'N') {
       var prev = 'N';
@@ -467,7 +523,7 @@ class IDLTransferHr extends Component {
       }
     }
   };
-  showOverlay = v => {
+  showOverlay = async v => {
     this.setState({ memberDetail: null, stream: [] });
     var n = 0;
     var arr = [];
@@ -497,11 +553,49 @@ class IDLTransferHr extends Component {
     // }else if(obj.changeType=='级别变更'){
     //   resid='634820028458';
     // }
+    try {
+      let HREndRecid = await http({
+        baseURL: WuxiHr03BaseURL
+      }).getTable({
+        resid: 638459489229,
+        cmswhere: `C3_227192472953 = '${v.personNum}'`
+      });
+      if (HREndRecid.data.length > 0) {
+        this.setState({ HREndRecid: HREndRecid.data[0].REC_ID });
+
+      }
+    } catch (error) {
+      message.info(error.message);
+      console.log(error.message);
+    }
     this.getStream(object.changeID, resid);
     this.getMem(object.changeID);
 
     this.setState({ toCheck: arr, toCheckFront: object, visible: true });
     console.log('v', v);
+  };
+
+  //hr终审更新岗位架构，修改新员工信息表信息
+  hREndModify = async () => {
+    const { allValues } = this.state;
+    let res;
+    try {
+      res = await http({ baseURL: WuxiHr03BaseURL }).modifyRecords({
+        resid: 638459489229,
+        data: [
+          {
+            REC_ID: this.state.HREndRecid,
+            C3_470524257391: this.state.toCheckFront.effortDate, //生效日期
+            C3_465142349966: this.state.toCheckFront.jobId, //岗位代码-可计算部门信息
+            jobCode: allValues.iiviJobCode, //jobcode
+            C3_581428109480: allValues.nBuCode //bucode
+          }
+        ]
+      });
+    } catch (error) {
+      message.info(error.message);
+      console.log(error.message);
+    }
   };
 
   approveHC = async v => {
@@ -710,7 +804,14 @@ class IDLTransferHr extends Component {
   };
   //获取表单更改后的值(HR预审可以修改变动信息)
   sendFormDataToFather = allValues => {
-    this.setState(allValues);
+    this.setState({
+      allValues,
+      iiviJobCode: allValues.iiviJobCode,
+      toCheckFront: {
+        ...this.state.toCheckFront,
+        iiviJobCode: allValues.iiviJobCode
+      }
+    });
     console.log(allValues);
   };
   //HR预审时，通知申请人他提交的变动信息已更改
@@ -740,6 +841,23 @@ class IDLTransferHr extends Component {
     message.info('提醒成功');
     this.tableDataRef.handleRefresh();
   };
+
+  getReplacementJobcode = async record => {
+    let jobcode;
+    try {
+      jobcode = await http({ baseURL: WuxiHr03BaseURL }).getTable({
+        resid: 660756647720,
+        cmswhere: `C3_660756674254 = '${record.C3_227192472953}'`
+      });
+      this.setState({
+        iiviJobCode: jobcode.data[0].C3_660756702537
+      });
+    } catch (error) {
+      console.log(error.message);
+      message.info(error.message);
+    }
+  };
+
   componentWillMount() {
     this.getRightGroup();
   }
@@ -756,7 +874,7 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                    `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'`
+                      `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'`
                       ? 'cur'
                       : ''
                   }
@@ -771,7 +889,7 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                    `headcount = 'Y' and C3_653481734712 = '${this.state.right.location}'`
+                      `headcount = 'Y' and C3_653481734712 = '${this.state.right.location}'`
                       ? 'cur'
                       : ''
                   }
@@ -786,7 +904,7 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                    `headcount = 'N' and C3_653481734712 = '${this.state.right.location}'`
+                      `headcount = 'N' and C3_653481734712 = '${this.state.right.location}'`
                       ? 'cur'
                       : ''
                   }
@@ -805,7 +923,7 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                    `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`
+                      `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`
                       ? 'cur'
                       : ''
                   }
@@ -820,7 +938,7 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                    `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'`
+                      `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'`
                       ? 'cur'
                       : ''
                   }
@@ -835,7 +953,7 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                    `hrPreAprrove = 'N' and C3_653481734712 = '${this.state.right.location}'`
+                      `hrPreAprrove = 'N' and C3_653481734712 = '${this.state.right.location}'`
                       ? 'cur'
                       : ''
                   }
@@ -851,7 +969,7 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                    `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
+                      `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
                       ? 'cur'
                       : ''
                   }
@@ -866,7 +984,7 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                    `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'`
+                      `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'`
                       ? 'cur'
                       : ''
                   }
@@ -881,7 +999,7 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                    `hrEndApprove = 'N' and C3_653481734712 = '${this.state.right.location}'`
+                      `hrEndApprove = 'N' and C3_653481734712 = '${this.state.right.location}'`
                       ? 'cur'
                       : ''
                   }
@@ -957,7 +1075,7 @@ class IDLTransferHr extends Component {
               }}
             >
               <TableData
-                resid={609599795438}
+                resid={422485234051}
                 hasRowView={false}
                 subtractH={220}
                 hasAdd={false}
@@ -978,6 +1096,7 @@ class IDLTransferHr extends Component {
                             C3_637425666513: record,
                             memberD: false
                           });
+                          this.getReplacementJobcode(record);
                         }}
                       >
                         选择
@@ -1072,7 +1191,7 @@ class IDLTransferHr extends Component {
             width={'90vw'}
             visible={this.state.visibleHC}
             footer={
-              this.state.C3_637425449725 && this.state.iiviJobCode ? (
+              this.state.C3_637425449725 === '否' ? (
                 <>
                   <Button
                     type="danger"
@@ -1088,19 +1207,48 @@ class IDLTransferHr extends Component {
                     onClick={() => {
                       this.approveHC('Y');
                     }}
-                    disabled={this.state.C3_637425449725 == '无' ? true : false}
+                  >
+                    保存并通过HC审核
+                  </Button>
+                </>
+              ) : this.state.C3_637425449725 && this.state.iiviJobCode ? (
+                <>
+                  <Button
+                    type="danger"
+                    style={{ marginLeft: '8px' }}
+                    onClick={() => {
+                      this.approveHC('N');
+                    }}
+                  >
+                    不通过审核
+                  </Button>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      this.approveHC('Y');
+                    }}
+                    disabled={this.state.C3_637425449725 == '否' ? true : false}
                   >
                     保存并通过HC审核
                   </Button>
                 </>
               ) : (
-                '至少全部填选完第1、3项才能提交'
-              )
+                    '至少全部填选完第1、3项才能提交'
+                  )
             }
-            onCancel={() => this.setState({ visibleHC: false })}
+            onCancel={() =>
+              this.setState({
+                visibleHC: false,
+                C3_637425449725: '',
+                iiviJobCode: '',
+                C3_637425470106: '',
+                C3_637425577105: '',
+                C3_637425666513: ''
+              })
+            }
           >
             <b>
-              <span style={{ color: 'red' }}>*</span>是否有Headcount：
+              <span style={{ color: 'red' }}>*</span>是否涉及Headcount：
             </b>
             <Select
               style={{ width: '200px' }}
@@ -1109,21 +1257,20 @@ class IDLTransferHr extends Component {
                 this.setState({ C3_637425449725: v });
               }}
             >
-              {this.state.list725.map((item, key) => {
-                return (
-                  <Option key={key} value={item}>
-                    {item}
-                  </Option>
-                );
-              })}
+              <Option key="是" value="是">
+                {'是'}
+              </Option>
+              <Option key="否" value="否">
+                {'否'}
+              </Option>
             </Select>
             <div style={{ width: '100%', height: '1rem' }}></div>
             <b>Headcount类型：</b>
             <Select
-              disabled={this.state.C3_637425449725 == '无' ? true : false}
+              disabled={this.state.C3_637425449725 == '否' ? true : false}
               style={{ width: '200px' }}
               value={
-                this.state.C3_637425449725 == '无'
+                this.state.C3_637425449725 == '否'
                   ? null
                   : this.state.C3_637425577105
               }
@@ -1140,29 +1287,12 @@ class IDLTransferHr extends Component {
               })}
             </Select>
             <div style={{ width: '100%', height: '1rem' }}></div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <b>
-                <span style={{ color: 'red' }}>*</span>Job Code：
-              </b>
-              <Input
-                style={{ width: 200 }}
-                value={this.state.iiviJobCode}
-                onChange={e => {
-                  this.setState({
-                    iiviJobCode: e.target.value
-                  });
-                }}
-              />
-            </div>
-
-            <div style={{ width: '100%', height: '1rem' }}></div>
-
             <b>
               替代人：
               {this.state.C3_637425666513
                 ? this.state.C3_637425666513.C3_227192484125 +
-                  '-' +
-                  this.state.C3_637425666513.C3_305737857578
+                '-' +
+                this.state.C3_637425666513.C3_305737857578
                 : '请点击右边的按钮选择人员'}
             </b>
             <Button
@@ -1175,6 +1305,36 @@ class IDLTransferHr extends Component {
             >
               选择人员
             </Button>
+            <div style={{ width: '100%', height: '1rem' }}></div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <b>
+                {this.state.C3_637425449725 !== '否' ? (
+                  <span style={{ color: 'red' }}>*</span>
+                ) : null}
+                Job Code：
+              </b>
+              <Input
+                style={{ width: 200 }}
+                value={this.state.iiviJobCode}
+                onChange={e => {
+                  this.setState({
+                    iiviJobCode: e.target.value
+                  });
+                }}
+                disabled={this.state.C3_637425449725 == '否' ? true : false}
+              />
+              {this.state.C3_637425577105 === 'New' && (
+                <Button
+                  style={{ marginLeft: '8px' }}
+                  type="primary"
+                  onClick={() => {
+                    this.setState({ selectJobcodeModal: true });
+                  }}
+                >
+                  选择Job Code
+                </Button>
+              )}
+            </div>
             <div style={{ width: '100%', height: '1rem' }}></div>
 
             <b>备注：</b>
@@ -1203,25 +1363,25 @@ class IDLTransferHr extends Component {
                   取消
                 </Button>
                 {this.state.cms ==
-                `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      this.approve('N', true);
-                    }}
-                  >
-                    确认
-                  </Button>
-                ) : (
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      this.approve('N');
-                    }}
-                  >
-                    确认
-                  </Button>
-                )}
+                  `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.approve('N', true);
+                      }}
+                    >
+                      确认
+                    </Button>
+                  ) : (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.approve('N');
+                      }}
+                    >
+                      确认
+                    </Button>
+                  )}
               </>
             }
           >
@@ -1252,7 +1412,7 @@ class IDLTransferHr extends Component {
           >
             <div style={{ width: '100%', height: '80vh' }}>
               <TableData
-                baseURL={this.url80}
+                baseURL={WuxiHr03BaseURL}
                 resid="638305113445"
                 subtractH={200}
                 hasAdvSearch={false}
@@ -1290,66 +1450,90 @@ class IDLTransferHr extends Component {
           </Modal>
           <Modal
             width={'90vw'}
+            visible={this.state.showMemo}
+            destroyOnClose={true}
+            footer={null}
+            onCancel={() => { this.setState({ showMemo: false }) }}
+          >
+            <div style={{ width: "100%", height: '60vh' }}>
+              <TableData
+                resid={669982527179}
+                cmswhere={`C3_634660564341 = '${this.state.toCheckFront.REC_ID}'`}
+                hasRowView={false}
+                subtractH={220} REC_ID
+                hasAdd={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                hasRowView={false}
+              />
+            </div>
+          </Modal>
+          <Modal
+            width={'90vw'}
             visible={this.state.visible}
             footer={
               this.state.cms ==
-              `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
-                <Button
-                  type="primary"
-                  onClick={() => this.setState({ visibleHC: true })}
-                  disabled={
-                    this.state.right.HCPreApprove === 'Y' ? false : true
-                  }
-                >
-                  填写HC审批信息
-                </Button>
-              ) : this.state.cms ==
+                `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
+                  <Button
+                    type="primary"
+                    onClick={() => this.setState({ visibleHC: true })}
+                    disabled={
+                      this.state.right.HCPreApprove === 'Y' ? false : true
+                    }
+                  >
+                    填写HC审批信息
+                  </Button>
+                ) : this.state.cms ==
                   `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ||
-                this.state.cms ==
+                  this.state.cms ==
                   `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
-                this.state.stream.length == 0 ? (
-                  '审批流计算中，不可预审。请耐心等待...'
-                ) : (
-                  <>
-                    <Button
-                      type="danger"
-                      loading={this.state.loading}
-                      style={{ marginLeft: '8px' }}
-                      onClick={() => {
-                        this.setState({ conUnpass: true });
-                      }}
-                    >
-                      不通过审核
+                    this.state.stream.length == 0 ? (
+                      '审批流计算中，不可预审。请耐心等待...'
+                    ) : (
+                        <>
+                          <Button
+                            type="danger"
+                            loading={this.state.loading}
+                            style={{ marginLeft: '8px' }}
+                            onClick={() => {
+                              this.setState({ conUnpass: true });
+                            }}
+                          >
+                            不通过审核
                     </Button>
 
-                    {this.state.cms ==
-                    `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
-                      this.state.toCheckFront.effortDate &&
-                      this.state.toCheckFront.jobId ? (
-                        <Button
-                          type="primary"
-                          style={{ padding: '0 8px' }}
-                          onClick={() => {
-                            this.approve('Y', true);
-                          }}
-                        >
-                          保存并通过审核
-                        </Button>
-                      ) : (
-                        ' 请先填写生效日期和岗位代码'
+                          {this.state.cms ==
+                            `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
+                              this.state.toCheckFront.effortDate &&
+                                this.state.toCheckFront.jobId ? (
+                                  <Button
+                                    type="primary"
+                                    style={{ padding: '0 8px' }}
+                                    onClick={() => {
+                                      this.approve('Y', true);
+                                    }}
+                                    loading={this.state.loading}
+                                  >
+                                    保存并通过审核
+                                  </Button>
+                                ) : (
+                                  ' 请先填写生效日期和岗位代码'
+                                )
+                            ) : (
+                              <Button
+                                type="primary"
+                                loading={this.state.loading}
+                                onClick={() => this.approve('Y')}
+                              >
+                                保存并通过审核
+                              </Button>
+                            )}
+                        </>
                       )
-                    ) : (
-                      <Button
-                        type="primary"
-                        loading={this.state.loading}
-                        onClick={() => this.approve('Y')}
-                      >
-                        保存并通过审核
-                      </Button>
-                    )}
-                  </>
-                )
-              ) : null
+                  ) : null
             }
             onCancel={() => this.setState({ visible: false })}
           >
@@ -1361,30 +1545,45 @@ class IDLTransferHr extends Component {
                 {this.state.stream.length == 0 ? (
                   '正在计算审批流'
                 ) : (
-                  <Steps size="small" current={this.state.curStep}>
-                    {this.state.stream.map((item, key) => {
-                      return (
-                        <Step
-                          title={item.stepName}
-                          description={<span>{item.stepPeople}</span>}
-                        />
-                      );
-                    })}
-                  </Steps>
-                )}
+                    <Steps size="small" current={this.state.curStep}>
+                      {this.state.stream.map((item, key) => {
+                        if (item.stepName === 'HR部门经理审批') {
+                          return (
+                            <Step
+                              title={item.stepName}
+                              description={
+                                <span>
+                                  {item.stepPeople}
+                                  <br />
+                                  {item.stepTime}
+                                </span>
+                              }
+                            />
+                          );
+                        } else {
+                          return (
+                            <Step
+                              title={item.stepName}
+                              description={<span>{item.stepPeople}</span>}
+                            />
+                          );
+                        }
+                      })}
+                    </Steps>
+                  )}
                 <div style={{ clear: 'both' }}></div>
                 {this.state.cms ==
                   `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` &&
-                this.state.stream.length > 0 ? (
-                  <Button
-                    onClick={() => {
-                      this.setState({ commandVisible: true });
-                    }}
-                    style={{ marginTop: 8 }}
-                  >
-                    变更审批流
-                  </Button>
-                ) : null}
+                  this.state.stream.length > 0 ? (
+                    <Button
+                      onClick={() => {
+                        this.setState({ commandVisible: true });
+                      }}
+                      style={{ marginTop: 8 }}
+                    >
+                      变更审批流
+                    </Button>
+                  ) : null}
                 <div
                   className="showContent"
                   style={{ marginTop: 24, width: '100%', marginLeft: '0' }}
@@ -1408,38 +1607,39 @@ class IDLTransferHr extends Component {
                   <span>{this.state.toCheckFront.changeReason}</span>
                   <b>Job Code：</b>
                   <span>{this.state.toCheckFront.iiviJobCode}</span>
+                  {/* <Button style={{ width: '120px' }} onClick={() => { this.setState({ showMemo: true }) }}>查看审批备注</Button> */}
                   <br />
                   {this.state.cms ==
-                  `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
-                    <>
-                      <b>岗位代码：</b>
-                      <span>{this.state.toCheckFront.jobId}</span>
-                      <br />
-                    </>
-                  ) : null}
+                    `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
+                      <>
+                        <b>岗位代码：</b>
+                        <span>{this.state.toCheckFront.jobId}</span>
+                        <br />
+                      </>
+                    ) : null}
                   {this.state.cms ==
-                  `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
-                    <>
-                      <b>岗位代码：</b>
-                      <span>
-                        {this.state.toCheckFront.jobId ? (
-                          this.state.toCheckFront.jobId
-                        ) : (
-                          <b style={{ color: '#f5222d' }}>请选择岗位</b>
-                        )}
-                      </span>
-                      <Button
-                        size="small"
-                        icon="search"
-                        onClick={() => {
-                          this.setState({ showJob: true });
-                        }}
-                      >
-                        搜索岗位
+                    `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
+                      <>
+                        <b>岗位代码：</b>
+                        <span>
+                          {this.state.toCheckFront.jobId ? (
+                            this.state.toCheckFront.jobId
+                          ) : (
+                              <b style={{ color: '#f5222d' }}>请选择岗位</b>
+                            )}
+                        </span>
+                        <Button
+                          size="small"
+                          icon="search"
+                          onClick={() => {
+                            this.setState({ showJob: true });
+                          }}
+                        >
+                          搜索岗位
                       </Button>
-                      <br />
-                    </>
-                  ) : null}
+                        <br />
+                      </>
+                    ) : null}
                   {this.state.toCheckFront.C3_632503853105 ? (
                     <div>
                       <b>审核反馈信息：</b>
@@ -1594,6 +1794,32 @@ class IDLTransferHr extends Component {
                           <p>{this.state.toCheckFront.ApproveRemark}</p>
                         </>
                       ) : null}
+                      <div style={{ float: 'right', marginRight: 16 }}>
+                        <b>审批备注：</b>
+                        <br />
+                        <div style={{ overflow: 'auto', height: '50vh' }}>
+                          {
+                            this.state.stream.length > 0 ?
+                              (
+                                this.state.stream.map((item) => {
+                                  return (
+                                    <>{item.memo ?
+                                      (<>
+                                        <span>{item.stepPeople}：</span>
+                                        <br /> <span>{item.memo}</span>
+                                        <br />
+                                        <br />
+                                      </>)
+                                      : null}
+                                    </>
+                                  )
+                                })
+                              )
+                              : '无'
+                          }
+
+                        </div>
+                      </div>
                       {/* <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0', marginLeft: '-1px' }}>
                           <li>
@@ -1640,13 +1866,22 @@ class IDLTransferHr extends Component {
                           </li>
                         </ul>
                       </div> */}
+
                       <ChangedInfoForm
                         toCheckFront={this.state.toCheckFront}
                         toCheck={this.state.toCheck}
                         HCPreApprove={this.state.right.HCPreApprove}
+                        isHREnd={
+                          this.state.cms ===
+                            `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
+                            ? true
+                            : false
+                        }
                         isShowButton={
                           this.state.cms ===
-                          `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`
+                            `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ||
+                            this.state.cms ===
+                            `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
                             ? true
                             : false
                         }
@@ -1656,6 +1891,53 @@ class IDLTransferHr extends Component {
                   </div>
                 </div>
               </div>
+            </div>
+          </Modal>
+          <Modal
+            title={'选择Job Code'}
+            width={'90vw'}
+            visible={this.state.selectJobcodeModal}
+            footer={null}
+            onCancel={() => this.setState({ selectJobcodeModal: false })}
+          >
+            <div
+              style={{
+                width: '100%',
+                height: 'calc(80vh - 104px)',
+                position: 'relative'
+              }}
+            >
+              <TableData
+                resid={659552172710}
+                baseURL={WuxiHr03BaseURL}
+                downloadURL={this.downloadURL}
+                hasRowView={false}
+                subtractH={220}
+                hasAdd={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                style={{ height: '100%' }}
+                hasRowView={false}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <Button
+                        onClick={() => {
+                          this.setState({
+                            selectJobcodeModal: false,
+                            iiviJobCode: record.JobCode
+                          });
+                        }}
+                      >
+                        选择
+                      </Button>
+                    );
+                  }
+                ]}
+              />
             </div>
           </Modal>
           <Modal
@@ -1709,95 +1991,95 @@ class IDLTransferHr extends Component {
             <div style={{ height: 'calc(100vh - 48px)' }}>
               {this.state.cms != `` ? (
                 this.state.right.HCPreApprove == 'Y' ||
-                this.state.right.HRPreApprove == 'Y' ? (
-                  <TableData
-                    resid={632255761674}
-                    cmswhere={this.state.cms}
-                    hasRowView={false}
-                    hasAdd={false}
-                    refTargetComponentName="TableData"
-                    wrappedComponentRef={element =>
-                      (this.tableDataRef = element)
-                    }
-                    hasRowDelete={false}
-                    hasRowModify={false}
-                    hasModify={false}
-                    hasDelete={false}
-                    style={{ height: '100%' }}
-                    recordFormUseAbsolute={true}
-                    hasRowView={false}
-                    actionBarWidth={120}
-                    actionBarFixed={true}
-                    hasRowSelection={true}
-                    actionBarExtra={({ dataSource, selectedRowKeys }) => {
-                      return (
-                        <>
-                          {this.state.cms ==
-                          `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
-                            <Button
-                              type="primary"
-                              disabled={!(selectedRowKeys.length > 0)}
-                              style={{ padding: '0 8px' }}
-                              onClick={() => {
-                                this.approveGroup(dataSource, selectedRowKeys);
-                              }}
-                            >
-                              批量审批通过
-                            </Button>
-                          ) : null}
-                          {this.state.cms ===
-                          `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
-                            <Button
-                              type="primary"
-                              width={'160px'}
-                              onClick={() => {
-                                this.handleNoticePorposal(
-                                  dataSource,
-                                  selectedRowKeys
-                                );
-                              }}
-                            >
-                              通知申请人信息已变动
-                            </Button>
-                          ) : null}
-                        </>
-                      );
-                    }}
-                    // approveGroup
-                    customRowBtns={[
-                      record => {
+                  this.state.right.HRPreApprove == 'Y' ? (
+                    <TableData
+                      resid={632255761674}
+                      cmswhere={this.state.cms}
+                      hasRowView={false}
+                      hasAdd={false}
+                      refTargetComponentName="TableData"
+                      wrappedComponentRef={element =>
+                        (this.tableDataRef = element)
+                      }
+                      hasRowDelete={false}
+                      hasRowModify={false}
+                      hasModify={false}
+                      hasDelete={false}
+                      style={{ height: '100%' }}
+                      recordFormUseAbsolute={true}
+                      hasRowView={false}
+                      actionBarWidth={120}
+                      actionBarFixed={true}
+                      hasRowSelection={true}
+                      actionBarExtra={({ dataSource, selectedRowKeys }) => {
                         return (
                           <>
-                            <Button
-                              style={{ width: '104px' }}
-                              onClick={() => {
-                                this.showOverlay(record);
-                              }}
-                            >
-                              确认信息
-                            </Button>
                             {this.state.cms ==
-                            `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
+                              `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
+                                <Button
+                                  type="primary"
+                                  disabled={!(selectedRowKeys.length > 0)}
+                                  style={{ padding: '0 8px' }}
+                                  onClick={() => {
+                                    this.approveGroup(dataSource, selectedRowKeys);
+                                  }}
+                                >
+                                  批量审批通过
+                                </Button>
+                              ) : null}
+                            {this.state.cms ===
+                              `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
+                                <Button
+                                  type="primary"
+                                  width={'160px'}
+                                  onClick={() => {
+                                    this.handleNoticePorposal(
+                                      dataSource,
+                                      selectedRowKeys
+                                    );
+                                  }}
+                                >
+                                  通知申请人信息已变动
+                                </Button>
+                              ) : null}
+                          </>
+                        );
+                      }}
+                      // approveGroup
+                      customRowBtns={[
+                        record => {
+                          return (
+                            <>
                               <Button
                                 style={{ width: '104px' }}
                                 onClick={() => {
-                                  this.setState({
-                                    modiJobCode: true,
-                                    toModi: record.REC_ID
-                                  });
+                                  this.showOverlay(record);
                                 }}
                               >
-                                修改Job Code
-                              </Button>
-                            ) : null}
-                          </>
-                        );
-                      }
-                    ]}
-                  />
-                ) : (
-                  <h3> 您无权查看，请联系管理员添加权限。</h3>
-                )
+                                确认信息
+                            </Button>
+                              {this.state.cms ==
+                                `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
+                                  <Button
+                                    style={{ width: '104px' }}
+                                    onClick={() => {
+                                      this.setState({
+                                        modiJobCode: true,
+                                        toModi: record.REC_ID
+                                      });
+                                    }}
+                                  >
+                                    修改Job Code
+                                  </Button>
+                                ) : null}
+                            </>
+                          );
+                        }
+                      ]}
+                    />
+                  ) : (
+                    <h3> 您无权查看，请联系管理员添加权限。</h3>
+                  )
               ) : null}
             </div>
           </Spin>

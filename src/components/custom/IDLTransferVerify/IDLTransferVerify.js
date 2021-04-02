@@ -18,7 +18,7 @@ import moment from 'moment';
 import { async } from 'q';
 
 function compare(property) {
-  return function(a, b) {
+  return function (a, b) {
     return a[property] - b[property];
   };
 }
@@ -80,7 +80,7 @@ class IDLTransferVerify extends Component {
       memberDetail: {}
     };
   }
-  componentDidMount() {}
+  componentDidMount() { }
   //  判断是否为发起人
   judgetrigger = v => {
     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -119,7 +119,9 @@ class IDLTransferVerify extends Component {
           stepName: res2.data[n].C3_634660565034,
           stepPeople: res2.data[n].C3_634660565583,
           stepTime: res2.data[n].edit_time,
-          order: res2.data[n].C3_634660566076
+          order: res2.data[n].C3_634660566076,
+          memo: res2.data[n].C3_634660566283,
+          current: res2.data[n].C3_637177232366
         });
         if (res2.data[n].C3_637177232366 == 'Y') {
           var c = res2.data[n].C3_635250483297;
@@ -151,6 +153,15 @@ class IDLTransferVerify extends Component {
       if (isFin == res2.data.length) {
         c = res2.data.length + 1;
       }
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[i].stepPeople == arr[j].stepPeople) {         //第一个等同于第二个，splice方法删除第二个
+            arr.splice(j, 1);
+            j--;
+          }
+        }
+      }
+      console.log(arr)
       this.setState({ loading: false, curStep: c, stream: arr });
     } catch (e) {
       console.log(e);
@@ -373,28 +384,28 @@ class IDLTransferVerify extends Component {
             visible={this.state.visible}
             footer={
               this.state.toCheckFront.Approve == '审核中' &&
-              this.state.mode != 'view' ? (
-                this.state.isBeginner ? (
-                  <span>您是发起人</span>
-                ) : this.state.canApprove ? (
-                  <>
-                    <Button
-                      type="danger"
-                      style={{ marginLeft: '8px' }}
-                      onClick={() => {
-                        this.setState({ conUnpass: true });
-                      }}
-                    >
-                      不通过审核
+                this.state.mode != 'view' ? (
+                  this.state.isBeginner ? (
+                    <span>您是发起人</span>
+                  ) : this.state.canApprove ? (
+                    <>
+                      <Button
+                        type="danger"
+                        style={{ marginLeft: '8px' }}
+                        onClick={() => {
+                          this.setState({ conUnpass: true });
+                        }}
+                      >
+                        不通过审核
                     </Button>
-                    <Button type="primary" onClick={() => this.approve('Y')}>
-                      保存并通过审核
+                      <Button type="primary" onClick={() => this.approve('Y')}>
+                        保存并通过审核
                     </Button>
-                  </>
-                ) : (
-                  <span>您不是当前审批人,当前审批人是:{this.state.curAPe}</span>
-                )
-              ) : null
+                    </>
+                  ) : (
+                        <span>您不是当前审批人,当前审批人是:{this.state.curAPe}</span>
+                      )
+                ) : null
             }
             onCancel={() => this.setState({ visible: false })}
           >
@@ -403,34 +414,43 @@ class IDLTransferVerify extends Component {
                 className="steps"
                 style={{ width: 'calc(100% - 48px)', marginLeft: '24px' }}
               >
-                {this.state.loading ? null : (
+                {/* {this.state.loading ? null : (
                   <Steps
                     size="small"
                     status={
                       this.state.cms == `Approve = '未通过'`
                         ? 'error'
                         : this.state.cms == `isStreamEnd = 'Y'`
-                        ? 'finish'
-                        : 'process'
+                          ? 'finish'
+                          : 'process'
                     }
                     current={this.state.curStep - 1}
                   >
                     {this.state.stream.map((item, key) => {
-                      return (
-                        <Step
-                          title={item.stepName}
-                          description={
-                            <span>
-                              {item.stepPeople}
-                              <br />
-                              {item.stepTime}
-                            </span>
-                          }
-                        />
-                      );
+                      if (item.stepName === 'HR部门经理审批') {
+                        return (
+                          <Step
+                            title={item.stepName}
+                            description={
+                              <span>
+                                {item.stepPeople}
+                                <br />
+                                {item.stepTime}
+                              </span>
+                            }
+                          />
+                        );
+                      } else {
+                        return (
+                          <Step
+                            title={item.stepName}
+                            description={<span>{item.stepPeople}</span>}
+                          />
+                        );
+                      }
                     })}
                   </Steps>
-                )}
+                )} */}
 
                 <div
                   className="showContent"
@@ -456,12 +476,23 @@ class IDLTransferVerify extends Component {
                   <b>变动原因：</b>
                   <span>{this.state.toCheckFront.changeReason}</span>
                   <br />
+                  {/* <Button style={{ width: '120px' }} onClick={() => { this.setState({ showMemo: true }) }}>查看审批备注</Button> */}
+
+                  <br />
                   {this.state.toCheckFront.C3_632503853105 ? (
                     <div>
                       <b>审核反馈信息：</b>
                       <span>{this.state.toCheckFront.C3_632503853105}</span>
                     </div>
                   ) : null}
+                  {this.state.toCheckFront.ApproveRemark ? (
+                    <>
+                      <br />
+                      <b>审批说明:</b>
+                      <p>{this.state.toCheckFront.ApproveRemark}</p>
+                    </>
+                  ) : null}
+
                   <div className="tableWrap">
                     <Spin spinning={this.state.loading}>
                       <div style={{ float: 'left' }}>
@@ -474,146 +505,140 @@ class IDLTransferVerify extends Component {
                           <li>
                             <b>部门名: </b>
                             {this.state.toCheckFront.depart ===
-                            this.state.toCheck[0] ? (
-                              this.state.toCheckFront.depart
-                            ) : (
-                              <b style={{ color: '#f5222d' }}>
-                                {this.state.toCheckFront.depart +
-                                  ' => ' +
-                                  this.state.toCheck[0]}
-                              </b>
-                            )}
+                              this.state.toCheck[0] ? (
+                                this.state.toCheckFront.depart
+                              ) : (
+                                <b style={{ color: '#f5222d' }}>
+                                  {this.state.toCheckFront.depart +
+                                    ' => ' +
+                                    this.state.toCheck[0]}
+                                </b>
+                              )}
                           </li>
                           <li>
                             <b>岗位名: </b>
                             {this.state.toCheckFront.jobName ===
-                            this.state.toCheck[1] ? (
-                              this.state.toCheckFront.jobName
-                            ) : (
-                              <b style={{ color: '#f5222d' }}>
-                                {this.state.toCheckFront.jobName +
-                                  ' => ' +
-                                  this.state.toCheck[1]}
-                              </b>
-                            )}
+                              this.state.toCheck[1] ? (
+                                this.state.toCheckFront.jobName
+                              ) : (
+                                <b style={{ color: '#f5222d' }}>
+                                  {this.state.toCheckFront.jobName +
+                                    ' => ' +
+                                    this.state.toCheck[1]}
+                                </b>
+                              )}
                           </li>
                           <li>
                             <b>级别: </b>
                             {this.state.toCheckFront.level ===
-                            this.state.toCheck[2] ? (
-                              this.state.toCheckFront.level
-                            ) : (
-                              <b style={{ color: '#f5222d' }}>
-                                {this.state.toCheckFront.level +
-                                  ' => ' +
-                                  this.state.toCheck[2]}
-                              </b>
-                            )}
+                              this.state.toCheck[2] ? (
+                                this.state.toCheckFront.level
+                              ) : (
+                                <b style={{ color: '#f5222d' }}>
+                                  {this.state.toCheckFront.level +
+                                    ' => ' +
+                                    this.state.toCheck[2]}
+                                </b>
+                              )}
                           </li>
                           <li>
                             <b>主管: </b>
                             {this.state.toCheckFront.driectorName ===
-                            this.state.toCheck[3] ? (
-                              this.state.toCheckFront.driectorName
-                            ) : (
-                              <b style={{ color: '#f5222d' }}>
-                                {this.state.toCheckFront.driectorName +
-                                  ' => ' +
-                                  this.state.toCheck[3]}
-                              </b>
-                            )}
+                              this.state.toCheck[3] ? (
+                                this.state.toCheckFront.driectorName
+                              ) : (
+                                <b style={{ color: '#f5222d' }}>
+                                  {this.state.toCheckFront.driectorName +
+                                    ' => ' +
+                                    this.state.toCheck[3]}
+                                </b>
+                              )}
                           </li>
                           <li>
                             <b>项目代码: </b>
                             {this.state.toCheckFront.proj_code ===
-                            this.state.toCheck[4] ? (
-                              this.state.toCheckFront.proj_code
-                            ) : (
-                              <b style={{ color: '#f5222d' }}>
-                                {this.state.toCheckFront.proj_code +
-                                  ' => ' +
-                                  this.state.toCheck[4]}
-                              </b>
-                            )}
+                              this.state.toCheck[4] ? (
+                                this.state.toCheckFront.proj_code
+                              ) : (
+                                <b style={{ color: '#f5222d' }}>
+                                  {this.state.toCheckFront.proj_code +
+                                    ' => ' +
+                                    this.state.toCheck[4]}
+                                </b>
+                              )}
                           </li>
                           <li>
                             <b>BU CODE: </b>
                             {(this.state.toCheckFront.bucode || '') ===
-                            this.state.toCheck[5] ? (
-                              this.state.toCheckFront.bucode
-                            ) : (
-                              <b style={{ color: '#f5222d' }}>
-                                {(this.state.toCheckFront.bucode || '') +
-                                  ' => ' +
-                                  this.state.toCheck[5]}
-                              </b>
-                            )}
+                              this.state.toCheck[5] ? (
+                                this.state.toCheckFront.bucode
+                              ) : (
+                                <b style={{ color: '#f5222d' }}>
+                                  {(this.state.toCheckFront.bucode || '') +
+                                    ' => ' +
+                                    this.state.toCheck[5]}
+                                </b>
+                              )}
                           </li>
                           <li>
                             <b>一级部门: </b>
                             {(this.state.toCheckFront.firstDepart || '') ===
-                            this.state.toCheck[6] ? (
-                              this.state.toCheckFront.firstDepart
-                            ) : (
-                              <b style={{ color: '#f5222d' }}>
-                                {(this.state.toCheckFront.firstDepart || '') +
-                                  ' => ' +
-                                  this.state.toCheck[6]}
-                              </b>
-                            )}
+                              this.state.toCheck[6] ? (
+                                this.state.toCheckFront.firstDepart
+                              ) : (
+                                <b style={{ color: '#f5222d' }}>
+                                  {(this.state.toCheckFront.firstDepart || '') +
+                                    ' => ' +
+                                    this.state.toCheck[6]}
+                                </b>
+                              )}
                           </li>
                           <li>
                             <b>二级部门: </b>
                             {(this.state.toCheckFront.secondDepart || '') ===
-                            this.state.toCheck[7] ? (
-                              this.state.toCheckFront.secondDepart
-                            ) : (
-                              <b style={{ color: '#f5222d' }}>
-                                {(this.state.toCheckFront.secondDepart || '') +
-                                  ' => ' +
-                                  this.state.toCheck[7]}
-                              </b>
-                            )}
+                              this.state.toCheck[7] ? (
+                                this.state.toCheckFront.secondDepart
+                              ) : (
+                                <b style={{ color: '#f5222d' }}>
+                                  {(this.state.toCheckFront.secondDepart || '') +
+                                    ' => ' +
+                                    this.state.toCheck[7]}
+                                </b>
+                              )}
                           </li>
                           <li>
                             <b>三级部门: </b>
                             {(this.state.toCheckFront.thirdDepart || '') ===
-                            this.state.toCheck[8] ? (
-                              this.state.toCheckFront.thirdDepart
-                            ) : (
-                              <b style={{ color: '#f5222d' }}>
-                                {(this.state.toCheckFront.thirdDepart || '') +
-                                  ' => ' +
-                                  this.state.toCheck[8]}
-                              </b>
-                            )}
+                              this.state.toCheck[8] ? (
+                                this.state.toCheckFront.thirdDepart
+                              ) : (
+                                <b style={{ color: '#f5222d' }}>
+                                  {(this.state.toCheckFront.thirdDepart || '') +
+                                    ' => ' +
+                                    this.state.toCheck[8]}
+                                </b>
+                              )}
                           </li>
                           <li>
                             <b>四级部门: </b>
                             {(this.state.toCheckFront.fourthDepart || '') ===
-                            this.state.toCheck[9] ? (
-                              this.state.toCheckFront.fourthDepart
-                            ) : (
-                              <b style={{ color: '#f5222d' }}>
-                                {(this.state.toCheckFront.fourthDepart || '') +
-                                  ' => ' +
-                                  this.state.toCheck[9]}
-                              </b>
-                            )}
+                              this.state.toCheck[9] ? (
+                                this.state.toCheckFront.fourthDepart
+                              ) : (
+                                <b style={{ color: '#f5222d' }}>
+                                  {(this.state.toCheckFront.fourthDepart || '') +
+                                    ' => ' +
+                                    this.state.toCheck[9]}
+                                </b>
+                              )}
                           </li>
                         </ul>
                       </div>
-                      {this.state.toCheckFront.ApproveRemark ? (
-                        <>
-                          <br />
-                          <b>审批说明:</b>
-                          <p>{this.state.toCheckFront.ApproveRemark}</p>
-                        </>
-                      ) : null}
+
                       <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0', marginLeft: '-1px' }}>
                           <li>
-                            <b>是否有Headcount：</b>
+                            <b>是否涉及Headcount：</b>
                             <span>
                               {this.state.toCheckFront.C3_637425449725
                                 ? this.state.toCheckFront.C3_637425449725
@@ -655,11 +680,61 @@ class IDLTransferVerify extends Component {
                             </span>
                           </li>
                         </ul>
+
                       </div>
                     </Spin>
                   </div>
                 </div>
+                <div style={{ float: 'left', marginLeft: 16 }}>
+                  <b>审批备注：</b>
+                  <br />
+                  <div style={{ overflow: 'auto', height: '50vh' }}>
+                    {
+                      this.state.stream.length > 0 ?
+                        (
+                          this.state.stream.map((item) => {
+                            return (
+                              <>{item.memo ?
+                                (<>
+                                  <span>{item.stepPeople}：</span>
+                                  <br /> <span>{item.memo}</span>
+                                  <br />
+                                  <br />
+                                </>)
+                                : null}
+                              </>
+                            )
+                          })
+                        )
+                        : '无'
+                    }
+
+                  </div>
+                </div>
               </div>
+            </div>
+          </Modal>
+          <Modal
+            width={'90vw'}
+            visible={this.state.showMemo}
+            destroyOnClose={true}
+            footer={null}
+            onCancel={() => { this.setState({ showMemo: false }) }}
+          >
+            <div style={{ width: "100%", height: '60vh' }}>
+              <TableData
+                resid={669982527179}
+                cmswhere={`C3_634660564341 = '${this.state.toCheckFront.REC_ID}'`}
+                hasRowView={false}
+                subtractH={220} REC_ID
+                hasAdd={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                hasRowView={false}
+              />
             </div>
           </Modal>
           <div className="sider">

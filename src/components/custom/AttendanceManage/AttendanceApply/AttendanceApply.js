@@ -36,6 +36,8 @@ class AttendanceApply extends React.Component {
 
   renderForm() {
     const { current } = this.state;
+    const { showAllminute, showWorkOvertimeOptions } = this.props;
+
     let page = null;
     switch (current) {
       case 1:
@@ -44,6 +46,8 @@ class AttendanceApply extends React.Component {
           <CustomForm1
             goBack={this.goBack}
             getNotices={this.props.getNotices}
+            showAllminute={showAllminute}
+            showWorkOvertimeOptions={showWorkOvertimeOptions}
           />
         );
         break;
@@ -74,6 +78,7 @@ class AttendanceApply extends React.Component {
 
   render() {
     const { isIndex } = this.state;
+    const { showBatchApply } = this.props;
     return (
       <div className="attendace-aplly">
         {isIndex ? (
@@ -85,13 +90,13 @@ class AttendanceApply extends React.Component {
             >
               <Meta title="填写申请" description="我要请假/加班" />
             </Card>
-            <Card
+            {showBatchApply && <Card
               hoverable
               cover={<img alt="example" src={img1Large} />}
               onClick={this.onCardClick(3)}
             >
               <Meta title="加班批量申请" description="加班批量申请点这里" />
-            </Card>
+            </Card>}
             <Card
               hoverable
               cover={<img alt="example" src={img2Large} />}
@@ -101,8 +106,8 @@ class AttendanceApply extends React.Component {
             </Card>
           </div>
         ) : (
-          this.renderForm()
-        )}
+            this.renderForm()
+          )}
       </div>
     );
   }

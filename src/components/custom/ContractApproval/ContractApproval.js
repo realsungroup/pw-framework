@@ -159,30 +159,7 @@ class ContractApproval extends React.Component {
                 hasRowSelection={true}
                 recordFormUseAbsolute={true}
                 customRowBtns={this.waitingCustomRowBtns}
-                actionBarExtra={({ dataSource, selectedRowKeys }) => {
-                  return (
-                    <>
-                      <Button
-                        type="primary"
-                        loading={this.state.loading}
-                        onClick={() =>
-                          this.multiApproval(dataSource, selectedRowKeys, true)
-                        }
-                      >
-                        批量同意
-                      </Button>
-                      <Button
-                        type="danger"
-                        loading={this.state.loading}
-                        onClick={() =>
-                          this.multiApproval(dataSource, selectedRowKeys, false)
-                        }
-                      >
-                        批量拒绝
-                      </Button>
-                    </>
-                  );
-                }}
+                hasBeBtns={true}
               />
             </div>
           </TabPane>

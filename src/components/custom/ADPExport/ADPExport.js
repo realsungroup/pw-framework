@@ -134,6 +134,7 @@ class ADPExport extends React.Component {
           if (!records.length) {
             return message.info('请选择记录');
           }
+          const monthFirstDay = this.state.yearMonth.format("YYYYMM") + '01';
           const now = moment().format('YYYYMMDDHHmmss');
           const fileName = `PP3104_${now}_CN2890_HRMD01_MUT8G2I.sap`;
           let data = `HEADR|"GVIIVI|"IIVIINC|"LEO_CHEN|"+86 591 88052823|"FZCN.Payroll@ii-vi.com|"${fileName}|"${moment().format(
@@ -141,12 +142,23 @@ class ADPExport extends React.Component {
           )}|"51222|"P|"1|"|"|"                                                                                                                                                                                                                                                                                                                                                                                                         |"|"|"|"|"|"|"|"|"|"|"\n`;
 
           let counts = 2;
+          //需要判断是否使用入职日期作为开始日期的item
+          const newJoinArray = ["管理费", "产前假扣款", "路程假扣款"];
           records.forEach(record => {
-            if (record.personnuumber) {
-              //去掉没有personnumber的员工记录
+            const isDownload = record.personnuumber && (record.C3_424653346778 != "实习协议");
+            if (isDownload) {
               columns.forEach(column => {
                 //去掉值为null或0的数据
                 if (record[column.filed]) {
+                  let startDate = record.C3_659465238204;
+                  if (newJoinArray.some(item => item == column.name)) {
+                    //当月入职
+                    if (record.C3_427590520804 == 'Y') {
+                      startDate = record.JOINDATE;
+                    } else {
+                      startDate = monthFirstDay;
+                    }
+                  }
                   let row = `P${column.number2}|"${
                     record.personnuumber
                     }|"CN|"|"INS|"${column.number2}|"${column.number1}|"${
@@ -167,7 +179,14 @@ class ADPExport extends React.Component {
                   counts++;
                 }
               });
-              data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"|"${record.C3_659465238204}|"99991231|"|"|"|"|"|"|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"\n`;
+              let startDate = "";
+              //当月入职
+              if (record.C3_427590520804 == 'Y') {
+                startDate = record.JOINDATE;
+              } else {
+                startDate = monthFirstDay;
+              }
+              data += `P0009|"${record.personnuumber}|"CN|"0|"INS|"0009|"0|"${startDate}|"99991231|"|"|"|"|"|"${record.YGNAMES}|"|"|"CN|"${record.bankkey}|"${record.C3_661873440126 ? record.C3_661873440126.substring(0, 18) : ''}|"T|"|"CNY|"0|"0|"|"|"01|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"|"${record.C3_661873440126 ? record.C3_661873440126.substring(18) : ''}|"|"|"|"\n`;
               counts++;
             }
           });
