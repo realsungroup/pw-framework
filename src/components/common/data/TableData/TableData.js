@@ -736,8 +736,6 @@ class TableData extends React.Component {
         _noWidthFields,
         _noWidthFieldsIndex,
       );
-      console.log(result)
-
       columns = result.columns;
       components = result.components;
     }
