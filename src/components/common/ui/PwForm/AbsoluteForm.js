@@ -55,7 +55,7 @@ class AbsoluteForm extends React.PureComponent {
                 title={item.initialValue}
                 style={{
                   position: 'absolute',
-                  minHeight: '3%',
+                  minHeight: '1%',
                   top: ((customStyle.top + 4) / containerHeight) * 100 + '%',
                   left: (customStyle.left / containerWidth) * 100 + '%',
                   width: (customStyle.width / containerWidth) * 100 + '%',
@@ -228,7 +228,8 @@ class AbsoluteForm extends React.PureComponent {
       intl,
       saveMode,
       labelRequiredList,
-      extraButtons
+      extraButtons,
+      confirmLoading
     } = this.props;
     let { containerControlArr, labelControllArr } = data;
     const containerHeight =
@@ -285,6 +286,7 @@ class AbsoluteForm extends React.PureComponent {
               editText={getIntlVal(intl.locale, enEditText, editText)}
               saveNeedConfirm={saveNeedConfirm}
               extraButtons={extraButtons}
+              confirmLoading={confirmLoading}
             />
           </div>
         )}
