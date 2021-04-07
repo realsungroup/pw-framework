@@ -14,7 +14,8 @@ export const defaultProps = {
   subTalbeLayout: 'tab',
   useAbsolute: false,
   layout: 'grid',
-  saveMode: 'full'
+  saveMode: 'full',
+  clearOnchangeFileds: []
 };
 
 export const propTypes = {
@@ -131,4 +132,14 @@ export const propTypes = {
    * 默认：false
    */
   isAddGetFormByCF: PropTypes.bool,
+
+  /**
+   * 值改变时需要清空其他字段的字段数组。
+   * 例如：clearOnchangeFileds={[{ 
+   *                             id: "C3_662164156791", //主字段
+   *                             clearFileds: ["C3_662164165635"] //主字段值改变时需要清空的字段
+   *                           }]}
+   * 默认：[]
+   */
+  clearOnchangeFileds: PropTypes.array
 };

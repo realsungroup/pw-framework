@@ -5084,6 +5084,11 @@ window[642855770350] = {
     advSearch: {
       isRequestFormData: false
     },
+    formDataProps: {
+      clearOnchangeFileds: [
+        // { id: "C3_662164156791", clearFileds: ["C3_662164165635"] }
+      ]
+    },
     labelRequiredList: [
       'Specify',
       'Dept',
