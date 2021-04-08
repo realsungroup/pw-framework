@@ -155,7 +155,11 @@ export default class LzMenuContainer extends React.Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    if (this.props.jump) {
+      window.location.href = this.props.jump
+    }
+  }
 
   // 切换菜单
   toggleMenu = index => {

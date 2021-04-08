@@ -228,6 +228,7 @@ window[590765309983] = {
   title: '违纪管理',
   name: 'LzMenuContainer',
   props: {
+    jump: 'http://10.108.2.66:805/fnmodule?resid=590765309983&recid=610540465303&type=undefined&title=违纪管理',
     baseURL: 'http://10.108.2.66:9091/',
     noDataTip: '暂无数据，请选择员工',
     resid: 590671418888,
