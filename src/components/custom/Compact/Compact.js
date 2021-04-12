@@ -44,11 +44,11 @@ const filterTab1 = [
 ];
 const filterTab2A = [
   {
-    label: '待发送邮件',
+    label: '待发送邮件(待续签提醒)',
     resid: '640264082868'
   },
   {
-    label: '已发送邮件',
+    label: '已发送邮件(待续签提醒)',
     resid: '640264102764'
   },
   {
