@@ -228,7 +228,8 @@ window[590765309983] = {
   title: '违纪管理',
   name: 'LzMenuContainer',
   props: {
-    jump: 'http://10.108.2.66:805/fnmodule?resid=590765309983&recid=610540465303&type=undefined&title=违纪管理',
+    jump:
+      'http://10.108.2.66:805/fnmodule?resid=590765309983&recid=610540465303&type=undefined&title=违纪管理',
     baseURL: 'http://10.108.2.66:9091/',
     noDataTip: '暂无数据，请选择员工',
     resid: 590671418888,
@@ -2021,7 +2022,7 @@ window[620212364621] = {
   name: 'ComprehensiveQuery',
   title: '综合查询',
   props: {
-    showAnnualLeaveDetail: false,//是否显示年假明细
+    showAnnualLeaveDetail: false //是否显示年假明细
   }
 };
 window[642853831562] = {
@@ -2029,7 +2030,7 @@ window[642853831562] = {
   title: '绩效查询',
   props: {
     tabKey: 'performance',
-    showAnnualLeaveDetail: false,//是否显示年假明细
+    showAnnualLeaveDetail: false //是否显示年假明细
   }
 };
 
@@ -2038,7 +2039,7 @@ window[642853818882] = {
   title: '考勤查询',
   props: {
     tabKey: 'attendance',
-    showAnnualLeaveDetail: true,//是否显示年假明细
+    showAnnualLeaveDetail: true //是否显示年假明细
   }
 };
 window[643372961628] = {
@@ -2046,7 +2047,7 @@ window[643372961628] = {
   title: '评级评优查询',
   props: {
     tabKey: 'rating',
-    showAnnualLeaveDetail: false,//是否显示年假明细
+    showAnnualLeaveDetail: false //是否显示年假明细
   }
 };
 window[642853806554] = {
@@ -2054,7 +2055,7 @@ window[642853806554] = {
   title: '人事查询',
   props: {
     tabKey: 'personnel',
-    showAnnualLeaveDetail: false,//是否显示年假明细
+    showAnnualLeaveDetail: false //是否显示年假明细
   }
 };
 window[621257502796] = {
@@ -2063,9 +2064,9 @@ window[621257502796] = {
   props: {
     //上海配置
     showAllminute: true, //是否显示所有分钟数
-    showBatchApply: false,//是否显示批量申请
+    showBatchApply: false, //是否显示批量申请
     showWorkOvertimeOptions: false, //是否显示加班选项
-    showApproveAll: false//是否显示一键审批
+    showApproveAll: false //是否显示一键审批
     //无锡配置
     // showAllminute: false, //是否显示所有分钟数
     // showBatchApply: true,//是否显示批量申请
@@ -9777,4 +9778,13 @@ window[664282094133] = {
   name: 'OnDutyTrainingApp', // 组件名称，
   title: '在岗培训审批', // 功能模块名称
   props: {}
+};
+
+//变动记录导出
+window[671543192998] = {
+  name: 'ExportPersonnelChanges', // 组件名称，
+  title: '变动记录导出', // 功能模块名称
+  props: {
+    baseURL: 'http://10.108.2.66:9091'
+  }
 };
