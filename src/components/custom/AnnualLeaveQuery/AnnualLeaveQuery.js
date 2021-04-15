@@ -44,23 +44,24 @@ class AnnualLeaveQuery extends React.Component {
     const { UserCode } = this.state;
     return (
       <div className="page-annual-leave-query">
-        <Tabs>
+        <div style={{ width: '100vw', height: '1.5rem' }}></div>
+        <Summary
+          baseURL={baseURL}
+          subResid={员工年假使用明细表}
+          resid={员工年假季度账户表}
+          userCode={UserCode}
+        />
+        {/* <Tabs>
           <TabPane tab="账户明细" key="1">
-            <Summary
-              baseURL={baseURL}
-              subResid={员工年假使用明细表}
-              resid={员工年假季度账户表}
-              userCode={UserCode}
-            />
+            
           </TabPane>
-          {/* <TabPane tab="使用明细" key="2">
+          <TabPane tab="使用明细" key="2">
             <Detail
               baseURL={baseURL}
               resid={员工年假使用明细表}
               userCode={UserCode}
             />
-          </TabPane> */}
-
+          </TabPane>
           <TabPane tab="年假季度结算" key="3">
             <CopySummary
               baseURL={baseURL}
@@ -69,7 +70,7 @@ class AnnualLeaveQuery extends React.Component {
               userCode={UserCode}
             />
           </TabPane>
-        </Tabs>
+        </Tabs> */}
       </div>
     );
   }

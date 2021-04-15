@@ -564,7 +564,7 @@ class IDLTransfer extends Component {
     try {
       let res = await http().getTable({
         resid: 609599795438,
-        cmswhere: `HRUSER_DEPID = '${v}'`
+        cmswhere: `HRUSER_DEP2ID = '${v}'`
       });
 
       function listToTree(list = []) {
@@ -992,6 +992,7 @@ class IDLTransfer extends Component {
                               }}
                             >
                               <TableData
+                                isUseBESize={true}
                                 resid={632327119162}
                                 cmswhere={
                                   this.state.companyV == '100'
@@ -1006,6 +1007,7 @@ class IDLTransfer extends Component {
                                 hasRowModify={false}
                                 hasModify={false}
                                 hasDelete={false}
+                                actionBarWidth={80}
                                 style={{ height: '100%' }}
                                 hasRowView={false}
                                 customRowBtns={[
@@ -1014,10 +1016,12 @@ class IDLTransfer extends Component {
                                       <Button
                                         onClick={() => {
                                           console.log(record);
-                                          this.getDepaMem(record.DEP_ID);
+                                          this.getDepaMem(
+                                            record.C3_461011945566
+                                          );
 
                                           this.setState({
-                                            depaV: record.DEP_ID,
+                                            depaV: record.C3_461011945566,
                                             depaName: record.DEP_NAME_EN,
                                             showSelDep: false,
                                             depaMemberV: null,
@@ -1282,6 +1286,7 @@ class IDLTransfer extends Component {
                       >
                         <TableData
                           resid={666203805903}
+                          isUseBESize={true}
                           baseURL={this.baseURL}
                           hasRowView={false}
                           hasAdd={false}
@@ -1328,7 +1333,7 @@ class IDLTransfer extends Component {
                           className="load"
                         >
                           <div className="memberList">
-                            <h3>变更前部门：</h3>
+                            {/* <h3>变更前部门：</h3>
                             <div>
                               <b>一级部门：</b>
                               <span>
@@ -1358,7 +1363,7 @@ class IDLTransfer extends Component {
                                   : '- -'}
                               </span>
                               <br />
-                            </div>
+                            </div> */}
                             <h3>
                               待变更人员：<b>{this.state.selectMem.length}</b>
                             </h3>
@@ -1382,16 +1387,16 @@ class IDLTransfer extends Component {
                                   >
                                     <h4>{key + 1}</h4>
                                     <p>
+                                      <b>工号：</b>
+                                      <span>{item.C3_448032387764}</span>
+                                    </p>
+                                    <p>
                                       <b>姓名：</b>
                                       <span>{item.C3_227192484125}</span>
                                     </p>
                                     <p>
                                       <b>英文名：</b>
                                       <span>{item.C3_419343735913}</span>
-                                    </p>
-                                    <p>
-                                      <b>工号：</b>
-                                      <span>{item.C3_448032387764}</span>
                                     </p>
 
                                     <p>
@@ -1405,9 +1410,26 @@ class IDLTransfer extends Component {
                                     </p>
 
                                     <p>
+                                      <b>一级部门：</b>
+                                      <span>{item.C3_422840485957}</span>
+                                    </p>
+
+                                    <p>
+                                      <b>二级部门：</b>
+                                      <span>{item.C3_422840495341}</span>
+                                    </p>
+                                    <p>
+                                      <b>三级部门：</b>
+                                      <span>{item.C3_422840502598}</span>
+                                    </p>
+                                    <p>
+                                      <b>四级部门：</b>
+                                      <span>{item.C3_422840508142}</span>
+                                    </p>
+                                    {/* <p>
                                       <b>当前级别：</b>
                                       <span>{item.C3_658407610385}</span>
-                                    </p>
+                                    </p> */}
                                   </li>
                                 );
                               })}
@@ -1575,7 +1597,6 @@ class IDLTransfer extends Component {
                                   : '- -'}
                               </span>
                             </div>
-
                             <Checkbox
                               checked={
                                 this.state.selectMem[this.state.curPeopleKey]
@@ -1686,7 +1707,8 @@ class IDLTransfer extends Component {
                             >
                               变更后岗位：
                             </Checkbox>
-                            <Checkbox
+                            &nbsp;无岗位的情况请先和HR联系创建岗位
+                            {/* <Checkbox
                               style={{ marginLeft: 8 }}
                               onChange={() => {
                                 this.setCheck('isNew');
@@ -1701,7 +1723,7 @@ class IDLTransfer extends Component {
                               }
                             >
                               需要新的headcount
-                            </Checkbox>
+                            </Checkbox> */}
                             <br />
                             {/* <label>岗位中文名：</label>
                       <Input
@@ -1931,7 +1953,9 @@ class IDLTransfer extends Component {
                               }}
                             >
                               <TableData
+                                isUseBESize={true}
                                 resid={632327119162}
+                                actionBarWidth={80}
                                 cmswhere={`C3_419339113187 != '' and C3_419448436728 = '${this.state.depaFilter}'`}
                                 hasRowView={false}
                                 subtractH={220}
@@ -1986,6 +2010,8 @@ class IDLTransfer extends Component {
                             >
                               <TableData
                                 resid={609599795438}
+                                actionBarWidth={80}
+                                isUseBESize={true}
                                 hasRowView={false}
                                 subtractH={220}
                                 hasAdd={false}
@@ -2021,6 +2047,7 @@ class IDLTransfer extends Component {
                           </Modal>
                           <Modal
                             title="岗位列表"
+                            destroyOnClose={true}
                             visible={this.state.searchJobV}
                             footer={null}
                             onCancel={() => {
@@ -2039,6 +2066,7 @@ class IDLTransfer extends Component {
                               <TableData
                                 resid={666280127026}
                                 baseURL={this.baseURL}
+                                actionBarWidth={80}
                                 downloadURL={this.downloadURL}
                                 hasRowView={false}
                                 subtractH={220}
@@ -2077,6 +2105,7 @@ class IDLTransfer extends Component {
                             title="BU CODE列表"
                             visible={this.state.searchBucode}
                             footer={null}
+                            destroyOnClose={true}
                             onCancel={() => {
                               this.setState({ searchBucode: false });
                             }}

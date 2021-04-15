@@ -700,9 +700,11 @@ class IDLTransferVerifyAction extends Component {
                               this.state.toCheckFront.level
                             ) : (
                               <b style={{ color: '#f5222d' }}>
-                                {this.state.toCheckFront.level +
-                                  ' => ' +
-                                  this.state.toCheck[2]}
+                                {
+                                  // this.state.toCheckFront.level +
+                                  //   ' => ' +
+                                  this.state.toCheck[2]
+                                }
                               </b>
                             )}
                           </li>
@@ -969,6 +971,7 @@ class IDLTransferVerifyAction extends Component {
               resid={
                 this.state.selection == '1' ? '637176902794' : '634660498796'
               }
+              isUseBESize={true}
               cmswhere={this.state.cms}
               hasRowView={false}
               hasAdd={false}

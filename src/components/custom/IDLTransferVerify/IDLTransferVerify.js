@@ -536,9 +536,11 @@ class IDLTransferVerify extends Component {
                               this.state.toCheckFront.level
                             ) : (
                               <b style={{ color: '#f5222d' }}>
-                                {this.state.toCheckFront.level +
-                                  ' => ' +
-                                  this.state.toCheck[2]}
+                                {
+                                  // this.state.toCheckFront.level +
+                                  //   ' => ' +
+                                  this.state.toCheck[2]
+                                }
                               </b>
                             )}
                           </li>
@@ -797,6 +799,7 @@ class IDLTransferVerify extends Component {
           >
             <TableData
               resid={632255761674}
+              isUseBESize={true}
               cmswhere={
                 this.state.mode == 'view' ? this.state.cmsView : this.state.cms
               }
