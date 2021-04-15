@@ -60,6 +60,7 @@ class AnnualLeaveQuery extends React.Component {
               userCode={UserCode}
             />
           </TabPane> */}
+
           <TabPane tab="年假季度结算" key="3">
             <CopySummary
               baseURL={baseURL}
