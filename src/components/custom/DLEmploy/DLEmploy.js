@@ -7,6 +7,7 @@ import ReportPeople from './ReportPeople';
 import UploadMedical from './UploadMedical';
 import LaborCorSelect from './LaborCorSelect';
 import ExaminationQRCode from '../ExaminationQRCode';
+import DLHasInterview from './DLHasInterview/DLHasInterview';
 import { Button, Menu, Icon, Switch } from 'antd';
 import './DLEmploy.less';
 import http from 'Util20/api';
@@ -55,6 +56,8 @@ class DLEmploy extends React.Component {
         return <LaborCorSelect></LaborCorSelect>;
       case '8':
         return <ExaminationQRCode></ExaminationQRCode>;
+      case '9':
+        return <DLHasInterview></DLHasInterview>;
       default:
         return '';
     }
@@ -114,6 +117,10 @@ class DLEmploy extends React.Component {
             <Menu.Item key="3">
               <Icon type="calendar" />
               <span> 求职清单 </span>
+            </Menu.Item>
+            <Menu.Item key="9">
+              <Icon type="calendar" />
+              <span> 已面试 </span>
             </Menu.Item>
             <Menu.Item key="4">
               <Icon type="calendar" />
