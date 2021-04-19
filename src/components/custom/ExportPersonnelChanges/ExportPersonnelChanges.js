@@ -7,6 +7,41 @@ import ExportJsonExcel from 'js-export-excel';
 const { Option } = Select;
 
 const curYear = moment().format('YYYY');
+
+const days = [
+  { title: 1, value: '01' },
+  { title: 2, value: '02' },
+  { title: 3, value: '03' },
+  { title: 4, value: '04' },
+  { title: 5, value: '05' },
+  { title: 6, value: '06' },
+  { title: 7, value: '07' },
+  { title: 8, value: '08' },
+  { title: 9, value: '09' },
+  { title: 10, value: '10' },
+  { title: 11, value: '11' },
+  { title: 12, value: '12' },
+  { title: 13, value: '13' },
+  { title: 14, value: '14' },
+  { title: 15, value: '15' },
+  { title: 16, value: '16' },
+  { title: 17, value: '17' },
+  { title: 18, value: '18' },
+  { title: 19, value: '19' },
+  { title: 20, value: '20' },
+  { title: 21, value: '21' },
+  { title: 22, value: '22' },
+  { title: 23, value: '23' },
+  { title: 24, value: '24' },
+  { title: 25, value: '25' },
+  { title: 26, value: '26' },
+  { title: 27, value: '27' },
+  { title: 28, value: '28' },
+  { title: 29, value: '29' },
+  { title: 30, value: '30' },
+  { title: 31, value: '31' }
+];
+
 const months = [
   { title: 1, value: '01' },
   { title: 2, value: '02' },
@@ -21,6 +56,7 @@ const months = [
   { title: 11, value: '11' },
   { title: 12, value: '12' }
 ];
+
 const years = [
   { title: '2020', value: 2020 },
   { title: '2021', value: 2021 },
@@ -151,6 +187,8 @@ class ExportPersonnelChanges extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      startDay: '01',
+      endDay: '31',
       startMonth: '01', //起止年月
       endMonth: '12',
       startYear: curYear,
@@ -168,15 +206,22 @@ class ExportPersonnelChanges extends Component {
    * 获取原始数据
    */
   getRawData = async () => {
-    const { startYear, endYear, startMonth, endMonth } = this.state;
+    const {
+      startYear,
+      endYear,
+      startMonth,
+      endMonth,
+      startDay,
+      endDay
+    } = this.state;
     const { baseURL } = this.props;
-    const startDate = startYear + startMonth + '01';
-    const endDate = endYear + endMonth + '31';
+    const startDate = startYear + startMonth + startDay;
+    const endDate = endYear + endMonth + endDay;
     let res;
     try {
       res = await http({ baseURL }).getTable({
         resid: '671538190462',
-        cmswhere: `effectDate >= '${startDate}' and effectDate <= '${endDate}'`
+        cmswhere: `createdDate >= '${startDate}' and createdDate <= '${endDate}'`
       });
       this.setState({
         rawData: res.data
@@ -194,10 +239,14 @@ class ExportPersonnelChanges extends Component {
   handleData = () => {
     const { rawData } = this.state;
     const handledData = rawData.map(item => {
-      //处理生效时间
-      item.effectDate = moment(item.effectDate)
-        .startOf('month')
-        .format('YYYY-MM-DD');
+      //处理生效时间,非当月入职，生效日期改为当月一号
+      if (item.isCurMonthJoin !== 'Y') {
+        item.effectDate = moment(item.effectDate)
+          .startOf('month')
+          .format('YYYY-MM-DD');
+      } else {
+        item.effectDate = moment(item.effectDate).format('YYYY-MM-DD');
+      }
       //处理Action(TRANS_COST_CNTR, ASG_CHANGE, MANAGER_CHANGE)及Reason(REORG, JOB_CODE_CHANGE, NEW_LDR)
       if (
         (item.C3_417991699292 !== '' ||
@@ -252,7 +301,7 @@ class ExportPersonnelChanges extends Component {
       '* Action(TRANS_COST_CNTR, ASG_CHANGE, MANAGER_CHANGE)',
       'Reason(REORG, JOB_CODE_CHANGE, NEW_LDR)',
       'Business Unit [..]',
-      'Department',
+      ' Department',
       'Grade Code',
       'Job Code',
       'Business Title',
@@ -268,11 +317,11 @@ class ExportPersonnelChanges extends Component {
         '* Hire Date': item.C3_671549142897,
         '* Person Type': item.C3_671549167757,
         '* Worker Type': item.C3_671549182272,
-        '* Effective Start Date': item.C3_671549209897,
+        '* Effective Start Date': item.effectDate,
         '* Action(TRANS_COST_CNTR, ASG_CHANGE, MANAGER_CHANGE)': item.Action,
         'Reason(REORG, JOB_CODE_CHANGE, NEW_LDR)': item.Reason,
         'Business Unit [..]': item.C3_671549241803,
-        Department: item.C3_671563896529,
+        ' Department': item.C3_671563896529,
         'Grade Code': item.C3_671561640559,
         'Job Code': item.C3_671559774903,
         'Business Title': item.C3_671561710715,
@@ -298,6 +347,8 @@ class ExportPersonnelChanges extends Component {
       endYear,
       startMonth,
       endMonth,
+      startDay,
+      endDay,
       handledData
     } = this.state;
     return (
@@ -313,7 +364,7 @@ class ExportPersonnelChanges extends Component {
             导出变动记录
           </Button>
           <span style={{ marginRight: '16px', marginLeft: '16px' }}>
-            起止日期：
+            创建日期：
           </span>
           <Select
             size="small"
@@ -358,7 +409,29 @@ class ExportPersonnelChanges extends Component {
               );
             })}
           </Select>
-          月{'\u00A0'}
+          月
+          <Select
+            size="small"
+            style={{ width: 100 }}
+            value={startDay}
+            onChange={v => {
+              this.setState(
+                {
+                  startDay: v
+                },
+                () => {
+                  this.getRawData();
+                }
+              );
+            }}
+          >
+            {days.map(day => {
+              return (
+                <Select.Option value={day.value}>{day.title}</Select.Option>
+              );
+            })}
+          </Select>
+          日{'\u00A0'}
           --{'\u00A0'}
           <Select
             size="small"
@@ -404,6 +477,28 @@ class ExportPersonnelChanges extends Component {
             })}
           </Select>
           月
+          <Select
+            size="small"
+            style={{ width: 100 }}
+            value={endDay}
+            onChange={v => {
+              this.setState(
+                {
+                  endDay: v
+                },
+                () => {
+                  this.getRawData();
+                }
+              );
+            }}
+          >
+            {days.map(day => {
+              return (
+                <Select.Option value={day.value}>{day.title}</Select.Option>
+              );
+            })}
+          </Select>
+          日
         </div>
         <div className="tableStyle">
           <Table
