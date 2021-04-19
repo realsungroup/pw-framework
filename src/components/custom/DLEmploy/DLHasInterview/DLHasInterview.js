@@ -154,50 +154,58 @@ class DLHasInterview extends React.Component {
                 </th>
               </tr>
               {assessData.map((item, key) => {
-                const currentRes = this.getcurrentRes(item.item);
-                return (
-                  <>
-                    <tr>
-                      <th className="thCss" colSpan="2" rowSpan="3">
-                        {item.item}
-                      </th>
-                      <th colSpan="3">
-                        {item[671567627981][0].selection}
-                        {currentRes === item[671567627981][0].selection
-                          ? '√'
-                          : ''}
-                      </th>
-                      <th colSpan="12">{item[671567627981][0].description}</th>
-                      <th colSpan="5" rowSpan="3">
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: item.questions
-                              .replace(/《/g, '<')
-                              .replace(/》/g, '>')
-                          }}
-                        ></div>
-                      </th>
-                    </tr>
-                    <tr>
-                      <th colSpan="3">
-                        {item[671567627981][1].selection}
-                        {currentRes === item[671567627981][1].selection
-                          ? '√'
-                          : ''}
-                      </th>
-                      <th colSpan="12">{item[671567627981][1].description}</th>
-                    </tr>
-                    <tr>
-                      <th colSpan="3">
-                        {item[671567627981][2].selection}
-                        {currentRes === item[671567627981][2].selection
-                          ? '√'
-                          : ''}
-                      </th>
-                      <th colSpan="12">{item[671567627981][2].description}</th>
-                    </tr>
-                  </>
-                );
+                if (item.itemOrder <= 5) {
+                  const currentRes = this.getcurrentRes(item.item);
+                  return (
+                    <>
+                      <tr>
+                        <th className="thCss" colSpan="2" rowSpan="3">
+                          {item.item}
+                        </th>
+                        <th colSpan="3">
+                          {item[671567627981][0].selection}
+                          {currentRes === item[671567627981][0].selection
+                            ? '√'
+                            : ''}
+                        </th>
+                        <th colSpan="12">
+                          {item[671567627981][0].description}
+                        </th>
+                        <th colSpan="5" rowSpan="3">
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: item.questions
+                                .replace(/《/g, '<')
+                                .replace(/》/g, '>')
+                            }}
+                          ></div>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th colSpan="3">
+                          {item[671567627981][1].selection}
+                          {currentRes === item[671567627981][1].selection
+                            ? '√'
+                            : ''}
+                        </th>
+                        <th colSpan="12">
+                          {item[671567627981][1].description}
+                        </th>
+                      </tr>
+                      <tr>
+                        <th colSpan="3">
+                          {item[671567627981][2].selection}
+                          {currentRes === item[671567627981][2].selection
+                            ? '√'
+                            : ''}
+                        </th>
+                        <th colSpan="12">
+                          {item[671567627981][2].description}
+                        </th>
+                      </tr>
+                    </>
+                  );
+                }
               })}
               <tr>
                 <th colSpan="2" rowSpan="2">
