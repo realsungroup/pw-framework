@@ -608,7 +608,7 @@ class FormData extends React.Component {
 
     const storeWay = operation === 'add' ? 'fe' : 'be';
     return (
-      <TabPane tab={tab} key={index}>
+      <TabPane tab={tab} key={index} forceRender>
         <div style={{ height: subTable.FrmHeight }}>
           <TableData
             wrappedComponentRef={element =>
@@ -652,7 +652,7 @@ class FormData extends React.Component {
 
     if (hasTabPane) {
       return (
-        <TabPane tab={tab} key={index}>
+        <TabPane tab={tab} key={index} forceRender>
           <TableData
             wrappedComponentRef={element =>
               (this[`tableDataRef${index}`] = element)
