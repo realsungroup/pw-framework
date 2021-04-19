@@ -236,7 +236,7 @@ export default class ViProvider extends React.Component {
                 refTargetComponentName="TableData"
                 recordFormUseAbsolute={true}
                 {...inExaminationAndApproval}
-                addText="请添加一般或施工人员"
+                addText="访客或施工人员长期备案"
                 actionBarExtra={({}) => {
                   return (
                     <Button
@@ -245,7 +245,7 @@ export default class ViProvider extends React.Component {
                         this.setState({ showDeliverModal: true });
                       }}
                     >
-                      请添加送货人员
+                      进出口人员备案
                     </Button>
                   );
                 }}
