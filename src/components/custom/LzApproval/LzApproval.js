@@ -239,14 +239,14 @@ export default class LzApproval extends React.Component {
       });
       console.log('modify结果', result);
       console.log(finalRes);
-      finalRes = await http().modifyRecords({
-        resid: '605717968873',
-        data: [
-          {
-            REC_ID: apprecid.data[0].REC_ID
-          }
-        ]
-      });
+      // finalRes = await http().modifyRecords({
+      //   resid: '605717968873',
+      //   data: [
+      //     {
+      //       REC_ID: apprecid.data[0].REC_ID
+      //     }
+      //   ]
+      // });
     } catch (error) {
       message.error(error.message);
     }
@@ -327,58 +327,58 @@ export default class LzApproval extends React.Component {
               footer={
                 isPrint
                   ? [
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          console.log('开始打印');
-                          this.doPrint('builder');
-                          this.setState({
-                            isPrint: true
-                          });
-                        }}
-                      >
-                        打印
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        console.log('开始打印');
+                        this.doPrint('builder');
+                        this.setState({
+                          isPrint: true
+                        });
+                      }}
+                    >
+                      打印
                       </Button>,
-                      <Button
-                        onClick={() => {
-                          this.setState({
-                            showBuilderModal: false,
-                            isPrint: false
-                          });
-                        }}
-                      >
-                        关闭
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          showBuilderModal: false,
+                          isPrint: false
+                        });
+                      }}
+                    >
+                      关闭
                       </Button>
-                    ]
+                  ]
                   : [
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          this.approveBuilder('Y');
-                          this.setState({ showBuilderModal: false });
-                        }}
-                      >
-                        通过
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.approveBuilder('Y');
+                        this.setState({ showBuilderModal: false });
+                      }}
+                    >
+                      通过
                       </Button>,
-                      <Button
-                        type="danger"
-                        onClick={() => {
-                          this.approveBuilder('N');
-                          this.setState({ showBuilderModal: false });
-                        }}
-                      >
-                        拒绝
+                    <Button
+                      type="danger"
+                      onClick={() => {
+                        this.approveBuilder('N');
+                        this.setState({ showBuilderModal: false });
+                      }}
+                    >
+                      拒绝
                       </Button>,
-                      <Button
-                        onClick={() => {
-                          this.setState({
-                            showBuilderModal: false
-                          });
-                        }}
-                      >
-                        关闭
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          showBuilderModal: false
+                        });
+                      }}
+                    >
+                      关闭
                       </Button>
-                    ]
+                  ]
               }
             >
               <div id="printBuilderForm">
@@ -408,55 +408,55 @@ export default class LzApproval extends React.Component {
               footer={
                 isPrint
                   ? [
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          console.log('开始打印');
-                          this.doPrint('deliver');
-                        }}
-                      >
-                        打印
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        console.log('开始打印');
+                        this.doPrint('deliver');
+                      }}
+                    >
+                      打印
                       </Button>,
-                      <Button
-                        onClick={() => {
-                          this.setState({
-                            showDeliverModal: false,
-                            isPrint: false
-                          });
-                        }}
-                      >
-                        关闭
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          showDeliverModal: false,
+                          isPrint: false
+                        });
+                      }}
+                    >
+                      关闭
                       </Button>
-                    ]
+                  ]
                   : [
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          this.approveBuilder('Y');
-                          this.setState({ showDeliverModal: false });
-                        }}
-                      >
-                        通过
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.approveBuilder('Y');
+                        this.setState({ showDeliverModal: false });
+                      }}
+                    >
+                      通过
                       </Button>,
-                      <Button
-                        type="danger"
-                        onClick={() => {
-                          this.approveBuilder('N');
-                          this.setState({ showDeliverModal: false });
-                        }}
-                      >
-                        拒绝
+                    <Button
+                      type="danger"
+                      onClick={() => {
+                        this.approveBuilder('N');
+                        this.setState({ showDeliverModal: false });
+                      }}
+                    >
+                      拒绝
                       </Button>,
-                      <Button
-                        onClick={() => {
-                          this.setState({
-                            showDeliverModal: false
-                          });
-                        }}
-                      >
-                        关闭
+                    <Button
+                      onClick={() => {
+                        this.setState({
+                          showDeliverModal: false
+                        });
+                      }}
+                    >
+                      关闭
                       </Button>
-                    ]
+                  ]
               }
             >
               <div id="printDeliverForm">
