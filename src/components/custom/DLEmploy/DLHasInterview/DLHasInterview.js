@@ -51,13 +51,19 @@ class DLHasInterview extends React.Component {
         resid: 671552039670,
         cmswhere: `C3_671556149700 = ${id}`
       });
-      this.setState({
-        passAssessData: res.data[0],
-        assessModal: true
-      });
+      if (res.data.length > 0) {
+        this.setState({
+          passAssessData: res.data[0],
+          assessModal: true
+
+        });
+      } else {
+        message.info('当前员工没有填写面试评估表');
+
+      }
+
     } catch (error) {
       console.log(error);
-      message.info('当前员工没有填写面试评估表');
     }
   };
 
