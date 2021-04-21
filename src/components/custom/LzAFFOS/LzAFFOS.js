@@ -125,6 +125,7 @@ export default class LzAFFOS extends React.Component {
       influentedManageNum: '', //施工管理部门负责人编号
       selectApprovalKey: 0, //选择审批人的序号
       goodsInfo: [], //带出厂物品信息
+      FAC_Manager: '',
       goodsInfoModal: false //填写出厂物品信息的模态框
     };
     this.abnormalRef = React.createRef();
@@ -516,6 +517,7 @@ export default class LzAFFOS extends React.Component {
         break;
       case 3:
         obj[this.state.selectApprovalKey].C3_607445035535 = '厂务经理';
+        this.setState({ FAC_Manager: v.name });
         break;
       case 4:
         obj[this.state.selectApprovalKey].C3_607445035535 = '经理';
@@ -610,6 +612,7 @@ export default class LzAFFOS extends React.Component {
         resid: '605703697147',
         maindata: {
           ...this.state.value,
+          FAC_Manager: this.state.FAC_Manager,
           C3_605703896083: '施工',
           C3_605703913037: '施工人员',
           _state: 'added',
