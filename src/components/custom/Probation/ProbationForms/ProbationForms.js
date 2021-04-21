@@ -133,6 +133,7 @@ class ProbationForms extends React.Component {
   };
 
   async componentDidMount() {
+
     this.setState({ loading: true });
     let memberId;
     let employedId;
@@ -921,6 +922,9 @@ class ProbationForms extends React.Component {
    * 确认辅导记录
    */
   confirmMentor = async index => {
+    let fdy = localStorage.getItem('userInfo');
+    fdy = JSON.parse(fdy);
+    fdy = fdy.Data
     try {
       const mentorshipRecord = [...this.state.mentorshipRecord];
       // console.log(this.state.employeeInformation.instructorID);
@@ -930,7 +934,8 @@ class ProbationForms extends React.Component {
           {
             REC_ID: mentorshipRecord[index].REC_ID,
             isConfirm: 'Y',
-            editorId: this.state.employeeInformation.instructorID
+            editorId: this.state.employeeInformation.instructorID,
+            PWC: fdy
           }
         ]
       });
