@@ -221,7 +221,7 @@ class ExportPersonnelChanges extends Component {
     try {
       res = await http({ baseURL }).getTable({
         resid: '671538190462',
-        cmswhere: `createdDate >= '${startDate}' and createdDate <= '${endDate}'`
+        cmswhere: `createdDate >= '${startDate}' and createdDate <= '${endDate}' and location = 'WX' and C3_672419708933 = 'Y'`
       });
       this.setState({
         rawData: res.data
