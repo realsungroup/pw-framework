@@ -362,6 +362,11 @@ class IDLTransfer extends Component {
           isDirector: true,
           loading: false
         });
+      } else {
+        this.setState({
+          isDirector: false,
+          loading: false
+        });
       }
     } catch (error) {
       console.log(error.message);
