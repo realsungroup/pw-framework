@@ -239,14 +239,14 @@ export default class LzApproval extends React.Component {
       });
       console.log('modify结果', result);
       console.log(finalRes);
-      finalRes = await http().modifyRecords({
-        resid: '605717968873',
-        data: [
-          {
-            REC_ID: apprecid.data[0].REC_ID
-          }
-        ]
-      });
+      // finalRes = await http().modifyRecords({
+      //   resid: '605717968873',
+      //   data: [
+      //     {
+      //       REC_ID: apprecid.data[0].REC_ID
+      //     }
+      //   ]
+      // });
     } catch (error) {
       message.error(error.message);
     }
