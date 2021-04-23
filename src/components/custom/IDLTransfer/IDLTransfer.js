@@ -118,7 +118,7 @@ class IDLTransfer extends Component {
       curPeopleKey: 0,
       showCraft: false,
       bucodeGroup: [],
-      isDirector: false //是否是主管，主管才可以提交
+      isDirector: true //是否是主管，主管才可以提交
     };
   }
   componentWillMount() {}
