@@ -347,7 +347,7 @@ class Summary extends React.PureComponent {
     try {
       res = await http({ baseURL }).getTable({
         resid: '662169346288',
-        cmswhere: `numberID = ${numID} and year = ${curYear}`
+        cmswhere: `numberID = '${numID}' and year = ${curYear}`
       });
       let synj1 = 0;
       let hjky = 0;
