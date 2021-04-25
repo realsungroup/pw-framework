@@ -109,7 +109,8 @@ class IDLTransferHr extends Component {
       allValues: {}, //HR预审批时可以修改变动信息，此state用来存放子组件传递来的值
       applyNum: '', //申请人编号，审批流中申请人自动审批通过
       selectJobcodeModal: false, //当HC预审的headcount类型为new时,有按钮可以打开模态框选择jobcode
-      HREndRecid: '' //待变更人员在新员工信息表中的REC-ID
+      HREndRecid: '', //待变更人员在新员工信息表中的REC-ID
+      hasApp: 'wait' //HR预审时为wait，hr终审时为finish
     };
   }
   //删除审批节点
@@ -165,7 +166,8 @@ class IDLTransferHr extends Component {
               stepPeople: res.data[c].auditUserCode,
               stepPeopleID: res.data[c].auditUserCode,
               auditNo: res.data[c].auditNo,
-              auditRecno: res.data[c].auditRecno
+              auditRecno: res.data[c].auditRecno,
+              stepStatus: res.data[c].C3_634660565837
             });
           }
           c++;
@@ -934,7 +936,8 @@ class IDLTransferHr extends Component {
                   }
                   onClick={() => {
                     this.setState({
-                      cms: `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`
+                      cms: `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'`,
+                      hasApp: 'wait'
                     });
                   }}
                 >
@@ -949,7 +952,8 @@ class IDLTransferHr extends Component {
                   }
                   onClick={() => {
                     this.setState({
-                      cms: `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'`
+                      cms: `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'`,
+                      hasApp: 'wait'
                     });
                   }}
                 >
@@ -964,7 +968,8 @@ class IDLTransferHr extends Component {
                   }
                   onClick={() => {
                     this.setState({
-                      cms: `hrPreAprrove = 'N' and C3_653481734712 = '${this.state.right.location}'`
+                      cms: `hrPreAprrove = 'N' and C3_653481734712 = '${this.state.right.location}'`,
+                      hasApp: 'wait'
                     });
                   }}
                 >
@@ -980,7 +985,8 @@ class IDLTransferHr extends Component {
                   }
                   onClick={() => {
                     this.setState({
-                      cms: `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
+                      cms: `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`,
+                      hasApp: 'finish'
                     });
                   }}
                 >
@@ -995,7 +1001,8 @@ class IDLTransferHr extends Component {
                   }
                   onClick={() => {
                     this.setState({
-                      cms: `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'`
+                      cms: `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'`,
+                      hasApp: 'finish'
                     });
                   }}
                 >
@@ -1010,7 +1017,8 @@ class IDLTransferHr extends Component {
                   }
                   onClick={() => {
                     this.setState({
-                      cms: `hrEndApprove = 'N' and C3_653481734712 = '${this.state.right.location}'`
+                      cms: `hrEndApprove = 'N' and C3_653481734712 = '${this.state.right.location}'`,
+                      hasApp: 'finish'
                     });
                   }}
                 >
@@ -1559,6 +1567,7 @@ class IDLTransferHr extends Component {
                       if (item.stepName === 'HR部门经理审批') {
                         return (
                           <Step
+                            status={this.state.hasApp}
                             title={item.stepName}
                             description={
                               <span>
@@ -1572,6 +1581,7 @@ class IDLTransferHr extends Component {
                       } else {
                         return (
                           <Step
+                            status={this.state.hasApp}
                             title={item.stepName}
                             description={<span>{item.stepPeople}</span>}
                           />
