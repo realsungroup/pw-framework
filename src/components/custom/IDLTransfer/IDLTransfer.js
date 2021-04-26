@@ -232,14 +232,15 @@ class IDLTransfer extends Component {
           bol = true;
           c = n;
         }
-      } else if (values[n].checkGroup.reason && !values[n].reason) {
-        if (!msg) {
-          msg = '变动原因';
-          bol = true;
-          bol3 = true;
-          c = n;
-        }
       }
+      // else if (values[n].checkGroup.reason && !values[n].reason) {
+      //   if (!msg) {
+      //     msg = '变动原因';
+      //     bol = true;
+      //     bol3 = true;
+      //     c = n;
+      //   }
+      // }
       var e = 0;
       if (!values[n].checkGroup.newDepa) {
         e = e + 1;
