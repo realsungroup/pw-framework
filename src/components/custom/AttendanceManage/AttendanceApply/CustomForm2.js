@@ -39,7 +39,7 @@ class CustomForm2 extends React.Component {
         return;
       }
       let { startTime, endTime, reason } = values;
-      if (!startTime && !startTime) {
+      if (!startTime && !endTime) {
         return message.info('至少选择上、下班时间中的一个');
       }
       try {
