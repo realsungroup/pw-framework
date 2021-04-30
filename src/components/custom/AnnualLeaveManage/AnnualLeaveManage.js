@@ -1400,13 +1400,14 @@ class NianJiaShiYong extends React.PureComponent {
         wrappedComponentRef={element => (this.tableDataRef = element)}
         refTargetComponentName="TableData"
         resid={666181543960}
+        hasBeBtns={true}
         baseURL={baseURL}
         subtractH={190}
-        hasAdd={true}
+        hasAdd={false}
         hasModify={false}
         hasDelete={false}
         hasRowEdit={false}
-        hasRowModify={true}
+        hasRowModify={false}
         hasRowView={true}
         hasRowDelete={false}
         actionBarWidth={100}
@@ -1994,11 +1995,12 @@ class NianJiaGaiLan extends React.PureComponent {
                   resid={666181543960}
                   baseURL={baseURL}
                   subtractH={190}
-                  hasAdd={true}
+                  hasAdd={false}
                   hasModify={false}
                   hasDelete={false}
+                  hasBeBtns={true}
                   hasRowEdit={false}
-                  hasRowModify={true}
+                  hasRowModify={false}
                   hasRowView={true}
                   hasRowDelete={false}
                   actionBarWidth={100}
