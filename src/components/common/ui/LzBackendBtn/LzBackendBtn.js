@@ -4,6 +4,7 @@ import http, { makeCancelable } from 'Util20/api';
 import { withHttpGetFormData } from '../../hoc/withHttp';
 import { propTypes, defaultProps } from './propTypes';
 import { getDataProp } from 'Util20/formData2ControlsData';
+import { injectIntl } from 'react-intl';
 
 const btnSizeMap = {
   large: 'large',
@@ -154,6 +155,7 @@ class LzBackendBtn extends React.PureComponent {
 
   render() {
     const { btnInfo, size, popConfirmProps } = this.props;
+    const { intl: { locale } } = this.props;
     const { getFormDataLoading } = this.state;
     const { Url, Type } = btnInfo;
     // if (Type !== 4 && Url) {
@@ -176,7 +178,7 @@ class LzBackendBtn extends React.PureComponent {
             loading={this.state.loading}
             size={btnSizeMap[size]}
           >
-            {btnInfo.Name1}
+            {locale == 'en' ? btnInfo.Name2 : btnInfo.Name1}
           </Button>
         </Popconfirm>
       );
@@ -185,11 +187,11 @@ class LzBackendBtn extends React.PureComponent {
     } else {
       return (
         <Button style={style} size={btnSizeMap[size]} onClick={this.onConfirm} loading={getFormDataLoading}>
-          {btnInfo.Name1}
+          {locale == 'en' ? btnInfo.Name2 : btnInfo.Name1}
         </Button>
       );
     }
   }
 }
 
-export default withHttpGetFormData(LzBackendBtn);
+export default withHttpGetFormData(injectIntl(LzBackendBtn));

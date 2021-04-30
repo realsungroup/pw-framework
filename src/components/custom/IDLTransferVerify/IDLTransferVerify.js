@@ -119,7 +119,9 @@ class IDLTransferVerify extends Component {
           stepName: res2.data[n].C3_634660565034,
           stepPeople: res2.data[n].C3_634660565583,
           stepTime: res2.data[n].edit_time,
-          order: res2.data[n].C3_634660566076
+          order: res2.data[n].C3_634660566076,
+          memo: res2.data[n].C3_634660566283,
+          current: res2.data[n].C3_637177232366
         });
         if (res2.data[n].C3_637177232366 == 'Y') {
           var c = res2.data[n].C3_635250483297;
@@ -151,6 +153,16 @@ class IDLTransferVerify extends Component {
       if (isFin == res2.data.length) {
         c = res2.data.length + 1;
       }
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[i].stepPeople == arr[j].stepPeople) {
+            //第一个等同于第二个，splice方法删除第二个
+            arr.splice(j, 1);
+            j--;
+          }
+        }
+      }
+      console.log(arr);
       this.setState({ loading: false, curStep: c, stream: arr });
     } catch (e) {
       console.log(e);
@@ -403,34 +415,43 @@ class IDLTransferVerify extends Component {
                 className="steps"
                 style={{ width: 'calc(100% - 48px)', marginLeft: '24px' }}
               >
-                {this.state.loading ? null : (
+                {/* {this.state.loading ? null : (
                   <Steps
                     size="small"
                     status={
                       this.state.cms == `Approve = '未通过'`
                         ? 'error'
                         : this.state.cms == `isStreamEnd = 'Y'`
-                        ? 'finish'
-                        : 'process'
+                          ? 'finish'
+                          : 'process'
                     }
                     current={this.state.curStep - 1}
                   >
                     {this.state.stream.map((item, key) => {
-                      return (
-                        <Step
-                          title={item.stepName}
-                          description={
-                            <span>
-                              {item.stepPeople}
-                              <br />
-                              {item.stepTime}
-                            </span>
-                          }
-                        />
-                      );
+                      if (item.stepName === 'HR部门经理审批') {
+                        return (
+                          <Step
+                            title={item.stepName}
+                            description={
+                              <span>
+                                {item.stepPeople}
+                                <br />
+                                {item.stepTime}
+                              </span>
+                            }
+                          />
+                        );
+                      } else {
+                        return (
+                          <Step
+                            title={item.stepName}
+                            description={<span>{item.stepPeople}</span>}
+                          />
+                        );
+                      }
                     })}
                   </Steps>
-                )}
+                )} */}
 
                 <div
                   className="showContent"
@@ -456,12 +477,23 @@ class IDLTransferVerify extends Component {
                   <b>变动原因：</b>
                   <span>{this.state.toCheckFront.changeReason}</span>
                   <br />
+                  {/* <Button style={{ width: '120px' }} onClick={() => { this.setState({ showMemo: true }) }}>查看审批备注</Button> */}
+
+                  <br />
                   {this.state.toCheckFront.C3_632503853105 ? (
                     <div>
                       <b>审核反馈信息：</b>
                       <span>{this.state.toCheckFront.C3_632503853105}</span>
                     </div>
                   ) : null}
+                  {this.state.toCheckFront.ApproveRemark ? (
+                    <>
+                      <br />
+                      <b>审批说明:</b>
+                      <p>{this.state.toCheckFront.ApproveRemark}</p>
+                    </>
+                  ) : null}
+
                   <div className="tableWrap">
                     <Spin spinning={this.state.loading}>
                       <div style={{ float: 'left' }}>
@@ -504,9 +536,11 @@ class IDLTransferVerify extends Component {
                               this.state.toCheckFront.level
                             ) : (
                               <b style={{ color: '#f5222d' }}>
-                                {this.state.toCheckFront.level +
-                                  ' => ' +
-                                  this.state.toCheck[2]}
+                                {
+                                  // this.state.toCheckFront.level +
+                                  //   ' => ' +
+                                  this.state.toCheck[2]
+                                }
                               </b>
                             )}
                           </li>
@@ -603,17 +637,11 @@ class IDLTransferVerify extends Component {
                           </li>
                         </ul>
                       </div>
-                      {this.state.toCheckFront.ApproveRemark ? (
-                        <>
-                          <br />
-                          <b>审批说明:</b>
-                          <p>{this.state.toCheckFront.ApproveRemark}</p>
-                        </>
-                      ) : null}
+
                       <div style={{ float: 'left' }}>
                         <ul style={{ padding: '0', marginLeft: '-1px' }}>
                           <li>
-                            <b>是否有Headcount：</b>
+                            <b>是否涉及Headcount：</b>
                             <span>
                               {this.state.toCheckFront.C3_637425449725
                                 ? this.state.toCheckFront.C3_637425449725
@@ -659,7 +687,55 @@ class IDLTransferVerify extends Component {
                     </Spin>
                   </div>
                 </div>
+                <div style={{ float: 'left', marginLeft: 16 }}>
+                  <b>审批备注：</b>
+                  <br />
+                  <div style={{ overflow: 'auto', height: '50vh' }}>
+                    {this.state.stream.length > 0
+                      ? this.state.stream.map(item => {
+                          return (
+                            <>
+                              {item.memo ? (
+                                <>
+                                  <span>{item.stepPeople}：</span>
+                                  <br /> <span>{item.memo}</span>
+                                  <br />
+                                  <br />
+                                </>
+                              ) : null}
+                            </>
+                          );
+                        })
+                      : '无'}
+                  </div>
+                </div>
               </div>
+            </div>
+          </Modal>
+          <Modal
+            width={'90vw'}
+            visible={this.state.showMemo}
+            destroyOnClose={true}
+            footer={null}
+            onCancel={() => {
+              this.setState({ showMemo: false });
+            }}
+          >
+            <div style={{ width: '100%', height: '60vh' }}>
+              <TableData
+                resid={669982527179}
+                cmswhere={`C3_634660564341 = '${this.state.toCheckFront.REC_ID}'`}
+                hasRowView={false}
+                subtractH={220}
+                REC_ID
+                hasAdd={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                hasRowView={false}
+              />
             </div>
           </Modal>
           <div className="sider">
@@ -723,6 +799,7 @@ class IDLTransferVerify extends Component {
           >
             <TableData
               resid={632255761674}
+              isUseBESize={true}
               cmswhere={
                 this.state.mode == 'view' ? this.state.cmsView : this.state.cms
               }

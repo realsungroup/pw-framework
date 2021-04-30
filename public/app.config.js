@@ -30,14 +30,15 @@ window.pwConfig = {
     pexan: 623152549932,
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://10.108.21.41:2001/', //考勤审批
+      personInfoDownloadURL: 'http://10.108.2.66:80/', //人事信息下载地址
+      attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.21.41:2001/',
       PostArchitectureBaseURL: 'http://10.108.2.66:9091/',
       PostArchitectureDownloadBaseURL: 'http://10.108.21.41:2001/',
-      comprehensiveQueryBaseURL: 'http://10.108.21.41:2001/', //综合查询
+      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询

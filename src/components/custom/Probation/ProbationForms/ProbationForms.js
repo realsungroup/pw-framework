@@ -454,6 +454,7 @@ class ProbationForms extends React.Component {
         delete item.C3_625069822489;
         delete item.C3_638372958685;
         delete item.sendAffirmEmail;
+        delete item.isAffirm;
         subdata.push({
           resid: resid5,
           maindata: {
@@ -464,7 +465,6 @@ class ProbationForms extends React.Component {
           }
         });
       });
-      // console.log(onTheJobTraining);
       mentorshipRecord.forEach(item => {
         delete item.instructEmailIsSend;
         delete item.C3_625594433726;
@@ -478,6 +478,7 @@ class ProbationForms extends React.Component {
           }
         });
       });
+      delete employeeInformation.isNoticeHrEmail;
       await http().saveRecordAndSubTables({
         data: [
           {
@@ -486,31 +487,31 @@ class ProbationForms extends React.Component {
               ...employeeInformation,
               instructor:
                 this.state.employeeInformation.instructor &&
-                  this.state.employeeInformation.instructor.indexOf('-') > -1
+                this.state.employeeInformation.instructor.indexOf('-') > -1
                   ? this.state.employeeInformation.instructor.split('-')[0]
                   : this.state.employeeInformation.instructor,
               instructorDirectorName:
                 this.state.employeeInformation.instructorDirectorName &&
-                  this.state.employeeInformation.instructorDirectorName.indexOf(
-                    '-'
-                  ) > -1
+                this.state.employeeInformation.instructorDirectorName.indexOf(
+                  '-'
+                ) > -1
                   ? this.state.employeeInformation.instructorDirectorName.split(
-                    '-'
-                  )[0]
+                      '-'
+                    )[0]
                   : this.state.employeeInformation.instructorDirectorName,
               C3_637084539039:
                 this.state.employeeInformation.C3_637084539039 &&
-                  this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
+                this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
                   ? this.state.employeeInformation.C3_637084539039.split('-')[0]
                   : this.state.employeeInformation.C3_637084539039,
               instructorDirectorName2:
                 this.state.employeeInformation.instructorDirectorName2 &&
-                  this.state.employeeInformation.instructorDirectorName2.indexOf(
-                    '-'
-                  ) > -1
+                this.state.employeeInformation.instructorDirectorName2.indexOf(
+                  '-'
+                ) > -1
                   ? this.state.employeeInformation.instructorDirectorName2.split(
-                    '-'
-                  )[0]
+                      '-'
+                    )[0]
                   : this.state.employeeInformation.instructorDirectorName2,
               _state: 'modified',
               _id: 1
@@ -648,7 +649,7 @@ class ProbationForms extends React.Component {
           return Modal.info({
             title: '提示',
             content: '没有试用期信息。',
-            onOk: () => { }
+            onOk: () => {}
           });
         }
         let probationObjectives = data[viewableTable.objectiveResid].filter(
@@ -1312,7 +1313,7 @@ class ProbationForms extends React.Component {
           console.log(error);
         }
       },
-      onCancel() { }
+      onCancel() {}
     });
   };
 
@@ -2151,19 +2152,21 @@ class ProbationForms extends React.Component {
                     }
                     const maxLen = 30;
                     const num = Math.ceil(text.length / maxLen);
-                    const children = []
+                    const children = [];
                     for (let index = 1; index <= num; index++) {
                       const start = (index - 1) * maxLen;
-                      const end = (index) * maxLen;
-                      children.push(new Paragraph({
-                        children: [
-                          new TextRun({
-                            text: text.substring(start, end),
-                            break: 1
-                          })
-                        ],
-                        alignment: AlignmentType.CENTER
-                      }))
+                      const end = index * maxLen;
+                      children.push(
+                        new Paragraph({
+                          children: [
+                            new TextRun({
+                              text: text.substring(start, end),
+                              break: 1
+                            })
+                          ],
+                          alignment: AlignmentType.CENTER
+                        })
+                      );
                     }
                     return new TableCell({
                       children,
@@ -2209,7 +2212,7 @@ class ProbationForms extends React.Component {
                   width: {
                     size:
                       employeeInformation.smmary &&
-                        employeeInformation.smmary.length > 61
+                      employeeInformation.smmary.length > 61
                         ? 9070
                         : 9070,
                     type: WidthType.DXA
@@ -2251,7 +2254,7 @@ class ProbationForms extends React.Component {
                   width: {
                     size:
                       employeeInformation.directorEvaluate &&
-                        employeeInformation.directorEvaluate.length > 61
+                      employeeInformation.directorEvaluate.length > 61
                         ? 9070
                         : 9070,
                     type: WidthType.DXA
@@ -2294,7 +2297,7 @@ class ProbationForms extends React.Component {
                   width: {
                     size:
                       employeeInformation.ManagerEvaluate &&
-                        employeeInformation.ManagerEvaluate.length > 61
+                      employeeInformation.ManagerEvaluate.length > 61
                         ? 9070
                         : 9070,
                     type: WidthType.DXA
@@ -2336,7 +2339,7 @@ class ProbationForms extends React.Component {
                   width: {
                     size:
                       employeeInformation.hrManagerEvaluate &&
-                        employeeInformation.hrManagerEvaluate.length > 61
+                      employeeInformation.hrManagerEvaluate.length > 61
                         ? 9070
                         : 9070,
                     type: WidthType.DXA
@@ -2497,22 +2500,22 @@ class ProbationForms extends React.Component {
                     保存
                   </Button>
                   {roleName === 'HR' &&
-                    this.state.flagHitBack == true &&
-                    this.state.flagAlreadyHit == 0 ? (
-                      <span>
-                        <Button
-                          style={{ marginRight: '8px' }}
-                          onClick={this.agreeApply}
-                        >
-                          同意自定义辅导员
+                  this.state.flagHitBack == true &&
+                  this.state.flagAlreadyHit == 0 ? (
+                    <span>
+                      <Button
+                        style={{ marginRight: '8px' }}
+                        onClick={this.agreeApply}
+                      >
+                        同意自定义辅导员
                       </Button>
-                        <Button onClick={this.disagreeApply} type="danger">
-                          驳回自定义辅导员
+                      <Button onClick={this.disagreeApply} type="danger">
+                        驳回自定义辅导员
                       </Button>
-                      </span>
-                    ) : (
-                      ''
-                    )}
+                    </span>
+                  ) : (
+                    ''
+                  )}
                   {
                     <span style={{ color: 'red' }}>
                       {this.state.flagAlreadyHit == 2
@@ -2523,8 +2526,8 @@ class ProbationForms extends React.Component {
                 </div>
               )}
             {/* 角色为员工且转正申请未提交 */}
-            {roleName === '员工' &&
-              employeeInformation.regStatus === '待转正' &&
+            {/* {roleName === '员工' && */}
+            {employeeInformation.regStatus === '待转正' &&
               employeeInformation.C3_622649502021 != 'Y' && (
                 <Popconfirm
                   title="确认提交转正申请？"
@@ -2616,7 +2619,7 @@ class ProbationForms extends React.Component {
                 style={{ width: 300 }}
                 placeholder="请选择课程"
                 optionFilterProp="children"
-                onSearch={val => { }}
+                onSearch={val => {}}
                 filterOption={(input, option) =>
                   option.props.children
                     .toLowerCase()
@@ -2671,7 +2674,7 @@ class ProbationForms extends React.Component {
                 style={{ width: 300 }}
                 placeholder="请选择课程"
                 optionFilterProp="children"
-                onSearch={val => { }}
+                onSearch={val => {}}
                 value={this.state.modifyInternalCourseData.course}
                 filterOption={(input, option) =>
                   option.props.children

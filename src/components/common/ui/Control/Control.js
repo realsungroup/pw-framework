@@ -24,6 +24,7 @@ import * as blobUtil from 'blob-util';
 import { getRadioGroupOptions } from './util';
 import './Control.less';
 import http from 'Util20/api';
+import ClearOnchangeContext from '../../contexts/clearOnchangeContext';
 
 const { TextArea, Search } = Input;
 const Option = Select.Option;
@@ -159,6 +160,7 @@ const getAutoCompleteDataSource = (res, key) => {
 class Control extends React.Component {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
+  static contextType = ClearOnchangeContext;
 
   constructor(props) {
     super(props);
@@ -171,7 +173,8 @@ class Control extends React.Component {
       takePictureCancelText: '取消', // 可选值：'取消' | '重拍'
       mediaFieldValue: '', // 媒体字段值
       isMediaField: false, // 是否为多媒体字段
-      dataSource: [] // AutoComplete 的下拉选项
+      dataSource: [], // AutoComplete 的下拉选项
+      clearOnChangeFileds: [] //value改变时需要清空的字段
     };
   }
 
@@ -187,6 +190,9 @@ class Control extends React.Component {
     const { id, name, controlData } = dataItem;
     const { ColType } = controlData;
     if (name === 'Input' && ColType === 6) {
+      if (!record.REC_ID) {
+        return
+      }
       let httpParams = {};
       if (baseURL) {
         httpParams.baseURL = baseURL;
@@ -237,9 +243,29 @@ class Control extends React.Component {
       const dataSource = getAutoCompleteDataSource(res, key);
       this.setState({ dataSource });
     }
+    const contextvalue = this.context;
+    const findRes = contextvalue.find(item => item.id == id);
+    if (findRes) {
+      this.setState({
+        clearOnChangeFileds: findRes.clearFileds
+      });
+    }
   };
 
-  componentWillUnmount = () => {};
+  componentDidUpdate(prevProps) {
+    const { clearOnChangeFileds } = this.state;
+    const preValue = prevProps.value;
+    const currentValue = this.props.value;
+    if (clearOnChangeFileds.length > 0 && preValue && preValue !== currentValue) {
+      let filedsValue = {};
+      clearOnChangeFileds.reduce((preV, currentV) => {
+        preV[currentV] = undefined;
+        return preV;
+      }, filedsValue);
+      this.props.form.setFieldsValue(filedsValue);
+    }
+  }
+  componentWillUnmount = () => { };
 
   shouldComponentUpdate = (nextProps, nextState) => {
     if (
@@ -257,12 +283,13 @@ class Control extends React.Component {
   };
 
   retFilterFieldValues = innerFieldNames => {
-    const { record } = this.props;
+    const { record, form } = this.props;
     const colValues = [];
     innerFieldNames.forEach(innerFieldName => {
       colValues.push({
         col1: innerFieldName.col1,
-        col1Value: record[innerFieldName.col1],
+        // col1Value: record[innerFieldName.col1],
+        col1Value: form.getFieldValue(innerFieldName.col1),
         col2: innerFieldName.col2
       });
     });
@@ -308,8 +335,8 @@ class Control extends React.Component {
     const advDicTableProps = {
       cmswhere: this.getAdvDicCmswhere(
         dataItem.controlData &&
-          dataItem.controlData.AdvDictionaryListData &&
-          dataItem.controlData.AdvDictionaryListData[0]
+        dataItem.controlData.AdvDictionaryListData &&
+        dataItem.controlData.AdvDictionaryListData[0]
       )
     };
     showAdvDicTable(
@@ -473,7 +500,7 @@ class Control extends React.Component {
         this.stream.getTracks().forEach(track => track.stop());
         this.stream = null;
         this.canvas = null;
-      } catch (err) {}
+      } catch (err) { }
 
       this.setState({
         takePictureVisible: false,
@@ -681,8 +708,8 @@ class Control extends React.Component {
               style={{ width: customStyle.width, height: customStyle.height }}
             ></img>
           ) : (
-            ''
-          );
+              ''
+            );
         }
 
         default: {
@@ -731,6 +758,7 @@ class Control extends React.Component {
               onSearch={this.handleSearch}
               onBlur={this.handleBeforeSave}
               value={value}
+              disabled={props.disabled}
             />
           );
         }
@@ -841,8 +869,8 @@ class Control extends React.Component {
               style={{ width: customStyle.width, height: customStyle.height }}
             ></img>
           ) : (
-            ''
-          );
+              ''
+            );
         }
 
         case 'RadioGroup': {

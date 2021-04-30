@@ -9,8 +9,7 @@ const tabPaneStyle = { height: 'calc(100vh - 60px)' };
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureBaseURL;
 const downloadBaseURL =
-  window.pwConfig[process.env.NODE_ENV].customURLs
-    .PostArchitectureDownloadBaseURL;
+  window.pwConfig[process.env.NODE_ENV].customURLs.personInfoDownloadURL;
 /**
  * 人事信息
  */

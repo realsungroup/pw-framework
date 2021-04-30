@@ -183,5 +183,7 @@ export {
   AnnualLeaveManage,
   OnDutyTrainingApp,
   IIVIInfo,
-  BUCODEInfo
+  BUCODEInfo,
+  RecruitmentNeeds,
+  ExportPersonnelChanges
 } from '../components/custom/loadableCustom';

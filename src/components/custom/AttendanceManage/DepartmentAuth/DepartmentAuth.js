@@ -3,6 +3,7 @@ import './DepartmentAuth.less';
 import { Button, message, Popconfirm } from 'antd';
 import TableData from '../../../common/data/TableData';
 import http from 'Util20/api';
+import { injectIntl } from 'react-intl';
 
 /*
  * 部门独立授权
@@ -16,13 +17,15 @@ class DepartmentAuth extends React.Component {
     this.attendanceDownloadURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
-  actionBarExtra = record => (
-    <div className="">
+  actionBarExtra = record => {
+    const { intl: { locale } } = this.props;
+
+    return <div className="">
       <Popconfirm
-        title="启用独立授权？"
+        title={locale == 'en' ? 'Are you sure?' : "启用独立授权？"}
         onConfirm={() => {
           if (!record.selectedRowKeys.length) {
-            return message.error('请选择一条记录');
+            return message.error(locale == 'en' ? 'Please select at least one record' : '请选择一条记录');
           }
           let selectedRecords = record.selectedRowKeys.map(key => {
             return {
@@ -35,13 +38,13 @@ class DepartmentAuth extends React.Component {
           this.isAuth(true, selectedRecords);
         }}
       >
-        <Button>启用独立授权</Button>
+        <Button size="small" type="primary">{locale == 'en' ? 'Enable' : "启用独立授权"}</Button>
       </Popconfirm>
       <Popconfirm
-        title="禁用独立授权？"
+        title={locale == 'en' ? 'Are you sure?' : "禁用独立授权？"}
         onConfirm={() => {
           if (!record.selectedRowKeys.length) {
-            return message.error('请选择一条记录');
+            return message.error(locale == 'en' ? 'Please select at least one record' : '请选择一条记录');
           }
           let selectedRecords = record.selectedRowKeys.map(key => {
             return {
@@ -54,10 +57,10 @@ class DepartmentAuth extends React.Component {
           this.isAuth(false, selectedRecords);
         }}
       >
-        <Button>禁用独立授权</Button>
+        <Button size="small" type="danger">{locale == 'en' ? 'Disable' : "禁用独立授权"}</Button>
       </Popconfirm>
     </div>
-  );
+  };
 
   isAuth = async (isAuth, data) => {
     try {
@@ -104,4 +107,4 @@ class DepartmentAuth extends React.Component {
   }
 }
 
-export default DepartmentAuth;
+export default injectIntl(DepartmentAuth);

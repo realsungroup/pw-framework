@@ -228,6 +228,8 @@ window[590765309983] = {
   title: '违纪管理',
   name: 'LzMenuContainer',
   props: {
+    jump:
+      'http://10.108.2.66:805/fnmodule?resid=590765309983&recid=610540465303&type=undefined&title=违纪管理',
     baseURL: 'http://10.108.2.66:9091/',
     noDataTip: '暂无数据，请选择员工',
     resid: 590671418888,
@@ -2018,13 +2020,17 @@ window[619954194724] = {
 };
 window[620212364621] = {
   name: 'ComprehensiveQuery',
-  title: '综合查询'
+  title: '综合查询',
+  props: {
+    showAnnualLeaveDetail: false //是否显示年假明细
+  }
 };
 window[642853831562] = {
   name: 'ComprehensiveQuery',
   title: '绩效查询',
   props: {
-    tabKey: 'performance'
+    tabKey: 'performance',
+    showAnnualLeaveDetail: false //是否显示年假明细
   }
 };
 
@@ -2032,26 +2038,41 @@ window[642853818882] = {
   name: 'ComprehensiveQuery',
   title: '考勤查询',
   props: {
-    tabKey: 'attendance'
+    tabKey: 'attendance',
+    showAnnualLeaveDetail: true //是否显示年假明细
   }
 };
 window[643372961628] = {
   name: 'ComprehensiveQuery',
   title: '评级评优查询',
   props: {
-    tabKey: 'rating'
+    tabKey: 'rating',
+    showAnnualLeaveDetail: false //是否显示年假明细
   }
 };
 window[642853806554] = {
   name: 'ComprehensiveQuery',
   title: '人事查询',
   props: {
-    tabKey: 'personnel'
+    tabKey: 'personnel',
+    showAnnualLeaveDetail: false //是否显示年假明细
   }
 };
 window[621257502796] = {
   name: 'AttendanceManage',
-  title: '考勤申请'
+  title: '考勤申请',
+  props: {
+    //上海配置
+    showAllminute: true, //是否显示所有分钟数
+    showBatchApply: false, //是否显示批量申请
+    showWorkOvertimeOptions: false, //是否显示加班选项
+    showApproveAll: false //是否显示一键审批
+    //无锡配置
+    // showAllminute: false, //是否显示所有分钟数
+    // showBatchApply: true,//是否显示批量申请
+    // showWorkOvertimeOptions: true, //是否显示加班选项
+    //showApproveAll:true//是否显示一键审批
+  }
 };
 window[622577431745] = {
   name: 'ReferenceCheck',
@@ -4895,7 +4916,7 @@ window[642855707652] = {
 };
 window[642855719230] = {
   // name: 'TableData', // 组件名称，
-  name: 'MainTableSubTables', // 组件名称，
+  name: 'RecruitmentNeeds', // 组件名称，
   title: '招聘需求管理', // 功能模块名称
   props: {
     baseURL: 'http://10.108.2.66:1001/',
@@ -5066,6 +5087,11 @@ window[642855770350] = {
     },
     advSearch: {
       isRequestFormData: false
+    },
+    formDataProps: {
+      clearOnchangeFileds: [
+        // { id: "C3_662164156791", clearFileds: ["C3_662164165635"] }
+      ]
     },
     labelRequiredList: [
       'Specify',
@@ -9752,4 +9778,13 @@ window[664282094133] = {
   name: 'OnDutyTrainingApp', // 组件名称，
   title: '在岗培训审批', // 功能模块名称
   props: {}
+};
+
+//变动记录导出
+window[671543192998] = {
+  name: 'ExportPersonnelChanges', // 组件名称，
+  title: '变动记录导出', // 功能模块名称
+  props: {
+    baseURL: 'http://10.108.2.66:9091'
+  }
 };

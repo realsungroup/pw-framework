@@ -15,6 +15,7 @@ import './ViProvider.less';
 // import TableData from '../../../lib/unit-component/TableData';
 import { TableData } from '../../common/loadableCommon';
 import DeliverList from './DeliverList';
+import GoodsInfoForm from '../LzAFFOS/GoodsInfoForm';
 import {
   inApplication,
   inExaminationAndApproval,
@@ -58,7 +59,9 @@ export default class ViProvider extends React.Component {
       C3_605719340594: moment(),
       C3_605719340781: moment().add(3, 'month'),
       C3_605718146773: '非管控区',
-      C3_605718133807: '送货人员'
+      C3_605718133807: '送货人员',
+      showGoodsInfo: false,
+      goodsInfo: []
     };
     this.abnormalRef = React.createRef();
     this.inApplicationRef = React.createRef();
@@ -151,6 +154,15 @@ export default class ViProvider extends React.Component {
         maindata: item
       };
     });
+    //添加带出厂物品信息
+    const subdataGoods = this.state.goodsInfo.map((item, index) => {
+      item._state = 'added';
+      item._id = index + 50;
+      return {
+        resid: '669820837743',
+        maindata: item
+      };
+    });
     const data = [
       {
         resid: '605891699222',
@@ -162,7 +174,7 @@ export default class ViProvider extends React.Component {
           _state: 'added',
           _id: 1
         },
-        subdata: [...subdataPeople]
+        subdata: [...subdataPeople, ...subdataGoods]
       }
     ];
     console.log('data', data);
@@ -180,6 +192,21 @@ export default class ViProvider extends React.Component {
       message.info(error);
     }
     this.tableDataRef.handleRefresh();
+  };
+
+  //打开出厂货物信息填写页面
+  showGoodsInfo = () => {
+    this.setState({
+      goodsInfoModal: true
+    });
+  };
+
+  //获取子组件出场货物信息
+  getGoodsInfo = goodsInfo => {
+    this.setState({
+      goodsInfo: goodsInfo,
+      goodsInfoModal: false
+    });
   };
 
   render() {
@@ -209,7 +236,7 @@ export default class ViProvider extends React.Component {
                 refTargetComponentName="TableData"
                 recordFormUseAbsolute={true}
                 {...inExaminationAndApproval}
-                addText="请添加一般或施工人员"
+                addText="访客或施工人员长期备案"
                 actionBarExtra={({}) => {
                   return (
                     <Button
@@ -218,12 +245,25 @@ export default class ViProvider extends React.Component {
                         this.setState({ showDeliverModal: true });
                       }}
                     >
-                      请添加送货人员
+                      进出口人员备案
                     </Button>
                   );
                 }}
               />
             </div>
+            <Modal
+              title="出厂物品登记"
+              width="90%"
+              visible={this.state.goodsInfoModal}
+              onCancel={() => {
+                this.setState({
+                  goodsInfoModal: false
+                });
+              }}
+              footer={[]}
+            >
+              <GoodsInfoForm getGoodsInfo={this.getGoodsInfo} />
+            </Modal>
             <Modal
               title="送货人员清单"
               width="90%"
@@ -381,6 +421,61 @@ export default class ViProvider extends React.Component {
                             </th>
                             <th colSpan="2" className="thCss">
                               <label>{item.carNum}</label>
+                            </th>
+                          </tr>
+                        );
+                      })}
+                      <tr>
+                        <th colSpan="9">
+                          <h3>带出厂物品信息</h3>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th colSpan="9">
+                          <Button
+                            onClick={() => {
+                              this.showGoodsInfo();
+                            }}
+                            type="primary"
+                          >
+                            变更信息
+                          </Button>
+                        </th>
+                      </tr>
+                      <tr>
+                        <th className="thCss">
+                          <label>物品名称</label>
+                        </th>
+                        <th className="thCss">
+                          <label>单位</label>
+                        </th>
+                        <th className="thCss">
+                          <label>数量</label>
+                        </th>
+                        <th colSpan="3" className="thCss">
+                          <label>带出原因</label>
+                        </th>
+                        <th colSpan="3" className="thCss">
+                          <label>物品图片</label>
+                        </th>
+                      </tr>
+                      {this.state.goodsInfo.map(item => {
+                        return (
+                          <tr>
+                            <th className="thCss">
+                              <label>{item.goodsName}</label>
+                            </th>
+                            <th className="thCss">
+                              <label>{item.unit}</label>
+                            </th>
+                            <th className="thCss">
+                              <label>{item.quantity}</label>
+                            </th>
+                            <th colSpan="3" className="thCss">
+                              <label>{item.reason}</label>
+                            </th>
+                            <th colSpan="3" className="thCss">
+                              <label>{item.photo1}</label>
                             </th>
                           </tr>
                         );

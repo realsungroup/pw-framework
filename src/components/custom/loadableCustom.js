@@ -915,3 +915,15 @@ export const BUCODEInfo = Loadable({
     return minLoading;
   }
 });
+export const RecruitmentNeeds = Loadable({
+  loader: () => import('./RecruitmentNeeds'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ExportPersonnelChanges = Loadable({
+  loader: () => import('./ExportPersonnelChanges'),
+  loading() {
+    return minLoading;
+  }
+});

@@ -21,6 +21,7 @@ class BuildApprovlForm extends React.Component {
       isPrint
     } = this.props.toBuilderFormInfo;
     const isControl = approvalInfo.C3_605703930741 === '管控区' ? true : false;
+    console.log(approvalInfo.isLong);
     return (
       <Form>
         <div className="changeAntCss">
@@ -190,7 +191,7 @@ class BuildApprovlForm extends React.Component {
                 )}
               </tr>
               {/* 长期施工 */}
-              {!isPrint && approvalInfo.isLong && (
+              {!isPrint && approvalInfo.isLong !== '临时施工' && (
                 <>
                   <tr>
                     <th colSpan="9">
@@ -322,7 +323,7 @@ class BuildApprovlForm extends React.Component {
                 </>
               )}
               {/* 临时施工 */}
-              {!isPrint && !approvalInfo.isLong && (
+              {!isPrint && approvalInfo.isLong === '临时施工' && (
                 <>
                   <tr>
                     <th colSpan="9">

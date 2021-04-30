@@ -2,7 +2,8 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import appConfig, { dataType } from './http.config';
 import http from './http';
-import { getItem, removeItem } from './localCache';
+import { getItem, removeItem, setItem } from './localCache';
+import qs from 'querystring';
 
 export const loggedIn = () => !!getItem('userInfo');
 
@@ -10,15 +11,61 @@ export const logout = () => {
   removeItem('userInfo');
   removeItem('initialSlide');
 };
-
+class AutoLogin extends React.PureComponent {
+  componentDidMount() {
+    const { user, pass } = this.props;
+    this.login(user, pass);
+  }
+  login = async (user, pass) => {
+    let res;
+    try {
+      res = await defaultLogin(user, pass);
+    } catch (err) {
+      alert(err.message);
+      return console.error(err.message);
+    }
+    const result = res.OpResult;
+    if (result === 'Y') {
+      setItem('userInfo', JSON.stringify(res));
+      // 登录成功
+      const userInfo = JSON.parse(getItem('userInfo'));
+      const userLanguage = userInfo.UserInfo.EMP_LANGUAGE;
+      const language = getItem('language');
+      if (userLanguage !== language) {
+        let res;
+        try {
+          res = await http().setLanguage({ language });
+        } catch (err) {
+          return alert(err.message);
+        }
+        if (res.OpResult !== 'Y') {
+          alert(res.ErrorMsg);
+        } else {
+          userInfo.UserInfo.EMP_LANGUAGE = language;
+          setItem('userInfo', JSON.stringify(userInfo));
+        }
+      }
+      window.location.reload();
+    } else {
+      return alert(res.ErrorMsg);
+    }
+  }
+  render() {
+    return 'login...'
+  }
+}
 export const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
-      loggedIn() ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
+    render={props => {
+      const logined = loggedIn();
+      const qsObj = qs.parse(window.location.search.slice(1));
+      if (logined) {
+        return <Component {...props} />
+      } else if (qsObj.user && qsObj.pass) {
+        return <AutoLogin user={qsObj.user} pass={qsObj.pass} />
+      } else {
+        return <Redirect
           to={{
             pathname: '/login',
             state: {
@@ -26,7 +73,8 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
             }
           }}
         />
-      )
+      }
+    }
     }
   />
 );

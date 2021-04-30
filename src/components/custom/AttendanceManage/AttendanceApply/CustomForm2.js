@@ -32,8 +32,8 @@ class CustomForm2 extends React.Component {
   };
 
   handleSubmit = async e => {
-    e.preventDefault();
-
+    // e.preventDefault();
+    this.setState({ submitting: true });
     this.props.form.validateFields(async (err, values) => {
       if (err) {
         return;
@@ -43,7 +43,6 @@ class CustomForm2 extends React.Component {
         return message.info('至少选择上、下班时间中的一个');
       }
       try {
-        this.setState({ submitting: true });
         let res = await http().addRecords({
           resid: '449440966625',
           data: [
@@ -65,9 +64,11 @@ class CustomForm2 extends React.Component {
         message.success(res.message);
         this.props.goBack();
         this.props.getNotices();
+        this.setState({ submitting: false });
       } catch (error) {
         console.log(error);
         message.error(error.message);
+        this.setState({ submitting: false });
       } finally {
         this.setState({ submitting: false });
       }
@@ -78,7 +79,7 @@ class CustomForm2 extends React.Component {
     const { currentUser, currentTime, submitting } = this.state;
     return (
       <div className="attendace-aplly_form__wrapper">
-        <Form className="attendace-aplly_form" onSubmit={this.handleSubmit}>
+        <Form className="attendace-aplly_form">
           <h2>补刷卡申请单</h2>
           <Row style={{ fontWeight: 600, marginBottom: 32 }}>
             <Col span={8}>填单人：{currentUser}</Col>
@@ -137,7 +138,10 @@ class CustomForm2 extends React.Component {
             <Button
               loading={submitting}
               type="primary"
-              htmlType="submit"
+              // htmlType="submit"
+              onClick={() => {
+                this.handleSubmit();
+              }}
               style={{ marginRight: 8 }}
             >
               提交

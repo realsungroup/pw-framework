@@ -19,7 +19,11 @@ const contractHistoryResid = '436624421847'; //合同历史记录
 const mailHis = '641216663667'; //邮件提醒历史记录
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
-const CheckboxOptions = ['DL', 'IDL'];
+const CheckboxOptions = ['一线员工', '办公室员工'];
+const CheckboxOptionsMap = {
+  一线员工: '产线',
+  办公室员工: '办公室'
+};
 const filterTab1 = [
   {
     label: '在职人员',
@@ -40,11 +44,11 @@ const filterTab1 = [
 ];
 const filterTab2A = [
   {
-    label: '待发送邮件',
+    label: '待发送邮件(待续签提醒)',
     resid: '640264082868'
   },
   {
-    label: '已发送邮件',
+    label: '已发送邮件(待续签提醒)',
     resid: '640264102764'
   },
   {
@@ -62,6 +66,41 @@ const filterTab2B = [
     cms: `C3_640119278050= 'IDL'`
   }
 ];
+const filterTab3A = [
+  {
+    label: '办公室员工'
+  },
+  {
+    label: '一线员工'
+  }
+];
+const filterTab3B = [
+  {
+    condition: 'DL',
+    label: '员工意向确认',
+    resid: '668712593119'
+  },
+  {
+    condition: 'DL',
+    label: '一级部门经理审批',
+    resid: '668710715266'
+  },
+  {
+    condition: 'DL',
+    label: '部门总监审批',
+    resid: '668712440510'
+  },
+  {
+    condition: 'IDL',
+    label: '主管审批',
+    resid: '668709373267'
+  },
+  {
+    condition: 'IDL',
+    label: '经理审批',
+    resid: '668710368892'
+  }
+];
 class Compact extends Component {
   constructor(props) {
     super(props);
@@ -71,6 +110,9 @@ class Compact extends Component {
       jobId: jobId,
       key1: '_0A',
       ke2: '_0B',
+      key3: '_03A',
+      key4: '_03B',
+      residTab3: '668712593119',
       residTab1: '440237518278',
       residTab2: '640264082868',
       cms: `C3_532015901062 != 'N' and C3_532015901062 != 'Y' and C3_532015785778 = '${jobId}'`,
@@ -94,6 +136,74 @@ class Compact extends Component {
       ' ~ ' +
       moment(v[1]).format('YYYY-MM-DD hh:mm:ss');
     this.setState({ signingDate: v, meetTime: str });
+  };
+  /**
+   * 重新发送提醒邮件=清空后台已发送邮件的字段
+   */
+  handleRemail = async record => {
+    this.setState({ loading: true });
+    if (record.selectedRowKeys.length < 1) {
+      message.error('请先选择记录！');
+      this.setState({ loading: false });
+    } else {
+      const data = record.dataSource;
+      let Reldata = [];
+      data.map(item => {
+        record.selectedRowKeys.map(items => {
+          if (item.REC_ID === items) {
+            Reldata.push(item);
+          }
+        });
+      });
+      let obj = {};
+      let resid;
+      let toChange;
+      //C3_640795239364 咨询员工意向已发
+      //C3_489008835622提醒第一审批人已发
+      //C3_641226096054部门总监审批已发
+
+      //C3_640820671962是否已经发送(表640820603954)
+
+      resid = '436624135588';
+
+      // if (this.state.key4 === '_03B') {
+      //   toChange = 'C3_640795239364';
+      // } else if (this.state.key4 === '_13B') {
+      //   toChange = 'C3_489008835622';
+      // } else if (this.state.key4 === '_23B') {
+      //   toChange = 'C3_641226096054';
+      // } else {
+      //   toChange = 'C3_640820671962';
+      // }
+      if (this.state.key4 == '_33B') {
+        toChange = 'C3_669745543191';
+      } else {
+        toChange = 'C3_669745551472';
+      }
+      let toSend = [];
+      let n = 0;
+      while (n < Reldata.length) {
+        toSend.push({
+          REC_ID: Reldata[n].REC_ID,
+          [toChange]: ''
+        });
+        n++;
+      }
+      obj = {
+        resid,
+        data: toSend
+      };
+      // console.log(obj);
+      try {
+        let res = await http().modifyRecords(obj);
+        this.setState({ loading: false });
+        message.success('操作成功');
+        this.tableDataRef3.handleRefresh();
+      } catch (e) {
+        console.log(e.message);
+        this.setState({ loading: false });
+      }
+    }
   };
   /**
    * 发送签约邮件
@@ -244,6 +354,7 @@ class Compact extends Component {
                 <TableData
                   resid={440237518278}
                   subtractH={180}
+                  isUseBESize={true}
                   // tableComponent="ag-grid"
                   // sideBarAg={true}
                   hasAdvSearch={true}
@@ -280,6 +391,7 @@ class Compact extends Component {
               {this.state.residTab1 == '437092525908' ? (
                 <TableData
                   resid={437092525908}
+                  isUseBESize={true}
                   subtractH={180}
                   // tableComponent="ag-grid"
                   // sideBarAg={true}
@@ -319,6 +431,7 @@ class Compact extends Component {
                 <TableData
                   resid={436624421847}
                   subtractH={180}
+                  isUseBESize={true}
                   // tableComponent="ag-grid"
                   // sideBarAg={true}
                   hasAdvSearch={true}
@@ -359,6 +472,7 @@ class Compact extends Component {
               {this.state.residTab1 == '436624135588' ? (
                 <TableData
                   resid={436624135588}
+                  isUseBESize={true}
                   subtractH={180}
                   // tableComponent="ag-grid"
                   // sideBarAg={true}
@@ -443,6 +557,7 @@ class Compact extends Component {
               {residTab2 == 640264082868 ? (
                 <TableData
                   resid={640264082868}
+                  isUseBESize={true}
                   subtractH={220}
                   hasAdd={false}
                   hasRowView={true}
@@ -463,7 +578,9 @@ class Compact extends Component {
                       ? checkboxOptions.length === 2
                         ? ''
                         : `1 = 2`
-                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                      : `C3_668601864440  = '${
+                          CheckboxOptionsMap[checkboxOptions[0]]
+                        }'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -545,6 +662,7 @@ class Compact extends Component {
                   resid={640264102764}
                   subtractH={220}
                   hasAdd={false}
+                  isUseBESize={true}
                   hasRowView={true}
                   hasRowDelete={false}
                   hasRowEdit={false}
@@ -563,7 +681,9 @@ class Compact extends Component {
                       ? checkboxOptions.length === 2
                         ? ''
                         : `1 = 2`
-                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                      : `C3_668601864440= '${
+                          CheckboxOptionsMap[checkboxOptions[0]]
+                        }'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -625,6 +745,7 @@ class Compact extends Component {
                   resid={640264137935}
                   subtractH={220}
                   hasAdd={false}
+                  isUseBESize={true}
                   hasRowView={true}
                   recordFormUseAbsolute={true}
                   hasRowDelete={false}
@@ -643,7 +764,9 @@ class Compact extends Component {
                       ? checkboxOptions.length === 2
                         ? ''
                         : `1 = 2`
-                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                      : `C3_668601864440= '${
+                          CheckboxOptionsMap[checkboxOptions[0]]
+                        }'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -700,6 +823,108 @@ class Compact extends Component {
                   ]}
                 />
               ) : null}
+            </div>
+          </TabPane>
+          <TabPane
+            tab="审批节点一览"
+            key="3"
+            style={{ width: '100%', height: 'calc(100vh - 64px)' }}
+          >
+            <div className="filterLine">
+              {filterTab3A.map((item, key) => {
+                return (
+                  <span
+                    className={
+                      this.state.key3 == '_' + key + '3A'
+                        ? 'filter current'
+                        : 'filter'
+                    }
+                    key={'_' + key + '3A'}
+                    onClick={() => {
+                      if (this.state.key3 != '_' + key + '3A') {
+                        if (item.label == '一线员工') {
+                          this.setState({
+                            key4: '_33B',
+                            residTab3: '668709373267'
+                          });
+                        } else {
+                          this.setState({
+                            key4: '_03B',
+                            residTab3: '668712593119'
+                          });
+                        }
+                      }
+                      this.setState({
+                        key3: '_' + key + '3A'
+                      });
+                    }}
+                  >
+                    {item.label}
+                  </span>
+                );
+              })}
+            </div>
+            <div className="filterLine">
+              {filterTab3B.map((item, key) => {
+                return (
+                  <span
+                    className={
+                      this.state.key4 == '_' + key + '3B'
+                        ? 'filter current'
+                        : 'filter'
+                    }
+                    style={{
+                      display:
+                        (this.state.key3 === ('_03A' || '_13A') &&
+                          item.condition == 'DL') ||
+                        (this.state.key3 != ('_03A' || '_13A') &&
+                          item.condition == 'IDL')
+                          ? 'inline'
+                          : 'none'
+                    }}
+                    key={'_' + key + '3B'}
+                    onClick={() => {
+                      this.setState({
+                        key4: '_' + key + '3B',
+                        residTab3: item.resid
+                      });
+                    }}
+                  >
+                    {item.label}
+                  </span>
+                );
+              })}
+            </div>
+            <div style={{ width: '100%', height: 'calc(100vh - 128px)' }}>
+              <TableData
+                resid={this.state.residTab3}
+                subtractH={220}
+                isUseBESize={true}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={true}
+                hasRowModify={false}
+                hasRowSelection={true}
+                wrappedComponentRef={element => (this.tableDataRef3 = element)}
+                refTargetComponentName="TableData"
+                actionBarExtra={record => {
+                  return this.state.key3 === '_13A' ? (
+                    <Button
+                      type="primary"
+                      loading={this.state.loading}
+                      onClick={() => {
+                        this.handleRemail(record);
+                      }}
+                    >
+                      再次发送提醒邮件
+                    </Button>
+                  ) : null;
+                }}
+              />
             </div>
           </TabPane>
           {/* <TabPane
@@ -780,6 +1005,7 @@ class Compact extends Component {
             <TableData
               resid={contractHistoryResid}
               subtractH={220}
+              isUseBESize={true}
               // tableComponent="ag-grid"
               // sideBarAg={true}
               hasAdvSearch={false}

@@ -665,7 +665,8 @@ class TableData extends React.Component {
       hasBeSort,
       defaultColumnWidth,
       columnsWidth,
-      fixedColumns
+      fixedColumns,
+      locale: this.props.intl.locale
     };
 
     let dataSource = res.data;
@@ -738,7 +739,6 @@ class TableData extends React.Component {
       columns = result.columns;
       components = result.components;
     }
-
     this._dealedColumns = columns;
 
     this.setState({ originalColumn: res.cmscolumninfo });
@@ -1139,7 +1139,7 @@ class TableData extends React.Component {
   // 渲染在头部的后端按钮
   renderBeBtns = () => {
     const { beBtnsMultiple, beBtnsOther } = this.state;
-    const { size, formProps, baseURL, backendButtonPopConfirmProps } = this.props;
+    const { size, formProps, baseURL, backendButtonPopConfirmProps, intl: { locale } } = this.props;
     const id = this._id;
     const arr = [...beBtnsMultiple, ...beBtnsOther];
     const records = this.getSelectedRecords();
@@ -1173,7 +1173,7 @@ class TableData extends React.Component {
               recordFormData,
               baseURL,
               iframeURL,
-              btnInfo.Name1
+              locale == 'en' ? btnInfo.Name2 : btnInfo.Name1
             );
           });
         }}
@@ -1186,7 +1186,7 @@ class TableData extends React.Component {
 
   // 渲染行后端按钮
   renderRowBeBtns = (beBtnsSingle, record) => {
-    const { size, formProps, baseURL } = this.props;
+    const { size, formProps, baseURL, intl: { locale } } = this.props;
     const id = this._id;
 
     return beBtnsSingle.map(btnInfo => (
@@ -1221,7 +1221,7 @@ class TableData extends React.Component {
                 recordFormData,
                 baseURL,
                 iframeURL,
-                btnInfo.Name1
+                locale == 'en' ? btnInfo.Name2 : btnInfo.Name1
               );
             }
           );
