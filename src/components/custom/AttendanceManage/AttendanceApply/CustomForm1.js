@@ -78,7 +78,7 @@ class CustomForm1 extends React.Component {
     },
     errors: {
       type: true,
-      reason: true,
+      reason: this.props.reasonRequired,
       startTime: true,
       endTime: true,
       timeLength: false, //时间长度
@@ -356,13 +356,24 @@ class CustomForm1 extends React.Component {
   };
 
   handleEventChange = item => e => {
-    this.setState({
-      filledData: { ...this.state.filledData, [item]: e.target.value },
-      errors: {
-        ...this.state.errors,
-        [item]: e.target.value ? false : true
-      }
-    });
+    if (item == "reason") {
+      const { reasonRequired } = this.props;
+      this.setState({
+        filledData: { ...this.state.filledData, [item]: e.target.value },
+        errors: {
+          ...this.state.errors,
+          [item]: !reasonRequired || e.target.value ? false : true
+        }
+      })
+    } else {
+      this.setState({
+        filledData: { ...this.state.filledData, [item]: e.target.value },
+        errors: {
+          ...this.state.errors,
+          [item]: e.target.value ? false : true
+        }
+      });
+    }
   };
 
   handleFileChange = info => {
@@ -405,7 +416,7 @@ class CustomForm1 extends React.Component {
       isNeedAttachment,
       errors
     } = this.state;
-    const { showWorkOvertimeOptions } = this.props;
+    const { showWorkOvertimeOptions, reasonRequired } = this.props;
     let startHours = [], //可选的开始时间点
       endHours = [], //可选的结束时间点
       disabled = true; //时间长度是否不可手动输入
@@ -502,7 +513,7 @@ class CustomForm1 extends React.Component {
           <Form.Item
             {...formItemLayout}
             label="事由："
-            required
+            required={reasonRequired}
             validateStatus={errors.reason && 'error'}
             help={errors.reason && '请输入事由'}
           >
