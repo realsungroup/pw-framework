@@ -8,7 +8,7 @@ http.setDefaultBaseURL(baseURL);
 
 // 请求拦截
 http.setRequestInterceptors(
-  function(config) {
+  function (config) {
     // 请求头加上 token
     const userInfo = JSON.parse(getItem('userInfo'));
 
@@ -22,14 +22,14 @@ http.setRequestInterceptors(
     }
     return config;
   },
-  function(error) {
+  function (error) {
     return error;
   }
 );
 
 // 响应拦截
 http.setResponseInterceptors(
-  function(response) {
+  function (response) {
     const res = response.data;
     if (
       (res &&
@@ -53,7 +53,7 @@ http.setResponseInterceptors(
       }
     }
   },
-  function(error) {
+  function (error) {
     return error;
   }
 );
@@ -370,6 +370,14 @@ http.createApi('getAutoImportStatus', {
   url: '/api/Resource/GetAutoImportStatus'
 });
 
+/**
+ * 根据taskid获取任务进度
+ *
+ */
+http.createApi('getAutoImportStatusByTaskId', {
+  method: 'get',
+  url: '/api/Resource/GetAutoImportStatusByTaskId'
+});
 /*
  * 获取所有 app
  * 参数：{ parentresids, getresourcedata, getrecordcount, cmswhere }

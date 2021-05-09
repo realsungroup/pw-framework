@@ -9772,7 +9772,7 @@ window[663690700084] = {
   name: 'AnnualLeaveManage', // 组件名称，
   title: '年假管理', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:7001'
+    baseURL: 'http://10.108.2.66:9091'
   }
 };
 //在岗培训审批
