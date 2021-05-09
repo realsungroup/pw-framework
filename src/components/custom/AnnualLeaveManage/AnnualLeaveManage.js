@@ -11,7 +11,8 @@ import {
   Icon,
   message,
   Input,
-  Table
+  Table,
+  Progress
 } from 'antd';
 import './AnnualLeaveManage.less';
 import TableData from 'Common/data/TableData';
@@ -449,7 +450,7 @@ class AnnualLeaveManage extends React.Component {
     numList: [],
     selectQuarterModal: false,
     jiesuanQuarter: curQuarter,
-    refreshCallback: () => {}
+    refreshCallback: () => { }
   };
   handleOpenSelectPerson = callback => {
     this.setState({ selectPersonVisible: true, refreshCallback: callback });
@@ -1888,7 +1889,11 @@ class NianJiaGaiLan extends React.PureComponent {
     downloading: false,
     selectedData: {},
     downloadData: [],
-    pageSize: 10
+    pageSize: 10,
+    isShowModal: false,
+    totalIndex: 0,
+    curIndex: 0,
+    isTaskComplete: false
   };
   componentDidMount() {
     this.getData({ pageIndex: this.state.current - 1 });
@@ -1903,6 +1908,100 @@ class NianJiaGaiLan extends React.PureComponent {
       this.getData({ pageIndex: this.state.current - 1, key });
     });
   };
+  actionBarExtra = () => {
+    return <Button onClick={() => { this.setState({ isShowModal: true }, this.handleNotice) }} size="small" type="primary">同步全部人员</Button>
+  }
+  /**
+   * 进度条
+   */
+  renderTaskProgress = () => {
+    const { totalIndex, curIndex } = this.state;
+    let percent = 0;
+    if (this.state.isTaskComplete) {
+      percent = 100;
+    } else if (totalIndex) {
+      percent = Math.floor((curIndex / totalIndex) * 100);
+    }
+    return (
+      <div style={{ display: "flex", justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+        <Progress width={240} type="circle" percent={percent} />
+        <div style={{ marginTop: 20 }}>
+          {curIndex} / {totalIndex}
+        </div>
+      </div>
+    );
+  };
+  /**
+   * 同步全部
+   */
+  handleNotice = async () => {
+    if (this._taskid) {
+      this.setState({ isShowModal: true });
+      return
+    }
+    let res;
+    try {
+      res = await http({ baseURL: this.props.baseURL }).PostRunAutoImport({
+        id: 673732172531,
+        parms: {
+          yearnumber: moment().year()
+        }
+      });
+      this._taskid = res.data
+    } catch (err) {
+      console.error(err);
+    }
+    this.setState({ isShowModal: true });
+    this.getTaskInfo();
+  };
+  /**
+   * 获取进度
+   */
+  getTaskInfo = async () => {
+    let res;
+    try {
+      res = await http({ baseURL: this.props.baseURL }).getAutoImportStatusByTaskId({
+        taskid: this._taskid
+      });
+    } catch (err) {
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo();
+        }
+      }, 1000);
+      return message.error(err.message);
+    }
+    if (res.error !== 0) {
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo();
+        }
+      }, 1000);
+      return message.error(res.message);
+    }
+    // 当前任务已完成
+    if (res.IsComplete) {
+      this.setState({
+        totalIndex: res.data.Total,
+        curIndex: res.data.Index,
+        isTaskComplete: true
+      });
+      message.success('同步完成');
+      this._taskid = null;
+      // 当前任务未完成
+    } else {
+      this.setState({
+        totalIndex: res.data.Total,
+        curIndex: res.data.Index,
+        isTaskComplete: false
+      });
+      this.timer = setTimeout(async () => {
+        if (this.getTaskInfo) {
+          await this.getTaskInfo();
+        }
+      }, 1000);
+    }
+  };
   render() {
     const { baseURL, baseURLFromAppConfig } = this.props;
     const {
@@ -1913,7 +2012,8 @@ class NianJiaGaiLan extends React.PureComponent {
       selectedData,
       pageSize,
       downloading,
-      downloadData
+      downloadData,
+      isShowModal
     } = this.state;
     return (
       <div className="NJGL">
@@ -1959,11 +2059,11 @@ class NianJiaGaiLan extends React.PureComponent {
             hasModify={false}
             hasDelete={false}
             hasRowEdit={false}
-            hasRowModify={false}
+            hasRowModify={true}
             hasRowView={false}
             hasRowDelete={false}
             actionBarWidth={100}
-            // actionBarExtra={this.actionBarExtra}
+            actionBarExtra={this.actionBarExtra}
             downloadBaseURL={baseURLFromAppConfig}
           />
           {/* <div className='maindata'>
@@ -2080,6 +2180,25 @@ class NianJiaGaiLan extends React.PureComponent {
             </TabPane>
           </Tabs>
         </div>
+        <Modal
+          title="同步全部人员"
+          visible={isShowModal}
+          okText="完成"
+          cancelText="关闭"
+          closable={false}
+          onOk={() => {
+            this.setState({
+              isShowModal: false
+            });
+          }}
+          onCancel={() => {
+            this.setState({
+              isShowModal: false
+            });
+          }}
+        >
+          {this.renderTaskProgress()}
+        </Modal>
       </div>
     );
   }
