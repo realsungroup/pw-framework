@@ -154,7 +154,7 @@ class ADPExport extends React.Component {
                   if (newJoinArray.some(item => item == column.name)) {
                     //当月入职
                     if (record.C3_427590520804 == 'Y') {
-                      startDate = record.JOINDATE;
+                      startDate = record.C3_427552757162;
                     } else {
                       startDate = monthFirstDay;
                     }
@@ -182,7 +182,7 @@ class ADPExport extends React.Component {
               let startDate = "";
               //当月入职
               if (record.C3_427590520804 == 'Y') {
-                startDate = record.JOINDATE;
+                startDate = record.C3_427552757162;
               } else {
                 startDate = monthFirstDay;
               }
