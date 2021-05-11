@@ -711,4 +711,13 @@ http.createApi('getTablePost', {
   url: '/api/100/table/PostRetrieve'
 });
 
+/**
+ * 获取表格数据（post 请求）
+ * 参数:{ resid, cmswhere, ... }；参数和 getTable 的参数一致
+ */
+http.createApi('getdailyrpt', {
+  method: 'get',
+  url: '/api/200/attendance/getdailyrpt'
+});
+
 export default http;
