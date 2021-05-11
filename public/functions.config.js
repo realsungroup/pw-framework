@@ -2066,12 +2066,14 @@ window[621257502796] = {
     showAllminute: true, //是否显示所有分钟数
     showBatchApply: false, //是否显示批量申请
     showWorkOvertimeOptions: false, //是否显示加班选项
-    showApproveAll: false //是否显示一键审批
+    showApproveAll: false, //是否显示一键审批
+    reasonRequired: false, //事由是否是必填的
     //无锡配置
     // showAllminute: false, //是否显示所有分钟数
     // showBatchApply: true,//是否显示批量申请
     // showWorkOvertimeOptions: true, //是否显示加班选项
-    //showApproveAll:true//是否显示一键审批
+    // showApproveAll:true//是否显示一键审批
+    // reasonRequired:true, //事由是否是必填的
   }
 };
 window[622577431745] = {
@@ -9770,7 +9772,7 @@ window[663690700084] = {
   name: 'AnnualLeaveManage', // 组件名称，
   title: '年假管理', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:7001'
+    baseURL: 'http://10.108.2.66:9091'
   }
 };
 //在岗培训审批

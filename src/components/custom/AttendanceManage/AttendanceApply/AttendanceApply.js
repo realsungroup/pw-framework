@@ -36,6 +36,7 @@ class AttendanceApply extends React.Component {
 
   renderForm() {
     const { current } = this.state;
+
     const {
       showAllminute,
       showWorkOvertimeOptions,
@@ -53,6 +54,7 @@ class AttendanceApply extends React.Component {
             showAllminute={showAllminute}
             showChooseAllDay={showChooseAllDay}
             showWorkOvertimeOptions={showWorkOvertimeOptions}
+            reasonRequired={reasonRequired}
           />
         );
         break;

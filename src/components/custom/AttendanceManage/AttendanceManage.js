@@ -115,6 +115,7 @@ class AttendanceManage extends React.Component {
       showApproveAll,
       showChooseAllDay
     } = this.props;
+
     let page = null;
     switch (selectKey) {
       // 我的考勤申请单
@@ -169,6 +170,7 @@ class AttendanceManage extends React.Component {
             showChooseAllDay={showChooseAllDay}
             showBatchApply={showBatchApply}
             showWorkOvertimeOptions={showWorkOvertimeOptions}
+            reasonRequired={reasonRequired}
           />
         );
         break;
