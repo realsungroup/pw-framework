@@ -40,7 +40,8 @@ class AttendanceApply extends React.Component {
     const {
       showAllminute,
       showWorkOvertimeOptions,
-      showChooseAllDay
+      showChooseAllDay,
+      reasonRequired
     } = this.props;
 
     let page = null;
