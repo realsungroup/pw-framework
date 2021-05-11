@@ -113,7 +113,8 @@ class AttendanceManage extends React.Component {
       showBatchApply,
       showWorkOvertimeOptions,
       showApproveAll,
-      showChooseAllDay
+      showChooseAllDay,
+      reasonRequired
     } = this.props;
 
     let page = null;

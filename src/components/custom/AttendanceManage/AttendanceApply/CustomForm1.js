@@ -382,7 +382,7 @@ class CustomForm1 extends React.Component {
   };
 
   handleEventChange = item => e => {
-    if (item == "reason") {
+    if (item == 'reason') {
       const { reasonRequired } = this.props;
       this.setState({
         filledData: { ...this.state.filledData, [item]: e.target.value },
@@ -390,7 +390,7 @@ class CustomForm1 extends React.Component {
           ...this.state.errors,
           [item]: !reasonRequired || e.target.value ? false : true
         }
-      })
+      });
     } else {
       this.setState({
         filledData: { ...this.state.filledData, [item]: e.target.value },
@@ -494,7 +494,11 @@ class CustomForm1 extends React.Component {
       errors,
       chooseAllDay
     } = this.state;
-    const { showWorkOvertimeOptions, showChooseAllDay } = this.props;
+    const {
+      showWorkOvertimeOptions,
+      showChooseAllDay,
+      reasonRequired
+    } = this.props;
 
     let startHours = [], //可选的开始时间点
       endHours = [], //可选的结束时间点
