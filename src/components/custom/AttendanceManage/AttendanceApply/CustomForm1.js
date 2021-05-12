@@ -95,11 +95,14 @@ class CustomForm1 extends React.Component {
   minute = [];
   componentDidMount() {
     const { showAllminute } = this.props;
-    this.minute = showAllminute
-      ? new Array(60).fill('1').map((item, index) => {
-          return index < 10 ? '0' + index : '' + index;
-        })
-      : ['00', 30];
+    const isShangHai =
+      JSON.parse(getItem('userInfo')).EnterpriseCode === '2000';
+    this.minute =
+      showAllminute || isShangHai
+        ? new Array(60).fill('1').map((item, index) => {
+            return index < 10 ? '0' + index : '' + index;
+          })
+        : ['00', 30];
 
     this.getType();
   }
