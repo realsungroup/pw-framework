@@ -8,7 +8,7 @@ http.setDefaultBaseURL(baseURL);
 
 // 请求拦截
 http.setRequestInterceptors(
-  function (config) {
+  function(config) {
     // 请求头加上 token
     const userInfo = JSON.parse(getItem('userInfo'));
 
@@ -22,14 +22,14 @@ http.setRequestInterceptors(
     }
     return config;
   },
-  function (error) {
+  function(error) {
     return error;
   }
 );
 
 // 响应拦截
 http.setResponseInterceptors(
-  function (response) {
+  function(response) {
     const res = response.data;
     if (
       (res &&
@@ -53,7 +53,7 @@ http.setResponseInterceptors(
       }
     }
   },
-  function (error) {
+  function(error) {
     return error;
   }
 );
@@ -720,8 +720,8 @@ http.createApi('getTablePost', {
 });
 
 /**
- * 获取表格数据（post 请求）
- * 参数:{ resid, cmswhere, ... }；参数和 getTable 的参数一致
+ * 获取表格数据（get 请求）
+ * 参数:{ date1,date2,pnid,refresh }；参数和 getTable 的参数一致
  */
 http.createApi('getdailyrpt', {
   method: 'get',
