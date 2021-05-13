@@ -23,6 +23,8 @@ const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 16 }
 };
+const attendanceBaseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
 const { TextArea } = Input;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -441,7 +443,7 @@ class CustomForm1 extends React.Component {
     const refresh = '1';
     let res;
     try {
-      res = await http({ baseURL: 'http://wux-hr03:9091' }).getdailyrpt({
+      res = await http({ baseURL: attendanceBaseURL }).getdailyrpt({
         pnid,
         date1,
         date2,
