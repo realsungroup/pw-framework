@@ -343,13 +343,20 @@ class EmployeeCourses extends React.Component {
         } else {
           result = '审核中';
         }
+        let str = item.C3_615657104984;
+        if (str) {
+          if (str.length > 10) {
+            str = item.C3_615657104984.substring(0, 10)
+          }
+        }
         return {
           name: item.C3_615657104492,
           employeeID: item.C3_615657105254,
-          time: item.C3_615657104984,
+          time: str,
           result
         };
       });
+      console.log('当前', selectedCourse)
       let last_result = '';
       if (selectedCourse.C3_623173774889) {
         if (selectedCourse.C3_623173774889 === 'Y') {
@@ -361,10 +368,14 @@ class EmployeeCourses extends React.Component {
       } else {
         last_result = '审核中';
       }
+      let str = '';
+      if (selectedCourse.passTime) {
+        str = selectedCourse.passTime.substring(0, 10)
+      }
       approvalRecords.push({
         name: selectedCourse.HRName,
         employeeID: selectedCourse.HRNum,
-        time: selectedCourse.passTime,
+        time: str,
         result: last_result
       });
       this.setState({
@@ -467,6 +478,8 @@ class EmployeeCourses extends React.Component {
     });
   };
   closeCourseDetailOpenApply = () => {
+    this.getApprovalRecords();
+
     this.setState({
       visible: false,
       applyVisible: true
@@ -994,7 +1007,7 @@ class EmployeeCourses extends React.Component {
           title={`${item.courseType} / ${item.C3_613941384592}`}
           className={`course-list_course-card ${
             item.REC_ID === selectedCourse.REC_ID ? 'checked' : ''
-          }`}
+            }`}
           key={item.REC_ID}
           bodyStyle={{ padding: 16 }}
           headStyle={{ padding: '0 16px' }}
@@ -1046,8 +1059,8 @@ class EmployeeCourses extends React.Component {
         </Card>
       ))
     ) : (
-      <Empty style={{ marginTop: '100px' }}></Empty>
-    );
+        <Empty style={{ marginTop: '100px' }}></Empty>
+      );
   };
   render() {
     const { selectedCourse } = this.state;
@@ -1353,65 +1366,65 @@ class EmployeeCourses extends React.Component {
           footer={
             this.state.applyModalMode === 'modify'
               ? [
-                  <Button
-                    onClick={() => {
-                      this.setState({
-                        applyVisible: false,
-                        applyModalMode: 'view',
-                        extraCost: ''
-                      });
-                    }}
-                  >
-                    关闭
+                <Button
+                  onClick={() => {
+                    this.setState({
+                      applyVisible: false,
+                      applyModalMode: 'view',
+                      extraCost: ''
+                    });
+                  }}
+                >
+                  关闭
                   </Button>,
-                  <Popconfirm
-                    title="确认提交？"
-                    okText="确认"
-                    cancelText="取消"
-                    onConfirm={this.submitApply}
-                  >
-                    <Button
-                      type="primary"
-                      loading={this.state.loadings.submitApplyBtnLoading}
-                    >
-                      提交
-                    </Button>
-                  </Popconfirm>,
-                  <Popconfirm
-                    title="确定要放弃吗？"
-                    icon={
-                      <Icon type="question-circle-o" style={{ color: 'red' }} />
-                    }
-                    onConfirm={this.isAbandon}
-                  >
-                    <Button type="danger">放弃</Button>
-                  </Popconfirm>
-                ]
-              : [
-                  <Button
-                    onClick={() => {
-                      this.setState({
-                        applyVisible: false,
-                        applyModalMode: 'view',
-                        extraCost: ''
-                      });
-                    }}
-                  >
-                    关闭
-                  </Button>,
+                <Popconfirm
+                  title="确认提交？"
+                  okText="确认"
+                  cancelText="取消"
+                  onConfirm={this.submitApply}
+                >
                   <Button
                     type="primary"
-                    onClick={() => {
-                      const bodyHtml = window.document.body.innerHTML;
-                      window.document.body.innerHTML = this.printer.innerHTML;
-                      window.print();
-                      window.document.body.innerHTML = bodyHtml;
-                      window.location.reload();
-                    }}
+                    loading={this.state.loadings.submitApplyBtnLoading}
                   >
-                    打印
+                    提交
+                    </Button>
+                </Popconfirm>,
+                // <Popconfirm
+                //   title="确定要放弃吗？"
+                //   icon={
+                //     <Icon type="question-circle-o" style={{ color: 'red' }} />
+                //   }
+                //   onConfirm={this.isAbandon}
+                // >
+                //   <Button type="danger">放弃</Button>
+                // </Popconfirm>
+              ]
+              : [
+                <Button
+                  onClick={() => {
+                    this.setState({
+                      applyVisible: false,
+                      applyModalMode: 'view',
+                      extraCost: ''
+                    });
+                  }}
+                >
+                  关闭
+                  </Button>,
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    const bodyHtml = window.document.body.innerHTML;
+                    window.document.body.innerHTML = this.printer.innerHTML;
+                    window.print();
+                    window.document.body.innerHTML = bodyHtml;
+                    window.location.reload();
+                  }}
+                >
+                  打印
                   </Button>
-                ]
+              ]
           }
         >
           <div id="apply-printer" ref={element => (this.printer = element)}>
@@ -1445,28 +1458,28 @@ class EmployeeCourses extends React.Component {
           footer={
             this.state.feedbackModalMode === 'modify'
               ? [
-                  <Button onClick={this.handleCloseFeedBackModal}>关闭</Button>,
-                  <Button
-                    onClick={() => {
-                      this.submitRate();
-                    }}
-                    loading={this.state.loadings.submitPlanBtnLoading}
-                  >
-                    确定提交
+                <Button onClick={this.handleCloseFeedBackModal}>关闭</Button>,
+                <Button
+                  onClick={() => {
+                    this.submitRate();
+                  }}
+                  loading={this.state.loadings.submitPlanBtnLoading}
+                >
+                  确定提交
                   </Button>
-                ]
+              ]
               : [
-                  <Button
-                    onClick={() => {
-                      this.setState({
-                        feebackVisible: false,
-                        feedbackModalMode: 'view'
-                      });
-                    }}
-                  >
-                    关闭
+                <Button
+                  onClick={() => {
+                    this.setState({
+                      feebackVisible: false,
+                      feedbackModalMode: 'view'
+                    });
+                  }}
+                >
+                  关闭
                   </Button>
-                ]
+              ]
           }
         >
           <FeedBackAndPlan
@@ -1526,15 +1539,15 @@ class EmployeeCourses extends React.Component {
           footer={
             this.state.tipsModalMode === 'modify'
               ? [
-                  <Button onClick={this.onCloseTipModal}>关闭</Button>,
-                  <Button
-                    type="primary"
-                    onClick={this.submitTip}
-                    loading={this.state.loadings.submitTipLoading}
-                  >
-                    提交
+                <Button onClick={this.onCloseTipModal}>关闭</Button>,
+                <Button
+                  type="primary"
+                  onClick={this.submitTip}
+                  loading={this.state.loadings.submitTipLoading}
+                >
+                  提交
                   </Button>
-                ]
+              ]
               : [<Button onClick={this.onCloseTipModal}>关闭</Button>]
           }
         >
@@ -1578,28 +1591,28 @@ class EmployeeCourses extends React.Component {
               </div>
             </div>
           ) : (
-            <div style={{ padding: 12 }}>
-              {/* 标题 */}
-              <h2 style={{ textAlign: 'center' }}>
-                {this.state.selcetedTip.C3_614964239022}
-              </h2>
-              <Divider />
-              {/* 内容 */}
-              {this.state.selcetedTip.Filepath ? (
-                this.state.selcetedTip.Filepath.split(',').map(
-                  (item, index) => (
-                    <p key={item}>
-                      <a href={item} target="_blank">
-                        附件{index + 1}
-                      </a>
-                    </p>
+              <div style={{ padding: 12 }}>
+                {/* 标题 */}
+                <h2 style={{ textAlign: 'center' }}>
+                  {this.state.selcetedTip.C3_614964239022}
+                </h2>
+                <Divider />
+                {/* 内容 */}
+                {this.state.selcetedTip.Filepath ? (
+                  this.state.selcetedTip.Filepath.split(',').map(
+                    (item, index) => (
+                      <p key={item}>
+                        <a href={item} target="_blank">
+                          附件{index + 1}
+                        </a>
+                      </p>
+                    )
                   )
-                )
-              ) : (
-                <p>无附件</p>
-              )}
-            </div>
-          )}
+                ) : (
+                    <p>无附件</p>
+                  )}
+              </div>
+            )}
         </Modal>
       </div>
     );
