@@ -132,9 +132,9 @@ export default class LzAFFOS extends React.Component {
     this.inApplicationRef = React.createRef();
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => { };
 
   handleTabsChange = activeKey => {
     this.setState({ activeKey });
@@ -876,7 +876,7 @@ export default class LzAFFOS extends React.Component {
                       </div>
                     )
                   }}
-                  actionBarExtra={({}) => {
+                  actionBarExtra={({ }) => {
                     return (
                       <>
                         <Button
@@ -1173,11 +1173,16 @@ export default class LzAFFOS extends React.Component {
                   });
                 }}
                 onOk={() => {
-                  this.setState({
-                    showApprovalModal: false,
-                    showLongApprovalModal: false
-                  });
-                  this.submitAllData();
+                  if (this.state.FAC_Manager === '') {
+                    message.info('请填写厂务经理');
+                    return;
+                  } else {
+                    this.setState({
+                      showApprovalModal: false,
+                      showLongApprovalModal: false
+                    });
+                    this.submitAllData();
+                  }
                 }}
               >
                 <div className="approval_modal">
@@ -1546,7 +1551,7 @@ export default class LzAFFOS extends React.Component {
             <div>
               <label>是否长期施工</label>
               <Switch
-                onChange={checked => {}}
+                onChange={checked => { }}
                 checkedChildren="是"
                 unCheckedChildren="否"
               />
@@ -1557,7 +1562,7 @@ export default class LzAFFOS extends React.Component {
             onClose={this.handleCloseAddWorker}
           />
         </Spin>
-      </div>
+      </div >
     );
   }
   handleCloseAddWorker = () => {
@@ -1583,7 +1588,7 @@ class AddWorker extends React.PureComponent {
         <div>
           <label>是否长期施工</label>
           <Switch
-            onChange={checked => {}}
+            onChange={checked => { }}
             checkedChildren="是"
             unCheckedChildren="否"
           />
