@@ -114,6 +114,7 @@ class AttendanceManage extends React.Component {
       showWorkOvertimeOptions,
       showApproveAll,
       showChooseAllDay,
+      isEightToSeventeen,
       reasonRequired
     } = this.props;
 
@@ -169,6 +170,7 @@ class AttendanceManage extends React.Component {
             getNotices={this.getNotices}
             showAllminute={showAllminute}
             showChooseAllDay={showChooseAllDay}
+            isEightToSeventeen={isEightToSeventeen}
             showBatchApply={showBatchApply}
             showWorkOvertimeOptions={showWorkOvertimeOptions}
             reasonRequired={reasonRequired}

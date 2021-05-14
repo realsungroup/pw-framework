@@ -468,15 +468,16 @@ class CustomForm1 extends React.Component {
         const endDate = moment(moment(endTime).format('YYYY-MM-DD'));
         const endHour = moment(endTime).format('HH');
         const endMinute = moment(endTime).format('mm');
+        const { isEightToSeventeen } = this.props;
         this.setState({
           filledData: {
             ...this.state.filledData,
             startDate,
-            startHour,
-            startMinute,
-            endHour,
+            startHour: isEightToSeventeen ? '08' : startHour,
+            startMinute: isEightToSeventeen ? '00' : startMinute,
             endDate,
-            endMinute
+            endHour: isEightToSeventeen ? '17' : endHour,
+            endMinute: isEightToSeventeen ? '00' : endMinute
           }
         });
         this.setDateError();
