@@ -278,6 +278,7 @@ class Summary extends React.PureComponent {
           ProductIDs: bianhao //当前人员编号1751
         }
       );
+      console.log('res', res);
       let arr = [];
       let n = 0;
       while (n < res.nodes.length) {

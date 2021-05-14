@@ -153,8 +153,6 @@ class IDLTransferHr extends Component {
         resid,
         recid
       });
-      console.log('审批流', res);
-
       var n = 1;
       var arr = [];
       while (n < res.data.length + 1) {
@@ -174,7 +172,6 @@ class IDLTransferHr extends Component {
         }
         n++;
       }
-      console.log('审批流', arr);
       n = 0;
       var str = ``;
       //  C3_305737857578 编号
@@ -205,13 +202,14 @@ class IDLTransferHr extends Component {
 
           n++;
         }
-        console.log('stream', arr2);
         let proposal;
+        let appNum = '';
         try {
           proposal = await http().getTable({
             resid: 632255761674,
             cmswhere: `changeID = '${recid}'`
           });
+          appNum = proposal.data[0].applyPersonId;
           this.setState({
             applyNum: proposal.data[0].applyPersonId
           });
@@ -219,6 +217,198 @@ class IDLTransferHr extends Component {
           message.info(error.message);
           console.log(error.message);
         }
+
+        //获取最高审批人
+        let tops;
+        try {
+          tops = await http().getTable({
+            resid: 673622950750
+          });
+        } catch (e) {
+          message.info(e.message);
+          console.log(e.message);
+        }
+        var streamRec = [];
+        // C3_634660564341 变动编号
+        // C3_635250483297 审批阶段序号
+        // C3_634660566076 审批序号
+        // C3_635255573464 审批人编号
+        // C3_634660565034 审批阶段名称
+        // C3_634660565583 审批人
+        let cms = ``;
+        var n = 0;
+        while (n < arr2.length) {
+          if (n == 0) {
+            cms += `C3_305737857578 = '${arr2[n].stepPeopleID}'`;
+          } else {
+            cms += ` or C3_305737857578 = '${arr2[n].stepPeopleID}'`;
+          }
+          streamRec.push({
+            C3_634660564341: this.state.toCheckFront.changeID,
+            C3_635250483297: arr2[n].auditRecno,
+            C3_634660566076: arr2[n].auditNo,
+            C3_635255573464: arr2[n].stepPeopleID,
+            C3_634660565034: arr2[n].stepName,
+            C3_634660565583: arr2[n].stepPeople
+          });
+          n++;
+        }
+        console.log('arr2', arr2, streamRec);
+
+        let supData;
+        supData = await http().getTable({
+          resid: 227186227531,
+          cmswhere: cms
+        });
+        console.log('supData', supData);
+
+        let supArr = [];
+        let supCounter = 0;
+        let topArr = [];
+        // 建立顶级审批人的对比数组
+        while (supCounter < tops.data.length) {
+          topArr.push(tops.data[supCounter]);
+          supCounter++;
+        }
+        // 查找上上级6主管为止是否和提起人人人员编号相同，如果是的话存进数组，有顶级审批人出现的话，下一个阶级停止判断
+        supCounter = 0;
+        while (supCounter < supData.data.length) {
+          let bool = false;
+          let j = false;
+
+          if (supData.data[supCounter].C3_417993417686 == appNum && j != true) {
+            bool = true;
+            console.log(
+              supData.data[supCounter].C3_227192484125,
+              '直接主管',
+              appNum
+            );
+            let k = 0;
+            if (k < topArr.length) {
+              if (topArr[k] == supData.data[supCounter].C3_417993417686) {
+                j = true;
+              }
+              k++;
+            }
+          }
+          if (supData.data[supCounter].C3_446640642919 == appNum) {
+            bool = true;
+            console.log(
+              supData.data[supCounter].C3_227192484125,
+              '上级2',
+              appNum
+            );
+
+            let k = 0;
+            if (k < topArr.length) {
+              if (topArr[k] == supData.data[supCounter].C3_446640642919) {
+                j = true;
+              }
+              k++;
+            }
+          }
+          if (supData.data[supCounter].C3_446640647278 == appNum && j != true) {
+            bool = true;
+            console.log(
+              supData.data[supCounter].C3_227192484125,
+              '上级3',
+              appNum
+            );
+
+            let k = 0;
+            if (k < topArr.length) {
+              if (topArr[k] == supData.data[supCounter].C3_446640647278) {
+                j = true;
+              }
+              k++;
+            }
+          }
+          if (supData.data[supCounter].C3_446640649747 == appNum && j != true) {
+            bool = true;
+            console.log(
+              supData.data[supCounter].C3_227192484125,
+              '上级4',
+              appNum
+            );
+
+            let k = 0;
+            if (k < topArr.length) {
+              if (topArr[k] == supData.data[supCounter].C3_446640649747) {
+                j = true;
+              }
+              k++;
+            }
+          }
+          if (supData.data[supCounter].C3_446640652170 == appNum && j != true) {
+            bool = true;
+            console.log(
+              supData.data[supCounter].C3_227192484125,
+              '上级5',
+              appNum
+            );
+
+            let k = 0;
+            if (k < topArr.length) {
+              if (topArr[k] == supData.data[supCounter].C3_446640652170) {
+                j = true;
+              }
+              k++;
+            }
+          }
+          if (supData.data[supCounter].C3_446640814888 == appNum && j != true) {
+            bool = true;
+            console.log(
+              supData.data[supCounter].C3_227192484125,
+              '上级6',
+              appNum
+            );
+
+            let k = 0;
+            if (k < topArr.length) {
+              if (topArr[k] == supData.data[supCounter].C3_446640814888) {
+                j = true;
+              }
+              k++;
+            }
+          }
+          if (bool == true) {
+            supArr.push(supData.data[supCounter].C3_305737857578);
+          }
+          supCounter++;
+        }
+        // 申请人如果也是审批人，自动通过
+        let applyHasPass = [];
+
+        streamRec.map(item => {
+          let bol = false;
+          let bol2 = false;
+          if (item.C3_635255573464.toString() === appNum) {
+            bol = true;
+          }
+          let l = 0;
+          while (l < supArr.length) {
+            if (item.C3_635255573464 == supArr[l]) {
+              bol = true;
+              bol2 = true;
+            }
+            l++;
+          }
+          if (bol === true) {
+            let str2 = '';
+            if (bol2 == true) {
+              str2 = 'Y';
+            }
+            applyHasPass.push({
+              ...item,
+              C3_634660565837: 'Y',
+              show: str2,
+              edit_time: moment().format('YYYY-MM-DD HH:mm:ss')
+            });
+          } else {
+            applyHasPass.push({ ...item });
+          }
+        });
+
         this.setState({ stream: arr2, streamChange: arr2 });
       } catch (e) {
         console.log(e);
@@ -472,43 +662,13 @@ class IDLTransferHr extends Component {
             }
           ]
         });
-        var streamRec = [];
-        // C3_634660564341 变动编号
-        // C3_635250483297 审批阶段序号
-        // C3_634660566076 审批序号
-        // C3_635255573464 审批人编号
-        // C3_634660565034 审批阶段名称
-        // C3_634660565583 审批人
+
+        //自动跳过审批的代码移到这里
+
         if (!end) {
-          var n = 0;
-          while (n < this.state.stream.length) {
-            streamRec.push({
-              C3_634660564341: this.state.toCheckFront.changeID,
-              C3_635250483297: this.state.stream[n].auditRecno,
-              C3_634660566076: this.state.stream[n].auditNo,
-              C3_635255573464: this.state.stream[n].stepPeopleID,
-              C3_634660565034: this.state.stream[n].stepName,
-              C3_634660565583: this.state.stream[n].stepPeople
-            });
-            n++;
-          }
-          //申请人如果也是审批人，自动通过
-          let applyHasPass = [];
-          streamRec.map(item => {
-            if (item.C3_635255573464.toString() === this.state.applyNum) {
-              applyHasPass.push({
-                ...item,
-                C3_634660565837: 'Y',
-                edit_time: moment().format('YYYY-MM-DD HH:mm:ss')
-              });
-            } else {
-              applyHasPass.push({ ...item });
-            }
-          });
-          console.log('更新后审批流', applyHasPass);
           let res2 = await http().addRecords({
             resid: 634660498796,
-            data: applyHasPass
+            data: this.state.stream
           });
         }
 
@@ -571,7 +731,8 @@ class IDLTransferHr extends Component {
       console.log(error.message);
     }
     this.getStream(object.changeID, resid);
-    this.getMem(object.changeID);
+
+    // this.getMem(object.changeID);
 
     this.setState({ toCheck: arr, toCheckFront: object, visible: true });
     console.log('v', v);
@@ -699,7 +860,7 @@ class IDLTransferHr extends Component {
     try {
       let res2 = await http().getTable({
         resid: 634660498796,
-        cmswhere: `C3_634660564341='${v}'`
+        cmswhere: `C3_634660564341 = '${v}'`
       });
       if (res2.data.length > 0) {
         var n = 0;
@@ -711,22 +872,22 @@ class IDLTransferHr extends Component {
             stepName: res2.data[n].C3_634660565034,
             stepPeople: res2.data[n].C3_634660565583,
             stepTime: res2.data[n].edit_time,
-            order: res2.data[n].C3_634660566076
+            order: res2.data[n].C3_634660566076,
+            current: res2.data[n].C3_637177232366
           });
           if (res2.data[n].C3_637177232366 == 'Y') {
-            var c = res2.data[n].C3_635250483297;
+            c = res2.data[n].C3_635250483297;
           }
-          if (res2.data[n].C3_634660565837 == 'Y') {
-            isFin = isFin + 1;
-          }
+          // if (res2.data[n].C3_634660565837 == 'Y') {
+          //   isFin = isFin + 1;
+          // }
+          //有问题！
           n++;
         }
-        console.log('arr', arr);
-        console.log('res2', res2);
         arr = arr.sort(compare('order'));
-        if (isFin == res2.data.length) {
-          c = res2.data.length + 1;
-        }
+        // if (isFin == res2.data.length) {
+        //   c = res2.data.length + 1;
+        // }
         this.setState({ stream: arr, curStep: c });
       } else {
         this.StreamGenerate(id, v);
