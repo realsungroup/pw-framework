@@ -2068,14 +2068,16 @@ window[621257502796] = {
     // showWorkOvertimeOptions: false, //是否显示加班选项
     // showApproveAll: false, //是否显示一键审批
     // reasonRequired: false, //事由是否是必填的
-    // showChooseAllDay: true
+    // showChooseAllDay: true,
+    // isEightToSeventeen:true, //请全天假默认从8到17点
     //无锡配置
     showAllminute: false, //是否显示所有分钟数
     showBatchApply: true, //是否显示批量申请
     showWorkOvertimeOptions: true, //是否显示加班选项
     showApproveAll: true, //是否显示一键审批
     reasonRequired: true, //事由是否是必填的
-    showChooseAllDay: true
+    showChooseAllDay: true,
+    isEightToSeventeen: true //请全天假默认从8到17点
   }
 };
 window[622577431745] = {

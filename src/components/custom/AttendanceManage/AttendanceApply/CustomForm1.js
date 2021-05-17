@@ -468,16 +468,29 @@ class CustomForm1 extends React.Component {
         const endDate = moment(moment(endTime).format('YYYY-MM-DD'));
         const endHour = moment(endTime).format('HH');
         const endMinute = moment(endTime).format('mm');
+        const hasSort = startDate.isBefore(endTime);
         const { isEightToSeventeen } = this.props;
         this.setState({
           filledData: {
             ...this.state.filledData,
-            startDate,
-            startHour: isEightToSeventeen ? '08' : startHour,
-            startMinute: isEightToSeventeen ? '00' : startMinute,
-            endDate,
-            endHour: isEightToSeventeen ? '17' : endHour,
-            endMinute: isEightToSeventeen ? '00' : endMinute
+            startDate: hasSort ? startDate : endDate,
+            startHour: isEightToSeventeen
+              ? '08'
+              : hasSort
+              ? startHour
+              : endHour,
+            startMinute: isEightToSeventeen
+              ? '00'
+              : hasSort
+              ? startMinute
+              : endMinute,
+            endDate: hasSort ? endDate : startDate,
+            endHour: isEightToSeventeen ? '17' : hasSort ? endHour : startHour,
+            endMinute: isEightToSeventeen
+              ? '00'
+              : hasSort
+              ? endMinute
+              : startMinute
           }
         });
         this.setDateError();
