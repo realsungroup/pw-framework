@@ -149,6 +149,12 @@ class Summary extends React.PureComponent {
       // width: 120,
     },
     {
+      title: '剩余可用年假',
+      dataIndex: 'synj',
+      key: 'synj'
+      // width: 120,
+    },
+    {
       title: '累积使用',
       dataIndex: 'ljsq',
       key: 'ljsq'
@@ -489,7 +495,7 @@ class Summary extends React.PureComponent {
         <Spin spinning={this.state.loading}>
           <div>
             <span style={{ marginRight: '2vw' }}>当年新增年假{isWuxi ? curentYearIncrease + '天' : curentYearIncrease * 8 + '小时'}</span>
-            <span style={{ marginRight: '2vw' }}>上年转结年假{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</span>
+            <span style={{ marginRight: '2vw' }}>上年结转年假{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</span>
             <TreeSelect
               style={{ width: '250px' }}
               value={selectValue}
