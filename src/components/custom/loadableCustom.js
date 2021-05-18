@@ -927,3 +927,9 @@ export const ExportPersonnelChanges = Loadable({
     return minLoading;
   }
 });
+export const HolidayBalanceQuery = Loadable({
+  loader: () => import('./HolidayBalanceQuery'),
+  loading() {
+    return minLoading;
+  }
+});
