@@ -584,7 +584,7 @@ class Summary extends React.PureComponent {
                   <TableData
                     key={selectedRecord.REC_ID}
                     //dataMode="sub"
-                    resid={'674042800878'}
+                    resid={'674751187747'}
                     //subresid={'662737017622'}
                     //hostrecid={selectedRecord.REC_ID}
                     baseURL={baseURL}
