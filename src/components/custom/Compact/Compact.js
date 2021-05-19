@@ -19,7 +19,11 @@ const contractHistoryResid = '436624421847'; //合同历史记录
 const mailHis = '641216663667'; //邮件提醒历史记录
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
-const CheckboxOptions = ['DL', 'IDL'];
+const CheckboxOptions = ['一线员工', '办公室员工'];
+const CheckboxOptionsMap = {
+  一线员工: '产线',
+  办公室员工: '办公室'
+};
 const filterTab1 = [
   {
     label: '在职人员',
@@ -40,11 +44,11 @@ const filterTab1 = [
 ];
 const filterTab2A = [
   {
-    label: '待发送邮件',
+    label: '待发送邮件(待续签提醒)',
     resid: '640264082868'
   },
   {
-    label: '已发送邮件',
+    label: '已发送邮件(待续签提醒)',
     resid: '640264102764'
   },
   {
@@ -64,10 +68,10 @@ const filterTab2B = [
 ];
 const filterTab3A = [
   {
-    label: 'IDL'
+    label: '办公室员工'
   },
   {
-    label: 'DL'
+    label: '一线员工'
   }
 ];
 const filterTab3B = [
@@ -574,7 +578,9 @@ class Compact extends Component {
                       ? checkboxOptions.length === 2
                         ? ''
                         : `1 = 2`
-                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                      : `C3_668601864440  = '${
+                          CheckboxOptionsMap[checkboxOptions[0]]
+                        }'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -675,7 +681,9 @@ class Compact extends Component {
                       ? checkboxOptions.length === 2
                         ? ''
                         : `1 = 2`
-                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                      : `C3_668601864440= '${
+                          CheckboxOptionsMap[checkboxOptions[0]]
+                        }'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -756,7 +764,9 @@ class Compact extends Component {
                       ? checkboxOptions.length === 2
                         ? ''
                         : `1 = 2`
-                      : `C3_640119278050 = '${checkboxOptions[0]}'`
+                      : `C3_668601864440= '${
+                          CheckboxOptionsMap[checkboxOptions[0]]
+                        }'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -832,7 +842,7 @@ class Compact extends Component {
                     key={'_' + key + '3A'}
                     onClick={() => {
                       if (this.state.key3 != '_' + key + '3A') {
-                        if (item.label == 'DL') {
+                        if (item.label == '一线员工') {
                           this.setState({
                             key4: '_33B',
                             residTab3: '668709373267'

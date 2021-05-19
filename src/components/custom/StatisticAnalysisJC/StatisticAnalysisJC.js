@@ -40,8 +40,8 @@ class StatisticAnalysisJC extends React.Component {
       key: '', // 模糊搜索的 key 值
       sortOrder: '', // 后端排序规则：'desc' 降序 | 'asc' 升序
       sortField: '', // 后端排序字段
-      record : [],
-      cmswhere:''
+      record: [],
+      cmswhere: ''
     };
   }
 
@@ -201,7 +201,7 @@ class StatisticAnalysisJC extends React.Component {
     this.setState({ loading: false });
   };
 
-  componentWillMount = async  => {
+  componentWillMount = async => {
     let res;
     console.log(this.props);
     // try{
@@ -214,34 +214,32 @@ class StatisticAnalysisJC extends React.Component {
     // }
   };
 
-  getRecord = async (wheres) =>{
+  getRecord = async wheres => {
     let options = {
       key: '',
       sortOrder: '',
       sortField: '',
-      pageindex:0,
-      pageSize:10,
-      cmswhere:wheres
-    }
+      pageindex: 0,
+      pageSize: 10,
+      cmswhere: wheres
+    };
     let res;
-      const { resid,mtsid } = this.props;
-console.log("options",options)
+    const { resid, mtsid } = this.props;
+    console.log('options', options);
     try {
-      res = await getMainTableData(
-        resid,
-        mtsid,
-        options
-      );
+      res = await getMainTableData(resid, mtsid, options);
     } catch (error) {
       message.error(error.message);
     }
-    this.setState({
-      record:res.data,
-      cmswhere:wheres
-    })
-    this.forceUpdate()
+    console.log(res);
+    res &&
+      this.setState({
+        record: res.data,
+        cmswhere: wheres
+      });
+    this.forceUpdate();
   };
-  
+
   handleConfirm = async (dataSource, selectedRowKeys) => {
     if (!selectedRowKeys.length) {
       return message.error('请选择记录');
@@ -549,8 +547,8 @@ console.log("options",options)
                 );
               }
             ]}
-            dataSource = {this.state.record}
-            cmswhere= {this.state.cmswhere}
+            dataSource={this.state.record}
+            cmswhere={this.state.cmswhere}
           />
           {advSearchConfig && (
             <LzAdvSearch

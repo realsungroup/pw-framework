@@ -921,3 +921,9 @@ export const RecruitmentNeeds = Loadable({
     return minLoading;
   }
 });
+export const ExportPersonnelChanges = Loadable({
+  loader: () => import('./ExportPersonnelChanges'),
+  loading() {
+    return minLoading;
+  }
+});

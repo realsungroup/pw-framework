@@ -93,7 +93,7 @@ const columns = [
     number1: '25PL',
     number2: '2010',
     isFront: false,
-    isSameBegin: true
+    isSameBegin: false
   },
   {
     name: '路程假扣款',
@@ -101,7 +101,7 @@ const columns = [
     number1: '25RL',
     number2: '2010',
     isFront: false,
-    isSameBegin: true
+    isSameBegin: false
   },
   {
     name: '产假扣款',
@@ -154,7 +154,7 @@ class ADPExport extends React.Component {
                   if (newJoinArray.some(item => item == column.name)) {
                     //当月入职
                     if (record.C3_427590520804 == 'Y') {
-                      startDate = record.JOINDATE;
+                      startDate = record.C3_427552757162;
                     } else {
                       startDate = monthFirstDay;
                     }
@@ -162,7 +162,7 @@ class ADPExport extends React.Component {
                   let row = `P${column.number2}|"${
                     record.personnuumber
                     }|"CN|"|"INS|"${column.number2}|"${column.number1}|"${
-                    record.C3_659465238204
+                    startDate
                     }|"${
                     column.isSameBegin ? record.C3_659465238204 : '99991231'
                     }|"|"|"|"|"${column.number1}|"`;
@@ -182,7 +182,7 @@ class ADPExport extends React.Component {
               let startDate = "";
               //当月入职
               if (record.C3_427590520804 == 'Y') {
-                startDate = record.JOINDATE;
+                startDate = record.C3_427552757162;
               } else {
                 startDate = monthFirstDay;
               }

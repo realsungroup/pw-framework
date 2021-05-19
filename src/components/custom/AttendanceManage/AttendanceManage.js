@@ -108,7 +108,7 @@ class AttendanceManage extends React.Component {
 
   renderContent = () => {
     const { summaryVisible, selectKey } = this.state;
-    const { showAllminute, showBatchApply, showWorkOvertimeOptions } = this.props;
+    const { showAllminute, showBatchApply, showWorkOvertimeOptions, showApproveAll, reasonRequired } = this.props;
     let page = null;
     switch (selectKey) {
       // 我的考勤申请单
@@ -162,6 +162,7 @@ class AttendanceManage extends React.Component {
             showAllminute={showAllminute}
             showBatchApply={showBatchApply}
             showWorkOvertimeOptions={showWorkOvertimeOptions}
+            reasonRequired={reasonRequired}
           />
         );
         break;
@@ -174,6 +175,7 @@ class AttendanceManage extends React.Component {
             onOpenApprovalRecordModal={this.openApprovalRecordModal}
             getNotices={this.getNotices}
             summaryVisible={summaryVisible}
+            showApproveAll={showApproveAll}
           />
         );
         break;

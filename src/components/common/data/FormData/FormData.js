@@ -608,7 +608,7 @@ class FormData extends React.Component {
 
     const storeWay = operation === 'add' ? 'fe' : 'be';
     return (
-      <TabPane tab={tab} key={index}>
+      <TabPane tab={tab} key={index} forceRender>
         <div style={{ height: subTable.FrmHeight }}>
           <TableData
             wrappedComponentRef={element =>
@@ -652,7 +652,7 @@ class FormData extends React.Component {
 
     if (hasTabPane) {
       return (
-        <TabPane tab={tab} key={index}>
+        <TabPane tab={tab} key={index} forceRender>
           <TableData
             wrappedComponentRef={element =>
               (this[`tableDataRef${index}`] = element)
@@ -717,7 +717,12 @@ class FormData extends React.Component {
       recordFormHideLables,
       extraButtons
     } = this.props;
-    const { hasSubTables, confirmLoading, loading, clearOnchangeFileds } = this.state;
+    const {
+      hasSubTables,
+      confirmLoading,
+      loading,
+      clearOnchangeFileds
+    } = this.state;
     const mode = operation === 'view' ? 'view' : 'edit';
     let otherProps = {};
     // 当为查看时，不显示 编辑、保存和取消按钮
@@ -743,8 +748,32 @@ class FormData extends React.Component {
       return (
         <ClearOnchangeContext.Provider value={clearOnchangeFileds}>
           <Spin spinning={loading}>
-            <div className={this.state.windowEnlarge ? 'enlarged-size' : 'normal-size'}>
-              {this.state.windowEnlarge ? <Icon type="fullscreen-exit" onClick={() => { this.setState({ windowEnlarge: false }); if (this.props.isExpand) { this.props.isExpand(false); }; }} /> : <Icon type="fullscreen" onClick={() => { this.setState({ windowEnlarge: true }); if (this.props.isExpand) { this.props.isExpand(true); }; }} />}
+            <div
+              className={
+                this.state.windowEnlarge ? 'enlarged-size' : 'normal-size'
+              }
+            >
+              {this.state.windowEnlarge ? (
+                <Icon
+                  type="fullscreen-exit"
+                  onClick={() => {
+                    this.setState({ windowEnlarge: false });
+                    if (this.props.isExpand) {
+                      this.props.isExpand(false);
+                    }
+                  }}
+                />
+              ) : (
+                <Icon
+                  type="fullscreen"
+                  onClick={() => {
+                    this.setState({ windowEnlarge: true });
+                    if (this.props.isExpand) {
+                      this.props.isExpand(true);
+                    }
+                  }}
+                />
+              )}
               <AbsoluteForm
                 getForm={this.getForm}
                 data={data}
@@ -767,12 +796,14 @@ class FormData extends React.Component {
                 recordFormHideFields={recordFormHideFields}
                 recordFormHideLables={recordFormHideLables}
                 extraButtons={extraButtons}
+                confirmLoading={confirmLoading}
               />
               {hasSubTables &&
                 this.renderSubTablesAbsolute(containerHeight, containerWidth)}
             </div>
           </Spin>
-        </ClearOnchangeContext.Provider>);
+        </ClearOnchangeContext.Provider>
+      );
     }
 
     return (
@@ -822,7 +853,8 @@ class FormData extends React.Component {
             </div>
           </div>
         </Spin>
-      </ClearOnchangeContext.Provider>);
+      </ClearOnchangeContext.Provider>
+    );
   }
 }
 

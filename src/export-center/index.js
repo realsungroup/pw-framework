@@ -184,5 +184,6 @@ export {
   OnDutyTrainingApp,
   IIVIInfo,
   BUCODEInfo,
-  RecruitmentNeeds
+  RecruitmentNeeds,
+  ExportPersonnelChanges
 } from '../components/custom/loadableCustom';

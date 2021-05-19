@@ -29,7 +29,7 @@ const PwFormFooter = React.memo(
     return (
       <div className="pw-form__footer">
         <div>{typeof extraButtons === 'function' && extraButtons(form)}</div>
-        {(function() {
+        {(function () {
           if (mode === 'edit') {
             return (
               <Fragment>
@@ -41,19 +41,19 @@ const PwFormFooter = React.memo(
                         onSave && onSave(form);
                       }}
                     >
-                      <Button type="primary">{saveText}</Button>
+                      <Button type="primary" loading={confirmLoading}>{saveText}</Button>
                     </Popconfirm>
                   ) : (
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        onSave && onSave(form);
-                      }}
-                      loading={confirmLoading}
-                    >
-                      {saveText}
-                    </Button>
-                  ))}
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          onSave && onSave(form);
+                        }}
+                        loading={confirmLoading}
+                      >
+                        {saveText}
+                      </Button>
+                    ))}
                 {saveReopen && (
                   <Button
                     type="primary"

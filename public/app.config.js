@@ -7,8 +7,8 @@ window.pwConfig = {
     // 地址
     // baseURL: 'http://10.108.11.36:6001/', // 请求的基地址
     // baseURL: 'http://pwkwebapi.realsun.me/',
-    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
-    // baseURL: 'http://10.108.2.66:5002/', // 请求的基地址
+    // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    baseURL: 'http://10.108.2.66:5002/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
@@ -30,6 +30,7 @@ window.pwConfig = {
     pexan: 623152549932,
     //各定制组件需用到的基地址
     customURLs: {
+      personInfoDownloadURL: 'http://10.108.2.66:80/', //人事信息下载地址
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',

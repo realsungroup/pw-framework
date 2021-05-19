@@ -125,6 +125,7 @@ export default class LzAFFOS extends React.Component {
       influentedManageNum: '', //施工管理部门负责人编号
       selectApprovalKey: 0, //选择审批人的序号
       goodsInfo: [], //带出厂物品信息
+      FAC_Manager: '',
       goodsInfoModal: false //填写出厂物品信息的模态框
     };
     this.abnormalRef = React.createRef();
@@ -150,8 +151,8 @@ export default class LzAFFOS extends React.Component {
     let res;
     try {
       res = await http().getTable({
-        resid: 227186227531,
-        cmswhere: `C3_227192472953 = ${num}`
+        resid: 670091350112,
+        cmswhere: `jobNum = ${num}`
       });
       this.setState({
         selectApprovalKey: 1
@@ -433,21 +434,21 @@ export default class LzAFFOS extends React.Component {
     });
   };
 
-  //更改厂务总监
+  //更改部门总监
   changeConductor = () => {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 5,
-      cms: 663098123864
+      cms: 670091359835
     });
   };
 
-  //更改经理
+  //更改部门经理
   changeManagerSpecial = () => {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 4,
-      cms: 663097802792
+      cms: 670091357851
     });
   };
 
@@ -456,7 +457,7 @@ export default class LzAFFOS extends React.Component {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 3,
-      cms: 227186227531
+      cms: 670091353265
     });
   };
 
@@ -465,7 +466,7 @@ export default class LzAFFOS extends React.Component {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 2,
-      cms: 227186227531
+      cms: 670091351596
     });
   };
 
@@ -474,7 +475,7 @@ export default class LzAFFOS extends React.Component {
     this.setState({
       changeApproveModal: true,
       selectApprovalKey: 1,
-      cms: 227186227531
+      cms: 670091350112
     });
   };
 
@@ -497,11 +498,11 @@ export default class LzAFFOS extends React.Component {
   // 审批人更改
   changeAppMem = v => {
     var obj = this.state.approvalPeopleList;
-    obj[this.state.selectApprovalKey].C3_227212499515 = v.C3_227212499515; //所属部门
-    obj[this.state.selectApprovalKey].C3_605717998409 = v.C3_227192484125; //姓名
-    obj[this.state.selectApprovalKey].C3_605718032582 = v.C3_305737857578; //人员编号
-    obj[this.state.selectApprovalKey].num = v.C3_227192472953; //工号
-    obj[this.state.selectApprovalKey].C3_607445040215 = v.C3_227192496109;
+    obj[this.state.selectApprovalKey].C3_227212499515 = v.partment; //所属部门
+    obj[this.state.selectApprovalKey].C3_605717998409 = v.name; //姓名
+    obj[this.state.selectApprovalKey].C3_605718032582 = v.peopleNum; //人员编号
+    obj[this.state.selectApprovalKey].num = v.jobNum; //工号
+    obj[this.state.selectApprovalKey].C3_607445040215 = v.englishName; //英文名
     obj[this.state.selectApprovalKey].C3_607445034147 = '施工访客审批';
     switch (this.state.selectApprovalKey) {
       case 0:
@@ -516,6 +517,7 @@ export default class LzAFFOS extends React.Component {
         break;
       case 3:
         obj[this.state.selectApprovalKey].C3_607445035535 = '厂务经理';
+        this.setState({ FAC_Manager: v.name });
         break;
       case 4:
         obj[this.state.selectApprovalKey].C3_607445035535 = '经理';
@@ -610,6 +612,7 @@ export default class LzAFFOS extends React.Component {
         resid: '605703697147',
         maindata: {
           ...this.state.value,
+          FAC_Manager: this.state.FAC_Manager,
           C3_605703896083: '施工',
           C3_605703913037: '施工人员',
           _state: 'added',
@@ -823,12 +826,13 @@ export default class LzAFFOS extends React.Component {
 
     return (
       <div className="lz-affo">
-        <Tabs
-          activeKey={activeKey}
-          renderTabBar={this.renderTabBar}
-          onChange={this.handleTabsChange}
-        >
-          {/* <TabPane tab="申请中" key="申请中">
+        <Spin spinning={loading}>
+          <Tabs
+            activeKey={activeKey}
+            renderTabBar={this.renderTabBar}
+            onChange={this.handleTabsChange}
+          >
+            {/* <TabPane tab="申请中" key="申请中">
             <div style={{ height: 'calc(100vh - 60px)' }}>
               <TableData
                 {...inApplication}
@@ -843,95 +847,95 @@ export default class LzAFFOS extends React.Component {
             </div>
           </TabPane> */}
 
-          <TabPane tab="填写申请" key="审批中">
-            <div style={{ height: 'calc(100vh - 60px)' }}>
-              <TableData
-                recordFormUseAbsolute={true}
-                {...inExaminationAndApproval}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
-                refTargetComponentName="TableData"
-                formProps={{
-                  saveText: '提交',
-                  height: 500,
-                  saveNeedConfirm: true,
-                  saveConfirmTip: '请确认已在右侧添加完访客信息'
-                }}
-                successMessageComponent={{
-                  name: 'Modal',
-                  title: (
-                    <div>
-                      <p
-                        style={{
-                          thor: 'black',
-                          fontWeight: 'bold',
-                          fontSize: '14px'
-                        }}
-                      >
-                        您的申请已提交，所有外部人员需检查锡康码及行动轨迹
-                      </p>
-                    </div>
-                  )
-                }}
-                actionBarExtra={({}) => {
-                  return (
-                    <>
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          this.getapplyInfo();
-                          this.setState({ showModalJungleBuild: true });
-                        }}
-                      >
-                        填写施工人员基本信息
-                      </Button>
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          this.getapplyInfo();
-                          this.setState({
-                            showJungleLongDeliverModal: true,
-                            isLongDeliver: false,
-                            showDeliverApprovalModal: true
-                          });
-                        }}
-                      >
-                        填写提送货人员基本信息
-                      </Button>
-                    </>
-                  );
-                }}
-              />
-            </div>
-
-            {/* 选择是否长期施工人员 */}
-            <Modal
-              title="请选择是否长期施工人员"
-              visible={this.state.showModalJungleBuild}
-              onOk={() => {
-                this.setState({
-                  showModalJungleBuild: false,
-                  showBuilderModal: true
-                });
-              }}
-              onCancel={() => this.setState({ showModalJungleBuild: false })}
-            >
-              <div>
-                <label className="jungle_isBuilder_label">
-                  是否长期施工人员
-                </label>
-                <Radio.Group
-                  onChange={e => {
-                    this.setState({ isLongBuilder: e.target.value });
+            <TabPane tab="填写申请" key="审批中">
+              <div style={{ height: 'calc(100vh - 60px)' }}>
+                <TableData
+                  recordFormUseAbsolute={true}
+                  {...inExaminationAndApproval}
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  refTargetComponentName="TableData"
+                  formProps={{
+                    saveText: '提交',
+                    height: 500,
+                    saveNeedConfirm: true,
+                    saveConfirmTip: '请确认已在右侧添加完访客信息'
                   }}
-                >
-                  <Radio value={true}>是</Radio>
-                  <Radio value={false}>否</Radio>
-                </Radio.Group>
+                  successMessageComponent={{
+                    name: 'Modal',
+                    title: (
+                      <div>
+                        <p
+                          style={{
+                            thor: 'black',
+                            fontWeight: 'bold',
+                            fontSize: '14px'
+                          }}
+                        >
+                          您的申请已提交，所有外部人员需检查锡康码及行动轨迹
+                        </p>
+                      </div>
+                    )
+                  }}
+                  actionBarExtra={({}) => {
+                    return (
+                      <>
+                        <Button
+                          type="primary"
+                          onClick={() => {
+                            this.getapplyInfo();
+                            this.setState({ showModalJungleBuild: true });
+                          }}
+                        >
+                          填写施工人员基本信息
+                        </Button>
+                        <Button
+                          type="primary"
+                          onClick={() => {
+                            this.getapplyInfo();
+                            this.setState({
+                              showJungleLongDeliverModal: true,
+                              isLongDeliver: false,
+                              showDeliverApprovalModal: true
+                            });
+                          }}
+                        >
+                          填写提送货人员基本信息
+                        </Button>
+                      </>
+                    );
+                  }}
+                />
               </div>
-            </Modal>
 
-            {/* 选择是否长期送货人员 */}
-            {/* <Modal
+              {/* 选择是否长期施工人员 */}
+              <Modal
+                title="请选择是否长期施工人员"
+                visible={this.state.showModalJungleBuild}
+                onOk={() => {
+                  this.setState({
+                    showModalJungleBuild: false,
+                    showBuilderModal: true
+                  });
+                }}
+                onCancel={() => this.setState({ showModalJungleBuild: false })}
+              >
+                <div>
+                  <label className="jungle_isBuilder_label">
+                    是否长期施工人员
+                  </label>
+                  <Radio.Group
+                    onChange={e => {
+                      this.setState({ isLongBuilder: e.target.value });
+                    }}
+                  >
+                    <Radio value={true}>是</Radio>
+                    <Radio value={false}>否</Radio>
+                  </Radio.Group>
+                </div>
+              </Modal>
+
+              {/* 选择是否长期送货人员 */}
+              {/* <Modal
               title="请选择是否长期送货人员"
               visible={this.state.showJungleLongDeliverModal}
               onOk={() => {
@@ -974,74 +978,70 @@ export default class LzAFFOS extends React.Component {
               )}
             </Modal> */}
 
-            {/* 选择受影响部门模态框 */}
-            <Modal
-              title="部门列表"
-              visible={this.state.searchDepaV}
-              footer={null}
-              onCancel={() => {
-                this.setState({ searchDepaV: false });
-              }}
-              width={'80vw'}
-              height={'80vh'}
-            >
-              <div
-                style={{
-                  width: '100%',
-                  height: 'calc(100vh - 104px)',
-                  position: 'relative'
+              {/* 选择受影响部门模态框 */}
+              <Modal
+                title="部门列表"
+                visible={this.state.searchDepaV}
+                footer={null}
+                onCancel={() => {
+                  this.setState({ searchDepaV: false });
                 }}
+                width={'80vw'}
+                height={'80vh'}
               >
-                <TableData
-                  // resid={632327119162}
-                  resid={663672607380}
-                  cmswhere={`C3_419339113187 != '' and C3_419448436728 = '菲尼萨光电通讯科技(无锡)有限公司'`}
-                  hasRowView={false}
-                  subtractH={220}
-                  hasAdd={false}
-                  hasRowSelection={false}
-                  hasRowDelete={false}
-                  hasRowModify={false}
-                  hasModify={false}
-                  hasDelete={false}
-                  style={{ height: '100%' }}
-                  hasRowView={false}
-                  customRowBtns={[
-                    record => {
-                      return (
-                        <Button
-                          onClick={() => {
-                            if (this.state.kindOfDept === 'dept') {
-                              this.setState({
-                                searchDepaV: false,
-                                dept: record.DEP_NAME
-                              });
-                            } else if (
-                              this.state.kindOfDept === 'influentedDepa'
-                            ) {
-                              this.setState({
-                                searchDepaV: false,
-                                influentedDepa: record.DEP_NAME,
-                                influentedManage: record.C3_475851099125,
-                                influentedManageNum: record.C3_450479321413
-                              });
-                              this.getInfluentedManageInfo(
-                                record.C3_450479321413
-                              );
-                            }
-                          }}
-                        >
-                          选择
-                        </Button>
-                      );
-                    }
-                  ]}
-                />
-              </div>
-            </Modal>
+                <div
+                  style={{
+                    width: '100%',
+                    height: 'calc(100vh - 104px)',
+                    position: 'relative'
+                  }}
+                >
+                  <TableData
+                    resid={670091350112}
+                    hasRowView={false}
+                    subtractH={220}
+                    hasAdd={false}
+                    hasRowSelection={false}
+                    hasRowDelete={false}
+                    hasRowModify={false}
+                    hasModify={false}
+                    hasDelete={false}
+                    style={{ height: '100%' }}
+                    hasRowView={false}
+                    customRowBtns={[
+                      record => {
+                        return (
+                          <Button
+                            onClick={() => {
+                              if (this.state.kindOfDept === 'dept') {
+                                this.setState({
+                                  searchDepaV: false,
+                                  dept: record.partment
+                                });
+                              } else if (
+                                this.state.kindOfDept === 'influentedDepa'
+                              ) {
+                                this.setState({
+                                  searchDepaV: false,
+                                  influentedDepa: record.partment,
+                                  influentedManage: record.name,
+                                  influentedManageNum: record.jobNum
+                                });
+                                this.getInfluentedManageInfo(record.jobNum);
+                              }
+                            }}
+                          >
+                            选择
+                          </Button>
+                        );
+                      }
+                    ]}
+                  />
+                </div>
+              </Modal>
 
-            {/* 填写施工人员信息表单组件 */}
-            <Spin spinning={loading}>
+              {/* 填写施工人员信息表单组件 */}
+
               <BuildApprovlForm
                 parent={this}
                 toFormMsg={{
@@ -1071,10 +1071,8 @@ export default class LzAFFOS extends React.Component {
                 changeControl={this.changeControl}
                 openDeptModal={this.openDeptModal}
               />
-            </Spin>
 
-            {/* 填写送货人员信息表单组件 */}
-            <Spin spinning={loading}>
+              {/* 填写送货人员信息表单组件 */}
               <DeliverApprovalForm
                 parent={this}
                 toDeliverApprovalFormData={{
@@ -1096,465 +1094,469 @@ export default class LzAFFOS extends React.Component {
                 changeApply={this.changeApply}
                 submitAllDeliverData={this.submitAllDeliverData}
               />
-            </Spin>
-            {/* 访客 */}
-            <Modal
-              title="出厂物品登记"
-              width="90%"
-              visible={this.state.goodsInfoModal}
-              onCancel={() => {
-                this.setState({
-                  goodsInfoModal: false
-                });
-              }}
-              footer={[]}
-            >
-              <GoodsInfoForm
-                getGoodsInfo={this.getGoodsInfo}
-                dataSource={this.state.goodsInfo}
-              />
-            </Modal>
-            {/* 送货 */}
-            <Modal
-              title="出厂物品登记"
-              width="90%"
-              visible={this.state.goodsInfoModal1}
-              onCancel={() => {
-                this.setState({
-                  goodsInfoModal1: false
-                });
-              }}
-              footer={[]}
-            >
-              <GoodsInfoForm1
-                getGoodsInfo={this.getGoodsInfo}
-                dataSource={this.state.goodsInfo}
-              />
-            </Modal>
+              {/* 访客 */}
+              <Modal
+                title="出厂物品登记"
+                width="90%"
+                visible={this.state.goodsInfoModal}
+                onCancel={() => {
+                  this.setState({
+                    goodsInfoModal: false
+                  });
+                }}
+                footer={[]}
+              >
+                <GoodsInfoForm
+                  getGoodsInfo={this.getGoodsInfo}
+                  dataSource={this.state.goodsInfo}
+                />
+              </Modal>
+              {/* 送货 */}
+              <Modal
+                title="出厂物品登记"
+                width="90%"
+                visible={this.state.goodsInfoModal1}
+                onCancel={() => {
+                  this.setState({
+                    goodsInfoModal1: false
+                  });
+                }}
+                footer={[]}
+              >
+                <GoodsInfoForm1
+                  getGoodsInfo={this.getGoodsInfo}
+                  dataSource={this.state.goodsInfo}
+                />
+              </Modal>
 
-            {/* 施工人员编辑Modal */}
-            <Modal
-              title="施工人员清单"
-              width="90%"
-              visible={this.state.showPeopleListModal}
-              onCancel={() => {
-                this.setState({
-                  showPeopleListModal: false
-                });
-              }}
-              footer={[]}
-            >
-              <LzAFFOSPeopleList parent={this} />
-            </Modal>
+              {/* 施工人员编辑Modal */}
+              <Modal
+                title="施工人员清单"
+                width="90%"
+                visible={this.state.showPeopleListModal}
+                onCancel={() => {
+                  this.setState({
+                    showPeopleListModal: false
+                  });
+                }}
+                footer={[]}
+              >
+                <LzAFFOSPeopleList parent={this} />
+              </Modal>
 
-            {/* 送货人员编辑Modal */}
-            <Modal
-              title="提送货人员清单"
-              width="90%"
-              visible={this.state.showDeliverPeopleListModal}
-              onCancel={() => {
-                this.setState({
-                  showDeliverPeopleListModal: false
-                });
-              }}
-              footer={[]}
-            >
-              <DeliverPeopleList parent={this} />
-            </Modal>
+              {/* 送货人员编辑Modal */}
+              <Modal
+                title="提送货人员清单"
+                width="90%"
+                visible={this.state.showDeliverPeopleListModal}
+                onCancel={() => {
+                  this.setState({
+                    showDeliverPeopleListModal: false
+                  });
+                }}
+                footer={[]}
+              >
+                <DeliverPeopleList parent={this} />
+              </Modal>
 
-            {/* 临时施工审批流 */}
-            <Modal
-              width="600px"
-              title="审批流确认"
-              visible={
-                this.state.showApprovalModal && !this.state.isLongBuilder
-              }
-              onCancel={() => {
-                this.setState({
-                  showApprovalModal: false,
-                  showLongApprovalModal: false
-                });
-              }}
-              onOk={() => {
-                this.setState({
-                  showApprovalModal: false,
-                  showLongApprovalModal: false
-                });
-                this.submitAllData();
-              }}
-            >
-              <div className="approval_modal">
-                <label className="front_label">1.施工影响部门负责人审批</label>
-                <label min-width="120px">
-                  {this.state.approvalPeopleList[1].C3_605717998409}
-                </label>
-                <Button
-                  onClick={() => {
-                    this.changeEffect();
-                  }}
-                >
-                  更改审批人
-                </Button>
-              </div>
-              <div className="approval_modal">
-                <label className="front_label">2.厂务工程师审批</label>
-                <label min-width="120px">
-                  {this.state.approvalPeopleList[2].C3_605717998409}
-                </label>
-                <Button
-                  onClick={() => {
-                    this.changeEngineer();
-                  }}
-                >
-                  更改审批人
-                </Button>
-              </div>
-              <div className="approval_modal">
-                <label className="front_label">3.厂务经理审批</label>
-                <label min-width="120px">
-                  {this.state.approvalPeopleList[3].C3_605717998409}
-                </label>
-                <Button
-                  onClick={() => {
-                    this.changeManager();
-                  }}
-                >
-                  更改审批人
-                </Button>
-              </div>
-              <div className="approval_modal">
-                <label className="front_label">4.经理审批</label>
-                <label min-width="120px">
-                  {this.state.approvalPeopleList[4].C3_605717998409}
-                </label>
-                <Button
-                  onClick={() => {
-                    this.changeManagerSpecial();
-                  }}
-                >
-                  更改审批人
-                </Button>
-              </div>
-              {this.state.isControl && (
+              {/* 临时施工审批流 */}
+              <Modal
+                width="600px"
+                title="审批流确认"
+                visible={
+                  this.state.showApprovalModal && !this.state.isLongBuilder
+                }
+                onCancel={() => {
+                  this.setState({
+                    showApprovalModal: false,
+                    showLongApprovalModal: false
+                  });
+                }}
+                onOk={() => {
+                  this.setState({
+                    showApprovalModal: false,
+                    showLongApprovalModal: false
+                  });
+                  this.submitAllData();
+                }}
+              >
                 <div className="approval_modal">
-                  <label className="front_label">5.总监审批</label>
+                  <label className="front_label">
+                    1.施工影响部门负责人审批
+                  </label>
                   <label min-width="120px">
-                    {this.state.approvalPeopleList[5].C3_605717998409}
+                    {this.state.approvalPeopleList[1].C3_605717998409}
                   </label>
                   <Button
                     onClick={() => {
-                      this.changeConductor();
+                      this.changeEffect();
                     }}
                   >
                     更改审批人
                   </Button>
                 </div>
-              )}
-            </Modal>
-
-            {/* 长期施工审批流确认 */}
-            <Modal
-              width="600px"
-              title="审批流确认"
-              visible={
-                this.state.showLongApprovalModal && this.state.isLongBuilder
-              }
-              onCancel={() => {
-                this.setState({
-                  showApprovalModal: false,
-                  showLongApprovalModal: false
-                });
-              }}
-              onOk={() => {
-                this.setState({
-                  showApprovalModal: false,
-                  showLongApprovalModal: false
-                });
-                this.submitAllData();
-              }}
-            >
-              <div className="approval_modal">
-                <label className="front_label">1.施工影响部门负责人审批</label>
-                <label min-width="120px">
-                  {this.state.approvalPeopleList[1].C3_605717998409}
-                </label>
-                <Button
-                  onClick={() => {
-                    this.changeEffect();
-                  }}
-                >
-                  查找人员
-                </Button>
-              </div>
-              <div className="approval_modal">
-                <label className="front_label">2.厂务工程师审批</label>
-                <label min-width="120px">
-                  {this.state.approvalPeopleList[2].C3_605717998409}
-                </label>
-                <Button
-                  onClick={() => {
-                    this.changeEngineer();
-                  }}
-                >
-                  查找人员
-                </Button>
-              </div>
-              <div className="approval_modal">
-                <label className="front_label">3.厂务经理审批</label>
-                <label min-width="120px">
-                  {this.state.approvalPeopleList[3].C3_605717998409}
-                </label>
-                <Button
-                  onClick={() => {
-                    this.changeManager();
-                  }}
-                >
-                  查找人员
-                </Button>
-              </div>
-              <div className="approval_modal">
-                <label className="front_label">4.经理审批</label>
-                <label min-width="120px">
-                  {this.state.approvalPeopleList[4].C3_605717998409}
-                </label>
-                <Button
-                  onClick={() => {
-                    this.changeManagerSpecial();
-                  }}
-                >
-                  查找人员
-                </Button>
-              </div>
-              {this.state.isControl && (
                 <div className="approval_modal">
-                  <label className="front_label">5.总监审批</label>
+                  <label className="front_label">2.厂务工程师审批</label>
                   <label min-width="120px">
-                    {this.state.approvalPeopleList[5].C3_605717998409}
+                    {this.state.approvalPeopleList[2].C3_605717998409}
                   </label>
                   <Button
                     onClick={() => {
-                      this.changeConductor();
+                      this.changeEngineer();
+                    }}
+                  >
+                    更改审批人
+                  </Button>
+                </div>
+                <div className="approval_modal">
+                  <label className="front_label">3.厂务经理审批</label>
+                  <label min-width="120px">
+                    {this.state.approvalPeopleList[3].C3_605717998409}
+                  </label>
+                  <Button
+                    onClick={() => {
+                      this.changeManager();
+                    }}
+                  >
+                    更改审批人
+                  </Button>
+                </div>
+                <div className="approval_modal">
+                  <label className="front_label">4.经理审批</label>
+                  <label min-width="120px">
+                    {this.state.approvalPeopleList[4].C3_605717998409}
+                  </label>
+                  <Button
+                    onClick={() => {
+                      this.changeManagerSpecial();
+                    }}
+                  >
+                    更改审批人
+                  </Button>
+                </div>
+                {this.state.isControl && (
+                  <div className="approval_modal">
+                    <label className="front_label">5.总监审批</label>
+                    <label min-width="120px">
+                      {this.state.approvalPeopleList[5].C3_605717998409}
+                    </label>
+                    <Button
+                      onClick={() => {
+                        this.changeConductor();
+                      }}
+                    >
+                      更改审批人
+                    </Button>
+                  </div>
+                )}
+              </Modal>
+
+              {/* 长期施工审批流确认 */}
+              <Modal
+                width="600px"
+                title="审批流确认"
+                visible={
+                  this.state.showLongApprovalModal && this.state.isLongBuilder
+                }
+                onCancel={() => {
+                  this.setState({
+                    showApprovalModal: false,
+                    showLongApprovalModal: false
+                  });
+                }}
+                onOk={() => {
+                  this.setState({
+                    showApprovalModal: false,
+                    showLongApprovalModal: false
+                  });
+                  this.submitAllData();
+                }}
+              >
+                <div className="approval_modal">
+                  <label className="front_label">
+                    1.施工影响部门负责人审批
+                  </label>
+                  <label min-width="120px">
+                    {this.state.approvalPeopleList[1].C3_605717998409}
+                  </label>
+                  <Button
+                    onClick={() => {
+                      this.changeEffect();
                     }}
                   >
                     查找人员
                   </Button>
                 </div>
-              )}
-            </Modal>
+                <div className="approval_modal">
+                  <label className="front_label">2.厂务工程师审批</label>
+                  <label min-width="120px">
+                    {this.state.approvalPeopleList[2].C3_605717998409}
+                  </label>
+                  <Button
+                    onClick={() => {
+                      this.changeEngineer();
+                    }}
+                  >
+                    查找人员
+                  </Button>
+                </div>
+                <div className="approval_modal">
+                  <label className="front_label">3.厂务经理审批</label>
+                  <label min-width="120px">
+                    {this.state.approvalPeopleList[3].C3_605717998409}
+                  </label>
+                  <Button
+                    onClick={() => {
+                      this.changeManager();
+                    }}
+                  >
+                    查找人员
+                  </Button>
+                </div>
+                <div className="approval_modal">
+                  <label className="front_label">4.经理审批</label>
+                  <label min-width="120px">
+                    {this.state.approvalPeopleList[4].C3_605717998409}
+                  </label>
+                  <Button
+                    onClick={() => {
+                      this.changeManagerSpecial();
+                    }}
+                  >
+                    查找人员
+                  </Button>
+                </div>
+                {this.state.isControl && (
+                  <div className="approval_modal">
+                    <label className="front_label">5.总监审批</label>
+                    <label min-width="120px">
+                      {this.state.approvalPeopleList[5].C3_605717998409}
+                    </label>
+                    <Button
+                      onClick={() => {
+                        this.changeConductor();
+                      }}
+                    >
+                      查找人员
+                    </Button>
+                  </div>
+                )}
+              </Modal>
 
-            {/* 审批流确认时选择审批人 */}
-            <Modal
-              zIndex={4321}
-              title={'选择审批人'}
-              width={'90vw'}
-              visible={this.state.changeApproveModal}
-              footer={null}
-              onCancel={() => this.setState({ changeApproveModal: false })}
-            >
-              <div
-                style={{
-                  width: '100%',
-                  height: 'calc(100vh - 104px)',
-                  position: 'relative'
-                }}
+              {/* 审批流确认时选择审批人 */}
+              <Modal
+                zIndex={4321}
+                title={'选择审批人'}
+                width={'90vw'}
+                visible={this.state.changeApproveModal}
+                footer={null}
+                onCancel={() => this.setState({ changeApproveModal: false })}
               >
+                <div
+                  style={{
+                    width: '100%',
+                    height: 'calc(100vh - 104px)',
+                    position: 'relative'
+                  }}
+                >
+                  <TableData
+                    resid={this.state.cms}
+                    hasRowView={false}
+                    subtractH={220}
+                    hasAdd={false}
+                    hasRowSelection={false}
+                    hasRowDelete={false}
+                    hasRowModify={false}
+                    hasModify={false}
+                    hasDelete={false}
+                    recordFormUseAbsolute={true}
+                    style={{ height: '100%' }}
+                    hasRowView={false}
+                    recordFormUseAbsolute={true}
+                    customRowBtns={[
+                      record => {
+                        return (
+                          <Button
+                            onClick={() => {
+                              this.changeAppMem(record);
+                            }}
+                          >
+                            选择
+                          </Button>
+                        );
+                      }
+                    ]}
+                  />
+                </div>
+              </Modal>
+            </TabPane>
+            <TabPane tab="已审批" key="已审批">
+              <div style={{ height: 'calc(100vh - 60px)' }}>
                 <TableData
-                  resid={this.state.cms}
-                  hasRowView={false}
-                  subtractH={220}
-                  hasAdd={false}
-                  hasRowSelection={false}
-                  hasRowDelete={false}
-                  hasRowModify={false}
-                  hasModify={false}
-                  hasDelete={false}
-                  recordFormUseAbsolute={true}
-                  style={{ height: '100%' }}
-                  hasRowView={false}
-                  recordFormUseAbsolute={true}
+                  {...approved}
                   customRowBtns={[
                     record => {
                       return (
                         <Button
+                          style={{ width: '104px' }}
                           onClick={() => {
-                            this.changeAppMem(record);
+                            this.showRecord(record);
+                            this.setState({
+                              isPrint: true
+                            });
                           }}
                         >
-                          选择
+                          打印申请单
                         </Button>
                       );
                     }
                   ]}
                 />
               </div>
-            </Modal>
-          </TabPane>
-          <TabPane tab="已审批" key="已审批">
-            <div style={{ height: 'calc(100vh - 60px)' }}>
-              <TableData
-                {...approved}
-                customRowBtns={[
-                  record => {
-                    return (
-                      <Button
-                        style={{ width: '104px' }}
-                        onClick={() => {
-                          this.showRecord(record);
-                          this.setState({
-                            isPrint: true
-                          });
-                        }}
-                      >
-                        打印申请单
-                      </Button>
-                    );
-                  }
-                ]}
-              />
-            </div>
-            {/* 施工人员打印模态框 */}
-            <Modal
-              width="61%"
-              visible={printBuilderModal}
-              title="施工申请审批"
-              onCancel={() => {
-                this.setState({
-                  printBuilderModal: false
-                });
-              }}
-              footer={[
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    console.log('开始打印');
-                    this.doPrint('builder');
-                    this.setState({
-                      isPrint: true
-                    });
-                  }}
-                >
-                  打印
-                </Button>,
-                <Button
-                  onClick={() => {
-                    this.setState({
-                      printBuilderModal: false,
-                      isPrint: false
-                    });
-                  }}
-                >
-                  关闭
-                </Button>
-              ]}
-            >
-              <div id="printBuilderForm">
-                <div className="printBody">
-                  <BuilderForm
-                    toBuilderFormInfo={{
-                      approvalInfo: record,
-                      builderList: builderList,
-                      approvalList: approvalList1,
-                      isPrint: isPrint
+              {/* 施工人员打印模态框 */}
+              <Modal
+                width="61%"
+                visible={printBuilderModal}
+                title="施工申请审批"
+                onCancel={() => {
+                  this.setState({
+                    printBuilderModal: false
+                  });
+                }}
+                footer={[
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      console.log('开始打印');
+                      this.doPrint('builder');
+                      this.setState({
+                        isPrint: true
+                      });
                     }}
-                  />
-                </div>
-              </div>
-            </Modal>
-            {/* 送货人员打印模态框 */}
-            <Modal
-              width="61%"
-              visible={printDeliverModal}
-              title="提送货申请审批"
-              onCancel={() => {
-                this.setState({
-                  printDeliverModal: false
-                });
-              }}
-              footer={[
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    console.log('开始打印');
-                    this.doPrint('deliver');
-                  }}
-                >
-                  打印
-                </Button>,
-                <Button
-                  onClick={() => {
-                    this.setState({
-                      printDeliverModal: false,
-                      isPrint: false
-                    });
-                  }}
-                >
-                  关闭
-                </Button>
-              ]}
-            >
-              <div id="printDeliverForm">
-                <div className="printBody">
-                  <DeliverForm
-                    toDeliverFormInfo={{
-                      approvalInfo: record,
-                      deliverList: deliverList,
-                      approvalList: approvalList1,
-                      isPrint: isPrint,
-                      isLongBuilder: isLongBuilder
+                  >
+                    打印
+                  </Button>,
+                  <Button
+                    onClick={() => {
+                      this.setState({
+                        printBuilderModal: false,
+                        isPrint: false
+                      });
                     }}
-                  />
-                </div>
-              </div>
-            </Modal>
-          </TabPane>
-          <TabPane tab="已拒绝" key="已拒绝">
-            <div style={{ height: 'calc(100vh - 60px)' }}>
-              <TableData {...refused} />
-            </div>
-          </TabPane>
-          <TabPane tab="历史记录" key="历史记录">
-            <div style={{ height: 'calc(100vh - 60px)' }}>
-              <TableData
-                {...history}
-                customtrBtns={[
-                  (record, btnSize) => {
-                    return (
-                      <Button
-                        onClick={() => {
-                          this.reApply(record);
-                        }}
-                      >
-                        重新申请
-                      </Button>
-                    );
-                  }
+                  >
+                    关闭
+                  </Button>
                 ]}
-              />
-            </div>
-          </TabPane>
-        </Tabs>
-        {!!abnormalNum && (
-          <div className="lz-affo__abnormal-num">{abnormalNum}</div>
-        )}
+              >
+                <div id="printBuilderForm">
+                  <div className="printBody">
+                    <BuilderForm
+                      toBuilderFormInfo={{
+                        approvalInfo: record,
+                        builderList: builderList,
+                        approvalList: approvalList1,
+                        isPrint: isPrint
+                      }}
+                    />
+                  </div>
+                </div>
+              </Modal>
+              {/* 送货人员打印模态框 */}
+              <Modal
+                width="61%"
+                visible={printDeliverModal}
+                title="提送货申请审批"
+                onCancel={() => {
+                  this.setState({
+                    printDeliverModal: false
+                  });
+                }}
+                footer={[
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      console.log('开始打印');
+                      this.doPrint('deliver');
+                    }}
+                  >
+                    打印
+                  </Button>,
+                  <Button
+                    onClick={() => {
+                      this.setState({
+                        printDeliverModal: false,
+                        isPrint: false
+                      });
+                    }}
+                  >
+                    关闭
+                  </Button>
+                ]}
+              >
+                <div id="printDeliverForm">
+                  <div className="printBody">
+                    <DeliverForm
+                      toDeliverFormInfo={{
+                        approvalInfo: record,
+                        deliverList: deliverList,
+                        approvalList: approvalList1,
+                        isPrint: isPrint,
+                        isLongBuilder: isLongBuilder
+                      }}
+                    />
+                  </div>
+                </div>
+              </Modal>
+            </TabPane>
+            <TabPane tab="已拒绝" key="已拒绝">
+              <div style={{ height: 'calc(100vh - 60px)' }}>
+                <TableData {...refused} />
+              </div>
+            </TabPane>
+            <TabPane tab="历史记录" key="历史记录">
+              <div style={{ height: 'calc(100vh - 60px)' }}>
+                <TableData
+                  {...history}
+                  customtrBtns={[
+                    (record, btnSize) => {
+                      return (
+                        <Button
+                          onClick={() => {
+                            this.reApply(record);
+                          }}
+                        >
+                          重新申请
+                        </Button>
+                      );
+                    }
+                  ]}
+                />
+              </div>
+            </TabPane>
+          </Tabs>
+          {!!abnormalNum && (
+            <div className="lz-affo__abnormal-num">{abnormalNum}</div>
+          )}
 
-        <Modal
-          title="选择人员类型"
-          visible={selectTypeVisible}
-          onCancel={this.toggleSelectTypeVisible}
-        >
-          <div>
-            <label>是否长期施工</label>
-            <Switch
-              onChange={checked => {}}
-              checkedChildren="是"
-              unCheckedChildren="否"
-            />
-          </div>
-        </Modal>
-        <AddWorker
-          visible={addWorkerVisible}
-          onClose={this.handleCloseAddWorker}
-        />
+          <Modal
+            title="选择人员类型"
+            visible={selectTypeVisible}
+            onCancel={this.toggleSelectTypeVisible}
+          >
+            <div>
+              <label>是否长期施工</label>
+              <Switch
+                onChange={checked => {}}
+                checkedChildren="是"
+                unCheckedChildren="否"
+              />
+            </div>
+          </Modal>
+          <AddWorker
+            visible={addWorkerVisible}
+            onClose={this.handleCloseAddWorker}
+          />
+        </Spin>
       </div>
     );
   }

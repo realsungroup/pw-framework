@@ -260,6 +260,7 @@ class Control extends React.Component {
       let filedsValue = {};
       clearOnChangeFileds.reduce((preV, currentV) => {
         preV[currentV] = undefined;
+        return preV;
       }, filedsValue);
       this.props.form.setFieldsValue(filedsValue);
     }
@@ -757,6 +758,7 @@ class Control extends React.Component {
               onSearch={this.handleSearch}
               onBlur={this.handleBeforeSave}
               value={value}
+              disabled={props.disabled}
             />
           );
         }

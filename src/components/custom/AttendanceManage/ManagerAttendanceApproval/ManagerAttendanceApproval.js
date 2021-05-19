@@ -24,7 +24,7 @@ class ManagerAttendanceApproval extends React.Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   actionBarExtra = record => {
-    const { intl: { locale } } = this.props;
+    const { intl: { locale }, showApproveAll } = this.props;
     return (
       <div className="hr-probation_table-action-bar-extra">
         <Button
@@ -76,11 +76,11 @@ class ManagerAttendanceApproval extends React.Component {
             {locale == 'en' ? "Reject" : "拒绝"}
           </Button>
         </Popconfirm>
-        <Popconfirm title={locale == 'en' ? "Are you Sure?" : "确认一键审批吗？"} onConfirm={this.approvalAll}>
+        {showApproveAll && <Popconfirm title={locale == 'en' ? "Are you Sure?" : "确认一键审批吗？"} onConfirm={this.approvalAll}>
           <Button type="primary" size={record.size}>
             {locale == 'en' ? "Approve All" : "一键审批"}
           </Button>
-        </Popconfirm>
+        </Popconfirm>}
       </div>
     );
   };
