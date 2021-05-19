@@ -9813,3 +9813,10 @@ window[671543192998] = {
     baseURL: 'http://10.108.2.66:9091'
   }
 };
+
+//在岗培训审批
+window[664282094133] = {
+  name: 'HolidayBalanceQuery', // 组件名称，
+  title: '在岗培训审批', // 功能模块名称
+  props: {}
+};
