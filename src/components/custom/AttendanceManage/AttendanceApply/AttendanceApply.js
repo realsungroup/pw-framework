@@ -42,7 +42,8 @@ class AttendanceApply extends React.Component {
       showWorkOvertimeOptions,
       showChooseAllDay,
       isEightToSeventeen,
-      reasonRequired
+      reasonRequired,
+      showAllminuteShuaKa
     } = this.props;
 
     let page = null;
@@ -67,6 +68,7 @@ class AttendanceApply extends React.Component {
           <CustomForm2
             goBack={this.goBack}
             getNotices={this.props.getNotices}
+            showAllminuteShuaKa={showAllminuteShuaKa}
           />
         );
         break;
