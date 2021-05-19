@@ -90,10 +90,12 @@
   overflow: auto;
   li {
     float: left;
-    padding: 10px;
-    min-height: 80px;
-    &:last-child {
-      display: none;
+      padding: 10px;
+      box-sizing: border-box;
+      height: 120px;
+      &:last-child{
+        display: none;
+      }
     }
-  }
+    
 }
