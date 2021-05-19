@@ -127,7 +127,8 @@ class Summary extends React.PureComponent {
     selectValue: '',
     loading: false,
     curentYearIncrease: 0,
-    isWuxi: true //当前员工是否是无锡员工
+    isWuxi: true, //当前员工是否是无锡员工
+    currentUserNo: null
   };
   columns = [
     {
@@ -163,8 +164,12 @@ class Summary extends React.PureComponent {
     {
       title: '操作',
       key: 'action',
-      render: (text, record) => (
-        <>
+      render: (text, record) => {
+        const { currentUserNo } = this.state;
+        if (record.memberID != currentUserNo) {
+          return null
+        }
+        return (
           <span
             className="table-action--view"
             onClick={() => {
@@ -176,19 +181,8 @@ class Summary extends React.PureComponent {
           >
             使用明细
           </span>
-          {/* <span
-            className="table-action--view"
-            onClick={() => {
-              this.setState({
-                selectedRecord: record,
-                subTableModalVisible: true
-              });
-            }}
-          >
-            交易明细
-          </span> */}
-        </>
-      )
+        )
+      }
     }
   ];
   componentDidMount() {
@@ -201,6 +195,7 @@ class Summary extends React.PureComponent {
     const bianhao = userinfo.UserInfo.EMP_USERCODE;
     this.setState({
       selectValue: bianhao,
+      currentUserNo: bianhao,
       isWuxi: userinfo.EnterpriseCode == "100" ? true : false
     });
     try {
@@ -215,7 +210,6 @@ class Summary extends React.PureComponent {
           ProductIDs: bianhao //当前人员编号1751
         }
       );
-      console.log('res', res);
       let arr = [];
       let n = 0;
       while (n < res.nodes.length) {
@@ -445,16 +439,17 @@ class Summary extends React.PureComponent {
     toExcel.saveExcel();
   };
 
-  getMonths = function (quarter) {
+  getCmswhere = function (year, quarter) {
+
     switch (quarter) {
       case 1:
-        return '1,2,3'
+        return `YEARMONTH = '${year}01' or YEARMONTH = '${year}02' or YEARMONTH = '${year}03'`
       case 2:
-        return '4,5,6'
+        return `YEARMONTH = '${year}04' or YEARMONTH = '${year}05' or YEARMONTH = '${year}06'`
       case 3:
-        return '7,8,9'
+        return `YEARMONTH = '${year}07' or YEARMONTH = '${year}08' or YEARMONTH = '${year}09'`
       case 4:
-        return '10,11,12'
+        return `YEARMONTH = '${year}10' or YEARMONTH = '${year}11' or YEARMONTH = '${year}12'`
       default:
         return '';
     }
@@ -589,7 +584,7 @@ class Summary extends React.PureComponent {
                   <TableData
                     key={selectedRecord.REC_ID}
                     //dataMode="sub"
-                    resid={'674583431383'}
+                    resid={'674042800878'}
                     //subresid={'662737017622'}
                     //hostrecid={selectedRecord.REC_ID}
                     baseURL={baseURL}
@@ -603,52 +598,7 @@ class Summary extends React.PureComponent {
                     hasRowDelete={false}
                     actionBarWidth={100}
                     height={500}
-                    cmswhere={`PNID = ${selectValue} and C3_424652509987 = ${selectedRecord.year} and C3_469046133471 in (${this.getMonths(selectedRecord.quarter)})`}
-                  // customRowBtns={[
-                  //   (record, btnSize) => {
-                  //     return (
-                  //       <Button
-                  //         onClick={() => {
-                  //           this.setState({
-                  //             selectedSubRecord: record,
-                  //             applyRecordsModalVisible: true
-                  //           });
-                  //         }}
-                  //         size={btnSize}
-                  //       >
-                  //         申请记录
-                  //       </Button>
-                  //     );
-                  //   }
-                  // ]}
-                  />
-                </Modal>
-                <Modal
-                  title="申请记录"
-                  visible={applyRecordsModalVisible}
-                  footer={null}
-                  width="70vw"
-                  onCancel={() => {
-                    this.setState({ applyRecordsModalVisible: false });
-                  }}
-                >
-                  <TableData
-                    key={selectedSubRecord.REC_ID}
-                    dataMode="sub"
-                    resid={resid}
-                    subresid={'662737017622'}
-                    hostrecid={selectedSubRecord.REC_ID}
-                    baseURL={baseURL}
-                    subtractH={200}
-                    hasAdd={false}
-                    hasModify={false}
-                    hasDelete={false}
-                    hasRowEdit={false}
-                    hasRowModify={false}
-                    hasRowView={true}
-                    hasRowDelete={false}
-                    actionBarWidth={100}
-                    height={500}
+                    cmswhere={this.getCmswhere(selectedRecord.year, selectedRecord.quarter)}
                   />
                 </Modal>
                 <Modal
