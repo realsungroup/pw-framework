@@ -189,21 +189,23 @@ class IDLTransferHr extends Component {
           resid: 609599795438,
           cmswhere: str
         });
+
         n = 0;
-        var arr2 = arr;
+        let arr2 = arr;
         while (n < arr2.length) {
-          var c = 0;
+          let c = 0;
           while (c < res2.data.length) {
             if (arr2[n].stepPeople == res2.data[c].C3_305737857578) {
               arr2[n].stepPeople = res2.data[c].C3_227192484125;
             }
             c++;
           }
-
           n++;
         }
+
         let proposal;
         let appNum = '';
+
         try {
           proposal = await http().getTable({
             resid: 632255761674,
@@ -807,17 +809,17 @@ class IDLTransferHr extends Component {
       }
 
       console.log(toAdd);
-      // let res2 = await http().addRecords({
-      //   resid: 634660498796,
-      //   data: toAdd
-      // });
-      // let res3 = await http().modifyRecords({
-      //   resid: 632255761674,
-      //   data: data
-      // });
-      // this.setState({ loading: false });
-      // message.success('批量审批成功');
-      // this.tableDataRef.handleRefresh();
+      let res2 = await http().addRecords({
+        resid: 634660498796,
+        data: toAdd
+      });
+      let res3 = await http().modifyRecords({
+        resid: 632255761674,
+        data: data
+      });
+      this.setState({ loading: false });
+      message.success('批量审批成功');
+      this.tableDataRef.handleRefresh();
       this.setState({ loading: false });
     } catch (e) {
       this.setState({ loading: false });
