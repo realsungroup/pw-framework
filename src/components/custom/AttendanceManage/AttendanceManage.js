@@ -115,7 +115,8 @@ class AttendanceManage extends React.Component {
       showApproveAll,
       showChooseAllDay,
       isEightToSeventeen,
-      reasonRequired
+      reasonRequired,
+      showAllminuteShuaKa
     } = this.props;
 
     let page = null;
@@ -169,6 +170,7 @@ class AttendanceManage extends React.Component {
             setLoading={this.setLoading}
             getNotices={this.getNotices}
             showAllminute={showAllminute}
+            showAllminuteShuaKa={showAllminuteShuaKa}
             showChooseAllDay={showChooseAllDay}
             isEightToSeventeen={isEightToSeventeen}
             showBatchApply={showBatchApply}
