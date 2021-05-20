@@ -9,11 +9,15 @@ const { RangePicker } = DatePicker
 class Statistics extends React.Component {
 	constructor(props) {
 		super(props);
+		this.baseURL =
+			window.pwConfig[
+				process.env.NODE_ENV
+			].customURLs.comprehensiveQueryBaseURL;
 		this.state = {
 			scrollHeight: 520,
 			data: [],
 			loading: true,
-			dateRange: [moment('2021-04-01').date(1), moment('2021-04-01').endOf('month')]
+			dateRange: [moment().date(1), moment().endOf('month')]
 		};
 	}
 
@@ -35,7 +39,7 @@ class Statistics extends React.Component {
 		try {
 			this.setState({ loading: true })
 			const res = await http({
-				baseURL: 'http://wux-hr03:801/'
+				baseURL: this.baseURL
 			}).getByProcedure({
 				procedure: 'IIVI_GetOtHours',
 				paranames: 'dates1,dates2,pnid',

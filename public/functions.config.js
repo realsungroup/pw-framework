@@ -2027,7 +2027,6 @@ window[620212364621] = {
     showJixiao: true, //是否显示人事信息
     showPingji: true, //是否显示人事信息
     showChaoshi: true, //是否显示超时工时统计
-
   }
 };
 window[642853831562] = {
@@ -2048,7 +2047,8 @@ window[642853818882] = {
   title: '考勤查询',
   props: {
     tabKey: 'attendance',
-    showAnnualLeaveDetail: true, //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showTiaoXiuDetail: true,//是否显示调休明细
     showRenshi: true, //是否显示人事信息
     showJixiao: true, //是否显示人事信息
     showPingji: true, //是否显示人事信息
