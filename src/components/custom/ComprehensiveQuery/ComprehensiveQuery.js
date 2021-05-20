@@ -58,7 +58,7 @@ class ComprehensiveQuery extends React.Component {
         page = <PersonInfo person={this.state.node} />;
         break;
       case 'attendance':
-        page = <WorkInfo person={this.state.node} showAnnualLeaveDetail={this.props.showAnnualLeaveDetail} />;
+        page = <WorkInfo person={this.state.node} showAnnualLeaveDetail={this.props.showAnnualLeaveDetail} showTiaoXiuDetail={this.props.showTiaoXiuDetail} />;
         break;
       case 'performance':
         page = <PerformanceQuery person={this.state.node} isExpand={(v) => this.isExpand(v)} />;
