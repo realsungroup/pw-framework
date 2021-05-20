@@ -42,7 +42,7 @@ export const inApplication = {
 
 // 访问中
 export const applyForAbnormal = {
-  resid: 605802635754,
+  resid: 674217539047,
   formProps: {
     height: 550
   },

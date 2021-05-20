@@ -199,17 +199,15 @@ class Summary extends React.PureComponent {
       isWuxi: userinfo.EnterpriseCode == "100" ? true : false
     });
     try {
-      let res = await http({ baseURL: 'http://10.108.2.66:2001' }).postTreeData(
-        {
-          resid: '609599795438',
-          Levels: 3,
-          MoveDirection: 1,
-          MoveLevels: 1,
-          ColumnOfID: 'C3_305737857578', //人员编号
-          ColumnOfPID: 'C3_417993417686', //直接主管编号
-          ProductIDs: bianhao //当前人员编号1751
-        }
-      );
+      let res = await http().postTreeData({
+        resid: '609599795438',
+        Levels: 3,
+        MoveDirection: 1,
+        MoveLevels: 1,
+        ColumnOfID: 'C3_305737857578', //人员编号
+        ColumnOfPID: 'C3_417993417686', //直接主管编号
+        ProductIDs: bianhao //当前人员编号1751
+      });
       let arr = [];
       let n = 0;
       while (n < res.nodes.length) {

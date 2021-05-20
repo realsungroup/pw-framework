@@ -77,6 +77,7 @@ class CustomForm2 extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const { currentUser, currentTime, submitting } = this.state;
+    const { showAllminuteShuaKa } = this.props;
     return (
       <div className="attendace-aplly_form__wrapper">
         <Form className="attendace-aplly_form">
@@ -99,7 +100,7 @@ class CustomForm2 extends React.Component {
               <DatePicker
                 showTime={{
                   format: 'HH:mm',
-                  minuteStep: 30,
+                  minuteStep: showAllminuteShuaKa ? 1 : 30,
                   defaultValue: moment('00:00', 'HH:mm')
                 }}
                 format="YYYY-MM-DD HH:mm"
@@ -120,7 +121,7 @@ class CustomForm2 extends React.Component {
               <DatePicker
                 showTime={{
                   format: 'HH:mm',
-                  minuteStep: 30,
+                  minuteStep: showAllminuteShuaKa ? 1 : 30,
                   defaultValue: moment('00:00', 'HH:mm')
                 }}
                 format="YYYY-MM-DD HH:mm"

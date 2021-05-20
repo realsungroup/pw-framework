@@ -36,7 +36,15 @@ class AttendanceApply extends React.Component {
 
   renderForm() {
     const { current } = this.state;
-    const { showAllminute, showWorkOvertimeOptions, reasonRequired } = this.props;
+
+    const {
+      showAllminute,
+      showWorkOvertimeOptions,
+      showChooseAllDay,
+      isEightToSeventeen,
+      reasonRequired,
+      showAllminuteShuaKa
+    } = this.props;
 
     let page = null;
     switch (current) {
@@ -47,6 +55,8 @@ class AttendanceApply extends React.Component {
             goBack={this.goBack}
             getNotices={this.props.getNotices}
             showAllminute={showAllminute}
+            showChooseAllDay={showChooseAllDay}
+            isEightToSeventeen={isEightToSeventeen}
             showWorkOvertimeOptions={showWorkOvertimeOptions}
             reasonRequired={reasonRequired}
           />
@@ -58,6 +68,7 @@ class AttendanceApply extends React.Component {
           <CustomForm2
             goBack={this.goBack}
             getNotices={this.props.getNotices}
+            showAllminuteShuaKa={showAllminuteShuaKa}
           />
         );
         break;
@@ -91,13 +102,15 @@ class AttendanceApply extends React.Component {
             >
               <Meta title="填写申请" description="我要请假/加班" />
             </Card>
-            {showBatchApply && <Card
-              hoverable
-              cover={<img alt="example" src={img1Large} />}
-              onClick={this.onCardClick(3)}
-            >
-              <Meta title="加班批量申请" description="加班批量申请点这里" />
-            </Card>}
+            {showBatchApply && (
+              <Card
+                hoverable
+                cover={<img alt="example" src={img1Large} />}
+                onClick={this.onCardClick(3)}
+              >
+                <Meta title="加班批量申请" description="加班批量申请点这里" />
+              </Card>
+            )}
             <Card
               hoverable
               cover={<img alt="example" src={img2Large} />}
@@ -107,8 +120,8 @@ class AttendanceApply extends React.Component {
             </Card>
           </div>
         ) : (
-            this.renderForm()
-          )}
+          this.renderForm()
+        )}
       </div>
     );
   }
