@@ -245,7 +245,7 @@ class ExportPersonnelChanges extends Component {
           .startOf('month')
           .format('YYYY-MM-DD');
       } else {
-        item.effectDate = moment(item.effectDate).format('YYYY-MM-DD');
+        item.effectDate = moment(item.joinDate).format('YYYY-MM-DD');
       }
       //处理Action(TRANS_COST_CNTR, ASG_CHANGE, MANAGER_CHANGE)及Reason(REORG, JOB_CODE_CHANGE, NEW_LDR)
       if (
