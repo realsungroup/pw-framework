@@ -108,7 +108,7 @@ class ComprehensiveQuery extends React.Component {
               <TabPane tab="考勤查询" key="attendance"></TabPane>
               {showJixiao && <TabPane tab="绩效查询" key="performance"></TabPane>}
               {showPingji && <TabPane tab="评级评优查询" key="rating"></TabPane>}
-              {showChaoshi && <TabPane tab="超时工时统计" key="statistics"></TabPane>}
+              {showChaoshi && <TabPane tab="下属超时工时统计" key="statistics"></TabPane>}
               {/* {process.env.NODE_ENV === 'development' && (
                 <TabPane tab="培训查询" key="training"></TabPane>
               )}

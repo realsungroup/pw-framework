@@ -1,7 +1,9 @@
 import React from 'react';
 import './Statistics.less';
-import { DatePicker, Table, Button } from 'antd';
+import { DatePicker, Table, Button, message } from 'antd';
 import ExportJsonExcel from 'js-export-excel';
+import http from 'Util20/api';
+import moment from 'moment';
 
 const { RangePicker } = DatePicker
 class Statistics extends React.Component {
@@ -9,197 +11,92 @@ class Statistics extends React.Component {
 		super(props);
 		this.state = {
 			scrollHeight: 520,
-			data: [{
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			}, {
-				number: 123,
-				name: '阿道夫',
-				startDate: '2021-05-20',
-				endDate: '2021-05-20',
-				hours: 1
-			},
-			]
+			data: [],
+			loading: true,
+			dateRange: [moment('2021-04-01').date(1), moment('2021-04-01').endOf('month')]
 		};
 	}
 
-	columns = [
-		{
-			title: '工号',
-			dataIndex: 'number',
-			key: 'number',
-			width: 100,
-		},
-		{
-			title: '姓名',
-			dataIndex: 'name',
-			key: 'name',
-			width: 100,
-		},
-		{
-			title: '开始日期',
-			dataIndex: 'startDate',
-			key: 'startDate',
-			width: 100,
-		},
-		{
-			title: '结束日期',
-			dataIndex: 'endDate',
-			key: 'endDate',
-			width: 100,
-		},
-		{
-			title: '超时小时',
-			dataIndex: 'hours',
-			key: 'hours',
-			width: 100,
-		},
-	]
+	columns = []
 	componentDidMount() {
 		this.setState({
 			scrollHeight: this.tableRef.offsetHeight - 38 - 24 - 56
 		})
+		this.getData();
+	}
+	componentDidUpdate(preProps) {
+		if (preProps.person.C3_305737857578 !== this.props.person.C3_305737857578) {
+			this.getData();
+		}
+	}
+	getData = async () => {
+		const { person } = this.props;
+		const { dateRange } = this.state;
+		try {
+			this.setState({ loading: true })
+			const res = await http({
+				baseURL: 'http://wux-hr03:801/'
+			}).getByProcedure({
+				procedure: 'IIVI_GetOtHours',
+				paranames: 'dates1,dates2,pnid',
+				paratypes: 'string,string,int',
+				paravalues: `${dateRange[0].format('YYYYMMDD')},${dateRange[1].format('YYYYMMDD')},${person.C3_305737857578}`,
+				resid: '674830300475'
+			});
+			this.columns = res.cmscolumninfo.map(item => {
+				return {
+					title: item.text,
+					dataIndex: item.id,
+					key: item.id,
+					width: 100,
+				}
+			})
+			this.setState({
+				data: res.data,
+				loading: false
+			})
+
+		} catch (error) {
+			message.error(error.message)
+			this.setState({ loading: false })
+		}
+
 	}
 	handleDownloadExcel = async () => {
 		var option = {};
 		const { data } = this.state;
-		const exportData = data
+		const exportData = data.map((item) => {
+			const obj = {}
+			this.columns.forEach(col => {
+				obj[col.title] = item[col.dataIndex]
+			})
+			return obj
+		})
 
-		option.fileName = '年假账户明细';
+		option.fileName = '下属超时工时统计';
 		option.datas = [
 			{
 				sheetData: exportData,
-				sheetName: '年假账户明细',
-				sheetHeader: [
-					'工号',
-					'姓名',
-					'开始日期',
-					'结束日期',
-					'超时小时'
-				]
+				sheetName: '下属超时工时统计',
+				sheetHeader: this.columns.map(item => item.title)
 			}
 		];
 		var toExcel = new ExportJsonExcel(option);
 		toExcel.saveExcel();
 	};
 	render() {
-		const { scrollHeight, data } = this.state;
+		const { scrollHeight, data, loading, dateRange } = this.state;
 		return (
 			<div ref={(ref) => { this.tableRef = ref }}
 				className="cq-statistics">
 				<div>
-					<RangePicker size="small" style={{ width: 450, marginRight: 8 }} />
+					<RangePicker
+						value={dateRange}
+						onChange={(dates, datesString) => {
+							this.setState({ dateRange: dates }, this.getData)
+						}}
+						allowClear={false}
+						size="small" style={{ width: 450, marginRight: 8 }} />
 					<Button onClick={this.handleDownloadExcel} size="small">导出</Button>
 				</div>
 				<Table
@@ -209,7 +106,7 @@ class Statistics extends React.Component {
 					bordered
 					size="small"
 					pagination={{ pageSize: 40, size: "small" }}
-					loading={false}
+					loading={loading}
 					scroll={{ y: scrollHeight }}
 				/>
 			</div>
