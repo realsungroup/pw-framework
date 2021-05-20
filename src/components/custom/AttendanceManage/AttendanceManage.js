@@ -61,7 +61,7 @@ class AttendanceManage extends React.Component {
       });
     }
     if (qsObj.showapply == 0) {
-      this.setState({ showApply: false })
+      this.setState({ showApply: false });
     }
     this.getNotices();
   };
@@ -108,7 +108,17 @@ class AttendanceManage extends React.Component {
 
   renderContent = () => {
     const { summaryVisible, selectKey } = this.state;
-    const { showAllminute, showBatchApply, showWorkOvertimeOptions, showApproveAll, reasonRequired } = this.props;
+    const {
+      showAllminute,
+      showBatchApply,
+      showWorkOvertimeOptions,
+      showApproveAll,
+      showChooseAllDay,
+      isEightToSeventeen,
+      reasonRequired,
+      showAllminuteShuaKa
+    } = this.props;
+
     let page = null;
     switch (selectKey) {
       // 我的考勤申请单
@@ -160,6 +170,9 @@ class AttendanceManage extends React.Component {
             setLoading={this.setLoading}
             getNotices={this.getNotices}
             showAllminute={showAllminute}
+            showAllminuteShuaKa={showAllminuteShuaKa}
+            showChooseAllDay={showChooseAllDay}
+            isEightToSeventeen={isEightToSeventeen}
             showBatchApply={showBatchApply}
             showWorkOvertimeOptions={showWorkOvertimeOptions}
             reasonRequired={reasonRequired}
@@ -225,7 +238,9 @@ class AttendanceManage extends React.Component {
       selectKey,
       showApply
     } = this.state;
-    const { intl: { locale } } = this.props;
+    const {
+      intl: { locale }
+    } = this.props;
     return (
       <Spin spinning={loading}>
         <div id="attendance-manage">
@@ -270,57 +285,69 @@ class AttendanceManage extends React.Component {
               onSelect={this.onSelect}
               inlineCollapsed={collapsed}
               selectedKeys={[selectKey]}
-            // selectedKeys = {this.selectedKeys}
+              // selectedKeys = {this.selectedKeys}
             >
-              {showApply && <SubMenu
-                key="sub1"
-                title={
-                  <span>
-                    <span className="attendance-manage_menu__level1">
-                      我的考勤申请单
+              {showApply && (
+                <SubMenu
+                  key="sub1"
+                  title={
+                    <span>
+                      <span className="attendance-manage_menu__level1">
+                        我的考勤申请单
+                      </span>
                     </span>
-                  </span>
-                }
-              >
-                <Menu.Item key="sub1-7">考勤申请</Menu.Item>
-                <Menu.Item key="sub1-1">待HR审核</Menu.Item>
+                  }
+                >
+                  <Menu.Item key="sub1-7">考勤申请</Menu.Item>
+                  <Menu.Item key="sub1-1">待HR审核</Menu.Item>
 
-                <Menu.Item key="sub1-2">
-                  待审批
-                  <Badge count={notices[waitingApproval]} />
-                </Menu.Item>
-                <Menu.Item key="sub1-3">
-                  审批中
-                  <Badge count={notices[approvaling]} />
-                </Menu.Item>
-                <Menu.Item key="sub1-4">已审批</Menu.Item>
-                <Menu.Item key="sub1-5">已作废</Menu.Item>
-                <Menu.Item key="sub1-6">已撤销</Menu.Item>
-              </SubMenu>}
+                  <Menu.Item key="sub1-2">
+                    待审批
+                    <Badge count={notices[waitingApproval]} />
+                  </Menu.Item>
+                  <Menu.Item key="sub1-3">
+                    审批中
+                    <Badge count={notices[approvaling]} />
+                  </Menu.Item>
+                  <Menu.Item key="sub1-4">已审批</Menu.Item>
+                  <Menu.Item key="sub1-5">已作废</Menu.Item>
+                  <Menu.Item key="sub1-6">已撤销</Menu.Item>
+                </SubMenu>
+              )}
               <SubMenu
                 key="sub2"
                 title={
                   <span>
                     <span className="attendance-manage_menu__level1">
-                      {locale == 'en' ? 'Approval' : "经理人考勤审批"}
+                      {locale == 'en' ? 'Approval' : '经理人考勤审批'}
                     </span>
                   </span>
                 }
               >
                 <Menu.Item key="sub2-1">
-                  {locale == 'en' ? 'Pending' : "考勤审批"}
+                  {locale == 'en' ? 'Pending' : '考勤审批'}
                   <Badge count={notices[managerApproval]} />
                 </Menu.Item>
-                <Menu.Item key="sub2-2">{locale == 'en' ? 'Current Month' : "当月审批记录"}</Menu.Item>
-                <Menu.Item key="sub2-3">{locale == 'en' ? 'History' : "历史审批记录"}</Menu.Item>
-                <Menu.Item key="sub2-4">{locale == 'en' ? 'Overdue Rec.' : "已过期未审批记录"}</Menu.Item>
-                <Menu.Item key="sub2-5">{locale == 'en' ? 'Authorization' : "考勤审批授权"}</Menu.Item>
+                <Menu.Item key="sub2-2">
+                  {locale == 'en' ? 'Current Month' : '当月审批记录'}
+                </Menu.Item>
+                <Menu.Item key="sub2-3">
+                  {locale == 'en' ? 'History' : '历史审批记录'}
+                </Menu.Item>
+                <Menu.Item key="sub2-4">
+                  {locale == 'en' ? 'Overdue Rec.' : '已过期未审批记录'}
+                </Menu.Item>
+                <Menu.Item key="sub2-5">
+                  {locale == 'en' ? 'Authorization' : '考勤审批授权'}
+                </Menu.Item>
               </SubMenu>
-              {showApply && <Menu.Item key="departmentAuth">
-                <span className="attendance-manage_menu__level1">
-                  {locale == 'en' ? 'Dept. AUTH' : "部门独立授权"}
-                </span>
-              </Menu.Item>}
+              {showApply && (
+                <Menu.Item key="departmentAuth">
+                  <span className="attendance-manage_menu__level1">
+                    {locale == 'en' ? 'Dept. AUTH' : '部门独立授权'}
+                  </span>
+                </Menu.Item>
+              )}
             </Menu>
           </div>
           <div
@@ -334,7 +361,7 @@ class AttendanceManage extends React.Component {
             {this.renderContent()}
           </div>
           <Modal
-            title={locale == 'en' ? "Details" : "审批记录"}
+            title={locale == 'en' ? 'Details' : '审批记录'}
             visible={approvalRecordVisible}
             width="90%"
             destroyOnClose
