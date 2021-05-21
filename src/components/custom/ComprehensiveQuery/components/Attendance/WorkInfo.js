@@ -336,6 +336,7 @@ class WorkInfo extends React.Component {
             <div style={modalWrapperStyle}>
               <TableData
                 resid="674912074304"
+                cmswhere={`C3_435431950633 = '${selectRecord.YGNO}'`}
                 subtractH={200}
                 hasAdvSearch={false}
                 hasAdd={false}
