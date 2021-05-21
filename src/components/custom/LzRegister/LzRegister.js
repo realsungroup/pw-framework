@@ -4,7 +4,7 @@ import { message, Tabs } from 'antd';
 import './LzRegister.less';
 import classNames from 'classnames';
 import EventEmitter from 'wolfy87-eventemitter';
-import { TableData } from '../../common/loadableCommon'
+import { TableData } from '../../common/loadableCommon';
 
 import {
   inApplication,
@@ -12,7 +12,8 @@ import {
   approved,
   refused,
   history,
-  inExaminationAndApproval
+  inExaminationAndApproval,
+  hsaVisited
 } from './config';
 
 const TabPane = Tabs.TabPane;
@@ -78,14 +79,20 @@ export default class LzRegister extends React.Component {
     const { activeKey, abnormalNum } = this.state;
     return (
       <div className="lz-register">
-
         <Tabs
           activeKey={activeKey}
           renderTabBar={this.renderTabBar}
           onChange={this.handleTabsChange}
         >
-          <TabPane tab="待访问" key="待访问" className='test1'>
-            <div style={{ height: (this.props.height ? this.props.height : 'calc(100vh - 220px)') }} className='test2'>
+          <TabPane tab="待访问" key="待访问" className="test1">
+            <div
+              style={{
+                height: this.props.height
+                  ? this.props.height
+                  : 'calc(100vh - 220px)'
+              }}
+              className="test2"
+            >
               <TableData
                 {...inApplication}
                 // https://github.com/react-component/form#note-use-wrappedcomponentref-instead-of-withref-after-rc-form140
@@ -95,7 +102,13 @@ export default class LzRegister extends React.Component {
             </div>
           </TabPane>
           <TabPane tab="访问中" key="访问中" forceRender={true}>
-            <div style={{ height: (this.props.height ? this.props.height : 'calc(100vh - 220px)') }}>
+            <div
+              style={{
+                height: this.props.height
+                  ? this.props.height
+                  : 'calc(100vh - 220px)'
+              }}
+            >
               <TableData
                 {...applyForAbnormal}
                 getTableData={this.getTableData}
@@ -105,8 +118,25 @@ export default class LzRegister extends React.Component {
               />
             </div>
           </TabPane>
+          <TabPane tab="访问结束" key="访问结束" forceRender={true}>
+            <div
+              style={{
+                height: this.props.height
+                  ? this.props.height
+                  : 'calc(100vh - 220px)'
+              }}
+            >
+              <TableData {...hsaVisited} getTableData={this.getTableData} />
+            </div>
+          </TabPane>
           <TabPane tab="已访问" key="已访问">
-            <div style={{ height: (this.props.height ? this.props.height : 'calc(100vh - 220px)') }}>
+            <div
+              style={{
+                height: this.props.height
+                  ? this.props.height
+                  : 'calc(100vh - 220px)'
+              }}
+            >
               <TableData {...refused} />
             </div>
           </TabPane>
