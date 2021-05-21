@@ -20,6 +20,7 @@ class WorkInfo extends React.Component {
     userCode: '',
     dailyDetailVisible: false,
     yearDetailVisible: false,
+    tiaoxiuDetailVisible: false,
     selectRecord: {},
     currentNav: 'monthDetail'
   };
@@ -93,6 +94,7 @@ class WorkInfo extends React.Component {
     this.setState({
       dailyDetailVisible: false,
       yearDetailVisible: false,
+      tiaoxiuDetailVisible: false,
       selectRecord: {}
     });
   };
@@ -111,7 +113,12 @@ class WorkInfo extends React.Component {
           selectRecord
         });
         break;
-
+      case 'tiaoxiu':
+        this.setState({
+          tiaoxiuDetailVisible: true,
+          selectRecord
+        });
+        break;
       default:
         break;
     }
@@ -130,10 +137,11 @@ class WorkInfo extends React.Component {
       selectMonth,
       dailyDetailVisible,
       yearDetailVisible,
+      tiaoxiuDetailVisible,
       selectRecord,
       currentNav
     } = this.state;
-    const { person, showAnnualLeaveDetail } = this.props;
+    const { person, showAnnualLeaveDetail, showTiaoXiuDetail } = this.props;
     return (
       <div className="performance-query">
         <div className="WorkInfoQuery">
@@ -203,6 +211,16 @@ class WorkInfo extends React.Component {
                           </Button>
                         );
                       },
+                      showTiaoXiuDetail ? (record, btnSize) => {
+                        return (
+                          <Button
+                            size="small"
+                            onClick={this.openModal('tiaoxiu', record)}
+                          >
+                            调休明细
+                          </Button>
+                        );
+                      } : null,
                       showAnnualLeaveDetail ? (record, btnSize) => {
                         return (
                           <Button
@@ -298,6 +316,34 @@ class WorkInfo extends React.Component {
                 hasRowSelection={false}
                 actionBarWidth={100}
                 cmswhere={`C3_426438637535 = '${selectRecord.YGNO}'`}
+                baseURL={this.baseURL}
+                downloadBaseURL={this.attendanceDownloadURL}
+              />
+            </div>
+          </Modal>
+          <Modal
+            title={`调休明细——${selectRecord.YGNAMES}`}
+            visible={tiaoxiuDetailVisible}
+            onCancel={this.closeModal}
+            onOk={this.closeModal}
+            width="80%"
+            destroyOnClose
+          >
+            <div style={modalWrapperStyle}>
+              <TableData
+                resid="671299372057"
+                subtractH={200}
+                hasAdvSearch={false}
+                hasAdd={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                actionBarWidth={100}
                 baseURL={this.baseURL}
                 downloadBaseURL={this.attendanceDownloadURL}
               />

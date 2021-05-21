@@ -2022,7 +2022,11 @@ window[620212364621] = {
   name: 'ComprehensiveQuery',
   title: '综合查询',
   props: {
-    showAnnualLeaveDetail: false //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示人事信息
+    showPingji: true, //是否显示人事信息
+    showChaoshi: true, //是否显示超时工时统计
   }
 };
 window[642853831562] = {
@@ -2030,7 +2034,11 @@ window[642853831562] = {
   title: '绩效查询',
   props: {
     tabKey: 'performance',
-    showAnnualLeaveDetail: false //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示人事信息
+    showPingji: true, //是否显示人事信息
+    showChaoshi: true, //是否显示超时工时统计
   }
 };
 
@@ -2039,7 +2047,12 @@ window[642853818882] = {
   title: '考勤查询',
   props: {
     tabKey: 'attendance',
-    showAnnualLeaveDetail: true //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showTiaoXiuDetail: true,//是否显示调休明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示人事信息
+    showPingji: true, //是否显示人事信息
+    showChaoshi: true, //是否显示超时工时统计
   }
 };
 window[643372961628] = {
@@ -2047,7 +2060,11 @@ window[643372961628] = {
   title: '评级评优查询',
   props: {
     tabKey: 'rating',
-    showAnnualLeaveDetail: false //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示人事信息
+    showPingji: true, //是否显示人事信息
+    showChaoshi: true, //是否显示超时工时统计
   }
 };
 window[642853806554] = {
@@ -2055,7 +2072,11 @@ window[642853806554] = {
   title: '人事查询',
   props: {
     tabKey: 'personnel',
-    showAnnualLeaveDetail: false //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示人事信息
+    showPingji: true, //是否显示人事信息
+    showChaoshi: true, //是否显示超时工时统计
   }
 };
 window[621257502796] = {
@@ -9795,4 +9816,10 @@ window[671543192998] = {
   props: {
     baseURL: 'http://10.108.2.66:9091'
   }
+};
+
+//调休假余额
+window[671298901933] = {
+  name: 'HolidayBalanceQuery', // 组件名称，
+  title: '调休假余额', // 功能模块名
 };

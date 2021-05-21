@@ -12,6 +12,7 @@ import DimissionQuery from './components/DimissionQuery';
 import InductionQuery from './components/InductionQuery';
 import JobAndEmployee from './components/JobAndEmployee';
 import TrainingQuery from './components/TrainingQuery';
+import Statistics from './components/Statistics';
 
 const { TabPane } = Tabs;
 
@@ -57,7 +58,7 @@ class ComprehensiveQuery extends React.Component {
         page = <PersonInfo person={this.state.node} />;
         break;
       case 'attendance':
-        page = <WorkInfo person={this.state.node} showAnnualLeaveDetail={this.props.showAnnualLeaveDetail} />;
+        page = <WorkInfo person={this.state.node} showAnnualLeaveDetail={this.props.showAnnualLeaveDetail} showTiaoXiuDetail={this.props.showTiaoXiuDetail} />;
         break;
       case 'performance':
         page = <PerformanceQuery person={this.state.node} isExpand={(v) => this.isExpand(v)} />;
@@ -77,7 +78,9 @@ class ComprehensiveQuery extends React.Component {
       case 'induction':
         page = <InductionQuery person={this.state.node} />;
         break;
-
+      case 'statistics':
+        page = <Statistics person={this.state.node} />;
+        break;
       default:
         break;
     }
@@ -85,6 +88,7 @@ class ComprehensiveQuery extends React.Component {
   };
   render() {
     const { isExpand, currentTab } = this.state;
+    const { showPingji, showJixiao, showRenshi, showChaoshi } = this.props;
     return (
       <div id="comprehensive-query">
         <main style={{ left: isExpand ? 260 : 24 }} className="main-content">
@@ -100,11 +104,12 @@ class ComprehensiveQuery extends React.Component {
               style={{ backgroundColor: '#fff' }}
               activeKey={currentTab}
             >
-              <TabPane tab="人事信息" key="personnel"></TabPane>
+              {showRenshi && <TabPane tab="人事信息" key="personnel"></TabPane>}
               <TabPane tab="考勤查询" key="attendance"></TabPane>
-              <TabPane tab="绩效查询" key="performance"></TabPane>
-              <TabPane tab="评级评优查询" key="rating"></TabPane>
-              {process.env.NODE_ENV === 'development' && (
+              {showJixiao && <TabPane tab="绩效查询" key="performance"></TabPane>}
+              {showPingji && <TabPane tab="评级评优查询" key="rating"></TabPane>}
+              {showChaoshi && <TabPane tab="下属超时工时统计" key="statistics"></TabPane>}
+              {/* {process.env.NODE_ENV === 'development' && (
                 <TabPane tab="培训查询" key="training"></TabPane>
               )}
               {process.env.NODE_ENV === 'development' && (
@@ -115,7 +120,7 @@ class ComprehensiveQuery extends React.Component {
               )}
               {process.env.NODE_ENV === 'development' && (
                 <TabPane tab="入职情况" key="induction"></TabPane>
-              )}
+              )} */}
             </Tabs>
           </header>
           <div className="comprehensive-query_main-content-wrap">
