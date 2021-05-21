@@ -30,7 +30,7 @@ export const inApplication = {
       subTableName: '访客信息',
       subResid: 606066688508,
       tableProps: {
-        hasAdd: false,
+        hasAdd: true,
         hasModify: false,
         hasDelete: false,
         hasRowModify: false,
