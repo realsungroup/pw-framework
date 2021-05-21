@@ -211,26 +211,30 @@ class WorkInfo extends React.Component {
                           </Button>
                         );
                       },
-                      showTiaoXiuDetail ? (record, btnSize) => {
-                        return (
-                          <Button
-                            size="small"
-                            onClick={this.openModal('tiaoxiu', record)}
-                          >
-                            调休明细
-                          </Button>
-                        );
-                      } : null,
-                      showAnnualLeaveDetail ? (record, btnSize) => {
-                        return (
-                          <Button
-                            size="small"
-                            onClick={this.openModal('year', record)}
-                          >
-                            年假明细
-                          </Button>
-                        );
-                      } : null
+                      showTiaoXiuDetail
+                        ? (record, btnSize) => {
+                            return (
+                              <Button
+                                size="small"
+                                onClick={this.openModal('tiaoxiu', record)}
+                              >
+                                调休明细
+                              </Button>
+                            );
+                          }
+                        : null,
+                      showAnnualLeaveDetail
+                        ? (record, btnSize) => {
+                            return (
+                              <Button
+                                size="small"
+                                onClick={this.openModal('year', record)}
+                              >
+                                年假明细
+                              </Button>
+                            );
+                          }
+                        : null
                     ]}
                   />
                 )}
@@ -331,7 +335,7 @@ class WorkInfo extends React.Component {
           >
             <div style={modalWrapperStyle}>
               <TableData
-                resid="671299372057"
+                resid="674912074304"
                 subtractH={200}
                 hasAdvSearch={false}
                 hasAdd={false}
