@@ -11,7 +11,8 @@ import {
   Select,
   message,
   Upload,
-  Icon
+  Icon,
+  Checkbox
 } from 'antd';
 import http from 'Util20/api';
 import { getItem } from 'Util/util';
@@ -22,8 +23,12 @@ const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 16 }
 };
+const attendanceBaseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
 const { TextArea } = Input;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD';
 const vacateHours = [
   '00',
   '01',
@@ -86,12 +91,21 @@ class CustomForm1 extends React.Component {
     },
     currentUser: JSON.parse(getItem('userInfo')).Data,
     currentUserCode: JSON.parse(getItem('userInfo')).UserInfo.EMP_ID,
-    fileList: [] //附件列表
+    fileList: [], //附件列表
+    chooseAllDay: false, //选择全天
+    allDayTimeLength: 0 //请全天假的总时间长度
   };
-  minute = []
+  minute = [];
   componentDidMount() {
     const { showAllminute } = this.props;
-    this.minute = showAllminute ? new Array(60).fill('1').map((item, index) => { return index < 10 ? '0' + index : '' + index }) : ['00', 30];
+    const isShangHai =
+      JSON.parse(getItem('userInfo')).EnterpriseCode === '2000';
+    this.minute =
+      showAllminute || isShangHai
+        ? new Array(60).fill('1').map((item, index) => {
+            return index < 10 ? '0' + index : '' + index;
+          })
+        : ['00', 30];
 
     this.getType();
   }
@@ -107,10 +121,18 @@ class CustomForm1 extends React.Component {
       startMinute,
       endMinute
     } = filledData;
-    const startTime = `${startDate} ${startHour}:${startMinute}`;
-    const endTime = `${endDate} ${endHour}:${endMinute}`;
-    const preStartTime = `${preState.filledData.startDate} ${preState.filledData.startHour}:${preState.filledData.startMinute}`;
-    const preEndTime = `${preState.filledData.endDate} ${preState.filledData.endHour}:${preState.filledData.endMinute}`;
+    const startTime = `${moment(startDate).format(
+      'YYYY-MM-DD'
+    )} ${startHour}:${startMinute}`;
+    const endTime = `${moment(endDate).format(
+      'YYYY-MM-DD'
+    )} ${endHour}:${endMinute}`;
+    const preStartTime = `${moment(preState.filledData.startDate).format(
+      'YYYY-MM-DD'
+    )} ${preState.filledData.startHour}:${preState.filledData.startMinute}`;
+    const preEndTime = `${moment(preState.filledData.endDate).format(
+      'YYYY-MM-DD'
+    )} ${preState.filledData.endHour}:${preState.filledData.endMinute}`;
     if (
       startDate &&
       startHour &&
@@ -173,7 +195,9 @@ class CustomForm1 extends React.Component {
         this.setState({
           filledData: {
             ...this.state.filledData,
-            timeLength
+            timeLength: this.state.chooseAllDay
+              ? this.state.allDayTimeLength
+              : timeLength
           },
           errors: {
             ...this.state.errors,
@@ -332,18 +356,28 @@ class CustomForm1 extends React.Component {
     this.setState({
       filledData: {
         ...this.state.filledData,
-        [item]: v && v.format('YYYY-MM-DD')
+        [item]: v && moment(v.format('YYYY-MM-DD'))
       }
     });
     this.setDateError();
   };
 
   setDateError = () => {
+    const {
+      startDate,
+      startHour,
+      startMinute,
+      endDate,
+      endHour,
+      endMinute
+    } = this.state.filledData;
     this.setState({
       errors: {
         ...this.state.errors,
-        startTime: this.state.filledData.startTime ? false : true,
-        endTime: this.state.filledData.endTime ? false : true
+        startTime: startDate && startHour && startMinute ? false : true,
+        endTime: endDate && endHour && endMinute ? false : true
+        // startTime: this.state.filledData.startTime ? false : true,
+        // endTime: this.state.filledData.endTime ? false : true
       }
     });
   };
@@ -356,7 +390,7 @@ class CustomForm1 extends React.Component {
   };
 
   handleEventChange = item => e => {
-    if (item == "reason") {
+    if (item == 'reason') {
       const { reasonRequired } = this.props;
       this.setState({
         filledData: { ...this.state.filledData, [item]: e.target.value },
@@ -364,7 +398,7 @@ class CustomForm1 extends React.Component {
           ...this.state.errors,
           [item]: !reasonRequired || e.target.value ? false : true
         }
-      })
+      });
     } else {
       this.setState({
         filledData: { ...this.state.filledData, [item]: e.target.value },
@@ -404,6 +438,78 @@ class CustomForm1 extends React.Component {
       });
     }
   };
+
+  setAllDay = async (dates, dateStrings) => {
+    const pnid = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
+    const date1 = dateStrings[0].replaceAll('/', '-');
+    const date2 = dateStrings[1].replaceAll('/', '-');
+    const refresh = '1';
+    let res;
+    try {
+      res = await http({ baseURL: attendanceBaseURL }).getdailyrpt({
+        pnid,
+        date1,
+        date2,
+        refresh
+      });
+    } catch (error) {
+      console.log(error.message);
+      message.info(error.message);
+    }
+    if (res.data) {
+      let allDayTimeLength = 0;
+      res.data.map(item => {
+        allDayTimeLength += item.F_79;
+      });
+      this.setState({
+        allDayTimeLength
+      });
+      if (
+        res.data[0].WORKDAYID === null ||
+        res.data[res.data.length - 1].WORKDAYID === null
+      ) {
+        message.info('开始或结束日期不可选择放假时间');
+      } else {
+        const startTime = res.data[0].WORKSTARTTIME;
+        const endTime = res.data[res.data.length - 1].WORKENDTIME;
+        const startDate = moment(moment(startTime).format('YYYY-MM-DD'));
+        const startHour = moment(startTime).format('HH');
+        const startMinute = moment(startTime).format('mm');
+        const endDate = moment(moment(endTime).format('YYYY-MM-DD'));
+        const endHour = moment(endTime).format('HH');
+        const endMinute = moment(endTime).format('mm');
+        const hasSort = startDate.isBefore(endTime);
+        const { isEightToSeventeen } = this.props;
+        this.setState({
+          filledData: {
+            ...this.state.filledData,
+            startDate: hasSort ? startDate : endDate,
+            startHour: isEightToSeventeen
+              ? '08'
+              : hasSort
+              ? startHour
+              : endHour,
+            startMinute: isEightToSeventeen
+              ? '00'
+              : hasSort
+              ? startMinute
+              : endMinute,
+            endDate: hasSort ? endDate : startDate,
+            endHour: isEightToSeventeen ? '17' : hasSort ? endHour : startHour,
+            endMinute: isEightToSeventeen
+              ? '00'
+              : hasSort
+              ? endMinute
+              : startMinute
+          }
+        });
+        this.setDateError();
+      }
+    } else {
+      message.info('请假的日期未生成日报，无法确定起止时间');
+    }
+  };
+
   render() {
     const {
       currentUser,
@@ -414,9 +520,15 @@ class CustomForm1 extends React.Component {
       submitting,
       applyType,
       isNeedAttachment,
-      errors
+      errors,
+      chooseAllDay
     } = this.state;
-    const { showWorkOvertimeOptions, reasonRequired } = this.props;
+    const {
+      showWorkOvertimeOptions,
+      showChooseAllDay,
+      reasonRequired
+    } = this.props;
+
     let startHours = [], //可选的开始时间点
       endHours = [], //可选的结束时间点
       disabled = true; //时间长度是否不可手动输入
@@ -436,7 +548,7 @@ class CustomForm1 extends React.Component {
     return (
       <div className="attendace-aplly_form__wrapper">
         <Form className="attendace-aplly_form">
-          <h2>{showWorkOvertimeOptions ? "请假/加班申请单" : "考勤申请单"}</h2>
+          <h2>{showWorkOvertimeOptions ? '请假/加班申请单' : '考勤申请单'}</h2>
           <Row style={{ fontWeight: 600, marginBottom: 32 }}>
             <Col span={8}>填单人：{currentUser}</Col>
             <Col span={16}>
@@ -456,6 +568,25 @@ class CustomForm1 extends React.Component {
               onChange={this.handleTypeChange}
             />
           </Form.Item>
+          {showChooseAllDay && (
+            <Form.Item {...formItemLayout} label="选择全天：">
+              <Checkbox
+                onChange={e => {
+                  this.setState({
+                    chooseAllDay: e.target.checked
+                  });
+                }}
+              ></Checkbox>
+              <RangePicker
+                style={{ marginLeft: '20px' }}
+                format={dateFormat}
+                disabled={!chooseAllDay}
+                onChange={(dates, dateStrings) => {
+                  this.setAllDay(dates, dateStrings);
+                }}
+              />
+            </Form.Item>
+          )}
           <Form.Item
             {...formItemLayout}
             label="开始时间："
@@ -463,8 +594,14 @@ class CustomForm1 extends React.Component {
             validateStatus={errors.startTime && 'error'}
             help={errors.startTime && '请输入完整的开始时间'}
           >
-            <DatePicker onChange={this.handleDateChange('startDate')} />
+            <DatePicker
+              disabled={chooseAllDay}
+              value={filledData.startDate}
+              onChange={this.handleDateChange('startDate')}
+            />
             <Select
+              disabled={chooseAllDay}
+              value={filledData.startHour}
               placeholder="时"
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('startHour')}
@@ -475,11 +612,17 @@ class CustomForm1 extends React.Component {
               ))}
             </Select>
             <Select
+              disabled={chooseAllDay}
+              value={filledData.startMinute}
               placeholder="分"
               onChange={this.handleStringChange('startMinute')}
               style={{ width: 100, marginLeft: 8 }}
             >
-              {this.minute.map(item => <Option key={item} value={item}>{item}</Option>)}
+              {this.minute.map(item => (
+                <Option key={item} value={item}>
+                  {item}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 
@@ -490,8 +633,14 @@ class CustomForm1 extends React.Component {
             validateStatus={errors.endTime && 'error'}
             help={errors.endTime && '请输入完整的结束时间'}
           >
-            <DatePicker onChange={this.handleDateChange('endDate')} />
+            <DatePicker
+              disabled={chooseAllDay}
+              value={filledData.endDate}
+              onChange={this.handleDateChange('endDate')}
+            />
             <Select
+              disabled={chooseAllDay}
+              value={filledData.endHour}
               placeholder="时"
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('endHour')}
@@ -502,11 +651,17 @@ class CustomForm1 extends React.Component {
               ))}
             </Select>
             <Select
+              disabled={chooseAllDay}
+              value={filledData.endMinute}
               placeholder="分"
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('endMinute')}
             >
-              {this.minute.map(item => <Option key={item} value={item}>{item}</Option>)}
+              {this.minute.map(item => (
+                <Option key={item} value={item}>
+                  {item}
+                </Option>
+              ))}
             </Select>
           </Form.Item>
 

@@ -335,6 +335,7 @@ class IDLTransferHr extends Component {
             }
             applyHasPass.push({
               ...item,
+              C3_674843594419: 'Y',
               C3_634660565837: 'Y',
               show: str2,
               edit_time: moment().format('YYYY-MM-DD HH:mm:ss')
@@ -806,18 +807,17 @@ class IDLTransferHr extends Component {
         p++;
       }
 
-      console.log(toAdd);
-      // let res2 = await http().addRecords({
-      //   resid: 634660498796,
-      //   data: toAdd
-      // });
-      // let res3 = await http().modifyRecords({
-      //   resid: 632255761674,
-      //   data: data
-      // });
-      // this.setState({ loading: false });
-      // message.success('批量审批成功');
-      // this.tableDataRef.handleRefresh();
+      let res2 = await http().addRecords({
+        resid: 634660498796,
+        data: toAdd
+      });
+      let res3 = await http().modifyRecords({
+        resid: 632255761674,
+        data: data
+      });
+      this.setState({ loading: false });
+      message.success('批量审批成功');
+      this.tableDataRef.handleRefresh();
       this.setState({ loading: false });
     } catch (e) {
       this.setState({ loading: false });
@@ -915,8 +915,42 @@ class IDLTransferHr extends Component {
       }
     }
   };
+  addMail = async () => {
+    console.log(this.state.btnV);
+    this.setState({ loading: true });
+    if (this.state.btnV) {
+      try {
+        let res = await http().getTable({
+          resid: 634660498796,
+          cmswhere: `C3_634660564341 = '${this.state.btnV}' and C3_637177232366 = 'Y'`
+        });
+        if (res.data.length > 0) {
+          let res2 = await http().addRecords({
+            resid: 674844067598,
+            data: [{ C3_674847285611: res.data[0].C3_634745478935 }]
+          });
+          message.success('已通知');
+          this.setState({ loading: false });
+        } else {
+          message.error('没有未审批记录');
+          this.setState({ loading: false });
+        }
+      } catch (e) {
+        console.log(e.message);
+        this.setState({ loading: false });
+      }
+    } else {
+      message.error('尚未获取到记录');
+      this.setState({ loading: false });
+    }
+  };
   showOverlay = async v => {
-    this.setState({ memberDetail: null, stream: [] });
+    this.setState({
+      btnV: null,
+      showBtnAlert: false,
+      memberDetail: null,
+      stream: []
+    });
     var n = 0;
     var arr = [];
     while (n < attr.length) {
@@ -961,6 +995,12 @@ class IDLTransferHr extends Component {
     }
     this.getStream(object.changeID, resid);
 
+    if (
+      this.state.cms ==
+      `hrPreAprrove = 'Y' and isnull(isStreamEnd,'') = '' and C3_653481734712 = '${this.state.right.location}'`
+    ) {
+      this.setState({ showBtnAlert: true, btnV: v.REC_ID });
+    }
     // this.getMem(object.changeID);
 
     this.setState({ toCheck: arr, toCheckFront: object, visible: true });
@@ -1122,7 +1162,8 @@ class IDLTransferHr extends Component {
             order: res2.data[n].C3_634660566076,
             current: res2.data[n].C3_637177232366,
             C3_634660565837: res2.data[n].C3_634660565837,
-            show: res2.data[n].show
+            show: res2.data[n].show,
+            C3_674843594419: res2.data[n].C3_674843594419 //是否是发起人
           });
 
           n++;
@@ -1349,13 +1390,13 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                      `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'`
+                      `hrPreAprrove = 'Y' and isnull(isStreamEnd,'') = '' and C3_653481734712 = '${this.state.right.location}'`
                       ? 'cur'
                       : ''
                   }
                   onClick={() => {
                     this.setState({
-                      cms: `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'`,
+                      cms: `hrPreAprrove = 'Y' and isnull(isStreamEnd,'') = '' and C3_653481734712 = '${this.state.right.location}'`,
                       hasApp: 'wait'
                     });
                   }}
@@ -1523,6 +1564,7 @@ class IDLTransferHr extends Component {
               />
             </div>
           </Modal>
+
           <Modal
             width={'90vw'}
             visible={this.state.commandVisible}
@@ -1892,6 +1934,48 @@ class IDLTransferHr extends Component {
             </div>
           </Modal>
           <Modal
+            title={'提醒邮件发送记录'}
+            width={'90vw'}
+            visible={this.state.showAlert}
+            footer={null}
+            destroyOnClose
+            onCancel={() => {
+              if (this.state.showAlertCms != ``) {
+                this.setState({
+                  visible: true,
+                  showAlert: false,
+                  showAlertCms: ``
+                });
+              } else {
+                this.setState({ showAlert: false, showAlertCms: `` });
+              }
+            }}
+          >
+            <div
+              style={{
+                width: '100%',
+                height: 'calc(80vh - 104px)',
+                position: 'relative'
+              }}
+            >
+              <TableData
+                resid={674844067598}
+                cmswhere={this.state.showAlertCms}
+                downloadURL={this.downloadURL}
+                hasRowView={false}
+                subtractH={220}
+                hasAdd={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                style={{ height: '100%' }}
+                hasRowView={false}
+              />
+            </div>
+          </Modal>
+          <Modal
             width={'90vw'}
             visible={this.state.visible}
             footer={
@@ -1983,11 +2067,15 @@ class IDLTransferHr extends Component {
                                     <br />
                                   </>
                                 ) : null}
-                                {item.C3_634660565837 == 'Y' ? (
-                                  <b style={{ color: '#1890ff' }}>通过</b>
+                                {item.C3_674843594419 == 'Y' ? (
+                                  <b style={{ color: '#1890ff' }}>发起人</b>
                                 ) : null}
+                                {item.C3_634660565837 == 'Y' &&
+                                  item.C3_674843594419 != 'Y' ? (
+                                    <b style={{ color: '#1890ff' }}>审批通过</b>
+                                  ) : null}
                                 {item.C3_634660565837 == 'N' ? (
-                                  <b style={{ color: '#f5222d' }}>未通过</b>
+                                  <b style={{ color: '#f5222d' }}>已拒绝</b>
                                 ) : null}
                                 {item.C3_634660565837 ? null : (
                                   <b style={{ color: '#666' }}>未审批</b>
@@ -2003,6 +2091,32 @@ class IDLTransferHr extends Component {
                       })}
                     </ul>
                   )}
+                {this.state.showBtnAlert ? (
+                  <div>
+                    <Button
+                      type="danger"
+                      loading={this.state.loading}
+                      onClick={() => this.addMail()}
+                    >
+                      发送邮件提醒当前审批人
+                    </Button>
+
+                    <Button
+                      type="normal"
+                      onClick={() => {
+                        this.setState({
+                          showAlert: true,
+                          visible: false,
+                          showAlertCms: `C3_674844102820 = '${this.state.btnV}'`
+                        });
+                      }}
+                      style={{ marginLeft: 16 }}
+                    >
+                      查看本记录的邮件发送记录
+                    </Button>
+                  </div>
+                ) : null}
+
                 <div style={{ clear: 'both' }}></div>
                 {this.state.cms ==
                   `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` &&
@@ -2321,6 +2435,7 @@ class IDLTransferHr extends Component {
               </div>
             </div>
           </Modal>
+
           <Modal
             title={'选择Job Code'}
             width={'90vw'}
@@ -2415,6 +2530,7 @@ class IDLTransferHr extends Component {
               />
             </div>
           </Modal>
+
           <Spin spinning={this.state.loading}>
             <div style={{ height: 'calc(100vh - 48px)' }}>
               {this.state.cms != `` ? (
@@ -2456,19 +2572,31 @@ class IDLTransferHr extends Component {
                                 </Button>
                               ) : null}
                             {this.state.cms ===
-                              `hrPreAprrove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
-                                <Button
-                                  type="primary"
-                                  width={'160px'}
-                                  onClick={() => {
-                                    this.handleNoticePorposal(
-                                      dataSource,
-                                      selectedRowKeys
-                                    );
-                                  }}
-                                >
-                                  通知申请人信息已变动
-                                </Button>
+                              `hrPreAprrove = 'Y' and isnull(isStreamEnd,'') = '' and C3_653481734712 = '${this.state.right.location}'` ? (
+                                <>
+                                  <Button
+                                    type="primary"
+                                    width={'160px'}
+                                    onClick={() => {
+                                      this.handleNoticePorposal(
+                                        dataSource,
+                                        selectedRowKeys
+                                      );
+                                    }}
+                                  >
+                                    通知申请人信息已变动
+                              </Button>
+                                  <Button
+                                    onClick={() => {
+                                      this.setState({
+                                        showAlert: true,
+                                        showAlertCms: ``
+                                      });
+                                    }}
+                                  >
+                                    查看所有提醒邮件发送记录
+                              </Button>
+                                </>
                               ) : null}
                           </>
                         );

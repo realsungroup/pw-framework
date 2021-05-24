@@ -199,17 +199,15 @@ class Summary extends React.PureComponent {
       isWuxi: userinfo.EnterpriseCode == "100" ? true : false
     });
     try {
-      let res = await http({ baseURL: 'http://10.108.2.66:2001' }).postTreeData(
-        {
-          resid: '609599795438',
-          Levels: 3,
-          MoveDirection: 1,
-          MoveLevels: 1,
-          ColumnOfID: 'C3_305737857578', //人员编号
-          ColumnOfPID: 'C3_417993417686', //直接主管编号
-          ProductIDs: bianhao //当前人员编号1751
-        }
-      );
+      let res = await http().postTreeData({
+        resid: '609599795438',
+        Levels: 3,
+        MoveDirection: 1,
+        MoveLevels: 1,
+        ColumnOfID: 'C3_305737857578', //人员编号
+        ColumnOfPID: 'C3_417993417686', //直接主管编号
+        ProductIDs: bianhao //当前人员编号1751
+      });
       let arr = [];
       let n = 0;
       while (n < res.nodes.length) {
@@ -443,13 +441,13 @@ class Summary extends React.PureComponent {
 
     switch (quarter) {
       case 1:
-        return `YEARMONTH = '${year}01' or YEARMONTH = '${year}02' or YEARMONTH = '${year}03'`
+        return `C3_375984964421 = '${year}01' or C3_375984964421 = '${year}02' or C3_375984964421 = '${year}03'`
       case 2:
-        return `YEARMONTH = '${year}04' or YEARMONTH = '${year}05' or YEARMONTH = '${year}06'`
+        return `C3_375984964421 = '${year}04' or C3_375984964421 = '${year}05' or C3_375984964421 = '${year}06'`
       case 3:
-        return `YEARMONTH = '${year}07' or YEARMONTH = '${year}08' or YEARMONTH = '${year}09'`
+        return `C3_375984964421 = '${year}07' or C3_375984964421 = '${year}08' or C3_375984964421 = '${year}09'`
       case 4:
-        return `YEARMONTH = '${year}10' or YEARMONTH = '${year}11' or YEARMONTH = '${year}12'`
+        return `C3_375984964421 = '${year}10' or C3_375984964421 = '${year}11' or C3_375984964421 = '${year}12'`
       default:
         return '';
     }
@@ -584,7 +582,7 @@ class Summary extends React.PureComponent {
                   <TableData
                     key={selectedRecord.REC_ID}
                     //dataMode="sub"
-                    resid={'674751187747'}
+                    resid={'674911218456'}
                     //subresid={'662737017622'}
                     //hostrecid={selectedRecord.REC_ID}
                     baseURL={baseURL}
@@ -594,9 +592,10 @@ class Summary extends React.PureComponent {
                     hasDelete={false}
                     hasRowEdit={false}
                     hasRowModify={false}
-                    hasRowView={true}
+                    hasRowView={false}
                     hasRowDelete={false}
                     actionBarWidth={100}
+                    isUseBESize={true}
                     height={500}
                     cmswhere={this.getCmswhere(selectedRecord.year, selectedRecord.quarter)}
                   />

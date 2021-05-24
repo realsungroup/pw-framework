@@ -8,7 +8,7 @@ const rowStyle = {
 /**
  * @description 课程信息
  */
-const CourseInfo = function(props) {
+const CourseInfo = function (props) {
   let { course } = props;
   return (
     <Card
@@ -32,10 +32,10 @@ const CourseInfo = function(props) {
         </Col> */}
       </Row>
       <Row style={rowStyle}>
-        <Col md={12}>
+        {/* <Col md={12}>
           <span className="course-info_label">价格:</span>
           {course.C3_613941385069}
-        </Col>
+        </Col> */}
         <Col md={12}>
           <span className="course-info_label">地点:</span>
           {course.C3_613941386325}
@@ -68,16 +68,16 @@ const CourseInfo = function(props) {
           {props.mode === 'view' ? (
             <p>{props.extraCost}</p>
           ) : (
-            <Input
-              value={props.extraCost}
-              type="number"
-              onChange={e => {
-                props.onChangeExtraCost(e.target.value);
-              }}
-            />
-          )}
+              <Input
+                value={props.extraCost}
+                type="number"
+                onChange={e => {
+                  props.onChangeExtraCost(e.target.value);
+                }}
+              />
+            )}
         </Col>
-         {/* <Col md={12}>
+        {/* <Col md={12}>
           <span className="course-info_label">地点:</span>
           {course.C3_613941386325}
         </Col> */}

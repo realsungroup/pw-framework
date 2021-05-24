@@ -185,5 +185,6 @@ export {
   IIVIInfo,
   BUCODEInfo,
   RecruitmentNeeds,
-  ExportPersonnelChanges
+  ExportPersonnelChanges,
+  HolidayBalanceQuery
 } from '../components/custom/loadableCustom';
