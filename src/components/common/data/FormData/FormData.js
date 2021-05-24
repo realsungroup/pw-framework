@@ -182,7 +182,8 @@ class FormData extends React.Component {
       storeWay,
       subTableArr,
       dblinkname,
-      baseURL
+      baseURL,
+      saveRecordAndSubTablesApiExtraParams,
     } = this.props;
     const { hasSubTables } = this.state;
     const { dataMode, resid, subresid, hostrecid } = info;
@@ -216,6 +217,7 @@ class FormData extends React.Component {
           const dataObj = {
             resid,
             maindata: { ...formData, _id: 1, _state: state },
+            ...saveRecordAndSubTablesApiExtraParams,
             _id: 1
           };
 
