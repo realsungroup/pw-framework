@@ -195,7 +195,9 @@ class CustomForm1 extends React.Component {
         this.setState({
           filledData: {
             ...this.state.filledData,
-            timeLength
+            timeLength: this.state.chooseAllDay
+              ? this.state.allDayTimeLength
+              : timeLength
           },
           errors: {
             ...this.state.errors,
@@ -203,10 +205,6 @@ class CustomForm1 extends React.Component {
           }
         });
       }
-      this.state.chooseAllDay &&
-        this.setState({
-          timeLength: this.state.allDayTimeLength
-        });
     } catch (error) {
       console.log(error);
       message.error(error.message);
