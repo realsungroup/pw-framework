@@ -119,7 +119,10 @@ class IDLTransferVerifyAction extends Component {
       });
       this.setState({ approveRec: res2 });
       res2.data.map(item => {
-        if (item.C3_634660565034 === 'HR部门经理审批') {
+        if (
+          item.C3_634660565034 === 'HR部门经理审批' ||
+          item.C3_634660565034 === 'HR部门总监审批'
+        ) {
           this.setState({
             HRManagerNumId: item.C3_634660565295
           });
