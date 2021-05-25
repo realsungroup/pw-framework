@@ -8,7 +8,8 @@ import {
   Modal,
   Checkbox,
   DatePicker,
-  Select
+  Select,
+  Icon
 } from 'antd';
 import moment from 'moment';
 
@@ -931,7 +932,7 @@ class Compact extends Component {
             key="3"
             style={{ width: '100%', height: 'calc(100vh - 64px)' }}
           >
-            <div className="filterLine">
+            <div className="filterLine filterLine_Alter">
               {filterTab3A.map((item, key) => {
                 return (
                   <span
@@ -980,12 +981,13 @@ class Compact extends Component {
                       });
                     }}
                   >
-                    {item.label}
+                    {this.state.key3 == '_' + key + '3A' ? item.label : <Icon type="retweet" />}
+
                   </span>
                 );
               })}
             </div>
-            <div className="filterLine">
+            <div className="filterLine" style={this.state.showType ? { float: 'left', width: 'auto', marginTop: '4px' } : { float: 'left', width: 'auto', marginTop: '8px' }}>
               {filterTab3B.map((item, key) => {
                 return (
                   <span
@@ -1018,7 +1020,7 @@ class Compact extends Component {
               {this.state.showType ?
                 (
                   <div>
-                    <Select style={{ marginTop: '8px', width: '200px', marginRight: 8, marginLeft: 16 }} onChange={(v) => { this.changeType(v) }} value={this.state.filterTypeV}>
+                    <Select style={{ width: '200px', marginRight: 8, marginLeft: 16 }} onChange={(v) => { this.changeType(v) }} value={this.state.filterTypeV}>
                       {filterType.map((item, key) => {
                         return (
                           <Option value={item.value} key={key}>{item.value}</Option>
@@ -1037,6 +1039,7 @@ class Compact extends Component {
 
                 : null}
             </div>
+            <div style={{ clear: 'both' }}></div>
             <div style={{ width: '100%', height: 'calc(100vh - 128px)' }}>
               <TableData
                 resid={this.state.residTab3}
