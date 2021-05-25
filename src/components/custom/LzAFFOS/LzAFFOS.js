@@ -132,9 +132,9 @@ export default class LzAFFOS extends React.Component {
     this.inApplicationRef = React.createRef();
   }
 
-  componentDidMount = () => { };
+  componentDidMount = () => {};
 
-  componentWillUnmount = () => { };
+  componentWillUnmount = () => {};
 
   handleTabsChange = activeKey => {
     this.setState({ activeKey });
@@ -545,6 +545,10 @@ export default class LzAFFOS extends React.Component {
     //审批表需要额外添加数据
 
     const extra = {};
+    let peopleStr = '';
+    this.state.dataSource.map(item => {
+      peopleStr = peopleStr + item.C3_605716828937 + '-';
+    });
     extra.maxProcess = newAppList.length; //最大审批节点
     extra.C3_605703779087 = this.state.value.C3_605703779087; //申请人姓名
     extra.C3_605703754022 = this.state.value.C3_605703754022; //申请人工号
@@ -555,6 +559,7 @@ export default class LzAFFOS extends React.Component {
     extra.C3_605703930741 = this.state.value.C3_605703930741; //访问区域
     extra.C3_605703980025 = this.state.value.C3_605703980025; //有效开始日期
     extra.C3_605703992046 = this.state.value.C3_605703980025; //有效结束日期
+    extra.C3_673029042748 = peopleStr;
     const list = newAppList.map((item, index) => {
       if (index === 0) {
         item.C3_605718009813 = 'waiting';
@@ -682,6 +687,10 @@ export default class LzAFFOS extends React.Component {
 
     //审批表需要额外添加数据
     const extra = {};
+    let peopleStr = '';
+    this.state.deliverList.map(item => {
+      peopleStr = peopleStr + item.C3_605716828937 + '-';
+    });
     extra.maxProcess = newAppList.length; //最大审批节点
     extra.C3_605703779087 = this.state.value.C3_605703779087; //申请人姓名
     extra.C3_605703754022 = this.state.value.C3_605703754022; //申请人工号
@@ -692,6 +701,7 @@ export default class LzAFFOS extends React.Component {
     extra.C3_605703930741 = this.state.value.C3_605703930741; //访问区域
     extra.C3_605703980025 = this.state.value.C3_605703980025; //有效开始日期
     extra.C3_605703992046 = this.state.value.C3_605703980025; //有效结束日期
+    extra.C3_673029042748 = peopleStr;
     const list = newAppList.map((item, index) => {
       if (index === 0) {
         item.C3_605718009813 = 'waiting';
@@ -876,7 +886,7 @@ export default class LzAFFOS extends React.Component {
                       </div>
                     )
                   }}
-                  actionBarExtra={({ }) => {
+                  actionBarExtra={({}) => {
                     return (
                       <>
                         <Button
@@ -1551,7 +1561,7 @@ export default class LzAFFOS extends React.Component {
             <div>
               <label>是否长期施工</label>
               <Switch
-                onChange={checked => { }}
+                onChange={checked => {}}
                 checkedChildren="是"
                 unCheckedChildren="否"
               />
@@ -1562,7 +1572,7 @@ export default class LzAFFOS extends React.Component {
             onClose={this.handleCloseAddWorker}
           />
         </Spin>
-      </div >
+      </div>
     );
   }
   handleCloseAddWorker = () => {
@@ -1588,7 +1598,7 @@ class AddWorker extends React.PureComponent {
         <div>
           <label>是否长期施工</label>
           <Switch
-            onChange={checked => { }}
+            onChange={checked => {}}
             checkedChildren="是"
             unCheckedChildren="否"
           />
