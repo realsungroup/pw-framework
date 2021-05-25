@@ -620,6 +620,7 @@ export default class LzAFFOS extends React.Component {
           FAC_Manager: this.state.FAC_Manager,
           C3_605703896083: '施工',
           C3_605703913037: '施工人员',
+          C3_619628041125: this.state.dataSource.length,
           _state: 'added',
           _id: 1
         },
@@ -761,6 +762,7 @@ export default class LzAFFOS extends React.Component {
             : '15',
           longTime: this.state.isLongDeliver,
           C3_605703913037: '送货人员',
+          C3_619628041125: this.state.deliverList.length,
           ...this.state.value,
           _state: 'added',
           _id: 1
