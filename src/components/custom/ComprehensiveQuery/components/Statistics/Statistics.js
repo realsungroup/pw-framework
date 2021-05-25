@@ -79,11 +79,11 @@ class Statistics extends React.Component {
       return obj;
     });
 
-    option.fileName = '下属超时工时统计';
+    option.fileName = '下属工时统计';
     option.datas = [
       {
         sheetData: exportData,
-        sheetName: '下属超时工时统计',
+        sheetName: '下属工时统计',
         sheetHeader: this.columns.map(item => item.title)
       }
     ];
