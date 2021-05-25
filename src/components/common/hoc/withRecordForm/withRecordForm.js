@@ -75,7 +75,8 @@ export function withRecordForm(options = {}) {
         beforeSaveConfig,
         labelRequiredList,
         recordFormHideFields,
-        recordFormHideLables
+        recordFormHideLables,
+        saveRecordAndSubTablesApiExtraParams,
       }) => {
         const FormDataProps = {
           data,
@@ -104,6 +105,7 @@ export function withRecordForm(options = {}) {
           labelRequiredList,
           recordFormHideFields,
           recordFormHideLables,
+          saveRecordAndSubTablesApiExtraParams,
           ...formDataProps
         };
         const containerProps = {

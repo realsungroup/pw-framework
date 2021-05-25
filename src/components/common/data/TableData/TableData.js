@@ -1330,6 +1330,7 @@ class TableData extends React.Component {
       labelRequiredList,
       recordFormHideFields,
       recordFormHideLables,
+      saveRecordAndSubTablesApiExtraParams,
     } = this.props;
 
     const { recordFormShowMode, selectedRecord } = this.state;
@@ -1412,6 +1413,7 @@ class TableData extends React.Component {
       labelRequiredList,
       recordFormHideFields,
       recordFormHideLables,
+      saveRecordAndSubTablesApiExtraParams,
     });
   };
 
