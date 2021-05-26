@@ -133,7 +133,6 @@ class ProbationForms extends React.Component {
   };
 
   async componentDidMount() {
-
     this.setState({ loading: true });
     let memberId;
     let employedId;
@@ -924,7 +923,7 @@ class ProbationForms extends React.Component {
   confirmMentor = async index => {
     let fdy = localStorage.getItem('userInfo');
     fdy = JSON.parse(fdy);
-    fdy = fdy.Data
+    fdy = fdy.Data;
     try {
       const mentorshipRecord = [...this.state.mentorshipRecord];
       // console.log(this.state.employeeInformation.instructorID);
@@ -983,6 +982,7 @@ class ProbationForms extends React.Component {
    * 主管评价内容变化
    */
   directorEvaluateChange = directorEvaluate => {
+    console.log('123v' + directorEvaluate);
     this.setState({
       employeeInformation: {
         ...this.state.employeeInformation,
@@ -1301,7 +1301,6 @@ class ProbationForms extends React.Component {
             default:
               break;
           }
-
           await http().modifyRecords({
             resid: resid1,
             data
@@ -2234,7 +2233,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试 用 期 主 管 评 价 Supervisor Evaluate',
+              text: '试 用 期 主 管 评 价 Supervisor Evaluation',
               color: '000000'
             })
           ]
@@ -2276,7 +2275,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试 用 期 经 理 / 总 监 评 价  Manager Evaluate',
+              text: '试 用 期 经 理 / 总 监 评 价  Manager Evaluation',
               color: '000000'
             })
           ]
@@ -2319,7 +2318,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试 用 期 HR 经 理 评 价  HR Manager Evaluate',
+              text: '试 用 期 HR 经 理 评 价  HR Manager Evaluation',
               color: '000000'
             })
           ]
@@ -2494,7 +2493,22 @@ class ProbationForms extends React.Component {
                     type="primary"
                     style={{ marginRight: 16 }}
                     onClick={() => {
-                      this.handleSubmit(roleName);
+                      //辅导记录为空不可以提交
+                      const isFilled =
+                        this.state.mentorshipRecord.length === 0
+                          ? false
+                          : this.state.mentorshipRecord.find(item => {
+                              return (
+                                item.instructionRecord === undefined ||
+                                item.editDate === undefined
+                              );
+                            });
+                      if (isFilled) {
+                        message.info('请将辅导记录和日期填写完整');
+                        return;
+                      } else {
+                        this.handleSubmit(roleName);
+                      }
                     }}
                   >
                     保存
@@ -2557,7 +2571,19 @@ class ProbationForms extends React.Component {
                   <Button
                     type="primary"
                     style={{ marginRight: 16 }}
-                    onClick={() => this.isAgree(true)}
+                    onClick={() => {
+                      let canSubmit = true;
+                      if (
+                        this.props.roleName === '主管' &&
+                        (employeeInformation.directorEvaluate === '' ||
+                          employeeInformation.directorEvaluate === null)
+                      ) {
+                        canSubmit = false;
+                        message.info('请填写试用期主管评价');
+                      }
+                      // return;
+                      canSubmit && this.isAgree(true);
+                    }}
                   >
                     同意转正
                   </Button>

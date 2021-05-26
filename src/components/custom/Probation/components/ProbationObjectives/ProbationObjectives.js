@@ -42,6 +42,8 @@ const ProbationObjectives = props => {
             1-实际达成远远低于目标（达成率50-69%）；
             <br />
             &nbsp;&nbsp;&nbsp;评分在3分以下的目标请在“评语”栏说明改进措施。
+            <br />
+            &nbsp;&nbsp;&nbsp;对于3个月时尚未开展的目标，可在3个月“评估”栏说明情况，不填写3个月评分。
           </p>
         </div>
         <div className="probation-objectives_fill-stage">

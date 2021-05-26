@@ -9796,3 +9796,44 @@ window[671543192998] = {
     baseURL: 'http://10.108.2.66:9091'
   }
 };
+
+//内训未反馈
+window[674738722036] = {
+  name: 'NoFeedbackFromInternalTraining', // 组件名称，
+  title: '内训未反馈', // 功能模块名称
+  props: {}
+};
+
+//预入职日期
+window[674925193464] = {
+  name: 'TableData', // 组件名称，
+  title: '预入职日期', // 功能模块名称
+  props: {
+    resid: 674925572556,
+    actionBarWidth: 300,
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasBackBtn: false,
+    hasDelete: false,
+    hasRowModify: true,
+    hasRowView: false,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    baseURL: 'http://10.108.2.66:1001/',
+    downloadBaseURL: 'http://10.108.2.66:1000/',
+    subtractH: 200
+  }
+};
+
+//培训资源管理
+window[675343454130] = {
+  name: 'BusinessManagement',
+  title: '培训资源管理',
+  props: {
+    rootId: 675365678089,
+    dblinkname: '',
+    baseURL: 'http://10.108.2.66:1001/',
+    downloadBaseURL: 'http://10.108.2.66:1000/'
+  }
+};

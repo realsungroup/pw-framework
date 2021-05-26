@@ -927,3 +927,9 @@ export const ExportPersonnelChanges = Loadable({
     return minLoading;
   }
 });
+export const NoFeedbackFromInternalTraining = Loadable({
+  loader: () => import('./NoFeedbackFromInternalTraining'),
+  loading() {
+    return minLoading;
+  }
+});

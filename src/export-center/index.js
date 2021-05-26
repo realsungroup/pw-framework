@@ -185,5 +185,6 @@ export {
   IIVIInfo,
   BUCODEInfo,
   RecruitmentNeeds,
-  ExportPersonnelChanges
+  ExportPersonnelChanges,
+  NoFeedbackFromInternalTraining
 } from '../components/custom/loadableCustom';
