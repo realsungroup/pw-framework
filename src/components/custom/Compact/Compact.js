@@ -7,7 +7,9 @@ import {
   Tabs,
   Modal,
   Checkbox,
-  DatePicker
+  DatePicker,
+  Select,
+  Icon
 } from 'antd';
 import moment from 'moment';
 
@@ -19,7 +21,8 @@ const contractHistoryResid = '436624421847'; //合同历史记录
 const mailHis = '641216663667'; //邮件提醒历史记录
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
-const CheckboxOptions = ['一线员工', '办公室员工'];
+const { Option } = Select;
+const CheckboxOptions = ['办公室员工', '产线员工'];
 const CheckboxOptionsMap = {
   一线员工: '产线',
   办公室员工: '办公室'
@@ -68,39 +71,100 @@ const filterTab2B = [
 ];
 const filterTab3A = [
   {
-    label: '办公室员工'
+    label: '一线员工'
   },
   {
-    label: '一线员工'
+    label: '办公室员工'
   }
 ];
 const filterTab3B = [
   {
     condition: 'DL',
-    label: '员工意向确认',
-    resid: '668712593119'
-  },
-  {
-    condition: 'DL',
-    label: '一级部门经理审批',
-    resid: '668710715266'
-  },
-  {
-    condition: 'DL',
-    label: '部门总监审批',
-    resid: '668712440510'
-  },
-  {
-    condition: 'IDL',
     label: '主管审批',
     resid: '668709373267'
   },
   {
-    condition: 'IDL',
+    condition: 'DL',
     label: '经理审批',
     resid: '668710368892'
   }
 ];
+const filterType = [
+  {
+    value: '工程部',
+    children: [
+      {
+        value: '意向确认',
+        resid: '668712593119'
+      },
+      {
+        value: '一级审批',
+        resid: '668710715266'
+      },
+      {
+        value: '二级审批',
+        resid: '668712440510'
+      }, {
+        value: '三级审批',
+        resid: '672684701234'
+      },
+    ]
+  },
+  {
+    value: '品质保证部',
+    children: [
+      {
+        value: '意向确认',
+        resid: '675182076659'
+      },
+      {
+        value: '一级审批',
+        resid: '675182037468'
+      },
+      {
+        value: '二级审批',
+        resid: '675182051422'
+      }, {
+        value: '三级审批',
+        resid: '675182062955'
+      },
+    ]
+  },
+  {
+    value: '其他部门',
+    children: [
+      {
+        value: '意向确认',
+        resid: '675182380651'
+      },
+      {
+        value: '一级审批',
+        resid: '675182579432'
+      },
+      {
+        value: '二级审批',
+        resid: '675182597825'
+      }
+    ]
+  },
+  {
+    value: '一级部门总监直接下属',
+    children: [
+      {
+        value: '意向确认',
+        resid: '675182934554'
+      },
+      {
+        value: '一级审批',
+        resid: '675182954696'
+      },
+      {
+        value: '二级审批',
+        resid: '675182971588'
+      }
+    ]
+  }
+]
 class Compact extends Component {
   constructor(props) {
     super(props);
@@ -127,8 +191,46 @@ class Compact extends Component {
       showCheck: false,
       checkMem: '',
       checkType: '',
-      loading: false
+      loading: false,
+      filterType2: [
+        {
+          value: '意向确认',
+          resid: '668712593119'
+        },
+        {
+          value: '一级审批',
+          resid: '668710715266'
+        },
+        {
+          value: '二级审批',
+          resid: '668712440510'
+        }, {
+          value: '三级审批',
+          resid: '672684701234'
+        }
+      ],
+      filterType2V: '意向确认',
+      filterTypeV: '工程部',
+
     };
+  }
+  changeType = (v) => {
+    let n = 0;
+    while (n < filterType.length) {
+      if (filterType[n].value == v) {
+        this.setState({ filterTypeV: v, filterType2: filterType[n].children, residTab3: filterType[n].children[0].resid, filterType2V: filterType[n].children[0].value })
+      }
+      n++;
+    }
+  }
+  changeType2 = (v) => {
+    let n = 0;
+    while (n < this.state.filterType2.length) {
+      if (this.state.filterType2[n].resid == v) {
+        this.setState({ residTab3: v, filterType2V: this.state.filterType2[n].value })
+      }
+      n++;
+    }
   }
   changeDate = v => {
     let str =
@@ -164,7 +266,7 @@ class Compact extends Component {
 
       //C3_640820671962是否已经发送(表640820603954)
 
-      resid = '436624135588';
+      resid = '641216645750';
 
       // if (this.state.key4 === '_03B') {
       //   toChange = 'C3_640795239364';
@@ -175,17 +277,16 @@ class Compact extends Component {
       // } else {
       //   toChange = 'C3_640820671962';
       // }
-      if (this.state.key4 == '_33B') {
-        toChange = 'C3_669745543191';
-      } else {
-        toChange = 'C3_669745551472';
-      }
+      // if (this.state.key4 == '_03B') {
+      //   toChange = 'C3_669745543191';
+      // } else {
+      //   toChange = 'C3_669745551472';
+      // }
       let toSend = [];
       let n = 0;
       while (n < Reldata.length) {
         toSend.push({
-          REC_ID: Reldata[n].REC_ID,
-          [toChange]: ''
+          C3_675283870413: Reldata[n].C3_491590137418
         });
         n++;
       }
@@ -193,9 +294,8 @@ class Compact extends Component {
         resid,
         data: toSend
       };
-      // console.log(obj);
       try {
-        let res = await http().modifyRecords(obj);
+        let res = await http().addRecords(obj);
         this.setState({ loading: false });
         message.success('操作成功');
         this.tableDataRef3.handleRefresh();
@@ -447,25 +547,25 @@ class Compact extends Component {
                   hasRowSelection={false}
                   wrappedComponentRef={element => (this.tableDataRef = element)}
 
-                  // customRowBtns={[
-                  //   (record, btnSize) => {
-                  //     return (
-                  //       <Button
-                  //         size={btnSize}
-                  //         onClick={() => {
+                // customRowBtns={[
+                //   (record, btnSize) => {
+                //     return (
+                //       <Button
+                //         size={btnSize}
+                //         onClick={() => {
 
-                  //           this.setState({
-                  //             selectedPerson: record,
-                  //             contractHistoryVisible: true
-                  //           });
-                  //           console.log(record)
-                  //         }}
-                  //       >
-                  //         查看历史信息
-                  //       </Button>
-                  //     );
-                  //   }
-                  // ]}
+                //           this.setState({
+                //             selectedPerson: record,
+                //             contractHistoryVisible: true
+                //           });
+                //           console.log(record)
+                //         }}
+                //       >
+                //         查看历史信息
+                //       </Button>
+                //     );
+                //   }
+                // ]}
                 />
               ) : null}
 
@@ -579,8 +679,8 @@ class Compact extends Component {
                         ? ''
                         : `1 = 2`
                       : `C3_668601864440  = '${
-                          CheckboxOptionsMap[checkboxOptions[0]]
-                        }'`
+                      CheckboxOptionsMap[checkboxOptions[0]]
+                      }'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -620,39 +720,39 @@ class Compact extends Component {
                   customRowBtns={
                     key1 === '_0A'
                       ? [
-                          (record, btnSize) => {
-                            return (
-                              <>
-                                <Button
-                                  size={btnSize}
-                                  onClick={() => {
-                                    this.setState({
-                                      selectedPersons: [record],
-                                      signingVisible: true
-                                    });
-                                  }}
-                                  type="primary"
-                                >
-                                  发送通知邮件
+                        (record, btnSize) => {
+                          return (
+                            <>
+                              <Button
+                                size={btnSize}
+                                onClick={() => {
+                                  this.setState({
+                                    selectedPersons: [record],
+                                    signingVisible: true
+                                  });
+                                }}
+                                type="primary"
+                              >
+                                发送通知邮件
                                 </Button>
 
-                                <Button
-                                  size="small"
-                                  style={{ marginLeft: '4px' }}
-                                  onClick={() => {
-                                    this.setState({
-                                      showCheck: true,
-                                      checkMem: record.C3_436624212137,
-                                      checkType: record.C3_640119278050
-                                    });
-                                  }}
-                                >
-                                  查看审批节点
+                              <Button
+                                size="small"
+                                style={{ marginLeft: '4px' }}
+                                onClick={() => {
+                                  this.setState({
+                                    showCheck: true,
+                                    checkMem: record.C3_436624212137,
+                                    checkType: record.C3_640119278050
+                                  });
+                                }}
+                              >
+                                查看审批节点
                                 </Button>
-                              </>
-                            );
-                          }
-                        ]
+                            </>
+                          );
+                        }
+                      ]
                       : []
                   }
                 />
@@ -682,8 +782,8 @@ class Compact extends Component {
                         ? ''
                         : `1 = 2`
                       : `C3_668601864440= '${
-                          CheckboxOptionsMap[checkboxOptions[0]]
-                        }'`
+                      CheckboxOptionsMap[checkboxOptions[0]]
+                      }'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -765,8 +865,8 @@ class Compact extends Component {
                         ? ''
                         : `1 = 2`
                       : `C3_668601864440= '${
-                          CheckboxOptionsMap[checkboxOptions[0]]
-                        }'`
+                      CheckboxOptionsMap[checkboxOptions[0]]
+                      }'`
                   }
                   actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
@@ -830,7 +930,7 @@ class Compact extends Component {
             key="3"
             style={{ width: '100%', height: 'calc(100vh - 64px)' }}
           >
-            <div className="filterLine">
+            <div className="filterLine filterLine_Alter">
               {filterTab3A.map((item, key) => {
                 return (
                   <span
@@ -844,13 +944,33 @@ class Compact extends Component {
                       if (this.state.key3 != '_' + key + '3A') {
                         if (item.label == '一线员工') {
                           this.setState({
-                            key4: '_33B',
-                            residTab3: '668709373267'
+                            key4: '_03B',
+                            residTab3: '668709373267',
+                            showType: false
                           });
                         } else {
                           this.setState({
-                            key4: '_03B',
-                            residTab3: '668712593119'
+                            showType: true,
+                            filterType2: [
+                              {
+                                value: '意向确认',
+                                resid: '668712593119'
+                              },
+                              {
+                                value: '一级审批',
+                                resid: '668710715266'
+                              },
+                              {
+                                value: '二级审批',
+                                resid: '668712440510'
+                              }, {
+                                value: '三级审批',
+                                resid: '672684701234'
+                              }
+                            ],
+                            residTab3: '668712593119',
+                            filterType2V: '意向确认',
+                            filterTypeV: '工程部'
                           });
                         }
                       }
@@ -859,12 +979,13 @@ class Compact extends Component {
                       });
                     }}
                   >
-                    {item.label}
+                    {this.state.key3 == '_' + key + '3A' ? item.label : <Icon type="retweet" />}
+
                   </span>
                 );
               })}
             </div>
-            <div className="filterLine">
+            <div className="filterLine" style={this.state.showType ? { float: 'left', width: 'auto', marginTop: '4px' } : { float: 'left', width: 'auto', marginTop: '8px' }}>
               {filterTab3B.map((item, key) => {
                 return (
                   <span
@@ -877,8 +998,8 @@ class Compact extends Component {
                       display:
                         (this.state.key3 === ('_03A' || '_13A') &&
                           item.condition == 'DL') ||
-                        (this.state.key3 != ('_03A' || '_13A') &&
-                          item.condition == 'IDL')
+                          (this.state.key3 != ('_03A' || '_13A') &&
+                            item.condition == 'IDL')
                           ? 'inline'
                           : 'none'
                     }}
@@ -894,7 +1015,29 @@ class Compact extends Component {
                   </span>
                 );
               })}
+              {this.state.showType ?
+                (
+                  <div>
+                    <Select style={{ width: '200px', marginRight: 8, marginLeft: 16 }} onChange={(v) => { this.changeType(v) }} value={this.state.filterTypeV}>
+                      {filterType.map((item, key) => {
+                        return (
+                          <Option value={item.value} key={key}>{item.value}</Option>
+                        )
+                      })}
+                    </Select>
+                    <Select style={{ width: '120px' }} onChange={(v) => { this.changeType2(v) }} value={this.state.filterType2V}>
+                      {this.state.filterType2.map((item, key) => {
+                        return (
+                          <Option value={item.resid} key={key}>{item.value}</Option>
+                        )
+                      })}
+                    </Select>
+                  </div>
+                )
+
+                : null}
             </div>
+            <div style={{ clear: 'both' }}></div>
             <div style={{ width: '100%', height: 'calc(100vh - 128px)' }}>
               <TableData
                 resid={this.state.residTab3}
@@ -981,10 +1124,10 @@ class Compact extends Component {
               hasRowSelection={true}
               wrappedComponentRef={element => (this.tableDataRef = element)}
               cmswhere={`C3_532015785778 = '${this.state.checkMem}' and C3_641241582139 = '${this.state.checkType}'`}
-              // customRowBtns={[(record)=>{return(
-              //   <Button size='small' loading={this.state.loading} onClick={()=>{this.sendMail(record)}}>发送邮件提醒审批</Button>
-              // )}]
-              // }
+            // customRowBtns={[(record)=>{return(
+            //   <Button size='small' loading={this.state.loading} onClick={()=>{this.sendMail(record)}}>发送邮件提醒审批</Button>
+            // )}]
+            // }
             />
           </div>
         </Modal>

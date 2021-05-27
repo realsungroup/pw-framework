@@ -10,7 +10,7 @@ import AttendanceMonth from '../../components/AttendanceMonth';
 
 import classNames from 'classnames';
 
-const noop = () => {};
+const noop = () => { };
 
 const hasAttendanceMonth =
   window.pwConfig[process.env.NODE_ENV].hasAttendanceMonth;
@@ -168,22 +168,22 @@ export default class DesktopBottomBar extends React.Component {
           <DesktopDate className="desktop-bottom-bar__date" />
 
           {/* 仪表盘 */}
-          <div
+          {/* <div
             className="desktop-bottom-bar__right-item"
             onClick={onOpenDashboard}
           >
             <Icon type="dashboard" />
-          </div>
+          </div> */}
 
           {/* 组织架构 */}
-          {orgChartConfig && (
+          {/* {orgChartConfig && (
             <div
               className="desktop-bottom-bar__right-item"
               onClick={onOpenOrgChart}
             >
               <Icon type="apartment" />
             </div>
-          )}
+          )} */}
 
           {/* 提醒 */}
           <div
