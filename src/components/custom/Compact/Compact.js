@@ -266,7 +266,7 @@ class Compact extends Component {
 
       //C3_640820671962是否已经发送(表640820603954)
 
-      resid = '436624135588';
+      resid = '641216645750';
 
       // if (this.state.key4 === '_03B') {
       //   toChange = 'C3_640795239364';
@@ -277,17 +277,16 @@ class Compact extends Component {
       // } else {
       //   toChange = 'C3_640820671962';
       // }
-      if (this.state.key4 == '_03B') {
-        toChange = 'C3_669745543191';
-      } else {
-        toChange = 'C3_669745551472';
-      }
+      // if (this.state.key4 == '_03B') {
+      //   toChange = 'C3_669745543191';
+      // } else {
+      //   toChange = 'C3_669745551472';
+      // }
       let toSend = [];
       let n = 0;
       while (n < Reldata.length) {
         toSend.push({
-          REC_ID: Reldata[n].REC_ID,
-          [toChange]: ''
+          C3_675283870413: Reldata[n].C3_491590137418
         });
         n++;
       }
@@ -295,9 +294,8 @@ class Compact extends Component {
         resid,
         data: toSend
       };
-      // console.log(obj);
       try {
-        let res = await http().modifyRecords(obj);
+        let res = await http().addRecords(obj);
         this.setState({ loading: false });
         message.success('操作成功');
         this.tableDataRef3.handleRefresh();

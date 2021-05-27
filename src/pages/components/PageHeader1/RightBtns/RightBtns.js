@@ -64,7 +64,7 @@ class RightBtns extends React.Component {
     };
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
   getDataAnalyseData = async () => {
     let res;
@@ -175,7 +175,7 @@ class RightBtns extends React.Component {
       this.props.form.getFieldValue('password2') !== undefined &&
       this.props.form.getFieldValue('password2') !== '' &&
       this.props.form.getFieldValue('password1') ===
-        this.props.form.getFieldValue('password2')
+      this.props.form.getFieldValue('password2')
     ) {
       try {
         const response = await changePassword(
@@ -438,7 +438,7 @@ class RightBtns extends React.Component {
           onClick={() => this.setState({ personCenterVisible: true })}
           tip={<FM id="RightBtns.DisplayMode" defaultMessage="显示模式" />}
         />
-        <Popover
+        {/* <Popover
           placement="bottomRight"
           title={
             <div style={{ textAlign: 'right' }}>
@@ -462,7 +462,7 @@ class RightBtns extends React.Component {
             onClick={() => this.setState({ languageVisible: true })}
             tip={<FM id="RightBtns.ChangeLanguage" defaultMessage="更换语言" />}
           />
-        </Popover>
+        </Popover> */}
 
         <Popconfirm
           placement="bottomLeft"
