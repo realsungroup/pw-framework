@@ -944,14 +944,16 @@ class ProbationForms extends React.Component {
       message.error(error.message);
       console.log(error);
     }
-    await http().modifyRecords({
-      resid: resid1,
-      data: [
-        {
-          REC_ID: this.state.employeeInformation.REC_ID
-        }
-      ]
-    });
+    setTimeout(() => {
+      http().modifyRecords({
+        resid: resid1,
+        data: [
+          {
+            REC_ID: this.state.employeeInformation.REC_ID
+          }
+        ]
+      });
+    }, 3000);
   };
 
   /**
