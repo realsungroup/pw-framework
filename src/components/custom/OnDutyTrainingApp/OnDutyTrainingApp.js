@@ -17,11 +17,12 @@ class OnDutyTrainingApp extends Component {
   };
   render() {
     const { trainerName } = this.state;
+    console.log(trainerName);
     return (
       <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
         <TableData
           resid={664295226124}
-          cmswhere={`trainer = '${trainerName}'`}
+          cmswhere={`trainer = '${trainerName}' or trainMember = '${trainerName}'`}
           hasBeBtns={true}
           hasRowSelection={true}
           hasAdd={false}
