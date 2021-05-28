@@ -92,7 +92,8 @@ class CustomForm1 extends React.Component {
     currentUser: JSON.parse(getItem('userInfo')).Data,
     currentUserCode: JSON.parse(getItem('userInfo')).UserInfo.EMP_ID,
     fileList: [], //附件列表
-    chooseAllDay: false //选择全天
+    chooseAllDay: false, //选择全天
+    allDayTimeLength: 0 //请全天假的总时间长度
   };
   minute = [];
   componentDidMount() {
@@ -194,7 +195,9 @@ class CustomForm1 extends React.Component {
         this.setState({
           filledData: {
             ...this.state.filledData,
-            timeLength
+            timeLength: this.state.chooseAllDay
+              ? this.state.allDayTimeLength
+              : timeLength
           },
           errors: {
             ...this.state.errors,
@@ -454,6 +457,13 @@ class CustomForm1 extends React.Component {
       message.info(error.message);
     }
     if (res.data) {
+      let allDayTimeLength = 0;
+      res.data.map(item => {
+        allDayTimeLength += item.F_79;
+      });
+      this.setState({
+        allDayTimeLength
+      });
       if (
         res.data[0].WORKDAYID === null ||
         res.data[res.data.length - 1].WORKDAYID === null

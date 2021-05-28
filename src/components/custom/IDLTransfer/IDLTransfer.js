@@ -949,19 +949,16 @@ class IDLTransfer extends Component {
           style={{ width: '100%', height: '100%' }}
           spinning={this.state.loading}
         >
-          {!isDirector ? (
-            <div>
-              <h3 style={{ textAlign: 'center', marginTop: '64px' }}>
-                您无权提交人事变动申请
-              </h3>
-            </div>
-          ) : (
-            <div className="IDLTransfer">
-              <Tabs
-                activeKey={this.state.page}
-                onChange={k => this.callBack(k)}
-              >
-                <TabPane tab="填写申请单" key="1">
+          <div className="IDLTransfer">
+            <Tabs activeKey={this.state.page} onChange={k => this.callBack(k)}>
+              <TabPane tab="填写申请单" key="1">
+                {!isDirector ? (
+                  <div>
+                    <h3 style={{ textAlign: 'center', marginTop: '64px' }}>
+                      您无权提交人事变动申请
+                    </h3>
+                  </div>
+                ) : (
                   <div className="wrap" style={{ padding: '16px' }}>
                     <Steps
                       current={this.state.step}
@@ -2278,22 +2275,31 @@ class IDLTransfer extends Component {
                       </div>
                     ) : null}
                   </div>
-                </TabPane>
-                <TabPane tab="我发起的审批记录" key="2">
+                )}
+              </TabPane>
+              <TabPane tab="我发起的审批记录" key="2">
+                {!isDirector ? (
+                  <div>
+                    <h3 style={{ textAlign: 'center', marginTop: '64px' }}>
+                      您无权提交人事变动申请
+                    </h3>
+                  </div>
+                ) : (
                   <div className="wrap">
                     {/* view */}
                     <IDLTransferVerify mode="view"></IDLTransferVerify>
                   </div>
-                </TabPane>
-                <TabPane tab="我的审核" key="3">
-                  <div className="wrap">
-                    {/* view */}
-                    <IDLTransferVerifyAction></IDLTransferVerifyAction>
-                  </div>
-                </TabPane>
-              </Tabs>
-            </div>
-          )}
+                )}
+              </TabPane>
+
+              <TabPane tab="我的审核" key="3">
+                <div className="wrap">
+                  {/* view */}
+                  <IDLTransferVerifyAction></IDLTransferVerifyAction>
+                </div>
+              </TabPane>
+            </Tabs>
+          </div>
         </Spin>
       </div>
     );

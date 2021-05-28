@@ -187,4 +187,5 @@ export {
   RecruitmentNeeds,
   ExportPersonnelChanges,
   NoFeedbackFromInternalTraining
+  HolidayBalanceQuery
 } from '../components/custom/loadableCustom';

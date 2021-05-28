@@ -87,7 +87,8 @@ export const defaultProps = {
   isSetColumnWidth: true,
   isWrap: false,
   backendButtonPopConfirmProps: {},
-  defaultAddRecord: {}
+  defaultAddRecord: {},
+  saveRecordAndSubTablesApiExtraParams: {}
 };
 
 export const propTypes = {
@@ -917,5 +918,15 @@ export const propTypes = {
    * 添加记录时的默认对象，如{number:'1234'}
    * 默认：-
    */
-  defaultAddRecord: PropTypes.object
+  defaultAddRecord: PropTypes.object,
+
+  /**
+   * （虽然这里注释了，但这个参数还是有用。为什么注释？不注释，页面会一直处于 loading 状态，原因暂时不知）
+   * 调用保存记录和子表接口（/api/200/table/Save）时额外的参数（在 FormData 组件中）
+   * 默认：{}
+   */
+  // saveRecordAndSubTablesApiExtraParams: PropTypes.Shape({
+  //   secondSaveColumn: PropTypes.string,
+  //   secondSaveValue: PropTypes.string,
+  // }),
 };
