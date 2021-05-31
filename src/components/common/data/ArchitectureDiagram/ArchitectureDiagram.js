@@ -2009,7 +2009,12 @@ class ArchitectureDiagram extends React.Component {
         this.handleFinishImport,
         {},
         { fileName: 'IDL入职-' + moment().format('YYYY-MM-DD HH:mm') },
-        true
+        false,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        false
       );
   };
   /**
@@ -2353,12 +2358,13 @@ class ArchitectureDiagram extends React.Component {
             <Dropdown
               overlay={
                 <Menu>
-                  <SubMenu title="入职">
+                  <Menu.Item onClick={this.handleRuzhi}>入职</Menu.Item>
+                  {/* <SubMenu title="入职">
                     <Menu.Item onClick={() => this.handleDLRuzhi(false)}>
                       DL
                     </Menu.Item>
                     <Menu.Item onClick={this.handleRuzhi}>IDL</Menu.Item>
-                  </SubMenu>
+                  </SubMenu> */}
                   <SubMenu title="变动">
                     <Menu.Item onClick={() => this.handleDLRuzhi(true)}>
                       DL
@@ -2389,7 +2395,7 @@ class ArchitectureDiagram extends React.Component {
               />
               下载导入模板
             </div>
-            <div
+            {/* <div
               className="architecture-diagram_header_icon-button"
               onClick={() => {
                 this.setState({ resultMin: false });
@@ -2400,8 +2406,8 @@ class ArchitectureDiagram extends React.Component {
                 className="architecture-diagram_header_icon-button__icon"
               />
               查看导入结果
-            </div>
-            <div
+            </div> */}
+            {/* <div
               className="architecture-diagram_header_icon-button"
               onClick={() => {
                 this.setState({ DLImportResultVisible: true });
@@ -2412,8 +2418,8 @@ class ArchitectureDiagram extends React.Component {
                 className="architecture-diagram_header_icon-button__icon"
               />
               查看DL导入匹配结果
-            </div>
-            <div
+            </div> */}
+            {/* <div
               className="architecture-diagram_header_icon-button"
               onClick={() => {
                 this.setState({ contrastResultVisible: true });
@@ -2424,7 +2430,7 @@ class ArchitectureDiagram extends React.Component {
                 className="architecture-diagram_header_icon-button__icon"
               />
               导入结果对比
-            </div>
+            </div> */}
           </div>
         )}
         <div className="architecture-diagram_header_icon-button-group">

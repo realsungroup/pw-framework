@@ -228,9 +228,7 @@ window[590765309983] = {
   title: '违纪管理',
   name: 'LzMenuContainer',
   props: {
-    jump:
-      'http://10.108.2.66:805/fnmodule?resid=590765309983&recid=610540465303&type=undefined&title=违纪管理',
-    baseURL: 'http://10.108.2.66:9091/',
+    baseURL: 'http://kingofdinner.realsun.me:30001',
     noDataTip: '暂无数据，请选择员工',
     resid: 590671418888,
     searchFields: [
@@ -2020,25 +2018,13 @@ window[619954194724] = {
 };
 window[620212364621] = {
   name: 'ComprehensiveQuery',
-  title: '综合查询',
-  props: {
-    showAnnualLeaveDetail: false, //是否显示年假明细
-    showRenshi: true, //是否显示人事信息
-    showJixiao: true, //是否显示人事信息
-    showPingji: true, //是否显示人事信息
-    showChaoshi: true, //是否显示超时工时统计
-  }
+  title: '综合查询'
 };
 window[642853831562] = {
   name: 'ComprehensiveQuery',
   title: '绩效查询',
   props: {
-    tabKey: 'performance',
-    showAnnualLeaveDetail: false, //是否显示年假明细
-    showRenshi: true, //是否显示人事信息
-    showJixiao: true, //是否显示人事信息
-    showPingji: true, //是否显示人事信息
-    showChaoshi: true, //是否显示超时工时统计
+    tabKey: 'performance'
   }
 };
 
@@ -2046,62 +2032,26 @@ window[642853818882] = {
   name: 'ComprehensiveQuery',
   title: '考勤查询',
   props: {
-    tabKey: 'attendance',
-    showAnnualLeaveDetail: false, //是否显示年假明细
-    showTiaoXiuDetail: true,//是否显示调休明细
-    showRenshi: true, //是否显示人事信息
-    showJixiao: true, //是否显示人事信息
-    showPingji: true, //是否显示人事信息
-    showChaoshi: true, //是否显示超时工时统计
+    tabKey: 'attendance'
   }
 };
 window[643372961628] = {
   name: 'ComprehensiveQuery',
   title: '评级评优查询',
   props: {
-    tabKey: 'rating',
-    showAnnualLeaveDetail: false, //是否显示年假明细
-    showRenshi: true, //是否显示人事信息
-    showJixiao: true, //是否显示人事信息
-    showPingji: true, //是否显示人事信息
-    showChaoshi: true, //是否显示超时工时统计
+    tabKey: 'rating'
   }
 };
 window[642853806554] = {
   name: 'ComprehensiveQuery',
   title: '人事查询',
   props: {
-    tabKey: 'personnel',
-    showAnnualLeaveDetail: false, //是否显示年假明细
-    showRenshi: true, //是否显示人事信息
-    showJixiao: true, //是否显示人事信息
-    showPingji: true, //是否显示人事信息
-    showChaoshi: true, //是否显示超时工时统计
+    tabKey: 'personnel'
   }
 };
 window[621257502796] = {
   name: 'AttendanceManage',
-  title: '考勤申请',
-  props: {
-    //上海配置
-    // showAllminute: true, //是否显示所有分钟数
-    // showBatchApply: false, //是否显示批量申请
-    // showWorkOvertimeOptions: false, //是否显示加班选项
-    // showApproveAll: false, //是否显示一键审批
-    // reasonRequired: false, //事由是否是必填的
-    // showChooseAllDay: true,
-    // isEightToSeventeen:true, //请全天假默认从8到17点
-    // showAllminuteShuaKa: true //刷卡的分钟下拉列表显示所有分钟
-    //无锡配置
-    showAllminute: false, //是否显示所有分钟数
-    showBatchApply: true, //是否显示批量申请
-    showWorkOvertimeOptions: true, //是否显示加班选项
-    showApproveAll: true, //是否显示一键审批
-    reasonRequired: true, //事由是否是必填的
-    showChooseAllDay: true,
-    isEightToSeventeen: true, //请全天假默认从8到17点
-    showAllminuteShuaKa: false //刷卡的分钟下拉列表显示所有分钟
-  }
+  title: '考勤申请'
 };
 window[622577431745] = {
   name: 'ReferenceCheck',
@@ -4945,7 +4895,7 @@ window[642855707652] = {
 };
 window[642855719230] = {
   // name: 'TableData', // 组件名称，
-  name: 'RecruitmentNeeds', // 组件名称，
+  name: 'MainTableSubTables', // 组件名称，
   title: '招聘需求管理', // 功能模块名称
   props: {
     baseURL: 'http://10.108.2.66:1001/',
@@ -5116,11 +5066,6 @@ window[642855770350] = {
     },
     advSearch: {
       isRequestFormData: false
-    },
-    formDataProps: {
-      clearOnchangeFileds: [
-        // { id: "C3_662164156791", clearFileds: ["C3_662164165635"] }
-      ]
     },
     labelRequiredList: [
       'Specify',
@@ -5519,8 +5464,8 @@ window[642856395014] = {
   props: {
     resid: 438956460750,
     actionBarWidth: 500,
-    baseURL: 'http://10.108.2.66:9091/',
-    downloadBaseURL: 'http://10.108.2.66:80/',
+    baseURL: 'http://kingofdinner.realsun.me:30001/',
+    downloadBaseURL: 'http://kingofdinner.realsun.me:30000/',
     hasAdd: true,
     hasBeBtns: true,
     hasModify: true,
@@ -6235,8 +6180,8 @@ window[642856661616] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '工资审核', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:9091/',
-    downloadBaseURL: 'http://10.108.2.66:80/',
+    baseURL: 'http://kingofdinner.realsun.me:30001/',
+    downloadBaseURL: 'http://kingofdinner.realsun.me:30000/',
     resid: 501177761232,
     mainTableProps: {
       actionBarWidth: 200,
@@ -8904,8 +8849,8 @@ window[645027658426] = {
     hasBeBtns: true,
     hasModify: true,
     hasBackBtn: true,
-    baseURL: 'http://10.108.2.66:9091/',
-    downloadBaseURL: 'http://10.108.2.66:80/',
+    baseURL: 'http://kingofdinner.realsun.me:30001/',
+    downloadBaseURL: 'http://kingofdinner.realsun.me:30000',
     hasDelete: true,
     hasRowModify: true,
     hasRowEdit: true,
@@ -8913,7 +8858,7 @@ window[645027658426] = {
     hasRowView: true,
     hasRowDelete: false,
     isUseFormDefine: false,
-    noWidthFields: 'C3_506093177840',
+    // noWidthFields: 'C3_506093177840',
     advSearch: {
       isUseTableFields: true
     },
@@ -9799,7 +9744,7 @@ window[663690700084] = {
   name: 'AnnualLeaveManage', // 组件名称，
   title: '年假管理', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:9091'
+    baseURL: 'http://10.108.2.66:7001'
   }
 };
 //在岗培训审批
@@ -9808,61 +9753,3 @@ window[664282094133] = {
   title: '在岗培训审批', // 功能模块名称
   props: {}
 };
-
-//变动记录导出
-window[671543192998] = {
-  name: 'ExportPersonnelChanges', // 组件名称，
-  title: '变动记录导出', // 功能模块名称
-  props: {
-    baseURL: 'http://10.108.2.66:9091'
-  }
-};
-
-
-//内训未反馈
-window[674738722036] = {
-  name: 'NoFeedbackFromInternalTraining', // 组件名称，
-  title: '内训未反馈', // 功能模块名称
-  props: {}
-};
-
-//预入职日期
-window[674925193464] = {
-  name: 'TableData', // 组件名称，
-  title: '预入职日期', // 功能模块名称
-  props: {
-    resid: 674925572556,
-    actionBarWidth: 300,
-    hasAdd: false,
-    hasBeBtns: false,
-    hasModify: false,
-    hasBackBtn: false,
-    hasDelete: false,
-    hasRowModify: true,
-    hasRowView: false,
-    hasRowDelete: false,
-    isUseFormDefine: false,
-    baseURL: 'http://10.108.2.66:1001/',
-    downloadBaseURL: 'http://10.108.2.66:1000/',
-    subtractH: 200
-  }
-};
-
-//培训资源管理
-window[675343454130] = {
-  name: 'BusinessManagement',
-  title: '培训资源管理',
-  props: {
-    rootId: 675365678089,
-    dblinkname: '',
-    baseURL: 'http://10.108.2.66:1001/',
-    downloadBaseURL: 'http://10.108.2.66:1000/'
-  }
-};
-=======
-//调休假余额
-window[671298901933] = {
-  name: 'HolidayBalanceQuery', // 组件名称，
-  title: '调休假余额', // 功能模块名
-};
-

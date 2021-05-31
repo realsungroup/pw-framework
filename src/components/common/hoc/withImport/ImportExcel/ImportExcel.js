@@ -97,9 +97,16 @@ export default class Import extends React.Component {
      * 默认：-
      */
     onChange: PropTypes.func,
+
+    /**
+     * 是否验证字段
+     * 默认：true
+     */
+    isValidField: PropTypes.bool,
   };
   static defaultProps = {
-    disabledSave: false
+    disabledSave: false,
+    isValidField: true
   };
   constructor(props) {
     super(props);
@@ -373,7 +380,8 @@ export default class Import extends React.Component {
       beforeImport,
       fileNameField,
       disabledSave,
-      onChange
+      onChange,
+      isValidField
     } = this.props;
     const { columninfo } = this.state;
     const resultArr = XLSX.utils.sheet_to_json(sheetData, {
@@ -387,11 +395,11 @@ export default class Import extends React.Component {
       headerInnerFields = resultArr[0].map(text => {
         const temp = columninfo.find(column => column.text === text);
         // 后端表中没有该字段
-        if (!temp) {
+        if (isValidField && !temp) {
           message.error(`导入失败：后端表中没有 ${text} 字段`);
           throw new Error('导入失败');
         }
-        return temp.id;
+        return temp && temp.id;
       });
       if (strict) {
         columninfo.forEach(column => {
