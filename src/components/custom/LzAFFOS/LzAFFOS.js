@@ -864,6 +864,10 @@ export default class LzAFFOS extends React.Component {
                 <TableData
                   recordFormUseAbsolute={true}
                   {...inExaminationAndApproval}
+                  saveRecordAndSubTablesApiExtraParams={{
+                    secondSaveColumn: 'C3_675250253608',
+                    secondSaveValue: 'Y'
+                  }}
                   wrappedComponentRef={element => (this.tableDataRef = element)}
                   refTargetComponentName="TableData"
                   formProps={{
