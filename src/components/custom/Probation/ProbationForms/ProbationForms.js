@@ -1032,16 +1032,24 @@ class ProbationForms extends React.Component {
     });
   };
 
-  setTutorshipSemi = ({ name, userMemberId }, bol) => {
-    this.setState({
-      employeeInformation: {
-        ...this.state.employeeInformation,
-        instructorDirectorId: userMemberId,
-        instructorDirectorName: name,
-        instructorID: undefined,
-        instructor: undefined
-      }
+  setTutorshipSemi = async ({ name, userMemberId }, bol) => {
+    let res = await http().getTable({
+      resid: 619281130628,
+      cmswhere: `userMemberId = '${userMemberId}'`
     });
+    if (res.data.length > 0) {
+      message.error('该人员已经在辅导员表中，请不要勾选自定义辅导员的单选框');
+    } else {
+      this.setState({
+        employeeInformation: {
+          ...this.state.employeeInformation,
+          instructorDirectorId: userMemberId,
+          instructorDirectorName: name,
+          instructorID: undefined,
+          instructor: undefined
+        }
+      });
+    }
   };
 
   setTutorship2 = ({ name, userMemberId }, bol) => {
@@ -1056,16 +1064,24 @@ class ProbationForms extends React.Component {
     });
   };
 
-  setTutorshipSemi2 = ({ name, userMemberId }, bol) => {
-    this.setState({
-      employeeInformation: {
-        ...this.state.employeeInformation,
-        instructorDirectorId2: userMemberId,
-        instructorDirectorName2: name,
-        C3_637084526216: undefined,
-        C3_637084539039: undefined
-      }
+  setTutorshipSemi2 = async ({ name, userMemberId }, bol) => {
+    let res = await http().getTable({
+      resid: 619281130628,
+      cmswhere: `userMemberId = '${userMemberId}'`
     });
+    if (res.data.length > 0) {
+      message.error('该人员已经在辅导员表中，请不要勾选自定义辅导员的单选框');
+    } else {
+      this.setState({
+        employeeInformation: {
+          ...this.state.employeeInformation,
+          instructorDirectorId2: userMemberId,
+          instructorDirectorName2: name,
+          C3_637084526216: undefined,
+          C3_637084539039: undefined
+        }
+      });
+    }
   };
 
   isSemi = v => {
