@@ -338,23 +338,23 @@ class ProbationForms extends React.Component {
         instructorDirectorName2 = '';
         instructorDirectorId2 = '';
       }
-      let res = await http().modifyRecords({
-        resid: resid1,
-        data: [
-          {
-            REC_ID: this.state.employeeInformation.REC_ID,
-            instructorIsPass: 'Y',
-            C3_637084526216,
-            C3_637084539039,
-            instructorDirectorName2,
-            instructorDirectorId2,
-            C3_627646976501,
-            instructor,
-            instructorDirectorName,
-            instructorDirectorId
-          }
-        ]
-      });
+      // let res = await http().modifyRecords({
+      //   resid: resid1,
+      //   data: [
+      //     {
+      //       REC_ID: this.state.employeeInformation.REC_ID,
+      //       instructorIsPass: 'Y',
+      //       C3_637084526216,
+      //       C3_637084539039,
+      //       instructorDirectorName2,
+      //       instructorDirectorId2,
+      //       C3_627646976501,
+      //       instructor,
+      //       instructorDirectorName,
+      //       instructorDirectorId
+      //     }
+      //   ]
+      // });
       message.success('成功同意辅导员');
       this.setState({ loading: false, flagAlreadyHit: 1 });
     } catch (error) {
