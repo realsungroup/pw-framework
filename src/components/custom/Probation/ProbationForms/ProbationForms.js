@@ -466,6 +466,7 @@ class ProbationForms extends React.Component {
       });
       mentorshipRecord.forEach(item => {
         delete item.instructEmailIsSend;
+        delete item.C3_664472776773;
         delete item.C3_625594433726;
         subdata.push({
           resid: resid6,
