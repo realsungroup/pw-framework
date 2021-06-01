@@ -352,8 +352,8 @@ class ExportPersonnelChanges extends Component {
       handledData
     } = this.state;
     return (
-      <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
-        <div style={{ paddingTop: '16px', paddingBottom: '16px' }}>
+      <div style={{ width: '100%', height: '100%', background: '#fff' }}>
+        <div style={{ paddingTop: '8px', paddingBottom: '16px' }}>
           <Button
             type="primary"
             style={{ marginRight: '32px', marginLeft: '32px' }}
@@ -511,6 +511,12 @@ class ExportPersonnelChanges extends Component {
             bordered
             size="middle"
             scroll={{ x: 240 }}
+            pagination={{
+              pageSize: 6,
+              showTotal: () => {
+                return <p>共 {this.state.handledData.length} 条记录</p>;
+              }
+            }}
           />
         </div>
       </div>
