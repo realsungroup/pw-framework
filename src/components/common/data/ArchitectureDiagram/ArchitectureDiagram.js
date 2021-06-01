@@ -3362,7 +3362,7 @@ class ArchitectureDiagram extends React.Component {
             info={{ dataMode: 'main', resid: this.props.importResid }}
             operation="add"
             data={this._dataProp}
-            record={joinRecord}
+            record={{...joinRecord, C3_638469590670: '入职'}}
             // useAbsolute={true}
             // formProps={{ width: 500 }}
             onCancel={this.closeJoinModal}
