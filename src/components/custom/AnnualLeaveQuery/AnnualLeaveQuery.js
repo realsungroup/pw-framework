@@ -471,18 +471,18 @@ class Summary extends React.PureComponent {
       selectValue
     } = this.state;
     const { subResid, resid, baseURL } = this.props;
-    const annualLeaves1 = this.calcAnnualLeaves(
-      startYear,
-      startQuarter,
-      endYear,
-      endQuarter,
-      allAnnualLeaveQuery
-    );
-    const annualLeaves = annualLeaves1.map(item => {
-      if (item.synj < 0) {
-        item.synj = 0;
+
+    const annualLeaves = allAnnualLeaveQuery.map(item => {
+      const _item = { ...item }
+      if (_item.synj < 0) {
+        _item.synj = 0;
       }
-      return item;
+      if (!isWuxi) {
+        _item.curSeasonNj = item.curSeasonNj * 8;
+        _item.synj = item.synj * 8;
+        _item.ljsq = item.ljsq * 8;
+      }
+      return _item;
     });
     return (
       <div className="alq-summary">
