@@ -26,7 +26,7 @@ class ComprehensiveQuery extends React.Component {
     node: {}, //选中的人员信息
     isExpand: true, //左侧展开状态
     currentTab: this.props.tabKey, //当前的tab页
-    hideTree: false//隐藏树组件
+    hideTree: false //隐藏树组件
   };
 
   constructor(props) {
@@ -48,9 +48,9 @@ class ComprehensiveQuery extends React.Component {
     this.setState({
       currentTab: activeKey
     });
-  isExpand = (val) => {
-    this.setState({ hideTree: val })
-  }
+  isExpand = val => {
+    this.setState({ hideTree: val });
+  };
   renderTabPane = currentTab => {
     let page = null;
     switch (currentTab) {
@@ -58,10 +58,21 @@ class ComprehensiveQuery extends React.Component {
         page = <PersonInfo person={this.state.node} />;
         break;
       case 'attendance':
-        page = <WorkInfo person={this.state.node} showAnnualLeaveDetail={this.props.showAnnualLeaveDetail} showTiaoXiuDetail={this.props.showTiaoXiuDetail} />;
+        page = (
+          <WorkInfo
+            person={this.state.node}
+            showAnnualLeaveDetail={this.props.showAnnualLeaveDetail}
+            showTiaoXiuDetail={this.props.showTiaoXiuDetail}
+          />
+        );
         break;
       case 'performance':
-        page = <PerformanceQuery person={this.state.node} isExpand={(v) => this.isExpand(v)} />;
+        page = (
+          <PerformanceQuery
+            person={this.state.node}
+            isExpand={v => this.isExpand(v)}
+          />
+        );
         break;
       case 'rating':
         page = <ViewRate person={this.state.node} />;
@@ -106,9 +117,15 @@ class ComprehensiveQuery extends React.Component {
             >
               {showRenshi && <TabPane tab="人事信息" key="personnel"></TabPane>}
               <TabPane tab="考勤查询" key="attendance"></TabPane>
-              {showJixiao && <TabPane tab="绩效查询" key="performance"></TabPane>}
-              {showPingji && <TabPane tab="评级评优查询" key="rating"></TabPane>}
-              {showChaoshi && <TabPane tab="下属超时工时统计" key="statistics"></TabPane>}
+              {showJixiao && (
+                <TabPane tab="绩效查询" key="performance"></TabPane>
+              )}
+              {showPingji && (
+                <TabPane tab="评级评优查询" key="rating"></TabPane>
+              )}
+              {showChaoshi && (
+                <TabPane tab="下属工时统计" key="statistics"></TabPane>
+              )}
               {/* {process.env.NODE_ENV === 'development' && (
                 <TabPane tab="培训查询" key="training"></TabPane>
               )}
@@ -127,9 +144,8 @@ class ComprehensiveQuery extends React.Component {
             {this.renderTabPane(currentTab)}
           </div>
         </main>
-        <div style={this.state.hideTree ? { 'display': 'none' } : {}}>
+        <div style={this.state.hideTree ? { display: 'none' } : {}}>
           <TreeRel
-
             url="api/OrgChart/GetNodesData"
             resid="609599795438"
             ColumnOfID="C3_305737857578"

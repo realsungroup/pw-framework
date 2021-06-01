@@ -56,6 +56,10 @@ class ReviewEmployee extends React.Component {
    * 通知报名
    */
   handleNotice = async record => {
+    if (this._taskid) {
+      this.setState({ isShowModal: true });
+      return;
+    }
     this.setState({
       record: record
     });
@@ -67,6 +71,7 @@ class ReviewEmployee extends React.Component {
           arrangeID: this.props.courseArrangement.CourseArrangeID
         }
       });
+      this._taskid = res.data;
     } catch (err) {
       this.setState({ loading: false });
       console.error(err);
@@ -88,7 +93,7 @@ class ReviewEmployee extends React.Component {
       percent = Math.floor((curIndex / totalIndex) * 100);
     }
     return (
-      <div className="total-plan__seed_personnel">
+      <div className="internal-progress-container">
         <Progress width={240} type="circle" percent={percent} />
         <div style={{ marginTop: 20 }}>
           {curIndex} / {totalIndex}
@@ -103,7 +108,9 @@ class ReviewEmployee extends React.Component {
   getTaskInfo = async () => {
     let res;
     try {
-      res = await http().getAutoImportStatus();
+      res = await http().getAutoImportStatus({
+        taskid: this._taskid
+      });
     } catch (err) {
       this.timer = setTimeout(async () => {
         if (this.getTaskInfo) {
@@ -127,6 +134,7 @@ class ReviewEmployee extends React.Component {
         curIndex: res.data.Index,
         isTaskComplete: false
       });
+      this._taskid = null;
       message.success('通知完成');
       // 当前任务未完成
     } else {

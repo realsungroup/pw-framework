@@ -25,7 +25,7 @@ class TableDataVisitor extends React.Component {
         let res;
         try {
           res = await http().getTable({
-            resid: 606066688508,
+            resid: 674826958103,
             cmswhere: `C3_614704116070 = '${card.cardno}'`
           });
           if (res.data.length > 0) {

@@ -186,5 +186,6 @@ export {
   BUCODEInfo,
   RecruitmentNeeds,
   ExportPersonnelChanges,
+  NoFeedbackFromInternalTraining,
   HolidayBalanceQuery
 } from '../components/custom/loadableCustom';
