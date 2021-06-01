@@ -9859,10 +9859,28 @@ window[675343454130] = {
     downloadBaseURL: 'http://10.108.2.66:1000/'
   }
 };
-=======
+
 //调休假余额
 window[671298901933] = {
   name: 'HolidayBalanceQuery', // 组件名称，
   title: '调休假余额', // 功能模块名
 };
 
+//下月合同到期名单
+window[675856353290] = {
+  name: 'TableData', // 组件名称，
+  title: '下月合同到期名单', // 功能模块名称
+  props: {
+    resid: 675799631810,
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasBackBtn: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    subtractH: 200
+  }
+};
