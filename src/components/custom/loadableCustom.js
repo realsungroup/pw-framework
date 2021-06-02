@@ -942,3 +942,9 @@ export const HolidayBalanceQuery = Loadable({
   }
 });
 
+export const PaySettleAccounts = Loadable({
+  loader: () => import('./PaySettleAccounts'),
+  loading() {
+    return minLoading;
+  }
+});

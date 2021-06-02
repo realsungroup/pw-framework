@@ -2065,7 +2065,10 @@ class ArchitectureDiagram extends React.Component {
         importConfig.containerType,
         importConfig.saveState,
         importConfig.containerProps,
-        this.handleFinishImport,
+        (records, hasError) => {
+          !hasError && this.props.closeImportView() && message.success('导入成功');
+        },
+        // this.handleFinishImport,
         {
           rp: {
             EnableBitianCheck: false,
@@ -2078,43 +2081,48 @@ class ArchitectureDiagram extends React.Component {
           C3_294355760203: '',
           C3_655655647639: 'Y' //锁定
         },
-        true,
-        async (records, setMessages) => {
-          try {
-            const res = await http({ baseURL }).getTable({
-              resid: '638459489229',
-              cmswhere: `C3_305737857578 in (${records
-                .map(item => item.C3_305737857578)
-                .join(',')})`
-            });
-            const { data } = res;
-            const messages = [];
-            records.forEach(record => {
-              const _findData = data.find(
-                _data => _data.C3_305737857578 === record.C3_305737857578
-              );
-              if (_findData) {
-                if (_findData.C3_227192472953 != record.C3_227192472953) {
-                  messages.push(
-                    `编号${_findData.C3_305737857578}的人员的工号是${_findData.C3_227192472953},Excel中填写的工号是${record.C3_227192472953}`
-                  );
-                }
-              } else {
-                messages.push(`没有编号为${record.C3_305737857578}的人员`);
-              }
-            });
-            setMessages(messages);
-            if (messages.length) {
-              return true;
-            } else {
-              return false;
-            }
-          } catch (error) {
-            console.error(error);
-            message.error(error.message);
-            return true;
-          }
-        }
+        false,
+        undefined,
+        // async (records, setMessages) => {
+          // try {
+          //   const res = await http({ baseURL }).getTable({
+          //     resid: '638459489229',
+          //     cmswhere: `C3_305737857578 in (${records
+          //       .map(item => item.C3_305737857578)
+          //       .join(',')})`
+          //   });
+          //   const { data } = res;
+          //   const messages = [];
+          //   records.forEach(record => {
+          //     const _findData = data.find(
+          //       _data => _data.C3_305737857578 === record.C3_305737857578
+          //     );
+          //     if (_findData) {
+          //       if (_findData.C3_227192472953 != record.C3_227192472953) {
+          //         messages.push(
+          //           `编号${_findData.C3_305737857578}的人员的工号是${_findData.C3_227192472953},Excel中填写的工号是${record.C3_227192472953}`
+          //         );
+          //       }
+          //     } else {
+          //       messages.push(`没有编号为${record.C3_305737857578}的人员`);
+          //     }
+          //   });
+          //   setMessages(messages);
+          //   if (messages.length) {
+          //     return true;
+          //   } else {
+          //     return false;
+          //   }
+          // } catch (error) {
+          //   console.error(error);
+          //   message.error(error.message);
+          //   return true;
+          // }
+        // },
+        undefined,
+        undefined,
+        undefined,
+        false
       );
   };
   /**

@@ -187,5 +187,6 @@ export {
   RecruitmentNeeds,
   ExportPersonnelChanges,
   NoFeedbackFromInternalTraining,
-  HolidayBalanceQuery
+  HolidayBalanceQuery,
+  PaySettleAccounts
 } from '../components/custom/loadableCustom';
