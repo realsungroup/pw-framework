@@ -2004,7 +2004,9 @@ class ArchitectureDiagram extends React.Component {
         importConfig.containerType,
         importConfig.saveState,
         importConfig.containerProps,
-        this.handleFinishImport,
+        (records, hasError) => {
+          !hasError && this.props.closeImportView() && message.success('导入成功');
+        }, 
         {},
         { fileName: 'IDL入职-' + moment().format('YYYY-MM-DD HH:mm') },
         false,
@@ -2363,14 +2365,14 @@ class ArchitectureDiagram extends React.Component {
                     </Menu.Item>
                     <Menu.Item onClick={this.handleRuzhi}>IDL</Menu.Item>
                   </SubMenu> */}
-                  <SubMenu title="变动">
+                  {/* <SubMenu title="变动">
                     <Menu.Item onClick={() => this.handleDLRuzhi(true)}>
                       DL
                     </Menu.Item>
                     <Menu.Item onClick={this.handleBiandong}>IDL</Menu.Item>
-                  </SubMenu>
+                  </SubMenu> */}
                   <Menu.Item onClick={this.handleLizhi}>离职</Menu.Item>
-                  <Menu.Item onClick={this.chuMing}>除名</Menu.Item>
+                  {/* <Menu.Item onClick={this.chuMing}>除名</Menu.Item> */}
                   {/* <Menu.Item onClick={this.handleImport}>兼任</Menu.Item> */}
                 </Menu>
               }
@@ -3356,7 +3358,7 @@ class ArchitectureDiagram extends React.Component {
             info={{ dataMode: 'main', resid: this.props.importResid }}
             operation="add"
             data={this._dataProp}
-            record={joinRecord}
+            record={{...joinRecord, C3_638469590670: '入职'}}
             // useAbsolute={true}
             // formProps={{ width: 500 }}
             onCancel={this.closeJoinModal}
