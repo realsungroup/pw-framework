@@ -2005,7 +2005,10 @@ class ArchitectureDiagram extends React.Component {
         importConfig.saveState,
         importConfig.containerProps,
         (records, hasError) => {
-          !hasError && this.props.closeImportView() && message.success('导入成功');
+          if (!hasError) {
+            this.props.closeImportView();
+            message.success('导入成功');
+          }
         }, 
         {},
         { fileName: 'IDL入职-' + moment().format('YYYY-MM-DD HH:mm') },
@@ -2064,7 +2067,10 @@ class ArchitectureDiagram extends React.Component {
         importConfig.saveState,
         importConfig.containerProps,
         (records, hasError) => {
-          !hasError && this.props.closeImportView() && message.success('导入成功');
+          if (!hasError) {
+            this.props.closeImportView();
+            message.success('导入成功');
+          }
         },
         // this.handleFinishImport,
         {
