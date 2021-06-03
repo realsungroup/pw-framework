@@ -9753,3 +9753,11 @@ window[664282094133] = {
   title: '在岗培训审批', // 功能模块名称
   props: {}
 };
+
+window[675854121414] = {
+  name: 'PaySettleAccounts',
+  title: '当月薪资结算',
+  props: {
+    baseURL: 'http://kingofdinner.realsun.me:30001'
+  }
+}
