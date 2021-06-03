@@ -405,7 +405,7 @@ class ArchitectureDiagram extends React.Component {
         return false;
       }
     });
-    this.chart.on('exportstart', function(sender, args) {
+    this.chart.on('exportstart', function (sender, args) {
       args.content += `
       <style type="text/css">
         .created > rect {
@@ -467,12 +467,10 @@ class ArchitectureDiagram extends React.Component {
     this.setState({
       newSupNumber: newParentNode.orgNumber
     });
-    const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${
-      newParentNode[displayFileds.firstField]
-    } 下面吗？`;
-    const enTip = `Are you sure you want to drag ${
-      newNode[displayFileds.firstField]
-    } under ${newParentNode[displayFileds.firstField]}`;
+    const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${newParentNode[displayFileds.firstField]
+      } 下面吗？`;
+    const enTip = `Are you sure you want to drag ${newNode[displayFileds.firstField]
+      } under ${newParentNode[displayFileds.firstField]}`;
     Modal.confirm({
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
       content: (
@@ -1009,7 +1007,7 @@ class ArchitectureDiagram extends React.Component {
       }
       res = await http(httpParams).getFormData({
         resid: importResid,
-        formName: 'join'
+        formName: 'test'
       });
       const formData = dealControlArr(res.data.columns);
       this._dataProp = getDataProp(formData, record, true, false, false);
@@ -2478,11 +2476,10 @@ class ArchitectureDiagram extends React.Component {
               }}
               key={item.id}
             >
-              {`${item[firstField]}(${
-                item.memberCN && item.memberCN !== 'N/A'
+              {`${item[firstField]}(${item.memberCN && item.memberCN !== 'N/A'
                   ? item.memberCN
                   : '无任职人'
-              })`}
+                })`}
             </Breadcrumb.Item>
           );
         })}
@@ -2509,9 +2506,8 @@ class ArchitectureDiagram extends React.Component {
       cmswhere += `C3_417994161226 = '${selectedType}'`;
     }
     if (selectedResult && selectedResult !== '全部') {
-      cmswhere += `${
-        cmswhere ? ' and ' : ''
-      } importStatus = '${selectedResult}'`;
+      cmswhere += `${cmswhere ? ' and ' : ''
+        } importStatus = '${selectedResult}'`;
     }
     return (
       <div
@@ -3174,8 +3170,8 @@ class ArchitectureDiagram extends React.Component {
                                                   )}
                                                   {showMore &&
                                                     ind + 1 ===
-                                                      this._historyColinfo
-                                                        .length && (
+                                                    this._historyColinfo
+                                                      .length && (
                                                       <span
                                                         style={{
                                                           color: '#1890ff',
@@ -3267,8 +3263,8 @@ class ArchitectureDiagram extends React.Component {
                                                   )}
                                                   {showMore &&
                                                     ind + 1 ===
-                                                      this._partHistoryColinfo
-                                                        .length && (
+                                                    this._partHistoryColinfo
+                                                      .length && (
                                                       <span
                                                         style={{
                                                           color: '#1890ff',
@@ -3932,7 +3928,7 @@ class DLImportResult extends React.PureComponent {
         data: [{ REC_ID: record.REC_ID }]
       });
       this.tableDataRef1.handleRefresh();
-    } catch (error) {}
+    } catch (error) { }
     this.setState({ spinnig: false });
   };
   handleActiveKeyChange = activeKey => {
@@ -4040,7 +4036,7 @@ class DLImportResult extends React.PureComponent {
       // });
       this.tableDataRef2.handleRefresh();
       this.props.openContrastResult();
-    } catch (error) {}
+    } catch (error) { }
     this.setState({ spinnig: false });
   };
 }
@@ -4130,7 +4126,7 @@ class ContrastResult extends React.PureComponent {
           item.includes(this.state.yearMonth.format('YYYY-MM'))
         )
       });
-    } catch (error) {}
+    } catch (error) { }
   }
   render() {
     const { baseURL, onClose } = this.props;
