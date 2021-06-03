@@ -2125,7 +2125,18 @@ class ArchitectureDiagram extends React.Component {
         // },
         undefined,
         undefined,
-        undefined,
+        (records) => {
+          if (Array.isArray(records)) {
+            records.forEach(record => {
+              if (record.C3_470524257391 instanceof Date) {
+                record.C3_470524257391 = moment(record.C3_470524257391).add(1, 'days').format('YYYY-MM-DD');
+              }
+              if (record.C3_244132849812 instanceof Date) {
+                record.C3_244132849812 = moment(record.C3_244132849812).add(1, 'days').format('YYYY-MM-DD');
+              }
+            });
+          }
+        },
         false
       );
   };
