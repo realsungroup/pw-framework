@@ -1214,7 +1214,7 @@ class ArchitectureDiagram extends React.Component {
                     {
                       C3_244132849812: data.lizhiDate, //离职日期
                       C3_418993073324: data.lizhiReason, //离职原因
-                      C3_383426933426: data.lizhiType, //离职类型
+                      // C3_383426933426: data.lizhiType, //离职类型
                       C3_470524257391: data.date, //生效日期
                       C3_543601479390: data.aDate, //实际离职日期
                       C3_305737857578: node.memberCode,
@@ -2006,7 +2006,7 @@ class ArchitectureDiagram extends React.Component {
         importConfig.containerProps,
         (records, hasError) => {
           !hasError && this.props.closeImportView() && message.success('导入成功');
-        }, 
+        },
         {},
         { fileName: 'IDL入职-' + moment().format('YYYY-MM-DD HH:mm') },
         false,
@@ -2469,8 +2469,8 @@ class ArchitectureDiagram extends React.Component {
               key={item.id}
             >
               {`${item[firstField]}(${item.memberCN && item.memberCN !== 'N/A'
-                  ? item.memberCN
-                  : '无任职人'
+                ? item.memberCN
+                : '无任职人'
                 })`}
             </Breadcrumb.Item>
           );
@@ -3358,7 +3358,7 @@ class ArchitectureDiagram extends React.Component {
             info={{ dataMode: 'main', resid: this.props.importResid }}
             operation="add"
             data={this._dataProp}
-            record={{...joinRecord, C3_638469590670: '入职'}}
+            record={{ ...joinRecord, C3_638469590670: '入职' }}
             // useAbsolute={true}
             // formProps={{ width: 500 }}
             onCancel={this.closeJoinModal}
@@ -3665,14 +3665,14 @@ class LizhiForm extends React.PureComponent {
             }}
           />
         </Form.Item>
-        <Form.Item label="离职类型" required>
+        {/* <Form.Item label="离职类型" required>
           <Input
             value={lizhiType}
             onChange={e => {
               this.setState({ lizhiType: e.target.value });
             }}
           />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label="生效日期" required>
           <DatePicker
             value={date}
@@ -3699,16 +3699,16 @@ class LizhiForm extends React.PureComponent {
               if (!lizhiReason) {
                 return message.info('请输入离职原因');
               }
-              if (!lizhiType) {
-                return message.info('请输入离职类型');
-              }
+              // if (!lizhiType) {
+              //   return message.info('请输入离职类型');
+              // }
               if (!date) {
                 return message.info('请选择生效日期');
               }
               this.props.onOk({
                 lizhiDate,
                 lizhiReason,
-                lizhiType,
+                // lizhiType,
                 date,
                 aDate
               });
