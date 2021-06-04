@@ -35,7 +35,8 @@ class AnnualLeaveQuery extends React.Component {
       UserName: userInfoJson.Data,
       synj: null, //抬头上的信息
       snsy: null, //抬头上的信息
-      djfp: null //抬头上的信息
+      djfp: null,//抬头上的信息
+      snjysy: null
     };
   }
 
@@ -269,6 +270,8 @@ class Summary extends React.PureComponent {
       });
       let synj1 = 0;
       let curentYearIncrease = 0;
+      let snjysy = 0;
+      this.setState({ snjysy: 0 })
       res.data.map(item => {
         if (item.synj >= 0) {
           synj1 = item.synj + synj1;
@@ -277,7 +280,38 @@ class Summary extends React.PureComponent {
           curentYearIncrease += item.curSeasonNj
         }
       });
+      let qua = new Date().getMonth();
+      qua++;
+      if (qua < 7) {
+        if (qua < 4) {
+          qua = 1
+        } else {
+          qua = 2
+        }
+      } else {
+        qua = 10
+      }
+      let nn = 0;
+      while (nn < res.data.length) {
+        if (qua == 1) {
+          if (res.data[nn].quarter == 1) {
+            snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            if (snjysy < 0) {
+              snjysy = 0;
+            }
+          }
+        } else if (qua == 2) {
+          if (res.data[nn].quarter == 2) {
+            snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            if (snjysy < 0) {
+              snjysy = 0;
+            }
+          }
+        }
+        nn++;
+      }
       this.setState({
+        snjysy,
         synj: synj1,
         snsy: res.data.length ? res.data[0].lnsy : 0,
         curentYearIncrease
@@ -347,7 +381,39 @@ class Summary extends React.PureComponent {
           curentYearIncrease += item.curSeasonNj
         }
       });
+      let snjysy = 0;
+      let qua = new Date().getMonth();
+      qua++;
+      if (qua < 7) {
+        if (qua < 4) {
+          qua = 1
+        } else {
+          qua = 2
+        }
+      } else {
+        qua = 10
+      }
+      let nn = 0;
+      while (nn < res.data.length) {
+        if (qua == 1) {
+          if (res.data[nn].quarter == 1) {
+            snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            if (snjysy < 0) {
+              snjysy = 0;
+            }
+          }
+        } else if (qua == 2) {
+          if (res.data[nn].quarter == 2) {
+            snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            if (snjysy < 0) {
+              snjysy = 0;
+            }
+          }
+        }
+        nn++;
+      }
       this.setState({
+        snjysy,
         synj: synj1,
         snsy: res.data.length ? res.data[0].lnsy : 0,
         curentYearIncrease
@@ -490,6 +556,8 @@ class Summary extends React.PureComponent {
           <div>
             <span style={{ marginRight: '2vw' }}>当年新增年假{isWuxi ? curentYearIncrease + '天' : curentYearIncrease * 8 + '小时'}</span>
             <span style={{ marginRight: '2vw' }}>上年结转年假{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</span>
+            <span style={{ marginRight: '2vw' }}>上年剩余可用年假{isWuxi ? this.state.snjysy + '天' : this.state.snjysy * 8 + '小时'}</span>
+
             <TreeSelect
               style={{ width: '250px' }}
               value={selectValue}
