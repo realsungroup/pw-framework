@@ -5069,58 +5069,187 @@ window[642855760886] = {
   }
 };
 window[642855770350] = {
-  name: 'TableData', // 组件名称，
-  title: '我的招聘申请', // 功能模块名称
-  props: {
-    baseURL: 'http://10.108.2.66:1001',
-    downloadBaseURL: 'http://10.108.2.66:1000/',
-    resid: 518460953577,
-    actionBarWidth: 300,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    recordFormUseAbsolute: true,
-    // isUseFormDefine:false,
-    // isSetColumnWidth: false,
-    // noWidthFields: 'C3_518381374532',
-    backendButtonPopConfirmProps: { placement: 'bottom' },
-    formProps: {
-      // height: 500
-      width: 850
-    },
-    advSearch: {
-      isRequestFormData: false
-    },
-    formDataProps: {
-      clearOnchangeFileds: [
-        // { id: "C3_662164156791", clearFileds: ["C3_662164165635"] }
-      ]
-    },
-    labelRequiredList: [
-      'Specify',
-      'Dept',
-      'Status',
-      'Pay Type',
-      'Job Grade Level',
-      'Relocation Eligible?',
-      'Incentive Eligible?',
-      'Budget Quarter',
-      'Dept. Code',
-      'Project Code',
-      '1)',
-      'Name',
-      'KEY JOB DUTIES & RESPONSIBILITIES:',
-      '% of Travel',
-      'SKILLS & QUALIFICATIONS:'
-    ],
-    subtractH: 200
-  }
+  name: 'TabsTableData',
+  title: '我的招聘申请',
+  props: [
+    [
+      {
+        resid: 518460953577,
+        TabsTitle: '待提交',
+        hasBeBtns: true,
+        hasModify: true,
+        hasDelete: true,
+        hasAdd: true,
+        hasRowDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        recordFormUseAbsolute: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+        formProps: {
+          // height: 500
+          width: 850
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        formDataProps: {
+          clearOnchangeFileds: [
+            // { id: "C3_662164156791", clearFileds: ["C3_662164165635"] }
+          ]
+        },
+        labelRequiredList: [
+          'Specify',
+          'Dept',
+          'Status',
+          'Pay Type',
+          'Job Grade Level',
+          'Relocation Eligible?',
+          'Incentive Eligible?',
+          'Budget Quarter',
+          'Dept. Code',
+          'Project Code',
+          '1)',
+          'Name',
+          'KEY JOB DUTIES & RESPONSIBILITIES:',
+          '% of Travel',
+          'SKILLS & QUALIFICATIONS:'
+        ],
+        subtractH: 200
+      },
+      {
+        resid: 518462587979,
+        TabsTitle: '已提交（HR核对中）',
+        hasBeBtns: false,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        recordFormUseAbsolute: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+        formProps: {
+          // height: 500
+          width: 850
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        formDataProps: {
+          clearOnchangeFileds: [
+            // { id: "C3_662164156791", clearFileds: ["C3_662164165635"] }
+          ]
+        },
+        labelRequiredList: [
+          'Specify',
+          'Dept',
+          'Status',
+          'Pay Type',
+          'Job Grade Level',
+          'Relocation Eligible?',
+          'Incentive Eligible?',
+          'Budget Quarter',
+          'Dept. Code',
+          'Project Code',
+          '1)',
+          'Name',
+          'KEY JOB DUTIES & RESPONSIBILITIES:',
+          '% of Travel',
+          'SKILLS & QUALIFICATIONS:'
+        ],
+        subtractH: 200
+      },
+      {
+        resid: 518462637258,
+        TabsTitle: '审批中',
+        hasBeBtns: false,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        recordFormUseAbsolute: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+        formProps: {
+          // height: 500
+          width: 850
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        formDataProps: {
+          clearOnchangeFileds: [
+            // { id: "C3_662164156791", clearFileds: ["C3_662164165635"] }
+          ]
+        },
+        labelRequiredList: [
+          'Specify',
+          'Dept',
+          'Status',
+          'Pay Type',
+          'Job Grade Level',
+          'Relocation Eligible?',
+          'Incentive Eligible?',
+          'Budget Quarter',
+          'Dept. Code',
+          'Project Code',
+          '1)',
+          'Name',
+          'KEY JOB DUTIES & RESPONSIBILITIES:',
+          '% of Travel',
+          'SKILLS & QUALIFICATIONS:'
+        ],
+        subtractH: 200
+      },
+      {
+        resid: 518462647364,
+        TabsTitle: '已审批',
+        hasBeBtns: false,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        recordFormUseAbsolute: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+        formProps: {
+          // height: 500
+          width: 850
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        formDataProps: {
+          clearOnchangeFileds: [
+            // { id: "C3_662164156791", clearFileds: ["C3_662164165635"] }
+          ]
+        },
+        labelRequiredList: [
+          'Specify',
+          'Dept',
+          'Status',
+          'Pay Type',
+          'Job Grade Level',
+          'Relocation Eligible?',
+          'Incentive Eligible?',
+          'Budget Quarter',
+          'Dept. Code',
+          'Project Code',
+          '1)',
+          'Name',
+          'KEY JOB DUTIES & RESPONSIBILITIES:',
+          '% of Travel',
+          'SKILLS & QUALIFICATIONS:'
+        ],
+        subtractH: 200
+      }
+    ]
+  ]
 };
+
+
 window[642855780253] = {
   // name: 'TableData', // 组件名称，
   name: 'MyApplication',
