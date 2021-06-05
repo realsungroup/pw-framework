@@ -303,6 +303,7 @@ class PaySettleAccounts extends React.Component {
           onOk={this.handleConfirm}
           destroyOnClose
           confirmLoading={confirmLoading}
+          onCancel={() => this.setState({ createVisible: false })}
         >
           <div className='pay-settle-accounts__create-modal-content'>
             <span>请输入结薪月份：</span>
@@ -317,6 +318,7 @@ class PaySettleAccounts extends React.Component {
           title={null}
           visible={progressVisible}
           footer={this.renderFooter()}
+          onCancel={() => this.setState({ progressVisible: false })}
         >
           <div>
             <div className='pay-settle-accounts__progress-wrapper'>
@@ -332,6 +334,7 @@ class PaySettleAccounts extends React.Component {
           destroyOnClose
           footer={null}
           width='100%'
+          onCancel={() => this.setState({ listVisible: false })}
         >
           <div style={{ height: 500 }}>
             <TableData
