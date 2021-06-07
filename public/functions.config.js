@@ -9768,14 +9768,14 @@ window[675854135689] = {
   props: {
     resid: 675941697926,
     actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasBackBtn: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
     isUseFormDefine: false,
     baseURL: 'http://kingofdinner.realsun.me:30001/',
     downloadBaseURL: 'http://kingofdinner.realsun.me:30000/',
@@ -9788,3 +9788,14 @@ window[675854135689] = {
     subtractH: 200
   }
 };
+
+window[675854148221] = {
+  name: 'PaySettleAccounts',
+  title: '当月薪资审批',
+  props: {
+    baseURL: 'http://kingofdinner.realsun.me:30001',
+    downloadBaseURL: 'http://kingofdinner.realsun.me:30000', // 导出 excel 的基地址
+    title: '当月薪资审批'
+  }
+};
+
