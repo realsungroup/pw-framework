@@ -9759,6 +9759,32 @@ window[675854121414] = {
   title: '当月薪资结算',
   props: {
     baseURL: 'http://kingofdinner.realsun.me:30001',
-    downloadBaseURL: 'http://kingofdinner.realsun.me:30001' // 导出 excel 的基地址
+    downloadBaseURL: 'http://kingofdinner.realsun.me:30000/' // 导出 excel 的基地址
+  }
+};
+window[675854135689] = {
+  name: 'TableData', // 组件名称，
+  title: '个人薪资查询', // 功能模块名称
+  props: {
+    resid: 675941697926,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    isUseFormDefine: false,
+    baseURL: 'http://kingofdinner.realsun.me:30001/',
+    downloadBaseURL: 'http://kingofdinner.realsun.me:30000/',
+    formProps: {
+      // height: 500
+    },
+    advSearch: {
+      isRequestFormData: false
+    },
+    subtractH: 200
   }
 };
