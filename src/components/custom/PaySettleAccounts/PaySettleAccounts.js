@@ -5,14 +5,8 @@ import http from 'Util20/api';
 import './PaySettleAccounts.less';
 import moment from 'moment';
 import { compose } from 'recompose';
-import { withHttpGetBeBtns, withHttpGetFormData } from '../../common/hoc/withHttp';
-import withAdvSearch from '../../common/hoc/withAdvSearch';
 import withDownloadFile from '../../common/hoc/withDownloadFile';
-import withModalDrawer from '../../common/hoc/withModalDrawer';
-import { withRecordForm } from '../../common/hoc/withRecordForm';
-import { injectIntl } from 'react-intl';
 import withImport from '../../common/hoc/withImport';
-
 
 /*
  * 薪资结算
@@ -26,15 +20,16 @@ class PaySettleAccounts extends React.Component {
     totalIndex: 0,
     curIndex: 0,
     isTaskComplete: false,
-    listVisible: false
+    listVisible: false,
+    tableDataKey: 1
   };
 
   actionBarExtra = record => {
     return (
       <div>
         <Button
-          type='primary'
           onClick={() => this.setState({ createVisible: true })}
+          size="small"
         >
           新建工资结算
         </Button>
@@ -63,32 +58,29 @@ class PaySettleAccounts extends React.Component {
       saveFE = false
     } = importConfig;
 
-
     let disabledSave = false;
     if (saveFE) {
       disabledSave = true;
     }
 
     openImportView &&
-    openImportView(
-      dblinkname,
-      url,
-      675809001517,
-      mode,
-      containerType,
-      saveState,
-      containerProps,
-      null,
-      {},
-      {},
-      false,
-      null,
-      null,
-      disabledSave,
-      () => {
-      }
-    );
-
+      openImportView(
+        dblinkname,
+        url,
+        675809001517,
+        mode,
+        containerType,
+        saveState,
+        containerProps,
+        null,
+        {},
+        {},
+        false,
+        null,
+        null,
+        disabledSave,
+        () => {}
+      );
   };
 
   handleDownload = async () => {
@@ -130,16 +122,10 @@ class PaySettleAccounts extends React.Component {
   payActionBarExtra = () => {
     return (
       <div>
-        <Button
-          type='primary'
-          onClick={this.handleImport}
-        >
+        <Button type="primary" onClick={this.handleImport}>
           导入手动项目
         </Button>
-        <Button
-          type='primary'
-          onClick={this.handleDownload}
-        >
+        <Button type="primary" onClick={this.handleDownload}>
           导出薪资详情
         </Button>
       </div>
@@ -175,6 +161,26 @@ class PaySettleAccounts extends React.Component {
   };
 
   _taskid = null;
+
+  addRecord = async () => {
+    const { baseURL } = this.props;
+    const { month } = this.state;
+    try {
+      await http({ baseURL }).addRecords({
+        resid: 675808935048,
+        data: [
+          {
+            Month: month.format('YYYYMM')
+          }
+        ],
+        isEditOrAdd: true
+      });
+    } catch (err) {
+      message.error(err.message);
+      return;
+    }
+    this.setState({ tableDataKey: this.state.tableDataKey + 1 });
+  };
 
   /**
    * 获取进度
@@ -223,8 +229,9 @@ class PaySettleAccounts extends React.Component {
       });
       message.success('同步完成');
       this._taskid = null;
-      // 当前任务未完成
+      this.addRecord();
     } else {
+      // 当前任务未完成
       this.setState({
         totalIndex: res.data.Total,
         curIndex: res.data.Index,
@@ -242,12 +249,24 @@ class PaySettleAccounts extends React.Component {
     const { isTaskComplete } = this.state;
     if (isTaskComplete) {
       return (
-        <Button onClick={() => this.setState({ listVisible: true })}>
+        <Button
+          onClick={() =>
+            this.setState({ listVisible: true, createVisible: false })
+          }
+        >
           查看薪资名单
         </Button>
       );
     }
     return null;
+  };
+
+  handleViewDetail = record => {
+    const monthStr = `${record.Month.substring(0, 4)}-${record.Month.substring(
+      4
+    )}-01`;
+    const month = moment(monthStr);
+    this.setState({ month, listVisible: true });
   };
 
   render() {
@@ -261,7 +280,8 @@ class PaySettleAccounts extends React.Component {
       totalIndex,
       isTaskComplete,
       listVisible,
-      downloadLoading
+      downloadLoading,
+      tableDataKey
     } = this.state;
 
     let progress;
@@ -273,10 +293,11 @@ class PaySettleAccounts extends React.Component {
     }
 
     return (
-      <div className='pay-settle-accounts'>
+      <div className="pay-settle-accounts">
         <TableData
+          key={tableDataKey}
           baseURL={baseURL}
-          resid='675808935048'
+          resid="675808935048"
           subtractH={230}
           hasAdvSearch={false}
           hasAdd={false}
@@ -291,21 +312,34 @@ class PaySettleAccounts extends React.Component {
           actionBarExtra={this.actionBarExtra}
           hasDownload={false}
           wrappedComponentRef={element => (this.tableDataRef = element)}
-          refTargetComponentName='TableData'
-          height='100%'
+          refTargetComponentName="TableData"
+          height="100%"
           hasZoomInOut={false}
-          // isSetColumnWidth={false}
+          customRowBtns={[
+            (record, btnSize) => {
+              return (
+                <Button
+                  type="primary"
+                  size={btnSize}
+                  onClick={() => this.handleViewDetail(record)}
+                >
+                  查看薪资详情
+                </Button>
+              );
+            }
+          ]}
+          hasBeBtns
         />
         <Modal
-          title='新建薪资结算'
+          title="新建薪资结算"
           visible={createVisible}
-          okText='开始结算'
+          okText="开始结算"
           onOk={this.handleConfirm}
           destroyOnClose
           confirmLoading={confirmLoading}
           onCancel={() => this.setState({ createVisible: false })}
         >
-          <div className='pay-settle-accounts__create-modal-content'>
+          <div className="pay-settle-accounts__create-modal-content">
             <span>请输入结薪月份：</span>
             <DatePicker.MonthPicker
               value={month}
@@ -321,10 +355,14 @@ class PaySettleAccounts extends React.Component {
           onCancel={() => this.setState({ progressVisible: false })}
         >
           <div>
-            <div className='pay-settle-accounts__progress-wrapper'>
-              <Progress type='circle' percent={progress} />
+            <div className="pay-settle-accounts__progress-wrapper">
+              <Progress type="circle" percent={progress} />
             </div>
-            {isTaskComplete && <div style={{ textAlign: 'center', marginTop: 16 }}>结薪名单生成完毕！</div>}
+            {isTaskComplete && (
+              <div style={{ textAlign: 'center', marginTop: 16 }}>
+                结薪名单生成完毕！
+              </div>
+            )}
           </div>
         </Modal>
 
@@ -333,15 +371,15 @@ class PaySettleAccounts extends React.Component {
           visible={listVisible}
           destroyOnClose
           footer={null}
-          width='100%'
+          width="100%"
           onCancel={() => this.setState({ listVisible: false })}
         >
           <div style={{ height: 500 }}>
             <TableData
               loading={downloadLoading}
-              title='薪资详情'
+              title="薪资详情"
               baseURL={baseURL}
-              resid='675809001517'
+              resid="675809001517"
               subtractH={230}
               hasAdvSearch={false}
               hasAdd={false}
@@ -355,18 +393,17 @@ class PaySettleAccounts extends React.Component {
               actionBarWidth={100}
               actionBarExtra={this.payActionBarExtra}
               hasDownload={false}
-              refTargetComponentName='TableData'
-              height='100%'
+              refTargetComponentName="TableData"
+              height="100%"
               hasZoomInOut={false}
+              cmswhere={`Month = '${month.format('YYYYMM')}'`}
             />
           </div>
-
         </Modal>
       </div>
     );
   }
 }
-
 
 const composedHoc = compose(
   withDownloadFile,
