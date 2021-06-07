@@ -412,6 +412,9 @@ class IDLTransferVerifyAction extends Component {
         toCheckFront: obj,
         C3_632503844784: obj.changeID
       });
+      if (r.isTarget == 'Y') {
+        this.setState({ isTarget: 'Y' })
+      }
     } catch (e) {
       console.log(e);
       this.setState({ laoding: false });
@@ -547,17 +550,20 @@ class IDLTransferVerifyAction extends Component {
             footer={
               this.state.selection == '1' ? (
                 <>
-                  <Button
-                    type="danger"
-                    style={{ marginLeft: '8px' }}
-                    onClick={() => {
-                      this.approve('N');
+                  {this.state.isTarget == 'Y' ?
+                    null
+                    : (<Button
+                      type="danger"
+                      style={{ marginLeft: '8px' }}
+                      onClick={() => {
+                        this.approve('N');
 
-                      // this.setState({ conUnpass: true });
-                    }}
-                  >
-                    不通过审核
-                  </Button>
+                        // this.setState({ conUnpass: true });
+                      }}
+                    >
+                      不通过审核
+                    </Button>)}
+
                   <Button
                     type="primary"
                     onClick={() => {
@@ -572,7 +578,7 @@ class IDLTransferVerifyAction extends Component {
                       // }
                     }}
                   >
-                    保存并通过审核
+                    {this.state.isTarget == 'Y' ? '确认' : '保存并通过审核'}
                   </Button>
                 </>
               ) : null
