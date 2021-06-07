@@ -1,6 +1,6 @@
 import React from 'react';
 import TableData from '../../common/data/TableData';
-import { Button, message, Modal, DatePicker, Progress } from 'antd';
+import { Button, message, Modal, DatePicker, Progress, Popconfirm } from 'antd';
 import http from 'Util20/api';
 import './PaySettleAccounts.less';
 import moment from 'moment';
@@ -24,15 +24,56 @@ class PaySettleAccounts extends React.Component {
     tableDataKey: 1
   };
 
-  actionBarExtra = record => {
+  handleCheck = async ({ dataSource, selectedRowKeys }) => {
+    const { baseURL } = this.props;
+    if (!selectedRowKeys.length) {
+      return message.error('请选择记录');
+    }
+
+    const data = selectedRowKeys.map(id => ({
+      REC_ID: id,
+      approve: 'Approved'
+    }));
+
+    try {
+      await http({ baseURL }).modifyRecords({
+        resid: '675808935048',
+        isEditOrAdd: true,
+        data
+      });
+    } catch (err) {
+      return message.error(err.message);
+    }
+    message.success('操作成功');
+    this.setState({ tableDataKey: this.tableDataKey + 1 });
+  };
+
+  actionBarExtra = ({ dataSource, selectedRowKeys }) => {
+    const { title } = this.props;
+    if (title === '当月薪资结算') {
+      return (
+        <div>
+          <Button
+            onClick={() => this.setState({ createVisible: true })}
+            size="small"
+          >
+            新建工资结算
+          </Button>
+        </div>
+      );
+    }
+
     return (
       <div>
-        <Button
-          onClick={() => this.setState({ createVisible: true })}
-          size="small"
+        <Popconfirm
+          placement="top"
+          title="确定要薪资审核吗？"
+          onConfirm={() => this.handleCheck({ dataSource, selectedRowKeys })}
+          okText="确定"
+          cancelText="取消"
         >
-          新建工资结算
-        </Button>
+          <Button size="small">薪资审核</Button>
+        </Popconfirm>
       </div>
     );
   };
@@ -328,7 +369,7 @@ class PaySettleAccounts extends React.Component {
               );
             }
           ]}
-          hasBeBtns
+          hasBeBtns={this.props.title === '当月薪资结算'}
         />
         <Modal
           title="新建薪资结算"
