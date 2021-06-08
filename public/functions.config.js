@@ -9800,3 +9800,29 @@ window[675854148221] = {
   }
 };
 
+window[676498584577] = {
+  name: 'TableData', // 组件名称，
+  title: '发送工资邮件', // 功能模块名称
+  props: {
+    resid: 676498693538,
+    actionBarWidth: 200,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    baseURL: 'http://kingofdinner.realsun.me:30001/',
+    downloadBaseURL: 'http://kingofdinner.realsun.me:30000/',
+    formProps: {
+      // height: 500
+    },
+    advSearch: {
+      isRequestFormData: false
+    },
+    subtractH: 200
+  }
+};
