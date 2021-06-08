@@ -213,7 +213,6 @@ export default class PageContainer extends React.Component {
       resid: 424358078333
     });
     if (res && Array.isArray(res.data)) {
-      console.log({ res });
       res.data.sort((a, b) => a.C3_424358155202 - b.C3_424358155202);
       res.data.forEach(item => {
         item.label = `${item.C3_424358155202}`.splice(4, 0, '-');

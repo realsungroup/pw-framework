@@ -37,10 +37,12 @@ import {
   PageContainer,
   NotFound
 } from './pages/loadablePage';
+import http from './util20/api';
 
 addLocaleData([...en, ...zh]);
 
 const basename = window.pwConfig[process.env.NODE_ENV].basename;
+const languageMessagesConfig = window.pwConfig[process.env.NODE_ENV].languageMessagesConfig;
 
 const ReminderMsg = (
   <div className="app__nonuse-ie">
@@ -113,7 +115,8 @@ class App extends Component {
     this.state = {
       warningBarVisible: true,
       resId,
-      desktopStyle: null
+      desktopStyle: null,
+      messages: []
     };
   }
 
@@ -124,11 +127,11 @@ class App extends Component {
 
   componentDidMount = () => {
     const clipboard = new ClipboardJS('.app__warning-bar-copy');
-    clipboard.on('success', function(e) {
+    clipboard.on('success', function (e) {
       message.success('复制成功');
     });
 
-    clipboard.on('error', function(e) {
+    clipboard.on('error', function (e) {
       message.error('复制失败');
     });
 
@@ -143,34 +146,47 @@ class App extends Component {
       } else {
         language = userInfo.UserInfo.EMP_LANGUAGE;
       }
-    } catch (err) {}
-
+    } catch (err) { }
     this.setState({
       userInfo,
       language
     });
+    this.getLanguageMessages(language)
   };
+  //获取国际化配置
+  getLanguageMessages = async (language) => {
+    const { baseURL, enResid, cnResid, keyColumn, valColumn, dblinkname } = languageMessagesConfig;
+    try {
+      const res = await http({
+        baseURL
+      }).getLanguage({
+        resid: language === 'English' ? enResid : enResid,
+        keyColumn,
+        valColumn,
+        dblinkname
+      });
+      this.setState({ messages: res.data })
+    } catch (error) {
 
+    }
+  }
   handleCloseWarningBar = () => {
     this.setState({ warningBarVisible: false });
   };
 
   handleSwitchHome = homeMode => {
     this.setState({ desktopStyle: homeMode });
-    console.log({ homeMode });
     localStorage.setItem('desktopStyle', homeMode);
   };
 
   render() {
-    const { language } = this.state;
+    const { language, messages } = this.state;
 
     let localeAntd = zh_CN_antd;
-    let locale = 'zh',
-      messages = zh_CN;
+    let locale = 'zh';
     if (language === 'English') {
       localeAntd = en_US_antd;
       locale = 'en';
-      messages = en_US;
     }
 
     return (

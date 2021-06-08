@@ -3,12 +3,13 @@ import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Tooltip } from 'antd';
+import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import './SwitchHome.less';
 
 /**
  * 切换首页
  */
-export default class SwitchHome extends React.Component {
+class SwitchHome extends React.Component {
   static propTypes = {
     /**
      * 首页的模式：'DESKTOP' 桌面模式 | 'WORKBENCH' 工作台模式
@@ -47,9 +48,15 @@ export default class SwitchHome extends React.Component {
   getTooltipTitle = () => {
     const { homeMode } = this.props;
     if (homeMode === 'DESKTOP') {
-      return '切换至工作台';
+      return <FM
+        id="切换至工作台"
+        defaultMessage="切换至工作台"
+      />;
     } else {
-      return '切换至桌面版';
+      return <FM
+        id="切换至桌面版"
+        defaultMessage="切换至桌面版"
+      />;
     }
   };
 
@@ -94,3 +101,5 @@ export default class SwitchHome extends React.Component {
     return ReactDOM.createPortal(children, document.body);
   }
 }
+
+export default injectIntl(SwitchHome)

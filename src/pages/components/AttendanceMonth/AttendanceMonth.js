@@ -2,6 +2,7 @@ import React from 'react';
 import { getGBEMClassName } from 'Util20/util';
 import { Select } from 'antd';
 import classNames from 'classnames';
+import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import './AttendanceMonth.less';
 
 const { Option } = Select;
@@ -19,7 +20,12 @@ const AttendanceMonth = ({
 }) => {
   return (
     <div className={classNames(prefix, className)}>
-      <span className={c('attendance-title')}>考勤月份</span>
+      <span className={c('attendance-title')}>
+        <FM
+          id="考勤月份"
+          defaultMessage="考勤月份"
+        />
+      </span>
       <Select
         value={currentAttendanceMonth}
         className={c('attendance-month-select')}
@@ -35,4 +41,4 @@ const AttendanceMonth = ({
   );
 };
 
-export default AttendanceMonth;
+export default injectIntl(AttendanceMonth);

@@ -8,7 +8,7 @@ window.pwConfig = {
     // baseURL: 'http://10.108.11.36:6001/', // 请求的基地址
     // baseURL: 'http://pwkwebapi.realsun.me/',
     // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
-    baseURL: 'http://10.108.2.66:5002/', // 请求的基地址
+    baseURL: 'http://wux-hr03:1001/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
@@ -21,6 +21,15 @@ window.pwConfig = {
       629462405981: {
         fileType: 'mdb'
       }
+    },
+    //中英文请求配置
+    languageMessagesConfig: {
+      baseURL: 'http://wux-hr03:6001/',
+      cnResid: '',//中文配置resid
+      enResid: '676463355223',//英文配置resid
+      keyColumn: "lankey",
+      valColumn: "lanvalue",
+      dblinkname: ''
     },
     penetrate: false, //是否穿透模式
     penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
@@ -239,6 +248,15 @@ window.pwConfig = {
       629462405981: {
         fileType: 'mdb'
       }
+    },
+    //中英文请求配置
+    languageMessagesConfig: {
+      baseURL: 'http://wux-hr03:6001/',
+      cnResid: '',//中文配置resid
+      enResid: '676463355223',//英文配置resid
+      keyColumn: "lankey",
+      valColumn: "lanvalue",
+      dblinkname: ''
     },
     penetrate: false, //是否穿透模式
     penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
