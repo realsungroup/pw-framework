@@ -2022,7 +2022,11 @@ window[620212364621] = {
   name: 'ComprehensiveQuery',
   title: '综合查询',
   props: {
-    showAnnualLeaveDetail: false //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示人事信息
+    showPingji: true, //是否显示人事信息
+    showChaoshi: true, //是否显示超时工时统计
   }
 };
 window[642853831562] = {
@@ -2030,7 +2034,11 @@ window[642853831562] = {
   title: '绩效查询',
   props: {
     tabKey: 'performance',
-    showAnnualLeaveDetail: false //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示人事信息
+    showPingji: true, //是否显示人事信息
+    showChaoshi: true, //是否显示超时工时统计
   }
 };
 
@@ -2039,7 +2047,12 @@ window[642853818882] = {
   title: '考勤查询',
   props: {
     tabKey: 'attendance',
-    showAnnualLeaveDetail: true //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showTiaoXiuDetail: true,//是否显示调休明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示人事信息
+    showPingji: true, //是否显示人事信息
+    showChaoshi: true, //是否显示超时工时统计
   }
 };
 window[643372961628] = {
@@ -2047,7 +2060,11 @@ window[643372961628] = {
   title: '评级评优查询',
   props: {
     tabKey: 'rating',
-    showAnnualLeaveDetail: false //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示人事信息
+    showPingji: true, //是否显示人事信息
+    showChaoshi: true, //是否显示超时工时统计
   }
 };
 window[642853806554] = {
@@ -2055,7 +2072,11 @@ window[642853806554] = {
   title: '人事查询',
   props: {
     tabKey: 'personnel',
-    showAnnualLeaveDetail: false //是否显示年假明细
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示人事信息
+    showPingji: true, //是否显示人事信息
+    showChaoshi: true, //是否显示超时工时统计
   }
 };
 window[621257502796] = {
@@ -9926,13 +9947,61 @@ window[671543192998] = {
   }
 };
 
-//下月合同到期名单
-window[676485269974] = {
+
+//内训未反馈
+window[674738722036] = {
+  name: 'NoFeedbackFromInternalTraining', // 组件名称，
+  title: '内训未反馈', // 功能模块名称
+  props: {}
+};
+
+//预入职日期
+window[674925193464] = {
   name: 'TableData', // 组件名称，
-  title: '年假管理——考勤员用', // 功能模块名称
+  title: '预入职日期', // 功能模块名称
   props: {
-    resid: 668272811088,
-    baseURL: 'http://10.108.2.66:9091',
+    resid: 674925572556,
+    actionBarWidth: 300,
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasBackBtn: false,
+    hasDelete: false,
+    hasRowModify: true,
+    hasRowView: false,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    baseURL: 'http://10.108.2.66:1001/',
+    downloadBaseURL: 'http://10.108.2.66:1000/',
+    subtractH: 200
+  }
+};
+
+//培训资源管理
+window[675343454130] = {
+  name: 'BusinessManagement',
+  title: '培训资源管理',
+  props: {
+    rootId: 675365678089,
+    dblinkname: '',
+    baseURL: 'http://10.108.2.66:1001/',
+    downloadBaseURL: 'http://10.108.2.66:1000/'
+  }
+};
+
+//调休假余额
+window[671298901933] = {
+  name: 'HolidayBalanceQuery', // 组件名称，
+  title: '调休假余额', // 功能模块名
+};
+
+//下月合同到期名单
+window[675856353290] = {
+  name: 'TableData', // 组件名称，
+  title: '下月合同到期名单', // 功能模块名称
+  props: {
+    resid: 675799631810,
+
     hasAdd: false,
     hasBeBtns: false,
     hasModify: false,
@@ -9944,4 +10013,25 @@ window[676485269974] = {
     isUseFormDefine: false,
     subtractH: 200
   }
+
 };
+//下月合同到期名单
+window[676485269974] = {
+  name: 'TableData', // 组件名称，
+  title: '年假管理——考勤员用', // 功能模块名称
+  props: {
+    resid: 668272811088,
+    baseURL: 'http://10.108.2.66:9091',
+       hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasBackBtn: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    subtractH: 200
+  }
+  };
+

@@ -61,7 +61,6 @@ const InternalTraining = React.memo(props => {
             &nbsp;&nbsp;&nbsp;&nbsp;2.课程具体安排详见每月内训通知邮件；
             <br />
             &nbsp;&nbsp;&nbsp;&nbsp;3.内训课为公开课程，鼓励员工参加与工作有关或感兴趣的非必修课程。
-
           </p>
         </div>
         <Table

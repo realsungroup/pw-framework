@@ -113,7 +113,7 @@ class ContractApproval extends React.Component {
         });
         var _this = this;
         message.success('操作成功');
-        var t = setTimeout(function() {
+        var t = setTimeout(function () {
           _this.tableDataRef.handleRefresh();
           _this.setState({ loading: false });
         }, 2000);
@@ -137,7 +137,7 @@ class ContractApproval extends React.Component {
     } = this.state;
     return (
       <div className="contract-approval">
-        <Tabs defaultActiveKey="1" style={tabsStyle}>
+        <Tabs defaultActiveKey="1" style={tabsStyle} onChange={() => { this.tableDataRef.handleRefresh(); }}>
           <TabPane tab="待处理" key="1" style={tabPaneStyle}>
             <div className="tabledata-container">
               <TableData
@@ -160,6 +160,7 @@ class ContractApproval extends React.Component {
                 recordFormUseAbsolute={true}
                 customRowBtns={this.waitingCustomRowBtns}
                 hasBeBtns={true}
+                afterSaveRefresh={true}
               />
             </div>
           </TabPane>
@@ -172,6 +173,8 @@ class ContractApproval extends React.Component {
                 // sideBarAg={true}
                 hasAdvSearch={true}
                 hasAdd={false}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+
                 hasRowView={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
@@ -181,6 +184,7 @@ class ContractApproval extends React.Component {
                 hasModify={false}
                 hasBeBtns={false}
                 hasRowSelection={false}
+                afterSaveRefresh={true}
               />
             </div>
           </TabPane>
@@ -192,6 +196,8 @@ class ContractApproval extends React.Component {
                 // tableComponent="ag-grid"
                 // sideBarAg={true}
                 hasAdvSearch={true}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+
                 hasAdd={false}
                 hasRowView={true}
                 recordFormUseAbsolute={true}
@@ -202,6 +208,7 @@ class ContractApproval extends React.Component {
                 hasModify={false}
                 hasBeBtns={false}
                 hasRowSelection={false}
+                afterSaveRefresh={true}
               />
             </div>
           </TabPane>

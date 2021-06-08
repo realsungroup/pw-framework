@@ -134,7 +134,6 @@ class ProbationForms extends React.Component {
   };
 
   async componentDidMount() {
-
     this.setState({ loading: true });
     let memberId;
     let employedId;
@@ -340,23 +339,23 @@ class ProbationForms extends React.Component {
         instructorDirectorName2 = '';
         instructorDirectorId2 = '';
       }
-      let res = await http().modifyRecords({
-        resid: resid1,
-        data: [
-          {
-            REC_ID: this.state.employeeInformation.REC_ID,
-            instructorIsPass: 'Y',
-            C3_637084526216,
-            C3_637084539039,
-            instructorDirectorName2,
-            instructorDirectorId2,
-            C3_627646976501,
-            instructor,
-            instructorDirectorName,
-            instructorDirectorId
-          }
-        ]
-      });
+      // let res = await http().modifyRecords({
+      //   resid: resid1,
+      //   data: [
+      //     {
+      //       REC_ID: this.state.employeeInformation.REC_ID,
+      //       instructorIsPass: 'Y',
+      //       C3_637084526216,
+      //       C3_637084539039,
+      //       instructorDirectorName2,
+      //       instructorDirectorId2,
+      //       C3_627646976501,
+      //       instructor,
+      //       instructorDirectorName,
+      //       instructorDirectorId
+      //     }
+      //   ]
+      // });
       message.success('成功同意辅导员');
       this.setState({ loading: false, flagAlreadyHit: 1 });
     } catch (error) {
@@ -468,6 +467,7 @@ class ProbationForms extends React.Component {
       });
       mentorshipRecord.forEach(item => {
         delete item.instructEmailIsSend;
+        delete item.C3_664472776773;
         delete item.C3_625594433726;
         subdata.push({
           resid: resid6,
@@ -480,6 +480,46 @@ class ProbationForms extends React.Component {
         });
       });
       delete employeeInformation.isNoticeHrEmail;
+      console.log('提交的数据', [
+        {
+          resid: resid1,
+          maindata: {
+            ...employeeInformation,
+            instructor:
+              this.state.employeeInformation.instructor &&
+              this.state.employeeInformation.instructor.indexOf('-') > -1
+                ? this.state.employeeInformation.instructor.split('-')[0]
+                : this.state.employeeInformation.instructor,
+            instructorDirectorName:
+              this.state.employeeInformation.instructorDirectorName &&
+              this.state.employeeInformation.instructorDirectorName.indexOf(
+                '-'
+              ) > -1
+                ? this.state.employeeInformation.instructorDirectorName.split(
+                    '-'
+                  )[0]
+                : this.state.employeeInformation.instructorDirectorName,
+            C3_637084539039:
+              this.state.employeeInformation.C3_637084539039 &&
+              this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
+                ? this.state.employeeInformation.C3_637084539039.split('-')[0]
+                : this.state.employeeInformation.C3_637084539039,
+            instructorDirectorName2:
+              this.state.employeeInformation.instructorDirectorName2 &&
+              this.state.employeeInformation.instructorDirectorName2.indexOf(
+                '-'
+              ) > -1
+                ? this.state.employeeInformation.instructorDirectorName2.split(
+                    '-'
+                  )[0]
+                : this.state.employeeInformation.instructorDirectorName2,
+            _state: 'modified',
+            _id: 1
+          },
+          subdata
+        }
+      ]);
+
       await http().saveRecordAndSubTables({
         data: [
           {
@@ -926,7 +966,7 @@ class ProbationForms extends React.Component {
     let fdy = localStorage.getItem('userInfo');
     this.setState({ loadingConfirm: true });
     fdy = JSON.parse(fdy);
-    fdy = fdy.Data
+    fdy = fdy.Data;
     try {
       const mentorshipRecord = [...this.state.mentorshipRecord];
       // console.log(this.state.employeeInformation.instructorID);
@@ -949,16 +989,19 @@ class ProbationForms extends React.Component {
       this.setState({ loadingConfirm: false });
 
     }
-    await http().modifyRecords({
-      resid: resid1,
-      data: [
-        {
-          REC_ID: this.state.employeeInformation.REC_ID
-        }
-      ]
-    });
-    this.setState({ loadingConfirm: false });
 
+    setTimeout(() => {
+      http().modifyRecords({
+        resid: resid1,
+        data: [
+          {
+            REC_ID: this.state.employeeInformation.REC_ID
+          }
+        ]
+      });
+   this.setState({ loadingConfirm: false });
+
+    }, 3000);
   };
 
   /**
@@ -989,6 +1032,7 @@ class ProbationForms extends React.Component {
    * 主管评价内容变化
    */
   directorEvaluateChange = directorEvaluate => {
+    console.log('123v' + directorEvaluate);
     this.setState({
       employeeInformation: {
         ...this.state.employeeInformation,
@@ -1036,16 +1080,24 @@ class ProbationForms extends React.Component {
     });
   };
 
-  setTutorshipSemi = ({ name, userMemberId }, bol) => {
-    this.setState({
-      employeeInformation: {
-        ...this.state.employeeInformation,
-        instructorDirectorId: userMemberId,
-        instructorDirectorName: name,
-        instructorID: undefined,
-        instructor: undefined
-      }
+  setTutorshipSemi = async ({ name, userMemberId }, bol) => {
+    let res = await http().getTable({
+      resid: 619281130628,
+      cmswhere: `userMemberId = '${userMemberId}'`
     });
+    if (res.data.length > 0) {
+      message.error('该人员已经在辅导员表中，请不要勾选自定义辅导员的单选框');
+    } else {
+      this.setState({
+        employeeInformation: {
+          ...this.state.employeeInformation,
+          instructorDirectorId: userMemberId,
+          instructorDirectorName: name,
+          instructorID: undefined,
+          instructor: undefined
+        }
+      });
+    }
   };
 
   setTutorship2 = ({ name, userMemberId }, bol) => {
@@ -1060,16 +1112,24 @@ class ProbationForms extends React.Component {
     });
   };
 
-  setTutorshipSemi2 = ({ name, userMemberId }, bol) => {
-    this.setState({
-      employeeInformation: {
-        ...this.state.employeeInformation,
-        instructorDirectorId2: userMemberId,
-        instructorDirectorName2: name,
-        C3_637084526216: undefined,
-        C3_637084539039: undefined
-      }
+  setTutorshipSemi2 = async ({ name, userMemberId }, bol) => {
+    let res = await http().getTable({
+      resid: 619281130628,
+      cmswhere: `userMemberId = '${userMemberId}'`
     });
+    if (res.data.length > 0) {
+      message.error('该人员已经在辅导员表中，请不要勾选自定义辅导员的单选框');
+    } else {
+      this.setState({
+        employeeInformation: {
+          ...this.state.employeeInformation,
+          instructorDirectorId2: userMemberId,
+          instructorDirectorName2: name,
+          C3_637084526216: undefined,
+          C3_637084539039: undefined
+        }
+      });
+    }
   };
 
   isSemi = v => {
@@ -1307,7 +1367,6 @@ class ProbationForms extends React.Component {
             default:
               break;
           }
-
           await http().modifyRecords({
             resid: resid1,
             data
@@ -2240,7 +2299,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试 用 期 主 管 评 价 Supervisor Evaluate',
+              text: '试 用 期 主 管 评 价 Supervisor Evaluation',
               color: '000000'
             })
           ]
@@ -2282,7 +2341,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试 用 期 经 理 / 总 监 评 价  Manager Evaluate',
+              text: '试 用 期 经 理 / 总 监 评 价  Manager Evaluation',
               color: '000000'
             })
           ]
@@ -2325,7 +2384,7 @@ class ProbationForms extends React.Component {
           children: [
             new TextRun({
               bold: true,
-              text: '试 用 期 HR 经 理 评 价  HR Manager Evaluate',
+              text: '试 用 期 HR 经 理 评 价  HR Manager Evaluation',
               color: '000000'
             })
           ]
@@ -2501,7 +2560,22 @@ class ProbationForms extends React.Component {
                     type="primary"
                     style={{ marginRight: 16 }}
                     onClick={() => {
-                      this.handleSubmit(roleName);
+                      //辅导记录为空不可以提交
+                      const isFilled =
+                        this.state.mentorshipRecord.length === 0
+                          ? false
+                          : this.state.mentorshipRecord.find(item => {
+                              return (
+                                item.instructionRecord === undefined ||
+                                item.editDate === undefined
+                              );
+                            });
+                      if (isFilled) {
+                        message.info('请将辅导记录和日期填写完整');
+                        return;
+                      } else {
+                        this.handleSubmit(roleName);
+                      }
                     }}
                   >
                     保存
@@ -2564,7 +2638,33 @@ class ProbationForms extends React.Component {
                   <Button
                     type="primary"
                     style={{ marginRight: 16 }}
-                    onClick={() => this.isAgree(true)}
+                    onClick={() => {
+                      let canSubmit = true;
+                      if (
+                        this.props.roleName === '主管' &&
+                        (employeeInformation.directorEvaluate === '' ||
+                          employeeInformation.directorEvaluate === null)
+                      ) {
+                        canSubmit = false;
+                        message.info('请填写试用期主管评价');
+                      } else if (
+                        this.props.roleName === '经理' &&
+                        (employeeInformation.ManagerEvaluate === '' ||
+                          employeeInformation.ManagerEvaluate === null)
+                      ) {
+                        canSubmit = false;
+                        message.info('请填写试用期经理/总监评价');
+                      } else if (
+                        this.props.roleName === 'HR经理' &&
+                        (employeeInformation.hrManagerEvaluate === '' ||
+                          employeeInformation.hrManagerEvaluate === null)
+                      ) {
+                        canSubmit = false;
+                        message.info('请填写试用期HR经理评价');
+                      }
+                      // return;
+                      canSubmit && this.isAgree(true);
+                    }}
                   >
                     同意转正
                   </Button>

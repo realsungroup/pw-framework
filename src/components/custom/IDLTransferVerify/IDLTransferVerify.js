@@ -735,6 +735,7 @@ class IDLTransferVerify extends Component {
                 hasModify={false}
                 hasDelete={false}
                 hasRowView={false}
+                hasDownload={false}
               />
             </div>
           </Modal>
@@ -815,6 +816,7 @@ class IDLTransferVerify extends Component {
               hasRowView={false}
               actionBarWidth={100}
               actionBarFixed={true}
+              hasDownload={false}
               customRowBtns={[
                 record => {
                   return (

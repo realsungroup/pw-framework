@@ -55,7 +55,14 @@ const IndividualSummary = React.memo(props => {
       <Card
         title={
           <React.Fragment>
-            <span className="card_title_name__zh">试用期主管评价</span>
+            <span className="card_title_name__zh">
+              试用期主管评价
+              {roleName === '主管' ? (
+                <span style={{ color: 'red' }}>*</span>
+              ) : (
+                <></>
+              )}
+            </span>
             <span className="card_title_name__en">Supervisor Evaluation</span>
           </React.Fragment>
         }
@@ -74,7 +81,14 @@ const IndividualSummary = React.memo(props => {
       <Card
         title={
           <React.Fragment>
-            <span className="card_title_name__zh">试用期经理/总监评价</span>
+            <span className="card_title_name__zh">
+              试用期经理/总监评价
+              {roleName === '经理' ? (
+                <span style={{ color: 'red' }}>*</span>
+              ) : (
+                <></>
+              )}
+            </span>
             <span className="card_title_name__en">Manager Evaluation</span>
           </React.Fragment>
         }
@@ -93,7 +107,14 @@ const IndividualSummary = React.memo(props => {
       <Card
         title={
           <React.Fragment>
-            <span className="card_title_name__zh">试用期HR经理评价</span>
+            <span className="card_title_name__zh">
+              试用期HR经理评价
+              {roleName === 'HR经理' ? (
+                <span style={{ color: 'red' }}>*</span>
+              ) : (
+                <></>
+              )}
+            </span>
             <span className="card_title_name__en">HR Manager Evaluation</span>
           </React.Fragment>
         }

@@ -768,6 +768,7 @@ class QuestionnaireStatisticAnalysis extends React.Component {
                 </Button>
               )}
             </div>
+            <div style={{ color: '#f5222d', marginBottom: '8px' }}>*只能选择单选或者多选题，选择题目后才能选择部门和级别</div>
             {hasDepartmentFilter && (
               <div className="questionnaire-statistic-analysis__department">
                 <h3 style={{ display: 'inline-block' }}>所选部门：</h3>

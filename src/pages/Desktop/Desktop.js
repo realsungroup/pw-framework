@@ -578,11 +578,11 @@ class Desktop extends React.Component {
               defaultImg={folderPng}
             />
           ) : (
-            <i
-              className={`iconfont icon-${app.DeskiconCls || 'wdkq_icon'}`}
-              style={{ fontSize: 48 }}
-            />
-          )}
+              <i
+                className={`iconfont icon-${app.DeskiconCls || 'wdkq_icon'}`}
+                style={{ fontSize: 48 }}
+              />
+            )}
         </div>
         <h3 className="desktop__folder-app-title">{app.title}</h3>
         <Icon
@@ -646,31 +646,31 @@ class Desktop extends React.Component {
                                   height: 32,
                                   width: 'auto'
                                 }}
-                                // onError={this.handleImageError}
+                              // onError={this.handleImageError}
                               />
                             ) : (
-                              <div className="overlay">
-                                <div className="overlay-inner"></div>
-                                <Img
-                                  src={app.appIconUrl}
-                                  alt={app.appIconUrl}
-                                  style={{
-                                    display: 'inline-block',
-                                    height: 32,
-                                    width: 'auto'
-                                  }}
-                                  defaultImg={folderPng}
+                                <div className="overlay">
+                                  <div className="overlay-inner"></div>
+                                  <Img
+                                    src={app.appIconUrl}
+                                    alt={app.appIconUrl}
+                                    style={{
+                                      display: 'inline-block',
+                                      height: 32,
+                                      width: 'auto'
+                                    }}
+                                    defaultImg={folderPng}
                                   // onError={this.handleImageError}
-                                />
-                              </div>
-                            )
+                                  />
+                                </div>
+                              )
                           ) : (
-                            <i
-                              className={`iconfont icon-${app.DeskiconCls ||
-                                'wdkq_icon'}`}
-                              style={{ fontSize: 48 }}
-                            />
-                          )}
+                              <i
+                                className={`iconfont icon-${app.DeskiconCls ||
+                                  'wdkq_icon'}`}
+                                style={{ fontSize: 48 }}
+                              />
+                            )}
                         </div>
                         <h3 className="desktop__folder-category-app-title">
                           {app.title}
@@ -904,7 +904,7 @@ class Desktop extends React.Component {
           <MenuItem onClick={onOpenColorPicker}>
             <span>更换主题色</span>
           </MenuItem>
-          <SubMenuItem
+          {/* <SubMenuItem
             title={
               <div>
                 <span>更换语言</span>
@@ -934,7 +934,7 @@ class Desktop extends React.Component {
               />
               <span>English</span>
             </MenuItem>
-          </SubMenuItem>
+          </SubMenuItem> */}
           <MenuItem
             onClick={onOpenDesktopBg}
             className="deszktop__context-menu-desktop-icon-wrapper"
