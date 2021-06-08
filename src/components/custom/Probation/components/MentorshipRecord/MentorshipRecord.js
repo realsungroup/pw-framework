@@ -18,7 +18,8 @@ const MentorshipRecord = props => {
     confirmMentor,
     modifyMentor,
     removeMentor,
-    editable
+    editable,
+    loadingConfirm
   } = props;
   return (
     <div id="mentorshi-record" className="probation-form">
@@ -105,6 +106,7 @@ const MentorshipRecord = props => {
                       <Button
                         type="primary"
                         onClick={() => confirmMentor(index)}
+                        loading={loadingConfirm}
                       >
                         确认
                       </Button>

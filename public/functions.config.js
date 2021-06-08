@@ -10001,6 +10001,7 @@ window[675856353290] = {
   title: '下月合同到期名单', // 功能模块名称
   props: {
     resid: 675799631810,
+
     hasAdd: false,
     hasBeBtns: false,
     hasModify: false,
@@ -10012,4 +10013,25 @@ window[675856353290] = {
     isUseFormDefine: false,
     subtractH: 200
   }
+
 };
+//下月合同到期名单
+window[676485269974] = {
+  name: 'TableData', // 组件名称，
+  title: '年假管理——考勤员用', // 功能模块名称
+  props: {
+    resid: 668272811088,
+    baseURL: 'http://10.108.2.66:9091',
+       hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasBackBtn: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    isUseFormDefine: false,
+    subtractH: 200
+  }
+  };
+
