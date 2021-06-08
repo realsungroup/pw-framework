@@ -9815,6 +9815,7 @@ window[676498584577] = {
     hasRowView: false,
     hasRowDelete: false,
     isUseFormDefine: false,
+    hasRowSelection: true,
     baseURL: 'http://kingofdinner.realsun.me:30001/',
     downloadBaseURL: 'http://kingofdinner.realsun.me:30000/',
     formProps: {

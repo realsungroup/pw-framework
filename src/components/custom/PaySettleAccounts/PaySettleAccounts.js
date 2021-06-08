@@ -137,7 +137,7 @@ class PaySettleAccounts extends React.Component {
         null,
         null,
         disabledSave,
-        () => {}
+        () => { }
       );
   };
 
@@ -217,9 +217,7 @@ class PaySettleAccounts extends React.Component {
     const { baseURL } = this.props;
     await http({ baseURL }).runBySql({
       dblink: 'ME',
-      sql: `delete from CT675165454595 where month = '${month.format(
-        'YYYYMM'
-      )}' and isFinish <> 'Y'`
+      sql: `delete from CT675165454595 where month = '${month.format('YYYYMM')}' and isnull(isFinish,'')<>'Y'`
     });
   };
 
