@@ -24,6 +24,23 @@ class PaySettleAccounts extends React.Component {
     tableDataKey: 1
   };
 
+  componentDidUpdate = (prevProps, prevState) => {
+    const { isTaskComplete } = this.state;
+    if (!prevState.isTaskComplete && isTaskComplete) {
+      this.triggerNlms();
+    }
+  };
+
+  // 触发计算公式
+  triggerNlms = async () => {
+    const { baseURL } = this.props;
+    await http({ baseURL }).addRecords({
+      resid: 675808935048,
+      data: [],
+      isEditOrAdd: true
+    });
+  };
+
   handleCheck = async ({ dataSource, selectedRowKeys }) => {
     const { baseURL } = this.props;
     if (!selectedRowKeys.length) {
@@ -173,32 +190,65 @@ class PaySettleAccounts extends React.Component {
     );
   };
 
-  handleConfirm = async () => {
+  runAutoImport = async () => {
     const { baseURL = 'http://kingofdinner.realsun.me:30001' } = this.props;
     const { month } = this.state;
     if (!month) {
       return message.error('请填写月份');
     }
-    this.setState({ confirmLoading: true });
-    let res;
-    try {
-      res = await http({
-        baseURL
-      }).PostRunAutoImport({
-        id: 675961915108,
-        parms: {
-          month: month.format('YYYYMM')
-        }
-      });
-    } catch (err) {
-      this.setState({ confirmLoading: false });
-      return message.error(err.message);
-    }
+
+    let res = await http({
+      baseURL
+    }).PostRunAutoImport({
+      id: 675961915108,
+      parms: {
+        month: month.format('YYYYMM')
+      }
+    });
 
     this._taskid = res.data;
     this.setState({ confirmLoading: false, progressVisible: true }, () => {
       this.getTaskInfo();
     });
+  };
+
+  runBySql = async () => {
+    const { month } = this.state;
+    const { baseURL } = this.props;
+    await http({ baseURL }).runBySql({
+      dblink: 'ME',
+      sql: `delete from CT675165454595 where month = '${month.format(
+        'YYYYMM'
+      )}' and isFinish <> 'Y'`
+    });
+  };
+
+  addTableRecord = async () => {
+    const { baseURL } = this.props;
+    const { month } = this.state;
+    await http({ baseURL }).addRecords({
+      resid: 675808935048,
+      data: [
+        {
+          Month: month.format('YYYYMM')
+        }
+      ],
+      isEditOrAdd: true
+    });
+  };
+
+  handleConfirm = async () => {
+    this.setState({ confirmLoading: true });
+    try {
+      await this.runBySql();
+      await this.addTableRecord();
+      await this.runAutoImport();
+    } catch (err) {
+      message.error(err.message);
+      this.setState({ confirmLoading: false });
+      return;
+    }
+    this.setState({ confirmLoading: false });
   };
 
   _taskid = null;
