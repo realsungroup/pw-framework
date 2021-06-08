@@ -9759,7 +9759,8 @@ window[675854121414] = {
   title: '当月薪资结算',
   props: {
     baseURL: 'http://kingofdinner.realsun.me:30001',
-    downloadBaseURL: 'http://kingofdinner.realsun.me:30000/' // 导出 excel 的基地址
+    downloadBaseURL: 'http://kingofdinner.realsun.me:30000/', // 导出 excel 的基地址
+    title: '当月薪资结算'
   }
 };
 window[675854135689] = {
