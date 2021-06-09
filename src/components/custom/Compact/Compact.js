@@ -725,6 +725,7 @@ class Compact extends Component {
             <div style={{ width: '100%', height: 'calc(100vh - 128px)' }}>
               <TableData
                 resid={this.state.residTab3}
+                key={this.state.residTab3 + ''}
                 subtractH={220}
                 isUseBESize={true}
                 hasAdd={false}
