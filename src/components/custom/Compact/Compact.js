@@ -176,7 +176,7 @@ class Compact extends Component {
       ke2: '_0B',
       key3: '_03A',
       key4: '_03B',
-      residTab3: '668712593119',
+      residTab3: '668709373267',
       residTab1: '440237518278',
       residTab2: '640264082868',
       cms: `C3_532015901062 != 'N' and C3_532015901062 != 'Y' and C3_532015785778 = '${jobId}'`,
@@ -610,6 +610,151 @@ class Compact extends Component {
             </div>
           </TabPane>
           <TabPane
+            tab="审批节点一览"
+            key="3"
+            style={{ width: '100%', height: 'calc(100vh - 64px)' }}
+          >
+            <div className="filterLine filterLine_Alter">
+              {filterTab3A.map((item, key) => {
+                return (
+                  <span
+                    className={
+                      this.state.key3 == '_' + key + '3A'
+                        ? 'filter current'
+                        : 'filter'
+                    }
+                    key={'_' + key + '3A'}
+                    onClick={() => {
+                      if (this.state.key3 != '_' + key + '3A') {
+                        if (item.label == '一线员工') {
+                          this.setState({
+                            key4: '_03B',
+                            residTab3: '668709373267',
+                            showType: false
+                          });
+                        } else {
+                          this.setState({
+                            showType: true,
+                            filterType2: [
+                              {
+                                value: '意向确认',
+                                resid: '668712593119'
+                              },
+                              {
+                                value: '一级审批',
+                                resid: '668710715266'
+                              },
+                              {
+                                value: '二级审批',
+                                resid: '668712440510'
+                              }, {
+                                value: '三级审批',
+                                resid: '672684701234'
+                              }
+                            ],
+                            residTab3: '668712593119',
+                            filterType2V: '意向确认',
+                            filterTypeV: '工程部'
+                          });
+                        }
+                      }
+                      this.setState({
+                        key3: '_' + key + '3A'
+                      });
+                    }}
+                  >
+                    {this.state.key3 == '_' + key + '3A' ? item.label : <Icon type="retweet" />}
+
+                  </span>
+                );
+              })}
+            </div>
+            <div className="filterLine" style={this.state.showType ? { float: 'left', width: 'auto', marginTop: '4px' } : { float: 'left', width: 'auto', marginTop: '8px' }}>
+              {filterTab3B.map((item, key) => {
+                return (
+                  <span
+                    className={
+                      this.state.key4 == '_' + key + '3B'
+                        ? 'filter current'
+                        : 'filter'
+                    }
+                    style={{
+                      display:
+                        (this.state.key3 === ('_03A' || '_13A') &&
+                          item.condition == 'DL') ||
+                          (this.state.key3 != ('_03A' || '_13A') &&
+                            item.condition == 'IDL')
+                          ? 'inline'
+                          : 'none'
+                    }}
+                    key={'_' + key + '3B'}
+                    onClick={() => {
+                      this.setState({
+                        key4: '_' + key + '3B',
+                        residTab3: item.resid
+                      });
+                    }}
+                  >
+                    {item.label}
+                  </span>
+                );
+              })}
+              {this.state.showType ?
+                (
+                  <div>
+                    <Select style={{ width: '200px', marginRight: 8, marginLeft: 16 }} onChange={(v) => { this.changeType(v) }} value={this.state.filterTypeV}>
+                      {filterType.map((item, key) => {
+                        return (
+                          <Option value={item.value} key={key}>{item.value}</Option>
+                        )
+                      })}
+                    </Select>
+                    <Select style={{ width: '120px' }} onChange={(v) => { this.changeType2(v) }} value={this.state.filterType2V}>
+                      {this.state.filterType2.map((item, key) => {
+                        return (
+                          <Option value={item.resid} key={key}>{item.value}</Option>
+                        )
+                      })}
+                    </Select>
+                  </div>
+                )
+
+                : null}
+            </div>
+            <div style={{ clear: 'both' }}></div>
+            <div style={{ width: '100%', height: 'calc(100vh - 128px)' }}>
+              <TableData
+                resid={this.state.residTab3}
+                subtractH={220}
+                isUseBESize={true}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={true}
+                hasRowModify={false}
+                hasRowSelection={true}
+                wrappedComponentRef={element => (this.tableDataRef3 = element)}
+                refTargetComponentName="TableData"
+                actionBarExtra={record => {
+                  return this.state.key3 === '_13A' ? (
+                    <Button
+                      type="primary"
+                      loading={this.state.loading}
+                      onClick={() => {
+                        this.handleRemail(record);
+                      }}
+                    >
+                      再次发送提醒邮件
+                    </Button>
+                  ) : null;
+                }}
+              />
+            </div>
+          </TabPane>
+          <TabPane
             // forceRender={true}
 
             tab="人员续签"
@@ -925,151 +1070,7 @@ class Compact extends Component {
               ) : null}
             </div>
           </TabPane>
-          <TabPane
-            tab="审批节点一览"
-            key="3"
-            style={{ width: '100%', height: 'calc(100vh - 64px)' }}
-          >
-            <div className="filterLine filterLine_Alter">
-              {filterTab3A.map((item, key) => {
-                return (
-                  <span
-                    className={
-                      this.state.key3 == '_' + key + '3A'
-                        ? 'filter current'
-                        : 'filter'
-                    }
-                    key={'_' + key + '3A'}
-                    onClick={() => {
-                      if (this.state.key3 != '_' + key + '3A') {
-                        if (item.label == '一线员工') {
-                          this.setState({
-                            key4: '_03B',
-                            residTab3: '668709373267',
-                            showType: false
-                          });
-                        } else {
-                          this.setState({
-                            showType: true,
-                            filterType2: [
-                              {
-                                value: '意向确认',
-                                resid: '668712593119'
-                              },
-                              {
-                                value: '一级审批',
-                                resid: '668710715266'
-                              },
-                              {
-                                value: '二级审批',
-                                resid: '668712440510'
-                              }, {
-                                value: '三级审批',
-                                resid: '672684701234'
-                              }
-                            ],
-                            residTab3: '668712593119',
-                            filterType2V: '意向确认',
-                            filterTypeV: '工程部'
-                          });
-                        }
-                      }
-                      this.setState({
-                        key3: '_' + key + '3A'
-                      });
-                    }}
-                  >
-                    {this.state.key3 == '_' + key + '3A' ? item.label : <Icon type="retweet" />}
 
-                  </span>
-                );
-              })}
-            </div>
-            <div className="filterLine" style={this.state.showType ? { float: 'left', width: 'auto', marginTop: '4px' } : { float: 'left', width: 'auto', marginTop: '8px' }}>
-              {filterTab3B.map((item, key) => {
-                return (
-                  <span
-                    className={
-                      this.state.key4 == '_' + key + '3B'
-                        ? 'filter current'
-                        : 'filter'
-                    }
-                    style={{
-                      display:
-                        (this.state.key3 === ('_03A' || '_13A') &&
-                          item.condition == 'DL') ||
-                          (this.state.key3 != ('_03A' || '_13A') &&
-                            item.condition == 'IDL')
-                          ? 'inline'
-                          : 'none'
-                    }}
-                    key={'_' + key + '3B'}
-                    onClick={() => {
-                      this.setState({
-                        key4: '_' + key + '3B',
-                        residTab3: item.resid
-                      });
-                    }}
-                  >
-                    {item.label}
-                  </span>
-                );
-              })}
-              {this.state.showType ?
-                (
-                  <div>
-                    <Select style={{ width: '200px', marginRight: 8, marginLeft: 16 }} onChange={(v) => { this.changeType(v) }} value={this.state.filterTypeV}>
-                      {filterType.map((item, key) => {
-                        return (
-                          <Option value={item.value} key={key}>{item.value}</Option>
-                        )
-                      })}
-                    </Select>
-                    <Select style={{ width: '120px' }} onChange={(v) => { this.changeType2(v) }} value={this.state.filterType2V}>
-                      {this.state.filterType2.map((item, key) => {
-                        return (
-                          <Option value={item.resid} key={key}>{item.value}</Option>
-                        )
-                      })}
-                    </Select>
-                  </div>
-                )
-
-                : null}
-            </div>
-            <div style={{ clear: 'both' }}></div>
-            <div style={{ width: '100%', height: 'calc(100vh - 128px)' }}>
-              <TableData
-                resid={this.state.residTab3}
-                subtractH={220}
-                isUseBESize={true}
-                hasAdd={false}
-                hasRowView={true}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasBeBtns={true}
-                hasRowModify={false}
-                hasRowSelection={true}
-                wrappedComponentRef={element => (this.tableDataRef3 = element)}
-                refTargetComponentName="TableData"
-                actionBarExtra={record => {
-                  return this.state.key3 === '_13A' ? (
-                    <Button
-                      type="primary"
-                      loading={this.state.loading}
-                      onClick={() => {
-                        this.handleRemail(record);
-                      }}
-                    >
-                      再次发送提醒邮件
-                    </Button>
-                  ) : null;
-                }}
-              />
-            </div>
-          </TabPane>
           {/* <TabPane
           // forceRender={true}
 
