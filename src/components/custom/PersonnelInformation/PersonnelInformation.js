@@ -7,9 +7,9 @@ import './PersonnelInformation.less';
 
 const tabPaneStyle = { height: 'calc(100vh - 60px)' };
 const baseURL =
-  window.pwConfig[process.env.NODE_ENV].customURLs.PostArchitectureBaseURL;
+  window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03BaseURL;
 const downloadBaseURL =
-  window.pwConfig[process.env.NODE_ENV].customURLs.personInfoDownloadURL;
+  window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03DownloadBaseURL;
 /**
  * 人事信息
  */

@@ -2026,7 +2026,7 @@ window[620212364621] = {
     showRenshi: true, //是否显示人事信息
     showJixiao: true, //是否显示人事信息
     showPingji: true, //是否显示人事信息
-    showChaoshi: true, //是否显示超时工时统计
+    showChaoshi: true //是否显示超时工时统计
   }
 };
 window[642853831562] = {
@@ -2038,7 +2038,7 @@ window[642853831562] = {
     showRenshi: true, //是否显示人事信息
     showJixiao: true, //是否显示人事信息
     showPingji: true, //是否显示人事信息
-    showChaoshi: true, //是否显示超时工时统计
+    showChaoshi: true //是否显示超时工时统计
   }
 };
 
@@ -2048,11 +2048,11 @@ window[642853818882] = {
   props: {
     tabKey: 'attendance',
     showAnnualLeaveDetail: false, //是否显示年假明细
-    showTiaoXiuDetail: true,//是否显示调休明细
+    showTiaoXiuDetail: true, //是否显示调休明细
     showRenshi: true, //是否显示人事信息
     showJixiao: true, //是否显示人事信息
     showPingji: true, //是否显示人事信息
-    showChaoshi: true, //是否显示超时工时统计
+    showChaoshi: true //是否显示超时工时统计
   }
 };
 window[643372961628] = {
@@ -2064,7 +2064,7 @@ window[643372961628] = {
     showRenshi: true, //是否显示人事信息
     showJixiao: true, //是否显示人事信息
     showPingji: true, //是否显示人事信息
-    showChaoshi: true, //是否显示超时工时统计
+    showChaoshi: true //是否显示超时工时统计
   }
 };
 window[642853806554] = {
@@ -2076,7 +2076,7 @@ window[642853806554] = {
     showRenshi: true, //是否显示人事信息
     showJixiao: true, //是否显示人事信息
     showPingji: true, //是否显示人事信息
-    showChaoshi: true, //是否显示超时工时统计
+    showChaoshi: true //是否显示超时工时统计
   }
 };
 window[621257502796] = {
@@ -3775,12 +3775,14 @@ window[642854616358] = {
     advSearch: {
       isRequestFormData: false
     },
+    isUseBESize: true,
+    hasBeSort: false,
     subtractH: 200
   }
 };
 window[642854648916] = {
   name: 'TableData', // 组件名称，
-  title: '月度结算表', // 功能模块名称
+  title: '考勤月度结算表', // 功能模块名称
   props: {
     resid: 431886989798,
     baseURL: 'http://10.108.2.66:9091/',
@@ -3802,6 +3804,8 @@ window[642854648916] = {
     advSearch: {
       isRequestFormData: false
     },
+    isUseBESize: true,
+    hasBeSort: false,
     subtractH: 200
   }
 };
@@ -3834,6 +3838,8 @@ window[642854660698] = {
       advSearch: {
         isRequestFormData: false
       },
+      isUseBESize: true,
+      hasBeSort: false,
       subtractH: 200
     },
     subTablesProps: {
@@ -3841,6 +3847,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
         advSearch: {
           isRequestFormData: false
         }
@@ -3850,6 +3858,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
         advSearch: {
           isRequestFormData: false
         }
@@ -3858,6 +3868,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
         advSearch: {
           isRequestFormData: false
         }
@@ -3866,6 +3878,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
         advSearch: {
           isRequestFormData: false
         }
@@ -3874,6 +3888,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
         advSearch: {
           isRequestFormData: false
         }
@@ -3882,6 +3898,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
         advSearch: {
           isRequestFormData: false
         }
@@ -3890,6 +3908,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
         advSearch: {
           isRequestFormData: false
         }
@@ -3919,6 +3939,8 @@ window[642854669532] = {
     advSearch: {
       isRequestFormData: false
     },
+    isUseBESize: true,
+    hasBeSort: false,
     subtractH: 200
   }
 };
@@ -4610,6 +4632,8 @@ window[642855085886] = {
     advSearch: {
       isRequestFormData: false
     },
+    isUseBESize: true,
+    hasBeSort: false,
     subtractH: 200
   }
 };
@@ -5269,7 +5293,6 @@ window[642855770350] = {
     ]
   ]
 };
-
 
 window[642855780253] = {
   // name: 'TableData', // 组件名称，
@@ -8888,7 +8911,7 @@ window[642854837350] = {
 
 window[642854549263] = {
   name: 'TableData', // 组件名称，
-  title: '结算汇总表', // 功能模块名称
+  title: '考勤汇总表', // 功能模块名称
   props: {
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
@@ -8929,6 +8952,8 @@ window[642854549263] = {
     advSearch: {
       isRequestFormData: false
     },
+    isUseBESize: true,
+    hasBeSort: false,
     subtractH: 200
   }
 };
@@ -9528,48 +9553,50 @@ window[647005696097] = {
     subtractH: 200
   }
 };
-window[647005718255] = {
-  name: 'MainTableSubTables', // 组件名称，
-  title: 'HR专员请假审批', // 功能模块名称
-  props: {
-    baseURL: 'http://10.108.2.66:9091/',
-    downloadBaseURL: 'http://10.108.2.66:80/',
-    resid: 513784214608,
-    mainTableProps: {
-      actionBarWidth: 300,
-      hasAdd: true,
-      hasBeBtns: true,
-      hasModify: true,
-      hasBackBtn: true,
-      hasDelete: true,
-      hasRowModify: true,
-      hasRowView: true,
-      hasRowDelete: true,
-      isUseFormDefine: false,
+// window[647005718255] = {
+//   name: 'MainTableSubTables', // 组件名称，
+//   title: 'HR专员请假审批', // 功能模块名称
+//   props: {
+//     baseURL: 'http://10.108.2.66:9091/',
+//     downloadBaseURL: 'http://10.108.2.66:80/',
+//     resid: 513784214608,
+//     mainTableProps: {
+//       actionBarWidth: 300,
+//       hasAdd: true,
+//       hasBeBtns: true,
+//       hasModify: true,
+//       hasBackBtn: true,
+//       hasDelete: true,
+//       hasRowModify: true,
+//       hasRowView: true,
+//       hasRowDelete: true,
+//       isUseFormDefine: false,
 
-      mediaFieldBaseURL: 'http://wux-hr03/',
-      formProps: {
-        // height: 500
-      },
-      backendButtonPopConfirmProps: { placement: 'bottom' },
-      advSearch: {
-        isRequestFormData: false
-      },
-      subtractH: 200
-    },
-    subTablesProps: {
-      446915608629: {
-        hasBeBtns: true,
-        isUseFormDefine: false,
-        baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
-        advSearch: {
-          isRequestFormData: false
-        }
-      }
-    }
-  }
-};
+//       mediaFieldBaseURL: 'http://wux-hr03/',
+//       formProps: {
+//         // height: 500
+//       },
+//       backendButtonPopConfirmProps: { placement: 'bottom' },
+//       advSearch: {
+//         isRequestFormData: false
+//       },
+//       isUseBESize: true,
+//       hasBeSort: false,
+//       subtractH: 200
+//     },
+//     subTablesProps: {
+//       446915608629: {
+//         hasBeBtns: true,
+//         isUseFormDefine: false,
+//         baseURL: 'http://10.108.2.66:9091/',
+//         downloadBaseURL: 'http://10.108.2.66:80/',
+//         advSearch: {
+//           isRequestFormData: false
+//         }
+//       }
+//     }
+//   }
+// };
 window[647005738876] = {
   name: 'MainTableSubTables', // 组件名称，
   title: 'HR专员请假已审批', // 功能模块名称
@@ -9596,6 +9623,8 @@ window[647005738876] = {
       advSearch: {
         isRequestFormData: false
       },
+      isUseBESize: true,
+      hasBeSort: false,
       subtractH: 200
     },
     subTablesProps: {
@@ -9625,7 +9654,7 @@ window[647005761923] = {
     hasRowModify: false,
     hasRowView: false,
     hasRowDelete: false,
-    isWrap: true,
+    // isWrap: true,
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
     mediaFieldBaseURL: 'http://wux-hr03/',
@@ -9635,6 +9664,8 @@ window[647005761923] = {
     advSearch: {
       isRequestFormData: false
     },
+    isUseBESize: true,
+    hasBeSort: false,
     subtractH: 200
   }
 };
@@ -9947,7 +9978,6 @@ window[671543192998] = {
   }
 };
 
-
 //内训未反馈
 window[674738722036] = {
   name: 'NoFeedbackFromInternalTraining', // 组件名称，
@@ -9992,7 +10022,12 @@ window[675343454130] = {
 //调休假余额
 window[671298901933] = {
   name: 'HolidayBalanceQuery', // 组件名称，
-  title: '调休假余额', // 功能模块名
+  title: '调休假余额' // 功能模块名
+};
+
+window[647005718255] = {
+  name: 'HRLeaveApp', // 组件名称，
+  title: 'HR专员请假审批' // 功能模块名
 };
 
 //下月合同到期名单
@@ -10015,6 +10050,138 @@ window[675856353290] = {
   }
 
 };
+
+
+//银行卡信息
+window[676466039420] = {
+  name: 'TabsTableData',
+  title: '银行卡信息',
+  props: [
+    [
+      {
+        TabsTitle: '在职',
+        resid: 676465985369,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        subtractH: 200
+      },
+      {
+        TabsTitle: '离职',
+        resid: 676466000854,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        subtractH: 200
+      }
+    ]
+  ]
+};
+
+//内训未反馈
+window[676477760756] = {
+  name: 'MonthlySettlementLock', // 组件名称，
+  title: '月结算锁定', // 功能模块名称
+  props: {}
+};
+
+//考勤日报处理1
+window[676647698412] = {
+  name: 'MainTableSubTables', // 组件名称，
+  title: '考勤日报处理1', // 功能模块名称
+  props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    resid: 676572028895,
+    mainTableProps: {
+      actionBarWidth: 200,
+      hasAdd: false,
+      hasBeBtns: true,
+      hasModify: false,
+      hasBackBtn: true,
+      hasDelete: false,
+      hasRowModify: false,
+      hasRowView: false,
+      hasRowSelection: true,
+      hasRowDelete: false,
+      isUseFormDefine: false,
+      backendButtonPopConfirmProps: { placement: 'bottom' },
+      advSearch: {
+        isRequestFormData: false
+      },
+      isUseBESize: true,
+      hasBeSort: false,
+      subtractH: 200
+    },
+    subTablesProps: {
+      676573379187: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
+        advSearch: {
+          isRequestFormData: false
+        }
+      },
+      676573571624: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
+        advSearch: {
+          isRequestFormData: false
+        }
+      },
+      676573590282: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
+        advSearch: {
+          isRequestFormData: false
+        }
+      },
+      676573619175: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
+        advSearch: {
+          isRequestFormData: false
+        }
+      },
+      676573667991: {
+        hasBeBtns: true,
+        baseURL: 'http://10.108.2.66:9091/',
+        downloadBaseURL: 'http://10.108.2.66:80/',
+        isUseBESize: true,
+        hasBeSort: false,
+        advSearch: {
+          isRequestFormData: false
+        }
+      }
+    }
+  }
+};
+
 //下月合同到期名单
 window[676485269974] = {
   name: 'TableData', // 组件名称，
@@ -10034,4 +10201,5 @@ window[676485269974] = {
     subtractH: 200
   }
   };
+
 

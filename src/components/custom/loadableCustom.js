@@ -942,3 +942,16 @@ export const HolidayBalanceQuery = Loadable({
   }
 });
 
+export const HRLeaveApp = Loadable({
+  loader: () => import('./HRLeaveApp'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const MonthlySettlementLock = Loadable({
+  loader: () => import('./MonthlySettlementLock'),
+  loading() {
+    return minLoading;
+  }
+});
