@@ -258,7 +258,8 @@ class ArchitectureDiagram extends React.Component {
       contrastResultVisible: false,
       newSupNumber: '', //拖拽后的上级岗位代码
       selectedData: [], //批量选中的表格数据
-      buttonLoading: false //批量修改号码按钮
+      buttonLoading: false, //批量修改号码按钮
+      showAllJobs: true //架构图里显示所有岗位，包括空缺岗位
     };
   }
 
@@ -2439,6 +2440,31 @@ class ArchitectureDiagram extends React.Component {
               className="architecture-diagram_header_icon-button__icon"
             />
             下载空缺岗位表格
+          </div>
+        </div>
+        <div className="architecture-diagram_header_icon-button-group">
+          <div
+            className="architecture-diagram_header_icon-button"
+            onClick={() => {
+              const nodes = this._nodes.filter(item => {
+                return this._emptyJobs.every(item1 => {
+                  return item.REC_ID != item1.REC_ID;
+                });
+              });
+              this.setState({ showAllJobs: !this.state.showAllJobs }, () => {
+                if (this.state.showAllJobs) {
+                  this.chart.load(this._nodes);
+                } else {
+                  this.chart.load(nodes);
+                }
+              });
+            }}
+          >
+            <Icon
+              type="eye"
+              className="architecture-diagram_header_icon-button__icon"
+            />
+            {this.state.showAllJobs ? '隐藏空缺岗位' : '显示空缺岗位'}
           </div>
         </div>
       </header>

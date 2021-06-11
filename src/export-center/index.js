@@ -187,5 +187,7 @@ export {
   RecruitmentNeeds,
   ExportPersonnelChanges,
   NoFeedbackFromInternalTraining,
-  HolidayBalanceQuery
+  HolidayBalanceQuery,
+  HRLeaveApp,
+  MonthlySettlementLock
 } from '../components/custom/loadableCustom';
