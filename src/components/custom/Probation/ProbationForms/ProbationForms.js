@@ -272,6 +272,13 @@ class ProbationForms extends React.Component {
             resid: '619281130628',
             data: toAdd
           });
+          if (res4.data.length > 0) {
+            let memberId = this.props.memberId;
+            let employedId = this.props.employedId;
+            message.success('成功同意辅导员1');
+            this.props.goBack();
+
+          }
         }
       }
       var memID2 = this.state.employeeInformation.instructorDirectorId2;
@@ -301,14 +308,19 @@ class ProbationForms extends React.Component {
           resid: '619281130628',
           cmswhere: `userMemberId = '${memID2}'`
         });
-        if (res6.data.length == 0) {
+        if (res6.data.length > 0) {
           let res7 = await http().addRecords({
             resid: '619281130628',
             data: toAdd
           });
+          if (res7.data.length > 0) {
+            let memberId = this.props.memberId;
+            let employedId = this.props.employedId;
+            message.success('成功同意辅导员2');
+            this.props.goBack();
+          }
         }
       }
-
       // 辅导员表ID619281130628
 
       // 辅导员工号C3_227192472953
@@ -318,27 +330,27 @@ class ProbationForms extends React.Component {
       // 辅导员部门C3_422840479020
 
       //辅导员姓名C3_227192484125
-      var C3_637084526216;
-      var C3_637084539039;
-      var instructorDirectorName2;
-      var instructorDirectorId2;
-      var C3_627646976501;
-      var instructor;
-      var instructorDirectorName;
-      var instructorDirectorId;
-      if (memID) {
-        C3_627646976501 = this.state.employeeInformation.instructorDirectorId;
-        instructor = this.state.employeeInformation.instructorDirectorName;
-        instructorDirectorName = '';
-        instructorDirectorId = '';
-      }
-      if (memID2) {
-        C3_637084526216 = this.state.employeeInformation.instructorDirectorId2;
-        C3_637084539039 = this.state.employeeInformation
-          .instructorDirectorName2;
-        instructorDirectorName2 = '';
-        instructorDirectorId2 = '';
-      }
+      // var C3_637084526216;
+      // var C3_637084539039;
+      // var instructorDirectorName2;
+      // var instructorDirectorId2;
+      // var C3_627646976501;
+      // var instructor;
+      // var instructorDirectorName;
+      // var instructorDirectorId;
+      // if (memID) {
+      //   C3_627646976501 = this.state.employeeInformation.instructorDirectorId;
+      //   instructor = this.state.employeeInformation.instructorDirectorName;
+      //   instructorDirectorName = '';
+      //   instructorDirectorId = '';
+      // }
+      // if (memID2) {
+      //   C3_637084526216 = this.state.employeeInformation.instructorDirectorId2;
+      //   C3_637084539039 = this.state.employeeInformation
+      //     .instructorDirectorName2;
+      //   instructorDirectorName2 = '';
+      //   instructorDirectorId2 = '';
+      // }
       // let res = await http().modifyRecords({
       //   resid: resid1,
       //   data: [
@@ -356,8 +368,7 @@ class ProbationForms extends React.Component {
       //     }
       //   ]
       // });
-      message.success('成功同意辅导员');
-      this.setState({ loading: false, flagAlreadyHit: 1 });
+
     } catch (error) {
       this.setState({ loading: false });
       message.error(error.message);
@@ -365,6 +376,14 @@ class ProbationForms extends React.Component {
     }
   };
 
+  getFDY = async (recid) => {
+    let res = await http().getTable({
+      resid: '619281130628',
+      cmswhere: `REC_ID = '${recid}'`
+    });
+    return res
+
+  }
   /**
    * 不同意辅导员申请
    */
@@ -487,31 +506,31 @@ class ProbationForms extends React.Component {
             ...employeeInformation,
             instructor:
               this.state.employeeInformation.instructor &&
-              this.state.employeeInformation.instructor.indexOf('-') > -1
+                this.state.employeeInformation.instructor.indexOf('-') > -1
                 ? this.state.employeeInformation.instructor.split('-')[0]
                 : this.state.employeeInformation.instructor,
             instructorDirectorName:
               this.state.employeeInformation.instructorDirectorName &&
-              this.state.employeeInformation.instructorDirectorName.indexOf(
-                '-'
-              ) > -1
+                this.state.employeeInformation.instructorDirectorName.indexOf(
+                  '-'
+                ) > -1
                 ? this.state.employeeInformation.instructorDirectorName.split(
-                    '-'
-                  )[0]
+                  '-'
+                )[0]
                 : this.state.employeeInformation.instructorDirectorName,
             C3_637084539039:
               this.state.employeeInformation.C3_637084539039 &&
-              this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
+                this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
                 ? this.state.employeeInformation.C3_637084539039.split('-')[0]
                 : this.state.employeeInformation.C3_637084539039,
             instructorDirectorName2:
               this.state.employeeInformation.instructorDirectorName2 &&
-              this.state.employeeInformation.instructorDirectorName2.indexOf(
-                '-'
-              ) > -1
+                this.state.employeeInformation.instructorDirectorName2.indexOf(
+                  '-'
+                ) > -1
                 ? this.state.employeeInformation.instructorDirectorName2.split(
-                    '-'
-                  )[0]
+                  '-'
+                )[0]
                 : this.state.employeeInformation.instructorDirectorName2,
             _state: 'modified',
             _id: 1
@@ -999,7 +1018,7 @@ class ProbationForms extends React.Component {
           }
         ]
       });
-   this.setState({ loadingConfirm: false });
+      this.setState({ loadingConfirm: false });
 
     }, 3000);
   };
@@ -2565,11 +2584,11 @@ class ProbationForms extends React.Component {
                         this.state.mentorshipRecord.length === 0
                           ? false
                           : this.state.mentorshipRecord.find(item => {
-                              return (
-                                item.instructionRecord === undefined ||
-                                item.editDate === undefined
-                              );
-                            });
+                            return (
+                              item.instructionRecord === undefined ||
+                              item.editDate === undefined
+                            );
+                          });
                       if (isFilled) {
                         message.info('请将辅导记录和日期填写完整');
                         return;
