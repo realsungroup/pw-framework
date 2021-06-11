@@ -58,7 +58,7 @@ const InternalTraining = React.memo(props => {
           <p>
             ※1.新员工需在试用期内完成至少5门内训课程，才能进入最终转正流程；
             <br />
-            &nbsp;&nbsp;&nbsp;&nbsp;2.课程具体安排详见每周内训通知邮件；
+            &nbsp;&nbsp;&nbsp;&nbsp;2.课程具体安排详见每月内训通知邮件；
             <br />
             &nbsp;&nbsp;&nbsp;&nbsp;3.内训课为公开课程，鼓励员工参加与工作有关或感兴趣的非必修课程。
           </p>
@@ -74,7 +74,7 @@ const InternalTraining = React.memo(props => {
             title="课程/Courses"
             dataIndex="course"
             key="course"
-            // width={300}
+          // width={300}
           />
           <Column title="培训师/Trainer" dataIndex="trainer" key="trainer" />
           <Column title="培训日期/Date" dataIndex="trainDate" key="trainDate" />

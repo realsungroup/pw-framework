@@ -86,6 +86,7 @@ class ProbationForms extends React.Component {
     this.fetchUser = debounce(this.fetchUser, 800);
   }
   state = {
+    loadingConfirm: false,
     flagHitBack: false,
     flagAlreadyHit: 0,
     employeeInformation: {}, //个人信息
@@ -479,47 +480,45 @@ class ProbationForms extends React.Component {
         });
       });
       delete employeeInformation.isNoticeHrEmail;
-      console.log('提交的数据',
-        [
-          {
-            resid: resid1,
-            maindata: {
-              ...employeeInformation,
-              instructor:
-                this.state.employeeInformation.instructor &&
-                  this.state.employeeInformation.instructor.indexOf('-') > -1
-                  ? this.state.employeeInformation.instructor.split('-')[0]
-                  : this.state.employeeInformation.instructor,
-              instructorDirectorName:
-                this.state.employeeInformation.instructorDirectorName &&
-                  this.state.employeeInformation.instructorDirectorName.indexOf(
-                    '-'
-                  ) > -1
-                  ? this.state.employeeInformation.instructorDirectorName.split(
-                    '-'
-                  )[0]
-                  : this.state.employeeInformation.instructorDirectorName,
-              C3_637084539039:
-                this.state.employeeInformation.C3_637084539039 &&
-                  this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
-                  ? this.state.employeeInformation.C3_637084539039.split('-')[0]
-                  : this.state.employeeInformation.C3_637084539039,
-              instructorDirectorName2:
-                this.state.employeeInformation.instructorDirectorName2 &&
-                  this.state.employeeInformation.instructorDirectorName2.indexOf(
-                    '-'
-                  ) > -1
-                  ? this.state.employeeInformation.instructorDirectorName2.split(
+      console.log('提交的数据', [
+        {
+          resid: resid1,
+          maindata: {
+            ...employeeInformation,
+            instructor:
+              this.state.employeeInformation.instructor &&
+              this.state.employeeInformation.instructor.indexOf('-') > -1
+                ? this.state.employeeInformation.instructor.split('-')[0]
+                : this.state.employeeInformation.instructor,
+            instructorDirectorName:
+              this.state.employeeInformation.instructorDirectorName &&
+              this.state.employeeInformation.instructorDirectorName.indexOf(
+                '-'
+              ) > -1
+                ? this.state.employeeInformation.instructorDirectorName.split(
                     '-'
                   )[0]
-                  : this.state.employeeInformation.instructorDirectorName2,
-              _state: 'modified',
-              _id: 1
-            },
-            subdata
-          }
-        ]
-      )
+                : this.state.employeeInformation.instructorDirectorName,
+            C3_637084539039:
+              this.state.employeeInformation.C3_637084539039 &&
+              this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
+                ? this.state.employeeInformation.C3_637084539039.split('-')[0]
+                : this.state.employeeInformation.C3_637084539039,
+            instructorDirectorName2:
+              this.state.employeeInformation.instructorDirectorName2 &&
+              this.state.employeeInformation.instructorDirectorName2.indexOf(
+                '-'
+              ) > -1
+                ? this.state.employeeInformation.instructorDirectorName2.split(
+                    '-'
+                  )[0]
+                : this.state.employeeInformation.instructorDirectorName2,
+            _state: 'modified',
+            _id: 1
+          },
+          subdata
+        }
+      ]);
 
       await http().saveRecordAndSubTables({
         data: [
@@ -965,6 +964,7 @@ class ProbationForms extends React.Component {
    */
   confirmMentor = async index => {
     let fdy = localStorage.getItem('userInfo');
+    this.setState({ loadingConfirm: true });
     fdy = JSON.parse(fdy);
     fdy = fdy.Data;
     try {
@@ -986,7 +986,10 @@ class ProbationForms extends React.Component {
     } catch (error) {
       message.error(error.message);
       console.log(error);
+      this.setState({ loadingConfirm: false });
+
     }
+
     setTimeout(() => {
       http().modifyRecords({
         resid: resid1,
@@ -996,6 +999,8 @@ class ProbationForms extends React.Component {
           }
         ]
       });
+   this.setState({ loadingConfirm: false });
+
     }, 3000);
   };
 
@@ -2507,6 +2512,7 @@ class ProbationForms extends React.Component {
                   removeMentor={this.removeMentor}
                   modifyMentor={this.modifyMentor}
                   confirmMentor={this.confirmMentor}
+                  loadingConfirm={this.state.loadingConfirm}
                   roleName={roleName}
                   auth={this.state.tableAuth.mentorRecord}
                   editable={editable}
@@ -2559,11 +2565,11 @@ class ProbationForms extends React.Component {
                         this.state.mentorshipRecord.length === 0
                           ? false
                           : this.state.mentorshipRecord.find(item => {
-                            return (
-                              item.instructionRecord === undefined ||
-                              item.editDate === undefined
-                            );
-                          });
+                              return (
+                                item.instructionRecord === undefined ||
+                                item.editDate === undefined
+                              );
+                            });
                       if (isFilled) {
                         message.info('请将辅导记录和日期填写完整');
                         return;
@@ -2641,6 +2647,20 @@ class ProbationForms extends React.Component {
                       ) {
                         canSubmit = false;
                         message.info('请填写试用期主管评价');
+                      } else if (
+                        this.props.roleName === '经理' &&
+                        (employeeInformation.ManagerEvaluate === '' ||
+                          employeeInformation.ManagerEvaluate === null)
+                      ) {
+                        canSubmit = false;
+                        message.info('请填写试用期经理/总监评价');
+                      } else if (
+                        this.props.roleName === 'HR经理' &&
+                        (employeeInformation.hrManagerEvaluate === '' ||
+                          employeeInformation.hrManagerEvaluate === null)
+                      ) {
+                        canSubmit = false;
+                        message.info('请填写试用期HR经理评价');
                       }
                       // return;
                       canSubmit && this.isAgree(true);
