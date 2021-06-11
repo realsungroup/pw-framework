@@ -74,9 +74,10 @@ class ApprovaledApplicationForm extends React.Component {
           hasModify={false}
           hasRowModify={false}
           hasRowSelection={true}
+          hasBeBtns={true}
           actionBarWidth={100}
           dblinkname="ehr"
-          actionBarExtra={this.actionBarExtra}
+          //actionBarExtra={this.actionBarExtra}
           wrappedComponentRef={element => (this.tableDataRef = element)}
           refTargetComponentName="TableData"
           baseURL={this.baseURL}
