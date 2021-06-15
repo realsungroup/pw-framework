@@ -186,5 +186,8 @@ export {
   BUCODEInfo,
   RecruitmentNeeds,
   ExportPersonnelChanges,
-  HolidayBalanceQuery
+  NoFeedbackFromInternalTraining,
+  HolidayBalanceQuery,
+  HRLeaveApp,
+  MonthlySettlementLock
 } from '../components/custom/loadableCustom';

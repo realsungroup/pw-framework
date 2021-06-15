@@ -248,6 +248,9 @@ class IDLTransferHr extends Component {
           });
           n++;
         }
+        //预存最后一个节点
+        let lastA = streamRec[streamRec.length - 1];
+        lastA.isTarget = 'Y'
         let supData;
         supData = await http().getTable({
           resid: 227186227531,
@@ -396,6 +399,8 @@ class IDLTransferHr extends Component {
           applyHasPass[fc].C3_634660566076 = fc + 1;
           fc++;
         }
+        applyHasPass.splice(applyHasPass.length - 1, 1);
+        applyHasPass.push(lastA);
         this.setState({ stream: applyHasPass, streamChange: applyHasPass });
         console.log('arr2', arr2, applyHasPass);
       } catch (e) {
@@ -2612,8 +2617,9 @@ class IDLTransferHr extends Component {
                                   this.showOverlay(record);
                                 }}
                               >
-                                确认信息
-                            </Button>
+                                {this.state.cms == `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'` || this.state.cms == `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` || this.state.cms == `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? '确认信息' : '查看信息'}
+
+                              </Button>
                               {this.state.cms ==
                                 `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
                                   <Button

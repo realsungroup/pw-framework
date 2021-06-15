@@ -6,6 +6,7 @@ import { getItem } from 'Util20/util';
 import { Resizable } from 'react-resizable';
 import { BIGrid } from 'lz-components-and-utils/lib/index';
 import './ManagerAttendanceApproval.less';
+import PwAggrid from 'Common/ui/PwAggrid';
 
 const { Option } = Select;
 const colors = ['#5793f3', '#d14a61', '#675bba'];
@@ -76,7 +77,8 @@ class WorkOvertimeChart extends React.Component {
     isShowAggird: false,
     employeeId: 0,
     loading: false,
-    selectedPersonid: 0
+    selectedPersonid: 0,
+    cmscolumninfo: []
   };
   components = {
     header: {
@@ -282,7 +284,8 @@ class WorkOvertimeChart extends React.Component {
       });
       this.setState({
         tableColumns: columns,
-        dataSource
+        dataSource,
+        cmscolumninfo: res.cmscolumninfo
       });
     } catch (error) {
       message.error(error.message);
@@ -320,7 +323,8 @@ class WorkOvertimeChart extends React.Component {
       months,
       tableColumns,
       dataSource,
-      selectedPersonid
+      selectedPersonid,
+      cmscolumninfo
     } = this.state;
     const columns = this.state.tableColumns.map((col, index) => ({
       ...col,
@@ -418,34 +422,35 @@ class WorkOvertimeChart extends React.Component {
               </div>
             </div>
             {isShowAggird ? (
-              <BIGrid
-                height={600}
-                gridProps={[
-                  {
-                    resid: '624039666618',
-                    baseURL: window.pwConfig[process.env.NODE_ENV].baseURL,
-                    dataSource: 'procedure',
-                    procedureParams: {
-                      paranames: '@leaderygno,@yearmonth',
-                      paratypes: 'string,string',
-                      paravalues: `${selectedPersonid},${selectedMonth}`,
-                      procedure: 'GetS3OTListByLeaderMonth'
-                    }
-                  }
-                ]}
-              />
+              <div style={{ height: 600 }}>
+                <PwAggrid
+                  originalColumn={cmscolumninfo}
+                  dataSource={dataSource}
+                  gridProps={[]}
+                  resid={'624039666618'}
+                  baseURL={window.pwConfig[process.env.NODE_ENV].baseURL}
+                  hasAdd={false}
+                  hasModify={false}
+                  hasDelete={false}
+                  hasImport={false}
+                  hasRefresh={false}
+                  hasAdvSearch={false}
+                  hasDownload={false}
+                  sideBarAg={true}
+                />
+              </div>
             ) : (
-              <Table
-                columns={columns}
-                rowKey={record => record['工号']}
-                dataSource={dataSource}
-                bordered
-                // pagination={this.state.pagination}
-                loading={this.state.loading}
-                components={this.components}
+                <Table
+                  columns={columns}
+                  rowKey={record => record['工号']}
+                  dataSource={dataSource}
+                  bordered
+                  // pagination={this.state.pagination}
+                  loading={this.state.loading}
+                  components={this.components}
                 // onChange={this.handleTableChange}
-              />
-            )}
+                />
+              )}
           </div>
         </div>
         <div

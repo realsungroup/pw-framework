@@ -927,8 +927,30 @@ export const ExportPersonnelChanges = Loadable({
     return minLoading;
   }
 });
+
+export const NoFeedbackFromInternalTraining = Loadable({
+  loader: () => import('./NoFeedbackFromInternalTraining'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const HolidayBalanceQuery = Loadable({
   loader: () => import('./HolidayBalanceQuery'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const HRLeaveApp = Loadable({
+  loader: () => import('./HRLeaveApp'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const MonthlySettlementLock = Loadable({
+  loader: () => import('./MonthlySettlementLock'),
   loading() {
     return minLoading;
   }

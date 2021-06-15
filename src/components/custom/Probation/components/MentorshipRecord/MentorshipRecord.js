@@ -18,7 +18,8 @@ const MentorshipRecord = props => {
     confirmMentor,
     modifyMentor,
     removeMentor,
-    editable
+    editable,
+    loadingConfirm
   } = props;
   return (
     <div id="mentorshi-record" className="probation-form">
@@ -67,10 +68,10 @@ const MentorshipRecord = props => {
                       value={item.editDate ? moment(item.editDate) : undefined}
                     />
                   ) : (
-                      <span style={{ marginLeft: '1.25vw' }}>
-                        {item.editDate}
-                      </span>
-                    )}
+                    <span style={{ marginLeft: '1.25vw' }}>
+                      {item.editDate}
+                    </span>
+                  )}
                 </div>
                 <div className="mentorshi-record_card_item">
                   辅导记录/Mentorship Record
@@ -85,18 +86,18 @@ const MentorshipRecord = props => {
                       rows={3}
                     />
                   ) : (
-                      <p className="mentorshi-record_card_item_content">
-                        {item.instructionRecord}
-                      </p>
-                    )}
+                    <p className="mentorshi-record_card_item_content">
+                      {item.instructionRecord}
+                    </p>
+                  )}
                 </div>
                 <div className="mentorshi-record_card_item">
                   状态/Status：
                   {item.isConfirm === 'Y' ? (
                     <span style={{ color: '#2593fc' }}>已确认</span>
                   ) : (
-                      <span style={{ color: '#f22635' }}>待确认</span>
-                    )}
+                    <span style={{ color: '#f22635' }}>待确认</span>
+                  )}
                 </div>
                 <footer className="mentorshi-record_card_buttons">
                   {(roleName === '辅导员' || roleName === 'HR') &&
@@ -105,6 +106,7 @@ const MentorshipRecord = props => {
                       <Button
                         type="primary"
                         onClick={() => confirmMentor(index)}
+                        loading={loadingConfirm}
                       >
                         确认
                       </Button>

@@ -188,7 +188,10 @@ export default class PageContainer extends React.Component {
       ) {
         desktopStyle = _desktopStyle;
       }
-    } catch (err) {}
+      http({ baseURL: attendanceMonthChangeUrl }).saveUserAttMonth({
+        yearmonth: moment().format('YYYYMM')
+      });
+    } catch (err) { }
 
     this.setState({
       desktopStyle
@@ -908,7 +911,7 @@ export default class PageContainer extends React.Component {
   setThemeColor = themeColor => {
     window.less
       .modifyVars({ '@primary-color': themeColor })
-      .then(() => {})
+      .then(() => { })
       .catch(err => {
         console.log({ err });
         message.error(err.message);
@@ -1198,13 +1201,13 @@ export default class PageContainer extends React.Component {
                 }}
               />
             ) : (
-              <Icon
-                type="shrink"
-                onClick={() => {
-                  this.setState({ headerVisible: true });
-                }}
-              />
-            )}
+                <Icon
+                  type="shrink"
+                  onClick={() => {
+                    this.setState({ headerVisible: true });
+                  }}
+                />
+              )}
           </div>
         </div>
       );

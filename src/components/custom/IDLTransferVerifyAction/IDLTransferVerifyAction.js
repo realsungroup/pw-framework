@@ -51,7 +51,8 @@ const attr = [
   '一级部门',
   '二级部门',
   '三级部门',
-  '四级部门'
+  '四级部门',
+  '部门代码'
 ];
 const showAfter = [
   'nDepart', //部门名
@@ -63,7 +64,8 @@ const showAfter = [
   'nFirstDepart', //一级部门
   'nSecondDepart', //二级部门
   'nThirdDepart', //三级部门
-  'nFourthDepart' //四级部门
+  'nFourthDepart', //四级部门
+  'nDept_code'//部门代码
 ];
 class IDLTransferVerifyAction extends Component {
   constructor(props) {
@@ -415,6 +417,9 @@ class IDLTransferVerifyAction extends Component {
         toCheckFront: obj,
         C3_632503844784: obj.changeID
       });
+      if (r.isTarget == 'Y') {
+        this.setState({ isTarget: 'Y' })
+      }
     } catch (e) {
       console.log(e);
       this.setState({ laoding: false });
@@ -550,17 +555,20 @@ class IDLTransferVerifyAction extends Component {
             footer={
               this.state.selection == '1' ? (
                 <>
-                  <Button
-                    type="danger"
-                    style={{ marginLeft: '8px' }}
-                    onClick={() => {
-                      this.approve('N');
+                  {this.state.isTarget == 'Y' ?
+                    null
+                    : (<Button
+                      type="danger"
+                      style={{ marginLeft: '8px' }}
+                      onClick={() => {
+                        this.approve('N');
 
-                      // this.setState({ conUnpass: true });
-                    }}
-                  >
-                    不通过审核
-                  </Button>
+                        // this.setState({ conUnpass: true });
+                      }}
+                    >
+                      不通过审核
+                    </Button>)}
+
                   <Button
                     type="primary"
                     onClick={() => {
@@ -575,7 +583,7 @@ class IDLTransferVerifyAction extends Component {
                       // }
                     }}
                   >
-                    保存并通过审核
+                    {this.state.isTarget == 'Y' ? '确认' : '保存并通过审核'}
                   </Button>
                 </>
               ) : null
@@ -628,10 +636,151 @@ class IDLTransferVerifyAction extends Component {
                 )} */}
 
                 {/* <div className='showContent' style={{height:'calc(80vh - 120px)',overflowY:'auto',marginTop:24,width:480,marginLeft:'calc(50% - 240px)'}}> */}
+
                 <div
                   className="showContent"
-                  style={{ marginTop: 24, width: '100%', marginLeft: '0' }}
+                  style={this.state.isTarget == 'Y' ? { display: 'block' } : { display: 'none' }}
                 >
+                  <div>
+                    <div>员工工号：
+                    {this.state.toCheckFront.personNum}
+                    </div>
+                    <div>员工姓名：
+                    {this.state.toCheckFront.person}
+                    </div>
+                    <div>生效日期：
+                    {moment(this.state.toCheckFront.effortDate).format('YYYY-MM-DD')}
+                    </div>
+                    <table cellPadding={8} border={1} style={{ marginTop: 8 }}>
+                      <tr>
+                        <td>
+                          项目
+                          </td>
+                        <td>
+                          变动前
+                          </td>
+                        <td>
+                          变动后
+                          </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          一级部门
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.firstDepart}
+                        </td>
+                        <td>
+                          {this.state.toCheck[6]}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          二级部门
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.secondDepart}
+                        </td>
+                        <td>
+                          {this.state.toCheck[7]}
+                        </td>
+                      </tr><tr>
+                        <td>
+                          三级部门
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.thirdDepart}
+                        </td>
+                        <td>
+                          {this.state.toCheck[8]}
+                        </td>
+                      </tr><tr>
+                        <td>
+                          四级部门
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.fourthDepart}
+                        </td>
+                        <td>
+                          {this.state.toCheck[9]}
+                        </td>
+                      </tr><tr>
+                        <td>
+                          职位
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.jobName}
+                        </td>
+                        <td>
+                          {this.state.toCheck[1]}
+                        </td>
+                      </tr><tr>
+                        <td>
+                          主管
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.driectorName}
+                        </td>
+                        <td>
+                          {this.state.toCheck[3]}
+                        </td>
+                      </tr><tr>
+                        <td>
+                          级别
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.level}
+                        </td>
+                        <td>
+                          {this.state.toCheck[2]}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          部门代码
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.dept_code}
+                        </td>
+                        <td>
+                          {this.state.toCheck[10]}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          项目代码
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.proj_code}
+                        </td>
+                        <td>
+                          {this.state.toCheck[4]}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          BU_CODE
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.BUCode}
+                        </td>
+                        <td>
+                          {this.state.toCheck[5]}
+                        </td>
+                      </tr>
+                    </table>
+
+
+                  </div>
+
+
+                </div>
+
+                <div
+                  className="showContent"
+                  style={this.state.isTarget == 'Y' ? { display: 'none' } : { marginTop: 24, width: '100%', marginLeft: '0' }}
+                >
+
                   {this.state.HRManagerNumId === this.state.userId ? (
                     <>
                       <b>生效时间：</b>
@@ -862,53 +1011,54 @@ class IDLTransferVerifyAction extends Component {
                           </li>
                         </ul>
                       </div>
+                      <div style={{ float: 'left', marginLeft: 16 }}>
+                        <b>审批备注：</b>
+                        <br />
+                        <div style={{ overflow: 'auto', height: '50vh' }}>
+                          {this.state.stream.length > 0
+                            ? this.state.stream.map(item => {
+                              return (
+                                <>
+                                  {item.memo ||
+                                    (item.current === 'Y' &&
+                                      this.state.selection == '1') ? (
+                                      <>
+                                        <span>{item.stepPeople}：</span>
+                                        <br />
+                                        {item.current == 'Y' &&
+                                          this.state.selection == '1' ? (
+                                            <Input.TextArea
+                                              maxLength={500}
+                                              style={{
+                                                marginTop: 16,
+                                                width: '400px',
+                                                height: 120,
+                                                resize: 'none'
+                                              }}
+                                              value={this.state.C3_632503853105}
+                                              onChange={v => {
+                                                this.setState({
+                                                  C3_632503853105: v.target.value
+                                                });
+                                              }}
+                                            />
+                                          ) : (
+                                            <span>{item.memo}</span>
+                                          )}
+                                        <br />
+                                        <br />
+                                      </>
+                                    ) : null}
+                                </>
+                              );
+                            })
+                            : '无'}
+                        </div>
+                      </div>
                     </Spin>
                   </div>
                 </div>
-                <div style={{ float: 'left', marginLeft: 16 }}>
-                  <b>审批备注：</b>
-                  <br />
-                  <div style={{ overflow: 'auto', height: '50vh' }}>
-                    {this.state.stream.length > 0
-                      ? this.state.stream.map(item => {
-                        return (
-                          <>
-                            {item.memo ||
-                              (item.current === 'Y' &&
-                                this.state.selection == '1') ? (
-                                <>
-                                  <span>{item.stepPeople}：</span>
-                                  <br />
-                                  {item.current == 'Y' &&
-                                    this.state.selection == '1' ? (
-                                      <Input.TextArea
-                                        maxLength={500}
-                                        style={{
-                                          marginTop: 16,
-                                          width: '400px',
-                                          height: 120,
-                                          resize: 'none'
-                                        }}
-                                        value={this.state.C3_632503853105}
-                                        onChange={v => {
-                                          this.setState({
-                                            C3_632503853105: v.target.value
-                                          });
-                                        }}
-                                      />
-                                    ) : (
-                                      <span>{item.memo}</span>
-                                    )}
-                                  <br />
-                                  <br />
-                                </>
-                              ) : null}
-                          </>
-                        );
-                      })
-                      : '无'}
-                  </div>
-                </div>
+
               </div>
             </div>
           </Modal>
