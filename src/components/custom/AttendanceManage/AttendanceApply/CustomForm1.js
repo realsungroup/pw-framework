@@ -91,9 +91,13 @@ class CustomForm1 extends React.Component {
     },
     currentUser: JSON.parse(getItem('userInfo')).Data,
     currentUserCode: JSON.parse(getItem('userInfo')).UserInfo.EMP_ID,
+    currentUserNo: JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE,
     fileList: [], //附件列表
     chooseAllDay: false, //选择全天
-    allDayTimeLength: 0 //请全天假的总时间长度
+    allDayTimeLength: 0, //请全天假的总时间长度
+    availableTime: 0,
+    showAvailableTime: false,
+    availableTimeText: ''
   };
   minute = [];
   componentDidMount() {
@@ -103,8 +107,8 @@ class CustomForm1 extends React.Component {
     this.minute =
       showAllminute || isShangHai
         ? new Array(60).fill('1').map((item, index) => {
-            return index < 10 ? '0' + index : '' + index;
-          })
+          return index < 10 ? '0' + index : '' + index;
+        })
         : ['00', 30];
 
     this.getType();
@@ -415,7 +419,7 @@ class CustomForm1 extends React.Component {
     this.setState({ fileList });
   };
 
-  handleTypeChange = v => {
+  handleTypeChange = (v, options) => {
     if (v.length) {
       this.setState({
         selectedTypeId: v[1],
@@ -424,6 +428,20 @@ class CustomForm1 extends React.Component {
         errors: {
           ...this.state.errors,
           type: false
+        }
+      }, () => {
+        const { availableTimeVisible } = this.props
+        const label = options[1].label
+        switch (label) {
+          case '年假':
+            availableTimeVisible && this.getNianJia();
+            break;
+          case '调休':
+            availableTimeVisible && this.getTiaoXiu();
+            break;
+          default:
+            this.setState({ showAvailableTime: false })
+            break;
         }
       });
     } else {
@@ -438,7 +456,41 @@ class CustomForm1 extends React.Component {
       });
     }
   };
-
+  getNianJia = async () => {
+    const { currentUserNo } = this.state;
+    try {
+      const res = await http({ baseURL: attendanceBaseURL }).getTable({
+        resid: "426438255597",
+        cmswhere: `C3_426438687329 = ${moment().year()} and C3_426438637903 = ${currentUserNo}`
+      });
+      const data = res.data[0];
+      this.setState({
+        availableTime: data ? data.C3_426440680841 : 0,
+        availableTimeText: '剩余年假额度（小时）：',
+        showAvailableTime: true
+      })
+    } catch (error) {
+      message.error(error.message)
+    }
+  }
+  getTiaoXiu = async () => {
+    const { currentUserNo } = this.state;
+    try {
+      const res = await http({ baseURL: attendanceBaseURL }).getTable({
+        resid: "435431842051",
+        cmswhere: `C3_435433214220 = ${moment().year()} and C3_446737739320 = ${currentUserNo}`
+      });
+      const data = res.data[0];
+      // 剩余年假额度（小时）：
+      this.setState({
+        availableTime: data ? data.C3_436551701844 : 0,
+        availableTimeText: '剩余调休额度（小时）：',
+        showAvailableTime: true
+      })
+    } catch (error) {
+      message.error(error.message)
+    }
+  }
   setAllDay = async (dates, dateStrings) => {
     const pnid = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
     const date1 = dateStrings[0].replaceAll('/', '-');
@@ -487,20 +539,20 @@ class CustomForm1 extends React.Component {
             startHour: isEightToSeventeen
               ? '08'
               : hasSort
-              ? startHour
-              : endHour,
+                ? startHour
+                : endHour,
             startMinute: isEightToSeventeen
               ? '00'
               : hasSort
-              ? startMinute
-              : endMinute,
+                ? startMinute
+                : endMinute,
             endDate: hasSort ? endDate : startDate,
             endHour: isEightToSeventeen ? '17' : hasSort ? endHour : startHour,
             endMinute: isEightToSeventeen
               ? '00'
               : hasSort
-              ? endMinute
-              : startMinute
+                ? endMinute
+                : startMinute
           }
         });
         this.setDateError();
@@ -521,14 +573,17 @@ class CustomForm1 extends React.Component {
       applyType,
       isNeedAttachment,
       errors,
-      chooseAllDay
+      chooseAllDay,
+      availableTime,
+      showAvailableTime,
+      availableTimeText
     } = this.state;
     const {
       showWorkOvertimeOptions,
       showChooseAllDay,
-      reasonRequired
+      reasonRequired,
+      availableTimeVisible
     } = this.props;
-
     let startHours = [], //可选的开始时间点
       endHours = [], //可选的结束时间点
       disabled = true; //时间长度是否不可手动输入
@@ -568,6 +623,9 @@ class CustomForm1 extends React.Component {
               onChange={this.handleTypeChange}
             />
           </Form.Item>
+          {availableTimeVisible && showAvailableTime && <Row>
+            <Col>{availableTimeText}{availableTime}</Col>
+          </Row>}
           {showChooseAllDay && (
             <Form.Item {...formItemLayout} label="选择全天：">
               <Checkbox
