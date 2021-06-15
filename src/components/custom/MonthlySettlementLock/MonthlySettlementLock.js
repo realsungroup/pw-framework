@@ -28,11 +28,11 @@ class MonthlySettlementLock extends Component {
   //进行锁定操作
   handleLock = async () => {
     const { selectedMonth, selectedYear } = this.state;
-    // const sql1 = `update CT311025002785 set C3_469045712212 = 'Y' where C3_424652509987='${selectedYear}' and C3_469046133471='${selectedMonth}'`;
-    const sql1 = `update CT651238160820 set C3_651238761645 = 'Y' where C3_651238195776='${selectedYear}' and C3_651238202386='${selectedMonth}'`;
+    const sql1 = `update CT311025002785 set C3_469045712212 = 'Y' where C3_424652509987='${selectedYear}' and C3_469046133471='${selectedMonth}'`;
+    // const sql1 = `update CT651238160820 set C3_651238761645 = 'Y' where C3_651238195776='${selectedYear}' and C3_651238202386='${selectedMonth}'`;
     try {
       await http().runBySql({
-        dblink: 'me',
+        dblink: 'ehr',
         sql: sql1
       });
       message.success(`${selectedYear}年${selectedMonth}月的数据已锁定`);
