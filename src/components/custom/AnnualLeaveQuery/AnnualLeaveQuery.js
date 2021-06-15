@@ -271,6 +271,7 @@ class Summary extends React.PureComponent {
       let synj1 = 0;
       let curentYearIncrease = 0;
       let snjysy = 0;
+      let dnjysy = 0;
       this.setState({ snjysy: 0 })
       res.data.map(item => {
         if (item.synj >= 0) {
@@ -289,13 +290,18 @@ class Summary extends React.PureComponent {
           qua = 2
         }
       } else {
-        qua = 10
+        if (qua < 10) {
+          qua = 3
+        } else {
+          qua = 4
+        }
       }
       let nn = 0;
       while (nn < res.data.length) {
         if (qua == 1) {
           if (res.data[nn].quarter == 1) {
             snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            dnjysy = res.data[nn].synj
             if (snjysy < 0) {
               snjysy = 0;
             }
@@ -303,15 +309,25 @@ class Summary extends React.PureComponent {
         } else if (qua == 2) {
           if (res.data[nn].quarter == 2) {
             snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            dnjysy = res.data[nn].synj
             if (snjysy < 0) {
               snjysy = 0;
             }
+          }
+        } else if (qua == 3) {
+          if (res.data[nn].quarter == 3) {
+            dnjysy = res.data[nn].synj
+          }
+        } else if (qua == 4) {
+          if (res.data[nn].quarter == 4) {
+            dnjysy = res.data[nn].synj
           }
         }
         nn++;
       }
       this.setState({
         snjysy,
+        dnjysy,
         synj: synj1,
         snsy: res.data.length ? res.data[0].lnsy : 0,
         curentYearIncrease
@@ -382,6 +398,7 @@ class Summary extends React.PureComponent {
         }
       });
       let snjysy = 0;
+      let dnjysy = 0;
       let qua = new Date().getMonth();
       qua++;
       if (qua < 7) {
@@ -391,13 +408,18 @@ class Summary extends React.PureComponent {
           qua = 2
         }
       } else {
-        qua = 10
+        if (qua < 10) {
+          qua = 3
+        } else {
+          qua = 4
+        }
       }
       let nn = 0;
       while (nn < res.data.length) {
         if (qua == 1) {
           if (res.data[nn].quarter == 1) {
             snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            dnjysy = res.data[nn].synj
             if (snjysy < 0) {
               snjysy = 0;
             }
@@ -405,14 +427,24 @@ class Summary extends React.PureComponent {
         } else if (qua == 2) {
           if (res.data[nn].quarter == 2) {
             snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            dnjysy = res.data[nn].synj
             if (snjysy < 0) {
               snjysy = 0;
             }
+          }
+        } else if (qua == 3) {
+          if (res.data[nn].quarter == 3) {
+            dnjysy = res.data[nn].synj
+          }
+        } else if (qua == 4) {
+          if (res.data[nn].quarter == 4) {
+            dnjysy = res.data[nn].synj
           }
         }
         nn++;
       }
       this.setState({
+        dnjysy,
         snjysy,
         synj: synj1,
         snsy: res.data.length ? res.data[0].lnsy : 0,
@@ -553,29 +585,47 @@ class Summary extends React.PureComponent {
     return (
       <div className="alq-summary">
         <Spin spinning={this.state.loading}>
-          <div>
-            <span style={{ marginRight: '2vw' }}>当年新增年假{isWuxi ? curentYearIncrease + '天' : curentYearIncrease * 8 + '小时'}</span>
-            <span style={{ marginRight: '2vw' }}>上年结转年假{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</span>
-            <span style={{ marginRight: '2vw' }}>上年剩余可用年假{isWuxi ? this.state.snjysy + '天' : this.state.snjysy * 8 + '小时'}</span>
+          <div className='showblock'>
+            <div>
+              <TreeSelect
+                style={{ width: '250px' }}
+                value={selectValue}
+                dropdownStyle={{ overflow: 'auto' }}
+                placeholder={
+                  JSON.parse(localStorage.getItem('userInfo')).EMP_NAME
+                }
+                treeData={this.state.treeData}
+                onChange={(value, label, extra) => {
+                  this.setState({
+                    selectValue: value,
+                    loading: true,
+                    isWuxi: extra.triggerNode.props.company == "100" ? true : false
+                  });
+                  this.fetchAnnualLeavesCopy(value);
+                }}
+              ></TreeSelect>
+            </div>
+            <div>
+              <span style={{ marginRight: '2vw' }}>上年结转年假<b>{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</b></span>
+            </div>
+            <div>
 
-            <TreeSelect
-              style={{ width: '250px' }}
-              value={selectValue}
-              dropdownStyle={{ overflow: 'auto' }}
-              placeholder={
-                JSON.parse(localStorage.getItem('userInfo')).EMP_NAME
-              }
-              treeData={this.state.treeData}
-              onChange={(value, label, extra) => {
-                this.setState({
-                  selectValue: value,
-                  loading: true,
-                  isWuxi: extra.triggerNode.props.company == "100" ? true : false
-                });
-                this.fetchAnnualLeavesCopy(value);
-              }}
-            ></TreeSelect>
+              <span style={{ marginRight: '2vw' }}>当年新增年假<b>{isWuxi ? curentYearIncrease + '天' : curentYearIncrease * 8 + '小时'}</b></span>
+            </div>
+            <div>
+
+              <span style={{ marginRight: '2vw' }}>上年剩余可用年假<b>{isWuxi ? this.state.snjysy + '天' : this.state.snjysy * 8 + '小时'}</b></span>
+            </div>
+            <div>
+
+              <span style={{ marginRight: '2vw' }}>当年剩余可用年假<b>{isWuxi ? this.state.dnjysy + '天' : this.state.dnjysy * 8 + '小时'}</b></span>
+            </div>
+            <div>
+
+              <span style={{ color: '#f5222d' }}>注意当年剩余不含上年剩余年假，也不含未释放年假</span>
+            </div>
           </div>
+          {/* 
           <div className="collapseStyle">
             <Collapse
               bordered={false}
@@ -699,6 +749,7 @@ class Summary extends React.PureComponent {
               </Panel>
             </Collapse>
           </div>
+        */}
         </Spin>
       </div>
     );
