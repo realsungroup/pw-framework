@@ -340,7 +340,7 @@ class PaySettleAccounts extends React.Component {
       return (
         <Button
           onClick={() =>
-            this.setState({ listVisible: true, createVisible: false })
+            this.setState({ listVisible: true, createVisible: false, progressVisible: false })
           }
         >
           查看薪资名单
@@ -357,6 +357,11 @@ class PaySettleAccounts extends React.Component {
     const month = moment(monthStr);
     this.setState({ month, listVisible: true });
   };
+
+  handleListModalCancel = () => {
+    this.setState({ listVisible: false });
+    this.addRecord();
+  } 
 
   render() {
     const { baseURL = 'http://kingofdinner.realsun.me:30001' } = this.props;
@@ -461,7 +466,7 @@ class PaySettleAccounts extends React.Component {
           destroyOnClose
           footer={null}
           width="100%"
-          onCancel={() => this.setState({ listVisible: false })}
+          onCancel={this.handleListModalCancel}
         >
           <div style={{ height: 500 }}>
             <TableData
