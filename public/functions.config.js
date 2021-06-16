@@ -2092,6 +2092,8 @@ window[621257502796] = {
     // showChooseAllDay: true,
     // isEightToSeventeen:true, //请全天假默认从8到17点
     // showAllminuteShuaKa: true //刷卡的分钟下拉列表显示所有分钟
+    // availableTimeVisible:true,//是否显示可用额度
+
     //无锡配置
     showAllminute: false, //是否显示所有分钟数
     showBatchApply: true, //是否显示批量申请
@@ -2100,7 +2102,8 @@ window[621257502796] = {
     reasonRequired: true, //事由是否是必填的
     showChooseAllDay: true,
     isEightToSeventeen: true, //请全天假默认从8到17点
-    showAllminuteShuaKa: false //刷卡的分钟下拉列表显示所有分钟
+    showAllminuteShuaKa: false,//刷卡的分钟下拉列表显示所有分钟
+    availableTimeVisible: false,//是否显示可用额度
   }
 };
 window[622577431745] = {
@@ -10189,7 +10192,7 @@ window[676485269974] = {
   props: {
     resid: 668272811088,
     baseURL: 'http://10.108.2.66:9091',
-       hasAdd: false,
+    hasAdd: false,
     hasBeBtns: false,
     hasModify: false,
     hasBackBtn: false,
@@ -10200,6 +10203,6 @@ window[676485269974] = {
     isUseFormDefine: false,
     subtractH: 200
   }
-  };
+};
 
 
