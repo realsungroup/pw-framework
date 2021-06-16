@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import folderPng from '../../Desktop/assets/folder.png';
 import RightBtns from './RightBtns';
 import classNames from 'classnames';
-import logoImg from '../../../assets/logo-26.png';
+import logoImg from '../../../assets/logo.svg';
 import UserInfo from './UserInfo';
 import './PageHeader.less';
 import { Drawer, Menu, Icon, Input, Badge, Popover, Select } from 'antd';
