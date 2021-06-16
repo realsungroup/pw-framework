@@ -325,6 +325,9 @@ class Summary extends React.PureComponent {
         }
         nn++;
       }
+      if (snjysy > 0) {
+        dnjysy = dnjysy - snjysy;
+      }
       this.setState({
         snjysy,
         dnjysy,
@@ -442,6 +445,9 @@ class Summary extends React.PureComponent {
           }
         }
         nn++;
+      }
+      if (snjysy > 0) {
+        dnjysy = dnjysy - snjysy
       }
       this.setState({
         dnjysy,
