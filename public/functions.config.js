@@ -2089,18 +2089,22 @@ window[621257502796] = {
     // showWorkOvertimeOptions: false, //是否显示加班选项
     // showApproveAll: false, //是否显示一键审批
     // reasonRequired: false, //事由是否是必填的
-    // showChooseAllDay: true,
+    // showChooseAllDay: true, //是否显示全天假选择框
     // isEightToSeventeen:true, //请全天假默认从8到17点
     // showAllminuteShuaKa: true //刷卡的分钟下拉列表显示所有分钟
+    // availableTimeVisible:true,//是否显示可用额度
+
     //无锡配置
     showAllminute: false, //是否显示所有分钟数
     showBatchApply: true, //是否显示批量申请
     showWorkOvertimeOptions: true, //是否显示加班选项
     showApproveAll: true, //是否显示一键审批
     reasonRequired: true, //事由是否是必填的
-    showChooseAllDay: true,
-    isEightToSeventeen: true, //请全天假默认从8到17点
+    showChooseAllDay: false, //是否显示全天假选择框
+    isEightToSeventeen: false, //请全天假默认从8到17点
     showAllminuteShuaKa: false //刷卡的分钟下拉列表显示所有分钟
+    availableTimeVisible: false,//是否显示可用额度
+
   }
 };
 window[622577431745] = {
@@ -3870,6 +3874,8 @@ window[642854660698] = {
         downloadBaseURL: 'http://10.108.2.66:80/',
         isUseBESize: true,
         hasBeSort: false,
+        recordFormName: 'default1',
+        rowEditFormName: 'default1',
         advSearch: {
           isRequestFormData: false
         }
@@ -3878,6 +3884,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        recordFormName: 'default1',
+        rowEditFormName: 'default1',
         isUseBESize: true,
         hasBeSort: false,
         advSearch: {
@@ -3888,6 +3896,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        recordFormName: 'default1',
+        rowEditFormName: 'default1',
         isUseBESize: true,
         hasBeSort: false,
         advSearch: {
@@ -10048,9 +10058,7 @@ window[675856353290] = {
     isUseFormDefine: false,
     subtractH: 200
   }
-
 };
-
 
 //银行卡信息
 window[676466039420] = {
@@ -10189,7 +10197,7 @@ window[676485269974] = {
   props: {
     resid: 668272811088,
     baseURL: 'http://10.108.2.66:9091',
-       hasAdd: false,
+    hasAdd: false,
     hasBeBtns: false,
     hasModify: false,
     hasBackBtn: false,
@@ -10200,6 +10208,14 @@ window[676485269974] = {
     isUseFormDefine: false,
     subtractH: 200
   }
-  };
+};
 
-
+//员工名册英文报表
+window[677242145509] = {
+  name: 'PWRedirect',
+  title: '员工名册英文',
+  props: {
+    resid: '677259789381',
+    replaceBaseUrl: ''
+  }
+};

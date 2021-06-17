@@ -43,7 +43,8 @@ class AttendanceApply extends React.Component {
       showChooseAllDay,
       isEightToSeventeen,
       reasonRequired,
-      showAllminuteShuaKa
+      showAllminuteShuaKa,
+      availableTimeVisible
     } = this.props;
 
     let page = null;
@@ -56,6 +57,7 @@ class AttendanceApply extends React.Component {
             getNotices={this.props.getNotices}
             showAllminute={showAllminute}
             showChooseAllDay={showChooseAllDay}
+            availableTimeVisible={availableTimeVisible}
             isEightToSeventeen={isEightToSeventeen}
             showWorkOvertimeOptions={showWorkOvertimeOptions}
             reasonRequired={reasonRequired}

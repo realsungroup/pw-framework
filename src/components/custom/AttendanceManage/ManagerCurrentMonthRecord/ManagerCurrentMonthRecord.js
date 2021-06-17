@@ -34,6 +34,9 @@ class ManagerCurrentMonthRecord extends React.Component {
           dblinkname="ehr"
           baseURL={this.baseURL}
           downloadBaseURL={this.attendanceDownloadURL}
+          isUseBESize={true}
+          hasBeSort={false}
+          isWrap={true}
         />
       </div>
     );

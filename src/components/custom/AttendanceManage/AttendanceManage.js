@@ -116,7 +116,8 @@ class AttendanceManage extends React.Component {
       showChooseAllDay,
       isEightToSeventeen,
       reasonRequired,
-      showAllminuteShuaKa
+      showAllminuteShuaKa,
+      availableTimeVisible
     } = this.props;
 
     let page = null;
@@ -176,6 +177,7 @@ class AttendanceManage extends React.Component {
             showBatchApply={showBatchApply}
             showWorkOvertimeOptions={showWorkOvertimeOptions}
             reasonRequired={reasonRequired}
+            availableTimeVisible={availableTimeVisible}
           />
         );
         break;
@@ -285,7 +287,7 @@ class AttendanceManage extends React.Component {
               onSelect={this.onSelect}
               inlineCollapsed={collapsed}
               selectedKeys={[selectKey]}
-              // selectedKeys = {this.selectedKeys}
+            // selectedKeys = {this.selectedKeys}
             >
               {showApply && (
                 <SubMenu
@@ -387,6 +389,9 @@ class AttendanceManage extends React.Component {
               height={'600px'}
               cmswhere={`C3_446915623989 = '${selectRecord.C3_446915623989 ||
                 selectRecord.C3_449011109791}'`}
+              isUseBESize={true}
+              hasBeSort={false}
+              isWrap={true}
             />
           </Modal>
         </div>
