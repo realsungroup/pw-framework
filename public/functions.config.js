@@ -3870,6 +3870,8 @@ window[642854660698] = {
         downloadBaseURL: 'http://10.108.2.66:80/',
         isUseBESize: true,
         hasBeSort: false,
+        recordFormName: 'default1',
+        rowEditFormName: 'default1',
         advSearch: {
           isRequestFormData: false
         }
@@ -3878,6 +3880,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        recordFormName: 'default1',
+        rowEditFormName: 'default1',
         isUseBESize: true,
         hasBeSort: false,
         advSearch: {
@@ -3888,6 +3892,8 @@ window[642854660698] = {
         hasBeBtns: true,
         baseURL: 'http://10.108.2.66:9091/',
         downloadBaseURL: 'http://10.108.2.66:80/',
+        recordFormName: 'default1',
+        rowEditFormName: 'default1',
         isUseBESize: true,
         hasBeSort: false,
         advSearch: {
