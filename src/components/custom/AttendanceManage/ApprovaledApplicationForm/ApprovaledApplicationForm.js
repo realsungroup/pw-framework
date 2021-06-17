@@ -82,6 +82,9 @@ class ApprovaledApplicationForm extends React.Component {
           refTargetComponentName="TableData"
           baseURL={this.baseURL}
           downloadBaseURL={this.attendanceDownloadURL}
+          isUseBESize={true}
+          hasBeSort={false}
+          isWrap={true}
         />
       </div>
     );
