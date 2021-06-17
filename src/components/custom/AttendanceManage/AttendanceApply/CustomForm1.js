@@ -93,6 +93,8 @@ class CustomForm1 extends React.Component {
     currentUserCode: JSON.parse(getItem('userInfo')).UserInfo.EMP_ID,
     fileList: [], //附件列表
     chooseAllDay: false, //选择全天
+    levelSort: '', //级别排序
+    isShangHai: false, //是否是上海员工
     allDayTimeLength: 0 //请全天假的总时间长度
   };
   minute = [];
@@ -100,15 +102,36 @@ class CustomForm1 extends React.Component {
     const { showAllminute } = this.props;
     const isShangHai =
       JSON.parse(getItem('userInfo')).EnterpriseCode === '2000';
+    this.setState({
+      isShangHai: isShangHai
+    });
     this.minute =
       showAllminute || isShangHai
         ? new Array(60).fill('1').map((item, index) => {
             return index < 10 ? '0' + index : '' + index;
           })
         : ['00', 30];
-
     this.getType();
+    this.getLevelSort();
   }
+
+  // 获取级别排序，用于控制上海员工是否显示全天假
+  getLevelSort = async () => {
+    const usercode = JSON.parse(getItem('userInfo')).UserCode;
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 227186227531,
+        cmswhere: `C3_227192472953 = '${usercode}'`
+      });
+      this.setState({
+        levelSort: res.data[0].C3_419522823650
+      });
+    } catch (error) {
+      console.log(error.message);
+      message.info(error.message);
+    }
+  };
 
   componentDidUpdate(preProps, preState) {
     // 填写的时间变化时自动计算加班时长
@@ -521,7 +544,9 @@ class CustomForm1 extends React.Component {
       applyType,
       isNeedAttachment,
       errors,
-      chooseAllDay
+      chooseAllDay,
+      levelSort,
+      isShangHai
     } = this.state;
     const {
       showWorkOvertimeOptions,
@@ -568,7 +593,7 @@ class CustomForm1 extends React.Component {
               onChange={this.handleTypeChange}
             />
           </Form.Item>
-          {showChooseAllDay && (
+          {(showChooseAllDay || (isShangHai && levelSort <= 8)) && (
             <Form.Item {...formItemLayout} label="选择全天：">
               <Checkbox
                 onChange={e => {
