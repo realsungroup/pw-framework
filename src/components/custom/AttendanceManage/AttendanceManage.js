@@ -387,6 +387,9 @@ class AttendanceManage extends React.Component {
               height={'600px'}
               cmswhere={`C3_446915623989 = '${selectRecord.C3_446915623989 ||
                 selectRecord.C3_449011109791}'`}
+              isUseBESize={true}
+              hasBeSort={false}
+              isWrap={true}
             />
           </Modal>
         </div>

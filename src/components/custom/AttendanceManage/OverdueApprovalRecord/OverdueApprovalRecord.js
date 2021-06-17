@@ -35,7 +35,10 @@ class OverdueApprovalRecord extends React.Component {
           dblinkname="ehr"
           baseURL={this.baseURL}
           isSetColumnWidth={false}
-        // noWidthFields='C3_447031495725'
+          isUseBESize={true}
+          hasBeSort={false}
+          isWrap={true}
+          // noWidthFields='C3_447031495725'
         />
       </div>
     );

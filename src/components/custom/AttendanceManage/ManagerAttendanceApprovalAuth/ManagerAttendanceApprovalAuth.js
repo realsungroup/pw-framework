@@ -36,7 +36,10 @@ class ManagerAttendanceApprovalAuth extends React.Component {
           baseURL={this.baseURL}
           downloadBaseURL={this.attendanceDownloadURL}
           // isSetColumnWidth={false}
-          columnsWidth={{ '被授权人工号': 200 }}
+          columnsWidth={{ 被授权人工号: 200 }}
+          isUseBESize={true}
+          hasBeSort={false}
+          isWrap={true}
         />
       </div>
     );
