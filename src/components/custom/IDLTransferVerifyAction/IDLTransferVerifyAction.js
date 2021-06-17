@@ -757,6 +757,17 @@ class IDLTransferVerifyAction extends Component {
                           {this.state.toCheck[4]}
                         </td>
                       </tr>
+                      <tr>
+                        <td>
+                          BU_CODE
+                          </td>
+                        <td>
+                          {this.state.toCheckFront.BUCode}
+                        </td>
+                        <td>
+                          {this.state.toCheck[5]}
+                        </td>
+                      </tr>
                     </table>
 
 
