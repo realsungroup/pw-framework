@@ -199,7 +199,7 @@ const filterType = [
       },
       {
         value: '全部',
-        resid: '677270035480'
+        resid: '677271029195'
       }]
   }
 ]
