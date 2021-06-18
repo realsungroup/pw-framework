@@ -45,7 +45,8 @@ class ChiefInspectorProbation extends React.Component {
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
-        <div className="hr-probation_table-action-bar-extra_buttons">
+        <span>请点击表格内的‘查看’,查看员工的试用期详情并审批转正</span>
+        {/* <div className="hr-probation_table-action-bar-extra_buttons">
           <Button
             onClick={() => {
               this.handleAgreed(record);
@@ -53,7 +54,7 @@ class ChiefInspectorProbation extends React.Component {
           >
             同意转正
           </Button>
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -103,14 +104,14 @@ class ChiefInspectorProbation extends React.Component {
             />
           </div>
         ) : (
-          <ProbationForms
-            memberId={this.state.selectedRecord.memberId}
-            employedId={this.state.selectedRecord.C3_625051545181}
-            goBack={this.goBack}
-            roleName="总监"
-            setIsShowTable={this.setIsShowTable}
-          />
-        )}
+            <ProbationForms
+              memberId={this.state.selectedRecord.memberId}
+              employedId={this.state.selectedRecord.C3_625051545181}
+              goBack={this.goBack}
+              roleName="总监"
+              setIsShowTable={this.setIsShowTable}
+            />
+          )}
       </div>
     );
   }
