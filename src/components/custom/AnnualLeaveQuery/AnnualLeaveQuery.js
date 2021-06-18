@@ -272,7 +272,7 @@ class Summary extends React.PureComponent {
       let curentYearIncrease = 0;
       let snjysy = 0;
       let dnjysy = 0;
-      this.setState({ snjysy: 0 })
+      this.setState({ snjysy: 0, dnjysy: 0 })
       res.data.map(item => {
         if (item.synj >= 0) {
           synj1 = item.synj + synj1;
@@ -301,33 +301,42 @@ class Summary extends React.PureComponent {
         if (qua == 1) {
           if (res.data[nn].quarter == 1) {
             snjysy = res.data[nn].snsy - res.data[nn].ljsq;
-            dnjysy = res.data[nn].synj
             if (snjysy < 0) {
               snjysy = 0;
+              dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
+
+            } else {
+              dnjysy = res.data[nn].hjky - res.data[nn].snsy;
+
+
             }
           }
         } else if (qua == 2) {
           if (res.data[nn].quarter == 2) {
             snjysy = res.data[nn].snsy - res.data[nn].ljsq;
-            dnjysy = res.data[nn].synj
             if (snjysy < 0) {
               snjysy = 0;
+              dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
+
+            } else {
+              dnjysy = res.data[nn].hjky - res.data[nn].snsy;
+
             }
           }
         } else if (qua == 3) {
           if (res.data[nn].quarter == 3) {
-            dnjysy = res.data[nn].synj
+            dnjysy = res.data[nn].synj;
+            dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
           }
         } else if (qua == 4) {
           if (res.data[nn].quarter == 4) {
-            dnjysy = res.data[nn].synj
+            dnjysy = res.data[nn].synj;
+            dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
           }
         }
         nn++;
       }
-      if (snjysy > 0) {
-        dnjysy = dnjysy - snjysy;
-      }
+
       this.setState({
         snjysy,
         dnjysy,
@@ -422,33 +431,43 @@ class Summary extends React.PureComponent {
         if (qua == 1) {
           if (res.data[nn].quarter == 1) {
             snjysy = res.data[nn].snsy - res.data[nn].ljsq;
-            dnjysy = res.data[nn].synj
             if (snjysy < 0) {
               snjysy = 0;
+              dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
+
+            } else {
+              dnjysy = res.data[nn].hjky - res.data[nn].snsy;
+
             }
           }
         } else if (qua == 2) {
           if (res.data[nn].quarter == 2) {
             snjysy = res.data[nn].snsy - res.data[nn].ljsq;
-            dnjysy = res.data[nn].synj
             if (snjysy < 0) {
               snjysy = 0;
+              dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
+
+            } else {
+              dnjysy = res.data[nn].hjky - res.data[nn].snsy;
+
             }
           }
         } else if (qua == 3) {
           if (res.data[nn].quarter == 3) {
-            dnjysy = res.data[nn].synj
+            dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
+
+
           }
         } else if (qua == 4) {
           if (res.data[nn].quarter == 4) {
-            dnjysy = res.data[nn].synj
+            dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
+
+
           }
         }
         nn++;
       }
-      if (snjysy > 0) {
-        dnjysy = dnjysy - snjysy
-      }
+
       this.setState({
         dnjysy,
         snjysy,
