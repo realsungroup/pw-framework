@@ -53,7 +53,10 @@ class DirectorProbation extends React.Component {
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
-        <div className="hr-probation_table-action-bar-extra_buttons">
+        <span>请点击表格内的‘查看’,查看员工的试用期详情并审批转正</span>
+
+
+        {/* <div className="hr-probation_table-action-bar-extra_buttons">
           <Button
             onClick={() => {
               this.handleAgreed(record);
@@ -61,7 +64,7 @@ class DirectorProbation extends React.Component {
           >
             同意转正
           </Button>
-        </div>
+        </div> */}
       </div>
     );
   };
