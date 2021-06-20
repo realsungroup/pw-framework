@@ -2,6 +2,7 @@
   "name": "pw-components",
   "version": "0.1.1",
   "private": false,
+  "module": "lib/index.js",
   "dependencies": {
     "@ant-design/colors": "^4.0.5",
     "@ant-design/icons-react": "^2.0.1",
