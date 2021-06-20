@@ -52,8 +52,8 @@ class TemplateWrap extends Component {
     }
     this.state = {
       visible: false,
-      code: 'demo',
-      password: '1234@qwer',
+      code: 'dem1',
+      password: '123456',
       baseURL
     };
 

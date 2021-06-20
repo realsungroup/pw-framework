@@ -25,6 +25,7 @@ import dealControlArr, { dealFormData } from 'Util20/controls';
 import http, { makeCancelable } from 'Util20/api';
 import { debounce } from 'lodash';
 import classNames from 'classnames';
+import { getUpdatedWithColumns, getColumnMaxWithByBEWith, getDealedTableBlankIssueColumns } from './utils';
 
 const { Fragment } = React;
 
@@ -344,8 +345,13 @@ class TableData extends React.Component {
     window.addEventListener('resize', this.cb);
   };
 
+  updateColumns = (callback) => {
+    const columns = this.getDealedTableBlankIssueColumns(this.state.columns);
+    this.setState({columns}, callback);
+  }
+
   handleResize = () => {
-    this.getScrollXY();
+    this.updateColumns(this.getScrollXY);
   };
 
   getDataSource = () => {
@@ -427,44 +433,70 @@ class TableData extends React.Component {
     }
   };
 
+
+  getSubtractH = () => {
+    const tableDOM = this.tableDataRef;
+
+    const tableHeader = tableDOM.querySelector('.ant-table-header');
+    const tableHeaderH = tableHeader ? tableHeader.clientHeight : 0;
+
+    const tableFooter = tableDOM.querySelector('.pw-table__footer');
+    const tableFooterH = tableFooter ? tableFooter.clientHeight : 0;
+
+    const pwTableHeader = tableDOM.querySelector('.pw-table__header');
+    const pwTableHeaderH = pwTableHeader ? pwTableHeader.clientHeight : 0;
+
+    const pwTableActionBar = tableDOM.querySelector('.pw-table__action-bar');
+    const pwTableActionBarH = pwTableActionBar ? pwTableActionBar.clientHeight : 0;
+    return tableHeaderH + tableFooterH + pwTableHeaderH + pwTableActionBarH;
+  }
+
   getScrollXY = async y => {
+    const { rowSelection } = this.state;
     const {
       columnsWidth,
       actionBarWidth,
       width,
       height,
-      subtractH
+      isUseBESize
     } = this.props;
-    const { rowSelection } = this.state;
-    let columnsWidthKeys = [];
-    let customWidth = 0;
-    if (columnsWidth) {
-      columnsWidthKeys = Object.keys(columnsWidth);
-      columnsWidthKeys.forEach(key => {
-        if (typeof columnsWidth[key] === 'number') {
-          customWidth += columnsWidth[key];
+    
+    let subtractH = this.props.subtractH || this.getSubtractH();
+    let x = 0;
+    
+    // 当使用后端设置的宽度作为列的最大宽度时，每个列的宽度肯定是存在的
+    if (isUseBESize) {
+      const { columns } = this.state;
+      const width = (rowSelection ? rowSelection.columnWidth : 0) + actionBarWidth;
+      x = columns.reduce((acc, cur) => acc + cur.width, width);
+    } else {
+      let columnsWidthKeys = [];
+      let customWidth = 0;
+      if (columnsWidth) {
+        columnsWidthKeys = Object.keys(columnsWidth);
+        columnsWidthKeys.forEach(key => {
+          if (typeof columnsWidth[key] === 'number') {
+            customWidth += columnsWidth[key];
+          }
+        });
+      }
+      this._dealedColumns.forEach(item => {
+        if (!columnsWidthKeys.find(key => key === item.title)) {
+          if (typeof item.width === 'number') {
+            customWidth += item.width;
+          }
         }
       });
-    }
-
-    this._dealedColumns.forEach(item => {
-      if (!columnsWidthKeys.find(key => key === item.title)) {
-        if (typeof item.width === 'number') {
-          customWidth += item.width;
-        }
+      x = customWidth;
+      // 操作栏
+      if (this.hasActionBar()) {
+        x += actionBarWidth;
       }
-    });
 
-    let x = customWidth;
-
-    // 操作栏
-    if (this.hasActionBar()) {
-      x += actionBarWidth;
-    }
-
-    // rowSelection
-    if (rowSelection) {
-      x += 50;
+      // rowSelection
+      if (rowSelection) {
+        x += 50;
+      }
     }
 
     // 计算：this.boxW 和 this.boxH
@@ -483,6 +515,7 @@ class TableData extends React.Component {
           : parent.clientHeight * percentString2decimal(height);
     }
 
+    // const scrollXY = { x, y: this.boxH - subtractH };
     const scrollXY = { x, y: this.boxH - subtractH };
 
     this._x = x;
@@ -739,6 +772,31 @@ class TableData extends React.Component {
       columns = result.columns;
       components = result.components;
     }
+
+    // 使用后端设置的宽度作为列的最大宽度
+    if (isUseBESize) {
+      let columnMaxWidth = getColumnMaxWithByBEWith(res.cmscolumninfo);
+      // 通过 props 传进来的 columnMaxWidth 优先级大于后端设置的
+      if (this.props.columnMaxWidth) {
+        columnMaxWidth = { ...columnMaxWidth, ...this.props.columnMaxWidth };
+      }
+
+      // 通过 columnMaxWidth 计算列宽度
+      columns = await getUpdatedWithColumns(columns, {
+        containerSelector: '.table-data__pw-table-container-max-width',
+        columnMaxWidth,
+        dataSource
+      });
+    }
+    
+    // 存储 column 的宽度
+    columns.forEach(column => {
+      column._width = column.width;
+    });
+
+    // 处理表格会出现空白列的问题（可能会改变所有列的宽度）
+    columns = this.getDealedTableBlankIssueColumns(columns);
+
     this._dealedColumns = columns;
 
     this.setState({ originalColumn: res.cmscolumninfo });
@@ -776,6 +834,19 @@ class TableData extends React.Component {
 
     this.setState(state);
   };
+
+  getDealedTableBlankIssueColumns = (columns) => {
+    // 处理表格会出现空白列的问题（可能会改变所有列的宽度）
+    const { rowSelection } = this.state;
+    const tableWidth = this.tableDataRef.clientWidth;
+    columns = getDealedTableBlankIssueColumns(columns.map(column => ({...column, width: column._width})), {
+      rowSelectionWidth: rowSelection ? rowSelection.columnWidth : 0,
+      tableWidth: tableWidth - 34, // padding + border
+      actionBarWidth: this.props.actionBarWidth
+    });
+    return columns;
+  }
+   
 
   setUpBtnAuth = ({
     hasAdd,
@@ -1947,6 +2018,7 @@ class TableData extends React.Component {
       });
     }
 
+    // 行颜色配置
     if (rowColorConfig) {
       newColumns.forEach(item => {
         item.render = (text, record, rowIndex) => {
@@ -2506,19 +2578,22 @@ class TableData extends React.Component {
     }
     const { style, isWrap } = this.props;
     return (
-      <div
-        className={classNames('table-data', {
-          'table-data--no-wrap': !isWrap
-        })}
-        style={
-          zoomOutStyle.position
-            ? { ...zoomOutStyle, ...style }
-            : { width, height, ...style }
-        }
-        ref={element => (this.tableDataRef = element)}
-      >
-        <Spin spinning={loading}>{this.renderPwTable()}</Spin>
-      </div>
+      <>
+        <div
+          className={classNames('table-data', {
+            'table-data--no-wrap': !isWrap
+          })}
+          style={
+            zoomOutStyle.position
+              ? { ...zoomOutStyle, ...style }
+              : { width, height, ...style }
+          }
+          ref={element => (this.tableDataRef = element)}
+        >
+          <Spin spinning={loading}>{this.renderPwTable()}</Spin>
+        </div>
+        <div className='table-data__pw-table-container-max-width'></div>
+      </>
     );
   }
 }

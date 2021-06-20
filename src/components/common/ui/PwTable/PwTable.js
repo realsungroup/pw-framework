@@ -29,6 +29,7 @@ import { BIGrid } from 'lz-components-and-utils/lib/index';
 import fixedPng from './assets/冻结@2x.png';
 import fixedListPng from './assets/冻结列表@2x.png';
 import { debounce } from 'lodash';
+import classNames from 'classnames';
 
 const Search = Input.Search;
 
@@ -221,6 +222,7 @@ class PwTable extends React.Component {
       headerExtra,
       isShowGrid,
       gridProps,
+      className,
       ...restProps
     } = this.props;
 
@@ -233,9 +235,9 @@ class PwTable extends React.Component {
 
     const { locale } = this.props.intl;
 
-    const hasStatisticalAnalysis = gridProps.length ? true : false;
+    const hasStatisticalAnalysis = gridProps && gridProps.length ? true : false;
     return (
-      <div className="pw-table">
+      <div className={classNames('pw-table', className)}>
         {hasHeader && (
           <div className="pw-table__header">
             <div

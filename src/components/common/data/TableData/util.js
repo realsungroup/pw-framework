@@ -89,13 +89,13 @@ export const getColumns = (
 
     if (isSetColumnWidth) {
       let columnWidth;
-      // 使用后端给的 width
-      if (isUseBESize) {
-        columnWidth =
-          (item[item.id] && item[item.id].CS_SHOW_WIDTH) || defaultColumnWidth;
-      } else {
-        columnWidth = defaultColumnWidth;
-      }
+      // // 使用后端给的 width
+      // if (isUseBESize) {
+      //   columnWidth =
+      //     (item[item.id] && item[item.id].CS_SHOW_WIDTH) || defaultColumnWidth;
+      // } else {
+      //   columnWidth = defaultColumnWidth;
+      // }
       // 自定义列宽度
       let width = columnsWidth && columnsWidth[item.text];
       if (width) {
