@@ -72,7 +72,7 @@ export const defaultProps = {
     saveState: 'editoradd',
     containerType: 'drawer',
     containerProps: {},
-    saveFE: false,
+    saveFE: false
   },
   tableComponent: 'antdTable',
   rowSelectionAg: 'multiple',
@@ -287,7 +287,9 @@ export const propTypes = {
 
   /**
    * 表格高度 - scroll.y 的值（当横向滚动条被遮住时，需要添加这个参数。其值为 TableData 组件除去中间内容的其他高度）
-   * 注意：当无效时，请检查是否设置了表格的高度。此参数需要表格设置了宽度时，才有效
+   * 注意：
+   * 1. 不传这个 props 时，TableData 内部会计算这个值，传入的 subtractH 比计算的优先级更高；
+   * 2. 当无效时，请检查是否设置了表格的高度。此参数需要表格设置了高度时，才有效
    * 默认：0
    */
   subtractH: PropTypes.number,
@@ -644,7 +646,7 @@ export const propTypes = {
     saveState: PropTypes.oneOf(['editoradd', 'added']).isRequired, // 保存数据时的状态：'editoradd' 表示表中如果已存在该记录，则更新记录，不会报错；'added' 表示如果已存在该记录，则不能够插入该记录，而是抛出错误给前端
     containerType: PropTypes.oneOf(['modal', 'drawer']), // 导入控件所在的容器类型：'modal' 模态窗 | 'drawer' 抽屉
     containerProps: PropTypes.object, // 容器（'modal' | 'drawer'）接收的 props（参考 ant-design Modal/Drawer 组件的 props）
-    saveFE: PropTypes.bool, // 是否将导入的 excel 记录保存到前端表格中
+    saveFE: PropTypes.bool // 是否将导入的 excel 记录保存到前端表格中
   }),
 
   /**
@@ -745,7 +747,7 @@ export const propTypes = {
   whereRefreshWhenAdd: PropTypes.oneOf(['start', 'end']),
 
   /**
-   * 是否使用后端给的列尺寸（width/height）
+   * 是否使用后端给的列尺寸（width/height）作为最大宽度
    * 默认：false
    */
   isUseBESize: PropTypes.bool,
@@ -929,4 +931,14 @@ export const propTypes = {
   //   secondSaveColumn: PropTypes.string,
   //   secondSaveValue: PropTypes.string,
   // }),
+
+  /**
+   * 列的最大宽度，如果列的内容超过最大宽度时，会进行换行（或显示省略号，是换行还是显示省略号，取决于 isWrap 的值），否则列的宽度由内容的宽度决定（自适应）。这个优先级高于后端的宽度
+   * columnMaxWidth = { name: 100, age: 200 } 表示 name 字段设置最大宽度 100px，age 字段设置最大宽度 200px
+   * 默认：-
+   */
+  columnMaxWidth: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.objectOf(PropTypes.number)
+  ])
 };

@@ -23,12 +23,19 @@ class DevTableData extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ height: 400 }}>
         <TableData
           resid="609868074490"
           baseURL="http://powerworks.realsun.me:5051/"
-          fixedColumns={['工号']}
+          // fixedColumns={['工号']}
+          columnMaxWidth={{
+            C3_609868116494: 200
+          }}
+          // columnMaxWidth={200}
+          isUseBESize={true}
           isWrap={false}
+          subtractH={178}
+          // height={400}
         />
         {/* <TableData
           resid="609868074490"
