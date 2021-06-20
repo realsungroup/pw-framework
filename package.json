@@ -1,7 +1,7 @@
 {
   "name": "pw-components",
-  "version": "21.3.0",
-  "private": true,
+  "version": "0.1.0",
+  "private": false,
   "dependencies": {
     "@ant-design/colors": "^4.0.5",
     "@ant-design/icons-react": "^2.0.1",
@@ -63,6 +63,7 @@
     "fs-extra": "7.0.0",
     "hammerjs": "2.0.8",
     "happypack": "^5.0.1",
+    "hi-pkg-scripts": "^0.6.0",
     "hoist-non-react-statics": "^3.2.1",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "html2canvas": "^1.0.0-rc.5",
@@ -159,7 +160,10 @@
     "test": "node scripts/test.js",
     "run-build": "node --max_old_space_size=4000 scripts/build.js",
     "add-suffix": "node scripts/addSuffixToPublicJsFile.js",
-    "dll": "webpack -p --progress --config ./config/webpack.config.vendor.js"
+    "dll": "webpack -p --progress --config ./config/webpack.config.vendor.js",
+    "build:js": "rm -rf lib && NODE_ENV=production babel src/components/common -d lib/ --source-maps --ignore src/components/**/*.test.js",
+    "build:less": "node scripts/less2css.js",
+    "release": "npm run build:js && hi-pkg-scripts release components"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -214,10 +218,16 @@
   },
   "babel": {
     "presets": [
-      "react-app"
+      [
+        "react-app",
+        {
+          "absoluteRuntime": false
+        }
+      ]
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.14.5",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "antd-theme-webpack-plugin": "^1.2.0",

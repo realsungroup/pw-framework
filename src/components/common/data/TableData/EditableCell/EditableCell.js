@@ -3,7 +3,6 @@ import { EditableContext } from '../EditableRow';
 import { Form } from 'antd';
 import Control from '../../../ui/Control';
 import PropTypes from 'prop-types';
-import './EditableCell.less';
 
 const FormItem = Form.Item;
 

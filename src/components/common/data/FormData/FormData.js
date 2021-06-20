@@ -1,19 +1,18 @@
 import React from 'react';
 import PwForm from '../../ui/PwForm';
 import AbsoluteForm from '../../ui/PwForm/AbsoluteForm';
-
 import { message, Tabs, Spin, Icon } from 'antd';
-import { dealFormData } from 'Util20/controls';
-import { getResid } from 'Util20/util';
-import { TableData } from '../../loadableCommon';
+import { dealFormData } from '../../util20/controls';
+import { getResid } from '../../util20/util';
+import TableData from '../../data/TableData';
 import classNames from 'classnames';
-import './FormData.less';
 import { propTypes, defaultProps } from './propTypes';
-import http, { makeCancelable } from 'Util20/api';
+import http, { makeCancelable } from '../../util20/api';
 import debounce from 'lodash/debounce';
-import { isDateString } from 'Util20/util';
+import { isDateString } from '../../util20/util';
 import moment from 'moment';
 import ClearOnchangeContext from '../../contexts/clearOnchangeContext';
+import './FormData.less';
 
 const TabPane = Tabs.TabPane;
 

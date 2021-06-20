@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from '../serviceWorker';
 import TemplateWrap from './TemplateWrap';
+import '../components/common/styles/TableData.less';
 
 // 导入需要开发的组件
 import TableData from 'Common/data/TableData';
@@ -28,13 +29,12 @@ class DevTableData extends Component {
           resid="609868074490"
           baseURL="http://powerworks.realsun.me:5051/"
           // fixedColumns={['工号']}
-          columnMaxWidth={{
-            C3_609868116494: 200
-          }}
+          // columnMaxWidth={{
+          //   C3_609868116494: 200
+          // }}
           // columnMaxWidth={200}
           isUseBESize={true}
           isWrap={false}
-          subtractH={178}
           // height={400}
         />
         {/* <TableData
