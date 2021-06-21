@@ -1,6 +1,6 @@
 {
   "name": "pw-components",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "module": "lib/components/index.js",
   "dependencies": {
