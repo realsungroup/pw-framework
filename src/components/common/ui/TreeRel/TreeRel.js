@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select, Icon, Input, Button } from 'antd';
 import { Tree } from 'antd';
-import http from 'Util20/api';
+import http from '../../../../util20/api';
 import './TreeRel.less';
 
 const { TreeNode } = Tree;

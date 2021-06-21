@@ -4,7 +4,7 @@ import PwAggird from '../../ui/PwAggrid';
 import { message, Button, Spin, Modal, Icon, Input } from 'antd';
 import LzBackendBtn from '../../ui/LzBackendBtn';
 import ButtonWithConfirm from '../../ui/ButtonWithConfirm';
-import { getResid, getCmsWhere, percentString2decimal } from 'Util20/util';
+import { getResid, getCmsWhere, percentString2decimal } from '../../../../util20/util';
 import { getColumns, getRowSelection, getPagination } from './util';
 import './TableDataSavePage.less';
 import { withHttpGetBeBtns, withHttpGetFormData } from '../../hoc/withHttp';
@@ -17,13 +17,13 @@ import { withRecordForm } from '../../hoc/withRecordForm';
 
 import { defaultProps, propTypes } from './propTypes';
 import { EditableContext } from './EditableRow';
-import { getDataProp, setDataInitialValue } from 'Util20/formData2ControlsData';
+import { getDataProp, setDataInitialValue } from '../../../../util20/formData2ControlsData';
 import { ResizableBox } from 'react-resizable';
 // import withZoomInOut from '../../hoc/withZoomInOut';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
-import { getIntlVal, getItem } from 'Util20/util';
-import { dealFormData } from 'Util20/controls';
-import http, { makeCancelable } from 'Util20/api';
+import { getIntlVal, getItem } from '../../../../util20/util';
+import { dealFormData } from '../../../../util20/controls';
+import http, { makeCancelable } from '../../../../util20/api';
 import { debounce } from 'lodash';
 
 const { Fragment } = React;

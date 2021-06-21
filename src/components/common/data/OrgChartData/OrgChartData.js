@@ -1,11 +1,11 @@
 import React from 'react';
 import './OrgChartData.less';
 import { propTypes, defaultProps } from './propTypes';
-import http, { makeCancelable } from 'Util20/api';
-import { clone, getIntlVal } from 'Util20/util';
+import http, { makeCancelable } from '../../../../util20/api';
+import { clone, getIntlVal } from '../../../../util20/util';
 import { message, Modal, Spin, Button, Slider } from 'antd';
 import { withHttpGetFormData } from '../../hoc/withHttp';
-import { setDataInitialValue, getDataProp } from 'Util20/formData2ControlsData';
+import { setDataInitialValue, getDataProp } from '../../../../util20/formData2ControlsData';
 import { compose } from 'recompose';
 import FormData from 'Common/data/FormData';
 import withModalDrawer from 'Common/hoc/withModalDrawer';

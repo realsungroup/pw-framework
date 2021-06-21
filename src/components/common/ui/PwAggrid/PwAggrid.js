@@ -18,10 +18,10 @@ import {
 } from './map';
 import './PwAggrid.less';
 import 'react-resizable/css/styles.css';
-import { getIntlVal } from 'Util20/util';
+import { getIntlVal } from '../../../../util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import moment from 'moment';
-import http from 'Util20/api';
+import http from '../../../../util20/api';
 import DatePickerEditor from './components/DatePickerEditor';
 
 const isFirstColumn = params => {

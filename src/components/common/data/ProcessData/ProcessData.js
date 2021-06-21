@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, message, Progress, Popconfirm, Button } from 'antd';
-import http, { makeCancelable } from 'Util20/api';
+import http, { makeCancelable } from '../../../../util20/api';
 import './ProcessData.less';
 
 /**

@@ -1,6 +1,6 @@
 import React from 'react';
 import './TreeData.less';
-import http, { makeCancelable } from 'Util20/api';
+import http, { makeCancelable } from '../../../../util20/api';
 import { message, Tree, Input, Select } from 'antd';
 import { getParentKey } from './util';
 import memoize from 'memoize-one';

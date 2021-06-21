@@ -1,7 +1,7 @@
 import React from 'react';
 import './BatchTask.less';
 import { Modal, Progress, message, Icon, Tooltip } from 'antd';
-import http from 'Util20/api';
+import http from '../../../../util20/api';
 import { defaultProps, propTypes } from './propTypes';
 
 const IconStyle = {

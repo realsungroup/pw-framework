@@ -1,7 +1,7 @@
 import React from 'react';
 import { argumentContainer } from '../util';
 import { message } from 'antd';
-import http, { makeCancelable } from 'Util20/api';
+import http, { makeCancelable } from '../../../../util20/api';
 
 // 带有下载文件功能的高阶组件
 const withDownloadFile = WrappedComponent => {

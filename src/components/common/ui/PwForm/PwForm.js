@@ -6,7 +6,7 @@ import Control from '../Control';
 import { propTypes, defaultProps } from './propTypes';
 import { injectIntl } from 'react-intl';
 import './PwForm.less';
-import { getIntlVal, getGBEMClassName } from 'Util20/util';
+import { getIntlVal, getGBEMClassName } from '../../../../util20/util';
 import classNames from 'classnames';
 
 const Fragment = React.Fragment;

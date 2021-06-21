@@ -23,7 +23,7 @@ import { defaultProps, propTypes } from './propTypes';
 import * as blobUtil from 'blob-util';
 import { getRadioGroupOptions } from './util';
 import './Control.less';
-import http from 'Util20/api';
+import http from '../../../../util20/api';
 import ClearOnchangeContext from '../../contexts/clearOnchangeContext';
 
 const { TextArea, Search } = Input;

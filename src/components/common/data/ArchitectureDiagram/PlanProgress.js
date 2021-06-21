@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Progress, List, message, Icon, Button } from 'antd';
 // import PropTypes from 'prop-types';
-import http from 'Util20/api';
+import http from '../../../../util20/api';
 
 class PlanProgress extends React.Component {
   // static propTypes = {

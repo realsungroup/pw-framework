@@ -2,11 +2,11 @@ import React from 'react';
 import './BusinessManagement.less';
 import { propTypes, defaultProps } from './propTypes';
 import { message, Tabs, Menu, Layout, Input, Spin } from 'antd';
-import http, { makeCancelable } from 'Util20/api';
+import http, { makeCancelable } from '../../../../util20/api';
 import BMContent from './BMContent';
 import arrayToTree from 'array-to-tree';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
-import { getIntlVal } from 'Util20/util';
+import { getIntlVal } from '../../../../util20/util';
 import { compose } from 'recompose';
 
 const TabPane = Tabs.TabPane;

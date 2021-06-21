@@ -1,6 +1,6 @@
 import React from 'react';
 import { message, Spin, Tabs } from 'antd';
-import http, { makeCancelable } from 'Util20/api';
+import http, { makeCancelable } from '../../../../util20/api';
 import { TableData } from 'Common/loadableCommon';
 import classNames from 'classnames';
 import { propTypes, defaultProps } from './propTypes';

@@ -1,5 +1,5 @@
 import React from 'react';
-import http, { makeCancelable } from 'Util20/api';
+import http, { makeCancelable } from '../../../../util20/api';
 
 /**
  * 获取url对应的域名

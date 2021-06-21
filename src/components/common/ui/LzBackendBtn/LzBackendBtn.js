@@ -1,9 +1,9 @@
 import React from 'react';
 import { Popconfirm, message, Button } from 'antd';
-import http, { makeCancelable } from 'Util20/api';
+import http, { makeCancelable } from '../../../../util20/api';
 import { withHttpGetFormData } from '../../hoc/withHttp';
 import { propTypes, defaultProps } from './propTypes';
-import { getDataProp } from 'Util20/formData2ControlsData';
+import { getDataProp } from '../../../../util20/formData2ControlsData';
 import { injectIntl } from 'react-intl';
 
 const btnSizeMap = {

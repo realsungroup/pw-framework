@@ -10,7 +10,7 @@ import {
   Spin
 } from 'antd';
 import PropTypes from 'prop-types';
-import http, { makeCancelable } from 'Util20/api';
+import http, { makeCancelable } from '../../../../../util20/api';
 import './ImportExcel.less';
 import XLSX from 'xlsx';
 

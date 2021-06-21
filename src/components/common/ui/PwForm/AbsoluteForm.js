@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from 'antd';
 import Control from '../Control';
 import PwFormFooter from './PwFormFooter/index';
-import { getIntlVal } from 'Util20/util';
+import { getIntlVal } from '../../../../util20/util';
 import { injectIntl } from 'react-intl';
 import { propTypes, defaultProps } from './propTypes';
 import classNames from 'classnames';

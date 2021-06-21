@@ -8,7 +8,7 @@ import IconWithTooltip from 'Common/ui/IconWithTooltip';
 import classNames from 'classnames';
 import { FNLIST, TEMPLATES, ORIENTATIONS, MODES } from './constants';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
-import { getIntlVal } from 'Util20/util';
+import { getIntlVal } from '../../../../../util20/util';
 
 const RadioGroup = Radio.Group;
 const prefix = 'org-chart-tools';

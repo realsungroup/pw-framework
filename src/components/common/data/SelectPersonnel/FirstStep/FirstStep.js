@@ -16,7 +16,7 @@ import ListWithSelect from './ListWithSelect';
 import PersonListWithSelect from './PersonListWithSelect';
 import PersonListWithDel from './PersonListWithDel';
 import InfiniteScroll from 'react-infinite-scroller';
-import http from 'Util20/api';
+import http from '../../../../../util20/api';
 import PropTypes from 'prop-types';
 import XLSX from 'xlsx';
 import examplePng from './assets/example.png';

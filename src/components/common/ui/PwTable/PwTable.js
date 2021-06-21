@@ -23,7 +23,7 @@ import {
 } from './map';
 import './PwTable.less';
 import 'react-resizable/css/styles.css';
-import { getIntlVal } from 'Util20/util';
+import { getIntlVal } from '../../../../util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import { BIGrid } from 'lz-components-and-utils/lib/index';
 import fixedPng from './assets/冻结@2x.png';

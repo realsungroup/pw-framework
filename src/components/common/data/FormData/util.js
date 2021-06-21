@@ -1,4 +1,4 @@
-import { getRules, ControlCode } from 'Util20/controls';
+import { getRules, ControlCode } from '../../../../util20/controls';
 import moment from 'moment';
 
 const assortFields = controlArr => {
