@@ -1,9 +1,9 @@
 import React from 'react';
-import './BMContent.less';
+import '../../../styles/BMContent.less';
 import { propTypes, defaultProps } from './propTypes';
 import { message, Spin, Tabs } from 'antd';
 import http, { makeCancelable } from '../../../../../util20/api';
-import { TableData } from 'Common/loadableCommon';
+import TableData from '../../TableData';
 
 const TabPane = Tabs.TabPane;
 

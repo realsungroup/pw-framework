@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select, Icon, Input, Button } from 'antd';
 import { defaultProps, propTypes } from './propTypes';
-import './AdvSearch.less';
+import '../../styles/AdvSearch.less';
 
 const Option = Select.Option;
 

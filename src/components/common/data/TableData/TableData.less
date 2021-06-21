@@ -1,0 +1,137 @@
+@import '../../../../styles/variables.less';
+
+.table-data {
+  table {
+    // 只有定义了表格的布局算法为fixed，下面td的定义才能起作用
+    table-layout: fixed;
+  }
+  // 单元格内容溢出隐藏
+  &--no-wrap {
+    // 表格中单元格单行溢出隐藏
+    table {
+      // 只有定义了表格的布局算法为fixed，下面td的定义才能起作用
+      table-layout: fixed;
+    }
+    td {
+      word-break: keep-all;
+      /* 不换行 */
+      white-space: nowrap;
+      /* 不换行 */
+      overflow: hidden;
+      /* 内容超出宽度时隐藏超出部分的内容 */
+      text-overflow: ellipsis;
+      /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用*/
+    }
+  }
+  .ant-table-tbody {
+    .ant-form-item {
+      margin-bottom: 0 !important;
+    }
+    textarea.ant-input {
+      vertical-align: middle !important;
+    }
+  }
+
+  &__row--clicked {
+    background-color: #f5f5f5;
+  }
+
+  width: 100%;
+  height: 100%;
+  * {
+    border-radius: 0 !important;
+    box-sizing: border-box;
+  }
+  & > .ant-spin-nested-loading {
+    width: 100%;
+    height: 100%;
+    & > .ant-spin-container {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .ant-table-fixed-left,
+  .ant-table-fixed-right {
+    z-index: 2 !important;
+  }
+
+  .ant-table-fixed-left table {
+    width: min-content !important;
+  }
+
+  &__action-btn {
+    margin: 0 4px;
+  }
+  .ant-table-fixed-right .ant-table-header {
+    background-color: #f1f1fa !important;
+  }
+  .react-resizable-handle {
+    z-index: 101;
+  }
+  .ant-table-selection-column {
+    height: 34px !important;
+  }
+  // &>.ant-spin-nested-loading,
+  // &>.ant-spin-nested-loading>.ant-spin-container {
+  //   // width: 100%;
+  //   // height: 100%;
+  // }
+  tr,
+  th,
+  td,
+  .ant-table,
+  .ant-table-fixed-right {
+    border-color: #bdbdbd !important;
+  }
+  tr {
+    td {
+      background: none !important;
+      position: relative;
+      * {
+        // position: relative;
+        z-index: 2;
+      }
+    }
+  }
+
+  th,
+  td {
+    height: 32px;
+    padding: 0 8px !important;
+    span {
+      // color:#fff!important;
+      color: #333 !important; //在改完主题色之前先用这个颜色
+    }
+    button {
+      &:hover {
+        span {
+          text-decoration: underline;
+        }
+      }
+      border: none;
+      span {
+        color: @primary-color!important;
+      }
+      background: none !important;
+      &.ant-btn-danger {
+        filter: hue-rotate(130deg);
+      }
+    }
+  }
+  thead {
+    background: #f1f1fa;
+  }
+
+  td {
+    word-break: break-all !important;
+  }
+
+  &__pw-table-container-max-width {
+    width: 100px;
+  }
+}
+
+.adv-search {
+  margin-left: 0 !important;
+}

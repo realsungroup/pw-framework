@@ -1,5 +1,5 @@
 import React from 'react';
-import './BatchTask.less';
+import '../../styles/BatchTask.less';
 import { Modal, Progress, message, Icon, Tooltip } from 'antd';
 import http from '../../../../util20/api';
 import { defaultProps, propTypes } from './propTypes';

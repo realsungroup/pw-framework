@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, message, Progress, Popconfirm, Button } from 'antd';
 import http, { makeCancelable } from '../../../../util20/api';
-import './ProcessData.less';
+import '../../styles/ProcessData.less';
 
 /**
  * 结算

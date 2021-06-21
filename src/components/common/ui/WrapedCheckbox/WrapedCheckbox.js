@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox } from 'antd';
 import PropTypes from 'prop-types';
-import './WrapedCheckbox.less';
+import '../../styles/WrapedCheckbox.less';
 
 /**
  * 被包装的 Checkbox 组件：WrapedCheckbox

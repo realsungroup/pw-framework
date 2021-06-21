@@ -1,5 +1,5 @@
 import React from 'react';
-import './BusinessManagement.less';
+import '../../styles/BusinessManagement.less';
 import { propTypes, defaultProps } from './propTypes';
 import { message, Tabs, Menu, Layout, Input, Spin } from 'antd';
 import http, { makeCancelable } from '../../../../util20/api';

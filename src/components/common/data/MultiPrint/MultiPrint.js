@@ -1,5 +1,5 @@
 import React from 'react';
-import './MultiPrint.less';
+import '../../styles/MultiPrint.less';
 import { message, Button } from 'antd';
 import { TableData } from '../../loadableCommon';
 

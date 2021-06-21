@@ -16,7 +16,7 @@ import {
   paginationSizeMap,
   inputSizeMap
 } from './map';
-import './PwAggrid.less';
+import '../../styles/PwAggrid.less';
 import 'react-resizable/css/styles.css';
 import { getIntlVal } from '../../../../util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';

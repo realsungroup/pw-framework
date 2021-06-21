@@ -23,7 +23,7 @@ import {
   Menu,
   Input
 } from 'antd';
-import './ArchitectureDiagram.less';
+import '../../styles/ArchitectureDiagram.less';
 import add1 from './svg/同级.svg';
 import add2 from './svg/子级.svg';
 import avatarDef from './svg/avatar.svg';

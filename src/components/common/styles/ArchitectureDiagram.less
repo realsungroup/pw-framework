@@ -1,0 +1,309 @@
+.architecture-diagram {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  &__expand-buttons {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    z-index: 99;
+  }
+  &__expand {
+    color: #fff;
+    margin-right: 2px;
+    background: rgba(24, 144, 255, 1);
+    padding: 4px 8px;
+    i.anticon.anticon-switcher {
+      cursor: pointer;
+      margin-left: 32px;
+    }
+  }
+  &__content {
+    height: calc(100% - 64px);
+    overflow: auto;
+    &__main {
+      height: 100%;
+      display: flex;
+      &__container {
+        flex-grow: 1;
+        height: 100%;
+        overflow: hidden;
+      }
+      .architecture-diagram__tabledata__container,
+      .architecture-diagram__chart-container {
+        height: 100%;
+        width: 100%;
+      }
+      .architecture-diagram__tabledata__container.hidden {
+        display: none;
+      }
+      .architecture-diagram__chart-container.hidden {
+        display: none;
+      }
+      .architecture-diagram_main_sider {
+        display: flex;
+        flex-direction: column;
+        // width: 200px;
+        user-select: text;
+        .architecture-diagram_main_sider_title {
+          height: 28px;
+          background: rgba(24, 144, 255, 1);
+          line-height: 28px;
+          color: #ffffff;
+          padding: 0 12px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .architecture-diagram_main_item-detail {
+          min-height: 200px;
+          width: 200px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          &_list {
+            flex: 1;
+            overflow: auto;
+            padding: 10px;
+            &_item {
+              margin: 0;
+              span {
+                color: #999999;
+              }
+            }
+          }
+          .architecture-diagram_unselect-tip {
+            padding: 12px;
+          }
+        }
+        .architecture-diagram_main_item-history {
+          min-height: 300px;
+          width: 200px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          .architecture-diagram_change-hsitory_list {
+            flex: 1;
+            overflow: auto;
+            padding: 10px;
+            &__view-button {
+              margin-left: 8px;
+            }
+            .architecture-diagram_change-hsitory {
+              border-bottom: 1px solid #e7e7e7;
+              padding: 8px 0;
+              word-break: break-all;
+              &_item {
+                margin: 0;
+                span {
+                  color: #999999;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  & > .ant-spin-nested-loading {
+    width: 100%;
+    height: 100%;
+    & > .ant-spin-container {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &_header {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;
+    // padding: 0 24px;
+    height: 32px;
+    &_icon-button-group {
+      display: flex;
+      height: 100%;
+      border-right: 1px solid #ebebeb;
+    }
+    &_icon-button {
+      // min-width: 90px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      &&__selected {
+        color: #1890ff;
+      }
+      &.delete-button {
+        color: #f5222d;
+      }
+      &.disable-button {
+        color: #f5222d;
+      }
+      &.enable-button {
+        color: #2593fc;
+      }
+      &__icon {
+        font-size: 18px;
+        margin-right: 8px;
+      }
+    }
+  }
+  &_breadcrumb {
+    height: 32px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+  }
+  #architecture-diagram_orgchart {
+    background: #f0f2f5;
+    height: 100%;
+    // flex: 1;
+    width: 100%;
+  }
+  //未启用状态
+  .created > rect {
+    fill-opacity: 0.4;
+  }
+  // 选中状态
+  .selected > rect {
+    fill: #1890ff;
+  }
+  .selected > text {
+    fill: #ffffff;
+  }
+  // 空缺状态
+  .empty > rect {
+    fill: #fa8c16;
+  }
+  .empty > line {
+    stroke: #fa8c16;
+  }
+  .empty > text {
+    fill: #ffffff;
+  }
+  // 选中空缺状态
+  .empty.selected > rect {
+    fill: #ffa940;
+  }
+  .empty.selected > line {
+    stroke: #ffa940;
+  }
+  .empty.selected > text {
+    fill: #ffffff;
+  }
+  // 废弃状态
+  .discard > rect {
+    fill: #bbbbbb;
+  }
+  .discard > line {
+    stroke: #bbbbbb;
+  }
+  .discard > text {
+    fill: #999999;
+  }
+  //兼任状态
+  .tartOccupied > line {
+    stroke: #13c2c2;
+  }
+  // 兼任选中状态
+  .tartOccupied.selected > rect {
+    fill: #36cfc9;
+  }
+  .tartOccupied.selected > line {
+    stroke: #36cfc9;
+  }
+  .tartOccupied.selected > text {
+    fill: #ffffff;
+  }
+
+  &_main-container {
+    // height: calc(100% - 64px);
+    height: 100%;
+    min-height: 600px;
+    // display: grid;
+    // grid-template-columns: 1fr 200px;
+    // grid-template-rows: 100%;
+    display: flex;
+    &.hidden {
+      display: none;
+    }
+  }
+  .architecture-diagram_tabledata__container {
+    height: 100%;
+    min-height: 600px;
+    &.hidden {
+      display: none;
+    }
+  }
+  .architecture-diagram__import-result {
+    height: calc(100% - 64px);
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    transition: width 0.5s;
+    > .ant-spin-nested-loading {
+      height: 100%;
+      & > .ant-spin-container {
+        height: 100%;
+      }
+    }
+    &__main {
+      height: 100%;
+      width: calc(100% - 200px);
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+
+      &__title {
+        height: 28px;
+        background: #ffffff;
+        line-height: 28px;
+        color: #333333;
+        padding: 0 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 0;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+      &__content {
+        padding: 8px 24px;
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        z-index: 0;
+        background: #ffffff;
+
+        .ant-tabs {
+          height: 100%;
+        }
+        .ant-tabs-top-content.ant-tabs-content-animated {
+          height: calc(100% - 60px);
+        }
+      }
+    }
+  }
+  .hidden.architecture-diagram__import-result {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+  .architecture-diagram__import-result-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0);
+    opacity: 0.2;
+  }
+  .architecture-diagram__min-button {
+    cursor: pointer;
+  }
+}

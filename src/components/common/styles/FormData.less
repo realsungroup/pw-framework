@@ -1,0 +1,36 @@
+.form-data {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  &__tabs {
+    float: left;
+    height: 100%;
+    vertical-align: top;
+    overflow: auto;
+    &--full {
+      width: 100% !important;
+    }
+  }
+  &__form-wrap {
+    float: left;
+    height: 100%;
+  }
+}
+.enlarged-size{
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  padding:24px;
+  box-sizing: border-box;
+  z-index:99999;
+  left: 0;
+  top: 0;
+  transition: .3s;
+  background-color: #FFF;
+  overflow: auto;
+}
+.normal-size{
+  transition: .3s;
+  width:auto;
+  height:auto;
+}

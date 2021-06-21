@@ -1,0 +1,62 @@
+@import '../../../styles/variables.less';
+.business-management {
+  &__title {
+    height: 60px;
+    line-height: 60px;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+  }
+  .ant-tabs-extra-content {
+    display: none;
+  }
+  &__menu-search {
+    text-align: center;
+  }
+  &__input-search {
+    border-radius: 10px;
+    width: 160px;
+    input {
+      border-radius: 16px;
+      background: #eee;
+      &:focus {
+        background: rgba(255,255,255,0);
+      }
+    }
+  }
+  .ant-layout-sider{
+    background: rgba(255,255,255,1);
+
+    *{
+      background: rgba(255,255,255,0)!important;
+      box-shadow: none!important;
+    }
+    .ant-menu-item{
+      *{
+        color:#333;
+      }
+      
+    }
+    .ant-menu-submenu-title , .ant-menu-submenu-arrow{
+      color:#333;
+      i{
+        &:before{
+          background: #666!important;
+        }
+        &:after{
+          background: #666!important;
+        }
+      }
+      &:hover{
+        color:@primary-color;
+      }
+    }
+    .ant-menu-item-selected{
+      background-color: @primary-color!important;
+      span{
+        color:#fff;
+
+      }
+    }
+  }
+}

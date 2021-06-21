@@ -22,7 +22,7 @@ import moment from 'moment';
 import { defaultProps, propTypes } from './propTypes';
 import * as blobUtil from 'blob-util';
 import { getRadioGroupOptions } from './util';
-import './Control.less';
+import '../../styles/Control.less';
 import http from '../../../../util20/api';
 import ClearOnchangeContext from '../../contexts/clearOnchangeContext';
 

@@ -21,13 +21,12 @@ import {
   paginationSizeMap,
   inputSizeMap
 } from './map';
-import './PwTable.less';
+import '../../styles/PwTable.less';
 import 'react-resizable/css/styles.css';
 import { getIntlVal } from '../../../../util20/util';
 import { injectIntl, FormattedMessage as FM } from 'react-intl';
 import { BIGrid } from 'lz-components-and-utils/lib/index';
-import fixedPng from './assets/冻结@2x.png';
-import fixedListPng from './assets/冻结列表@2x.png';
+import fixedListPng from '../../assets/冻结列表@2x.png';
 import { debounce } from 'lodash';
 import classNames from 'classnames';
 

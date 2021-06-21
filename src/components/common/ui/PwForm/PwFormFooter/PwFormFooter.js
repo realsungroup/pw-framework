@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Popconfirm } from 'antd';
 import PropTypes from 'prop-types';
-import './PwFormFooter.less';
+import '../../../styles/PwFormFooter.less';
 
 const Fragment = React.Fragment;
 

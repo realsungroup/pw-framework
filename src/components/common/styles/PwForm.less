@@ -1,0 +1,89 @@
+.pw-form {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 4px;
+  height: 100%;
+
+  &__form-item {
+    &--hide {
+      display: none;
+    }
+  }
+  &__body {
+    flex: 1;
+    overflow: auto;
+  }
+  &__form-item {
+    &--float {
+      float: left;
+    }
+    &--remove-antd-style {
+      .ant-form-item,
+      .ant-form-item-children {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+      }
+      .ant-form-item-label,
+      .ant-form-item-control {
+        line-height: normal;
+      }
+    }
+  }
+  &__form-item-label {
+    text-align: right;
+  }
+}
+
+.absolute-form {
+  position: relative;
+  &__form-item {
+    &--hide {
+      display: none;
+    }
+  }
+  &__label {
+    &--hide {
+      display: none;
+    }
+  }
+  .has-error .ant-form-explain {
+    position: absolute;
+    z-index: 1;
+  }
+  .required::before {
+    position: absolute;
+    left: -6px;
+    top: 2px;
+    display: inline-block;
+    margin-right: 0px;
+    color: #f5222d;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: '*';
+  }
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+  .ant-input {
+    height: 24px;
+  }
+  .ant-form-item-control {
+    line-height: 24px;
+  }
+  .ant-select-selection--single {
+    height: 24px;
+  }
+  .ant-select-selection__rendered {
+    line-height: 24px;
+  }
+  .ant-select {
+    width: 100%;
+  }
+}
+
+.table-data-form > .pw-form__body {
+  flex: none;
+}

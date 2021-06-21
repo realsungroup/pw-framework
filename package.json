@@ -2,7 +2,7 @@
   "name": "pw-components",
   "version": "0.1.5",
   "private": false,
-  "module": "lib/components/index.js",
+  "module": "lib/components/common/index.js",
   "dependencies": {
     "@ant-design/colors": "^4.0.5",
     "@ant-design/icons-react": "^2.0.1",
@@ -164,7 +164,11 @@
     "dll": "webpack -p --progress --config ./config/webpack.config.vendor.js",
     "build:js": "rm -rf lib && NODE_ENV=production babel src -d lib --source-maps --ignore src/components/**/*.test.js,src/components/custom/**/*.js",
     "build:less": "node scripts/less2css.js",
-    "release": "npm run build:js && hi-pkg-scripts release components"
+    "move:less": "cp -R src/components/common/styles lib/components/common/styles && cp -R src/styles lib/styles",
+    "move:assets": "cp -R src/components/common/assets lib/components/common/assets",
+    "move:all": "npm run move:less && npm run move:assets",
+    "build:all": "npm run build:js && npm run move:all",
+    "release": "npm run build:all && hi-pkg-scripts release components"
   },
   "eslintConfig": {
     "extends": "react-app"

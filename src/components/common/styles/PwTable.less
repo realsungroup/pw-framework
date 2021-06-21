@@ -1,0 +1,126 @@
+.pw-table {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #e8eaee;
+  border-radius: 4px;
+  padding: 16px;
+  background: #fff;
+  overflow: hidden;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e8eaee;
+  }
+  &__header-title {
+    &--large {
+      font-size: 30px;
+    }
+    &--middle {
+      font-size: 26px;
+    }
+    &--small {
+      font-size: 22px;
+    }
+  }
+  &__header-icon {
+    margin: 0 8px;
+  }
+  &__action-bar {
+    overflow: hidden;
+    &--large {
+      padding: 12px 0;
+    }
+    &--middle {
+      padding: 10px 0;
+    }
+    &--small {
+      padding: 8px 0;
+    }
+    button {
+      margin: 0 4px;
+    }
+  }
+  &__action-btns {
+    float: left;
+  }
+  &__search {
+    float: right;
+  }
+  &__footer {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 44px;
+    border-top: 1px solid #e8eaee;
+    background: #fff;
+    z-index: 100;
+  }
+
+  &__columns-wrapper,
+  &__fixed-columns-wrapper {
+    width: 240px;
+    max-height: 378px;
+    overflow: auto;
+    padding: 16px;
+  }
+
+  &__fixed-columns-wrapper {
+    background-color: #fff;
+  }
+
+  &__columns-title {
+    margin: 8px 0;
+  }
+
+  &__columns-item,
+  &__fixed-columns-item {
+    display: flex;
+    margin: 4px 0;
+    height: 24px;
+    align-items: center;
+    &:hover {
+      cursor: pointer;
+      background-color: #e9f6fe;
+    }
+  }
+
+  &__columns-item-title,
+  &__fixed-columns-item-title {
+    margin-left: 4px;
+    width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__columns-footer,
+  &__fixed-columns-footer {
+    margin-top: 16px;
+  }
+
+  &__columns-list {
+    max-height: 200px;
+    overflow: auto;
+  }
+
+  &__columns-no-data,
+  &__fixed-columns-no-data {
+    color: #bfbfbf;
+  }
+
+  &__fixed-column,
+  &__fixed-column-list {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+  &__fixed-column-list {
+    margin: 0 8px;
+  }
+}

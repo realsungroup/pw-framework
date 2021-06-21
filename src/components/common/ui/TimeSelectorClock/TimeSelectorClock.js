@@ -1,5 +1,5 @@
 import React from 'react';
-import './TimeSelectorClock.less';
+import '../../styles/TimeSelectorClock.less';
 var retOk;
 var timeType;
 class TimeSelectorClock extends React.Component {

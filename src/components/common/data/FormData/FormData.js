@@ -12,7 +12,7 @@ import debounce from 'lodash/debounce';
 import { isDateString } from '../../../../util20/util';
 import moment from 'moment';
 import ClearOnchangeContext from '../../contexts/clearOnchangeContext';
-import './FormData.less';
+import '../../styles/FormData.less';
 
 const TabPane = Tabs.TabPane;
 

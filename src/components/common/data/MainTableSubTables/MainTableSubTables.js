@@ -1,10 +1,10 @@
 import React from 'react';
 import { message, Spin, Tabs } from 'antd';
 import http, { makeCancelable } from '../../../../util20/api';
-import { TableData } from 'Common/loadableCommon';
+import TableData from '../TableData';
 import classNames from 'classnames';
 import { propTypes, defaultProps } from './propTypes';
-import './MainTableSubTables.less';
+import '../../styles/MainTableSubTables.less';
 
 const TabPane = Tabs.TabPane;
 

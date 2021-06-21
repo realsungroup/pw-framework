@@ -5,7 +5,7 @@ import PwFormFooter from './PwFormFooter/index';
 import Control from '../Control';
 import { propTypes, defaultProps } from './propTypes';
 import { injectIntl } from 'react-intl';
-import './PwForm.less';
+import '../../styles/PwForm.less';
 import { getIntlVal, getGBEMClassName } from '../../../../util20/util';
 import classNames from 'classnames';
 

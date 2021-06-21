@@ -2,7 +2,7 @@ import React from 'react';
 import { Select, Icon, Input, Button } from 'antd';
 import { Tree } from 'antd';
 import http from '../../../../util20/api';
-import './TreeRel.less';
+import '../../styles/TreeRel.less';
 
 const { TreeNode } = Tree;
 var bol = false;

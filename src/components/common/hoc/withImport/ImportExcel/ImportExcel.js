@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import PropTypes from 'prop-types';
 import http, { makeCancelable } from '../../../../../util20/api';
-import './ImportExcel.less';
+import '../../../styles/ImportExcel.less';
 import XLSX from 'xlsx';
 
 const Dragger = Upload.Dragger;

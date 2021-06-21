@@ -1,5 +1,5 @@
 import React from 'react';
-import './Spin.less';
+import '../../styles/Spin.less';
 
 export default function Spin() {
   return (
