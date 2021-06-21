@@ -2,7 +2,7 @@
   "name": "pw-components",
   "version": "0.1.4",
   "private": false,
-  "module": "lib/index.js",
+  "module": "lib/components/index.js",
   "dependencies": {
     "@ant-design/colors": "^4.0.5",
     "@ant-design/icons-react": "^2.0.1",
@@ -162,7 +162,7 @@
     "run-build": "node --max_old_space_size=4000 scripts/build.js",
     "add-suffix": "node scripts/addSuffixToPublicJsFile.js",
     "dll": "webpack -p --progress --config ./config/webpack.config.vendor.js",
-    "build:js": "rm -rf lib && NODE_ENV=production babel src/components/common -d lib/ --source-maps --ignore src/components/**/*.test.js",
+    "build:js": "rm -rf lib && NODE_ENV=production babel src -d lib --source-maps --ignore src/components/**/*.test.js,src/components/custom/**/*.js",
     "build:less": "node scripts/less2css.js",
     "release": "npm run build:js && hi-pkg-scripts release components"
   },
