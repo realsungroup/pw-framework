@@ -292,7 +292,7 @@ class DeliverPeopleList extends React.Component {
   sendDeliverList = () => {
     if (
       !this.state.dataSource.find(item => {
-        if (!/^1[345678]\d{9}$/.test(item.C3_606412134505)) {
+        if (!/^1[0-9]{10}$/.test(item.C3_606412134505)) {
           message.info(`${item.C3_605716828937}的手机号码有误，请重新填写`);
           return true;
         } else if (
