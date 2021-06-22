@@ -107,7 +107,10 @@ const filterType = [
       }, {
         value: '三级审批',
         resid: '672684701234'
-      },
+      }, {
+        value: '全部',
+        resid: '677270648930'
+      }
     ]
   },
   {
@@ -127,6 +130,9 @@ const filterType = [
       }, {
         value: '三级审批',
         resid: '675182062955'
+      }, {
+        value: '全部',
+        resid: '677270503247'
       },
     ]
   },
@@ -144,6 +150,9 @@ const filterType = [
       {
         value: '二级审批',
         resid: '675182597825'
+      }, {
+        value: '全部',
+        resid: '677270260926'
       }
     ]
   },
@@ -161,8 +170,37 @@ const filterType = [
       {
         value: '二级审批',
         resid: '675182971588'
+      },
+      {
+        value: '全部',
+        resid: '677270035480'
       }
+
     ]
+  }
+  , {
+    value: '全部部门',
+    children: [
+      {
+        value: '意向确认',
+        resid: '677269581164'
+      },
+      {
+        value: '一级审批',
+        resid: '677268435952'
+      },
+      {
+        value: '二级审批',
+        resid: '677268708036'
+      },
+      {
+        value: '三级审批',
+        resid: '677268796340'
+      },
+      {
+        value: '全部',
+        resid: '677271029195'
+      }]
   }
 ]
 class Compact extends Component {
