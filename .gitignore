@@ -27,3 +27,4 @@ build.zip
 .idea/
 
 /lib
+.vscode/
