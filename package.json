@@ -168,7 +168,8 @@
     "move:assets": "cp -R src/components/common/assets lib/components/common/assets",
     "move:all": "npm run move:less && npm run move:assets",
     "build:all": "npm run build:js && npm run move:all",
-    "release": "npm run build:all && hi-pkg-scripts release components"
+    "test:all": "jest",
+    "release": "npm run test:all && npm run build:all && hi-pkg-scripts release components"
   },
   "eslintConfig": {
     "extends": "react-app"
