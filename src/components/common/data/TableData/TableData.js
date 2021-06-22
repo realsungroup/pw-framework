@@ -248,6 +248,7 @@ class TableData extends React.Component {
   }
 
   componentDidMount = async () => {
+    console.info('[pw-components TableData]');
     this.initVariables();
     this.setState({ loading: true });
 
