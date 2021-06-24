@@ -35,7 +35,7 @@ class AnnualLeaveQuery extends React.Component {
       UserName: userInfoJson.Data,
       synj: null, //抬头上的信息
       snsy: null, //抬头上的信息
-      djfp: null,//抬头上的信息
+      djfp: null, //抬头上的信息
       snjysy: null
     };
   }
@@ -168,7 +168,7 @@ class Summary extends React.PureComponent {
       render: (text, record) => {
         const { currentUserNo } = this.state;
         if (record.memberID != currentUserNo) {
-          return null
+          return null;
         }
         return (
           <span
@@ -182,7 +182,7 @@ class Summary extends React.PureComponent {
           >
             使用明细
           </span>
-        )
+        );
       }
     }
   ];
@@ -197,7 +197,7 @@ class Summary extends React.PureComponent {
     this.setState({
       selectValue: bianhao,
       currentUserNo: bianhao,
-      isWuxi: userinfo.EnterpriseCode == "100" ? true : false
+      isWuxi: userinfo.EnterpriseCode == '100' ? true : false
     });
     try {
       let res = await http().postTreeData({
@@ -272,66 +272,67 @@ class Summary extends React.PureComponent {
       let curentYearIncrease = 0;
       let snjysy = 0;
       let dnjysy = 0;
-      this.setState({ snjysy: 0, dnjysy: 0 })
+      let fix = 0;
+      this.setState({ snjysy: 0, dnjysy: 0 });
       res.data.map(item => {
         if (item.synj >= 0) {
           synj1 = item.synj + synj1;
         }
         if (item.curSeasonNj) {
-          curentYearIncrease += item.curSeasonNj
+          curentYearIncrease += item.curSeasonNj;
         }
       });
       let qua = new Date().getMonth();
       qua++;
       if (qua < 7) {
         if (qua < 4) {
-          qua = 1
+          qua = 1;
         } else {
-          qua = 2
+          qua = 2;
         }
       } else {
         if (qua < 10) {
-          qua = 3
+          qua = 3;
         } else {
-          qua = 4
+          qua = 4;
         }
       }
       let nn = 0;
       while (nn < res.data.length) {
         if (qua == 1) {
           if (res.data[nn].quarter == 1) {
-            snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            fix = res.data[nn].useChange - res.data[nn].C3_667148022365;
+            snjysy = res.data[nn].snsy - res.data[nn].ljsq + fix;
             if (snjysy < 0) {
               snjysy = 0;
-              dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
-
+              dnjysy = res.data[nn].hjky - res.data[nn].ljsq + fix;
             } else {
               dnjysy = res.data[nn].hjky - res.data[nn].snsy;
-
-
             }
           }
         } else if (qua == 2) {
           if (res.data[nn].quarter == 2) {
-            snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            fix = res.data[nn].useChange - res.data[nn].C3_667148022365;
+
+            snjysy = res.data[nn].snsy - res.data[nn].ljsq + fix;
             if (snjysy < 0) {
               snjysy = 0;
-              dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
-
+              dnjysy = res.data[nn].hjky - res.data[nn].ljsq + fix;
             } else {
               dnjysy = res.data[nn].hjky - res.data[nn].snsy;
-
             }
           }
         } else if (qua == 3) {
           if (res.data[nn].quarter == 3) {
-            dnjysy = res.data[nn].synj;
-            dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
+            fix = res.data[nn].useChange - res.data[nn].C3_667148022365;
+
+            dnjysy = res.data[nn].hjky - res.data[nn].ljsq + fix;
           }
         } else if (qua == 4) {
           if (res.data[nn].quarter == 4) {
-            dnjysy = res.data[nn].synj;
-            dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
+            fix = res.data[nn].useChange - res.data[nn].C3_667148022365;
+
+            dnjysy = res.data[nn].hjky - res.data[nn].ljsq + fix;
           }
         }
         nn++;
@@ -406,63 +407,62 @@ class Summary extends React.PureComponent {
           synj1 = item.synj + synj1;
         }
         if (item.curSeasonNj) {
-          curentYearIncrease += item.curSeasonNj
+          curentYearIncrease += item.curSeasonNj;
         }
       });
       let snjysy = 0;
       let dnjysy = 0;
+      let fix = 0;
       let qua = new Date().getMonth();
       qua++;
       if (qua < 7) {
         if (qua < 4) {
-          qua = 1
+          qua = 1;
         } else {
-          qua = 2
+          qua = 2;
         }
       } else {
         if (qua < 10) {
-          qua = 3
+          qua = 3;
         } else {
-          qua = 4
+          qua = 4;
         }
       }
       let nn = 0;
       while (nn < res.data.length) {
         if (qua == 1) {
           if (res.data[nn].quarter == 1) {
-            snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            fix = res.data[nn].useChange - res.data[nn].C3_667148022365;
+            snjysy = res.data[nn].snsy - res.data[nn].ljsq + fix;
             if (snjysy < 0) {
               snjysy = 0;
-              dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
-
+              dnjysy = res.data[nn].hjky - res.data[nn].ljsq + fix;
             } else {
               dnjysy = res.data[nn].hjky - res.data[nn].snsy;
-
             }
           }
         } else if (qua == 2) {
           if (res.data[nn].quarter == 2) {
-            snjysy = res.data[nn].snsy - res.data[nn].ljsq;
+            fix = res.data[nn].useChange - res.data[nn].C3_667148022365;
+            snjysy = res.data[nn].snsy - res.data[nn].ljsq + fix;
             if (snjysy < 0) {
               snjysy = 0;
-              dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
-
+              dnjysy = res.data[nn].hjky - res.data[nn].ljsq + fix;
             } else {
               dnjysy = res.data[nn].hjky - res.data[nn].snsy;
-
             }
           }
         } else if (qua == 3) {
           if (res.data[nn].quarter == 3) {
-            dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
+            fix = res.data[nn].useChange - res.data[nn].C3_667148022365;
 
-
+            dnjysy = res.data[nn].hjky - res.data[nn].ljsq + fix;
           }
         } else if (qua == 4) {
           if (res.data[nn].quarter == 4) {
-            dnjysy = res.data[nn].hjky - res.data[nn].ljsq;
+            fix = res.data[nn].useChange - res.data[nn].C3_667148022365;
 
-
+            dnjysy = res.data[nn].hjky - res.data[nn].ljsq + fix;
           }
         }
         nn++;
@@ -548,33 +548,27 @@ class Summary extends React.PureComponent {
       {
         sheetData: exportData,
         sheetName: '年假账户明细',
-        sheetHeader: [
-          '年份',
-          '季度',
-          '当季分配年假',
-          '累积使用'
-        ]
+        sheetHeader: ['年份', '季度', '当季分配年假', '累积使用']
       }
     ];
     var toExcel = new ExportJsonExcel(option);
     toExcel.saveExcel();
   };
 
-  getCmswhere = function (year, quarter) {
-
+  getCmswhere = function(year, quarter) {
     switch (quarter) {
       case 1:
-        return `C3_375984964421 = '${year}01' or C3_375984964421 = '${year}02' or C3_375984964421 = '${year}03'`
+        return `C3_375984964421 = '${year}01' or C3_375984964421 = '${year}02' or C3_375984964421 = '${year}03'`;
       case 2:
-        return `C3_375984964421 = '${year}04' or C3_375984964421 = '${year}05' or C3_375984964421 = '${year}06'`
+        return `C3_375984964421 = '${year}04' or C3_375984964421 = '${year}05' or C3_375984964421 = '${year}06'`;
       case 3:
-        return `C3_375984964421 = '${year}07' or C3_375984964421 = '${year}08' or C3_375984964421 = '${year}09'`
+        return `C3_375984964421 = '${year}07' or C3_375984964421 = '${year}08' or C3_375984964421 = '${year}09'`;
       case 4:
-        return `C3_375984964421 = '${year}10' or C3_375984964421 = '${year}11' or C3_375984964421 = '${year}12'`
+        return `C3_375984964421 = '${year}10' or C3_375984964421 = '${year}11' or C3_375984964421 = '${year}12'`;
       default:
         return '';
     }
-  }
+  };
   render() {
     const {
       selectedSubRecord,
@@ -596,7 +590,7 @@ class Summary extends React.PureComponent {
     const { subResid, resid, baseURL } = this.props;
 
     const annualLeaves = allAnnualLeaveQuery.map(item => {
-      const _item = { ...item }
+      const _item = { ...item };
       if (_item.synj < 0) {
         _item.synj = 0;
       }
@@ -610,7 +604,7 @@ class Summary extends React.PureComponent {
     return (
       <div className="alq-summary">
         <Spin spinning={this.state.loading}>
-          <div className='showblock'>
+          <div className="showblock">
             <div>
               <TreeSelect
                 style={{ width: '250px' }}
@@ -624,30 +618,52 @@ class Summary extends React.PureComponent {
                   this.setState({
                     selectValue: value,
                     loading: true,
-                    isWuxi: extra.triggerNode.props.company == "100" ? true : false
+                    isWuxi:
+                      extra.triggerNode.props.company == '100' ? true : false
                   });
                   this.fetchAnnualLeavesCopy(value);
                 }}
               ></TreeSelect>
             </div>
             <div>
-              <span style={{ marginRight: '2vw' }}>上年结转年假<b>{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</b></span>
+              <span style={{ marginRight: '2vw' }}>
+                上年结转年假<b>{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</b>
+              </span>
             </div>
             <div>
-
-              <span style={{ marginRight: '2vw' }}>当年新增年假<b>{isWuxi ? curentYearIncrease + '天' : curentYearIncrease * 8 + '小时'}</b></span>
+              <span style={{ marginRight: '2vw' }}>
+                当年新增年假
+                <b>
+                  {isWuxi
+                    ? curentYearIncrease + '天'
+                    : curentYearIncrease * 8 + '小时'}
+                </b>
+              </span>
             </div>
             <div>
-
-              <span style={{ marginRight: '2vw' }}>上年剩余可用年假<b>{isWuxi ? this.state.snjysy + '天' : this.state.snjysy * 8 + '小时'}</b></span>
+              <span style={{ marginRight: '2vw' }}>
+                上年剩余可用年假
+                <b>
+                  {isWuxi
+                    ? this.state.snjysy + '天'
+                    : this.state.snjysy * 8 + '小时'}
+                </b>
+              </span>
             </div>
             <div>
-
-              <span style={{ marginRight: '2vw' }}>当年剩余可用年假<b>{isWuxi ? this.state.dnjysy + '天' : this.state.dnjysy * 8 + '小时'}</b></span>
+              <span style={{ marginRight: '2vw' }}>
+                当年剩余可用年假
+                <b>
+                  {isWuxi
+                    ? this.state.dnjysy + '天'
+                    : this.state.dnjysy * 8 + '小时'}
+                </b>
+              </span>
             </div>
             <div>
-
-              <span style={{ color: '#f5222d' }}>注意当年剩余不含上年剩余年假，也不含未释放年假</span>
+              <span style={{ color: '#f5222d' }}>
+                注意当年剩余不含上年剩余年假，也不含未释放年假
+              </span>
             </div>
           </div>
           {/* 
@@ -803,7 +819,7 @@ class Detail extends React.PureComponent {
               if (dateString[0] && dateString[1]) {
                 cmswhere = ` and startBreak >= '${
                   dateString[0]
-                  }' and startBreak <= '${dateString[1]}'`;
+                }' and startBreak <= '${dateString[1]}'`;
               } else {
                 cmswhere = '';
               }
