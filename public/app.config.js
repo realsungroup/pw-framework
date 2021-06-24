@@ -229,12 +229,16 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    baseURL: 'http://kingofdinner.realsun.me:40001/', // 请求的基地址
+
     basename: '/',
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
-    fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
+    // fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
+    fileDownloadUrl: 'http://kingofdinner.realsun.me:40001/', // 导出 Excel 文件下载基地址
+
     // 切换考勤月份的基地址
-    attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
+    attendanceMonthChangeUrl: 'http://kingofdinner.realsun.me:30001',
     fileDownloadConfig: {
       629462405981: {
         fileType: 'mdb'
@@ -250,14 +254,14 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
-      attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
+      attendanceBaseURL: 'http://kingofdinner.realsun.me:30001/', //考勤审批
+      attendanceDownloadURL: 'http://kingofdinner.realsun.me:30000/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
 
-      HeadCountBaseURL: 'http://10.108.2.66:9091/',
-      PostArchitectureBaseURL: 'http://10.108.2.66:9091/',
-      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
+      HeadCountBaseURL: 'http://kingofdinner.realsun.me:30001',
+      PostArchitectureBaseURL: 'http://kingofdinner.realsun.me:30001',
+      comprehensiveQueryBaseURL: 'http://kingofdinner.realsun.me:30001', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
@@ -270,8 +274,8 @@ window.pwConfig = {
       AchievementsBaseURL: 'http://10.108.2.66:1001/',
       RBASchedulingBaseURL: 'http://10.108.2.66:9091', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
-      WuxiHr03BaseURL: 'http://10.108.2.66:9091/', //80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
+      WuxiHr03BaseURL: 'http://kingofdinner.realsun.me:30001', //80端口非定制组件基地址
+      WuxiHr03DownloadBaseURL: 'http://kingofdinner.realsun.me:30000', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //员工沟通平台数据基地址
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //员工沟通平台下载基地址
       importTemplateDownloadURL:
@@ -335,31 +339,32 @@ window.pwConfig = {
 
     // 业务功能配置
     businessOptionalResIds: [
-      591549158605, //奖惩系统
-      605787603655, //访客系统
-      608290060436, //考试系统
-      607189833315, //问卷系统
-      609157644640, //学习与发展
+      // 591549158605, //奖惩系统
+      // 605787603655, //访客系统
+      // 608290060436, //考试系统
+      // 607189833315, //问卷系统
+      // 609157644640, //学习与发展
       626954765251, //人事信息管理
-      620212346456, //信息查询
-      621258285555, //考勤审批
-      629398031625, //考勤结算
-      629806000986, //综合管理
-      631968602083, //个人档案管理
-      642077273014, //物资管理
-      642852666439, //人员管理
-      642852866577, //安全管控
-      642852833296, //财务薪资相关
-      642852880030, //供应商合同管理
-      642852857804, //绩效考核
-      642852735477, //假期管理
-      642852790786, //考勤管理
-      642852725747, //考勤权限
-      642852713768, //考勤设置
-      642852747371, //排班管理
-      642852820322, //薪资与福利
-      642852847030, //员工关系
-      642852800770 //招聘
+      // 620212346456, //信息查询
+      // 621258285555, //考勤审批
+      // 629398031625, //考勤结算
+      // 629806000986, //综合管理
+      // 631968602083, //个人档案管理
+      // 642077273014, //物资管理
+      // 642852666439, //人员管理
+      // 642852866577, //安全管控
+      // 642852833296, //财务薪资相关
+      // 642852880030, //供应商合同管理
+      // 642852857804, //绩效考核
+      // 642852735477, //假期管理
+      // 642852790786, //考勤管理
+      // 642852725747, //考勤权限
+      // 642852713768, //考勤设置
+      // 642852747371, //排班管理
+      // 642852820322, //薪资与福利
+      // 642852847030, //员工关系
+      // 642852800770 //招聘
+      675854106629 //汇希工资系统
     ], // 获取多个业务可选功能的 resid 数组
 
     // 主题
@@ -394,7 +399,7 @@ window.pwConfig = {
       },
       {
         dblinkname: 'ehr',
-        baseurl: 'http://10.108.2.66:9091'
+        baseurl: 'http://kingofdinner.realsun.me:30001'
       }
     ],
 

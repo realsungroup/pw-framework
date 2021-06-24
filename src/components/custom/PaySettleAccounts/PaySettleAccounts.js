@@ -361,7 +361,7 @@ class PaySettleAccounts extends React.Component {
   handleListModalCancel = () => {
     this.setState({ listVisible: false });
     this.addRecord();
-  } 
+  }
 
   render() {
     const { baseURL = 'http://kingofdinner.realsun.me:30001' } = this.props;
@@ -480,7 +480,7 @@ class PaySettleAccounts extends React.Component {
               hasRowView={true}
               hasRowDelete={false}
               hasRowEdit={false}
-              hasDelete={false}
+              hasDelete={true}
               hasModify={false}
               hasRowModify={false}
               hasRowSelection={true}
