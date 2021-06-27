@@ -608,7 +608,7 @@ class Control extends React.Component {
   };
 
   render() {
-    const { dataItem, value, mode, customStyle } = this.props;
+    const { dataItem, value, mode, customStyle, isShowLink } = this.props;
     const name = dataItem.name;
     const props = dataItem.props;
     const {
@@ -621,6 +621,19 @@ class Control extends React.Component {
       switch (name) {
         case 'Input': {
           const { mediaFieldValue, isMediaField } = this.state;
+          if (isShowLink) {
+            return (
+              <a
+                target="blank"
+                style={{ display: 'block' }}
+                key={value || mediaFieldValue}
+                href={value || mediaFieldValue}
+              >
+                {value || mediaFieldValue}
+              </a>
+            )
+          }
+
           if (!isMediaField) {
             return <span>{value}</span>;
           }
@@ -636,6 +649,8 @@ class Control extends React.Component {
               ></img>
             );
           }
+
+          
 
           return null;
         }

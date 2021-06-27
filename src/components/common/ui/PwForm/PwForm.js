@@ -135,7 +135,8 @@ class PwForm extends React.Component {
       baseURL,
       uploadConfig,
       mediaFieldBaseURL,
-      recordFormHideFields
+      recordFormHideFields,
+      showLinkFields
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -148,7 +149,7 @@ class PwForm extends React.Component {
 
     const hasBeforeSave =
       !!beforeSaveFields && beforeSaveFields.indexOf(dataItem.id) !== -1;
-
+   
     return (
       <FormItem
         key={id}
@@ -174,6 +175,7 @@ class PwForm extends React.Component {
             customStyle={customStyle}
             uploadConfig={uploadConfig}
             mediaFieldBaseURL={mediaFieldBaseURL}
+            isShowLink={showLinkFields && showLinkFields.includes(dataItem.id)}
           />
         )}
       </FormItem>
@@ -226,7 +228,8 @@ class PwForm extends React.Component {
       labelControllArr,
       baseURL,
       uploadConfig,
-      mediaFieldBaseURL
+      mediaFieldBaseURL,
+      showLinkFields,
     } = this.props;
     const { getFieldDecorator } = form;
     const options = {
@@ -274,6 +277,7 @@ class PwForm extends React.Component {
                 baseURL={baseURL}
                 uploadConfig={uploadConfig}
                 mediaFieldBaseURL={mediaFieldBaseURL}
+                isShowLink={showLinkFields && showLinkFields.includes(dataItem.id)}
               />
             )}
           </div>
