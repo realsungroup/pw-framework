@@ -44,8 +44,9 @@ class ManagerProbation extends React.Component {
   actionBarExtra = record => {
     return (
       <div className="hr-probation_table-action-bar-extra">
-        <span>请点击表格内的‘查看’,查看员工的试用期详情并审批转正</span>
-
+        <span>
+          请点击表格内的‘查看’,查看员工的试用期详情，填写试用期评价并审批转正
+        </span>
 
         {/* <div className="hr-probation_table-action-bar-extra_buttons">
           <Button
@@ -105,14 +106,14 @@ class ManagerProbation extends React.Component {
             />
           </div>
         ) : (
-            <ProbationForms
-              memberId={this.state.selectedRecord.memberId}
-              employedId={this.state.selectedRecord.C3_625051545181}
-              goBack={this.goBack}
-              roleName="经理"
-              setIsShowTable={this.setIsShowTable}
-            />
-          )}
+          <ProbationForms
+            memberId={this.state.selectedRecord.memberId}
+            employedId={this.state.selectedRecord.C3_625051545181}
+            goBack={this.goBack}
+            roleName="经理"
+            setIsShowTable={this.setIsShowTable}
+          />
+        )}
       </div>
     );
   }
