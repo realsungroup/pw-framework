@@ -300,7 +300,8 @@ class HRProbation extends React.Component {
                   key="1"
                   resid={resid}
                   subtractH={240}
-                  hasAdd={false}
+                  hasAdd={true}
+                  size={'middle'}
                   hasRowView={false}
                   hasRowDelete={false}
                   hasRowEdit={false}

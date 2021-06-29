@@ -60,6 +60,7 @@ const MentorshipRecord = props => {
                   日期/Date
                   {auth.hasModify ? (
                     <DatePicker
+                      disabled={item.isConfirm == 'Y' ? true : false}
                       style={{ width: 140, marginLeft: '1.25vw' }}
                       onChange={v => {
                         item.editDate = v && v.format('YYYY-MM-DD');
@@ -83,6 +84,7 @@ const MentorshipRecord = props => {
                         item.instructionRecord = v.target.value;
                         modifyMentor(index, item);
                       }}
+                      disabled={item.isConfirm == 'Y' ? true : false}
                       rows={3}
                     />
                   ) : (
