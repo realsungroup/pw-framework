@@ -664,6 +664,12 @@ class Summary extends React.PureComponent {
               <span style={{ color: '#f5222d' }}>
                 注意当年剩余不含上年剩余年假，也不含未释放年假
               </span>
+              <br />
+              <span style={{ color: '#f5222d' }}>
+                温馨提示：请避开在年假结算日查询和申请年假！
+                <br />
+                [年假结算日：1月1日、4月1日、7月1日、10月1日]
+              </span>
             </div>
           </div>
           {/* 
