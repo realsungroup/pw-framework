@@ -14,7 +14,7 @@ class HRLeaveApp extends Component {
     super(props);
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
   render() {
     return (
       <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
@@ -39,6 +39,9 @@ class HRLeaveApp extends Component {
                 backendButtonPopConfirmProps: { placement: 'bottom' },
                 advSearch: {
                   isRequestFormData: false
+                },
+                formProps: {
+                  showLinkFields: ['C3_451391568463'],
                 },
                 isUseBESize: true,
                 hasBeSort: false,
@@ -77,6 +80,9 @@ class HRLeaveApp extends Component {
                 mediaFieldBaseURL: 'http://wux-hr03/',
                 advSearch: {
                   isRequestFormData: false
+                },
+                formProps: {
+                  showLinkFields: ['C3_451391568463'],
                 },
                 isUseBESize: true,
                 hasBeSort: false,

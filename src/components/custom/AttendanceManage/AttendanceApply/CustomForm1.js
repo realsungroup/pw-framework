@@ -96,8 +96,8 @@ class CustomForm1 extends React.Component {
     chooseAllDay: false, //选择全天
     levelSort: '', //级别排序
     isShangHai: false, //是否是上海员工
-    allDayTimeLength: 0 //请全天假的总时间长度
- allDayTimeLength: 0, //请全天假的总时间长度
+    allDayTimeLength: 0, //请全天假的总时间长度
+    allDayTimeLength: 0, //请全天假的总时间长度
     availableTime: 0,
     showAvailableTime: false,
     availableTimeText: ''

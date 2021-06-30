@@ -82,7 +82,7 @@ export default class LzRecord extends React.Component {
           renderTabBar={this.renderTabBar}
           onChange={this.handleTabsChange}
         >
-          <TabPane tab="待处理" key="待处理">
+          <TabPane tab="访问中" key="待处理">
             <div style={{ height: (this.props.height ? this.props.height : 'calc(100vh - 220px)') }}>
               <TableData
                 {...inApplication}
@@ -92,7 +92,7 @@ export default class LzRecord extends React.Component {
               />
             </div>
           </TabPane>
-          <TabPane tab="已处理" key="已处理" forceRender={true}>
+          <TabPane tab="已访问" key="已处理" forceRender={true}>
             <div style={{ height: (this.props.height ? this.props.height : 'calc(100vh - 220px)') }}>
               <TableData
                 {...applyForAbnormal}

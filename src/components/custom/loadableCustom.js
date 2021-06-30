@@ -955,3 +955,10 @@ export const MonthlySettlementLock = Loadable({
     return minLoading;
   }
 });
+
+export const OfficeSupply = Loadable({
+  loader: () => import('./OfficeSupply'),
+  loading() {
+    return minLoading;
+  }
+});

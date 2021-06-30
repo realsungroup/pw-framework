@@ -5,7 +5,7 @@ import { modRecord } from 'Util/api';
 
 // 待处理
 export const inApplication = {
-  resid: 605892972967,
+  resid: 678210125335,
   formProps: {
     height: 550
   },
@@ -15,7 +15,7 @@ export const inApplication = {
   hasModify: false,
   hasDelete: false,
   hasRowModify: false,
-  hasRowView: true,
+  hasRowView: false,
   hasRowDelete: false,
   hasBeBtns: true,
   subtractH: 196,
@@ -44,7 +44,7 @@ export const inApplication = {
 
 // 已处理
 export const applyForAbnormal = {
-  resid: 605892990971,
+  resid: 678210148858,
   // formProps: {
   //   height: 550,
   // },
@@ -54,7 +54,7 @@ export const applyForAbnormal = {
   hasModify: false,
   hasDelete: false,
   hasRowModify: false,
-  hasRowView: true,
+  hasRowView: false,
   hasRowDelete: false,
   hasBeBtns: true,
   subtractH: 200,
