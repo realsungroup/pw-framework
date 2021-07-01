@@ -26,7 +26,8 @@ const {
   enterprisecode,
   themeColor
 } = window.pwConfig[process.env.NODE_ENV];
-
+const baseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -222,7 +223,7 @@ class Login extends React.Component {
       this.setState({ loading: true });
       let res;
       try {
-        res = http().forgetPassword({
+        res = http({ baseURL: baseURL }).forgetPassword({
           badgeno: this.state.userNameLogin,
           enterprisecode: parseInt((100000 * Math.random()) ^ Math.random()),
           sendEmail: 'Y'
@@ -262,7 +263,7 @@ class Login extends React.Component {
       this.setState({ loading: true });
       let res;
       try {
-        res = await http().getResetPassword({
+        res = await http({ baseURL: baseURL }).getResetPassword({
           userid: this.state.userNameLogin,
           newpass1: this.state.PSWNew,
           resetcode: this.state.OTP
