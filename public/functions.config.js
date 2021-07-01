@@ -10221,12 +10221,25 @@ window[677242145509] = {
 };
 
 //办公用品申请-上海
+//浦西window 678279150394
+//finisarwindow 677843884822
+//浦西选人 678368649835
+//finisar选人 678368669087
 window[677843884822] = {
   name: 'OfficeSupply',
   title: '办公用品申请',
+  props: {
+    choosePeopleResid: 678368669087,
+  }
 };
 
 //办公用品管理-上海
+//浦西window 678279173271
+//finisarwindow 678188293831
+//已处理浦西 678449500775
+//未处理浦西 678449485649
+//已处理finisar 677873743625
+//未处理finisar 677873703733
 window[678188293831] = {
   name: 'TabsTableData',
   title: '办公用品管理',
@@ -10235,12 +10248,13 @@ window[678188293831] = {
       {
         TabsTitle: '待处理',
         resid: 677873703733,
-        baseURL: 'http://10.108.2.66:801/',
-        downloadBaseURL: 'http://10.108.2.66:800/',
+        baseURL: 'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.2.66:1000/',
         hasAdd: false,
         hasBeBtns: true,
         hasModify: false,
         hasDelete: false,
+        hasRowSelection: true,
         hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
@@ -10250,12 +10264,13 @@ window[678188293831] = {
       {
         TabsTitle: '已处理',
         resid: 677873743625,
-        baseURL: 'http://10.108.2.66:801/',
-        downloadBaseURL: 'http://10.108.2.66:800/',
+        baseURL: 'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.2.66:1000/',
         hasAdd: false,
         hasBeBtns: true,
         hasModify: false,
         hasDelete: false,
+        hasRowSelection: true,
         hasRowModify: false,
         hasRowView: false,
         hasRowDelete: false,
@@ -10267,6 +10282,10 @@ window[678188293831] = {
 };
 
 //办公用品信息维护-上海
+//浦西window 678279203086
+//finisarwindow 678188368103
+//浦西特殊物品领用人 678448647562
+//finisar特殊物品领用人 677873647642
 window[678188368103] = {
   name: 'TabsTableData',
   title: '办公用品信息维护',
@@ -10275,8 +10294,8 @@ window[678188368103] = {
       {
         TabsTitle: '办公用品信息维护',
         resid: 677873676211,
-        baseURL: 'http://10.108.2.66:801/',
-        downloadBaseURL: 'http://10.108.2.66:800/',
+        baseURL: 'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.2.66:1000/',
         hasAdd: true,
         hasBeBtns: true,
         hasModify: false,
@@ -10290,8 +10309,8 @@ window[678188368103] = {
       {
         TabsTitle: '特殊物品领用人',
         resid: 677873647642,
-        baseURL: 'http://10.108.2.66:801/',
-        downloadBaseURL: 'http://10.108.2.66:800/',
+        baseURL: 'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.2.66:1000/',
         hasAdd: true,
         hasBeBtns: true,
         hasModify: false,
