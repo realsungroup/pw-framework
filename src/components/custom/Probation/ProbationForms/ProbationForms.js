@@ -3054,6 +3054,7 @@ class ProbationForms extends React.Component {
           <TableData
             key="historyRecord"
             resid="619960233127"
+            cmswhere={`C3_678454213113 = '${employeeInformation[memberSemiId]}'`}
             subTableArrProps={[
               {
                 subResid: 619960210668,
@@ -3071,7 +3072,7 @@ class ProbationForms extends React.Component {
                 }
               }
             ]}
-            cmswhere={`memberId = '${this.state.employeeInformation.memberId}'`}
+            // cmswhere={`memberId = '${this.state.employeeInformation.memberId}'`}
             subtractH={220}
             height={600}
             actionBarWidth={200}
