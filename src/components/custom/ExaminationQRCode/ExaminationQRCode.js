@@ -21,7 +21,7 @@ class ExaminationQRCode extends React.Component {
   setUnix = seconds => {
     let { testBatchId } = this.state;
     this.setState({
-      value: `${testBatchId}+${moment().unix()}`
+      value: `${testBatchId}`
     });
     // this.timer = setTimeout(() => {
     //   this.setUnix(seconds);
@@ -38,10 +38,9 @@ class ExaminationQRCode extends React.Component {
       if (res.data.length) {
         let value = res.data[0].testBatchId;
         this.setState({
-          value: `${value}+${moment().unix()}`,
+          value: `${value}`,
           testBatchId: value
         });
-        this.setUnix(seconds);
       }
     } catch (error) {
       console.log(error);
@@ -50,7 +49,6 @@ class ExaminationQRCode extends React.Component {
 
   componentWillUnmount() {
     this.timer = null;
-    this.setUnix = null;
   }
 
   render() {
@@ -74,6 +72,11 @@ class ExaminationQRCode extends React.Component {
         >
           重新获取
         </Button>
+        <p style={{ margin: 16 }}>
+          <big>
+            <b>{this.state.value ? '正在获取数据' : this.state.value}</b>
+          </big>
+        </p>
         <QRCode value={this.state.value} size={500} renderAs="svg" />
       </div>
     );
