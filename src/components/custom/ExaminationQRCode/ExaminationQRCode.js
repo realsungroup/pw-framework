@@ -29,6 +29,7 @@ class ExaminationQRCode extends React.Component {
   };
 
   getCheckInId = async () => {
+    this.setState({ value: '' });
     try {
       let res = await http({
         baseURL: 'https://finisarinterview.realsun.me/'
@@ -74,7 +75,7 @@ class ExaminationQRCode extends React.Component {
         </Button>
         <p style={{ margin: 16 }}>
           <big>
-            <b>{this.state.value ? '正在获取数据' : this.state.value}</b>
+            <b>{this.state.value ? this.state.value : '正在获取数据'}</b>
           </big>
         </p>
         <QRCode value={this.state.value} size={500} renderAs="svg" />
