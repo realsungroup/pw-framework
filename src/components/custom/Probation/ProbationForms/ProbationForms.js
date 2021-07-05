@@ -276,7 +276,6 @@ class ProbationForms extends React.Component {
             let memberId = this.props.memberId;
             let employedId = this.props.employedId;
             message.success('成功同意辅导员1');
-            this.props.goBack();
           }
         }
       }
@@ -302,12 +301,12 @@ class ProbationForms extends React.Component {
             name: name
           }
         ];
-
+        console.log('memID2', memID2, 'toAdd', toAdd);
         let res6 = await http().getTable({
           resid: '619281130628',
           cmswhere: `userMemberId = '${memID2}'`
         });
-        if (res6.data.length > 0) {
+        if (res6.data.length == 0) {
           let res7 = await http().addRecords({
             resid: '619281130628',
             data: toAdd
@@ -316,57 +315,10 @@ class ProbationForms extends React.Component {
             let memberId = this.props.memberId;
             let employedId = this.props.employedId;
             message.success('成功同意辅导员2');
-            this.props.goBack();
           }
         }
       }
-      // 辅导员表ID619281130628
-
-      // 辅导员工号C3_227192472953
-
-      // 辅导员人员编号C3_305737857578
-
-      // 辅导员部门C3_422840479020
-
-      //辅导员姓名C3_227192484125
-      // var C3_637084526216;
-      // var C3_637084539039;
-      // var instructorDirectorName2;
-      // var instructorDirectorId2;
-      // var C3_627646976501;
-      // var instructor;
-      // var instructorDirectorName;
-      // var instructorDirectorId;
-      // if (memID) {
-      //   C3_627646976501 = this.state.employeeInformation.instructorDirectorId;
-      //   instructor = this.state.employeeInformation.instructorDirectorName;
-      //   instructorDirectorName = '';
-      //   instructorDirectorId = '';
-      // }
-      // if (memID2) {
-      //   C3_637084526216 = this.state.employeeInformation.instructorDirectorId2;
-      //   C3_637084539039 = this.state.employeeInformation
-      //     .instructorDirectorName2;
-      //   instructorDirectorName2 = '';
-      //   instructorDirectorId2 = '';
-      // }
-      // let res = await http().modifyRecords({
-      //   resid: resid1,
-      //   data: [
-      //     {
-      //       REC_ID: this.state.employeeInformation.REC_ID,
-      //       instructorIsPass: 'Y',
-      //       C3_637084526216,
-      //       C3_637084539039,
-      //       instructorDirectorName2,
-      //       instructorDirectorId2,
-      //       C3_627646976501,
-      //       instructor,
-      //       instructorDirectorName,
-      //       instructorDirectorId
-      //     }
-      //   ]
-      // });
+      await this.props.goBack();
     } catch (error) {
       this.setState({ loading: false });
       message.error(error.message);
@@ -571,6 +523,27 @@ class ProbationForms extends React.Component {
                       '-'
                     )[0]
                   : this.state.employeeInformation.instructorDirectorName2,
+              insRej2:
+                chara == '主管' ? '' : this.state.employeeInformation.insRej2,
+              instructorIsPass:
+                chara == '主管' &&
+                this.state.employeeInformation.instructorIsPass == 'N'
+                  ? ''
+                  : this.state.employeeInformation.instructorIsPass,
+              InstructorBackEmail:
+                chara == '主管'
+                  ? ''
+                  : this.state.employeeInformation.InstructorBackEmail,
+              C3_625225123202:
+                chara == '主管' &&
+                this.state.employeeInformation.instructorIsPass == 'N'
+                  ? ''
+                  : this.state.C3_625225123202,
+              insCheck2:
+                chara == '主管' &&
+                this.state.employeeInformation.instructorIsPass == 'N'
+                  ? ''
+                  : this.state.insCheck2,
               _state: 'modified',
               _id: 1
             },
