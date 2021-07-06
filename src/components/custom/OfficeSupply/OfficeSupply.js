@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, message, Input, Modal, Form, InputNumber, Spin, Tabs } from 'antd';
+import { Button, message, Input, Modal, Form, InputNumber, Tabs } from 'antd';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
@@ -149,13 +149,13 @@ class OfficeSupply extends Component {
     }
 
     render() {
-        const { loading, initialApplyData, addSupplyModal, chooseRecordModal, ischoosePeople, ischooseGood, isSpecialApply } = this.state;
+        const { initialApplyData, addSupplyModal, chooseRecordModal, ischoosePeople, ischooseGood, isSpecialApply } = this.state;
+        const { choosePeopleResid } = this.props;
         const { getFieldDecorator } = this.props.form;
         return (
             <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="未提交" key="1">
-                        {/* <Spin spinning={loading}> */}
                         <TableData
                             baseURL={baseURL}
                             downloadBaseURL={downloadBaseURL}
@@ -204,7 +204,6 @@ class OfficeSupply extends Component {
                                 );
                             }}
                         />
-                        {/* </Spin> */}
                         <Modal
                             title='申请办公用品'
                             width="70%"
@@ -266,7 +265,7 @@ class OfficeSupply extends Component {
                             destroyOnClose={true}
                         >
                             <TableData
-                                resid={ischoosePeople ? 677949146642 : ischooseGood ? isSpecialApply ? 677861437228 : 677861421582 : null}
+                                resid={ischoosePeople ? choosePeopleResid : ischooseGood ? isSpecialApply ? 677861437228 : 677861421582 : null}
                                 baseURL={baseURL}
                                 downloadBaseURL={downloadBaseURL}
                                 hasRowView={false}

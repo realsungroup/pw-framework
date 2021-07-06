@@ -2517,6 +2517,7 @@ class ProbationForms extends React.Component {
                   hrManagerEvaluateChange={this.hrManagerEvaluateChange}
                   roleName={roleName}
                   editable={editable}
+                  C3_622649502021={employeeInformation.C3_622649502021}
                 />
               </div>
               <aside className="probation-forms_main_sider toHide">
