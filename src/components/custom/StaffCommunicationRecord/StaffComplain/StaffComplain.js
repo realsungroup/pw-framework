@@ -13,10 +13,15 @@ import {
   Spin,
   Row,
   Col,
-  Slider
+  Slider,
+  Upload
 } from 'antd';
 import TableData from '../../../common/data/TableData';
+import moment from 'moment';
+
 import downloadImg from './下载.png';
+import { getItem } from '../../../../util20/util';
+
 import http, { makeCancelable } from 'Util20/api';
 import download from 'downloadjs';
 import ImageModal from 'cxj-react-image';
@@ -24,7 +29,17 @@ import ImageModal from 'cxj-react-image';
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
 const TextArea = Input.TextArea;
+const uploadURL =
+  'https://finisarinterview.realsun.me/api/AliyunOss/PutFilesObject?bucketname=nutritiontower&randomfilename=true';
+const subResid = 648055005558;
 
+const baseURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.staffComBaseURL;
+
+const downloadURL =
+  window.pwConfig[process.env.NODE_ENV].customURLs.staffComDownloadURL;
+
+const userInfo = JSON.parse(getItem('userInfo'));
 const resid = 648050843809;
 const residIng = 648669826228; //投诉处理中
 const residNo = 648841220130; //投诉未处理
@@ -44,6 +59,14 @@ class StaffComplain extends React.Component {
   }
 
   state = {
+    replyData: {
+      pictures: [],
+      videos: []
+    },
+    showModi: false,
+    modibrid: '',
+    replyVisible: false,
+    submitLoading: false,
     mode: 'inline',
     theme: 'light',
     selectKey: '1',
@@ -96,6 +119,43 @@ class StaffComplain extends React.Component {
   componentDidMount = () => {
     this.getNo();
     this.getColumnData();
+  };
+  modibridAction = v => {
+    this.setState({
+      modibrid: v
+    });
+  };
+  subBrid = async () => {
+    this.setState({ loading: true });
+    try {
+      let res = await http({ baseURL: this.baseURL }).modifyRecords({
+        resid,
+        data: [
+          {
+            REC_ID: this.state.modiTarget.REC_ID,
+            typeComplaint: this.state.modibrid
+          }
+        ]
+      });
+      message.success('成功');
+    } catch (e) {
+      console.message(e.message);
+      message.error('失败');
+    }
+    this.setState({
+      modiTarget: '',
+      showModi: false,
+      modibrid: '',
+      loading: false
+    });
+    await this.tableDataRef.handleRefresh();
+  };
+  showCom = async record => {
+    this.setState({
+      showModi: true,
+      modibrid: record.typeComplaint,
+      modiTarget: record
+    });
   };
   closeImg = () => {
     this.setState({
@@ -326,20 +386,129 @@ class StaffComplain extends React.Component {
       selectedProofs: selectedRecords
     });
   };
+  reply2 = record => {
+    this.setState({
+      selectRecord: record,
+      replyVisible2: true,
+      isBatchReply: false
+    });
+  };
+  handleCloseReply = () => {
+    this.setState({
+      replyVisible2: false,
+      replyData: { pictures: [], videos: [] }
+    });
+  };
+
+  handlePictureChange = ({ fileList }) =>
+    this.setState({
+      replyData: { ...this.state.replyData, pictures: fileList }
+    });
+
+  handleVideoChange = ({ fileList }) =>
+    this.setState({
+      replyData: { ...this.state.replyData, videos: fileList }
+    });
+
+  handleCancel = () => this.setState({ previewVisible: false });
+
+  handlePreview = (file, type) => {
+    this.setState({
+      previewFile: file.response.data[0],
+      previewVisible: true,
+      previewFileType: type
+    });
+  };
+
+  handleSubmit = async () => {
+    const {
+      replyData: { videos, text, pictures },
+      selectRecord
+    } = this.state;
+    if (videos.length) {
+      if (
+        videos.some(item => {
+          return !(
+            item.response &&
+            item.response.data &&
+            item.response.data[0]
+          );
+        })
+      ) {
+        return message.info('有文件正在上传，请稍后');
+      }
+    }
+    let data = [
+      {
+        resid,
+        maindata: {
+          REC_ID: selectRecord.REC_ID,
+          _state: 'modified',
+          _id: 1
+        },
+        subdata: [],
+        _id: 1
+      }
+    ];
+
+    pictures.forEach((item, index) => {
+      data[0].subdata.push({
+        resid: subResid,
+        maindata: {
+          fileURL: item.response.data[0],
+          mediaType: '图片',
+          _state: 'added',
+          _id: 1
+        },
+        _id: index
+      });
+    });
+    videos.forEach((item, index) => {
+      data[0].subdata.push({
+        resid: subResid,
+        maindata: {
+          fileURL: item.response.data[0],
+          mediaType: '视频',
+          _state: 'added',
+          _id: 1
+        },
+        _id: index
+      });
+    });
+    try {
+      this.setState({ submitLoading: true });
+      await http({ baseURL }).saveRecordAndSubTables({
+        data
+      });
+      // 负责人处理完通知HR
+      this.tableDataRef.handleRefresh();
+      this.setState({
+        replyVisible2: false,
+        replyData: { pictures: [], videos: [] },
+        upMedia: false
+      });
+      message.success('成功');
+    } catch (error) {
+      console.log(error);
+      message.error(error.message);
+    }
+    this.setState({ submitLoading: false });
+  };
+
   handleSubmitRemark = async () => {
     const { selectedRecords, adminRemark } = this.state;
     const data =
       selectedRecords.length > 1
         ? selectedRecords.map(item => ({
-          REC_ID: item.recordID,
-          adminRemark: adminRemark
-        }))
-        : [
-          {
-            REC_ID: selectedRecords[0].recordID,
+            REC_ID: item.recordID,
             adminRemark: adminRemark
-          }
-        ];
+          }))
+        : [
+            {
+              REC_ID: selectedRecords[0].recordID,
+              adminRemark: adminRemark
+            }
+          ];
     try {
       let res = await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
@@ -367,23 +536,23 @@ class StaffComplain extends React.Component {
       });
       const data = isBatchReply
         ? selectedRecords.map(item => ({
-          REC_ID: item.recordID,
-          replyID: now,
-          replication: this.state.replyContent,
-          replicationHR: 'Y',
-          status: '已处理',
-          renew: 'Y'
-        }))
-        : [
-          {
-            REC_ID: this.state.selectRecord.recordID,
+            REC_ID: item.recordID,
             replyID: now,
             replication: this.state.replyContent,
             replicationHR: 'Y',
             status: '已处理',
             renew: 'Y'
-          }
-        ];
+          }))
+        : [
+            {
+              REC_ID: this.state.selectRecord.recordID,
+              replyID: now,
+              replication: this.state.replyContent,
+              replicationHR: 'Y',
+              status: '已处理',
+              renew: 'Y'
+            }
+          ];
       await http({ baseURL: this.baseURL }).modifyRecords({
         resid,
         data
@@ -600,7 +769,7 @@ class StaffComplain extends React.Component {
     if (this.state.complainType !== '全部') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}typeComplaint = '${
         this.state.complainType
-        }' `;
+      }' `;
     }
     if (this.state.isAms !== '全部') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}signed = '${this.state.isAms}' `;
@@ -608,7 +777,7 @@ class StaffComplain extends React.Component {
     if (this.state.beginTime !== '') {
       cmsWhere += `${cmsWhere ? ' and ' : ''}REC_CRTTIME > '${
         this.state.beginTime
-        }' and REC_CRTTIME < '${this.state.endTime}'`;
+      }' and REC_CRTTIME < '${this.state.endTime}'`;
     }
     console.log('cmsWhere', cmsWhere);
     this.setState({
@@ -723,6 +892,41 @@ class StaffComplain extends React.Component {
     }
     this.setState({ backLoading: false });
   };
+
+  //直接结束审批流
+  endStream = async records => {
+    if (records.length < 1) {
+      message.error('请选择记录');
+    } else {
+      this.setState({ backLoading: true });
+      let arr = [];
+      arr = records.split(',');
+      let n = 0;
+      let data = [];
+      while (n < arr.length) {
+        data.push({
+          REC_ID: arr[n],
+          replicationHR: 'Y',
+          status: '已处理'
+        });
+        n++;
+      }
+      try {
+        let res = await http({ baseURL: this.baseURL }).modifyRecords({
+          resid,
+          data
+        });
+        this.setState({ backLoading: false });
+        message.success('成功');
+      } catch (e) {
+        console.log(e);
+        message.error(e.message);
+        this.setState({ backLoading: false });
+      }
+    }
+    this.tableDataRef.handleRefresh();
+  };
+
   renderContentBody = (resid, hasButton) => {
     const {
       typeComplaint,
@@ -759,8 +963,8 @@ class StaffComplain extends React.Component {
               <Option value="全部">全部</Option>
               {typeComplaint.length
                 ? typeComplaint.map((item, index) => {
-                  return <Option value={item}>{item}</Option>;
-                })
+                    return <Option value={item}>{item}</Option>;
+                  })
                 : null}
             </Select>
           </div>
@@ -880,6 +1084,24 @@ class StaffComplain extends React.Component {
                       批量回复
                     </Button>
                   )}
+                  {(selectKey === '1' || selectKey === '2') && (
+                    <Button
+                      size="small"
+                      type="danger"
+                      loading={this.state.backLoading}
+                      onClick={() => {
+                        if (!selectedRecords.length) {
+                          return message.info('请选择记录');
+                        }
+                        const recordIDs = selectedRecords
+                          .map(item => item.recordID)
+                          .join(',');
+                        this.endStream(recordIDs);
+                      }}
+                    >
+                      结束审批流
+                    </Button>
+                  )}
                   {userType === 'admin' && (
                     <Button
                       size="small"
@@ -902,27 +1124,46 @@ class StaffComplain extends React.Component {
             customRowBtns={[
               record => {
                 return (
-                  <Button
-                    onClick={() => {
-                      this.viewRecord(record);
-                    }}
-                  >
-                    查看
-                  </Button>
+                  <>
+                    <Button
+                      onClick={() => {
+                        this.viewRecord(record);
+                      }}
+                    >
+                      查看
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        this.showCom(record);
+                      }}
+                    >
+                      修改投诉种类
+                    </Button>
+                  </>
                 );
               },
               hasButton &&
-              (record => {
-                return (
-                  <Button
-                    onClick={() => {
-                      this.openProofList(record);
-                    }}
-                  >
-                    回复
-                  </Button>
-                );
-              })
+                (record => {
+                  return (
+                    <>
+                      <Button
+                        onClick={() => {
+                          this.openProofList(record);
+                        }}
+                      >
+                        回复
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          this.setState({ upMedia: true });
+                          this.reply2(record);
+                        }}
+                      >
+                        添加新的媒体证据
+                      </Button>
+                    </>
+                  );
+                })
             ]}
           />
         </div>
@@ -969,7 +1210,11 @@ class StaffComplain extends React.Component {
       replyContent,
       modalVisbile,
       picKey,
-      adminRemarkVis
+      replyVisible,
+      replyVisible2,
+      adminRemarkVis,
+      submitLoading,
+      replyData
     } = this.state;
     const userType = this.props.userType;
     return (
@@ -986,8 +1231,8 @@ class StaffComplain extends React.Component {
             // defaultOpenKeys={['sub1']}
             mode={this.state.mode}
             onSelect={this.onSelect}
-          // inlineCollapsed={this.state.collapsed}
-          // selectedKeys = {selectKeys}
+            // inlineCollapsed={this.state.collapsed}
+            // selectedKeys = {selectKeys}
           >
             <Menu.Item key="1">
               <span>
@@ -1091,6 +1336,29 @@ class StaffComplain extends React.Component {
           />
         </Modal> */}
         <Modal
+          visible={this.state.showModi}
+          width={777}
+          style={{ height: 'auto' }}
+          title={'修改投诉种类'}
+          loading={this.state.loading}
+          onCancel={() => this.setState({ showModi: false, modibrid: '' })}
+          destroyOnClose={true}
+          onOk={() => {
+            this.subBrid();
+          }}
+        >
+          <Select
+            defaultValue={this.state.modibrid}
+            size="small"
+            style={{ width: 320, height: 24, marginLeft: 3 }}
+            onChange={v => this.modibridAction(v)}
+          >
+            {this.state.typeComplaint.map(item => {
+              return <Option value={item}>{item}</Option>;
+            })}
+          </Select>
+        </Modal>
+        <Modal
           visible={this.state.showRecord}
           width={777}
           style={{ height: 'auto' }}
@@ -1192,8 +1460,8 @@ class StaffComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
               <div className="videoProof">
                 <h4>视频证据：</h4>
@@ -1220,8 +1488,8 @@ class StaffComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
               <hr />
               <h3>负责部门信息</h3>
@@ -1301,8 +1569,8 @@ class StaffComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
 
               <div className="videoProof">
@@ -1329,8 +1597,8 @@ class StaffComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
               <hr />
               <h3>HR回复</h3>
@@ -1371,8 +1639,8 @@ class StaffComplain extends React.Component {
                       );
                     })
                   ) : (
-                      <span>暂无图片</span>
-                    )}
+                    <span>暂无图片</span>
+                  )}
                 </div>
                 <div className="videoProof">
                   <h4>视频证据：</h4>
@@ -1398,8 +1666,8 @@ class StaffComplain extends React.Component {
                       );
                     })
                   ) : (
-                      <span style={{ textAlign: 'center' }}>暂无视频</span>
-                    )}
+                    <span style={{ textAlign: 'center' }}>暂无视频</span>
+                  )}
                 </div>
               </div>
               <hr />
@@ -1511,6 +1779,47 @@ class StaffComplain extends React.Component {
               }}
             />
           </div>
+        </Modal>
+        <Modal
+          title={this.state.upMedia ? '添加新的媒体证据' : '回复投诉'}
+          visible={replyVisible2}
+          width={800}
+          onCancel={this.handleCloseReply}
+          onOk={() => {
+            this.handleSubmit();
+          }}
+          confirmLoading={submitLoading}
+        >
+          <Row>
+            <h4>上传照片</h4>
+            <Upload
+              action={uploadURL}
+              listType="picture-card"
+              fileList={replyData.pictures}
+              onPreview={file => this.handlePreview(file, 'image')}
+              onChange={this.handlePictureChange}
+              accept="image/*"
+              multiple
+            >
+              选择照片
+            </Upload>
+          </Row>
+          <Row>
+            <h4>上传视频</h4>
+            <Upload
+              action={uploadURL}
+              listType="picture"
+              fileList={replyData.videos}
+              onPreview={file => this.handlePreview(file, 'video')}
+              onChange={this.handleVideoChange}
+              accept="video/*"
+              multiple
+            >
+              <Button>
+                <Icon type="upload" /> Upload
+              </Button>
+            </Upload>
+          </Row>
         </Modal>
         <Modal
           visible={this.state.proofModal}

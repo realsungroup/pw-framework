@@ -82,14 +82,14 @@ class ReplyComplain extends React.Component {
     },
     submitLoading: false,
     selectedTab: 'untreated',
-    modalVisbile:false
+    modalVisbile: false
   };
 
-  closeImg = ()=>{
+  closeImg = () => {
     this.setState({
-      modalVisbile:false
-    })
-  }
+      modalVisbile: false
+    });
+  };
   cancelModal = () => {
     this.setState({
       showRecord: false
@@ -234,12 +234,12 @@ class ReplyComplain extends React.Component {
         return message.info('有文件正在上传，请稍后');
       }
     }
-    if (!text) {
+    if (!text && !this.state.upMedia) {
       return message.info('请输入回复内容');
     }
     const time = moment().format('YYYY-MM-DD HH:mm:ss');
 
-    const data = [
+    let data = [
       {
         resid,
         maindata: {
@@ -254,6 +254,22 @@ class ReplyComplain extends React.Component {
         _id: 1
       }
     ];
+    //只上传媒体资源的场合，删除回复文字和时间
+    if (this.state.upMedia) {
+      data = [
+        {
+          resid,
+          maindata: {
+            REC_ID: selectRecord.REC_ID,
+            leaderRep: 'Y',
+            _state: 'modified',
+            _id: 1
+          },
+          subdata: [],
+          _id: 1
+        }
+      ];
+    }
     pictures.forEach((item, index) => {
       data[0].subdata.push({
         resid: subResid,
@@ -297,9 +313,10 @@ class ReplyComplain extends React.Component {
       this.tableDataRef.handleRefresh();
       this.setState({
         replyVisible: false,
-        replyData: { text: '', pictures: [], videos: [] }
+        replyData: { text: '', pictures: [], videos: [] },
+        upMedia: false
       });
-      message.success('回复成功');
+      message.success('成功');
     } catch (error) {
       console.log(error);
       message.error(error.message);
@@ -419,7 +436,7 @@ class ReplyComplain extends React.Component {
       selectedTab,
       showRecord,
       modalVisbile,
-      picKey,
+      picKey
     } = this.state;
     return (
       <div className="reply-complain">
@@ -521,13 +538,23 @@ class ReplyComplain extends React.Component {
                 customRowBtns={[
                   record => {
                     return (
-                      <Button
-                        onClick={() => {
-                          this.viewRecord(record);
-                        }}
-                      >
-                        查看
-                      </Button>
+                      <>
+                        <Button
+                          onClick={() => {
+                            this.viewRecord(record);
+                          }}
+                        >
+                          查看
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            this.setState({ upMedia: true });
+                            this.reply(record);
+                          }}
+                        >
+                          添加新的媒体证据
+                        </Button>
+                      </>
                     );
                   }
                 ]}
@@ -658,13 +685,19 @@ class ReplyComplain extends React.Component {
                       <img
                         src={item.fileURL}
                         style={{ width: 200, height: 'auto' }}
-                        onClick={() => { this.setState({ modalVisbile:true,enlargePic: true, picKey: item.fileURL }) }}
+                        onClick={() => {
+                          this.setState({
+                            modalVisbile: true,
+                            enlargePic: true,
+                            picKey: item.fileURL
+                          });
+                        }}
                       />
                     );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
 
               <div className="videoProof">
@@ -683,7 +716,7 @@ class ReplyComplain extends React.Component {
                           src={downloadImg}
                           onClick={() => {
                             this.downloadVideo(index);
-                            window.open(item.fileURL)
+                            window.open(item.fileURL);
                           }}
                           alt=""
                         />
@@ -691,8 +724,8 @@ class ReplyComplain extends React.Component {
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
               <hr />
               <h3>负责部门信息</h3>
@@ -756,13 +789,18 @@ class ReplyComplain extends React.Component {
                       <img
                         src={item.fileURL}
                         style={{ width: 200, height: 'auto' }}
-                        onClick={() => { this.setState({ enlargePic: true, picKey: item.fileURL }) }}
+                        onClick={() => {
+                          this.setState({
+                            enlargePic: true,
+                            picKey: item.fileURL
+                          });
+                        }}
                       />
                     );
                   })
                 ) : (
-                    <span>暂无图片</span>
-                  )}
+                  <span>暂无图片</span>
+                )}
               </div>
 
               <div className="videoProof">
@@ -771,26 +809,26 @@ class ReplyComplain extends React.Component {
                   dVideoProof.map((item, index) => {
                     return (
                       <>
-                      <video
-                        controls
-                        src={item.fileURL}
-                        autoPlay={false}
-                        style={{ width: '40%', marginRight: 8 }}
-                      />
-                      <img
+                        <video
+                          controls
+                          src={item.fileURL}
+                          autoPlay={false}
+                          style={{ width: '40%', marginRight: 8 }}
+                        />
+                        <img
                           src={downloadImg}
                           onClick={() => {
                             this.downloadVideo(index);
-                            window.open(item.fileURL)
+                            window.open(item.fileURL);
                           }}
                           alt=""
-                      />
+                        />
                       </>
                     );
                   })
                 ) : (
-                    <span style={{ textAlign: 'center' }}>暂无视频</span>
-                  )}
+                  <span style={{ textAlign: 'center' }}>暂无视频</span>
+                )}
               </div>
               <hr />
 
@@ -827,37 +865,37 @@ class ReplyComplain extends React.Component {
           className="changeAntCSS"
           visible={this.state.enlargePic}
           width={'90vw'}
-          style={{ 
+          style={{
             height: '90vh',
             marginBottom: 0,
             paddingBottom: 0,
             textAlign: 'center',
-            backgroundColor:'transparent',
+            backgroundColor: 'transparent'
           }}
           centered={true}
           onCancel={() => this.setState({ enlargePic: false })}
           destroyOnClose={true}
           footer={null}
-        >  
+        >
           <img
-            ref = {this.pic}
+            ref={this.pic}
             id="pic"
             src={this.state.picKey}
             style={{
-              transformOrigin:'top left',
+              transformOrigin: 'top left',
               transform: `scale(${this.state.imgDeatilSize})`,
               height: 'calc(100vh - 48px)',
-              width: 'auto',
+              width: 'auto'
             }}
-          />         
+          />
           <Slider
             style={{
               position: 'fixed',
-              left:'0',
-              right:'0',
-              margin:'auto',
+              left: '0',
+              right: '0',
+              margin: 'auto',
               bottom: '5vh',
-              width: '1000px',
+              width: '1000px'
             }}
             defaultValue={1}
             step={0.1}
@@ -870,7 +908,7 @@ class ReplyComplain extends React.Component {
           />
         </Modal>
         <Modal
-          title="回复投诉"
+          title={this.state.upMedia ? '添加新的媒体证据' : '回复投诉'}
           visible={replyVisible}
           width={800}
           onCancel={this.handleCloseReply}
@@ -883,14 +921,17 @@ class ReplyComplain extends React.Component {
           }}
           confirmLoading={submitLoading}
         >
-          <Row>
-            <h4>回复内容</h4>
-            <TextArea
-              placeholder="请输入回复内容"
-              value={replyData.text}
-              onChange={this.handleReplyTextChange}
-            />
-          </Row>
+          {/* 不是继续上传媒体资源的场合才需要填写回复内容 */}
+          {!this.state.upMedia ? (
+            <Row>
+              <h4>回复内容</h4>
+              <TextArea
+                placeholder="请输入回复内容"
+                value={replyData.text}
+                onChange={this.handleReplyTextChange}
+              />
+            </Row>
+          ) : null}
           <Row>
             <h4>上传照片</h4>
             <Upload
