@@ -397,6 +397,9 @@ class IDLTransferHr extends Component {
           applyHasPass[fc].C3_634660566076 = fc + 1;
           if (applyHasPass[fc].stepName == '员工确认') {
             applyHasPass[fc].isTarget = 'Y';
+            applyHasPass[fc].show = 'Y';
+            applyHasPass[fc].C3_634660565837 = 'Waiting';
+            applyHasPass[fc].C3_674843594419 = 'N';
           }
           fc++;
         }
@@ -755,6 +758,7 @@ class IDLTransferHr extends Component {
           while (fd < data.length) {
             if (pot[p][fc].C3_634660564341 == data[fd].REC_ID) {
               appNum = data[fd].applyPersonId;
+              pot[p][fc].C3_674843594419 = 'Y';
             }
             fd++;
           }
@@ -809,6 +813,17 @@ class IDLTransferHr extends Component {
           pp++;
         }
         p++;
+      }
+      let fc2 = 0;
+      while (fc2 < applyHasPass.length) {
+        applyHasPass[fc2].C3_634660566076 = fc2 + 1;
+        if (applyHasPass[fc2].C3_634660565034 == '员工确认') {
+          applyHasPass[fc2].isTarget = 'Y';
+          applyHasPass[fc2].show = 'Y';
+          applyHasPass[fc2].C3_634660565837 = 'Waiting';
+          applyHasPass[fc2].C3_674843594419 = 'N';
+        }
+        fc2++;
       }
 
       let res2 = await http().addRecords({
