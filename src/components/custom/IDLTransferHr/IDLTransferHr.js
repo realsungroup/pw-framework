@@ -846,91 +846,91 @@ class IDLTransferHr extends Component {
   approve = async (v, end) => {
     this.setState({ loading: true });
 
-    //如果H终审通过，变更新员工信息表记录
+    //如果HR终审通过，变更新员工信息表记录
     if (v == 'Y' && end) {
       console.log('HR终审通过');
       this.hREndModify();
-    }
-    var res = '';
-    if (v == 'N') {
-      var prev = 'N';
-      var endv;
-      if (end) {
-        prev = 'Y';
-        endv = 'N';
-      }
-
-      try {
-        res = await http().modifyRecords({
-          resid: 632255761674,
-          data: [
-            {
-              REC_ID: this.state.toCheckFront.REC_ID,
-              Approve: '未通过',
-              ApproveRemark: this.state.C3_632503853105,
-              hrPreAprrove: prev,
-              hrEndApprove: endv
-            }
-          ]
-        });
-        console.log('res', res);
-        if (res.Error === 0) {
-          message.success(res.message);
-          this.setState({ visible: false, conUnpass: false, loading: false });
-          this.tableDataRef.handleRefresh();
-        }
-      } catch (error) {
-        message.error(error.message);
-        this.setState({ loading: false });
-      }
     } else {
-      var ps = '审核中';
-      var endV = '';
-      if (end) {
-        ps = '已通过';
-        endV = 'Y';
-      }
-      try {
-        var date = this.state.toCheckFront.effortDate;
-        if (date) {
-          date = moment(date).format('YYYY-MM-DD');
+      var res = '';
+      if (v == 'N') {
+        var prev = 'N';
+        var endv;
+        if (end) {
+          prev = 'Y';
+          endv = 'N';
         }
-        res = await http().modifyRecords({
-          resid: 632255761674,
-          data: [
-            {
-              REC_ID: this.state.toCheckFront.REC_ID,
-              ...this.state.allValues,
-              Approve: ps,
-              ApproveRemark: this.state.C3_632503853105,
-              hrPreAprrove: 'Y',
-              effortDate: date,
-              hrEndApprove: endV,
-              jobId: this.state.toCheckFront.jobId
-            }
-          ]
-        });
 
-        //自动跳过审批的代码移到这里
-
-        if (!end) {
-          let res2 = await http().addRecords({
-            resid: 634660498796,
-            data: this.state.stream
+        try {
+          res = await http().modifyRecords({
+            resid: 632255761674,
+            data: [
+              {
+                REC_ID: this.state.toCheckFront.REC_ID,
+                Approve: '未通过',
+                ApproveRemark: this.state.C3_632503853105,
+                hrPreAprrove: prev,
+                hrEndApprove: endv
+              }
+            ]
           });
+          console.log('res', res);
+          if (res.Error === 0) {
+            message.success(res.message);
+            this.setState({ visible: false, conUnpass: false, loading: false });
+            this.tableDataRef.handleRefresh();
+          }
+        } catch (error) {
+          message.error(error.message);
+          this.setState({ loading: false });
         }
+      } else {
+        var ps = '审核中';
+        var endV = '';
+        if (end) {
+          ps = '已通过';
+          endV = 'Y';
+        }
+        try {
+          var date = this.state.toCheckFront.effortDate;
+          if (date) {
+            date = moment(date).format('YYYY-MM-DD');
+          }
+          res = await http().modifyRecords({
+            resid: 632255761674,
+            data: [
+              {
+                REC_ID: this.state.toCheckFront.REC_ID,
+                ...this.state.allValues,
+                Approve: ps,
+                ApproveRemark: this.state.C3_632503853105,
+                hrPreAprrove: 'Y',
+                effortDate: date,
+                hrEndApprove: endV
+              }
+            ]
+          });
 
-        var res3 = await http().modifyRecords({
-          resid: 632255761674,
-          data: [{ REC_ID: this.state.toCheckFront.REC_ID }]
-        });
+          //自动跳过审批的代码移到这里
 
-        message.success(res.message);
-        this.setState({ visible: false, loading: false });
-        this.tableDataRef.handleRefresh();
-      } catch (error) {
-        message.error(error.message);
-        this.setState({ loading: false });
+          if (!end) {
+            let res2 = await http().addRecords({
+              resid: 634660498796,
+              data: this.state.stream
+            });
+          }
+
+          var res3 = await http().modifyRecords({
+            resid: 632255761674,
+            data: [{ REC_ID: this.state.toCheckFront.REC_ID }]
+          });
+
+          message.success(res.message);
+          this.setState({ visible: false, loading: false });
+          this.tableDataRef.handleRefresh();
+        } catch (error) {
+          message.error(error.message);
+          this.setState({ loading: false });
+        }
       }
     }
   };
@@ -1029,24 +1029,127 @@ class IDLTransferHr extends Component {
   //hr终审更新岗位架构，修改新员工信息表信息
   hREndModify = async () => {
     const { allValues } = this.state;
-    let res;
-    try {
-      res = await http({ baseURL: WuxiHr03BaseURL }).modifyRecords({
-        resid: 638459489229,
-        data: [
-          {
-            REC_ID: this.state.HREndRecid,
-            C3_470524257391: this.state.toCheckFront.effortDate, //生效日期
-            C3_465142349966: this.state.toCheckFront.jobId, //岗位代码-可计算部门信息
-            jobCode: allValues.iiviJobCode, //jobcode
-            C3_581428109480: allValues.nBuCode //bucode
-          }
-        ]
+    //获取当前岗位代码和变动后的岗位代码是否一致，再判断部门/级别/上级/职位是否发生改变，满足两者的场合需要向岗位表上传数据、
+
+    if (this.state.toCheckFront.jobId === this.state.jId || !this.state.jId) {
+      console.log(this.state.toCheckFront);
+      let toAdd = {};
+      let resDep = await http({ baseURL: WuxiHr03BaseURL }).getTable({
+        resid: 417643880834,
+        cmswhere: `DEP_ID = '${this.state.toCheckFront.nDepartCode}'`
       });
-    } catch (error) {
-      message.info(error.message);
-      console.log(error.message);
+      let nDepCn = '';
+      let nDepEn = '';
+      if (resDep.data.length > 0) {
+        nDepCn = resDep.data[0].DEP_NAME;
+        nDepEn = resDep.data[0].DEP_NAME_EN;
+      }
+
+      let resSup = await http({ baseURL: WuxiHr03BaseURL }).getTable({
+        resid: 638459489229,
+        cmswhere: `C3_305737857578 = '${this.state.toCheckFront.nDriectorCode}'`
+      });
+
+      let nSupNum = '';
+      if (resSup.data.length > 0) {
+        nSupNum = resSup.data[0].C3_465142349966;
+      }
+
+      if (this.state.toCheckFront.isChangeDept == 'Y') {
+        toAdd.orgDepCode = this.state.toCheckFront.nDepartCode;
+        toAdd.orgDepEN = nDepEn;
+        toAdd.orgDepCN = nDepCn;
+        console.log('部门变');
+      }
+      if (this.state.toCheckFront.C3_638723541708 == 'Y') {
+        console.log('级别变');
+        toAdd.orgLevel = this.state.toCheckFront.nLevel;
+      }
+      if (this.state.toCheckFront.isChangeDriector == 'Y') {
+        console.log('主管变');
+        toAdd.orgSupNumber = nSupNum;
+        // 上级岗位编号
+      }
+      if (this.state.toCheckFront.isChangeJob == 'Y') {
+        console.log('职位变');
+        toAdd.orgJobCN = this.state.toCheckFront.nJobName;
+      }
+      let resToModi = await http({ baseURL: WuxiHr03BaseURL }).getTable({
+        resid: 638305113445,
+        cmswhere: `orgNumber = '${this.state.toCheckFront.jobId}'`
+      });
+      if (resToModi.data.length > 0) {
+        toAdd.REC_ID = resToModi.data[0].REC_ID;
+      } else {
+        message.error('未找到岗位');
+      }
+      let res = await http({ baseURL: WuxiHr03BaseURL }).modifyRecords({
+        resid: 638305113445,
+        data: [toAdd]
+      });
+      if (res.data.length > 0) {
+      } else {
+        message.error('岗位信息修改失败');
+      }
     }
+    //之后再修改终审状态
+
+    let date = this.state.toCheckFront.effortDate;
+    if (date) {
+      date = moment(date).format('YYYY-MM-DD');
+    }
+    let obj = {
+      REC_ID: this.state.toCheckFront.REC_ID,
+      ...this.state.allValues,
+      Approve: '已通过',
+      ApproveRemark: this.state.C3_632503853105,
+      effortDate: date,
+      hrEndApprove: 'Y'
+    };
+    let res2 = await http().modifyRecords({
+      resid: 632255761674,
+      data: [obj]
+    });
+    if (res2.data.length > 0) {
+      //最后传数据到新员工信息表
+      let res3 = await http({ baseURL: WuxiHr03BaseURL }).getTable({
+        resid: 638459489229,
+        cmswhere: `C3_305737857578 = '${res2.data[0].personID}'`
+      });
+      if (res3.data.length > 0) {
+        let toModi2 = {
+          REC_ID: res3.data[0].REC_ID,
+          C3_638469590670: '变动',
+          C3_227192472953: res2.data[0].personNum,
+          C3_227192484125: res2.data[0].person,
+          C3_305737857578: res2.data[0].personID,
+          C3_587728697204: res2.data[0].nLevel,
+          C3_417991699934: res2.data[0].nDept_code,
+          C3_417991699474: res2.data[0].nProj_Code,
+          C3_581428109480: res2.data[0].nBuCode,
+          C3_465142349966: res2.data[0].jobId,
+          C3_419522823650: res2.data[0].levelDesc,
+          C3_470524257391: res2.data[0].effortDate,
+          C3_417994161226: res2.data[0].type,
+          C3_308778699827: res2.data[0].ID,
+          jobCode: res2.data[0].iiviJobCode
+        };
+        let res4 = await http({ baseURL: WuxiHr03BaseURL }).modifyRecords({
+          resid: 638459489229,
+          data: [toModi2]
+        });
+        if (res4.data.length > 0) {
+          message.success('终审成功');
+        } else {
+          message.success('未能修改员工信息表');
+        }
+      } else {
+        message.error('员工信息表记录缺失');
+      }
+    } else {
+    }
+    this.setState({ visible: false, loading: false });
+    this.tableDataRef.handleRefresh();
   };
 
   approveHC = async v => {
@@ -1910,10 +2013,11 @@ class IDLTransferHr extends Component {
                       <Button
                         onClick={() => {
                           this.setState({
-                            toCheckFront: {
-                              ...this.state.toCheckFront,
-                              jobId: record.orgNumber
-                            },
+                            // toCheckFront: {
+                            //   ...this.state.toCheckFront,
+                            //   jobId: record.orgNumber
+                            // },
+                            jId: record.orgNumber,
                             showJob: false
                           });
                         }}
@@ -2187,11 +2291,9 @@ class IDLTransferHr extends Component {
                     <>
                       <b>岗位代码：</b>
                       <span>
-                        {this.state.toCheckFront.jobId ? (
-                          this.state.toCheckFront.jobId
-                        ) : (
-                          <b style={{ color: '#f5222d' }}>请选择岗位</b>
-                        )}
+                        {this.state.jId
+                          ? this.state.jId
+                          : this.state.toCheckFront.jobId}
                       </span>
                       <Button
                         size="small"
