@@ -1092,7 +1092,7 @@ class IDLTransferHr extends Component {
         message.error('岗位信息修改失败');
       }
     }
-    //之后再修改终审状态，使用后台的http请求修改新员工信息表的数据
+    //之后再修改终审状态
 
     let date = this.state.toCheckFront.effortDate;
     if (date) {
@@ -1111,9 +1111,42 @@ class IDLTransferHr extends Component {
       data: [obj]
     });
     if (res2.data.length > 0) {
-      message.success('终审成功');
+      //最后传数据到新员工信息表
+      let res3 = await http({ baseURL: WuxiHr03BaseURL }).getTable({
+        resid: 638459489229,
+        cmswhere: `C3_305737857578 = '${res2.data[0].personID}'`
+      });
+      if (res3.data.length > 0) {
+        let toModi2 = {
+          REC_ID: res3.data[0].REC_ID,
+          C3_638469590670: '变动',
+          C3_227192472953: res2.data[0].personNum,
+          C3_227192484125: res2.data[0].person,
+          C3_305737857578: res2.data[0].personID,
+          C3_587728697204: res2.data[0].nLevel,
+          C3_417991699934: res2.data[0].nDept_code,
+          C3_417991699474: res2.data[0].nProj_Code,
+          C3_581428109480: res2.data[0].nBuCode,
+          C3_465142349966: res2.data[0].jobId,
+          C3_419522823650: res2.data[0].levelDesc,
+          C3_470524257391: res2.data[0].effortDate,
+          C3_417994161226: res2.data[0].type,
+          C3_308778699827: res2.data[0].ID,
+          jobCode: res2.data[0].iiviJobCode
+        };
+        let res4 = await http({ baseURL: WuxiHr03BaseURL }).modifyRecords({
+          resid: 638459489229,
+          data: [toModi2]
+        });
+        if (res4.data.length > 0) {
+          message.success('终审成功');
+        } else {
+          message.success('未能修改员工信息表');
+        }
+      } else {
+        message.error('员工信息表记录缺失');
+      }
     } else {
-      message.error('记录缺失');
     }
     this.setState({ visible: false, loading: false });
     this.tableDataRef.handleRefresh();
