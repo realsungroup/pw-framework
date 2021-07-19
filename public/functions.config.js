@@ -10240,6 +10240,8 @@ window[677843884822] = {
 //未处理浦西 678449485649
 //已处理finisar 677873743625
 //未处理finisar 677873703733
+//名片iivi 679426916893
+//名片finisar 679426938293
 window[678188293831] = {
   name: 'TabsTableData',
   title: '办公用品管理',
@@ -10264,6 +10266,22 @@ window[678188293831] = {
       {
         TabsTitle: '已处理',
         resid: 677873743625,
+        baseURL: 'http://10.108.2.66:1001/',
+        downloadBaseURL: 'http://10.108.2.66:1000/',
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasRowSelection: true,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        subtractH: 200
+      },
+      {
+        TabsTitle: '名片申请处理',
+        resid: 679426938293,
         baseURL: 'http://10.108.2.66:1001/',
         downloadBaseURL: 'http://10.108.2.66:1000/',
         hasAdd: false,
@@ -10319,6 +10337,52 @@ window[678188368103] = {
         hasRowView: true,
         hasRowDelete: false,
         isUseFormDefine: false,
+        subtractH: 200
+      }
+    ]
+  ]
+};
+
+
+//办公用品申请-上海
+//浦西window 679490552562
+//finisarwindow 679485870124
+window[679485870124] = {
+  name: 'TabsTableData',
+  title: '名片申请',
+  props: [
+    [
+      {
+        TabsTitle: '未提交',
+        resid: 679483387876,
+        baseURL: 'http://10.108.2.66:1001',
+        hasAdd: true,
+        addText: '添加/Add',
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        hasRowSelection: true,
+        recordFormUseAbsolute: true,
+        subtractH: 200
+      },
+      {
+        TabsTitle: '已提交',
+        resid: 679578808040,
+        baseURL: 'http://10.108.2.66:1001',
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasBackBtn: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        hasRowDelete: false,
+        hasRowSelection: true,
+        recordFormUseAbsolute: true,
         subtractH: 200
       }
     ]
