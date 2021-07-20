@@ -10324,3 +10324,31 @@ window[678188368103] = {
     ]
   ]
 };
+
+//设备管理
+window[664282094133] = {
+  name: 'DeviceManagement', // 组件名称，
+  title: '设备管理', // 功能模块名称
+  props: {}
+};
+
+//部门管理
+window[664282094133] = {
+  name: 'DepartmentManagement', // 组件名称，
+  title: '部门管理', // 功能模块名称
+  props: {}
+};
+
+//考勤记录管理
+window[664282094133] = {
+  name: 'AttendanceRecordManagement', // 组件名称，
+  title: '考勤记录管理', // 功能模块名称
+  props: {}
+};
+
+//进出授权管理
+window[664282094133] = {
+  name: 'MoveAuthorityManagement', // 组件名称，
+  title: '进出授权管理', // 功能模块名称
+  props: {}
+};

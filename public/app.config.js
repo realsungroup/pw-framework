@@ -8,7 +8,7 @@ window.pwConfig = {
     // baseURL: 'http://10.108.11.36:6001/', // 请求的基地址
     // baseURL: 'http://pwkwebapi.realsun.me/',
     // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
-    baseURL: 'http://10.108.2.66:5002/', // 请求的基地址
+    baseURL: 'http://kingofdinner.realsun.me:18001/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
@@ -36,7 +36,7 @@ window.pwConfig = {
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.21.41:2001/',
-      PostArchitectureBaseURL: 'http://10.108.2.66:9091/',
+      PostArchitectureBaseURL: 'http://kingofdinner.realsun.me:17001/',
       PostArchitectureDownloadBaseURL: 'http://10.108.21.41:2001/',
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
@@ -256,7 +256,7 @@ window.pwConfig = {
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
 
       HeadCountBaseURL: 'http://10.108.2.66:9091/',
-      PostArchitectureBaseURL: 'http://10.108.2.66:9091/',
+      PostArchitectureBaseURL: 'http://kingofdinner.realsun.me:17001/',
       comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl

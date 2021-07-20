@@ -190,5 +190,9 @@ export {
   HolidayBalanceQuery,
   HRLeaveApp,
   MonthlySettlementLock,
-  OfficeSupply
+  OfficeSupply,
+  DeviceManagement,
+  DepartmentManagement,
+  AttendanceRecordManagement,
+  MoveAuthorityManagement,
 } from '../components/custom/loadableCustom';
