@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="10px" viewBox="0 0 14 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 55.2 (78181) - https://sketchapp.com -->
+    <title>自定义卡片</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="1233" height="591"></rect>
+        <filter x="-0.3%" y="-0.7%" width="100.6%" height="101.4%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="4" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.09 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="页面1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="岗位架构-最终-初始状态" transform="translate(-904.000000, -88.000000)">
+            <rect fill="#FFFFFF" x="0" y="0" width="1440" height="667"></rect>
+            <g id="编组-4" transform="translate(207.000000, 76.000000)">
+                <g id="矩形">
+                    <use fill="#F0F2F5" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                </g>
+            </g>
+            <rect id="矩形" fill="#FFFFFF" x="883" y="76" width="557" height="32"></rect>
+            <g id="文本框-(1)" transform="translate(903.000000, 85.000000)" fill-rule="nonzero">
+                <rect id="矩形" fill="#000000" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                <path d="M14.392,12.032 L1.608,12.032 C1.384,12.032 1.208,11.856 1.208,11.632 L1.208,4.368 C1.208,4.144 1.384,3.968 1.608,3.968 L14.392,3.968 C14.616,3.968 14.792,4.144 14.792,4.368 L14.792,11.632 C14.792,11.848 14.608,12.032 14.392,12.032 L14.392,12.032 Z M2.008,11.232 L13.992,11.232 L13.992,4.768 L2.008,4.768 L2.008,11.232 Z" id="形状" fill="#333303"></path>
+                <path d="M4.512,9.544 C4.288,9.544 4.112,9.368 4.112,9.144 L4.112,6.84 C4.112,6.616 4.288,6.44 4.512,6.44 C4.736,6.44 4.912,6.616 4.912,6.84 L4.912,9.144 C4.912,9.368 4.728,9.544 4.512,9.544 Z M12.88,9.544 L7.264,9.544 C7.04,9.544 6.864,9.368 6.864,9.144 C6.864,8.92 7.04,8.744 7.264,8.744 L12.88,8.744 C13.104,8.744 13.28,8.92 13.28,9.144 C13.28,9.368 13.104,9.544 12.88,9.544 Z" id="形状" fill="#000000"></path>
+            </g>
+        </g>
+    </g>
+</svg>
