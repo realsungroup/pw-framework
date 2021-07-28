@@ -58,7 +58,7 @@ export const inApplication = {
     placement: 'bottom',
     height: 'calc(100vh - 30px)'
   },
-  addText: '填写一般访客基本信息',
+  addText: '填写一般访客申请',
   subTableArrProps: [
     {
       subTableName: '访客信息',
@@ -102,7 +102,7 @@ export const inExaminationAndApproval = {
     placement: 'right',
     width: 820
   },
-  addText: '填写一般访客基本信息',
+  addText: '填写一般访客申请',
   subTableArrProps: [
     {
       subTableName: '访客信息',
