@@ -2103,8 +2103,7 @@ window[621257502796] = {
     showChooseAllDay: false, //是否显示全天假选择框
     isEightToSeventeen: false, //请全天假默认从8到17点
     showAllminuteShuaKa: false, //刷卡的分钟下拉列表显示所有分钟
-    availableTimeVisible: false,//是否显示可用额度
-
+    availableTimeVisible: false //是否显示可用额度
   }
 };
 window[622577431745] = {
@@ -10229,7 +10228,7 @@ window[677843884822] = {
   name: 'OfficeSupply',
   title: '办公用品申请',
   props: {
-    choosePeopleResid: 678368669087,
+    choosePeopleResid: 678368669087
   }
 };
 
@@ -10314,6 +10313,63 @@ window[678188368103] = {
         hasAdd: true,
         hasBeBtns: true,
         hasModify: false,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        subtractH: 200
+      }
+    ]
+  ]
+};
+//黑名单审核
+//待审核  680892074596
+//已审核 680892093510
+//已拒绝 680892103237
+window[680957487737] = {
+  name: 'TabsTableData',
+  title: 'DL招聘培训部审核',
+  props: [
+    [
+      {
+        TabsTitle: '待审核',
+        resid: 680892074596,
+        baseURL: 'http://kingofdinner.realsun.me:1201/',
+        downloadBaseURL: 'http://kingofdinner.realsun.me:1200/',
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        subtractH: 200
+      },
+      {
+        TabsTitle: '已审核',
+        resid: 680892093510,
+        baseURL: 'http://kingofdinner.realsun.me:1201/',
+        downloadBaseURL: 'http://kingofdinner.realsun.me:1200/',
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        subtractH: 200
+      },
+      {
+        TabsTitle: '已拒绝',
+        resid: 680892103237,
+        baseURL: 'http://kingofdinner.realsun.me:1201/',
+        downloadBaseURL: 'http://kingofdinner.realsun.me:1200/',
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
         hasDelete: true,
         hasRowModify: true,
         hasRowView: true,
