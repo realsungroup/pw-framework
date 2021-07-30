@@ -55,13 +55,10 @@ class DLHasInterview extends React.Component {
         this.setState({
           passAssessData: res.data[0],
           assessModal: true
-
         });
       } else {
         message.info('当前员工没有填写面试评估表');
-
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -101,24 +98,24 @@ class DLHasInterview extends React.Component {
           hasRowModify={false}
           height="100%"
           downloadBaseURL={this.dlEmployDownloadURL}
-          customRowBtns={[
-            record => {
-              return (
-                <Button
-                  onClick={() => {
-                    this.getPassAssessData(record.C3_617971057763);
-                    this.setState({
-                      selectedMan: record
-                    });
-                  }}
-                >
-                  查看面试评估表
-                </Button>
-              );
-            }
-          ]}
+          // customRowBtns={[
+          //   record => {
+          //     return (
+          //       <Button
+          //         onClick={() => {
+          //           this.getPassAssessData(record.C3_617971057763);
+          //           this.setState({
+          //             selectedMan: record
+          //           });
+          //         }}
+          //       >
+          //         查看面试评估表
+          //       </Button>
+          //     );
+          //   }
+          // ]}
         ></TableData>
-        <Modal
+        {/* <Modal
           width="61%"
           title={'面试评估表'}
           visible={assessModal}
@@ -179,11 +176,15 @@ class DLHasInterview extends React.Component {
                         </th>
                         <th colSpan="5" rowSpan="3">
                           <div
-                            dangerouslySetInnerHTML={{
-                              __html: item.questions
-                                .replace(/《/g, '<')
-                                .replace(/》/g, '>')
-                            }}
+                            dangerouslySetInnerHTML={
+                              item.question
+                                ? {
+                                    __html: item.questions
+                                      .replace(/《/g, '<')
+                                      .replace(/》/g, '>')
+                                  }
+                                : null
+                            }
                           ></div>
                         </th>
                       </tr>
@@ -240,7 +241,7 @@ class DLHasInterview extends React.Component {
               </tr>
             </tbody>
           </table>
-        </Modal>
+        </Modal> */}
       </>
     );
   }
