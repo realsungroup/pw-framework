@@ -962,3 +962,9 @@ export const OfficeSupply = Loadable({
     return minLoading;
   }
 });
+export const WorkSheet = Loadable({
+  loader: () => import('./WorkSheet'),
+  loading() {
+    return minLoading;
+  }
+});
