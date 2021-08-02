@@ -2,7 +2,7 @@ import React from 'react';
 import './WorkSheet.less';
 import { Select, Button,message,DatePicker } from 'antd';
 import { TableData } from '../../common/loadableCommon';
-
+import WorkSheetDetail from '../WorkSheetDetail';
 import http from 'Util20/api';
 
 const { Option } = Select;
@@ -30,8 +30,9 @@ class WorkSheet extends React.Component {
   
   async componentDidMount() {
    
-this.getFilters()
+    this.getFilters()
   }
+  //获取订单状态种类
   getFilters=async()=>{
     let res;
     try {
@@ -53,6 +54,7 @@ this.getFilters()
     }
 
   }
+  //获取部门种类
   getDepa=async()=>{
     let res;
     try {
@@ -67,6 +69,7 @@ this.getFilters()
     }
 
   }
+  //根据筛选条件刷新tabledata
   getData=async()=>{
     let cms =``;
     if(this.state.filterStatus){
@@ -98,6 +101,15 @@ this.getFilters()
     this.setState({
       cms
     })
+  }
+  //显示详情页
+  showDetails=(v)=>{
+    let value = true;
+    if(v!=null){
+      value=v
+    }
+    console.log('value',value,v)
+    this.setState({showDetails:value});
   }
   render() {
     return (
@@ -210,8 +222,23 @@ this.getFilters()
                 hasRowSelection={false}
                 hasAdvSearch={false}
                 importConfig={null}
+                actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                  return (
+                    <Button onClick={()=>{this.showDetails()}}>
+                        新建
+                    </Button>
+                  );
+                }}
               />
-          </div>
+        </div>
+        <div className='detailContent' style={this.state.showDetails?{display:'block'}:{display:'none'}}>
+             
+             <WorkSheetDetail
+                hasBack={true}
+                backFunc={()=>{this.showDetails(false)}}
+             >
+              </WorkSheetDetail>   
+        </div>
       </div>
 
     );
