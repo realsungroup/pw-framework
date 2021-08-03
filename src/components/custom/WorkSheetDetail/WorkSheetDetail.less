@@ -148,6 +148,63 @@
   .workSheetForm{
     height:calc(100vh - 4rem);
     overflow: auto;
+    text-align: center;
+    padding:1rem;
+    #toPrint{
+      display: inline-block;
+      width: 794px;
+      height: 1090px;
+      padding:2rem;
+      border:1px solid #000;
+      input{
+        border: 0px solid #fff;
+      }
+      i{
+        display: none;
+      }
+      .header{
+        width:100%;
+        div{
+          float:left;
+          width:calc(50% - 7.5rem);
+        }
+        h4{
+          display: inline-block;
+          font-size: 1.2rem;
+          width:15rem;
+        }
+        p{
+          float:right;
+          font-size: 1.2rem;
+          width:calc(50% - 7.5rem);
+
+          b{
+            color:#f5222d
+          }
+        }
+      }
+      .timer{
+        width:100%;
+        overflow: hidden;
+        div{
+          float: left;
+          line-height: 1.5rem;
+          input{
+            position:relative;
+            top:6px;
+            border-bottom:1px solid #000;
+            border-radius: 0px;
+          }
+          &:nth-child(2){
+            float:right;
+          }
+        }
+        table{
+          width:100%;
+          margin-top: 0.5rem;
+        }
+      }
+    }
   }
   .rightContent{
     float:right;

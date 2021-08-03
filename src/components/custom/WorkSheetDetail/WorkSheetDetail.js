@@ -186,61 +186,63 @@ class WorkSheetDetail extends React.Component {
                 </div>
                 <div className='timer'>
                   <div>
-                    接单时间：<DatePicker showTime/>
+                    接单时间：<DatePicker size='small'showTime/>
                   </div>
                   <div>
-                    交货时间：<DatePicker showTime/>
+                    交货时间：<DatePicker size='small' showTime/>
                   </div>
+                  <div>
                   <table border="1">
                     
                     <tr>
-                      <td>业务部</td>
-                      <td>客户名称</td>
-                      <td>A1111</td>
-                      <td>产品名称</td>
-                      <td>abcdefgh</td>
-                      <td>数量</td>
-                      <td>12</td>
+                      <td rowspan="9" colspan="1">业务部</td>
+                      <td colspan="3">客户名称</td>
+                      <td colspan="4">A1111</td>
+                      <td colspan="3">产品名称</td>
+                      <td colspan="6">abcdefgh</td>
+                      <td colspan="4">数量</td>
+                      <td colspan="7">12</td>
                     </tr>
                     <tr>
-                      <td>图面</td>
-                      <td>正切</td>
-                      <td>反切</td>
-                      <td>入刀</td>
-                      <td>净介</td>
-                      <td>参照</td>
-                      <td>菲林</td>
-                      <td>色位</td>
-                      <td>图纸尺寸</td>
-                      <td>传真</td>
-                      <td>邮件</td>
-                      <td>实样（物）</td>
+                      <td width='40px'>图面</td>
+                      <td width='40px'>正切</td>
+                      <td width='40px'>反切</td>
+                      <td width='40px'>入刀</td>
+                      <td width='40px'>净介</td>
+                      <td width='40px'>参照</td>
+                      <td width='40px'>菲林</td>
+                      <td width='40px'>色位</td>
+                      <td colspan="4">图纸尺寸</td>
+                      <td colspan="2">传真</td>
+                      <td colspan="2">邮件</td>
+                      <td colspan="10">实样（物）</td>
                     </tr>
                     <tr>
-                      <td>稿数情况</td>
-                      <td>菲林</td>
-                      <td>图纸</td>
-                      <td>稿</td>
-                      <td>实物</td>
-                      <td>稿样是否归还客户</td>
-                      <td>是</td>
-                      <td>否</td>
-                      <td>板度要求</td>
-                      <td>要求123</td>
+                      <td colspan="2">稿数情况</td>
+                      <td colspan="1">菲林</td>
+                      <td colspan="2">图纸</td>
+                      <td colspan="1">稿</td>
+                      <td colspan="2">实物</td>
+                      <td colspan="6">稿样是否归还客户</td>
+                      <td colspan="1">是</td>
+                      <td colspan="1">否</td>
+                      <td colspan="4">板度要求</td>
+                      <td colspan="7">要求123</td>
                     </tr>
                     <tr>
-                      <td>接单人</td>
-                      <td>张三</td>
-                      <td>送货单号</td>
-                      <td>价格</td>
-                      <td>1234</td>
-                      <td>含税</td>
-                      <td>不含税</td>
-                      <td>复核人</td>
-                      <td>李四</td>
+                      <td colspan="2">接单人</td>
+                      <td colspan="2">张三</td>
+                      <td colspan="2">送货单号</td>
+                      <td colspan="3">12345678</td>
+                      <td colspan="2">价格</td>
+                      <td colspan="2">1234</td>
+                      <td colspan="2">含税</td>
+                      <td colspan="3">不含税</td>
+                      <td colspan="3">复核人</td>
+                      <td colspan="5">李四</td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="26">
                         <div>
                           接单绘图说明：
                           <TextArea/>
@@ -249,148 +251,148 @@ class WorkSheetDetail extends React.Component {
 
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="2">
                         刀材名称
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="1">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         数量
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
-                      <td>
+                      <td colspan="4">
                         齿刀名称
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="3">
                         a
                       </td>
-                      <td>
+                      <td colspan="2"> 
                         数量
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="2">
                         痕线名称
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="1">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         数量
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
-                      <td>
+                      <td colspan="4">
                         孔类名称
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="3">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         数量
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="2">
                         销类名称
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="1">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         数量
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         其他
                       </td>
-                      <td>
+                      <td colspan="4">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="3">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         数量
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="2">
                         板材要求
                       </td>
-                      <td>
+                      <td colspan="2">
                         a
                       </td>
-                      <td>
+                      <td colspan="2">
                         木板厚度
                       </td>
-                      <td>
+                      <td colspan="1">
                         22
                       </td>
-                      <td>
+                      <td colspan="2">
                         20
                       </td>
-                      <td>
+                      <td colspan="2">
                         18
                       </td>
-                      <td>
+                      <td colspan="2">
                         15
                       </td>
-                      <td>
+                      <td colspan="2">
                         12
                       </td>
-                      <td>
+                      <td colspan="2">
                         10
                       </td>
-                      <td>
+                      <td colspan="4">
                         塑料板
                       </td>
                       <td>
@@ -410,74 +412,75 @@ class WorkSheetDetail extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td rowspan="3">
                         工程部
                       </td>
-                      <td>
+                      <td colspan="2">
                         制图人
                       </td>
-                      <td>
+                      <td colspan="2">
                         张三
                       </td>
-                      <td>
+                      <td colspan="3">
                         制图档号
                       </td>
-                      <td>
+                      <td colspan="1">
                         aaa
                       </td>
-                      <td>
+                      <td colspan="4">
                         制图尺寸
                       </td>
-                      <td>
+                      <td colspan="5">
                         <Input/>X<Input/>
                       </td>
-                      <td>
+                      <td colspan="3">
                       孔径1
                       </td>
-                      <td>
+                      <td colspan="2">
                         10
                       </td>
-                      <td>
+                      <td colspan="3">
                         孔径2
                       </td>
-                      <td>
+                      <td colspan="1">
                         10
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="2">
                         制米数
                       </td>
-                      <td>
+                      <td colspan="2">
                         刀长
                       </td>
-                      <td>
+                      <td colspan="1">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         线长
                       </td>
-                      <td>
+                      <td colspan="1">
                         222
                       </td>
-                      <td>
+                      <td colspan="3">
                         半穿刀
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                       齿刀
                       </td>
-                      <td>
+                      <td colspan="2">齿刀</td>
+                      <td colspan="4">
                         制图时间
                       </td>
-                      <td>
+                      <td colspan="6">
                       <Input/>至<Input/>
                       </td>
                       </tr>
                       <tr>
-                      <td>
+                      <td colspan="26">
                         <div>
                           制图备注：
                           <TextArea/>
@@ -489,66 +492,66 @@ class WorkSheetDetail extends React.Component {
 
                     </tr>
                     <tr>
-                      <td>
+                      <td rowspan="4">
                         激光部
                       </td>
-                      <td>
+                      <td colspan="2">
                         割板人
                       </td>
-                      <td>
+                      <td colspan="3">
                         张三
                       </td>
-                      <td>
+                      <td colspan="3">
                         割板时间
                       </td>
-                      <td>
+                      <td colspan="6">
                       <Input/>至<Input/>
                       </td>
-                      <td>
+                      <td colspan="6">
                         切割板尺寸
                       </td>
-                      <td>
+                      <td colspan="6">
                       <Input/>X<Input/>
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="3">
                         割缝宽度
                       </td>
-                      <td>
+                      <td colspan="2">
                         1.0
                       </td>
-                      <td>
+                      <td colspan="2">
                        0.71
                       </td>
-                      <td>
+                      <td colspan="2">
                         0.53
                       </td>
-                      <td>
+                      <td colspan="2">
                       0.45
                       </td>
-                      <td>
+                      <td colspan="2">
                         其他
                       </td>
-                      <td>
+                      <td colspan="2">
                       。。。
                       </td>
-                      <td>
+                      <td colspan="5">
                         切割方式
                       </td>
-                      <td>
+                      <td colspan="2">
                         连续
                       </td>
-                      <td>
+                      <td colspan="2">
                         脉冲
                       </td>
-                      <td>
+                      <td colspan="2">
                         半穿
                       </td>
                       
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="26">
                         <div>
                           切割要备注：
                           <TextArea/>
@@ -557,13 +560,13 @@ class WorkSheetDetail extends React.Component {
 
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="3">
                         重割原因
                       </td>
-                      <td>
+                      <td colspan="3">
                         1111
                       </td>
-                      <td>
+                      <td colspan="3">
                        重割次数
                       </td>
                       <td>
@@ -575,63 +578,67 @@ class WorkSheetDetail extends React.Component {
                       <td>
                         3
                       </td>
-                      <td>
+                      <td colspan="3">
                       确认人
                       </td>
-                      <td>
+                      <td colspan="4">
                         张三
                       </td>
-                      <td>
+                      <td colspan="3">
                         检验人
                       </td>
-                      <td>
+                      <td colspan="4">
                         李四
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td rowspan="3">
                         制造部
                       </td>
-                      <td>
+                      <td colspan="2">
                         装刀人
                       </td>
-                      <td>
+                      <td colspan="1">
                        时间
                       </td>
-                      <td>
+                      <td colspan="6">
                         <Input/>至<Input/>
                       </td>
-                      <td>
+                      <td colspan="5">
                       第二装刀人
                       </td>
-                      <td>
+                      <td colspan="3">
                        时间
                       </td>
-                      <td>
+                      <td colspan="9">
                         <Input/>至<Input/>
                       </td>
-                      <td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
                       弯刀人
                       </td>
-                      <td>
+                      <td colspan="1">
                        时间
                       </td>
-                      <td>
+                      <td colspan="6">
                         <Input/>至<Input/>
                       </td>
-                      <td>
+                      <td colspan="4">
                       弯刀米数
                       </td>
-                      <td>
+                      <td >
                        123
                       </td>
-                      <td>
+                      <td colspan="5">
                       弯刀机工作量
                       </td>
-                      <td>
+                      <td colspan="7">
                        <Input/>%
                       </td>
-                      <td>
+                    </tr>
+                    <tr>
+                      <td colspan="26">
                         <div>
                         装刀备注：
                         <TextArea/>
@@ -643,121 +650,121 @@ class WorkSheetDetail extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td rowspan="3">
                         仓库
                       </td>
-                      <td>
+                      <td colspan="2">
                         刀材名称
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         实用
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="4">
                         齿刀名称
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         实用
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="2">
                         痕线名称
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         实用
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="4">
                         孔类名称
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         实用
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="2">
                         销类名称
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         规格
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="2">
                         实用
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="4">
                         领料人
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
-                      <td>
+                      <td colspan="4">
                         发料人
                       </td>
-                      <td>
+                      <td colspan="4">
                         123
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td rowspan="4">
                         检验
                       </td>
-                      <td>
+                      <td colspan="2">
                         检验内容
                       </td>
                       <td>
@@ -822,7 +829,7 @@ class WorkSheetDetail extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="2">
                         制图
                       </td>
                       <td>
@@ -887,7 +894,7 @@ class WorkSheetDetail extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="2">
                         品管
                       </td>
                       <td>
@@ -952,22 +959,22 @@ class WorkSheetDetail extends React.Component {
                       </td>
                     </tr>
                     <tr>
-                      <td>
+                      <td colspan="2">
                         出货方式
                       </td>
-                      <td>
+                      <td colspan="2">
                         送
                       </td>
-                      <td>
+                      <td colspan="2">
                         自取
                       </td>
-                      <td>
+                      <td colspan="2">
                         托运
                       </td>
-                      <td>
+                      <td colspan="2">
                         快递
                       </td>
-                      <td>
+                      <td colspan="3">
                         最终评定
                       </td>
                       <td>
@@ -976,19 +983,20 @@ class WorkSheetDetail extends React.Component {
                       <td>
                         NG
                       </td>
-                      <td>
+                      <td colspan="3">
                         送货人
-                      </td><td>
+                      </td><td colspan="3">
                         123
                       </td>
-                      <td>
+                      <td colspan="3">
                         检验人
                       </td>
-                      <td>
+                      <td colspan="2">
                         123
                       </td>
                     </tr>
                   </table>
+                  </div>
                 </div>
 
 
