@@ -902,7 +902,7 @@ export default class LzAFFOS extends React.Component {
                             this.setState({ showModalJungleBuild: true });
                           }}
                         >
-                          填写施工人员基本信息
+                          填写施工人员申请
                         </Button>
                         <Button
                           type="primary"
@@ -915,7 +915,7 @@ export default class LzAFFOS extends React.Component {
                             });
                           }}
                         >
-                          填写提送货人员基本信息
+                          填写提送货人员申请
                         </Button>
                       </>
                     );

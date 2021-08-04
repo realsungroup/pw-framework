@@ -113,6 +113,13 @@ class SeeFeedback extends React.Component {
    * 发给培训师
    */
   sendToTrainer = async data => {
+    let obj = data;
+    let str1 = obj.C3_622485660010;
+    let str2 = obj.C3_622485682264;
+    str1 = str1.replace(/~/g, '-');
+    str2 = str2.replace(/~/g, '-');
+    obj.C3_622485660010 = str1;
+    obj.C3_622485682264 = str2;
     try {
       this.setState({
         sendToTrainerLoading: true

@@ -101,10 +101,10 @@ class DeliverApprovalForm extends React.Component {
                 <th>
                   <label>{approvalInfo.C3_614883990443}</label>
                 </th>
-                <th colSpan="2">
+                <th colSpan="2" style={{ display: 'none' }}>
                   <label>非管控区审批人编号</label>
                 </th>
-                <th>
+                <th style={{ display: 'none' }}>
                   <label>{approvalInfo.C3_614883971652}</label>
                 </th>
               </tr>
