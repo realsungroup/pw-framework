@@ -199,10 +199,59 @@
             float:right;
           }
         }
-        table{
-          width:100%;
-          margin-top: 0.5rem;
+        .tableWrap{
+            width: 100%;
+            overflow: hidden;
+            .depas{
+              float: left;
+              width:1.5rem;
+              margin-top: 0.5rem;
+              border-left: 1px solid #000;
+              border-top: 1px solid #000;
+              border-bottom: 1px solid #000;
+            }
+          .table{
+            float: left;
+            width:calc(100% - 1.5rem);
+            margin-top: 0.5rem;
+            div{
+              float:none;
+            }
+            .ant-row{
+              display: flex;
+              border-top:1px solid #000;
+              border-left:1px solid #000;
+              border-right:1px solid #000;
+              box-sizing: border-box;
+              &:last-child{
+                border-bottom: 1px solid #000;
+  
+              }
+            }
+            .ant-col{
+              border-right:1px solid #000;
+              box-sizing: border-box;
+              &:last-child{
+                border-right: 0px solid #000;
+  
+              }
+              input{
+                top:0;
+                border:0px solid #fff;
+                line-height:1.5rem;
+                width:100%;
+              }
+              textarea{
+                width:100%;
+                border:0px solid #fff;
+                resize: none;
+                height: 1rem;
+              }
+            }
+            
+          }
         }
+        
       }
     }
   }

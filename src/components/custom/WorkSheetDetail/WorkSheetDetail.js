@@ -1,6 +1,6 @@
 import React from 'react';
 import './WorkSheetDetail.less';
-import { Select, Button,message,Icon,Input,DatePicker } from 'antd';
+import { Row,Col,Select, Button,message,Icon,Input,DatePicker } from 'antd';
 import { TableData } from '../../common/loadableCommon';
 
 import http from 'Util20/api';
@@ -191,296 +191,303 @@ class WorkSheetDetail extends React.Component {
                   <div>
                     交货时间：<DatePicker size='small' showTime/>
                   </div>
-                  <div>
-                  <table border="1">
+                  <div className='tableWrap'>
+                  <div className='depas'>
+                    业务部
+                  </div>
+                  <div className='table'>
                     
-                    <tr>
-                      <td rowspan="9" colspan="1">业务部</td>
-                      <td colspan="3">客户名称</td>
-                      <td colspan="4">A1111</td>
-                      <td colspan="3">产品名称</td>
-                      <td colspan="6">abcdefgh</td>
-                      <td colspan="4">数量</td>
-                      <td colspan="7">12</td>
-                    </tr>
-                    <tr>
-                      <td width='40px'>图面</td>
-                      <td width='40px'>正切</td>
-                      <td width='40px'>反切</td>
-                      <td width='40px'>入刀</td>
-                      <td width='40px'>净介</td>
-                      <td width='40px'>参照</td>
-                      <td width='40px'>菲林</td>
-                      <td width='40px'>色位</td>
-                      <td colspan="4">图纸尺寸</td>
-                      <td colspan="2">传真</td>
-                      <td colspan="2">邮件</td>
-                      <td colspan="10">实样（物）</td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">稿数情况</td>
-                      <td colspan="1">菲林</td>
-                      <td colspan="2">图纸</td>
-                      <td colspan="1">稿</td>
-                      <td colspan="2">实物</td>
-                      <td colspan="6">稿样是否归还客户</td>
-                      <td colspan="1">是</td>
-                      <td colspan="1">否</td>
-                      <td colspan="4">板度要求</td>
-                      <td colspan="7">要求123</td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">接单人</td>
-                      <td colspan="2">张三</td>
-                      <td colspan="2">送货单号</td>
-                      <td colspan="3">12345678</td>
-                      <td colspan="2">价格</td>
-                      <td colspan="2">1234</td>
-                      <td colspan="2">含税</td>
-                      <td colspan="3">不含税</td>
-                      <td colspan="3">复核人</td>
-                      <td colspan="5">李四</td>
-                    </tr>
-                    <tr>
-                      <td colspan="26">
+                    <Row>
+                      <Col span={5}>客户名称</Col>
+                      <Col span={4}><input/></Col>
+                      <Col span={5}>产品名称</Col>
+                      <Col span={4}><input/></Col>
+                      <Col span={3}>数量</Col>
+                      <Col span={3}><input/></Col>
+                    </Row>
+                    <Row>
+                      <Col style={{width:'8%'}}>图面</Col>
+                      <Col style={{width:'8%'}}>正切</Col>
+                      <Col style={{width:'8%'}}>反切</Col>
+                      <Col style={{width:'8%'}}>入刀</Col>
+                      <Col style={{width:'8%'}}>净介</Col>
+                      <Col style={{width:'8%'}}>参照</Col>
+                      <Col style={{width:'8%'}}>菲林</Col>
+                      <Col style={{width:'8%'}}>色位</Col>
+                      <Col style={{width:'8%'}}>图纸尺寸</Col>
+                      <Col style={{width:'8%'}}>传真</Col>
+                      <Col style={{width:'8%'}}>邮件</Col>
+                      <Col style={{width:'12%'}}>实样（物）</Col>
+                    </Row>
+                    <Row>
+                      <Col span={2}>稿数情况</Col>
+                      <Col span={2}>菲林</Col>
+                      <Col span={2}>图纸</Col>
+                      <Col span={2}>稿</Col>
+                      <Col span={2}>实物</Col>
+                      <Col span={4}>稿样是否归还客户</Col>
+                      <Col span={2}>是</Col>
+                      <Col span={2}>否</Col>
+                      <Col span={2}>板度要求</Col>
+                      <Col span={4}><input/></Col>
+                    </Row>
+                    <Row>
+                      <Col span={2}>接单人</Col>
+                      <Col span={3}><input/></Col>
+                      <Col span={2}>送货单号</Col>
+                      <Col span={3}><input/></Col>
+                      <Col span={2}>价格</Col>
+                      <Col span={2}><input/></Col>
+                      <Col span={2}>含税</Col>
+                      <Col span={2}>不含税</Col>
+                      <Col span={2}>复核人</Col>
+                      <Col span={4}><input/></Col>
+                    </Row>
+                    <Row>
+                      <Col span={24} >
                         <div>
                           接单绘图说明：
                           <TextArea/>
                         </div>
-                      </td>
+                      </Col>
 
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                    </Row>
+                    <Row>
+                      <Col span={2}>
                         刀材名称
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                      </Col>
+                      <Col span={2}>
                         规格
-                      </td>
-                      <td colspan="1">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                      </Col>
+                      <Col span={2}>
                         数量
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                      </Col>
+                      <Col span={2}>
                         齿刀名称
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                      </Col>
+                      <Col span={2}>
                         规格
-                      </td>
-                      <td colspan="3">
-                        a
-                      </td>
-                      <td colspan="2"> 
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                      </Col>
+                      <Col span={2}> 
                         数量
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={2}>
                         痕线名称
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2} >
+                      <input/>
+                      </Col>
+                      <Col span={2}>
                         规格
-                      </td>
-                      <td colspan="1">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                      <Col span={2}>
                         数量
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                      <Col span={2}>
                         孔类名称
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                      <Col span={2}>
                         规格
-                      </td>
-                      <td colspan="3">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                      <Col span={2}>
                         数量
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={2}>
                         销类名称
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                      <Col span={2}>
                         规格
-                      </td>
-                      <td colspan="1">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                      <Col span={2}>
                         数量
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                      <Col span={2}>
                         其他
-                      </td>
-                      <td colspan="4">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                      <Col span={2}>
                         规格
-                      </td>
-                      <td colspan="3">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                      <Col span={2}>
                         数量
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={2}>
+                      <input/>
+                        
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col span={4}>
                         板材要求
-                      </td>
-                      <td colspan="2">
-                        a
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={4}>
                         木板厚度
-                      </td>
-                      <td colspan="1">
+                      </Col>
+                      <Col span={1}>
                         22
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={1}>
                         20
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={1}>
                         18
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={1}>
                         15
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={1}>
                         12
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col span={1}>
                         10
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col span={3}>
                         塑料板
-                      </td>
-                      <td>
+                      </Col>
+                      <Col span={1}>
                         10
-                      </td>
-                      <td>
+                      </Col>
+                      <Col span={1}>
                         8
-                      </td>
-                      <td>
+                      </Col>
+                      <Col span={1}>
                         6
-                      </td>
-                      <td>
+                      </Col>
+                      <Col span={1}>
                         5
-                      </td>
-                      <td>
+                      </Col>
+                      <Col span={1}>
                         4
-                      </td>
-                    </tr>
-                    <tr>
-                      <td rowspan="3">
-                        工程部
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col >
                         制图人
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         张三
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                         制图档号
-                      </td>
-                      <td colspan="1">
+                      </Col>
+                      <Col >
                         aaa
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col >
                         制图尺寸
-                      </td>
-                      <td colspan="5">
+                      </Col>
+                      <Col >
                         <Input/>X<Input/>
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                       孔径1
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         10
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                         孔径2
-                      </td>
-                      <td colspan="1">
+                      </Col>
+                      <Col >
                         10
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col >
                         制米数
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         刀长
-                      </td>
-                      <td colspan="1">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         线长
-                      </td>
-                      <td colspan="1">
+                      </Col>
+                      <Col >
                         222
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                         半穿刀
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                       齿刀
-                      </td>
-                      <td colspan="2">齿刀</td>
-                      <td colspan="4">
+                      </Col>
+                      <Col >齿刀</Col>
+                      <Col >
                         制图时间
-                      </td>
-                      <td colspan="6">
+                      </Col>
+                      <Col >
                       <Input/>至<Input/>
-                      </td>
-                      </tr>
-                      <tr>
-                      <td colspan="26">
+                      </Col>
+                      </Row>
+                      <Row>
+                      <Col >
                         <div>
                           制图备注：
                           <TextArea/>
@@ -488,157 +495,157 @@ class WorkSheetDetail extends React.Component {
                         <div>
                           检验人：
                         </div>
-                      </td>
+                      </Col>
 
-                    </tr>
-                    <tr>
-                      <td rowspan="4">
+                    </Row>
+                    <Row>
+                      <Col rowspan="4">
                         激光部
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         割板人
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                         张三
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                         割板时间
-                      </td>
-                      <td colspan="6">
+                      </Col>
+                      <Col >
                       <Input/>至<Input/>
-                      </td>
-                      <td colspan="6">
+                      </Col>
+                      <Col >
                         切割板尺寸
-                      </td>
-                      <td colspan="6">
+                      </Col>
+                      <Col >
                       <Input/>X<Input/>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="3">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col >
                         割缝宽度
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         1.0
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                        0.71
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         0.53
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                       0.45
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         其他
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                       。。。
-                      </td>
-                      <td colspan="5">
+                      </Col>
+                      <Col >
                         切割方式
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         连续
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         脉冲
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         半穿
-                      </td>
+                      </Col>
                       
-                    </tr>
-                    <tr>
-                      <td colspan="26">
+                    </Row>
+                    <Row>
+                      <Col >
                         <div>
                           切割要备注：
                           <TextArea/>
                         </div>
-                      </td>
+                      </Col>
 
-                    </tr>
-                    <tr>
-                      <td colspan="3">
+                    </Row>
+                    <Row>
+                      <Col >
                         重割原因
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                         1111
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                        重割次数
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         1
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                       2
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         3
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                       确认人
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col >
                         张三
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                         检验人
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col >
                         李四
-                      </td>
-                    </tr>
-                    <tr>
-                      <td rowspan="3">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col rowspan="3">
                         制造部
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         装刀人
-                      </td>
-                      <td colspan="1">
+                      </Col>
+                      <Col >
                        时间
-                      </td>
-                      <td colspan="6">
+                      </Col>
+                      <Col >
                         <Input/>至<Input/>
-                      </td>
-                      <td colspan="5">
+                      </Col>
+                      <Col >
                       第二装刀人
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                        时间
-                      </td>
-                      <td colspan="9">
+                      </Col>
+                      <Col >
                         <Input/>至<Input/>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col >
                       弯刀人
-                      </td>
-                      <td colspan="1">
+                      </Col>
+                      <Col >
                        时间
-                      </td>
-                      <td colspan="6">
+                      </Col>
+                      <Col >
                         <Input/>至<Input/>
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col >
                       弯刀米数
-                      </td>
-                      <td >
+                      </Col>
+                      <Col >
                        123
-                      </td>
-                      <td colspan="5">
+                      </Col>
+                      <Col >
                       弯刀机工作量
-                      </td>
-                      <td colspan="7">
+                      </Col>
+                      <Col >
                        <Input/>%
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="26">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col >
                         <div>
                         装刀备注：
                         <TextArea/>
@@ -647,355 +654,355 @@ class WorkSheetDetail extends React.Component {
                           检验人：
                         </div>
 
-                      </td>
-                    </tr>
-                    <tr>
-                      <td rowspan="3">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col rowspan="3">
                         仓库
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         刀材名称
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         规格
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         实用
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col >
                         齿刀名称
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         规格
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         实用
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col >
                         痕线名称
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         规格
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         实用
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col >
                         孔类名称
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         规格
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         实用
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col >
                         销类名称
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         规格
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         实用
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col >
                         领料人
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col >
                         发料人
-                      </td>
-                      <td colspan="4">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                    </tr>
-                    <tr>
-                      <td rowspan="4">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col rowspan="4">
                         检验
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         检验内容
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         尺寸
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         正反
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         结构
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         拼板
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         咬口
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         木板
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         桥位
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         清废
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         平衡
-                      </td><td>
+                      </Col><Col>
                         定位
-                      </td><td>
+                      </Col><Col>
                         半桥
-                      </td><td>
+                      </Col><Col>
                         刻字
-                      </td><td>
+                      </Col><Col>
                         钢刀
-                      </td><td>
+                      </Col><Col>
                         齿刀
-                      </td><td>
+                      </Col><Col>
                         钢孔
-                      </td><td>
+                      </Col><Col>
                         销
-                      </td><td>
+                      </Col><Col>
                         稿数
-                      </td><td>
+                      </Col><Col>
                         半穿
-                      </td><td>
+                      </Col><Col>
                         接刀
-                      </td><td>
+                      </Col><Col>
                         出图
-                      </td><td>
+                      </Col><Col>
                         板度
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         海绵
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         版面
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         检验时间_至_
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col >
                         制图
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         尺寸
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         正反
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         结构
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         拼板
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         咬口
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         木板
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         桥位
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         清废
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         平衡
-                      </td><td>
+                      </Col><Col>
                         定位
-                      </td><td>
+                      </Col><Col>
                         半桥
-                      </td><td>
+                      </Col><Col>
                         刻字
-                      </td><td>
+                      </Col><Col>
                         钢刀
-                      </td><td>
+                      </Col><Col>
                         齿刀
-                      </td><td>
+                      </Col><Col>
                         钢孔
-                      </td><td>
+                      </Col><Col>
                         销
-                      </td><td>
+                      </Col><Col>
                         稿数
-                      </td><td>
+                      </Col><Col>
                         半穿
-                      </td><td>
+                      </Col><Col>
                         接刀
-                      </td><td>
+                      </Col><Col>
                         出图
-                      </td><td>
+                      </Col><Col>
                         板度
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         海绵
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         版面
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         检验时间_至_
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col >
                         品管
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         尺寸
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         正反
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         结构
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         拼板
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         咬口
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         木板
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         桥位
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         清废
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         平衡
-                      </td><td>
+                      </Col><Col>
                         定位
-                      </td><td>
+                      </Col><Col>
                         半桥
-                      </td><td>
+                      </Col><Col>
                         刻字
-                      </td><td>
+                      </Col><Col>
                         钢刀
-                      </td><td>
+                      </Col><Col>
                         齿刀
-                      </td><td>
+                      </Col><Col>
                         钢孔
-                      </td><td>
+                      </Col><Col>
                         销
-                      </td><td>
+                      </Col><Col>
                         稿数
-                      </td><td>
+                      </Col><Col>
                         半穿
-                      </td><td>
+                      </Col><Col>
                         接刀
-                      </td><td>
+                      </Col><Col>
                         出图
-                      </td><td>
+                      </Col><Col>
                         板度
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         海绵
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         版面
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         检验时间_至_
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col >
                         出货方式
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         送
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         自取
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         托运
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         快递
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                         最终评定
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         OK
-                      </td>
-                      <td>
+                      </Col>
+                      <Col>
                         NG
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                         送货人
-                      </td><td colspan="3">
+                      </Col><Col >
                         123
-                      </td>
-                      <td colspan="3">
+                      </Col>
+                      <Col >
                         检验人
-                      </td>
-                      <td colspan="2">
+                      </Col>
+                      <Col >
                         123
-                      </td>
-                    </tr>
-                  </table>
+                      </Col>
+                    </Row>
+                  </div>
                   </div>
                 </div>
 
