@@ -72,6 +72,7 @@ class DeliverApprovalForm extends React.Component {
       : moment(); //结束时间初始值
     return (
       <Modal
+
         title="填写提送货人员申请"
         width="90%"
         visible={showDeliverApprovalModal}
@@ -301,12 +302,12 @@ class DeliverApprovalForm extends React.Component {
                       ]
                     })(<Input disabled autoComplete="off" />)}
                   </th>
-                  <th colSpan="2">
+                  <th colSpan="2" style={{ display: 'none' }}>
                     <label>
                       非管控区审批人编号<font color="red">*</font>
                     </label>
                   </th>
-                  <th>
+                  <th style={{ display: 'none' }}>
                     {getFieldDecorator('C3_614883971652', {
                       initialValue: this.props.toDeliverApprovalFormData
                         .approvalPeopleList[4].C3_605718032582,
