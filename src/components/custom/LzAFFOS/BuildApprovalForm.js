@@ -40,54 +40,112 @@ class BuildApprovlForm extends React.Component {
     } else if (this.props.form.getFieldValue('C3_614884004893') === '') {
       message.info('未填写非管控区负责人');
       return;
-    } else if (this.props.form.getFieldValue('projectIntro') === '' || this.props.form.getFieldValue('platformOrPlace') === '' || this.props.form.getFieldValue('factoryEngineerTel') === '' || this.props.form.getFieldValue('contractor') === ''
-      || this.props.form.getFieldValue('securityName') === '' || this.props.form.getFieldValue('securityTel') === '') {
+    } else if (
+      this.props.form.getFieldValue('projectIntro') === '' ||
+      this.props.form.getFieldValue('platformOrPlace') === '' ||
+      this.props.form.getFieldValue('factoryEngineerTel') === '' ||
+      this.props.form.getFieldValue('contractor') === '' ||
+      this.props.form.getFieldValue('securityName') === '' ||
+      this.props.form.getFieldValue('securityTel') === ''
+    ) {
       message.info('有必填项未填');
       return;
-    } else if (this.props.form.getFieldValue('C3_605703930741') === '管控区' && this.props.form.getFieldValue('C3_614884016188') === '') {
+    } else if (
+      this.props.form.getFieldValue('C3_605703930741') === '管控区' &&
+      this.props.form.getFieldValue('C3_614884016188') === ''
+    ) {
       message.info('未填写管控区负责人');
       return;
-    } else if (!isLongBuilder && this.props.form.getFieldValue('safetyPropaganda') !== '是') {
+    } else if (
+      !isLongBuilder &&
+      this.props.form.getFieldValue('safetyPropaganda') !== '是'
+    ) {
       message.info('需要已向承包商作业人员进行危害告知及安全宣导');
       return;
-    } else if (!isLongBuilder && this.props.form.getFieldValue('constructionMark') !== '是') {
+    } else if (
+      !isLongBuilder &&
+      this.props.form.getFieldValue('constructionMark') !== '是'
+    ) {
       message.info('承包商需要备齐“施工标示板”');
       return;
-    } else if (!isLongBuilder && this.props.form.getFieldValue('electricAppliance') !== '是') {
+    } else if (
+      !isLongBuilder &&
+      this.props.form.getFieldValue('electricAppliance') !== '是'
+    ) {
       message.info('施工过程使用电器需要符合要求');
       return;
-    } else if (!isLongBuilder && this.props.form.getFieldValue('protection') !== '是') {
+    } else if (
+      !isLongBuilder &&
+      this.props.form.getFieldValue('protection') !== '是'
+    ) {
       message.info('作业人员要有必要的防护具');
       return;
-    } else if (!isLongBuilder && this.props.form.getFieldValue('denfenceAndWarn') !== '是') {
+    } else if (
+      !isLongBuilder &&
+      this.props.form.getFieldValue('denfenceAndWarn') !== '是'
+    ) {
       message.info('开孔作业需要有围篙和警示标志');
       return;
-    } else if (!isLongBuilder && this.props.form.getFieldValue('blockFirePassage') !== '否') {
+    } else if (
+      !isLongBuilder &&
+      this.props.form.getFieldValue('blockFirePassage') !== '否'
+    ) {
       message.info('施工器材不可阻挡消防器材或消防通道');
       return;
-    } else if (isLongBuilder && this.props.form.getFieldValue('isTrained') !== '是') {
+    } else if (
+      isLongBuilder &&
+      this.props.form.getFieldValue('isTrained') !== '是'
+    ) {
       message.info('承包方需要完成Finisar施工EHS培训');
       return;
-    } else if (isLongBuilder && this.props.form.getFieldValue('isFormulated') !== '是') {
+    } else if (
+      isLongBuilder &&
+      this.props.form.getFieldValue('isFormulated') !== '是'
+    ) {
       message.info('承包商要穿着[识别背心或公司制服]并备妥[施工标示板]');
       return;
-    } else if (isLongBuilder && this.props.form.getFieldValue('isLicenced') !== '是') {
+    } else if (
+      isLongBuilder &&
+      this.props.form.getFieldValue('isLicenced') !== '是'
+    ) {
       message.info('承包商作业人员需要已取得作业所需要的相关证照');
       return;
-    } else if (isLongBuilder && this.props.form.getFieldValue('isSpecialSigned') !== '是') {
-      message.info('气体钢瓶、化学品、工具箱、氩/电焊机、切割机，宽或高超过40公分之电气设施需要标示作业厂商名称及联络人姓名及电话');
+    } else if (
+      isLongBuilder &&
+      this.props.form.getFieldValue('isSpecialSigned') !== '是'
+    ) {
+      message.info(
+        '气体钢瓶、化学品、工具箱、氩/电焊机、切割机，宽或高超过40公分之电气设施需要标示作业厂商名称及联络人姓名及电话'
+      );
       return;
-    } else if (isLongBuilder && this.props.form.getFieldValue('isTall') !== '否') {
+    } else if (
+      isLongBuilder &&
+      this.props.form.getFieldValue('isTall') !== '否'
+    ) {
       message.info('作业过程中不可以碰撞[消防喷淋系统]');
       return;
-    } else if (isLongBuilder && this.props.form.getFieldValue('isClean') === '是' && this.props.form.getFieldValue('isCleanTrained') !== '是') {
+    } else if (
+      isLongBuilder &&
+      this.props.form.getFieldValue('isClean') === '是' &&
+      this.props.form.getFieldValue('isCleanTrained') !== '是'
+    ) {
       message.info('需要洁净室作业');
       return;
-    } else if (isLongBuilder && this.props.form.getFieldValue('maybePolluted') === '是' && this.props.form.getFieldValue('measureDefence') !== '是') {
+    } else if (
+      isLongBuilder &&
+      this.props.form.getFieldValue('maybePolluted') === '是' &&
+      this.props.form.getFieldValue('measureDefence') !== '是'
+    ) {
       message.info('请说明防止作业中产生之灰尘污染结净室的措施[洁净室培训]');
       return;
-    } else if (isLongBuilder && this.props.form.getFieldValue('useChemist') === '是' && this.props.form.getFieldValue('emergency') !== '是') {
-      message.info('请说明防止作业中/作业后化学品逸散/翻洒及火灾防护之措施[洁净室培训]');
+    } else if (
+      isLongBuilder &&
+      this.props.form.getFieldValue('useChemist') === '是' &&
+      this.props.form.getFieldValue('emergency') !== '是'
+    ) {
+      message.info(
+        '请说明防止作业中/作业后化学品逸散/翻洒及火灾防护之措施[洁净室培训]'
+      );
       return;
     } else {
       this.props.form.validateFields((error, value) => {
@@ -153,7 +211,7 @@ class BuildApprovlForm extends React.Component {
 
     return (
       <Modal
-        title="施工申请"
+        title="填写施工人员申请"
         width="90%"
         visible={showBuilderModal}
         destroyOnClose
@@ -162,7 +220,6 @@ class BuildApprovlForm extends React.Component {
         }}
         onOk={() => {
           this.submit();
-
         }}
       >
         <Form>
@@ -769,66 +826,66 @@ class BuildApprovlForm extends React.Component {
                       </th>
                     </tr>
                     {this.props.form.getFieldValue('specialLicence') ===
-                      '是' ? (
-                        <>
-                          <tr>
-                            <th colSpan="2">
-                              <label>涉及特种作业许可证1</label>
-                            </th>
-                            <th>
-                              {getFieldDecorator('specialOne', {
-                                initialValue: ''
-                              })(
-                                <Select className="selectCss">
-                                  <Option value="登高作业">登高作业</Option>
-                                  <Option value="吊装作业">吊装作业</Option>
-                                  <Option value="动火作业">动火作业</Option>
-                                  <Option value="挂牌作业">挂牌作业</Option>
-                                  <Option value="密封空间作业">
-                                    密封空间作业
+                    '是' ? (
+                      <>
+                        <tr>
+                          <th colSpan="2">
+                            <label>涉及特种作业许可证1</label>
+                          </th>
+                          <th>
+                            {getFieldDecorator('specialOne', {
+                              initialValue: ''
+                            })(
+                              <Select className="selectCss">
+                                <Option value="登高作业">登高作业</Option>
+                                <Option value="吊装作业">吊装作业</Option>
+                                <Option value="动火作业">动火作业</Option>
+                                <Option value="挂牌作业">挂牌作业</Option>
+                                <Option value="密封空间作业">
+                                  密封空间作业
                                 </Option>
-                                </Select>
-                              )}
-                            </th>
-                            <th colSpan="2">
-                              <label>涉及特种作业许可证2</label>
-                            </th>
-                            <th>
-                              {getFieldDecorator('specialTwo', {
-                                initialValue: ''
-                              })(
-                                <Select className="selectCss">
-                                  <Option value="登高作业">登高作业</Option>
-                                  <Option value="吊装作业">吊装作业</Option>
-                                  <Option value="动火作业">动火作业</Option>
-                                  <Option value="挂牌作业">挂牌作业</Option>
-                                  <Option value="密封空间作业">
-                                    密封空间作业
+                              </Select>
+                            )}
+                          </th>
+                          <th colSpan="2">
+                            <label>涉及特种作业许可证2</label>
+                          </th>
+                          <th>
+                            {getFieldDecorator('specialTwo', {
+                              initialValue: ''
+                            })(
+                              <Select className="selectCss">
+                                <Option value="登高作业">登高作业</Option>
+                                <Option value="吊装作业">吊装作业</Option>
+                                <Option value="动火作业">动火作业</Option>
+                                <Option value="挂牌作业">挂牌作业</Option>
+                                <Option value="密封空间作业">
+                                  密封空间作业
                                 </Option>
-                                </Select>
-                              )}
-                            </th>
-                            <th colSpan="2">
-                              <label>涉及特种作业许可证3</label>
-                            </th>
-                            <th>
-                              {getFieldDecorator('specialThree', {
-                                initialValue: ''
-                              })(
-                                <Select className="selectCss">
-                                  <Option value="登高作业">登高作业</Option>
-                                  <Option value="吊装作业">吊装作业</Option>
-                                  <Option value="动火作业">动火作业</Option>
-                                  <Option value="挂牌作业">挂牌作业</Option>
-                                  <Option value="密封空间作业">
-                                    密封空间作业
+                              </Select>
+                            )}
+                          </th>
+                          <th colSpan="2">
+                            <label>涉及特种作业许可证3</label>
+                          </th>
+                          <th>
+                            {getFieldDecorator('specialThree', {
+                              initialValue: ''
+                            })(
+                              <Select className="selectCss">
+                                <Option value="登高作业">登高作业</Option>
+                                <Option value="吊装作业">吊装作业</Option>
+                                <Option value="动火作业">动火作业</Option>
+                                <Option value="挂牌作业">挂牌作业</Option>
+                                <Option value="密封空间作业">
+                                  密封空间作业
                                 </Option>
-                                </Select>
-                              )}
-                            </th>
-                          </tr>
-                        </>
-                      ) : null}
+                              </Select>
+                            )}
+                          </th>
+                        </tr>
+                      </>
+                    ) : null}
 
                     <tr>
                       <th colSpan="3">

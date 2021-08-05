@@ -72,7 +72,7 @@ class DeliverApprovalForm extends React.Component {
       : moment(); //结束时间初始值
     return (
       <Modal
-        title="送货申请"
+        title="填写提送货人员申请"
         width="90%"
         visible={showDeliverApprovalModal}
         destroyOnClose
