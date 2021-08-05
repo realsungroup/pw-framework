@@ -16,7 +16,7 @@ window.pwConfig = {
     //  baseURL:'http://hr.realsun.me:8081/',
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
     // 切换考勤月份的基地址
-    attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
+    attendanceMonthChangeUrl: 'http://kingofdinner.realsun.me:17001/',
     fileDownloadConfig: {
       629462405981: {
         fileType: 'mdb'
@@ -31,14 +31,14 @@ window.pwConfig = {
     //各定制组件需用到的基地址
     customURLs: {
       personInfoDownloadURL: 'http://10.108.2.66:80/', //人事信息下载地址
-      attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
+      attendanceBaseURL: 'http://kingofdinner.realsun.me:17001/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.21.41:2001/',
       PostArchitectureBaseURL: 'http://kingofdinner.realsun.me:17001/',
       PostArchitectureDownloadBaseURL: 'http://10.108.21.41:2001/',
-      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
+      comprehensiveQueryBaseURL: 'http://kingofdinner.realsun.me:17001/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
@@ -51,7 +51,7 @@ window.pwConfig = {
       AchievementsBaseURL: 'http://10.108.2.66:1001/', //绩效定制页面基地址
       RBASchedulingBaseURL: 'http://10.108.21.41:2001', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.21.41:2000', //RBA排班下载基地址
-      WuxiHr03BaseURL: 'http://10.108.2.66:9091/', //80端口非定制组件基地址
+      WuxiHr03BaseURL: 'http://kingofdinner.realsun.me:17001/', //80端口非定制组件基地址
       WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
@@ -234,7 +234,7 @@ window.pwConfig = {
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
     // 切换考勤月份的基地址
-    attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
+    attendanceMonthChangeUrl: 'http://kingofdinner.realsun.me:17001/',
     fileDownloadConfig: {
       629462405981: {
         fileType: 'mdb'
@@ -250,14 +250,14 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
+      attendanceBaseURL: 'http://kingofdinner.realsun.me:17001/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
 
-      HeadCountBaseURL: 'http://10.108.2.66:9091/',
+      HeadCountBaseURL: 'http://kingofdinner.realsun.me:17001/',
       PostArchitectureBaseURL: 'http://kingofdinner.realsun.me:17001/',
-      comprehensiveQueryBaseURL: 'http://10.108.2.66:9091/', //综合查询
+      comprehensiveQueryBaseURL: 'http://kingofdinner.realsun.me:17001/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
@@ -268,9 +268,9 @@ window.pwConfig = {
       WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
       AchievementsBaseURL: 'http://10.108.2.66:1001/',
-      RBASchedulingBaseURL: 'http://10.108.2.66:9091', //RBA排班基地址
+      RBASchedulingBaseURL: 'http://kingofdinner.realsun.me:17001', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
-      WuxiHr03BaseURL: 'http://10.108.2.66:9091/', //80端口非定制组件基地址
+      WuxiHr03BaseURL: 'http://kingofdinner.realsun.me:17001/', //80端口非定制组件基地址
       WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //员工沟通平台数据基地址
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //员工沟通平台下载基地址
@@ -394,7 +394,7 @@ window.pwConfig = {
       },
       {
         dblinkname: 'ehr',
-        baseurl: 'http://10.108.2.66:9091'
+        baseurl: 'http://kingofdinner.realsun.me:17001'
       }
     ],
 

@@ -88,9 +88,7 @@ export {
 // 导出demo
 // export { RichTextDemo } from '../components/custom/loadableCustom';
 export { QuestionnaireRecords } from '../components/custom/loadableCustom';
-export {
-  QuestionnaireStatisticAnalysisTabs
-} from '../components/custom/loadableCustom';
+export { QuestionnaireStatisticAnalysisTabs } from '../components/custom/loadableCustom';
 export { FiscalYearPlan } from '../components/custom/loadableCustom';
 export { CreateTotalPlan } from '../components/custom/loadableCustom';
 export { PersonGradeManagement } from '../components/custom/loadableCustom';
@@ -195,4 +193,5 @@ export {
   DepartmentManagement,
   AttendanceRecordManagement,
   MoveAuthorityManagement,
+  PersonnelInformationManagement
 } from '../components/custom/loadableCustom';
