@@ -31,6 +31,7 @@ window.pwConfig = {
     //各定制组件需用到的基地址
     customURLs: {
       personInfoDownloadURL: 'http://10.108.2.66:80/', //人事信息下载地址
+      hikBaseURL: 'http://114.55.35.96:7700/', //海康平台api-沪东项目
       attendanceBaseURL: 'http://kingofdinner.realsun.me:17001/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
@@ -250,6 +251,7 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
+      hikBaseURL: 'http://114.55.35.96:7700/', //海康平台api-沪东项目
       attendanceBaseURL: 'http://kingofdinner.realsun.me:17001/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',

@@ -7,45 +7,36 @@ class DeviceManagement extends Component {
     super(props);
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.baseURLAPI =
+      window.pwConfig[process.env.NODE_ENV].customURLs.hikBaseURL;
     this.state = {};
   }
-
-  componentDidMount = () => {};
 
   /**
    * 获取最新的设备信息
    * @returns void
    */
   getDeviceInfo = () => {
-    console.log('同步设备信息');
-    message.success('设备信息更新完毕');
-    this.tableDataRef.handleRefresh();
-  };
-
-  /**
-   * 添加新设备
-   * @param {object} deviceInfo
-   * @returns void
-   */
-  addDevice = deviceInfo => {
-    console.log('同步设备信息');
-    message.success('设备已成功添加');
-    this.tableDataRef.handleRefresh();
-  };
-
-  /**
-   * 删除设备
-   * @param {String} deviceNo
-   * @returns void
-   */
-  removeDevice = deviceNo => {
-    console.log('删除设备信息');
-    message.success('设备已成功删除');
-    this.tableDataRef.handleRefresh();
+    const url = `${this.baseURLAPI}api/v1/syncDevices`;
+    fetch(url)
+      .then(response => {
+        return response.json();
+      })
+      .then(res => {
+        if (res.error === 0) {
+          message.success('设备信息更新完毕');
+          this.tableDataRef.handleRefresh();
+        } else {
+          message.info(res.message);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        message.info(error.message);
+      });
   };
 
   render() {
-    const {} = this.state;
     return (
       <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
         <TableData
@@ -65,23 +56,15 @@ class DeviceManagement extends Component {
           refTargetComponentName="TableData"
           actionBarExtra={() => {
             return [
-              <Button type="primary" onClick={this.getDeviceInfo}>
+              <Button
+                key="syncDeviceButton"
+                type="primary"
+                onClick={this.getDeviceInfo}
+              >
                 同步设备信息
-              </Button>,
-              <Button type="primary" onClick={this.addDevice}>
-                添加设备
               </Button>
             ];
           }}
-          customRowBtns={[
-            record => {
-              return (
-                <Button type="primary" onClick={this.removeDevice}>
-                  删除设备
-                </Button>
-              );
-            }
-          ]}
         />
       </div>
     );
