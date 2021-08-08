@@ -119,6 +119,10 @@
         width:10rem;
         text-align: center;
         cursor:pointer;
+        &:hover{
+         color: #1890ff;
+         opacity: .6;
+        }
         &.current{
           color:#1890ff;
           border-bottom: 1px solid #1890ff;
@@ -137,7 +141,11 @@
         float: left;
         line-height: 1.5rem;
         margin-right: 1.5rem;
+        padding:0 .5rem;
         cursor: pointer;
+        &:hover{
+          background-color: #eee;
+        }
         &.right{
           float:right;
           color:#f5222d;
@@ -204,19 +212,45 @@
             overflow: hidden;
             .depas{
               float: left;
+              overflow: hidden;
               width:1.5rem;
               margin-top: 0.5rem;
               border-left: 1px solid #000;
               border-top: 1px solid #000;
               border-bottom: 1px solid #000;
+              div{
+                border-bottom:1px solid #000;
+                &:first-child{
+                  height:calc(15.5rem + 10px);
+                }
+                &:nth-child(2){
+                  height:calc(8rem + 2px);
+                }
+                &:nth-child(3){
+                  height:calc(8rem + 4px);
+                }
+                &:nth-child(4){
+                  height:calc(8rem + 3px);
+                }
+                &:nth-child(5){
+                  height:calc(4.5rem + 3px);
+                }
+                &:nth-child(6){
+                  height:calc(7.5rem + 3px);
+                  border-bottom:0px solid #000;
+                }
+              }
             }
+            
           .table{
             float: left;
             width:calc(100% - 1.5rem);
             margin-top: 0.5rem;
+            height: 851px;
             div{
               float:none;
             }
+           
             .ant-row{
               display: flex;
               border-top:1px solid #000;
@@ -225,8 +259,8 @@
               box-sizing: border-box;
               &:last-child{
                 border-bottom: 1px solid #000;
-  
               }
+              
             }
             .ant-col{
               border-right:1px solid #000;
@@ -248,7 +282,14 @@
                 height: 1rem;
               }
             }
-            
+            .multInput{
+              input{
+                width:45%;
+              }
+              span{
+                width:10%;
+              }
+            }
           }
         }
         
@@ -298,3 +339,4 @@
     }
   }
 }
+
