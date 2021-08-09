@@ -19,7 +19,7 @@ class DepartmentTree extends React.Component {
       treeDataList: [],
       searchValue: '',
       selectedBranch: [],
-      expandedKeys: [props.rootNode.key],
+      expandedKeys: [`${props.rootNode.key}`],
       autoExpandParent: true,
       loading: false
     };
