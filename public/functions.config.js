@@ -10340,9 +10340,24 @@ window[680109777866] = {
 
 //考勤记录管理
 window[680109796092] = {
-  name: 'AttendanceRecordManagement', // 组件名称，
-  title: '考勤记录管理', // 功能模块名称
-  props: {}
+  name: 'TableData',
+  title: '考勤记录管理',
+  props: {
+    resid: 680864631680,
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180,
+    baseURL: 'http://kingofdinner.realsun.me:17001/',
+    downloadBaseURL: 'http://kingofdinner.realsun.me:17000/'
+  }
 };
 
 //进出授权管理
