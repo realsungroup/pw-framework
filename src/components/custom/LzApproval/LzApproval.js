@@ -196,6 +196,7 @@ export default class LzApproval extends React.Component {
         this.setState({
           isPrint: false
         });
+        window.location.reload();
       }
     } else if (res === 'builder') {
       if (
@@ -209,6 +210,7 @@ export default class LzApproval extends React.Component {
         this.setState({
           isPrint: false
         });
+        window.location.reload();
       }
       window.document.body.innerHTML = currentHtml;
     }
@@ -287,11 +289,11 @@ export default class LzApproval extends React.Component {
                     return (
                       <div
                         style={{
-                          width: '300px',
+                          width: '50px',
                           zIndex: '3',
                           background: 'white',
                           position: 'absolute',
-                          left: 0,
+                          left: '65px',
                           top: 0
                         }}
                         className={
@@ -305,7 +307,7 @@ export default class LzApproval extends React.Component {
                             this.showRecord(record);
                           }}
                         >
-                          施工与送货审批
+                          查看
                         </Button>
                       </div>
                     );
@@ -318,6 +320,7 @@ export default class LzApproval extends React.Component {
               width="61%"
               visible={showBuilderModal}
               title="施工申请审批"
+              className="alterModal"
               onCancel={() => {
                 this.setState({
                   showBuilderModal: false,

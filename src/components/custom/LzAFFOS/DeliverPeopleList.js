@@ -7,16 +7,18 @@ import {
   Icon,
   Upload,
   message,
-  Modal
+  Modal,
+  Select
 } from 'antd';
 import React from 'react';
 import './LzAFFOS.less';
 import { uploadFile } from '../../../util/api';
 import moment from 'moment';
 import XLSX from 'xlsx';
+import { isObjectLike } from 'lodash';
 const EditableContext = React.createContext();
 const Dragger = Upload.Dragger;
-
+const { Option } = Select;
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
     <tr {...props} />
@@ -109,6 +111,7 @@ const noop = () => {};
 class DeliverPeopleList extends React.Component {
   constructor(props) {
     super(props);
+    let _this = this;
     this.columns = [
       {
         title: '访客姓名',
@@ -119,8 +122,27 @@ class DeliverPeopleList extends React.Component {
       {
         title: '登记证件类型',
         dataIndex: 'C3_605716867680',
-        editable: true,
-        width: '10%'
+        width: '10%',
+        render: (text, record) => (
+          <Select
+            style={{ width: '100%' }}
+            onChange={v => {
+              console.log(record.key, this.state.dataSource);
+              let obj = this.state.dataSource;
+              let n = 0;
+              while (n < obj.length) {
+                if (obj[n].key === record.key) {
+                  obj[n].C3_605716867680 = v;
+                  this.setState({ dataSource: obj });
+                }
+                n++;
+              }
+            }}
+          >
+            <Select.Option value="身份证">身份证</Select.Option>
+            <Select.Option value="护照">护照</Select.Option>
+          </Select>
+        )
       },
       {
         title: '登记证件号码',
@@ -298,9 +320,13 @@ class DeliverPeopleList extends React.Component {
         } else if (
           !/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(
             item.C3_614704116070
-          )
+          ) &&
+          item.C3_605716867680 == '身份证'
         ) {
           message.info(`${item.C3_605716828937}的证件号码有误，请重新填写`);
+          return true;
+        } else if (!item.C3_605716867680) {
+          message.info(`${item.C3_605716828937}证件类型未填写`);
           return true;
         }
         return false;

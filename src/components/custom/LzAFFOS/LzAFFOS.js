@@ -263,6 +263,7 @@ export default class LzAFFOS extends React.Component {
         this.setState({
           isPrint: false
         });
+        window.location.reload();
       }
     } else if (res === 'builder') {
       if (
@@ -275,6 +276,7 @@ export default class LzAFFOS extends React.Component {
         this.setState({
           isPrint: false
         });
+        window.location.reload();
       }
       window.document.body.innerHTML = currentHtml;
     }
