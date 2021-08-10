@@ -24,10 +24,15 @@
         width:calc(15.625rem - 1px);
       }
     }
+    .PLSelection{
+      width:100%;
+      span{
+        margin-top: -6px;
+      }
+    }
     &>ul{
       list-style: none;
       &>li{
-        
         background-color: #fff;
         margin-bottom:.8rem;
         padding:1rem 1.5rem;
@@ -247,6 +252,20 @@
             width:calc(100% - 1.5rem);
             margin-top: 0.5rem;
             height: 851px;
+            .selected{
+              &:after{
+                display: block;
+                content:'√';
+                text-align: left;
+                width: 100%;
+                height:24px;
+                position: absolute;
+                top:0;
+                left:0;
+                color:#1890ff;
+                font-weight: bold;
+              }
+            }
             div{
               float:none;
             }
@@ -306,8 +325,11 @@
       width:100%;
       .toChange{
         width:100%;
-        height:3rem;
+        min-height:3rem;
         background-color: #999;
+        text-align: center;
+        line-height: 3rem;
+        color:#fff;
       }
       .picsMenu{
         width:100%;
@@ -318,8 +340,18 @@
           line-height:1.5rem;
           color:#1890ff;
           float:right;
-          margin-left: 1.5rem;
+          text-align: right;
+          width:27%;
+          margin-top: 0.5rem;
           cursor:pointer;
+          &.left{
+            float:left;
+            width:72%;
+            margin:.3rem 0;
+            input{
+              cursor: pointer;
+            }
+          }
         }
       }
     }

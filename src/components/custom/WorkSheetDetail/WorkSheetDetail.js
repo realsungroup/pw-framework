@@ -1,7 +1,8 @@
 import React from 'react';
 import './WorkSheetDetail.less';
-import { Row,Col,Select, Button,message,Icon,Input,DatePicker } from 'antd';
+import { Row,Col,Select, Button,message,Icon,Input,DatePicker,Modal } from 'antd';
 import { TableData } from '../../common/loadableCommon';
+import moment from 'moment';
 
 import http from 'Util20/api';
 
@@ -13,28 +14,174 @@ class WorkSheetDetail extends React.Component {
   constructor(props){
     super(props)
   }
-  
+  state={
+    productLines:[],
+    productLinesValue:'请选择工作流',
+    productLineTree:
+      {
+        678789327168:[
+          
+          {
+            678789448828:[],
+            display:'N'
+          }
+        ]
+      },
+    histories:[],
+    imgUrl:null,
+    curModiReason:'',
+    curFeedBack:'',
+    sheetData:{}
+   }
   async componentDidMount() {
-   
+    
+    
   }
+  componentWillReceiveProps = (nextProps) => {
+    //初始化
+    if(this.props.new){
+      this.getProductLines();
+      let str = new Date();
+      str = moment(str).format('YYYY-MM-DD HH:MM:SS');
+      this.setState({
+        productLines:[],
+        productLinesValue:'请选择工作流',
+        productLineTree:
+          {
+            678789327168:[
+              
+              {
+                678789448828:[],
+                display:'N'
+              }
+            ]
+          },
+        histories:[{status:'current',value:str}],
+        imgUrl:'',
+        showImg:false,
+        curModiReason:'',
+        curFeedBack:''
+      })
+    }
+
+   }
+   changeSheet=(key,v)=>{
+    let obj = this.state.sheetData;
+    obj[key]=v; 
+    console.log(key,v)
+    this.setState({sheetData:obj});
+   }
+   changeBol=(key)=>{
+     let obj = this.state.sheetData;
+    if(obj[key]=='Y'){
+      obj[key]=''
+    }else{
+      obj[key]='Y'
+    }
+    this.setState({sheetData:obj});
+   }
+   imgUp(e) {
+    this.setState({ imgfile: e });
+    let files = e.target.files || e.dataTransfer.files;
+    if (!files.length) return;
+    let type = files[0].type; //文件的类型，判断是否是图片
+    let size = files[0].size; //文件的大小，判断图片的大小
+    if (size > 5242880) {
+      alert("请选择5M以内的图片！");
+      return false;
+    }
+    this.setState({ loading: true })
+    this.uploadFile(files[0], `http://kingofdinner.realsun.me:1201/api/AliyunOss/PutOneImageObject?bucketname=nutritiontower&srctype=${type[1]}`, "cloud").then((result) => {
+      this.setState({ loading: false, imgUrl: result })
+
+    }, (err) => {
+      //图片上传异常！
+      this.setState({ loading: false })
+
+
+    })
+  }
+   uploadFile = (file, url, mode) => {
+    return new Promise((resolve, reject) => {
+      let fd = new FormData();
+      fd.append('file', file, file.name);
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.onload = () => {
+        const data = JSON.parse(xhr.response);
+        if (xhr.status === 200 && (data.error === 0 || data.error === '0')) {
+          let imgUrl;
+          if (mode === 'local') {
+            imgUrl = data.httpfilename;
+          } else if (mode === 'cloud') {
+            imgUrl = data.data;
+          }
+          resolve(imgUrl);
+        } else {
+          reject(data);
+        }
+      };
+      xhr.send(fd);
+    });
+  };
+
   handlePrint = () => {
     // 打印
     const bodyHtml = window.document.body.innerHTML;
 
     var footstr = "</body>";
      var newstr = document.getElementById('toPrint').innerHTML;
-     var style='<style>  .ant-calendar-picker {    box-sizing: border-box;    margin: 0;    padding: 0;    color: rgba(0, 0, 0, 0.65);    font-size: 14px;    font-variant: tabular-nums;    line-height: 1.5;    list-style: none;    -webkit-font-feature-settings: "tnum";    font-feature-settings: "tnum", "tnum";    position: relative;    display: inline-block;    outline: none;    cursor: text;    -webkit-transition: opacity 0.3s;    transition: opacity 0.3s;}.ant-calendar-picker {    box-sizing: border-box;    margin: 0;    padding: 0;    color: rgba(0, 0, 0, 0.65);    font-size: 14px;    font-variant: tabular-nums;    line-height: 1.5;    list-style: none;    -webkit-font-feature-settings: "tnum", "tnum";    font-feature-settings: "tnum", "tnum";    position: relative;    display: inline-block;    outline: none;    cursor: text;    -webkit-transition: opacity 0.3s;    transition: opacity 0.3s;}    .ant-input {    box-sizing: border-box;    margin: 0;    padding: 0;    font-variant: tabular-nums;    list-style: none;    -webkit-font-feature-settings: "tnum", "tnum";    font-feature-settings: "tnum", "tnum";    position: relative;    display: inline-block;    width: 100%;    height: 32px;    padding: 4px 11px;    color: rgba(0, 0, 0, 0.65);    font-size: 14px;    line-height: 1.5;    background-color: #fff;    background-image: none;    border: 1px solid #d9d9d9;    border-radius: 4px;    -webkit-transition: all 0.3s;    transition: all 0.3s;}.ant-input-sm {    height: 24px;    padding: 1px 7px;}    .ant-input {    color: rgba(0, 0, 0, 0.65);    background-color: #fff;    background-image: none;    border: 1px solid #d9d9d9;    border-radius: 4px;}    .ant-calendar-picker-input.ant-input-sm {    padding-top: 0;    padding-bottom: 0;}    textarea.ant-input {    max-width: 100%;    height: auto;    min-height: 32px;    vertical-align: bottom;    -webkit-transition: all 0.3s, height 0s;    transition: all 0.3s, height 0s;}    .ant-row {    position: relative;    height: auto;    margin-right: 0;    margin-left: 0;    zoom: 1;    display: block;    box-sizing: border-box;    }.ant-row::before, .ant-row::after {    content: "";    display: table;}.ant-col{    position: relative;}.ant-col-1 {    display: block;    box-sizing: border-box;    width: 4.16666667%;}.ant-col-2 {    display: block;    box-sizing: border-box;    width: 8.33333333%;}.ant-col-3 {    display: block;    box-sizing: border-box;    width: 12.5%;}.ant-col-4 {    display: block;    box-sizing: border-box;    width: 16.66666667%;}.ant-col-5 {    display: block;    box-sizing: border-box;    width: 20.83333333%;}   .ant-col-6 {    display: block;    box-sizing: border-box;    width: 25%;}.ant-col-7 {    display: block;    box-sizing: border-box;    width: 29.16666667%;}.ant-col-24 {    display: block;    box-sizing: border-box;    width: 100%;}        *{margin:0;padding:0;box-sizing: border-box;text-align: center;}    .toPrint {  display: inline-block;  width: 794px;  height: 1090px;  padding: 2rem;  font-size: 14px;}.toPrint input {  border: 0px solid #fff;}.toPrint i {  display: none;}.toPrint .header {  width: 100%;}.toPrint .header div {  float: left;  width: calc(50% - 7.5rem);}.toPrint .header h4 {  display: inline-block;  font-size: 1.2rem;  width: 15rem;}.toPrint .header p {  float: right;  font-size: 1.2rem;  width: calc(50% - 7.5rem);}.toPrint .header p b {  color: #f5222d;}.toPrint .timer {  width: 100%;  overflow: hidden;}.toPrint .timer>div {  float: left;  line-height: 1.5rem;}.toPrint .timer div input {  position: relative;  0px;  border-bottom: 0px solid #000;  border-radius: 0px;}.toPrint .timer>div:nth-child(2) {  float: right;}.toPrint .timer .tableWrap {  width: 100%;  overflow: hidden;}.toPrint .timer .tableWrap .depas {  float: left;  overflow: hidden;  width: 1.5rem;  margin-top: 0.5rem;  border-left: 1px solid #000;  border-top: 1px solid #000;  border-bottom: 1px solid #000;}.toPrint .timer .tableWrap .depas div {  border-bottom: 1px solid #000;}.toPrint .timer .tableWrap .depas div:first-child {  height: calc(15.5rem + 9px);}.toPrint .timer .tableWrap .depas div:nth-child(2) {  height: calc(8rem + 4px);}.toPrint .timer .tableWrap .depas div:nth-child(3) {  height: calc(8rem + 3px);}.toPrint .timer .tableWrap .depas div:nth-child(4) {  height: calc(8rem + 3px);}.toPrint .timer .tableWrap .depas div:nth-child(5) {  height: calc(4.5rem + 3px);}.toPrint .timer .tableWrap .depas div:nth-child(6) {  height: calc(7.5rem + 3px);  border-bottom: 0px solid #000;}.toPrint .timer .tableWrap .table {  float: left;  width: calc(100% - 1.5rem);  margin-top: 0.5rem;  height: 851px;}.toPrint .timer .tableWrap .table div {  float: none;}.toPrint .timer .tableWrap .table .ant-row {  display: flex;  border-top: 1px solid #000;  border-left: 1px solid #000;  border-right: 1px solid #000;  box-sizing: border-box;}.toPrint .timer .tableWrap .table .ant-row:last-child {  border-bottom: 1px solid #000;}.toPrint .timer .tableWrap .table .ant-col {  border-right: 1px solid #000;  box-sizing: border-box;}.toPrint .timer .tableWrap .table .ant-col:last-child {  border-right: 0px solid #000;}.toPrint .timer .tableWrap .table .ant-col input {  top: 0;  border: 0px solid #fff;  line-height: 1.5rem;  width: 100%;transform: scale(0.95);}.toPrint .timer .tableWrap .table .ant-col textarea {  width: 100%;  border: 0px solid #fff;  resize: none;  height: 1rem;}.toPrint .timer .tableWrap .table .multInput input {  width: 44%;}.toPrint .timer .tableWrap .table .multInput span {  width: 10%;}</style>';
+     var style='<style>  .ant-calendar-picker {    box-sizing: border-box;    margin: 0;    padding: 0;    color: rgba(0, 0, 0, 0.65);    font-size: 14px;    font-variant: tabular-nums;    line-height: 1.5;    list-style: none;    -webkit-font-feature-settings: "tnum";    font-feature-settings: "tnum", "tnum";    position: relative;    display: inline-block;    outline: none;    cursor: text;    -webkit-transition: opacity 0.3s;    transition: opacity 0.3s;}.ant-calendar-picker {    box-sizing: border-box;    margin: 0;    padding: 0;    color: rgba(0, 0, 0, 0.65);    font-size: 14px;    font-variant: tabular-nums;    line-height: 1.5;    list-style: none;    -webkit-font-feature-settings: "tnum", "tnum";    font-feature-settings: "tnum", "tnum";    position: relative;    display: inline-block;    outline: none;    cursor: text;    -webkit-transition: opacity 0.3s;    transition: opacity 0.3s;}    .ant-input {    box-sizing: border-box;    margin: 0;    padding: 0;    font-variant: tabular-nums;    list-style: none;    -webkit-font-feature-settings: "tnum", "tnum";    font-feature-settings: "tnum", "tnum";    position: relative;    display: inline-block;    width: 100%;    height: 32px;    padding: 4px 11px;    color: rgba(0, 0, 0, 0.65);    font-size: 14px;    line-height: 1.5;    background-color: #fff;    background-image: none;    border: 1px solid #d9d9d9;    border-radius: 4px;    -webkit-transition: all 0.3s;    transition: all 0.3s;}.ant-input-sm {    height: 24px;    padding: 1px 7px;}    .ant-input {    color: rgba(0, 0, 0, 0.65);    background-color: #fff;    background-image: none;    border: 1px solid #d9d9d9;    border-radius: 4px;}    .ant-calendar-picker-input.ant-input-sm {    padding-top: 0;    padding-bottom: 0;}    textarea.ant-input {    max-width: 100%;    height: auto;    min-height: 32px;    vertical-align: bottom;    -webkit-transition: all 0.3s, height 0s;    transition: all 0.3s, height 0s;}    .ant-row {    position: relative;    height: auto;    margin-right: 0;    margin-left: 0;    zoom: 1;    display: block;    box-sizing: border-box;    }.ant-row::before, .ant-row::after {    content: "";    display: table;}.ant-col{    position: relative;}.ant-col-1 {    display: block;    box-sizing: border-box;    width: 4.16666667%;}.ant-col-2 {    display: block;    box-sizing: border-box;    width: 8.33333333%;}.ant-col-3 {    display: block;    box-sizing: border-box;    width: 12.5%;}.ant-col-4 {    display: block;    box-sizing: border-box;    width: 16.66666667%;}.ant-col-5 {    display: block;    box-sizing: border-box;    width: 20.83333333%;}   .ant-col-6 {    display: block;    box-sizing: border-box;    width: 25%;}.ant-col-7 {    display: block;    box-sizing: border-box;    width: 29.16666667%;}.ant-col-24 {    display: block;    box-sizing: border-box;    width: 100%;}        *{margin:0;padding:0;box-sizing: border-box;text-align: center;}    .toPrint {  display: inline-block;  width: 794px;  height: 1090px;  padding: 2rem;  font-size: 14px;}.toPrint input {  border: 0px solid #fff;}.toPrint i {  display: none;}.toPrint .header {  width: 100%;}.toPrint .header div {  float: left;  width: calc(50% - 7.5rem);}.toPrint .header h4 {  display: inline-block;  font-size: 1.2rem;  width: 15rem;}.toPrint .header p {  float: right;  font-size: 1.2rem;  width: calc(50% - 7.5rem);}.toPrint .header p b {  color: #f5222d;}.toPrint .timer {  width: 100%;  overflow: hidden;}.toPrint .timer>div {  float: left;  line-height: 1.5rem;}.toPrint .timer div input {  position: relative;  0px;  border-bottom: 0px solid #000;  border-radius: 0px;}.toPrint .timer>div:nth-child(2) {  float: right;}   .table .selected:after{ display: block;content:"√";text-align: left; width: 100%;height:24px; position: absolute;top:0;left:0; color:#1890ff;font-weight: bold;} .toPrint .timer .tableWrap {  width: 100%;  overflow: hidden;}.toPrint .timer .tableWrap .depas {  float: left;  overflow: hidden;  width: 1.5rem;  margin-top: 0.5rem;  border-left: 1px solid #000;  border-top: 1px solid #000;  border-bottom: 1px solid #000;}.toPrint .timer .tableWrap .depas div {  border-bottom: 1px solid #000;}.toPrint .timer .tableWrap .depas div:first-child {  height: calc(15.5rem + 9px);}.toPrint .timer .tableWrap .depas div:nth-child(2) {  height: calc(8rem + 4px);}.toPrint .timer .tableWrap .depas div:nth-child(3) {  height: calc(8rem + 3px);}.toPrint .timer .tableWrap .depas div:nth-child(4) {  height: calc(8rem + 3px);}.toPrint .timer .tableWrap .depas div:nth-child(5) {  height: calc(4.5rem + 3px);}.toPrint .timer .tableWrap .depas div:nth-child(6) {  height: calc(7.5rem + 3px);  border-bottom: 0px solid #000;}.toPrint .timer .tableWrap .table {  float: left;  width: calc(100% - 1.5rem);  margin-top: 0.5rem;  height: 851px;}.toPrint .timer .tableWrap .table div {  float: none;}.toPrint .timer .tableWrap .table .ant-row {  display: flex;  border-top: 1px solid #000;  border-left: 1px solid #000;  border-right: 1px solid #000;  box-sizing: border-box;}.toPrint .timer .tableWrap .table .ant-row:last-child {  border-bottom: 1px solid #000;}.toPrint .timer .tableWrap .table .ant-col {  border-right: 1px solid #000;  box-sizing: border-box;}.toPrint .timer .tableWrap .table .ant-col:last-child {  border-right: 0px solid #000;}.toPrint .timer .tableWrap .table .ant-col input {  top: 0;  border: 0px solid #fff;  line-height: 1.5rem;  width: 100%;transform: scale(0.95);}.toPrint .timer .tableWrap .table .ant-col textarea {  width: 100%;  border: 0px solid #fff;  resize: none;  height: 1rem;}.toPrint .timer .tableWrap .table .multInput input {  width: 44%;}.toPrint .timer .tableWrap .table .multInput span {  width: 10%;}</style>';
      var headstr = "<html><head><title></title>"+style+"</head><body>";
      document.body.innerHTML = headstr + newstr + footstr;
      window.print();
     window.document.body.innerHTML = bodyHtml;
     window.location.reload();
   };
+
+  //获取产品线
+  getProductLines = async()=>{
+    let res;
+    try{
+      res = await http().getRecordAndSubTables({
+        resid: '678789264059',
+        subresid: '678789327168,678789448828',
+        getsubresource: 1
+      });
+      this.setState({
+        productLines:res.data
+      })
+    }catch(e){
+      console.log(e.message);
+      message.error(e.message);
+    }
+  }
+  //修改产品线
+  changeProductLine=(v)=>{
+    let obj = this.state.productLines;
+    let n = 0;
+    while(n<obj.length){
+      if(obj[n].productflowid==v){
+        this.setState({productLineTree:obj[n]});
+      }
+      n++;
+    }
+  }
   render() {
     return (
       
 
       <div className='sheetDetails'>
+        <Modal
+        visible={this.state.showImg}
+        footer={null}
+        onCancel={()=>{this.setState({showImg:false})}}
+        destroyOnClose
+        width={'80vw'}
+        >
+          <div style={{width:'100%',height:'80vh',background:'url('+this.state.imgUrl+')',backgroundSize:'contain',backgroundPosition:'center',backgroundRepeat:'no-repeat'}}>
+          </div>
+        </Modal>
         <div className='streamList'>
             {
               this.props.hasBack?
@@ -46,8 +193,56 @@ class WorkSheetDetail extends React.Component {
               </div>
               :null
             }
+           
             <ul style={this.props.hasBack?{margin:'3.3rem .5rem .8rem'}:{margin:'.8rem .5rem'}}>
-              <li>
+            {
+              this.props.new?
+              <div className='PLSelection'>
+                <Select
+                 style={{ width: '100%',textIndent:'1rem',marginBottom:'1rem'}}
+                 placeholder="请选择工作流"
+                 value={this.state.productLinesValue}
+                 onChange={(v) =>{
+                   this.changeProductLine(v);
+                   this.setState({productLinesValue: v});
+                 }}
+                
+                >
+                {this.state.productLines.map(item => (
+                  <Option value={item.productflowid}>
+                    {item.productflowname}
+                  </Option>
+                ))}
+                </Select>
+              </div>
+              :null
+            }
+            {
+              this.state.productLineTree[678789327168].map((item)=>{return(
+                
+                <li className={item.current?'current':''} style={item.display=='N'?{display:'none'}:{}}>
+                <div>
+                  <div>{item.jobid}</div>
+                  <b>{item.depname}</b>
+                </div>
+                <ul>
+                    {item[678789448828].map((item2)=>{return(
+                    <li className={item2.current?'current':''}>
+                    <b>{item.jobid}.{item2.roleid}</b>
+                    <div>
+                      <span>{item2.date?item2.date:'--'}</span>
+                      <span>{item2.name?item2.name:'--'}</span>
+                      <span>{item2.rolename}</span>
+                    </div>
+                  </li>
+                    )})}
+                  
+                </ul>
+              </li>
+                
+              )})
+            }
+              {/* <li>
                 <div>
                   <div>1</div>
                   <b>业务部</b>
@@ -118,19 +313,22 @@ class WorkSheetDetail extends React.Component {
 
                   </li>
                 </ul>
-              </li>
+              </li> */}
             </ul>
         </div>
         <div className='sheet'>
           
           <div className='historySelections'>
             <ul style={{minWidth:'100%',width:(2*10)+'rem'}}>
-              <li className='current'>
+              {
+                this.state.histories.map(item=>(<li className={item.status=='current'?'current':''}>{item.value}</li>))
+              }
+              {/* <li className='current'>
               2021-07-24 12:00
               </li>
               <li>
               2021-07-24 12:00
-              </li>
+              </li> */}
             </ul>
             
           </div>
@@ -138,19 +336,27 @@ class WorkSheetDetail extends React.Component {
         <div className='rightContent'>
             <div className='pics'>
               <div className='toChange'>
+                {
+                  this.state.imgUrl?
+                 <img src={this.state.imgUrl} onClick={()=>{this.setState({showImg:true})}}/>:'点击下方“选择文件”添加图片'
+                }
               </div>
               <div className='picsMenu'>
-                <div>下载</div>
-                <div>替换</div>
+                { this.state.imgUrl?<a href={this.state.imgUrl} target='_blank'><div>下载</div></a>:null}
+                <div className='left'>
+                <input id="ss" name="ss" type="file" onChange={v => { this.imgUp(v) }} accept='image' />
+                </div>
 
               </div>
             </div>
-            <div className='reasons'>
+            {this.props.new?null:<>
+            
+              <div className='reasons'>
               <b>
                 修改原因：
               </b>
               <p>
-                原因AAAA
+                {this.state.curModiReason}
               </p>
             </div>
             <div className='feedback'>
@@ -159,9 +365,12 @@ class WorkSheetDetail extends React.Component {
               </b>
               <span>产看关联反馈</span>
               <p>
-                反馈AAAA
+              {this.state.curFeedBack}
               </p>
             </div>
+            
+            </>}
+            
           </div>
 
           <div className='menu'>
@@ -169,24 +378,31 @@ class WorkSheetDetail extends React.Component {
               <li>
                 保存
               </li>
-              <li>
+              {
+                this.props.new?null:
+                <>
+                <li>
                 复制新建
-              </li>
-              <li>
+                </li>
+                <li>
                 开始当前流程
-              </li>
-              <li>
-                结束当前流程
-              </li>
+                </li>
+                <li>
+                  结束当前流程
+                </li>
+                </>
+              }
               <li onClick={()=>{this.handlePrint();}}>
                 打印
               </li>
+              {
+                this.props.new?null:<>
               <li className='right'>
                 取消订单
               </li>
               <li className='right'>
                 报废订单
-              </li>
+              </li></>}
             </ul>
           </div>
           <div className='workSheetForm'>
@@ -201,10 +417,10 @@ class WorkSheetDetail extends React.Component {
                 </div>
                 <div className='timer'>
                   <div>
-                    接单时间：<DatePicker size='small'showTime/>
+                    接单时间：<DatePicker size='small'showTime value={this.state.sheetData.C3_678796788873} onChange={(v)=>{this.changeSheet('C3_678796788873',v)}}/>
                   </div>
                   <div>
-                    交货时间：<DatePicker size='small' showTime/>
+                    交货时间：<DatePicker size='small' showTime value={this.state.sheetData.C3_678796797075} onChange={(v)=>{this.changeSheet('C3_678796797075',v)}}/>
                   </div>
                   <div className='tableWrap'>
                   <div className='depas'>
@@ -231,57 +447,63 @@ class WorkSheetDetail extends React.Component {
                     
                     <Row>
                       <Col span={5}>客户名称</Col>
-                      <Col span={4}><input/></Col>
+                      <Col span={4}><input value={this.state.sheetData.C3_678796767356} onChange={(v)=>{this.changeSheet('C3_678796767356',v.target.value)}}/></Col>
                       <Col span={5}>产品名称</Col>
-                      <Col span={4}><input/></Col>
+                      <Col span={4}><input value={this.state.sheetData.C3_678796779827} onChange={(v)=>{this.changeSheet('C3_678796779827',v.target.value)}}/></Col>
                       <Col span={3}>数量</Col>
-                      <Col span={3}><input/></Col>
+                      <Col span={3}><input value={this.state.sheetData.C3_681946447748} onChange={(v)=>{this.changeSheet('C3_681946447748',v.target.value)}}/></Col>
                     </Row>
                     <Row>
-                      <Col style={{width:'8%'}}>图面</Col>
-                      <Col style={{width:'8%'}}>正切</Col>
-                      <Col style={{width:'8%'}}>反切</Col>
-                      <Col style={{width:'8%'}}>入刀</Col>
-                      <Col style={{width:'8%'}}>净介</Col>
-                      <Col style={{width:'8%'}}>参照</Col>
-                      <Col style={{width:'8%'}}>菲林</Col>
-                      <Col style={{width:'8%'}}>色位</Col>
-                      <Col style={{width:'9%'}}>图纸尺寸</Col>
-                      <Col style={{width:'8%'}}>传真</Col>
-                      <Col style={{width:'8%'}}>邮件</Col>
-                      <Col style={{width:'11%'}}>实样（物）</Col>
+                      <Col style={{width:'8%'}} 
+                      // className={this.state.sheetData.C3_681946842309=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946842309')}}
+                      >图面</Col>
+                      <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946858588=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946858588')}}>正切</Col>
+                      <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946866036=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946866036')}}>反切</Col>
+                      <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946874849=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946874849')}}>入刀</Col>
+                      <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946885747=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946885747')}}>净介</Col>
+                      <Col style={{width:'8%'}} 
+                      // className={this.state.sheetData.C3_681946893259=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946893259')}}
+                      >参照</Col>
+                      <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946907063=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946907063')}}>菲林</Col>
+                      <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946916803=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946916803')}}>色位</Col>
+                      <Col style={{width:'9%'}}
+                      //  className={this.state.sheetData.C3_681946932592=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946932592')}}
+                      >图纸尺寸</Col>
+                      <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946943505=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946943505')}}>传真</Col>
+                      <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946949984=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946949984')}}>邮件</Col>
+                      <Col style={{width:'11%',cursor:'pointer'}} className={this.state.sheetData.C3_681946967641=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946967641')}}>实样（物）</Col>
                     </Row>
                     <Row>
                       <Col span={2}>稿数情况</Col>
-                      <Col span={2}>菲林</Col>
-                      <Col span={2}>图纸</Col>
-                      <Col span={2}>稿</Col>
-                      <Col span={2}>实物</Col>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_681948129430=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681948129430')}}>菲林</Col>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_681948140445=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681948140445')}}>图纸</Col>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_681948156177=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681948156177')}}>稿</Col>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_681948368196=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681948368196')}}>实物</Col>
                       <Col span={4}>稿样是否归还客户</Col>
-                      <Col span={2}>是</Col>
-                      <Col span={2}>否</Col>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678796830965=='是'?'selected':''} onClick={()=>{this.changeSheet('C3_678796830965','是')}}>是</Col>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678796830965=='否'?'selected':''} onClick={()=>{this.changeSheet('C3_678796830965','否')}}>否</Col>
                       <Col span={2}>板度要求</Col>
-                      <Col span={4}><input/></Col>
+                      <Col span={4}><input value={this.state.sheetData.C3_678796840511} onChange={(v)=>{this.changeSheet('C3_678796840511',v.target.value)}}/></Col>
                     </Row>
                     <Row>
                       <Col span={2}>接单人</Col>
-                      <Col span={3}><input/></Col>
+                      <Col span={3}><input value={this.state.sheetData.C3_678796887001} onChange={(v)=>{this.changeSheet('C3_678796887001',v.target.value)}}/></Col>
                       <Col span={2}>送货单号</Col>
-                      <Col span={3}><input/></Col>
+                      <Col span={3}><input value={this.state.sheetData.C3_678796898023} onChange={(v)=>{this.changeSheet('C3_678796898023',v.target.value)}}/></Col>
                       <Col span={2}>价格</Col>
-                      <Col span={2}><input/></Col>
-                      <Col span={2}>含税</Col>
-                      <Col span={2}>不含税</Col>
+                      <Col span={2}><input value={this.state.sheetData.C3_678796906793} onChange={(v)=>{this.changeSheet('C3_678796906793',v.target.value)}}/></Col>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_681948661141=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681948661141')}}>含税</Col>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_681948667231=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681948667231')}}>不含税</Col>
                       <Col span={2}>复核人</Col>
-                      <Col span={4}><input/></Col>
+                      <Col span={4}><input value={this.state.sheetData.C3_678796943530} onChange={(v)=>{this.changeSheet('C3_678796943530',v.target.value)}}/></Col>
                     </Row>
                     <Row>
                       <Col span={24} >
                         <div>
-                          <span style={{width:'100%',textAlign:'left'}}>
+                          <span style={{width:'100%',textAlign:'left',display:'inline-block',textIndent:'.5rem'}}>
                           接单绘图说明：
                           </span>
-                          <TextArea/>
+                          <TextArea value={this.state.sheetData.C3_678796951598} onChange={(v)=>{this.changeSheet('C3_678796951598',v.target.value)}}/>
                         </div>
                       </Col>
 
@@ -291,79 +513,79 @@ class WorkSheetDetail extends React.Component {
                         刀材名称
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678796959023} onChange={(v)=>{this.changeSheet('C3_678796959023',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678796966324} onChange={(v)=>{this.changeSheet('C3_678796966324',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         数量
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678796973541} onChange={(v)=>{this.changeSheet('C3_678796973541',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         齿刀名称
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797062420} onChange={(v)=>{this.changeSheet('C3_678797062420',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797068641} onChange={(v)=>{this.changeSheet('C3_678797068641',v.target.value)}}/>
                       </Col>
                       <Col span={2}> 
                         数量
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797075331} onChange={(v)=>{this.changeSheet('C3_678797075331',v.target.value)}}/>
                       </Col>
                     </Row>
                     <Row>
-                      <Col span={2}>
+                      <Col span={2} >
                         痕线名称
                       </Col>
                       <Col span={2} >
-                      <input/>
+                      <input value={this.state.sheetData.C3_678796981497} onChange={(v)=>{this.changeSheet('C3_678796981497',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678796989327} onChange={(v)=>{this.changeSheet('C3_678796989327',v.target.value)}}/>
                         
                       </Col>
                       <Col span={2}>
                         数量
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797024313} onChange={(v)=>{this.changeSheet('C3_678797024313',v.target.value)}}/>
                         
                       </Col>
                       <Col span={2}>
                         孔类名称
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797082671} onChange={(v)=>{this.changeSheet('C3_678797082671',v.target.value)}}/>
                         
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797088953} onChange={(v)=>{this.changeSheet('C3_678797088953',v.target.value)}}/>
                         
                       </Col>
                       <Col span={2}>
                         数量
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797095425} onChange={(v)=>{this.changeSheet('C3_678797095425',v.target.value)}}/>
                         
                       </Col>
                     </Row>
@@ -372,42 +594,42 @@ class WorkSheetDetail extends React.Component {
                         销类名称
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797032289} onChange={(v)=>{this.changeSheet('C3_678797032289',v.target.value)}}/>
                         
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797041936} onChange={(v)=>{this.changeSheet('C3_678797041936',v.target.value)}}/>
                         
                       </Col>
                       <Col span={2}>
                         数量
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797050598} onChange={(v)=>{this.changeSheet('C3_678797050598',v.target.value)}}/>
                         
                       </Col>
                       <Col span={2}>
                         其他
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797101119} onChange={(v)=>{this.changeSheet('C3_678797101119',v.target.value)}}/>
                         
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797109062} onChange={(v)=>{this.changeSheet('C3_678797109062',v.target.value)}}/>
                         
                       </Col>
                       <Col span={2}>
                         数量
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_681949749757} onChange={(v)=>{this.changeSheet('C3_681949749757',v.target.value)}}/>
                         
                       </Col>
                     </Row>
@@ -418,40 +640,40 @@ class WorkSheetDetail extends React.Component {
                       <Col span={4}>
                         木板厚度
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797141752=='22'?'selected':''} onClick={()=>{this.changeSheet('C3_678797141752','22')}}>
                         22
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797141752=='20'?'selected':''} onClick={()=>{this.changeSheet('C3_678797141752','20')}}>
                         20
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797141752=='18'?'selected':''} onClick={()=>{this.changeSheet('C3_678797141752','18')}}>
                         18
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797141752=='15'?'selected':''} onClick={()=>{this.changeSheet('C3_678797141752','15')}}>
                         15
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797141752=='12'?'selected':''} onClick={()=>{this.changeSheet('C3_678797141752','12')}}>
                         12
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797141752=='10'?'selected':''} onClick={()=>{this.changeSheet('C3_678797141752','10')}}>
                         10
                       </Col>
                       <Col span={5}>
                         塑料板
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797207647=='10'?'selected':''} onClick={()=>{this.changeSheet('C3_678797207647','10')}}>
                         10
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797207647=='8'?'selected':''} onClick={()=>{this.changeSheet('C3_678797207647','8')}}>
                         8
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797207647=='6'?'selected':''} onClick={()=>{this.changeSheet('C3_678797207647','6')}}>
                         6
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797207647=='5'?'selected':''} onClick={()=>{this.changeSheet('C3_678797207647','5')}}>
                         5
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797207647=='4'?'selected':''} onClick={()=>{this.changeSheet('C3_678797207647','4')}}>
                         4
                       </Col>
                     </Row>
@@ -460,31 +682,31 @@ class WorkSheetDetail extends React.Component {
                         制图人
                       </Col>
                       <Col span={3}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797238397} onChange={(v)=>{this.changeSheet('C3_678797238397',v.target.value)}}/>
                       </Col>
                       <Col span={3}>
                         制图档号
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797244550} onChange={(v)=>{this.changeSheet('C3_678797244550',v.target.value)}}/>
                       </Col>
                       <Col span={3}>
                         制图尺寸
                       </Col>
                       <Col span={3} className='multInput'>
-                        <input/><span>X</span><input/>
+                        <input value={this.state.sheetData.C3_678797254113} onChange={(v)=>{this.changeSheet('C3_678797254113',v.target.value)}}/><span>X</span><input value={this.state.sheetData.C3_681950556005} onChange={(v)=>{this.changeSheet('C3_681950556005',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                       孔径1
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797264469} onChange={(v)=>{this.changeSheet('C3_678797264469',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         孔径2
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797278156} onChange={(v)=>{this.changeSheet('C3_678797278156',v.target.value)}}/>
                       </Col>
                     </Row>
                     <Row>
@@ -495,44 +717,46 @@ class WorkSheetDetail extends React.Component {
                         刀长
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797285605} onChange={(v)=>{this.changeSheet('C3_678797285605',v.target.value)}}/>
                       </Col>
                       <Col span={1}>
                         线长
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797294013} onChange={(v)=>{this.changeSheet('C3_678797294013',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         半穿刀
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797303604} onChange={(v)=>{this.changeSheet('C3_678797303604',v.target.value)}}/>
                       </Col>
                       <Col span={1}>
                       齿刀
                       </Col>
-                      <Col span={2}><input/></Col>
+                      <Col span={2}><input value={this.state.sheetData.C3_678797311216} onChange={(v)=>{this.changeSheet('C3_678797311216',v.target.value)}}/></Col>
                       <Col span={2}>
                         制图时间
                       </Col>
                       <Col className='multInput' span={7}>
-                      <input style={{width:'45%'}}/><span style={{width:'10%'}}>至</span><input style={{width:'45%'}}/>
+                      <input style={{width:'45%'}} value={this.state.sheetData.C3_678797319517} onChange={(v)=>{this.changeSheet('C3_678797319517',v.target.value)}}/>
+                      <span style={{width:'10%'}}>至</span>
+                      <input style={{width:'45%'}} value={this.state.sheetData.C3_678797328067} onChange={(v)=>{this.changeSheet('C3_678797328067',v.target.value)}}/>
                       </Col>
                       </Row>
                       <Row>
                       <Col span={24}>
                         <div>
-                          <span style={{width:'100%',textAlign:'left'}}>
+                          <span style={{width:'100%',textAlign:'left',display:'inline-block',textIndent:'.5rem'}}>
                           制图备注：
                           </span>
-                          <TextArea/>
+                          <TextArea value={this.state.sheetData.C3_678797335509} onChange={(v)=>{this.changeSheet('C3_678797335509',v.target.value)}}/>
                         </div>
                         <div>
                           <span style={{width:'10%'}}>
                           检验人：
                           </span>
-                          <input style={{width:'90%'}}/>
+                          <input style={{width:'90%'}} value={this.state.sheetData.C3_681950832269} onChange={(v)=>{this.changeSheet('C3_681950832269',v.target.value)}}/>
                         </div>
                       </Col>
 
@@ -542,53 +766,57 @@ class WorkSheetDetail extends React.Component {
                         割板人
                       </Col>
                       <Col span={4}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797343880} onChange={(v)=>{this.changeSheet('C3_678797343880',v.target.value)}}/>
                       </Col>
                       <Col span={3}>
                         割板时间
                       </Col>
                       <Col className='multInput' span={5}>
-                      <input/><span>至</span><input/>
+                      <input value={this.state.sheetData.C3_678797351896} onChange={(v)=>{this.changeSheet('C3_678797351896',v.target.value)}}/>
+                      <span>至</span>
+                      <input value={this.state.sheetData.C3_678797359840} onChange={(v)=>{this.changeSheet('C3_678797359840',v.target.value)}}/>
                       </Col>
                       <Col span={5}>
                         切割板尺寸
                       </Col>
                       <Col className='multInput' span={5}>
-                      <input/><span>X</span><input/>
+                      <input value={this.state.sheetData.C3_678797366895} onChange={(v)=>{this.changeSheet('C3_678797366895',v.target.value)}}/>
+                      <span>X</span>
+                      <input value={this.state.sheetData.C3_681951306434} onChange={(v)=>{this.changeSheet('C3_681951306434',v.target.value)}}/>
                       </Col>
                     </Row>
                     <Row>
                       <Col span={3}>
                         割缝宽度
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797373416=='1.0'?'selected':''} onClick={()=>{this.changeSheet('C3_678797373416','1.0')}}>
                         1.0
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797373416=='0.71'?'selected':''} onClick={()=>{this.changeSheet('C3_678797373416','0.71')}}>
                        0.71
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797373416=='0.53'?'selected':''} onClick={()=>{this.changeSheet('C3_678797373416','0.53')}}>
                         0.53
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797373416=='0.45'?'selected':''} onClick={()=>{this.changeSheet('C3_678797373416','0.45')}}>
                       0.45
                       </Col>
-                      <Col span={2}>
+                      <Col>
                         其他
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797373416=='1.0'||this.state.sheetData.C3_678797373416=='0.71'||this.state.sheetData.C3_678797373416=='0.53'||this.state.sheetData.C3_678797373416=='0.45'?'':this.state.sheetData.C3_678797373416} onChange={(v)=>{this.changeSheet('C3_678797373416',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         切割方式
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797379549=='连续'?'selected':''} onClick={()=>{this.changeSheet('C3_678797379549','连续')}}>
                         连续
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797379549=='脉冲'?'selected':''} onClick={()=>{this.changeSheet('C3_678797379549','脉冲')}}>
                         脉冲
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797379549=='半穿'?'selected':''} onClick={()=>{this.changeSheet('C3_678797379549','半穿')}}>
                         半穿
                       </Col>
                       
@@ -596,10 +824,10 @@ class WorkSheetDetail extends React.Component {
                     <Row>
                       <Col span={24}>
                         <div>
-                          <span style={{width:'100%',textAlign:'left'}}>
+                          <span style={{width:'100%',textAlign:'left',display:'inline-block',textIndent:'.5rem'}}>
                           切割要备注：
                           </span>
-                          <TextArea/>
+                          <TextArea value={this.state.sheetData.C3_678797387551} onChange={(v)=>{this.changeSheet('C3_678797387551',v.target.value)}}/>
                         </div>
                       </Col>
 
@@ -688,7 +916,7 @@ class WorkSheetDetail extends React.Component {
                     <Row>
                       <Col span={24}>
                         <div>
-                          <span style={{width:'100%',textAlign:'left'}}>
+                          <span style={{width:'100%',textAlign:'left',display:'inline-block',textIndent:'.5rem'}}>
                         装刀备注：
                         </span>
                         <TextArea/>

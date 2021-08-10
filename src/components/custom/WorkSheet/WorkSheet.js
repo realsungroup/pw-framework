@@ -235,6 +235,7 @@ class WorkSheet extends React.Component {
              
              <WorkSheetDetail
                 hasBack={true}
+                new={true}
                 backFunc={()=>{this.showDetails(false)}}
              >
               </WorkSheetDetail>   
