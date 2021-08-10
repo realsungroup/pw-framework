@@ -245,7 +245,7 @@ export default class ViProvider extends React.Component {
                         this.setState({ showDeliverModal: true });
                       }}
                     >
-                      出口提送货车辆备案
+                      进出口提送货车辆备案
                     </Button>
                   );
                 }}
