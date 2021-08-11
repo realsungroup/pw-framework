@@ -22,7 +22,10 @@ class VisitorApplyVIP extends React.Component {
       addModal: false,
       peopleList: [],
       record: {}, //当前选中的剂量
-      options: [] // 选择的一级审批人
+      options: [], // 选择的一级审批人
+      vipmealOptions: [], //vip餐选项
+      biscuitOptions: [], //饼干选项
+      fruitOptions: [] //水果选项
     };
   }
   actionBarExtra = record => {
@@ -57,6 +60,7 @@ class VisitorApplyVIP extends React.Component {
   componentDidMount = () => {
     this.getApprover();
     this.info();
+    this.getOptions();
   };
 
   info = () => {
@@ -69,6 +73,28 @@ class VisitorApplyVIP extends React.Component {
       ),
       onOk() {}
     });
+  };
+  getOptions = async () => {
+    let res;
+    try {
+      res = await http().getTableColumnDefine({
+        resid: 628944723761
+      });
+      let n = 0;
+      while (n < res.data.length) {
+        if (res.data[n].ColName == 'C3_682007624565') {
+          this.setState({ vipmealOptions: res.data[n].DisplayOptions });
+        } else if (res.data[n].ColName == 'C3_682007902400') {
+          this.setState({ biscuitOptions: res.data[n].DisplayOptions });
+        } else if (res.data[n].ColName == 'C3_682007924652') {
+          this.setState({ fruitOptions: res.data[n].DisplayOptions });
+        }
+        n++;
+      }
+      console.log('options', res.data);
+    } catch (error) {
+      message.error(error.message);
+    }
   };
   getApprover = async () => {
     let res;
@@ -303,75 +329,6 @@ class VisitorApplyVIP extends React.Component {
             <div>
               <div className="changeFormItem">
                 <Form.Item
-                  label="接机/接站"
-                  className="fix-form-feedback-bug"
-                  hasFeedback={mode === 'check' ? false : true}
-                >
-                  {getFieldDecorator('airportOrstation', {
-                    initialValue: record && record.airportOrstation,
-                    rules: [
-                      {
-                        required: true,
-                        message: '请选择接机/接站!'
-                      }
-                    ]
-                  })(
-                    <Radio.Group disabled={mode === 'check' ? true : false}>
-                      <Radio value={'是'}>需要</Radio>
-                      <Radio value={'否'}>不需要</Radio>
-                    </Radio.Group>
-                  )}
-                </Form.Item>
-              </div>
-              <div className="changeFormItem">
-                <Form.Item
-                  label="日常用车"
-                  className="fix-form-feedback-bug"
-                  hasFeedback={mode === 'check' ? false : true}
-                >
-                  {getFieldDecorator('everydayCar', {
-                    initialValue: record && record.everydayCar,
-                    rules: [
-                      {
-                        required: true,
-                        message: '请选择日常用车!'
-                      }
-                    ]
-                  })(
-                    <Radio.Group disabled={mode === 'check' ? true : false}>
-                      <Radio value={'是'}>需要</Radio>
-                      <Radio value={'否'}>不需要</Radio>
-                    </Radio.Group>
-                  )}
-                </Form.Item>
-              </div>
-
-              <div className="changeFormItem">
-                <Form.Item
-                  label="茶歇"
-                  className="fix-form-feedback-bug"
-                  hasFeedback={mode === 'check' ? false : true}
-                >
-                  {getFieldDecorator('TeaBreak', {
-                    initialValue: record && record.TeaBreak,
-                    rules: [
-                      {
-                        required: true,
-                        message: '请选择茶歇!'
-                      }
-                    ]
-                  })(
-                    <Radio.Group disabled={mode === 'check' ? true : false}>
-                      <Radio value={'是'}>需要</Radio>
-                      <Radio value={'否'}>不需要</Radio>
-                    </Radio.Group>
-                  )}
-                </Form.Item>
-              </div>
-            </div>
-            <div>
-              <div className="changeFormItem">
-                <Form.Item
                   label="来访目的"
                   hasFeedback={mode === 'check' ? false : true}
                 >
@@ -434,26 +391,175 @@ class VisitorApplyVIP extends React.Component {
                 </Form.Item>
               </div>
             </div>
-            <Form.Item
-              label="VIP餐(仅限外部审核及重要访客)"
-              className="fix-form-feedback-bug"
-              hasFeedback={mode === 'check' ? false : true}
+            <div className="serviceLine">
+              <span>是否需要接待：</span>
+              <Radio.Group
+                disabled={mode === 'check' ? true : false}
+                value={this.state.C3_682008393529}
+                onChange={v => {
+                  this.setState({ C3_682008393529: v.target.value });
+                }}
+              >
+                <Radio value={'是'}>需要</Radio>
+                <Radio value={'否'}>不需要</Radio>
+              </Radio.Group>
+            </div>
+            <div
+              className="seviceSections"
+              style={
+                this.state.C3_682008393529 == '是' ? {} : { display: 'none' }
+              }
             >
-              {getFieldDecorator('VIPMeal', {
-                initialValue: record && record.VIPMeal,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择VIP餐!'
+              <div>
+                <div>
+                  <span>接机/接站：</span>
+                  <Radio.Group
+                    disabled={mode === 'check' ? true : false}
+                    value={this.state.airportOrstation}
+                    onChange={v => {
+                      this.setState({ airportOrstation: v.target.value });
+                    }}
+                  >
+                    <Radio value={'是'}>需要</Radio>
+                    <Radio value={'否'}>不需要</Radio>
+                  </Radio.Group>
+                </div>
+                <div
+                  style={
+                    this.state.airportOrstation == '是'
+                      ? {}
+                      : { display: 'none' }
                   }
-                ]
-              })(
-                <Radio.Group disabled={mode === 'check' ? true : false}>
-                  <Radio value={'否'}>不需要</Radio>
-                  <Radio value={'是'}>需要</Radio>
-                </Radio.Group>
-              )}
-            </Form.Item>
+                >
+                  <span>请输入航班或者车次：</span>
+                  <Input
+                    value={this.state.C3_682008228598}
+                    onChange={v => {
+                      this.setState({ C3_682008228598: v.target.value });
+                    }}
+                  />
+                </div>
+              </div>
+              <div>
+                <div>
+                  <span>VIP餐：</span>
+                  <Radio.Group
+                    disabled={mode === 'check' ? true : false}
+                    value={this.state.VIPMeal}
+                    onChange={v => {
+                      this.setState({ VIPMeal: v.target.value });
+                    }}
+                  >
+                    <Radio value={'是'}>需要</Radio>
+                    <Radio value={'否'}>不需要</Radio>
+                  </Radio.Group>
+                </div>
+                <div
+                  style={this.state.VIPMeal == '是' ? {} : { display: 'none' }}
+                >
+                  <span>餐别：</span>
+                  <Select
+                    value={this.state.C3_682007624565}
+                    style={{ margin: 0 }}
+                    onChange={v => {
+                      this.setState({ C3_682007624565: v });
+                    }}
+                  >
+                    {this.state.vipmealOptions.map(item => {
+                      return <Option value={item}>{item}</Option>;
+                    })}
+                  </Select>
+                  <br />
+                  <span>数量：</span>
+                  <Input
+                    type="number"
+                    value={this.state.C3_682007800032}
+                    onChange={v => {
+                      this.setState({ C3_682007800032: v.target.value });
+                    }}
+                  />
+                  <br />
+                  <span>时间：</span>
+                  <DatePicker
+                    value={this.state.C3_682007825690}
+                    showTime
+                    onChange={v => {
+                      this.setState({ C3_682007825690: v });
+                    }}
+                  />
+                  <br />
+                  <span>地点：</span>
+                  <Input
+                    value={this.state.C3_682007840582}
+                    onChange={v => {
+                      this.setState({ C3_682007840582: v.target.value });
+                    }}
+                  />
+                </div>
+              </div>
+              <div>
+                <div>
+                  <span>茶歇：</span>
+                  <Radio.Group
+                    disabled={mode === 'check' ? true : false}
+                    value={this.state.TeaBreak}
+                    onChange={v => {
+                      this.setState({ TeaBreak: v.target.value });
+                    }}
+                  >
+                    <Radio value={'是'}>需要</Radio>
+                    <Radio value={'否'}>不需要</Radio>
+                  </Radio.Group>
+                </div>
+                <div
+                  style={this.state.TeaBreak == '是' ? {} : { display: 'none' }}
+                >
+                  <span>水果规格：</span>
+                  <Select
+                    value={this.state.C3_682007924652}
+                    style={{ margin: 0 }}
+                    onChange={v => {
+                      this.setState({ C3_682007924652: v });
+                    }}
+                  >
+                    {this.state.fruitOptions.map(item => {
+                      return <Option value={item}>{item}</Option>;
+                    })}
+                  </Select>
+                  <br />
+                  <span>水果数量：</span>
+                  <Input
+                    type="number"
+                    value={this.state.C3_682007915089}
+                    onChange={v => {
+                      this.setState({ C3_682007915089: v.target.value });
+                    }}
+                  />
+                  <br />
+                  <span>饼干规格：</span>
+                  <Select
+                    value={this.state.C3_682007902400}
+                    style={{ margin: 0 }}
+                    onChange={v => {
+                      this.setState({ C3_682007902400: v });
+                    }}
+                  >
+                    {this.state.biscuitOptions.map(item => {
+                      return <Option value={item}>{item}</Option>;
+                    })}
+                  </Select>
+                  <br />
+                  <span>饼干数量：</span>
+                  <Input
+                    value={this.state.C3_682007891040}
+                    type="number"
+                    onChange={v => {
+                      this.setState({ C3_682007891040: v.target.value });
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
 
             {mode === 'check' ? (
               ''
