@@ -80,6 +80,17 @@ class WorkSheetDetail extends React.Component {
     }
     this.setState({sheetData:obj});
    }
+   changeCheck=(key)=>{
+    let obj = this.state.sheetData;
+    if(obj[key]=='Y'){
+      obj[key]='N'
+    }else if(obj[key]=='N'){
+      obj[key]=''
+    }else{
+      obj[key]='Y'
+    }
+    this.setState({sheetData:obj});
+   }
    imgUp(e) {
     this.setState({ imgfile: e });
     let files = e.target.files || e.dataTransfer.files;
@@ -807,7 +818,7 @@ class WorkSheetDetail extends React.Component {
                       <Col span={2}>
                       <input value={this.state.sheetData.C3_678797373416=='1.0'||this.state.sheetData.C3_678797373416=='0.71'||this.state.sheetData.C3_678797373416=='0.53'||this.state.sheetData.C3_678797373416=='0.45'?'':this.state.sheetData.C3_678797373416} onChange={(v)=>{this.changeSheet('C3_678797373416',v.target.value)}}/>
                       </Col>
-                      <Col span={2}>
+                      <Col span={4}>
                         切割方式
                       </Col>
                       <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797379549=='连续'?'selected':''} onClick={()=>{this.changeSheet('C3_678797379549','连续')}}>
@@ -837,31 +848,31 @@ class WorkSheetDetail extends React.Component {
                         重割原因
                       </Col>
                       <Col span={4}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_682032954218} onChange={(v)=>{this.changeSheet('C3_682032954218',v.target.value)}}/>
                       </Col>
                       <Col span={3}>
                        重割次数
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_682033106245=='1'?'selected':''} onClick={()=>{this.changeSheet('C3_682033106245','1')}}>
                         1
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_682033106245=='2'?'selected':''} onClick={()=>{this.changeSheet('C3_682033106245','2')}}>
                       2
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_682033106245=='3'?'selected':''} onClick={()=>{this.changeSheet('C3_682033106245','3')}}>
                         3
                       </Col>
                       <Col span={2}>
                       确认人
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_682033137280} onChange={(v)=>{this.changeSheet('C3_682033137280',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         检验人
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_682033154189} onChange={(v)=>{this.changeSheet('C3_682033154189',v.target.value)}}/>
                       </Col>
                     </Row>
                     <Row>
@@ -869,48 +880,57 @@ class WorkSheetDetail extends React.Component {
                         装刀人
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797430424} onChange={(v)=>{this.changeSheet('C3_678797430424',v.target.value)}}/>
                       </Col>
                       <Col span={1}>
                        时间
                       </Col>
                       <Col className='multInput' span={7}>
-                      <input/><span>至</span><input/>
+                      <input value={this.state.sheetData.C3_678797436775} onChange={(v)=>{this.changeSheet('C3_678797436775',v.target.value)}}/>
+                      <span>至</span>
+                      <input value={this.state.sheetData.C3_678797442606} onChange={(v)=>{this.changeSheet('C3_678797442606',v.target.value)}}/>
                       </Col>
                       <Col span={3}>
                       第二装刀人
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797462885} onChange={(v)=>{this.changeSheet('C3_678797462885',v.target.value)}}/>
                       </Col>
                       <Col span={1}>
                        时间
                       </Col>
                       <Col className='multInput' span={6}>
-                      <input/><span>至</span><input/>
+                      <input value={this.state.sheetData.C3_678797469831} onChange={(v)=>{this.changeSheet('C3_678797469831',v.target.value)}}/>
+                      <span>至</span>
+                      <input value={this.state.sheetData.C3_678797479749} onChange={(v)=>{this.changeSheet('C3_678797479749',v.target.value)}}/>
                       </Col>
                     </Row>
                     <Row>
                       <Col span={2}>
                       弯刀人
                       </Col>
+                      <Col span={2}>
+                      <input value={this.state.sheetData.C3_678797394318} onChange={(v)=>{this.changeSheet('C3_678797394318',v.target.value)}}/>
+                      </Col>
                       <Col span={2} >
                        时间
                       </Col>
                       <Col className='multInput'span={7} >
-                      <input/><span>至</span><input/>
+                      <input value={this.state.sheetData.C3_678797402765} onChange={(v)=>{this.changeSheet('C3_678797402765',v.target.value)}}/>
+                      <span>至</span>
+                      <input value={this.state.sheetData.C3_678797411331} onChange={(v)=>{this.changeSheet('C3_678797411331',v.target.value)}}/>
                       </Col>
-                      <Col span={3}>
+                      <Col span={2}>
                       弯刀米数
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797448380} onChange={(v)=>{this.changeSheet('C3_678797448380',v.target.value)}}/>
                       </Col>
                       <Col span={4}>
                       弯刀机工作量
                       </Col>
-                      <Col span={4}>
-                      <input style={{width:'89%'}}/><span style={{width:'10%'}}>%</span>
+                      <Col span={3}>
+                      <input style={{width:'79%'}} value={this.state.sheetData.C3_678797454244} onChange={(v)=>{this.changeSheet('C3_678797454244',v.target.value)}}/><span>%</span>
                       </Col>
                     </Row>
                     <Row>
@@ -919,13 +939,15 @@ class WorkSheetDetail extends React.Component {
                           <span style={{width:'100%',textAlign:'left',display:'inline-block',textIndent:'.5rem'}}>
                         装刀备注：
                         </span>
-                        <TextArea/>
+                        <TextArea
+                        value={this.state.sheetData.C3_682034065524} onChange={(v)=>{this.changeSheet('C3_682034065524',v.target.value)}}
+                        />
                         </div>
                         <div>
                           <span style={{width:'10%'}}>
                           检验人：
                           </span>
-                          <input style={{width:'90%'}}/>
+                          <input style={{width:'90%'}} value={this.state.sheetData.C3_678797488455} onChange={(v)=>{this.changeSheet('C3_678797488455',v.target.value)}}/>
                         </div>
 
                       </Col>
@@ -935,37 +957,38 @@ class WorkSheetDetail extends React.Component {
                         刀材名称
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      {this.state.sheetData.C3_678796959023}
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2} >
-                      <input/>
+                      {this.state.sheetData.C3_678796966324}
                       </Col>
                       <Col span={2}>
                         实用
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_682034416594} onChange={(v)=>{this.changeSheet('C3_682034416594',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         齿刀名称
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      {this.state.sheetData.C3_678797062420}
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      {this.state.sheetData.C3_678797068641}
                       </Col>
                       <Col span={2}>
                         实用
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_682034438872} onChange={(v)=>{this.changeSheet('C3_682034438872',v.target.value)}}/>
+
                       </Col>
                     </Row>
                     <Row>
@@ -973,37 +996,39 @@ class WorkSheetDetail extends React.Component {
                         痕线名称
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      {this.state.sheetData.C3_678796981497}
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      {this.state.sheetData.C3_678796989327}
                       </Col>
                       <Col span={2}>
                         实用
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_682034463638} onChange={(v)=>{this.changeSheet('C3_682034463638',v.target.value)}}/>
+
                       </Col>
                       <Col span={2}>
                         孔类名称
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      {this.state.sheetData.C3_678797082671}
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      {this.state.sheetData.C3_678797088953}
                       </Col>
                       <Col span={2}>
                         实用
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_682034476603} onChange={(v)=>{this.changeSheet('C3_682034476603',v.target.value)}}/>
+
                       </Col>
                     </Row>
                     <Row>
@@ -1011,31 +1036,33 @@ class WorkSheetDetail extends React.Component {
                         销类名称
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      {this.state.sheetData.C3_678797032289}
                       </Col>
                       <Col span={2}>
                         规格
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      {this.state.sheetData.C3_678797041936}
                       </Col>
                       <Col span={2}>
                         实用
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_682034489751} onChange={(v)=>{this.changeSheet('C3_682034489751',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         领料人
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_682034505726} onChange={(v)=>{this.changeSheet('C3_682034505726',v.target.value)}}/>
+
                       </Col>
                       <Col span={2}>
                         发料人
                       </Col>
                       <Col span={2}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_682034516838} onChange={(v)=>{this.changeSheet('C3_682034516838',v.target.value)}}/>
+
                       </Col>
                     </Row>
                     <Row>
@@ -1116,171 +1143,309 @@ class WorkSheetDetail extends React.Component {
                         <br/>_至_
                       </Col>
                     </Row>
-                    <Row>
+                    <Row className='checkLine'>
                       <Col  style={{width:'2rem'}}>
                         制图
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035409773')}}>
+                        {this.state.sheetData.C3_682035409773=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035409773=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035422036')}}>
+                        {this.state.sheetData.C3_682035422036=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035422036=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035432227')}}>
+                        {this.state.sheetData.C3_682035432227=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035432227=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035453457')}}>
+                        {this.state.sheetData.C3_682035453457=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035453457=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035468232')}}>
+                        {this.state.sheetData.C3_682035468232=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035468232=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035481689')}}>
+                        {this.state.sheetData.C3_682035481689=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035481689=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035505668')}}>
+                        {this.state.sheetData.C3_682035505668=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035505668=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035523851')}}>
+                        {this.state.sheetData.C3_682035523851=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035523851=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035536745')}}>
+                        {this.state.sheetData.C3_682035536745=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035536745=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035545851')}}>
+                        {this.state.sheetData.C3_682035545851=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035545851=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035556211')}}>
+                        {this.state.sheetData.C3_682035556211=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035556211=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035564241')}}>
+                        {this.state.sheetData.C3_682035564241=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035564241=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035579077')}}>
+                        {this.state.sheetData.C3_682035579077=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035579077=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035591233')}}>
+                        {this.state.sheetData.C3_682035591233=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035591233=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035607308')}}>
+                        {this.state.sheetData.C3_682035607308=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035607308=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035616412')}}>
+                        {this.state.sheetData.C3_682035616412=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035616412=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035630789')}}>
+                        {this.state.sheetData.C3_682035630789=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035630789=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035641583')}}>
+                        {this.state.sheetData.C3_682035641583=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035641583=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035652553')}}>
+                        {this.state.sheetData.C3_682035652553=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035652553=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035663922')}}>
+                        {this.state.sheetData.C3_682035663922=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035663922=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035672756')}}>
+                        {this.state.sheetData.C3_682035672756=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035672756=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035682083')}}>
+                        {this.state.sheetData.C3_682035682083=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035682083=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035693207')}}>
+                        {this.state.sheetData.C3_682035693207=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035693207=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'calc(100% - 36.5rem)'}}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797494510} onChange={(v)=>{this.changeSheet('C3_678797494510',v.target.value)}}/>
                       </Col>
                     </Row>
-                    <Row>
+                    <Row  className='checkLine'>
                       <Col style={{width:'2rem'}}>
                         品管
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035940283')}}>
+                        {this.state.sheetData.C3_682035940283=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035940283=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035978006')}}>
+                        {this.state.sheetData.C3_682035978006=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035978006=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682035993475')}}>
+                        {this.state.sheetData.C3_682035993475=='Y'?'√':null}
+                        {this.state.sheetData.C3_682035993475=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036005367')}}>
+                        {this.state.sheetData.C3_682036005367=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036005367=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036014460')}}>
+                        {this.state.sheetData.C3_682036014460=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036014460=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036025355')}}>
+                        {this.state.sheetData.C3_682036025355=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036025355=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036032521')}}>
+                        {this.state.sheetData.C3_682036032521=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036032521=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036045272')}}>
+                        {this.state.sheetData.C3_682036045272=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036045272=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036054520')}}>
+                        {this.state.sheetData.C3_682036054520=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036054520=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036063617')}}>
+                        {this.state.sheetData.C3_682036063617=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036063617=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036072508')}}>
+                        {this.state.sheetData.C3_682036072508=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036072508=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036080089')}}>
+                        {this.state.sheetData.C3_682036080089=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036080089=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036095286')}}>
+                        {this.state.sheetData.C3_682036095286=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036095286=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036110172')}}>
+                        {this.state.sheetData.C3_682036110172=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036110172=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036130895')}}>
+                        {this.state.sheetData.C3_682036130895=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036130895=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036139234')}}>
+                        {this.state.sheetData.C3_682036139234=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036139234=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036147319')}}>
+                        {this.state.sheetData.C3_682036147319=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036147319=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036155378')}}>
+                        {this.state.sheetData.C3_682036155378=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036155378=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036164862')}}>
+                        {this.state.sheetData.C3_682036164862=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036164862=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036174495')}}>
+                        {this.state.sheetData.C3_682036174495=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036174495=='N'?'×':null}
+                      </div>
                       </Col><Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036186441')}}>
+                        {this.state.sheetData.C3_682036186441=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036186441=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036195755')}}>
+                        {this.state.sheetData.C3_682036195755=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036195755=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'1.5rem'}}>
-                      <input/>
+                      <div style={{cursor:'pointer'}} onClick={()=>{this.changeCheck('C3_682036206954')}}>
+                        {this.state.sheetData.C3_682036206954=='Y'?'√':null}
+                        {this.state.sheetData.C3_682036206954=='N'?'×':null}
+                      </div>
                       </Col>
                       <Col style={{width:'calc(100% - 36.5rem)'}}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797501456} onChange={(v)=>{this.changeSheet('C3_678797501456',v.target.value)}}/>
                       </Col>
                     </Row>
                     <Row>
                       <Col span={2}>
                         出货方式
                       </Col>
-                      <Col span={1}>
+                      <Col span={1} style={{cursor:'pointer'}} className={this.state.sheetData.C3_682039536836=='送'?'selected':''} onClick={()=>{this.changeSheet('C3_682039536836','送')}}>
                         送
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_682039536836=='自取'?'selected':''} onClick={()=>{this.changeSheet('C3_682039536836','自取')}}>
                         自取
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_682039536836=='托运'?'selected':''} onClick={()=>{this.changeSheet('C3_682039536836','托运')}}>
                         托运
                       </Col>
-                      <Col span={2}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_682039536836=='快递'?'selected':''} onClick={()=>{this.changeSheet('C3_682039536836','快递')}}>
                         快递
                       </Col>
                       <Col span={2}>
                         最终评定
                       </Col>
-                      <Col span={1}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797509260=='OK'?'selected':''} onClick={()=>{this.changeSheet('C3_678797509260','OK')}}>
                         OK
                       </Col>
-                      <Col span={1}>
+                      <Col span={2} style={{cursor:'pointer'}} className={this.state.sheetData.C3_678797509260=='NG'?'selected':''} onClick={()=>{this.changeSheet('C3_678797509260','NG')}}>
                         NG
                       </Col>
                       <Col span={2}>
                         送货人
                       </Col><Col span={3}>
-                      <input/>
+                      <input value={this.state.sheetData.C3_678797515839} onChange={(v)=>{this.changeSheet('C3_678797515839',v.target.value)}}/>
                       </Col>
                       <Col span={2}>
                         检验人
                       </Col>
-                      <Col span={4}>
-                      <input/>
+                      <Col span={2}>
+                      <input value={this.state.sheetData.C3_682039853604} onChange={(v)=>{this.changeSheet('C3_682039853604',v.target.value)}}/>
                       </Col>
                     </Row>
                   </div>
