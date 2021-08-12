@@ -622,6 +622,14 @@ export const VisitorApplyVIP = Loadable({
     return minLoading;
   }
 });
+
+export const VisitorApplyVIPReceptionist = Loadable({
+  loader: () => import('./VisitorApplyVIPReceptionist'),
+  loading() {
+    return minLoading;
+  }
+});
+
 export const DataProcess = Loadable({
   loader: () => import('./DataProcess'),
   loading() {

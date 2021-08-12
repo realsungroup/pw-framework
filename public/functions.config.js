@@ -2206,25 +2206,29 @@ window[631729798279] = {
   title: 'HeadCount'
 };
 
+// window[628885904481] = {
+//   name: 'TableData', // 组件名称，
+//   title: 'VIP前台查阅', // 功能模块名称
+//   props: {
+//     resid: 628946871001,
+//     hasAdd: false,
+//     hasBeBtns: true,
+//     hasModify: false,
+//     hasBackBtn: true,
+//     hasDelete: false,
+//     hasRowModify: true,
+//     actionBarWidth: 170,
+//     hasRowView: true,
+//     hasRowDelete: false,
+//     formProps: {
+//       // height: 500
+//     },
+//     subtractH: 200
+//   }
+// };
 window[628885904481] = {
-  name: 'TableData', // 组件名称，
-  title: 'VIP前台查阅', // 功能模块名称
-  props: {
-    resid: 628946871001,
-    hasAdd: false,
-    hasBeBtns: true,
-    hasModify: false,
-    hasBackBtn: true,
-    hasDelete: false,
-    hasRowModify: true,
-    actionBarWidth: 170,
-    hasRowView: true,
-    hasRowDelete: false,
-    formProps: {
-      // height: 500
-    },
-    subtractH: 200
-  }
+  name: 'VisitorApplyVIPReceptionist',
+  title: 'VIP前台访客查询'
 };
 
 window[628886558788] = {
