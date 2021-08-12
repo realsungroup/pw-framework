@@ -126,8 +126,9 @@ class DeliverPeopleList extends React.Component {
         render: (text, record) => (
           <Select
             style={{ width: '100%' }}
+            value={text}
             onChange={v => {
-              console.log(record.key, this.state.dataSource);
+              console.log(text, record.key, this.state.dataSource);
               let obj = this.state.dataSource;
               let n = 0;
               while (n < obj.length) {
@@ -258,7 +259,7 @@ class DeliverPeopleList extends React.Component {
       var sheetJson = XLSX.utils.sheet_to_json(ctx._sheet1);
       sheetJson.map((item, index) => {
         const newInfo = {};
-        newInfo.key = count + index;
+        newInfo.key = count - 1 + index;
         newInfo.C3_605716828937 = item.访客姓名;
         newInfo.C3_605716867680 = item.登记证件类型;
         newInfo.C3_614704116070 = item.登记证件号码;
@@ -266,8 +267,8 @@ class DeliverPeopleList extends React.Component {
         importData.push(newInfo);
       });
       ctx.setState({
-        count: count + importData.length,
-        dataSource: [...importData, ...dataSource]
+        count: importData.length + count - 1,
+        dataSource: importData
       });
     };
     reader.readAsArrayBuffer(file);

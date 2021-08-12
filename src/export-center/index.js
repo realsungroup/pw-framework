@@ -137,6 +137,9 @@ export { DLPrint } from '../components/custom/loadableCustom';
 export { StatisticalReportForms } from '../components/custom/loadableCustom';
 export { IDPTrack } from '../components/custom/loadableCustom';
 export { VisitorApplyVIP } from '../components/custom/loadableCustom';
+export {
+  VisitorApplyVIPReceptionist
+} from '../components/custom/loadableCustom';
 export { DataProcess } from '../components/custom/loadableCustom';
 export { InterviewInvitation } from '../components/custom/loadableCustom';
 export { RankGrade } from '../components/custom/loadableCustom';
