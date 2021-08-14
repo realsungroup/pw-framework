@@ -36,8 +36,10 @@ class WorkSheetDetail extends React.Component {
     imgUrl:null,
     curModiReason:'',
     curFeedBack:'',
-    sheetData:{C3_678796767356:'',C3_682184234543:''},
-    customers:[]
+    sheetData:{},
+    customers:[],
+    C3_682184234543:'',
+    C3_678796767356:'',
    }
   async componentDidMount() {
     
@@ -71,7 +73,8 @@ class WorkSheetDetail extends React.Component {
         curFeedBack:'',
         loading:false,
         process:'',
-        sheetData:{C3_678796767356:'',C3_682184234543:'', C3_682281119677 :''}
+        sheetData:{C3_682281119677 :''},
+        C3_678796767356:'',C3_682184234543:'', 
       })
     }
 
@@ -79,7 +82,6 @@ class WorkSheetDetail extends React.Component {
    changeSheet=(key,v)=>{
     let obj = this.state.sheetData;
     obj[key]=v; 
-    console.log(key,v)
     this.setState({sheetData:obj});
    }
    changeBol=(key)=>{
@@ -112,13 +114,13 @@ class WorkSheetDetail extends React.Component {
       alert("请选择5M以内的图片！");
       return false;
     }
-    this.setState({ loading: true })
+    this.setState({ loading: true ,process:'正在读取图片'})
     this.uploadFile(files[0], `http://kingofdinner.realsun.me:1201/api/AliyunOss/PutOneImageObject?bucketname=nutritiontower&srctype=${type[1]}`, "cloud").then((result) => {
       this.setState({ loading: false, imgUrl: result })
 
     }, (err) => {
       //图片上传异常！
-      this.setState({ loading: false })
+      this.setState({ loading: false,process:'' })
 
 
     })
@@ -197,28 +199,49 @@ class WorkSheetDetail extends React.Component {
   //新建工单
   handleCreat=async()=>{
     //检查生产线是否选择
-    if(!this.state.productLinesValue){
+    if(!this.state.productLinesValue||this.state.productLinesValue=='请选择工作流'){
       message.error('请选择生产线！')
       return false
     };
+    console.log('line',this.state.productLinesValue)
     //检查图纸
     if(!this.state.imgUrl){
       message.error('请添加图纸！')
       return false
     };
-    //
+    let obj = this.state.sheetData;
+    obj.C3_682267546275=this.state.productLinesValue;
+    obj.sheetStatus='进行中';
+    obj.C3_680644403785='Y';
+    obj.C3_682184234543=this.state.C3_682184234543;
+    obj.curPro=this.state.productLineTree[678789327168][0].productflowjobid;
+    obj.imgUrl=this.state.imgUrl
+    let res;
+    try{
+      res = await http().addRecords({
+        resid: '678790254230',
+        data:[
+          this.state.sheetData
+        ]
+      });
+      message.success('添加成功');
+      this.props.handleRefresh();
+      this.props.backFunc();
+    }catch(e){
+      message.error(e.message)
+      console.log(e.message);
+    }
 
   }
 
   render() {
     return (
       
-
       <div className='sheetDetails'>
         <div className='mask' 
         style={this.state.loading?{display:'block'}:{display:'none'}}
         >
-          <div>
+          <div style={{textAlign:'center'}}>
             {this.state.process}
           </div>
         </div>
@@ -578,7 +601,7 @@ class WorkSheetDetail extends React.Component {
                       >参照</Col>
                       <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946907063=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946907063')}}>菲林</Col>
                       <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946916803=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946916803')}}>色位</Col>
-                      <Col style={{width:'9%'}}
+                      <Col style={{width:'9%',cursor:'pointer'}} className={this.state.sheetData.C3_681946932592=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946932592')}}
                       //  className={this.state.sheetData.C3_681946932592=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946932592')}}
                       >图纸尺寸</Col>
                       <Col style={{width:'8%',cursor:'pointer'}} className={this.state.sheetData.C3_681946943505=='Y'?'selected':''} onClick={()=>{this.changeBol('C3_681946943505')}}>传真</Col>

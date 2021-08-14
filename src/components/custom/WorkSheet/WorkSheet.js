@@ -27,7 +27,8 @@ class WorkSheet extends React.Component {
       cms: ``,
       editRight:{
         part1:false
-      }
+      },
+      clearData:false
   }
   }
   
@@ -37,6 +38,7 @@ class WorkSheet extends React.Component {
     this.getRight();
 
   }
+
   //获取新建订单权限
   getRight=async()=>{
     //获取localstorage的部门代码
@@ -52,12 +54,25 @@ class WorkSheet extends React.Component {
       });
       console.log(res)
       let n =0;
-      let bol = false;
       let obj={}
       while(n<res.data.length){
         if(res.data[n].depaId=='681076033443'){
-          bol=true;
           obj.part1=true;
+        }
+        if(res.data[n].depaId=='681076169400'){
+          obj.part2=true;
+        }
+        if(res.data[n].depaId=='681076179960'){
+          obj.part3=true;
+        }
+        if(res.data[n].depaId=='681076187961'){
+          obj.part4=true;
+        }
+        if(res.data[n].depaId=='681076196461'){
+          obj.part5=true;
+        }
+        if(res.data[n].depaId=='681076208531'){
+          obj.part6=true;
         }
         n++;
       }
@@ -89,6 +104,11 @@ class WorkSheet extends React.Component {
     }
 
   }
+  //刷新表格
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
+  };
+
   //获取部门种类
   getDepa=async()=>{
     let res;
@@ -144,7 +164,7 @@ class WorkSheet extends React.Component {
       value=v
     }
     console.log('value',value,v)
-    this.setState({showDetails:value});
+    this.setState({showDetails:value,clearData:value});
   }
   render() {
     return (
@@ -242,7 +262,7 @@ class WorkSheet extends React.Component {
               <TableData
                 resid="678790254230"
                 wrappedComponentRef={element =>
-                  (this.addModalTableDataRef = element)
+                  (this.tableDataRef = element)
                 }
                 cmswhere={this.state.cms}
                 refTargetComponentName="TableData"
@@ -279,6 +299,8 @@ class WorkSheet extends React.Component {
                 new={true}
                 backFunc={()=>{this.showDetails(false)}}
                 editRight={this.state.editRight}
+                handleRefresh={()=>{this.handleRefresh()}}
+                clearData={this.state.clearData}
              >
               </WorkSheetDetail>   
         </div>
