@@ -4,6 +4,24 @@
     padding:0;
     box-sizing: border-box;
   }
+  .mask{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,.6);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index:999;
+    div{
+      width:120px;
+      height:40px;
+      margin-left:calc(50vw - 60px);
+      margin-top:calc(50vh - 20px);
+      background-color: #fff;
+      border-radius: .5rem;
+    }
+  }
+
   .streamList{
     float: left;
     width:15.625rem;
@@ -163,6 +181,42 @@
     overflow: auto;
     text-align: center;
     padding:1rem;
+    position: relative;
+    .block{
+      // background-color: rgba(0,0,0,0.05);
+      cursor:not-allowed;
+      position:absolute;
+      z-index: 999;
+      width:794px;
+      left:calc(50% - 397px);
+      &.hidden{
+        display: none;
+      }
+      &.part1{
+        height:387px;
+        top:1rem;
+      }
+      &.part2{
+        height:131px;
+        top:calc(1rem + 387px);
+      }
+      &.part3{
+        height:131px;
+        top:calc(1rem + 518px);
+      }
+      &.part4{
+        height:131px;
+        top:calc(1rem + 649px);
+      }
+      &.part5{
+        height:75px;
+        top:calc(1rem + 780px);
+      }
+      &.part6{
+        height:125px;
+        top:calc(1rem + 855px);
+      }
+    }
     #toPrint{
       display: inline-block;
       width: 794px;

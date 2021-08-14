@@ -24,13 +24,48 @@ class WorkSheet extends React.Component {
       filterEDA:'',
       filterEDB:'',
       filterDepa:'',
-      cms: ``
+      cms: ``,
+      editRight:{
+        part1:false
+      }
   }
   }
   
   async componentDidMount() {
    
-    this.getFilters()
+    this.getFilters();
+    this.getRight();
+
+  }
+  //获取新建订单权限
+  getRight=async()=>{
+    //获取localstorage的部门代码
+    let res;
+    let depaID=localStorage.getItem('userInfo');
+    depaID=JSON.parse(depaID);
+    depaID=depaID.UserInfo.EMP_DEPID;
+    //获取pw后台的新建权限
+    try {
+      res = await http().getTable({
+        resid: 681075873039,
+        cmswhere:`C3_682274906470 = '${depaID}'`
+      });
+      console.log(res)
+      let n =0;
+      let bol = false;
+      let obj={}
+      while(n<res.data.length){
+        if(res.data[n].depaId=='681076033443'){
+          bol=true;
+          obj.part1=true;
+        }
+        n++;
+      }
+     this.setState({editRight:obj});
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
   }
   //获取订单状态种类
   getFilters=async()=>{
@@ -224,9 +259,15 @@ class WorkSheet extends React.Component {
                 importConfig={null}
                 actionBarExtra={({ dataSource, selectedRowKeys }) => {
                   return (
-                    <Button onClick={()=>{this.showDetails()}}>
+                    <>
+                    {
+                      this.state.editRight.part1?
+                      <Button onClick={()=>{this.showDetails()}}>
                         新建
                     </Button>
+                      :null
+                    }
+                    </>
                   );
                 }}
               />
@@ -237,6 +278,7 @@ class WorkSheet extends React.Component {
                 hasBack={true}
                 new={true}
                 backFunc={()=>{this.showDetails(false)}}
+                editRight={this.state.editRight}
              >
               </WorkSheetDetail>   
         </div>
