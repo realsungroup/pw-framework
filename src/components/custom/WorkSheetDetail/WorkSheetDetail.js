@@ -509,11 +509,12 @@ class WorkSheetDetail extends React.Component {
                 <li>
                   结束当前流程
                 </li>
-                </>
-              }
-              <li onClick={()=>{this.handlePrint();}}>
+                <li onClick={()=>{this.handlePrint();}}>
                 打印
               </li>
+                </>
+              }
+             
               {
                 this.props.new?null:<>
               <li className='right'>
