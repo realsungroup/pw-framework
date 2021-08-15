@@ -35,7 +35,6 @@ class WorkSheetDetail extends React.Component {
     histories:[],
     imgUrl:null,
     curModiReason:'',
-    curFeedBack:'',
     sheetData:{},
     customers:[],
    }
@@ -66,7 +65,6 @@ class WorkSheetDetail extends React.Component {
         imgUrl:'',
         showImg:false,
         curModiReason:'',
-        curFeedBack:'',
         loading:false,
         process:'',
         sheetData:{C3_682281119677 :''},
@@ -95,6 +93,7 @@ class WorkSheetDetail extends React.Component {
       let his=[]
       let lineID=''
       let curID=''
+      let sheetID=''
       while(n<res.data.length){
         let str='';
         if(res.data[n].C3_680644403785=='Y'){
@@ -108,11 +107,12 @@ class WorkSheetDetail extends React.Component {
         );
         lineID=res.data[n].C3_682267546275;
         curID=res.data[n].curChara;
+        sheetID=res.data[n].C3_682281119677;
         let sheetData1=res.data[n];
         sheetData1.C3_678796788873=moment(sheetData1.C3_678796788873);
         sheetData1.C3_678796797075=moment(sheetData1.C3_678796797075);
           
-        this.setState({imgUrl:res.data[n].imgUrl,curModiReason:res.data[n].C3_680644227339,curFeedBack:res.data[n].C3_682368706409,sheetData:sheetData1,C3_678796767356:res.data[n].C3_678796767356});
+        this.setState({imgUrl:res.data[n].imgUrl,curModiReason:res.data[n].C3_680644227339,sheetData:sheetData1,C3_678796767356:res.data[n].C3_678796767356});
         n++;
       }
       if(version){
@@ -120,7 +120,7 @@ class WorkSheetDetail extends React.Component {
       }else{
       this.setState({loading:false,process:'',histories:his});
       }
-      this.getTargetLine(lineID,curID);
+      this.getTargetLine(lineID,curID,sheetID);
     
     }catch(e){
       console.log(e.message);
@@ -240,10 +240,11 @@ class WorkSheetDetail extends React.Component {
   }
 
   //获取指定产品线并整理
-  //参数是产品线ID,当前角色ID
-  getTargetLine = async(v,curID)=>{
+  //参数是产品线ID,当前角色ID,订单编号
+  getTargetLine = async(v,curID,sheetID)=>{
     this.setState({process:'获取产品线中...',loading:true});
     let res;
+    let res2;
     try{
       res = await http().getRecordAndSubTables({
         resid: '678789264059',
@@ -251,21 +252,44 @@ class WorkSheetDetail extends React.Component {
         cmswhere:`productflowid = '${v}'`,
         getsubresource: 1
       });
+       //取同一RECID的流程实例表
+      res2= await http().getTable({
+        resid:'682377608634',
+        cmswhere:`C3_682377626479 = '${sheetID}'`
+      })
       if(res.data.length>0){
         let obj=res.data[0];
       let n =0
+      let willDo=false;
       while(n<obj[678789327168].length){
         let nn=0;
+        if(willDo==true){
+          obj[678789327168][n].willDo=true;
+        }
         while(nn<obj[678789327168][n][678789448828].length){
+          
+          let nnn=0;
+          while(nnn<res2.data.length){
+            if(res2.data[nnn].C3_682377751651==obj[678789327168][n][678789448828][nn].productflowjobroleid){
+              let str=res2.data[nnn].C3_682379434328;
+              if(res2.data[nnn].C3_682379442485){
+                str += ' 至 '+res2.data[nnn].C3_682379442485;
+              }
+              obj[678789327168][n][678789448828][nn].date=str;
+              obj[678789327168][n][678789448828][nn].name=res2.data[nnn].C3_682377658692;
+            }
+            nnn++;
+          }
+
           if(obj[678789327168][n][678789448828][nn].productflowjobroleid==curID){
             obj[678789327168][n][678789448828][nn].current=true;
             obj[678789327168][n].current=true;
+            willDo=true;
           }
           nn++
         }
         n++;
       }
-      console.log('line',obj,curID)
       this.setState({
         productLineTree:obj,
         loading:false
@@ -281,7 +305,9 @@ class WorkSheetDetail extends React.Component {
       message.error(e.message);
     }
   }
-  //计算下一步骤
+  //计算下一步骤,点击开始的场合需要清空当前开始和结束时间
+
+ 
 
   //修改产品线
   changeProductLine=(v)=>{
@@ -353,10 +379,6 @@ class WorkSheetDetail extends React.Component {
           <div style={{width:'100%',height:'80vh'}}>
           <TableData
                 resid="680643338700"
-                wrappedComponentRef={element =>
-                  (this.addModalTableDataRef = element)
-                }
-                refTargetComponentName="TableData"
                 subtractH={180}
                 hasAdd={true}
                 hasRowView={false}
@@ -394,6 +416,32 @@ class WorkSheetDetail extends React.Component {
         </Modal>
 
         <Modal
+        visible={this.state.showRelCon}
+        footer={null}
+        onCancel={()=>{this.setState({showRelCon:false})}}
+        destroyOnClose
+        width={'80vw'}
+        >
+          <div style={{width:'100%',height:'80vh'}}>
+          <TableData
+                resid="680642915078"
+                cmswhere={`C3_682375876703 = '${this.state.sheetData.C3_682369620435}'`}
+                subtractH={180}
+                hasAdd={false}
+                hasRowView={true}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                hasAdvSearch={false}
+                importConfig={null}
+              />
+          </div>
+        </Modal>
+
+        <Modal
         visible={this.state.showGoods}
         footer={null}
         onCancel={()=>{this.setState({showGoods:false})}}
@@ -403,10 +451,6 @@ class WorkSheetDetail extends React.Component {
           <div style={{width:'100%',height:'80vh'}}>
           <TableData
                 resid="678789197967"
-                wrappedComponentRef={element =>
-                  (this.addModalTableDataRef = element)
-                }
-                refTargetComponentName="TableData"
                 subtractH={180}
                 hasAdd={true}
                 hasRowView={false}
@@ -491,7 +535,7 @@ class WorkSheetDetail extends React.Component {
             {
               this.state.productLineTree[678789327168].map((item)=>{return(
                 
-                <li className={item.current?'current':''} style={item.display=='N'?{display:'none'}:{}}>
+                <li className={item.current?'current':(item.willDo?'willDo':'')} style={item.display=='N'?{display:'none'}:{}}>
                 <div>
                   <div>{item.jobid}</div>
                   <b>{item.depname}</b>
@@ -513,78 +557,6 @@ class WorkSheetDetail extends React.Component {
                 
               )})
             }
-              {/* <li>
-                <div>
-                  <div>1</div>
-                  <b>业务部</b>
-                </div>
-                <ul>
-                  <li>
-                    <b>1.1</b>
-                    <div>
-                      <span>2021-07-23 12:00:01</span>
-                      <span>张三</span>
-                      <span>业务员</span>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <li className="current">
-                <div>
-                  <div>2</div>
-                  <b>部门A</b>
-                </div>
-                <ul>
-                  <li className="current">
-                    <b>2.1</b>
-                    <div>
-
-                    <span>进行中</span>
-                    <span>张三</span>
-                    <span>业务员</span>
-                    </div>
-
-                  </li>
-                  <li>
-                    <b>2.2</b>
-                    <div>
-
-                    <span>进行中</span>
-                    <span>张三</span>
-                    <span>业务员</span>
-                    </div>
-
-                  </li>
-                </ul>
-              </li>
-              <li className="willDo">
-                <div>
-                  <div>3</div>
-                  <b>部门B</b>
-                </div>
-                <ul>
-                  <li>
-                    <b>3.1</b>
-                    <div>
-
-                    <span>未开始</span>
-                    <span>张三</span>
-                    <span>业务员</span>
-                    </div>
-
-                  </li>
-                  <li>
-                    <b>3.2</b>
-                    <div>
-
-                    <span>未开始</span>
-                    <span>张三</span>
-                    <span>业务员</span>
-                    </div>
-
-                  </li>
-                </ul>
-              </li> */}
             </ul>
         </div>
         <div className='sheet'>
@@ -610,16 +582,8 @@ class WorkSheetDetail extends React.Component {
                   {item.value}
                 </li>))
               }
-              {/* <li className='current'>
-              2021-07-24 12:00
-              </li>
-              <li>
-              2021-07-24 12:00
-              </li> */}
             </ul>
-            
           </div>
-          
         <div className='rightContent'>
             <div className='pics'>
               <div className='toChange'>
@@ -650,9 +614,9 @@ class WorkSheetDetail extends React.Component {
               <b>
                 用户反馈：
               </b>
-              <span>产看关联反馈</span>
+              <span onClick={()=>{this.setState({showRelCon:true})}}>产看关联反馈</span>
               <p>
-              {this.state.curFeedBack}
+              {this.state.sheetData.C3_682368706409}
               </p>
             </div>
             
