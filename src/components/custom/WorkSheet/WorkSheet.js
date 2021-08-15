@@ -28,7 +28,9 @@ class WorkSheet extends React.Component {
       editRight:{
         part1:false
       },
-      clearData:false
+      clearData:false,
+      curSheetId:'',
+      isNew:true
   }
   }
   
@@ -158,13 +160,18 @@ class WorkSheet extends React.Component {
     })
   }
   //显示详情页
-  showDetails=(v)=>{
+  showDetails=(v,id)=>{
+    console.log('id',id)
     let value = true;
+    let ID='';
+    let isNew=true;
     if(v!=null){
-      value=v
+      value=v;
+      ID=id;
+      isNew=false;
     }
     console.log('value',value,v)
-    this.setState({showDetails:value,clearData:value});
+    this.setState({showDetails:value,clearData:value,curSheetId:ID,isNew:isNew});
   }
   render() {
     return (
@@ -282,7 +289,7 @@ class WorkSheet extends React.Component {
                     <>
                     {
                       this.state.editRight.part1?
-                      <Button onClick={()=>{this.showDetails()}}>
+                      <Button onClick={()=>{this.showDetails();}}>
                         新建
                     </Button>
                       :null
@@ -290,17 +297,29 @@ class WorkSheet extends React.Component {
                     </>
                   );
                 }}
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        onClick={()=>{this.showDetails(true,record.C3_682281119677)}}
+                      >
+                        查看
+                      </Button>
+                    );
+                  }
+                ]}
               />
         </div>
         <div className='detailContent' style={this.state.showDetails?{display:'block'}:{display:'none'}}>
              
              <WorkSheetDetail
                 hasBack={true}
-                new={true}
+                new={this.state.isNew}
                 backFunc={()=>{this.showDetails(false)}}
                 editRight={this.state.editRight}
                 handleRefresh={()=>{this.handleRefresh()}}
                 clearData={this.state.clearData}
+                curSheetId={this.state.curSheetId}
              >
               </WorkSheetDetail>   
         </div>

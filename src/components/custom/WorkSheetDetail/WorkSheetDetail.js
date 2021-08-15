@@ -38,21 +38,17 @@ class WorkSheetDetail extends React.Component {
     curFeedBack:'',
     sheetData:{},
     customers:[],
-    C3_682184234543:'',
-    C3_678796767356:'',
    }
   async componentDidMount() {
     
     
   }
 
-  componentWillReceiveProps = (nextProps) => {
+  componentWillReceiveProps = async(nextProps) => {
     //初始化
-    if(this.props.new){
+    if(nextProps.new){
       this.setState({loading:true});
       this.getProductLines();
-      let str = new Date();
-      str = moment(str).format('YYYY-MM-DD HH:MM:SS');
       this.setState({
         productLines:[],
         productLinesValue:'请选择工作流',
@@ -66,7 +62,7 @@ class WorkSheetDetail extends React.Component {
               }
             ]
           },
-        histories:[{status:'current',value:str}],
+        histories:[{status:'current',value:'新的工作单'}],
         imgUrl:'',
         showImg:false,
         curModiReason:'',
@@ -74,16 +70,62 @@ class WorkSheetDetail extends React.Component {
         loading:false,
         process:'',
         sheetData:{C3_682281119677 :''},
-        C3_678796767356:'',C3_682184234543:'', 
       })
-    }
+    }else{
+      await this.getHistories(nextProps.curSheetId);
 
    }
+  }
+   //获取历史数据
+   getHistories=async(v)=>{
+     this.setState({loading:true,process:'正在读取历史数据'});
+     let res;
+     try{
+      res = await http().getTable({
+        resid: '678790254230',
+        cmswhere:`C3_682281119677 = '${v}'`
+      });
+      console.log('his',res)
+      let n = 0;
+      let his=[]
+      let lineID=''
+      let curID=''
+      while(n<res.data.length){
+        let str='';
+        if(res.data[n].C3_680644403785=='Y'){
+          str='current'
+        }
+        his.push(
+          {
+            status:str,
+            value:res.data[n].C3_680644411481
+          }
+        );
+        lineID=res.data[n].C3_682267546275;
+        curID=res.data[n].curChara;
+        let sheetData1=res.data[n];
+        sheetData1.C3_678796788873=moment(sheetData1.C3_678796788873);
+        sheetData1.C3_678796797075=moment(sheetData1.C3_678796797075);
+          
+        this.setState({imgUrl:res.data[n].imgUrl,curModiReason:res.data[n].C3_680644227339,curFeedBack:res.data[n].C3_682368706409,sheetData:sheetData1,C3_678796767356:res.data[n].C3_678796767356});
+        n++;
+      }
+      this.setState({loading:false,process:'',histories:his});
+      this.getTargetLine(lineID,curID);
+    
+    }catch(e){
+      console.log(e.message);
+      message.error(e.message);
+      this.setState({loading:false,process:''});
+    }
+   }
+   //填写input
    changeSheet=(key,v)=>{
     let obj = this.state.sheetData;
     obj[key]=v; 
     this.setState({sheetData:obj});
    }
+   //多选
    changeBol=(key)=>{
      let obj = this.state.sheetData;
     if(obj[key]=='Y'){
@@ -93,6 +135,7 @@ class WorkSheetDetail extends React.Component {
     }
     this.setState({sheetData:obj});
    }
+   //单选
    changeCheck=(key)=>{
     let obj = this.state.sheetData;
     if(obj[key]=='Y'){
@@ -104,6 +147,7 @@ class WorkSheetDetail extends React.Component {
     }
     this.setState({sheetData:obj});
    }
+   //上传图片
    imgUp(e) {
     this.setState({ imgfile: e });
     let files = e.target.files || e.dataTransfer.files;
@@ -165,7 +209,7 @@ class WorkSheetDetail extends React.Component {
 
   //获取产品线
   getProductLines = async()=>{
-    this.setState({process:'获取产品线中...'});
+    this.setState({process:'获取产品线中...',loading:true});
     let res;
     try{
       res = await http().getRecordAndSubTables({
@@ -173,16 +217,61 @@ class WorkSheetDetail extends React.Component {
         subresid: '678789327168,678789448828',
         getsubresource: 1
       });
+      
       this.setState({
-        productLines:res.data
+        productLines:res.data,
+
+        loading:false
       })
     }catch(e){
+      this.setState({loading:false});
       console.log(e.message);
       message.error(e.message);
     }
   }
 
-
+  //获取指定产品线并整理
+  getTargetLine = async(v,curID)=>{
+    this.setState({process:'获取产品线中...',loading:true});
+    let res;
+    try{
+      res = await http().getRecordAndSubTables({
+        resid: '678789264059',
+        subresid: '678789327168,678789448828',
+        cmswhere:`productflowid = '${v}'`,
+        getsubresource: 1
+      });
+      if(res.data.length>0){
+        let obj=res.data[0];
+      let n =0
+      while(n<obj[678789327168].length){
+        let nn=0;
+        while(nn<obj[678789327168][n][678789448828].length){
+          if(obj[678789327168][n][678789448828][nn].productflowjobroleid==curID){
+            obj[678789327168][n][678789448828][nn].current=true;
+            obj[678789327168][n].current=true;
+          }
+          nn++
+        }
+        n++;
+      }
+      console.log('line',obj,curID)
+      this.setState({
+        productLineTree:obj,
+        loading:false
+      })
+      }else{
+        this.setState({
+          loading:false
+        })
+      }
+      
+    }catch(e){
+      console.log(e.message);
+      message.error(e.message);
+    }
+  }
+  //计算下一步骤
 
   //修改产品线
   changeProductLine=(v)=>{
@@ -213,7 +302,6 @@ class WorkSheetDetail extends React.Component {
     obj.C3_682267546275=this.state.productLinesValue;
     obj.sheetStatus='进行中';
     obj.C3_680644403785='Y';
-    obj.C3_682184234543=this.state.C3_682184234543;
     obj.curPro=this.state.productLineTree[678789327168][0].productflowjobid;
     obj.imgUrl=this.state.imgUrl
     let res;
@@ -239,11 +327,11 @@ class WorkSheetDetail extends React.Component {
       
       <div className='sheetDetails'>
         <div className='mask' 
-        style={this.state.loading?{display:'block'}:{display:'none'}}
+        style={this.state.loading?{display:'flex'}:{display:'none'}}
         >
-          <div style={{textAlign:'center'}}>
+          <span>
             {this.state.process}
-          </div>
+          </span>
         </div>
         <Modal
         visible={this.state.showCustomers}
@@ -260,7 +348,7 @@ class WorkSheetDetail extends React.Component {
                 }
                 refTargetComponentName="TableData"
                 subtractH={180}
-                hasAdd={false}
+                hasAdd={true}
                 hasRowView={false}
                 hasRowDelete={false}
                 hasRowEdit={false}
@@ -276,10 +364,13 @@ class WorkSheetDetail extends React.Component {
                       <Button
                         type="primary"
                         onClick={() => {
+                           let obj = this.state.sheetData;
+                          this.state.sheetData.C3_682184234543=record.idCustomer;
+                          this.state.sheetData.C3_678796767356=record.nameCustomer;
                           this.setState({
+                            
                             showCustomers:false,
-                            C3_682184234543:record.idCustomer,
-                            C3_678796767356:record.nameCustomer,
+                            sheetData:obj
                           })
                         }}
                       >
@@ -291,6 +382,57 @@ class WorkSheetDetail extends React.Component {
               />
           </div>
         </Modal>
+
+        <Modal
+        visible={this.state.showGoods}
+        footer={null}
+        onCancel={()=>{this.setState({showGoods:false})}}
+        destroyOnClose
+        width={'80vw'}
+        >
+          <div style={{width:'100%',height:'80vh'}}>
+          <TableData
+                resid="678789197967"
+                wrappedComponentRef={element =>
+                  (this.addModalTableDataRef = element)
+                }
+                refTargetComponentName="TableData"
+                subtractH={180}
+                hasAdd={true}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                hasAdvSearch={false}
+                importConfig={null}
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          let obj = this.state.sheetData;
+                          this.state.sheetData.C3_682369620435=record.productid;
+                          this.state.sheetData.C3_678796779827=record.C3_679066211152;
+
+                          this.setState({
+                            showGoods:false,
+                            sheetData:obj
+                          })
+                        }}
+                      >
+                        选择
+                      </Button>
+                    );
+                  }
+                ]}
+              />
+          </div>
+        </Modal>
+
         <Modal
         visible={this.state.showImg}
         footer={null}
@@ -581,11 +723,16 @@ class WorkSheetDetail extends React.Component {
                       <Col span={3}>客户名称</Col>
                       <Col span={7} style={{height:'24px'}}>
                         <div onClick={()=>{this.setState({showCustomers:true})}} style={{height:'24px',cursor:'pointer'}}>
-                          {this.state.C3_678796767356}
+                          {this.state.sheetData.C3_678796767356}
                         </div>
                        </Col>
                       <Col span={3}>产品名称</Col>
-                      <Col span={7}><input value={this.state.sheetData.C3_678796779827} onChange={(v)=>{this.changeSheet('C3_678796779827',v.target.value)}}/></Col>
+                      <Col span={7}>
+                      <div onClick={()=>{this.setState({showGoods:true})}} style={{height:'24px',cursor:'pointer'}}>
+                          {this.state.sheetData.C3_678796779827}
+                        </div>
+                       
+                      </Col>
                       <Col span={2}>数量</Col>
                       <Col span={2}><input value={this.state.sheetData.C3_681946447748} onChange={(v)=>{this.changeSheet('C3_681946447748',v.target.value)}}/></Col>
                     </Row>
