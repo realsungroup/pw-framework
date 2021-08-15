@@ -77,13 +77,18 @@ class WorkSheetDetail extends React.Component {
    }
   }
    //获取历史数据
-   getHistories=async(v)=>{
+   //产品线ID,版本号
+   getHistories=async(v,version)=>{
      this.setState({loading:true,process:'正在读取历史数据'});
+     let cms=`C3_682281119677 = '${v}'`;
+     if(version){
+      cms+=` and C3_680644411481 ='${version}'`;
+     }
      let res;
      try{
       res = await http().getTable({
         resid: '678790254230',
-        cmswhere:`C3_682281119677 = '${v}'`
+        cmswhere:cms
       });
       console.log('his',res)
       let n = 0;
@@ -110,7 +115,11 @@ class WorkSheetDetail extends React.Component {
         this.setState({imgUrl:res.data[n].imgUrl,curModiReason:res.data[n].C3_680644227339,curFeedBack:res.data[n].C3_682368706409,sheetData:sheetData1,C3_678796767356:res.data[n].C3_678796767356});
         n++;
       }
+      if(version){
+        this.setState({loading:false,process:''});
+      }else{
       this.setState({loading:false,process:'',histories:his});
+      }
       this.getTargetLine(lineID,curID);
     
     }catch(e){
@@ -231,6 +240,7 @@ class WorkSheetDetail extends React.Component {
   }
 
   //获取指定产品线并整理
+  //参数是产品线ID,当前角色ID
   getTargetLine = async(v,curID)=>{
     this.setState({process:'获取产品线中...',loading:true});
     let res;
@@ -582,7 +592,23 @@ class WorkSheetDetail extends React.Component {
           <div className='historySelections'>
             <ul style={{minWidth:'100%',width:(2*10)+'rem'}}>
               {
-                this.state.histories.map(item=>(<li className={item.status=='current'?'current':''}>{item.value}</li>))
+                this.state.histories.map((item,key)=>(
+                <li className={item.status=='current'?'current':''}
+                  onClick={()=>{
+                    let arr = this.state.histories;
+                    let n=0;
+                    while(n<arr.length){
+                      arr[n].status='';
+                      if(n==key){
+                      arr[n].status='current';
+                      }
+                      n++;
+                    }
+                    this.getHistories(this.props.curSheetId,item.value);
+                  }}
+                >
+                  {item.value}
+                </li>))
               }
               {/* <li className='current'>
               2021-07-24 12:00
