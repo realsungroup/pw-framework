@@ -191,5 +191,6 @@ export {
   HRLeaveApp,
   MonthlySettlementLock,
   OfficeSupply,
-  WorkSheet
+  WorkSheet,
+  WorkSheetShowBoard
 } from '../components/custom/loadableCustom';

@@ -6,6 +6,7 @@ import moment from 'moment';
 import debounce from 'lodash/debounce';
 
 import http from 'Util20/api';
+import { userInfo } from 'os';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -39,8 +40,7 @@ class WorkSheetDetail extends React.Component {
     customers:[],
    }
   async componentDidMount() {
-    
-    
+    this.getUserinfo();
   }
 
   componentWillReceiveProps = async(nextProps) => {
@@ -88,7 +88,6 @@ class WorkSheetDetail extends React.Component {
         resid: '678790254230',
         cmswhere:cms
       });
-      console.log('his',res)
       let n = 0;
       let his=[]
       let lineID=''
@@ -109,8 +108,12 @@ class WorkSheetDetail extends React.Component {
         curID=res.data[n].curChara;
         sheetID=res.data[n].C3_682281119677;
         let sheetData1=res.data[n];
-        sheetData1.C3_678796788873=moment(sheetData1.C3_678796788873);
-        sheetData1.C3_678796797075=moment(sheetData1.C3_678796797075);
+        if(sheetData1.C3_678796788873){
+          sheetData1.C3_678796788873=moment(sheetData1.C3_678796788873);
+        }
+        if(sheetData1.C3_678796797075){
+          sheetData1.C3_678796797075=moment(sheetData1.C3_678796797075);
+        }
           
         this.setState({imgUrl:res.data[n].imgUrl,curModiReason:res.data[n].C3_680644227339,sheetData:sheetData1,C3_678796767356:res.data[n].C3_678796767356});
         n++;
@@ -216,6 +219,14 @@ class WorkSheetDetail extends React.Component {
     window.location.reload();
   };
 
+  //获取登陆人信息
+  getUserinfo=()=>{
+    let userInfo=localStorage.getItem('userInfo');
+    userInfo=JSON.parse(userInfo);
+    userInfo=userInfo.UserInfo;
+    this.setState({userInfo:userInfo});
+  }
+
   //获取产品线
   getProductLines = async()=>{
     this.setState({process:'获取产品线中...',loading:true});
@@ -229,8 +240,10 @@ class WorkSheetDetail extends React.Component {
       
       this.setState({
         productLines:res.data,
-
-        loading:false
+        process:'',
+        loading:false,
+        productLineTree:res.data[0],
+        productLinesValue:res.data[0].productflowid
       })
     }catch(e){
       this.setState({loading:false});
@@ -271,7 +284,12 @@ class WorkSheetDetail extends React.Component {
           let nnn=0;
           while(nnn<res2.data.length){
             if(res2.data[nnn].C3_682377751651==obj[678789327168][n][678789448828][nn].productflowjobroleid){
-              let str=res2.data[nnn].C3_682379434328;
+              let str=''
+              if(res2.data[nnn].C3_682379434328){
+                str = res2.data[nnn].C3_682379434328;
+              }else{
+                str ='--'
+              }
               if(res2.data[nnn].C3_682379442485){
                 str += ' 至 '+res2.data[nnn].C3_682379442485;
               }
@@ -306,7 +324,42 @@ class WorkSheetDetail extends React.Component {
     }
   }
   //计算下一步骤,点击开始的场合需要清空当前开始和结束时间
-
+  calNext=(v)=>{
+    let org =this.state.productLineTree;
+    let n =0;
+    let arr=[];
+    let target={}
+    while(n<org[678789327168].length){
+      let nn=0;
+      while(nn<org[678789327168][n][678789448828].length){
+        arr.push(org[678789327168][n][678789448828][nn])
+        nn++;
+      }
+      n++;
+    }
+    n=0;
+  
+    while(n<arr.length){
+      if(v==arr[n].productflowjobroleid){
+        if(n==arr.length-1){
+          target={
+            productflowjobroleid:'',
+            rolename:'',
+            end:true
+          }
+        }else{
+          target={
+            productflowjobroleid:arr[n+1].productflowjobroleid,
+            rolename:arr[n+1].productflowjobroleid,
+            end:false
+          }
+        }
+      }
+      n++;
+    }
+    console.log('tar',org,arr,target)
+    return target
+  }
  
 
   //修改产品线
@@ -330,16 +383,62 @@ class WorkSheetDetail extends React.Component {
     };
     console.log('line',this.state.productLinesValue)
     //检查图纸
-    if(!this.state.imgUrl){
-      message.error('请添加图纸！')
-      return false
-    };
+    // if(!this.state.imgUrl){
+    //   message.error('请添加图纸！')
+    //   return false
+    // };
+    this.setState({loading:true,process:'保存中'})
+    let jobid=this.state.userInfo.EMP_STRING1//工号
+    let userName=this.state.userInfo.EMP_NAME//姓名
+    let userCode=this.state.userInfo.EMP_USERCODE//姓名
     let obj = this.state.sheetData;
     obj.C3_682267546275=this.state.productLinesValue;
     obj.sheetStatus='进行中';
+    obj.C3_682377833865='已结束';
     obj.C3_680644403785='Y';
     obj.curPro=this.state.productLineTree[678789327168][0].productflowjobid;
-    obj.imgUrl=this.state.imgUrl
+    obj.imgUrl=this.state.imgUrl;
+    obj.curChara=this.state.productLineTree[678789327168][0][678789448828][0].productflowjobroleid;
+    let nxt = this.calNext(this.state.productLineTree[678789327168][0][678789448828][0].productflowjobroleid);
+    obj.C3_682444277336=nxt.productflowjobroleid;
+    obj.C3_682371274376=userName;
+    obj.C3_682371322856=userCode;
+    obj.C3_682377803370=jobid;
+
+    let res;
+    console.log('toAdd',obj)
+    try{
+      res = await http().addRecords({
+        resid: '678790254230',
+        data:[
+          this.state.sheetData
+        ]
+      });
+      this.setState({loading:false,process:''})
+
+      message.success('添加成功');
+      this.props.handleRefresh();
+      this.props.backFunc();
+    }catch(e){
+      this.setState({loading:false,process:''})
+
+      message.error(e.message)
+      console.log(e.message);
+    }
+
+  }
+  //复制新建
+  copyAdd=async()=>{
+    //检查生产线是否选择
+    let obj = this.state.sheetData;
+    obj.C3_682267546275=this.state.productLinesValue;
+    obj.sheetStatus='进行中';
+    obj.C3_682377833865='已结束';
+    obj.C3_680644403785='Y';
+    obj.curPro=this.state.productLineTree[678789327168][0].productflowjobid;
+    obj.imgUrl=this.state.imgUrl;
+    let nxt = this.calNext(this.state.productLineTree[678789327168][0].productflowjobid);
+    obj.C3_682444277336=nxt.productflowjobroleid;
     let res;
     try{
       res = await http().addRecords({
@@ -357,7 +456,6 @@ class WorkSheetDetail extends React.Component {
     }
 
   }
-
   render() {
     return (
       
@@ -510,7 +608,7 @@ class WorkSheetDetail extends React.Component {
             }
            
             <ul style={this.props.hasBack?{margin:'3.3rem .5rem .8rem'}:{margin:'.8rem .5rem'}}>
-            {
+            {/* {
               this.props.new?
               <div className='PLSelection'>
                 <Select
@@ -531,7 +629,7 @@ class WorkSheetDetail extends React.Component {
                 </Select>
               </div>
               :null
-            }
+            } */}
             {
               this.state.productLineTree[678789327168].map((item)=>{return(
                 
@@ -589,7 +687,7 @@ class WorkSheetDetail extends React.Component {
               <div className='toChange'>
                 {
                   this.state.imgUrl?
-                 <img src={this.state.imgUrl} onClick={()=>{this.setState({showImg:true})}}/>:'点击下方“选择文件”添加图纸'
+                 <img style={{maxWidth:'100%'}} src={this.state.imgUrl} onClick={()=>{this.setState({showImg:true})}}/>:'点击下方“选择文件”添加图纸'
                 }
               </div>
               <div className='picsMenu'>
@@ -626,35 +724,40 @@ class WorkSheetDetail extends React.Component {
 
           <div className='menu'>
             <ul>
-              <li onClick={()=>{this.handleCreat();}}>
-                保存
-              </li>
               {
-                this.props.new?null:
+                this.props.editRight.part1?  <li onClick={()=>{
+                
+                  this.handleCreat();
+                
+                }}>
+                保存
+              </li>:null
+              }
+            
+              {
+                !this.props.new&&this.props.editRight.part1?
                 <>
-                <li>
+                <li onClick={
+                  ()=>{
+                    this.copyAdd();
+                  }
+                }>
                 复制新建
-                </li>
-                <li>
-                开始当前流程
-                </li>
-                <li>
-                  结束当前流程
                 </li>
                 <li onClick={()=>{this.handlePrint();}}>
                 打印
               </li>
-                </>
+                </>:null
               }
              
               {
-                this.props.new?null:<>
+                !this.props.new&&this.props.editRight.part1?<>
               <li className='right'>
                 取消订单
               </li>
               <li className='right'>
                 报废订单
-              </li></>}
+              </li></>:null}
             </ul>
           </div>
           <div className='workSheetForm'>

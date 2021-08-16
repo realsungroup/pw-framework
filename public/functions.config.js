@@ -10390,3 +10390,11 @@ window[681041450360] = {
     // resid: 777
   } // 组件所接收的 props
 };
+window[682466579171] = {
+  name: 'WorkSheetShowBoard', // 组件名称，这里为定制组件名称
+  title: '进行中的工作单', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    // resid: 777
+  } // 组件所接收的 props
+};

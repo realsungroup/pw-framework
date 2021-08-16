@@ -968,3 +968,9 @@ export const WorkSheet = Loadable({
     return minLoading;
   }
 });
+export const WorkSheetShowBoard = Loadable({
+  loader: () => import('./WorkSheetShowBoard'),
+  loading() {
+    return minLoading;
+  }
+});
