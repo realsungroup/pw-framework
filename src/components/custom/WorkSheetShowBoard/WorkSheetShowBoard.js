@@ -1,289 +1,321 @@
 import React from 'react';
 import './WorkSheetShowBoard.less';
-import { Select, Button,message,DatePicker,Row,Col } from 'antd';
+import echarts from 'echarts';
+import moment from 'moment';
+import { Select, Button, message, DatePicker, Modal, Spin } from 'antd';
 import { TableData } from '../../common/loadableCommon';
 import http from 'Util20/api';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 class WorkSheetShowBoard extends React.Component {
-  constructor(props){
-    super(props)
-   this.state={
-     filter:'全部',
-      depa:[
-        {
-          depaId:'',
-          depaName:''
-        }
-      ],//部门
-      sheetStatus:[],//审批单状态
-      filerStatus:'',
-      filterSTA:'',
-      filterSTB:'',
-      filterEDA:'',
-      filterEDB:'',
-      filterDepa:'',
-      cms: ``,
-      editRight:{
-        part1:false
-      },
-      clearData:false,
-      curSheetId:'',
-      isNew:true
+  constructor(props) {
+    super(props);
+    this.state = {
+      filter: '全部',
+      sheets: [{}]
+    };
   }
-  }
-  
-  async componentDidMount() {
-   
-    // this.getFilters();
-    // this.getRight();
 
+  async componentDidMount() {
+    // this.getFilters();
+    this.getRight();
+    this.getSheets();
   }
+
+  //实例化echarts
+  instantiation = chartObj => {
+    let myDate = new Date();
+    myDate = moment(myDate).format('YYYY-MM-DD');
+    let chartDom = document.getElementById('showBoard');
+    let myChart = echarts.init(chartDom);
+    let option;
+    let total = 0;
+    if (chartObj.total) {
+      total = chartObj.total;
+    }
+    option = {
+      title: {
+        text: myDate + ' ' + total + '件',
+        textStyle: {
+          height: '32px'
+        }
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        top: '32px',
+        left: 'left'
+      },
+      series: [
+        {
+          name: '工作单',
+          top: '50%',
+          type: 'pie',
+          center: ['50%', '60%'],
+          radius: ['30%', '50%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2
+          },
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: '14',
+              fontWeight: 'bold',
+              color: '#333333'
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: chartObj.data,
+          color: ['#52c41a', '#13c2c2', '#faad14', '#8c8c8c', '#f5222d']
+        }
+      ]
+    };
+
+    option && myChart.setOption(option);
+  };
 
   //获取新建订单权限
-  getRight=async()=>{
+  getRight = async () => {
     //获取localstorage的部门代码
     let res;
-    let depaID=localStorage.getItem('userInfo');
-    depaID=JSON.parse(depaID);
-    depaID=depaID.UserInfo.EMP_DEPID;
+    let depaID = localStorage.getItem('userInfo');
+    depaID = JSON.parse(depaID);
+    depaID = depaID.UserInfo.EMP_DEPID;
     //获取pw后台的新建权限
     try {
       res = await http().getTable({
         resid: 681075873039,
-        cmswhere:`C3_682274906470 = '${depaID}'`
+        cmswhere: `C3_682274906470 = '${depaID}'`
       });
-      console.log(res)
-      let n =0;
-      let obj={}
-      while(n<res.data.length){
-        if(res.data[n].depaId=='681076033443'){
-          obj.part1=true;
+      console.log(res);
+      let n = 0;
+      let obj = {};
+      let mesId = '';
+      while (n < res.data.length) {
+        if (res.data[n].depaId == '681076033443') {
+          obj.part1 = true;
+          mesId = '681076033443';
         }
-        if(res.data[n].depaId=='681076169400'){
-          obj.part2=true;
+        if (res.data[n].depaId == '681076169400') {
+          obj.part2 = true;
+          mesId = '681076169400';
         }
-        if(res.data[n].depaId=='681076179960'){
-          obj.part3=true;
+        if (res.data[n].depaId == '681076179960') {
+          obj.part3 = true;
+          mesId = '681076179960';
         }
-        if(res.data[n].depaId=='681076187961'){
-          obj.part4=true;
+        if (res.data[n].depaId == '681076187961') {
+          obj.part4 = true;
+          mesId = '681076187961';
         }
-        if(res.data[n].depaId=='681076196461'){
-          obj.part5=true;
+        if (res.data[n].depaId == '681076196461') {
+          obj.part5 = true;
+          mesId = '681076196461';
         }
-        if(res.data[n].depaId=='681076208531'){
-          obj.part6=true;
+        if (res.data[n].depaId == '681076208531') {
+          obj.part6 = true;
+          mesId = '681076208531';
         }
         n++;
       }
-     this.setState({editRight:obj});
+      this.setState({ editRight: obj });
     } catch (error) {
       message.error(error.message);
       console.log(error);
     }
-  }
-  //获取订单状态种类
-  getFilters=async()=>{
-    let res;
-    try {
-      res = await http().getTableColumnDefine({
-        resid: 678790254230,
-      });
-      console.log(res)
-      let n =0;
-      while(n<res.data.length){
-        if(res.data[n].ColName=='sheetStatus'){
-          this.setState({sheetStatus:res.data[n].DisplayOptions})
-        }
-        n++;
-      }
-      this.getDepa();
-    } catch (error) {
-      message.error(error.message);
-      console.log(error);
-    }
-
-  }
-  //刷新表格
-  handleRefresh = () => {
-    this.tableDataRef.handleRefresh();
   };
 
-  //获取部门种类
-  getDepa=async()=>{
+  //显示详情页
+  showDetails = (v, id) => {
+    console.log('id', id);
+    let value = true;
+    let ID = '';
+    let isNew = true;
+    if (v != null) {
+      value = v;
+      ID = id;
+      isNew = false;
+    }
+    console.log('value', value, v);
+    this.setState({
+      showDetails: value,
+      clearData: value,
+      curSheetId: ID,
+      isNew: isNew
+    });
+  };
+  //获取当前进行中的订单
+  getSheets = async () => {
+    this.setState({ loading: true });
     let res;
     try {
       res = await http().getTable({
-        resid: 681075873039,
+        resid: 679066070181
       });
-      this.setState({depa:res.data})
-      console.log(res)
+      let n = 0;
+      let emergy = [];
+      let arr = [];
+      while (n < res.data.length) {
+        if (res.data[n].C3_682507133563 == 'Y') {
+          emergy.push(res.data[n]);
+        } else {
+          arr.push(res.data[n]);
+        }
+        n++;
+      }
+      let newArr = emergy.concat(arr);
+      let chartObj = {
+        total: res.data.length,
+        data: [
+          { value: 1048, name: '已完成' },
+          { value: 1048, name: '进行中' },
+          { value: 1048, name: '未开始' },
+          { value: 735, name: '取消' },
+          { value: 580, name: '报废' }
+        ]
+      };
+      this.instantiation(chartObj);
+      this.setState({ sheets: newArr, loading: false, sheetsAll: newArr });
+
+      console.log(res);
     } catch (error) {
       message.error(error.message);
+      this.setState({ loading: false });
       console.log(error);
     }
+  };
+  //获取已完成记录
 
-  }
-  //根据筛选条件刷新tabledata
-  getData=async()=>{
-    let cms =``;
-    if(this.state.filterStatus){
-      cms+=`sheetStatus = '${this.state.filterStatus}'`
-    };
-    if(this.state.filterDepa){
-      if(this.state.filterStatus){
-        cms+=` and curDepaId = '${this.state.filterDepa}'`
-      }else{
-        cms+=`curDepaId = '${this.state.filterDepa}'`
+  //改变筛选器
+  changeFilter = v => {
+    let n = 0;
+    let arr = this.state.sheetsAll;
+    let arrUn = [];
+    let arrAl = [];
+    while (n < arr.length) {
+      if (arr[n].C3_682377833865 == '工作中') {
+        arrAl.push(arr[n]);
+      } else {
+        arrUn.push(arr[n]);
       }
-    };
-    if(this.state.filterSTA){
-      if(this.state.filterStatus || this.state.filterDepa){
-      cms+=` and C3_678796788873 > '${this.state.filterSTA}' and C3_678796788873 < '${this.state.filterSTB}'`
-      }else{
-      cms+=`C3_678796788873 > '${this.state.filterSTA}' and C3_678796788873 < '${this.state.filterSTB}'`
-
-      }
-    };
-    if(this.state.filterEDA){
-      if(this.state.filterStatus || this.state.filterDepa || this.state.filterSTA){
-      cms+=` and C3_678796797075 > '${this.state.filterEDA}' and C3_678796788873 < '${this.state.filterEDB}'`
-      }else{
-        cms+=`C3_678796797075 > '${this.state.filterEDA}' and C3_678796788873 < '${this.state.filterEDB}'`
-      }
-    };
-    console.log('cms',cms)
-    this.setState({
-      cms
-    })
-  }
-  //显示详情页
-  showDetails=(v,id)=>{
-    console.log('id',id)
-    let value = true;
-    let ID='';
-    let isNew=true;
-    if(v!=null){
-      value=v;
-      ID=id;
-      isNew=false;
+      n++;
     }
-    console.log('value',value,v)
-    this.setState({showDetails:value,clearData:value,curSheetId:ID,isNew:isNew});
-  }
+    if (v == '全部') {
+      this.setState({ sheets: this.state.sheetsAll });
+    } else if (v == '未开始') {
+      this.setState({ sheets: arrUn });
+    } else if (v == '已开始') {
+      this.setState({ sheets: arrAl });
+    }
+    this.setState({ filter: v });
+  };
   render() {
     return (
       <div className="cardWrap">
+        <Modal
+          visible={this.state.showImg}
+          footer={null}
+          onCancel={() => {
+            this.setState({ showImg: false });
+          }}
+          destroyOnClose
+          width={'80vw'}
+        >
+          <div
+            style={{
+              width: '100%',
+              height: '80vh',
+              background: 'url(' + this.state.imgUrl + ')',
+              backgroundSize: 'contain',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          ></div>
+        </Modal>
         <div>
-        <div className='filter'>
-        <div className={this.state.filter=='全部'?'current':''} onClick={()=>{this.setState({filter:'全部'})}}>全部</div>
-          <div className={this.state.filter=='未认领'?'current':''} onClick={()=>{this.setState({filter:'未认领'})}}>未认领</div>
-          <div className={this.state.filter=='已认领'?'current':''} onClick={()=>{this.setState({filter:'已认领'})}}>已认领</div>
-        </div>
-        <div className='showBoard'>
-          123
-        </div>
-        <div className='emergy sheet'>
-          <div>
-          <label>加急</label>
-          <h3>No.12345678</h3>
+          <div className="filter">
+            <div
+              className={this.state.filter == '全部' ? 'current' : ''}
+              onClick={() => {
+                this.changeFilter('全部');
+              }}
+            >
+              全部
+            </div>
+            <div
+              className={this.state.filter == '未开始' ? 'current' : ''}
+              onClick={() => {
+                this.changeFilter('未开始');
+              }}
+            >
+              未开始
+            </div>
+            <div
+              className={this.state.filter == '已开始' ? 'current' : ''}
+              onClick={() => {
+                this.changeFilter('已开始');
+              }}
+            >
+              已开始
+            </div>
           </div>
-          <div>
-            <p>制图 张三</p>
-            <p>2021-12-13 16:00:01开始</p>
-          </div>
-          <div>
-            <p>查看图纸</p>
-            <p>查看详情</p>
-          </div>
-        </div>
-       
-        <div className='emergy sheet'>
-          <div>
-          <label>加急</label>
-          <h3>No.12345678</h3>
-          </div>
-          <div>
-            <p>制图 张三</p>
-            <p>2021-12-13 16:00:01开始</p>
-          </div>
-          <div>
-            <p>查看图纸</p>
-            <p>查看详情</p>
-          </div>
-        </div>   <div className='emergy sheet'>
-          <div>
-          <label>加急</label>
-          <h3>No.12345678</h3>
-          </div>
-          <div>
-            <p>制图 张三</p>
-            <p>2021-12-13 16:00:01开始</p>
-          </div>
-          <div>
-            <p>查看图纸</p>
-            <p>查看详情</p>
-          </div>
-        </div>   <div className='emergy sheet'>
-          <div>
-          <label>加急</label>
-          <h3>No.12345678</h3>
-          </div>
-          <div>
-            <p>制图 张三</p>
-            <p>2021-12-13 16:00:01开始</p>
-          </div>
-          <div>
-            <p>查看图纸</p>
-            <p>查看详情</p>
-          </div>
-        </div>   <div className='emergy sheet'>
-          <div>
-          <label>加急</label>
-          <h3>No.12345678</h3>
-          </div>
-          <div>
-            <p>制图 张三</p>
-            <p>2021-12-13 16:00:01开始</p>
-          </div>
-          <div>
-            <p>查看图纸</p>
-            <p>查看详情</p>
-          </div>
-        </div>   
-        <div className='sheet'>
-          <div>
-          <label>进行中</label>
-          <h3>No.12345678</h3>
-          </div>
-          <div>
-            <p>制图 张三</p>
-            <p>2021-12-13 16:00:01开始</p>
-          </div>
-          <div>
-            <p>查看图纸</p>
-            <p>查看详情</p>
-          </div>
-        </div>   
-        <div className='ready sheet'>
-          <div>
-          <label>未开始</label>
-          <h3>No.12345678</h3>
-          </div>
-          <div>
-            <p>制图 张三</p>
-            <p>2021-12-13 16:00:01开始</p>
-          </div>
-          <div>
-            <p>查看图纸</p>
-            <p>查看详情</p>
-          </div>
-        </div>
+          <div id="showBoard"></div>
+          {this.state.sheets.map(item => {
+            return (
+              <div
+                className={
+                  item.C3_682507133563 == 'Y' ? 'emergy sheet' : 'sheet'
+                }
+              >
+                <div>
+                  <label>
+                    {item.C3_682507133563 == 'Y' ? '加急' : '不加急'}
+                  </label>
+                  <h3>{item.C3_678796779827}</h3>
+                </div>
+                <div>
+                  <p>
+                    {item.C3_682377833865 == '工作中'
+                      ? item.curProName
+                      : item.C3_682444267100}{' '}
+                    {item.C3_682377833865 == '工作中'
+                      ? item.C3_682371274376
+                      : ''}
+                  </p>
+                  <p>
+                    {item.C3_682377833865 == '工作中'
+                      ? item.C3_682379482255 + '开始'
+                      : '未开始'}
+                  </p>
+                </div>
+                <div>
+                  <p
+                    onClick={() => {
+                      this.setState({
+                        showImg: true,
+                        imgUrl: item.imgUrl
+                      });
+                    }}
+                  >
+                    查看图纸
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
-
     );
   }
 }
