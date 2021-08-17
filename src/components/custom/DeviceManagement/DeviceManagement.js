@@ -48,7 +48,7 @@ class DeviceManagement extends Component {
           hasDelete={false}
           hasModify={false}
           hasRowDelete={false}
-          hasRowModify={false}
+          hasRowModify={true}
           hasRowView={true}
           style={{ height: '100%' }}
           subtractH={200}
