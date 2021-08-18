@@ -203,19 +203,11 @@ class WorkSheetShowBoard extends React.Component {
       stDate = moment(stDate).format('YYYY-MM-DD');
       res2 = await http().getTable({
         resid: 682377608634,
-        cmswhere: `C3_682379434328 > '${stDate}' and C3_682377764470 = '${mesId}'`
+        cmswhere: `C3_682379434328 > '${stDate}' and C3_682377764470 = '${mesId}' and C3_682378769806 = '已完成' and islast = 'Y'`
       });
 
-      n = 0;
-      while (n < res2.length) {
-        if (
-          res2.data[n].C3_682378769806 == '已完成' &&
-          res2.data[n].isLast == 'Y'
-        ) {
-          done.push(res2.data[n]);
-        }
-        n++;
-      }
+      done=res2.data;
+      console.log(res2,done)
       let newArr = emergy.concat(arr);
       let chartObj = {
         total: res.data.length,
