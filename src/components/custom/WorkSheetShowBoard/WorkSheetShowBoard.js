@@ -210,7 +210,7 @@ class WorkSheetShowBoard extends React.Component {
       while (n < res2.length) {
         if (
           res2.data[n].C3_682378769806 == '已完成' &&
-          res2.data[n].C3_682539573514 == 'Y'
+          res2.data[n].isLast == 'Y'
         ) {
           done.push(res2.data[n]);
         }
