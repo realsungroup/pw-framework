@@ -547,12 +547,17 @@ class VisitorApplyVIP extends React.Component {
                 <Radio value={'否'}>不需要</Radio>
               </Radio.Group>
             </div>
+
             <div
               className="seviceSections"
               style={
                 this.state.C3_682008393529 == '是' ? {} : { display: 'none' }
               }
             >
+              <p style={{ marginTop: 8, color: '#f5222d' }}>
+                水果及VIP餐需要提前1天预订
+              </p>
+
               <div>
                 <div>
                   <span>接机/接站：</span>
