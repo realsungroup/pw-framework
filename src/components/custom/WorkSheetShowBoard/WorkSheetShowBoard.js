@@ -3,9 +3,8 @@ import './WorkSheetShowBoard.less';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Select, Button, message, DatePicker, Modal, Spin } from 'antd';
-import { TableData } from '../../common/loadableCommon';
+import WorkSheetDetail from '../WorkSheetDetail';
 import http from 'Util20/api';
-import { bindFn } from 'hammerjs';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -14,12 +13,15 @@ class WorkSheetShowBoard extends React.Component {
     super(props);
     this.state = {
       filter: '全部',
-      sheets: [{}]
+      sheets: [{}],
+      showDetails:false,
+      editRight:{
+        part1:false
+      }
     };
   }
 
   async componentDidMount() {
-    // this.getFilters();
     this.getRight();
   }
 
@@ -88,6 +90,7 @@ class WorkSheetShowBoard extends React.Component {
   //获取新建订单权限
   getRight = async () => {
     //获取localstorage的部门代码
+    this.setState({loading2:true});
     let res;
     let depaID = localStorage.getItem('userInfo');
     depaID = JSON.parse(depaID);
@@ -149,6 +152,7 @@ class WorkSheetShowBoard extends React.Component {
       isNew = false;
     }
     console.log('value', value, v);
+    this.getRight();
     this.setState({
       showDetails: value,
       clearData: value,
@@ -158,7 +162,7 @@ class WorkSheetShowBoard extends React.Component {
   };
   //获取当前进行中和未开始的订单
   getSheets = async mesId => {
-    this.setState({ loading: true });
+    this.setState({ loading2: true });
     let res;
     let res2;
     try {
@@ -224,16 +228,15 @@ class WorkSheetShowBoard extends React.Component {
         ]
       };
       this.instantiation(chartObj);
-      this.setState({ sheets: newArr, loading: false, sheetsAll: newArr });
+      this.setState({ sheets: newArr, loading2: false, sheetsAll: newArr });
 
       console.log(res);
     } catch (error) {
       message.error(error.message);
-      this.setState({ loading: false });
+      this.setState({ loading2: false });
       console.log(error);
     }
   };
-  //获取已完成记录
 
   //改变筛选器
   changeFilter = v => {
@@ -260,6 +263,8 @@ class WorkSheetShowBoard extends React.Component {
   };
   render() {
     return (
+      <div style={{width:'100vw'}}>
+        <Spin spinning={this.state.loading2}>
       <div className="cardWrap">
         <Modal
           visible={this.state.showImg}
@@ -315,6 +320,7 @@ class WorkSheetShowBoard extends React.Component {
                 className={
                   item.C3_682507133563 == 'Y' ? 'emergy sheet' : 'sheet'
                 }
+               
               >
                 <div>
                   <label>
@@ -338,6 +344,13 @@ class WorkSheetShowBoard extends React.Component {
                   </p>
                 </div>
                 <div>
+                <p
+                     onClick={
+                      ()=>{this.showDetails(true,item.C3_682281119677)}
+                    }
+                  >
+                    查看详情
+                  </p>
                   <p
                     onClick={() => {
                       this.setState({
@@ -353,6 +366,21 @@ class WorkSheetShowBoard extends React.Component {
             );
           })}
         </div>
+        
+        </div>
+        </Spin>
+        <div className='detailContent' style={this.state.showDetails?{display:'block'}:{display:'none'}}>
+             
+             <WorkSheetDetail
+                hasBack={true}
+                backFunc={()=>{this.showDetails(false)}}
+                editRight={this.state.editRight}
+                clearData={this.state.clearData}
+                curSheetId={this.state.curSheetId}
+             >
+              </WorkSheetDetail>   
+        </div>
+
       </div>
     );
   }

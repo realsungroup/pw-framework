@@ -22,7 +22,107 @@ import { userInfo } from 'os';
 const { Option } = Select;
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
+const mapping =[
+  //业务员
+  {
+    id:'681834033575',
+    process:'start',
+    mapping:[
+      {
+        from:'C3_678796887001',
+        to:'C3_682371274376',
+        memo:'接单人'
+      },{
+        from:'C3_682639109504',
+        to:'C3_682377803370',
+        memo:'接单人工号'
+      },{
+        from:'C3_682639124047',
+        to:'C3_682371322856',
+        memo:'接单人编号'
+      }
+    ]
+  },
+  //制图员
+  {
+    id:'681846698650',
+    process:'start',
+    mapping:[
+      {
+        from:'C3_678797238397',
+        to:'C3_682371274376',
+        memeo:'制图人'
+      },{
+        from:'C3_682639694068',
+        to:'C3_682377803370',
+        memo:'制图人工号'
+      },{
+        from:'C3_682639703794',
+        to:'C3_682371322856',
+        memo:'制图人编号'
+      },
+      {
+        from:'CUR_TIME',
+        to:'C3_678797319517',
+        memeo:'制图开始时间',
+        type:'string'
+      }
+    ]
+  },
+  {
+    id:'681846698650',
+    process:'end',
+    mapping:[
+      {
+        from:'CUR_TIME',
+        to:'C3_682379496968',
+        memeo:'制图开始时间',
+        type:'string'
+      }
+    ]
+  },
+  //割板人
+  {
+    id:'681846954720',
+    process:'start',
+    mapping:[
+      {
+        from:'C3_678797343880',
+        to:'C3_682371274376',
+        memeo:'割板人'
+      },{
+        from:'C3_682642226248',
+        to:'C3_682377803370',
+        memo:'割板人工号'
+      },{
+        from:'C3_682642236468',
+        to:'C3_682371322856',
+        memo:'割板人编号'
+      },
+      {
+        from:'CUR_TIME',
+        to:'C3_678797351896',
+        memeo:'割板开始时间',
+        type:'string'
+      }
+    ]
+  },
+  {
+    id:'681846698650',
+    process:'end',
+    mapping:[
+      {
+        from:'CUR_TIME',
+        to:'C3_678797359840',
+        memeo:'制图开始时间',
+        type:'string'
 
+      }
+    ]
+  }
+]
+const baseURL =
+window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
 class WorkSheetDetail extends React.Component {
   constructor(props) {
     super(props);
@@ -45,10 +145,12 @@ class WorkSheetDetail extends React.Component {
     imgUrl: null,
     curModiReason: '',
     sheetData: {},
-    customers: []
+    customers: [],
+    canEdit:9
   };
   async componentDidMount() {
     this.getUserinfo();
+
   }
 
   componentWillReceiveProps = async nextProps => {
@@ -56,6 +158,15 @@ class WorkSheetDetail extends React.Component {
     if (nextProps.new) {
       this.setState({ loading: true });
       this.getProductLines();
+      let objEmpty={}
+      if(this.props.colData){
+        let n =0;
+        let colData = this.props.colData
+        while(n<colData.length){
+          objEmpty[colData[n].ColName]=''
+          n++;
+        }
+      }
       this.setState({
         productLines: [],
         productLinesValue: '请选择工作流',
@@ -73,7 +184,7 @@ class WorkSheetDetail extends React.Component {
         curModiReason: '',
         loading: false,
         process: '',
-        sheetData: { C3_682281119677: '' }
+        sheetData: objEmpty
       });
     } else {
       await this.getHistories(nextProps.curSheetId);
@@ -109,6 +220,14 @@ class WorkSheetDetail extends React.Component {
         });
         lineID = res.data[n].C3_682267546275;
         curID = res.data[n].curChara;
+        if(res.data[n].C3_682377833865=='已完成' && res.data[n].sheetStatus=='进行中'){
+        curID = res.data[n].C3_682444277336;
+        this.setState({canEdit:0});
+
+        }else{
+          //未点击开始的流程不可直接填写表单
+          this.setState({canEdit:1});
+        }
         sheetID = res.data[n].C3_682281119677;
         let sheetData1 = res.data[n];
         if (sheetData1.C3_678796788873) {
@@ -300,16 +419,21 @@ class WorkSheetDetail extends React.Component {
                 res2.data[nnn].C3_682377751651 ==
                 obj[678789327168][n][678789448828][nn].productflowjobroleid
               ) {
-                let str = '';
+                let str1 = '';
+                let str2 = '';
                 if (res2.data[nnn].C3_682379434328) {
-                  str = res2.data[nnn].C3_682379434328;
+                  str1 = res2.data[nnn].C3_682379434328;
                 } else {
-                  str = '--';
+                  str1 = '--';
                 }
                 if (res2.data[nnn].C3_682379442485) {
-                  str += ' 至 ' + res2.data[nnn].C3_682379442485;
+                  str2 =  res2.data[nnn].C3_682379442485;
+                }else{
+                  str2 = '--';
                 }
-                obj[678789327168][n][678789448828][nn].date = str;
+
+                obj[678789327168][n][678789448828][nn].date1 = str1;
+                obj[678789327168][n][678789448828][nn].date2 = str2;
                 obj[678789327168][n][678789448828][nn].name =
                   res2.data[nnn].C3_682377658692;
               }
@@ -369,7 +493,7 @@ class WorkSheetDetail extends React.Component {
         } else {
           target = {
             productflowjobroleid: arr[n + 1].productflowjobroleid,
-            rolename: arr[n + 1].productflowjobroleid,
+            rolename: arr[n + 1].rolename,
             end: false
           };
         }
@@ -404,10 +528,10 @@ class WorkSheetDetail extends React.Component {
     }
     console.log('line', this.state.productLinesValue);
     //检查图纸
-    // if(!this.state.imgUrl){
-    //   message.error('请添加图纸！')
-    //   return false
-    // };
+    if(!this.state.imgUrl){
+      message.error('请添加图纸！')
+      return false
+    };
     this.setState({ loading: true, process: '保存中' });
     let jobid = this.state.userInfo.EMP_STRING1; //工号
     let userName = this.state.userInfo.EMP_NAME; //姓名
@@ -424,10 +548,14 @@ class WorkSheetDetail extends React.Component {
       this.state.productLineTree[678789327168][0][678789448828][0]
         .productflowjobroleid
     );
+    
+
     obj.C3_682444277336 = nxt.productflowjobroleid;
-    obj.C3_682371274376 = userName;
-    obj.C3_682371322856 = userCode;
-    obj.C3_682377803370 = jobid;
+    let counter = 0;
+    while(counter<mapping[0].mapping.length){
+      obj[mapping[0].mapping[counter].to]=this.state.sheetData[mapping[0].mapping[counter].from]
+      counter++;
+    }
 
     let res;
     console.log('toAdd', obj);
@@ -476,6 +604,75 @@ class WorkSheetDetail extends React.Component {
       console.log(e.message);
     }
   };
+  //开始当前流程
+  startFlow = async()=>{
+    this.setState({loading:true,process:'正在开始'})
+    let res;
+    let nxtChara=this.calNext(this.state.sheetData.C3_682444277336);
+    let jobid = this.state.userInfo.EMP_STRING1; //工号
+    let userName = this.state.userInfo.EMP_NAME; //姓名
+    let userCode = this.state.userInfo.EMP_USERCODE; //姓名
+    let myTime = new Date();
+    let data = {
+      REC_ID:this.state.sheetData.REC_ID,
+      curChara:this.state.sheetData.C3_682444277336,
+      C3_682444277336:nxtChara.productflowjobroleid,
+      C3_682379482255:myTime,
+      C3_682379496968:'',
+      C3_682377833865:'进行中',
+      C3_682371274376 : userName,
+      C3_682371322856 : userCode,
+      C3_682377803370 : jobid
+    }
+    console.log('data',data)
+    try {
+      res = await http().modifyRecords({
+        resid: '678790254230',
+        data: [data]
+      });
+      message.success('已经开始');
+      this.setState({loading:false,process:''})
+
+      this.getHistories(this.props.curSheetId);
+    } catch (e) {
+      this.setState({loading:false,process:''})
+      message.error(e.message);
+      console.log(e.message);
+    }
+  }
+  endFlow = async()=>{
+    this.setState({loading:true,process:'正在结束'})
+
+    let res;
+    let data = this.state.sheetData;
+    let myTime = new Date();
+      data.C3_682379496968=myTime;
+      data.C3_682377833865='已完成';
+    try {
+      res = await http().modifyRecords({
+        resid: '678790254230',
+        data: [data]
+      });
+      message.success('已经结束');
+      this.getHistories(this.props.curSheetId);
+    this.setState({loading:false,process:''})
+
+    } catch (e) {
+    this.setState({loading:false,process:''})
+
+      message.error(e.message);
+      console.log(e.message);
+    }
+  }
+  //姓名,编号,工号
+  selectPeople=(nam,number,id)=>{
+    let obj = this.state.sheetData;
+    obj[this.state.fillName]=nam;
+    obj[this.state.fillNum]=number;
+    obj[this.state.fillId]=id;
+    this.setState({sheetData:obj,showWorker:false});
+  }
+
   render() {
     return (
       <div className="sheetDetails">
@@ -485,6 +682,49 @@ class WorkSheetDetail extends React.Component {
         >
           <span>{this.state.process}</span>
         </div>
+
+        <Modal
+          visible={this.state.showWorker}
+          footer={null}
+          onCancel={() => {
+            this.setState({ showWorker: false });
+          }}
+          destroyOnClose
+          width={'80vw'}
+        >
+          <div style={{ width: '100%', height: '80vh' }}>
+            <TableData
+              resid="675165454595"
+              baseUrl={baseURL}
+              subtractH={180}
+              hasAdd={true}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={false}
+              hasAdvSearch={false}
+              importConfig={null}
+              customRowBtns={[
+                (record, btnSize) => {
+                  return (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.selectPeople(record.C3_227192484125,record.C3_305737857578,record.C3_227192472953);
+                      }}
+                    >
+                      选择
+                    </Button>
+                  );
+                }
+              ]}
+            />
+          </div>
+        </Modal>
+
         <Modal
           visible={this.state.showCustomers}
           footer={null}
@@ -694,8 +934,9 @@ class WorkSheetDetail extends React.Component {
                             {item.jobid}.{item2.roleid}
                           </b>
                           <div>
-                            <span>{item2.date ? item2.date : '--'}</span>
-                            <span>{item2.name ? item2.name : '--'}</span>
+                            <span>从 {item2.date1 ? item2.date1 : '--'}</span>
+                            <span>至 {item2.date2 ? item2.date2 : '--'}</span>
+                            <span>{item2.date1!='--' ? item2.name : '--'}</span>
                             <span>{item2.rolename}</span>
                           </div>
                         </li>
@@ -828,34 +1069,41 @@ class WorkSheetDetail extends React.Component {
           <div className="workSheetForm">
             <div
               className={
-                this.props.editRight.part1 ? 'block hidden' : 'block part1'
+                this.props.editRight.part1&&this.state.canEdit>0||this.props.new ? 'block hidden' : 'block part1'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part2 ? 'block hidden' : 'block part2'
+                this.props.editRight.part2&&this.state.canEdit>0 ? 'block hidden' : 'block part2'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part3 ? 'block hidden' : 'block part3'
+                this.props.editRight.part3&&this.state.canEdit>0 ? 'block hidden' : 'block part3'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part4 ? 'block hidden' : 'block part4'
+                this.props.editRight.part4&&this.state.canEdit>0 ? 'block hidden' : 'block part4'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part5 ? 'block hidden' : 'block part5'
+                this.props.editRight.part5&&this.state.canEdit>0 ? 'block hidden' : 'block part5'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part6 ? 'block hidden' : 'block part6'
+                this.props.editRight.part6&&this.state.canEdit>0 ? 'block hidden' : 'block part6'
               }
             ></div>
+            <div className='switch' style={this.props.new||this.state.canEdit>3?{display:'none'}:{}}>
+              {this.state.canEdit>0?
+              <Button type='danger' onClick={()=>{this.endFlow()}}>结束当前流程</Button>
+              :
+              <Button type='primary' onClick={()=>{this.startFlow()}}>开始当前流程</Button>
+              }
+            </div>
             <div id="toPrint">
               <div className="toPrint">
                 <div className="header" style={{ position: 'relative' }}>
@@ -1203,15 +1451,15 @@ class WorkSheetDetail extends React.Component {
                       <Row>
                         <Col span={2}>接单人</Col>
                         <Col span={3}>
-                          <input
-                            value={this.state.sheetData.C3_678796887001}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678796887001',
-                                v.target.value
-                              );
+                          <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_678796887001',fillNum:'C3_682639124047',fillId:'C3_682639109504'});
                             }}
-                          />
+                            style={{ height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_678796887001}
+                          </div>
+                        
                         </Col>
                         <Col span={2}>送货单号</Col>
                         <Col span={3}>
@@ -1267,15 +1515,14 @@ class WorkSheetDetail extends React.Component {
                         </Col>
                         <Col span={2}>复核人</Col>
                         <Col span={4}>
-                          <input
-                            value={this.state.sheetData.C3_678796943530}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678796943530',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_678796943530',fillNum:'C3_682641647401',fillId:'C3_682641632966'});
                             }}
-                          />
+                            style={{ height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_678796943530}
+                          </div>
                         </Col>
                       </Row>
                       <Row>

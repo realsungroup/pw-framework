@@ -28,7 +28,6 @@ class WorkSheet extends React.Component {
       editRight:{
         part1:false
       },
-      clearData:false,
       curSheetId:'',
       isNew:true
   }
@@ -43,46 +42,54 @@ class WorkSheet extends React.Component {
 
   //获取新建订单权限
   getRight=async()=>{
-    //获取localstorage的部门代码
-    let res;
-    let depaID=localStorage.getItem('userInfo');
-    depaID=JSON.parse(depaID);
-    depaID=depaID.UserInfo.EMP_DEPID;
-    //获取pw后台的新建权限
-    try {
-      res = await http().getTable({
-        resid: 681075873039,
-        cmswhere:`C3_682274906470 = '${depaID}'`
-      });
-      console.log(res)
-      let n =0;
-      let obj={}
-      while(n<res.data.length){
-        if(res.data[n].depaId=='681076033443'){
-          obj.part1=true;
-        }
-        if(res.data[n].depaId=='681076169400'){
-          obj.part2=true;
-        }
-        if(res.data[n].depaId=='681076179960'){
-          obj.part3=true;
-        }
-        if(res.data[n].depaId=='681076187961'){
-          obj.part4=true;
-        }
-        if(res.data[n].depaId=='681076196461'){
-          obj.part5=true;
-        }
-        if(res.data[n].depaId=='681076208531'){
-          obj.part6=true;
-        }
-        n++;
-      }
-     this.setState({editRight:obj});
-    } catch (error) {
-      message.error(error.message);
-      console.log(error);
+    // //获取localstorage的部门代码
+    // let res;
+    // let depaID=localStorage.getItem('userInfo');
+    // depaID=JSON.parse(depaID);
+    // depaID=depaID.UserInfo.EMP_DEPID;
+    // //获取pw后台的新建权限
+    // try {
+    //   res = await http().getTable({
+    //     resid: 681075873039,
+    //     cmswhere:`C3_682274906470 = '${depaID}'`
+    //   });
+    //   console.log(res)
+    //   let n =0;
+    //   let obj={}
+    //   while(n<res.data.length){
+    //     if(res.data[n].depaId=='681076033443'){
+    //       obj.part1=true;
+    //     }
+    //     if(res.data[n].depaId=='681076169400'){
+    //       obj.part2=true;
+    //     }
+    //     if(res.data[n].depaId=='681076179960'){
+    //       obj.part3=true;
+    //     }
+    //     if(res.data[n].depaId=='681076187961'){
+    //       obj.part4=true;
+    //     }
+    //     if(res.data[n].depaId=='681076196461'){
+    //       obj.part5=true;
+    //     }
+    //     if(res.data[n].depaId=='681076208531'){
+    //       obj.part6=true;
+    //     }
+    //     n++;
+    //   }
+    let obj={
+      part1:true,
+      part2:false,
+      part3:false,
+      part4:false,
+      part5:false,
+      part6:false,
     }
+     this.setState({editRight:obj});
+    // } catch (error) {
+    //   message.error(error.message);
+    //   console.log(error);
+    // }
   }
   //获取订单状态种类
   getFilters=async()=>{
@@ -91,7 +98,8 @@ class WorkSheet extends React.Component {
       res = await http().getTableColumnDefine({
         resid: 678790254230,
       });
-      console.log(res)
+      console.log(res);
+      this.setState({colData:res.data});
       let n =0;
       while(n<res.data.length){
         if(res.data[n].ColName=='sheetStatus'){
@@ -162,16 +170,15 @@ class WorkSheet extends React.Component {
   //显示详情页
   showDetails=(v,id)=>{
     console.log('id',id)
-    let value = true;
     let ID='';
     let isNew=true;
+    let value = true;
     if(v!=null){
-      value=v;
       ID=id;
       isNew=false;
+      value = v;
     }
-    console.log('value',value,v)
-    this.setState({showDetails:value,clearData:value,curSheetId:ID,isNew:isNew});
+    this.setState({showDetails:value,curSheetId:ID,isNew:isNew});
   }
   render() {
     return (
@@ -287,13 +294,9 @@ class WorkSheet extends React.Component {
                 actionBarExtra={({ dataSource, selectedRowKeys }) => {
                   return (
                     <>
-                    {
-                      this.state.editRight.part1?
                       <Button onClick={()=>{this.showDetails();}}>
                         新建
                     </Button>
-                      :null
-                    }
                     </>
                   );
                 }}
@@ -318,8 +321,8 @@ class WorkSheet extends React.Component {
                 backFunc={()=>{this.showDetails(false)}}
                 editRight={this.state.editRight}
                 handleRefresh={()=>{this.handleRefresh()}}
-                clearData={this.state.clearData}
                 curSheetId={this.state.curSheetId}
+                colData={this.state.colData}
              >
               </WorkSheetDetail>   
         </div>

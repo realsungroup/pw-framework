@@ -31,7 +31,7 @@ window.pwConfig = {
     //各定制组件需用到的基地址
     customURLs: {
       personInfoDownloadURL: 'http://10.108.2.66:80/', //人事信息下载地址
-      attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
+      attendanceBaseURL: 'http://kingofdinner.realsun.me:17001/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
