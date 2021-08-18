@@ -21,7 +21,6 @@ class WorkSheetShowBoard extends React.Component {
   async componentDidMount() {
     // this.getFilters();
     this.getRight();
-    await this.getSheets();
   }
 
   //实例化echarts
@@ -131,6 +130,7 @@ class WorkSheetShowBoard extends React.Component {
         n++;
       }
       this.setState({ editRight: obj, mesId: mesId });
+      this.getSheets(mesId);
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -157,14 +157,14 @@ class WorkSheetShowBoard extends React.Component {
     });
   };
   //获取当前进行中和未开始的订单
-  getSheets = async () => {
+  getSheets = async mesId => {
     this.setState({ loading: true });
     let res;
     let res2;
     try {
       res = await http().getTable({
         resid: 679066070181,
-        cmswhere: `(curDepaId = '${this.state.mesId}' and C3_682377833865 =='进行中') or (C3_682540124939 = '${this.state.mesId}' and C3_682377833865 =='已完成')`
+        cmswhere: `(curDepaId = '${mesId}' and C3_682377833865 ='进行中') or (C3_682540124939 = '${mesId}' and C3_682377833865 = '已完成')`
       });
       let n = 0;
       let emergy = [];
@@ -196,10 +196,10 @@ class WorkSheetShowBoard extends React.Component {
       }
       //获取已完成的
       let stDate = new Date();
-      stDate = moment(myDate).format('YYYY-MM-DD');
+      stDate = moment(stDate).format('YYYY-MM-DD');
       res2 = await http().getTable({
         resid: 682377608634,
-        cmswhere: `C3_682379434328 > '${stDate}' and C3_682377764470 = '${this.state.mesId}'`
+        cmswhere: `C3_682379434328 > '${stDate}' and C3_682377764470 = '${mesId}'`
       });
 
       n = 0;
@@ -216,11 +216,11 @@ class WorkSheetShowBoard extends React.Component {
       let chartObj = {
         total: res.data.length,
         data: [
-          { value: done.length, name: '已完成' },
-          { value: ing.length, name: '进行中' },
-          { value: unstart.length, name: '未开始' },
-          { value: qx.length, name: '取消' },
-          { value: zf.length, name: '作废' }
+          { value: done.length, name: '已完成：' + done.length },
+          { value: ing.length, name: '进行中：' + ing.length },
+          { value: unstart.length, name: '未开始：' + unstart.length },
+          { value: qx.length, name: '取消：' + qx.length },
+          { value: zf.length, name: '作废：' + zf.length }
         ]
       };
       this.instantiation(chartObj);
