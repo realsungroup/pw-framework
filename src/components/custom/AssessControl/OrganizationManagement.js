@@ -11,6 +11,7 @@ class OrganizationManagement extends React.Component {
     this.state = {
       isViewPersonModalOpen: false, //控制查看人员信息模态窗
       isDeleteOrgModalOpen: false, //控制删除分组信息模态窗
+      isViewEntranceModalOpen: false, //控制查看门禁点信息模态窗
       needRemoveData: {}, //待删除数据
       selectedRowData: {} //选中行的数据
     };
@@ -33,7 +34,8 @@ class OrganizationManagement extends React.Component {
   closeAllModal = () => {
     this.setState({
       isViewPersonModalOpen: false,
-      isDeleteOrgModalOpen: false
+      isDeleteOrgModalOpen: false,
+      isViewEntranceModalOpen: false
     });
   };
 
@@ -42,7 +44,8 @@ class OrganizationManagement extends React.Component {
       isViewPersonModalOpen,
       isDeleteOrgModalOpen,
       needRemoveData,
-      selectedRowData
+      selectedRowData,
+      isViewEntranceModalOpen
     } = this.state;
     return (
       <div className="OrganizationManagement">
@@ -200,6 +203,136 @@ class OrganizationManagement extends React.Component {
                 </div>
               </Modal>
             </div>
+          </TabPane>
+          <TabPane tab="门禁分组" key="entrance">
+            <div className="body-tip">
+              <Icon
+                type="question-circle"
+                style={{ color: '#2196f3', marginRight: '16px' }}
+              />
+              <span>将相同属性的门禁点归为1组，便于批量配置权限。</span>
+            </div>
+            <div>
+              <TableData
+                resid={682695547484}
+                baseURL={this.baseURL}
+                height={'calc(100vh - 138px)'}
+                subtractH={190}
+                hasAdd={false}
+                hasModify={false}
+                hasDelete={false}
+                hasRowEdit={false}
+                hasRowModify={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowSelection={true}
+                actionBarExtra={this.actionBarExtra}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
+                actionBarExtra={(
+                  dataSource,
+                  selectedRowKeys,
+                  data,
+                  recordFormData,
+                  size
+                ) => {
+                  return (
+                    <div>
+                      <Button type="primary" key="4">
+                        添加
+                      </Button>
+                      <Button
+                        type="danger"
+                        key="6"
+                        onClick={() => {
+                          this.setState({
+                            needRemoveData: dataSource.dataSource
+                          });
+                        }}
+                      >
+                        删除
+                      </Button>
+                    </div>
+                  );
+                }}
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return <Button key="1">编辑</Button>;
+                  },
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        key="2"
+                        onClick={() => {
+                          this.setState({
+                            needRemoveData: [record]
+                          });
+                        }}
+                      >
+                        删除
+                      </Button>
+                    );
+                  },
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        key="3"
+                        onClick={() => {
+                          this.setState({
+                            isViewEntranceModalOpen: true,
+                            selectedRowData: record
+                          });
+                        }}
+                      >
+                        详情
+                      </Button>
+                    );
+                  }
+                ]}
+              />
+            </div>
+            <Modal
+              visible={isViewEntranceModalOpen}
+              title="人员分组详情"
+              onCancel={this.closeAllModal}
+              width={'80%'}
+            >
+              <div>
+                <div className="modal-info">
+                  <h2>基本信息</h2>
+                  <div className="modal-text">
+                    <h4>门禁分组名称</h4>
+                    <p>{selectedRowData.name}</p>
+                  </div>
+                  <div className="modal-text">
+                    <h4>描述</h4>
+                    <p>{selectedRowData.describe}</p>
+                  </div>
+                  <div className="modal-table">
+                    <h2>门禁点列表</h2>
+                    <TableData
+                      resid={682695559871}
+                      baseURL={this.baseURL}
+                      cmswhere={`groupId = ${selectedRowData.REC_ID}`}
+                      height={'calc(100vh - 138px)'}
+                      subtractH={190}
+                      hasAdd={false}
+                      hasModify={false}
+                      hasDelete={false}
+                      hasRowEdit={false}
+                      hasRowModify={false}
+                      hasRowView={false}
+                      hasRowDelete={false}
+                      actionBarExtra={this.actionBarExtra}
+                      wrappedComponentRef={element =>
+                        (this.tableDataRef = element)
+                      }
+                      refTargetComponentName="TableData"
+                    />
+                  </div>
+                </div>
+              </div>
+            </Modal>
           </TabPane>
         </Tabs>
       </div>
