@@ -327,19 +327,21 @@ class WorkSheetDetail extends React.Component {
   }
 
   componentWillReceiveProps = async nextProps => {
+    let objEmpty={}
+
+    if(this.props.colData){
+      let n =0;
+      let colData = this.props.colData
+      while(n<colData.length){
+        objEmpty[colData[n].ColName]=''
+        n++;
+      }
+    }
     //初始化
     if (nextProps.new) {
       this.setState({ loading: true });
       this.getProductLines();
-      let objEmpty={}
-      if(this.props.colData){
-        let n =0;
-        let colData = this.props.colData
-        while(n<colData.length){
-          objEmpty[colData[n].ColName]=''
-          n++;
-        }
-      }
+     
       this.setState({
         productLines: [],
         productLinesValue: '请选择工作流',
@@ -360,6 +362,7 @@ class WorkSheetDetail extends React.Component {
         sheetData: objEmpty
       });
     } else {
+      this.setState({sheetData: objEmpty})
       await this.getHistories(nextProps.curSheetId);
     }
   };
