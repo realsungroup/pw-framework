@@ -40,6 +40,6 @@ hikInstance.interceptors.response.use(
 /**
  * 获取根区域信息
  */
-export const getRootRegion = async params => {
+export const getRootRegion = () => {
   return hikInstance.get('/api/v1/getRootRegion');
 };
