@@ -990,3 +990,17 @@ export const MoveAuthorityManagement = Loadable({
     return minLoading;
   }
 });
+
+export const PersonnelInformationManagement = Loadable({
+  loader: () => import('./PersonnelInformationManagement'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const AssessControl = Loadable({
+  loader: () => import('./AssessControl'),
+  loading() {
+    return minLoading;
+  }
+});

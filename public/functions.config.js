@@ -2103,8 +2103,7 @@ window[621257502796] = {
     showChooseAllDay: false, //是否显示全天假选择框
     isEightToSeventeen: false, //请全天假默认从8到17点
     showAllminuteShuaKa: false, //刷卡的分钟下拉列表显示所有分钟
-    availableTimeVisible: false,//是否显示可用额度
-
+    availableTimeVisible: false //是否显示可用额度
   }
 };
 window[622577431745] = {
@@ -10229,7 +10228,7 @@ window[677843884822] = {
   name: 'OfficeSupply',
   title: '办公用品申请',
   props: {
-    choosePeopleResid: 678368669087,
+    choosePeopleResid: 678368669087
   }
 };
 
@@ -10326,29 +10325,36 @@ window[678188368103] = {
 };
 
 //设备管理
-window[664282094133] = {
+window[680109731554] = {
   name: 'DeviceManagement', // 组件名称，
   title: '设备管理', // 功能模块名称
   props: {}
 };
 
 //部门管理
-window[664282094133] = {
+window[680109777866] = {
   name: 'DepartmentManagement', // 组件名称，
   title: '部门管理', // 功能模块名称
   props: {}
 };
 
 //考勤记录管理
-window[664282094133] = {
-  name: 'AttendanceRecordManagement', // 组件名称，
-  title: '考勤记录管理', // 功能模块名称
+window[680109796092] = {
+  name: 'AttendanceRecordManagement',
+  title: '考勤记录管理',
   props: {}
 };
 
 //进出授权管理
-window[664282094133] = {
-  name: 'MoveAuthorityManagement', // 组件名称，
-  title: '进出授权管理', // 功能模块名称
+window[681315404152] = {
+  name: 'AssessControl', // 组件名称，
+  title: '门禁管理', // 功能模块名称
+  props: {}
+};
+
+//人员信息管理
+window[680109714671] = {
+  name: 'PersonnelInformationManagement', // 组件名称，
+  title: '人员信息管理', // 功能模块名称
   props: {}
 };
