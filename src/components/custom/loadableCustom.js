@@ -962,3 +962,45 @@ export const OfficeSupply = Loadable({
     return minLoading;
   }
 });
+
+export const DeviceManagement = Loadable({
+  loader: () => import('./DeviceManagement'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const DepartmentManagement = Loadable({
+  loader: () => import('./DepartmentManagement'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const AttendanceRecordManagement = Loadable({
+  loader: () => import('./AttendanceRecordManagement'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const MoveAuthorityManagement = Loadable({
+  loader: () => import('./MoveAuthorityManagement'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const PersonnelInformationManagement = Loadable({
+  loader: () => import('./PersonnelInformationManagement'),
+  loading() {
+    return minLoading;
+  }
+});
+
+export const AssessControl = Loadable({
+  loader: () => import('./AssessControl'),
+  loading() {
+    return minLoading;
+  }
+});
