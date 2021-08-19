@@ -94,8 +94,27 @@ class AttendanceRecordManagement extends Component {
         if (json.data.list.length === 0) {
           message.info('无相关记录');
         } else {
+          //对数据进行进一步处理
+          const res1 = json.data.list.filter(item => {
+            if (item.personName === null) {
+              item.personName = '';
+            }
+            if (item.jobNo === null) {
+              item.jobNo = '';
+            }
+            return (
+              item.personName.search(userName) !== -1 &&
+              item.jobNo.search(personNum) !== -1
+            );
+          });
+          const result = res1.map(item => {
+            return {
+              ...item,
+              eventTime: moment(item.eventTime).format('YYYY-MM-DD HH:mm:ss')
+            };
+          });
           this.setState({
-            eventData: json.data.list
+            eventData: result
           });
           message.success('查询成功');
         }

@@ -8,8 +8,6 @@ const columns = [
     title: '人员姓名',
     dataIndex: 'personName',
     key: 'personName',
-    defaultSortOrder: 'descend',
-    sorter: (a, b) => a.personName - b.personName,
     // ellipsis: true,
     width: 150
   },
@@ -17,8 +15,6 @@ const columns = [
     title: '工号',
     dataIndex: 'jobNo',
     key: 'jobNo',
-    defaultSortOrder: 'descend',
-    sorter: (a, b) => a.jobNo - b.jobNo,
     // ellipsis: true,
     width: 150
   },
@@ -84,7 +80,7 @@ const columns = [
     ellipsis: true,
     key: 'eventTime',
     fixed: 'right',
-    width: 250
+    width: 200
   }
 ];
 const dataSource = [];
@@ -174,14 +170,15 @@ class AttendenceTable extends Component {
                 marginRight: '8px',
                 marginLeft: '8px'
               }}
-              // scroll={{ x: true, y: true }}
               columns={columns}
               dataSource={eventData}
               bordered
               size="middle"
               scroll={{ x: 220, y: 240 }}
               pagination={{
-                pageSize: 5,
+                showSizeChanger: true,
+                showQuickJumper: true,
+                pageSizeOptions: ['5', '10', '20'],
                 showTotal: () => {
                   return <p>共 {eventData.length} 条记录</p>;
                 }

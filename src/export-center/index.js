@@ -193,5 +193,6 @@ export {
   DepartmentManagement,
   AttendanceRecordManagement,
   MoveAuthorityManagement,
-  PersonnelInformationManagement
+  PersonnelInformationManagement,
+  AssessControl
 } from '../components/custom/loadableCustom';

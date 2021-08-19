@@ -997,3 +997,10 @@ export const PersonnelInformationManagement = Loadable({
     return minLoading;
   }
 });
+
+export const AssessControl = Loadable({
+  loader: () => import('./AssessControl'),
+  loading() {
+    return minLoading;
+  }
+});

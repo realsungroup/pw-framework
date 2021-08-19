@@ -10347,8 +10347,8 @@ window[680109796092] = {
 
 //进出授权管理
 window[681315404152] = {
-  name: 'MoveAuthorityManagement', // 组件名称，
-  title: '进出授权管理', // 功能模块名称
+  name: 'AssessControl', // 组件名称，
+  title: '门禁管理', // 功能模块名称
   props: {}
 };
 
