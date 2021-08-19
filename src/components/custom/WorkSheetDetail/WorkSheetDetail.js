@@ -363,9 +363,8 @@ class WorkSheetDetail extends React.Component {
           curCharaId=res.data[n].curChara;
           curSheetId= res.data[n].C3_682281119677;
           if(res.data[n].C3_682377833865=='已完成' && res.data[n].sheetStatus=='进行中'){
-            curCharaId = res.data[n].C3_682444277336;
-    
-            }
+            curCharaId = res.data[n].C3_682444277336;    
+          }
         }
         his.push({
           status: str,
