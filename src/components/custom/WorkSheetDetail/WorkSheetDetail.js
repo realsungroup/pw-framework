@@ -10,7 +10,8 @@ import {
   Input,
   DatePicker,
   Modal,
-  Spin
+  Popconfirm,
+  
 } from 'antd';
 import { TableData } from '../../common/loadableCommon';
 import moment from 'moment';
@@ -277,7 +278,8 @@ class WorkSheetDetail extends React.Component {
     curModiReason: '',
     sheetData: {},
     customers: [],
-    canEdit:9
+    canEdit:9,
+    isCurrent:true
   };
   async componentDidMount() {
     this.getUserinfo();
@@ -330,6 +332,7 @@ class WorkSheetDetail extends React.Component {
       cms += ` and C3_680644411481 ='${version}'`;
     }
     let res;
+    let curSheetData;
     try {
       res = await http().getTable({
         resid: '678790254230',
@@ -340,10 +343,29 @@ class WorkSheetDetail extends React.Component {
       let lineID = '';
       let curID = '';
       let sheetID = '';
+      let isCurrent = false;
+      let curLineId='';
+      let curCharaId='';
+      let curSheetId=''
       while (n < res.data.length) {
         let str = '';
         if (res.data[n].C3_680644403785 == 'Y') {
           str = 'current';
+          isCurrent=true;
+          curSheetData= res.data[n];
+          if (curSheetData.C3_678796788873) {
+            curSheetData.C3_678796788873 = moment(curSheetData.C3_678796788873);
+          }
+          if (curSheetData.C3_678796797075) {
+            curSheetData.C3_678796797075 = moment(curSheetData.C3_678796797075);
+          }
+          curLineId=res.data[n].C3_682267546275;
+          curCharaId=res.data[n].curChara;
+          curSheetId= res.data[n].C3_682281119677;
+          if(res.data[n].C3_682377833865=='已完成' && res.data[n].sheetStatus=='进行中'){
+            curCharaId = res.data[n].C3_682444277336;
+    
+            }
         }
         his.push({
           status: str,
@@ -356,9 +378,9 @@ class WorkSheetDetail extends React.Component {
         this.setState({canEdit:0});
 
         }else{
-          //未点击开始的流程不可直接填写表单
           this.setState({canEdit:1});
         }
+        
         sheetID = res.data[n].C3_682281119677;
         let sheetData1 = res.data[n];
         if (sheetData1.C3_678796788873) {
@@ -377,11 +399,18 @@ class WorkSheetDetail extends React.Component {
         n++;
       }
       if (version) {
-        this.setState({ loading: false, process: '' });
+        this.setState({ isCurrent:isCurrent,loading: false, process: '',imgUrl:res.data[0].imgUrl });
+        console.log('ll',lineID, curID, sheetID)
+        this.getTargetLine(lineID, curID, sheetID);
+        
       } else {
-        this.setState({ loading: false, process: '', histories: his });
+        if(curSheetData){
+          this.setState({imgUrl:curSheetData.imgUrl,sheetData:curSheetData,curModiReason:curSheetData.C3_680644227339});
+        }
+        this.setState({ loading: false, process: '', histories: his});
+        this.getTargetLine(curLineId, curCharaId, curSheetId);
+        console.log(curLineId, curCharaId, curSheetId)
       }
-      this.getTargetLine(lineID, curID, sheetID);
     } catch (e) {
       console.log(e.message);
       message.error(e.message);
@@ -519,7 +548,7 @@ class WorkSheetDetail extends React.Component {
   //获取指定产品线并整理
   //参数是产品线ID,当前角色ID,订单编号
   getTargetLine = async (v, curID, sheetID) => {
-    this.setState({ process: '获取产品线中...', loading: true });
+    this.setState({ process: '获取工作单进度中...', loading: true });
     let res;
     let res2;
     try {
@@ -664,9 +693,6 @@ class WorkSheetDetail extends React.Component {
       return false
     };
     this.setState({ loading: true, process: '保存中' });
-    let jobid = this.state.userInfo.EMP_STRING1; //工号
-    let userName = this.state.userInfo.EMP_NAME; //姓名
-    let userCode = this.state.userInfo.EMP_USERCODE; //姓名
     let obj = this.state.sheetData;
     obj.C3_682267546275 = this.state.productLinesValue;
     obj.sheetStatus = '进行中';
@@ -711,28 +737,48 @@ class WorkSheetDetail extends React.Component {
   };
   //复制新建
   copyAdd = async () => {
-    //检查生产线是否选择
-    let obj = this.state.sheetData;
+    this.setState({loading:true,process:'复制中'})
+    let obj = {};
     obj.C3_682267546275 = this.state.productLinesValue;
     obj.sheetStatus = '进行中';
     obj.C3_682377833865 = '已完成';
     obj.C3_680644403785 = 'Y';
     obj.curPro = this.state.productLineTree[678789327168][0].productflowjobid;
     obj.imgUrl = this.state.imgUrl;
+    obj.curChara = this.state.productLineTree[678789327168][0][678789448828][0].productflowjobroleid;
     let nxt = this.calNext(
-      this.state.productLineTree[678789327168][0].productflowjobid
+      this.state.productLineTree[678789327168][0][678789448828][0]
+        .productflowjobroleid
     );
+    let myTime = new Date();
+    obj.C3_682379482255=myTime;
+    obj.C3_682379496968=myTime;
     obj.C3_682444277336 = nxt.productflowjobroleid;
+    let counter = 0;
+    while(counter<mapping[0].mapping.length){
+      obj[mapping[0].mapping[counter].to]=this.state.sheetData[mapping[0].mapping[counter].from]
+      counter++;
+    }
+    let arr=['C3_678796887001','C3_682639109504','C3_682639124047','C3_682507133563','C3_682369620435','C3_678796788873','C3_678796797075','C3_678796767356','C3_682184234543','C3_678796779827','C3_681946447748','C3_681946858588','C3_681946866036','C3_681946874849','C3_681946885747','C3_681946907063','C3_681946916803','C3_681946932592','C3_681946943505','C3_681946949984','C3_681946967641','C3_681948129430','C3_681948140445','C3_681948156177','C3_681948368196','C3_678796830965','C3_678796898023','C3_678796906793','C3_681948661141','C3_678796943530','C3_682641632966','C3_682641647401','C3_678796951598','C3_678796959023','C3_678796966324','C3_678796973541','C3_678797062420','C3_678797068641','C3_678797075331','C3_678796981497','C3_678796989327','C3_678797024313','C3_678797082671','C3_678797088953','C3_678797095425','C3_678797032289','C3_678797041936','C3_678797050598','C3_678797101119','C3_678797109062','C3_681949749757','C3_678797141752','C3_678797207647']
+    counter=0;
+    while(counter<arr.length){
+      obj[arr[counter]]=this.state.sheetData[arr[counter]];
+      counter++;
+    }
+    console.log('复制',obj)
     let res;
     try {
       res = await http().addRecords({
         resid: '678790254230',
-        data: [this.state.sheetData]
+        data: [obj]
       });
-      message.success('添加成功');
       this.props.handleRefresh();
+      this.setState({loading:false,process:''});
       this.props.backFunc();
+      message.success('复制成功');
+
     } catch (e) {
+      this.setState({loading:false,process:''});
       message.error(e.message);
       console.log(e.message);
     }
@@ -793,7 +839,9 @@ class WorkSheetDetail extends React.Component {
     let myTime = new Date();
       data.C3_682379496968=myTime;
       data.C3_682377833865='已完成';
-
+      if(data.curChara=='682635881582'){
+        data.sheetStatus='已完成'
+      }
       let n=0;
       while(n<mapping.length){
         if(mapping[n].id==this.state.sheetData.C3_682444277336 && mapping[n].process=='end'){
@@ -834,6 +882,67 @@ class WorkSheetDetail extends React.Component {
     obj[this.state.fillId]=id;
     this.setState({sheetData:obj,showWorker:false});
   }
+  //报废/取消订单
+  endSheet = async(v)=>{
+    this.setState({loading:true,process:'正在操作'})
+    let res;
+    let data={
+      REC_ID:this.state.sheetData.REC_ID,
+      sheetStatus:v,
+      C3_682377833865:'非正常终止'
+    }
+    try {
+      res = await http().modifyRecords({
+        resid: '678790254230',
+        data: [data]
+      });
+      message.success(v);
+      this.getHistories(this.props.curSheetId);
+    this.setState({loading:false,process:''})
+
+    } catch (e) {
+    this.setState({loading:false,process:''})
+      message.error(e.message);
+      console.log(e.message);
+    }
+  }
+  //修改表单
+  handleModi=async()=>{
+    //将当前表单最新字段清空
+    this.setState({showModi:false,loading:'true',process:'更新工作单状态'})
+    let res;
+    let res2;
+    let res3;
+    try {
+      res = await http().getTable({
+        resid: '678790254230',
+        cmswhere:`C3_682281119677 = '${this.props.curSheetId}' and C3_680644403785 = 'Y'`
+      });
+      let obj=res.data[0];
+      obj.C3_680644403785='';
+      res2 = await http().modifyRecords({
+        resid: '678790254230',
+        data:[obj]
+      });
+      this.setState({process:'修改工作单数据'})
+      obj=this.state.sheetData;
+      obj.C3_680644411481 = '';
+      obj.imgUrl=this.state.imgUrl;
+      let myDate = new Date();
+      obj.C3_680644251256 = myDate;
+      res = await http().addRecords({
+        resid: '678790254230',
+        data: [obj]
+      });
+      this.getHistories(this.props.curSheetId);
+    this.setState({loading:false,process:''});
+    message.success('修改成功')
+    } catch (e) {
+    this.setState({showModi:false,loading:false,process:''})
+      message.error(e.message);
+      console.log(e.message);
+    }
+  }
 
   render() {
     return (
@@ -844,7 +953,28 @@ class WorkSheetDetail extends React.Component {
         >
           <span>{this.state.process}</span>
         </div>
-
+        <Modal
+         visible={this.state.showModi}
+         onOk={()=>{this.handleModi();}}
+         onCancel={() => {
+           this.setState({ showModi: false });
+         }}
+         destroyOnClose
+         width={'80vw'}
+        >
+          <div>
+            <p>请输入修改备注：</p>
+            <TextArea
+                              value={this.state.sheetData.C3_680644227339}
+                              onChange={v => {
+                                this.changeSheet(
+                                  'C3_680644227339',
+                                  v.target.value
+                                );
+                              }}
+                            />
+          </div>
+        </Modal>
         <Modal
           visible={this.state.showWorker}
           footer={null}
@@ -856,8 +986,7 @@ class WorkSheetDetail extends React.Component {
         >
           <div style={{ width: '100%', height: '80vh' }}>
             <TableData
-              resid="675165454595"
-              baseUrl={baseURL}
+              resid="682683140687"
               subtractH={180}
               hasAdd={true}
               hasRowView={false}
@@ -1192,24 +1321,31 @@ class WorkSheetDetail extends React.Component {
           <div className="menu">
             <ul>
               {this.props.editRight.part1 ? (
-                <li
-                  onClick={() => {
-                    this.handleCreat();
-                  }}
-                >
-                  保存
-                </li>
+                this.props.new?
+                <Popconfirm
+                 title="确认保存吗？"
+                 onConfirm={() => {
+                  this.handleCreat();
+                 }}
+               >
+                 <li>保存</li>
+
+             </Popconfirm>
+                :<li onClick={()=>{this.setState({showModi:true})}}>保存修改</li>
+                 
               ) : null}
 
               {!this.props.new && this.props.editRight.part1 ? (
                 <>
-                  <li
-                    onClick={() => {
-                      this.copyAdd();
-                    }}
-                  >
-                    复制新建
-                  </li>
+                <Popconfirm
+                  title="确认复制新建吗？"
+                  onConfirm={() => {
+                    this.copyAdd();
+                  }}
+                >
+                  <li>复制新建</li>
+
+              </Popconfirm>
                   <li
                     onClick={() => {
                       this.handlePrint();
@@ -1220,12 +1356,33 @@ class WorkSheetDetail extends React.Component {
                 </>
               ) : null}
 
-              {!this.props.new && this.props.editRight.part1 ? (
+              {!this.props.new && this.props.editRight.part1 && this.state.sheetData.sheetStatus!='已取消'&& this.state.sheetData.sheetStatus!='已作废'? (
                 <>
+                <Popconfirm
+                  title="确认取消吗？"
+                  onConfirm={() => {
+                    this.endSheet('已取消')
+                  }}
+                >
                   <li className="right">取消订单</li>
-                  <li className="right">报废订单</li>
+
+              </Popconfirm>
+              <Popconfirm
+                  title="确认作废吗？"
+                  onConfirm={() => {
+                    this.endSheet('已作废')
+                  }}
+                >
+                  <li className="right">作废订单</li>
+                  </Popconfirm>
                 </>
               ) : null}
+              {
+                this.state.sheetData.sheetStatus=='已取消'?<li className='stoped'>已取消</li>:null
+              }
+              {
+                this.state.sheetData.sheetStatus=='已作废'?<li className='stoped'>已作废</li>:null
+              }
             </ul>
           </div>
           <div className="workSheetForm">
@@ -1259,7 +1416,7 @@ class WorkSheetDetail extends React.Component {
                 this.props.editRight.part6 ? 'block hidden' : 'block part6'
               }
             ></div>
-            <div className='switch' style={this.props.new||this.state.canEdit>3?{display:'none'}:{}}>
+            <div className='switch' style={this.props.new||this.state.canEdit>3||!this.state.isCurrent?{display:'none'}:{}}>
               {this.state.canEdit>0?
               <Button type='danger' onClick={()=>{this.endFlow()}}>结束当前流程</Button>
               :
@@ -1613,23 +1770,15 @@ class WorkSheetDetail extends React.Component {
                       <Row>
                         <Col span={2}>接单人</Col>
                         <Col span={3}>
-                          {/* <div
+                          <div
                             onClick={() => {
                               this.setState({ showWorker: true ,fillName:'C3_678796887001',fillNum:'C3_682639124047',fillId:'C3_682639109504'});
                             }}
                             style={{ height: '24px', cursor: 'pointer' }}
                           >
                             {this.state.sheetData.C3_678796887001}
-                          </div> */}
-                          <input
-                            value={this.state.sheetData.C3_678796887001}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678796887001',
-                                v.target.value
-                              );
-                            }}
-                          />
+                          </div>
+                         
                         </Col>
                         <Col span={2}>送货单号</Col>
                         <Col span={3}>
@@ -2104,15 +2253,14 @@ class WorkSheetDetail extends React.Component {
                       <Row>
                         <Col span={2}>制图人</Col>
                         <Col span={3}>
-                          <input
-                            value={this.state.sheetData.C3_678797238397}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797238397',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_678797238397',fillNum:'C3_682639703794',fillId:'C3_682639694068'});
                             }}
-                          />
+                            style={{ height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_678797238397}
+                          </div>
                         </Col>
                         <Col span={3}>制图档号</Col>
                         <Col span={2}>
@@ -2274,32 +2422,29 @@ class WorkSheetDetail extends React.Component {
                             />
                           </div>
                           <div>
-                            <span style={{ width: '10%' }}>检验人：</span>
-                            <input
-                              style={{ width: '90%' }}
-                              value={this.state.sheetData.C3_681950832269}
-                              onChange={v => {
-                                this.changeSheet(
-                                  'C3_681950832269',
-                                  v.target.value
-                                );
-                              }}
-                            />
+                            <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_681950832269',fillNum:'C3_682642193833',fillId:'C3_682642207323'});
+                            }}
+                            style={{textIndent:'.5rem', height: '24px',textAlign:'left', cursor: 'pointer' }}
+                          >
+                            检验人：{this.state.sheetData.C3_681950832269}
+                          </div>
+                            
                           </div>
                         </Col>
                       </Row>
                       <Row>
                         <Col span={2}>割板人</Col>
                         <Col span={4}>
-                          <input
-                            value={this.state.sheetData.C3_678797343880}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797343880',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_678797343880',fillNum:'C3_682642236468',fillId:'C3_682642226248'});
                             }}
-                          />
+                            style={{height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_678797343880}
+                          </div>
                         </Col>
                         <Col span={3}>割板时间</Col>
                         <Col className="multInput" span={5}>
@@ -2550,41 +2695,38 @@ class WorkSheetDetail extends React.Component {
                         </Col>
                         <Col span={2}>确认人</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_682033137280}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_682033137280',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_682033137280',fillNum:'C3_682642278017',fillId:'C3_682642261218'});
                             }}
-                          />
+                            style={{height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_682033137280}
+                          </div>
                         </Col>
                         <Col span={2}>检验人</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_682033154189}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_682033154189',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_682033154189',fillNum:'C3_682642309178',fillId:'C3_682642320881'});
                             }}
-                          />
+                            style={{height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_682033154189}
+                          </div>
                         </Col>
                       </Row>
                       <Row>
                         <Col span={2}>装刀人</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797430424}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797430424',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_678797430424',fillNum:'C3_682642384633',fillId:'C3_682642361945'});
                             }}
-                          />
+                            style={{height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_678797430424}
+                          </div>
                         </Col>
                         <Col span={1}>时间</Col>
                         <Col className="multInput" span={7}>
@@ -2610,15 +2752,15 @@ class WorkSheetDetail extends React.Component {
                         </Col>
                         <Col span={3}>第二装刀人</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797462885}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797462885',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_678797462885',fillNum:'C3_682642439955',fillId:'C3_682642425303'});
                             }}
-                          />
+                            style={{height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_678797462885}
+                          </div>
+                         
                         </Col>
                         <Col span={1}>时间</Col>
                         <Col className="multInput" span={6}>
@@ -2646,15 +2788,14 @@ class WorkSheetDetail extends React.Component {
                       <Row>
                         <Col span={2}>弯刀人</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797394318}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797394318',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_678797394318',fillNum:'C3_682642472381',fillId:'C3_682642483380'});
                             }}
-                          />
+                            style={{height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_678797394318}
+                          </div>
                         </Col>
                         <Col span={2}>时间</Col>
                         <Col className="multInput" span={7}>
@@ -2729,17 +2870,15 @@ class WorkSheetDetail extends React.Component {
                             />
                           </div>
                           <div>
-                            <span style={{ width: '10%' }}>检验人：</span>
-                            <input
-                              style={{ width: '90%' }}
-                              value={this.state.sheetData.C3_678797488455}
-                              onChange={v => {
-                                this.changeSheet(
-                                  'C3_678797488455',
-                                  v.target.value
-                                );
-                              }}
-                            />
+                            <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_678797488455',fillNum:'C3_682642516846',fillId:'C3_682642505192'});
+                            }}
+                            style={{textIndent:'.5rem',textAlign:'left',height: '24px', cursor: 'pointer' }}
+                          >
+                            检验人：{this.state.sheetData.C3_678797488455}
+                          </div>
+                            
                           </div>
                         </Col>
                       </Row>
@@ -2850,27 +2989,25 @@ class WorkSheetDetail extends React.Component {
                         </Col>
                         <Col span={2}>领料人</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_682034505726}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_682034505726',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_682034505726',fillNum:'C3_682642545464',fillId:'C3_682642555278'});
                             }}
-                          />
+                            style={{height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_682034505726}
+                          </div>
                         </Col>
                         <Col span={2}>发料人</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_682034516838}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_682034516838',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_682034516838',fillNum:'C3_682642568050',fillId:'C3_682642625234'});
                             }}
-                          />
+                            style={{height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_682034516838}
+                          </div>
                         </Col>
                       </Row>
                       <Row>
@@ -3711,27 +3848,25 @@ class WorkSheetDetail extends React.Component {
                         </Col>
                         <Col span={2}>送货人</Col>
                         <Col span={3}>
-                          <input
-                            value={this.state.sheetData.C3_678797515839}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797515839',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_678797515839',fillNum:'C3_682642781988',fillId:'C3_682642791216'});
                             }}
-                          />
+                            style={{height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_678797515839}
+                          </div>
                         </Col>
                         <Col span={2}>检验人</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_682039853604}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_682039853604',
-                                v.target.value
-                              );
+                        <div
+                            onClick={() => {
+                              this.setState({ showWorker: true ,fillName:'C3_682039853604',fillNum:'C3_682642812388',fillId:'C3_682642803657'});
                             }}
-                          />
+                            style={{height: '24px', cursor: 'pointer' }}
+                          >
+                            {this.state.sheetData.C3_682039853604}
+                          </div>
                         </Col>
                       </Row>
                     </div>

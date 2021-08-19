@@ -266,6 +266,7 @@ class WorkSheetShowBoard extends React.Component {
           }}
           destroyOnClose
           width={'80vw'}
+          style={{background:'#999'}}
         >
           <div
             style={{
