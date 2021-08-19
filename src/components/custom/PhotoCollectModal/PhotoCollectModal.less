@@ -1,0 +1,67 @@
+.photo-collect-modal {
+  .ant-modal-body {
+    padding: 0 !important;
+  }
+  &__info {
+    margin: 0 8px;
+  }
+  &__tip {
+    line-height: 34px;
+    background-color: #eef7fe;
+  }
+  &__body {
+    padding: 24px;
+    color: #99a5b4;
+  }
+  &__name {
+    color: #333;
+  }
+  &__img {
+    display: block;
+    width: 195px;
+    height: 260px;
+    margin: 24px auto 0;
+  }
+  &__btns-wrapper {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 0 4px;
+    span {
+      color: #333;
+    }
+  }
+  &__upload-btn {
+    position: relative;
+  }
+  &__file-input {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  &__upload-img,
+  &__take-photo-img {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+  }
+  &__desc-wrapper {
+    margin-top: 24px;
+  }
+  &__desc {
+    text-align: center;
+  }
+}

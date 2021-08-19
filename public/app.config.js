@@ -22,6 +22,11 @@ window.pwConfig = {
         fileType: 'mdb'
       }
     },
+
+    // 上传人员人脸照片的基地址
+    uploadPersonPhotoURL:
+      'http://kingofdinner.realsun.me:17000/rispweb/rispservice/svcuploadfile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://kingofdinner.realsun.me:17000/rispweb/upfiles',
+
     penetrate: false, //是否穿透模式
     penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
     waitingHandleBaseURL: 'http://10.108.21.41:6000',
@@ -240,6 +245,10 @@ window.pwConfig = {
         fileType: 'mdb'
       }
     },
+    // 上传人员人脸照片的基地址
+    uploadPersonPhotoURL:
+      'http://kingofdinner.realsun.me:17000/rispweb/rispservice/svcuploadfile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://kingofdinner.realsun.me:17000/rispweb/upfiles',
+
     penetrate: false, //是否穿透模式
     penetrateReplaceBaseURL: 'http://ngrok80.realsun.me',
     waitingHandleBaseURL: 'http://10.108.2.66:1002',
