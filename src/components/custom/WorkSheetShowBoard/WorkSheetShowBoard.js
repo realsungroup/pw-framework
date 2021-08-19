@@ -90,54 +90,54 @@ class WorkSheetShowBoard extends React.Component {
   //获取新建订单权限
   getRight = async () => {
     //获取localstorage的部门代码
-    this.setState({loading2:true});
-    let res;
-    let depaID = localStorage.getItem('userInfo');
-    depaID = JSON.parse(depaID);
-    depaID = depaID.UserInfo.EMP_DEPID;
+    // this.setState({loading2:true});
+    // let res;
+    // let depaID = localStorage.getItem('userInfo');
+    // depaID = JSON.parse(depaID);
+    // depaID = depaID.UserInfo.EMP_DEPID;
     //获取pw后台的新建权限
-    try {
-      res = await http().getTable({
-        resid: 681075873039,
-        cmswhere: `C3_682274906470 = '${depaID}'`
-      });
-      console.log(res);
-      let n = 0;
+    // try {
+    //   res = await http().getTable({
+    //     resid: 681075873039,
+    //     cmswhere: `C3_682274906470 = '${depaID}'`
+    //   });
+      // console.log(res);
+      // let n = 0;
       let obj = {};
       let mesId = '';
-      while (n < res.data.length) {
-        if (res.data[n].depaId == '681076033443') {
+      // while (n < res.data.length) {
+        if (this.props.depaId == '681076033443') {
           obj.part1 = true;
           mesId = '681076033443';
         }
-        if (res.data[n].depaId == '681076169400') {
+        if (this.props.depaId == '681076169400') {
           obj.part2 = true;
           mesId = '681076169400';
         }
-        if (res.data[n].depaId == '681076179960') {
+        if (this.props.depaId == '681076179960') {
           obj.part3 = true;
           mesId = '681076179960';
         }
-        if (res.data[n].depaId == '681076187961') {
+        if (this.props.depaId == '681076187961') {
           obj.part4 = true;
           mesId = '681076187961';
         }
-        if (res.data[n].depaId == '681076196461') {
+        if (this.props.depaId == '681076196461') {
           obj.part5 = true;
           mesId = '681076196461';
         }
-        if (res.data[n].depaId == '681076208531') {
+        if (this.props.depaId == '681076208531') {
           obj.part6 = true;
           mesId = '681076208531';
         }
-        n++;
-      }
+      //   n++;
+      // }
       this.setState({ editRight: obj, mesId: mesId });
       this.getSheets(mesId);
-    } catch (error) {
-      message.error(error.message);
-      console.log(error);
-    }
+    // } catch (error) {
+    //   message.error(error.message);
+    //   console.log(error);
+    // }
   };
 
   //显示详情页
@@ -210,7 +210,7 @@ class WorkSheetShowBoard extends React.Component {
       console.log(res2,done)
       let newArr = emergy.concat(arr);
       let chartObj = {
-        total: res.data.length,
+        total: done.length+ing.length+unstart.length+qx.length+zf.length,
         data: [
           { value: done.length, name: '已完成：' + done.length },
           { value: ing.length, name: '进行中：' + ing.length },
@@ -305,6 +305,14 @@ class WorkSheetShowBoard extends React.Component {
             >
               已开始
             </div>
+            <div
+              className={this.state.filter == '已开始' ? 'current' : ''}
+              onClick={() => {
+                this.getRight();
+              }}
+            >
+              刷新数据
+            </div>
           </div>
           <div id="showBoard"></div>
           {this.state.sheets.map(item => {
@@ -370,6 +378,7 @@ class WorkSheetShowBoard extends React.Component {
                 editRight={this.state.editRight}
                 clearData={this.state.clearData}
                 curSheetId={this.state.curSheetId}
+                mesId={this.state.mesId}
              >
               </WorkSheetDetail>   
         </div>

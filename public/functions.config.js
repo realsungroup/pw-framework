@@ -10384,7 +10384,7 @@ window[680957487737] = {
 //员工 我的课程
 window[681041450360] = {
   name: 'WorkSheet', // 组件名称，这里为定制组件名称
-  title: '工作单列表', // 功能模块名称
+  title: '业务部工作单', // 功能模块名称
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
     // resid: 777
@@ -10392,9 +10392,37 @@ window[681041450360] = {
 };
 window[682466579171] = {
   name: 'WorkSheetShowBoard', // 组件名称，这里为定制组件名称
-  title: '进行中的工作单', // 功能模块名称
+  title: '工程部工作单', // 功能模块名称
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
+    depaId:'681076169400'
+    // resid: 777
+  } // 组件所接收的 props
+};
+window[682726365673] = {
+  name: 'WorkSheetShowBoard', // 组件名称，这里为定制组件名称
+  title: '激光部工作单', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    depaId:'681076179960'
+    // resid: 777
+  } // 组件所接收的 props
+};
+window[682726413350] = {
+  name: 'WorkSheetShowBoard', // 组件名称，这里为定制组件名称
+  title: '制造部工作单', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    depaId:'681076187961'
+    // resid: 777
+  } // 组件所接收的 props
+};
+window[682726440988] = {
+  name: 'WorkSheetShowBoard', // 组件名称，这里为定制组件名称
+  title: '质检部工作单', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    depaId:'681076208531'
     // resid: 777
   } // 组件所接收的 props
 };

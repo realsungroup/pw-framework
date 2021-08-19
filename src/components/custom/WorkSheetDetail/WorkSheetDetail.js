@@ -76,7 +76,7 @@ const mapping =[
     mapping:[
       {
         from:'CUR_TIME',
-        to:'C3_682379496968',
+        to:'C3_678797328067',
         memeo:'制图结束时间',
         type:'string'
       }
@@ -174,6 +174,46 @@ const mapping =[
       }
     ]
   },
+//装刀人2
+{
+  id:'682728251509',
+  process:'start',
+  mapping:[
+    {
+      from:'C3_678797462885',
+      to:'C3_682371274376',
+      memeo:'装刀人2'
+    },{
+      from:'C3_682642425303',
+      to:'C3_682377803370',
+      memo:'装刀人2工号'
+    },{
+      from:'C3_682642439955',
+      to:'C3_682371322856',
+      memo:'装刀人2编号'
+    },
+    {
+      from:'CUR_TIME',
+      to:'C3_678797469831',
+      memeo:'装刀2开始时间',
+      type:'string'
+    }
+  ]
+},
+{
+  id:'682728251509',
+  process:'end',
+  mapping:[
+    {
+      from:'CUR_TIME',
+      to:'C3_678797479749',
+      memeo:'装刀结束时间',
+      type:'string'
+
+    }
+  ]
+},
+
   //弯刀人
   {
     id:'682635512931',
@@ -375,9 +415,15 @@ class WorkSheetDetail extends React.Component {
         if(res.data[n].C3_682377833865=='已完成' && res.data[n].sheetStatus=='进行中'){
         curID = res.data[n].C3_682444277336;
         this.setState({canEdit:0});
-
         }else{
           this.setState({canEdit:1});
+        }
+
+        if(res.data[n].C3_682377833865=='已完成' && res.data[n].curDepaId==this.props.mesId && res.data[n].C3_682540168336!='Y'){
+          this.setState({canEdit:9});
+        }
+        if(!this.props.mesId){
+          this.setState({canEdit:9});
         }
         
         sheetID = res.data[n].C3_682281119677;
@@ -788,17 +834,11 @@ class WorkSheetDetail extends React.Component {
     let res;
     let nxtChara=this.calNext(this.state.sheetData.C3_682444277336);
     let myTime = new Date();
-    let data = {
-      REC_ID:this.state.sheetData.REC_ID,
-      curChara:this.state.sheetData.C3_682444277336,
-      C3_682444277336:nxtChara.productflowjobroleid,
-      C3_682379482255:myTime,
-      C3_682379496968:'',
-      C3_682377833865:'进行中',
-    }
+    let data = this.state.sheetData;
+    let ins = this.state.sheetData.C3_682444277336
     let n=0;
     while(n<mapping.length){
-      if(mapping[n].id==this.state.sheetData.C3_682444277336 && mapping[n].process=='start'){
+      if(mapping[n].id==ins && mapping[n].process=='start'){
         let counter=0;
         while(counter<mapping[n].mapping.length){
           let ress=this.state.sheetData[mapping[n].mapping[counter].from];
@@ -812,8 +852,12 @@ class WorkSheetDetail extends React.Component {
       }
       n++;
     }
+    data.curChara=this.state.sheetData.C3_682444277336;
+    data.C3_682444277336=nxtChara.productflowjobroleid;
+    data.C3_682379482255=myTime;
+    data.C3_682379496968='';
+    data.C3_682377833865='进行中';
     console.log('data',data)
-    this.setState({loading:false,process:'正在开始'})
 
     try {
       res = await http().modifyRecords({
@@ -836,14 +880,10 @@ class WorkSheetDetail extends React.Component {
     let res;
     let data = this.state.sheetData;
     let myTime = new Date();
-      data.C3_682379496968=myTime;
-      data.C3_682377833865='已完成';
-      if(data.curChara=='682635881582'){
-        data.sheetStatus='已完成'
-      }
+     
       let n=0;
       while(n<mapping.length){
-        if(mapping[n].id==this.state.sheetData.C3_682444277336 && mapping[n].process=='end'){
+        if(mapping[n].id==this.state.sheetData.curChara && mapping[n].process=='end'){
           let counter=0;
           while(counter<mapping[n].mapping.length){
             let ress=this.state.sheetData[mapping[n].mapping[counter].from];
@@ -856,7 +896,11 @@ class WorkSheetDetail extends React.Component {
         }
         n++;
       }
-
+      data.C3_682379496968=myTime;
+      data.C3_682377833865='已完成';
+      if(data.curChara=='682635881582'){
+        data.sheetStatus='已完成'
+      }
     try {
       res = await http().modifyRecords({
         resid: '678790254230',
@@ -1392,27 +1436,27 @@ class WorkSheetDetail extends React.Component {
             ></div>
             <div
               className={
-                this.props.editRight.part2 ? 'block hidden' : 'block part2'
+                this.props.editRight.part2 || this.props.editRight.part6? 'block hidden' : 'block part2'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part3 ? 'block hidden' : 'block part3'
+                this.props.editRight.part3 || this.props.editRight.part6 ? 'block hidden' : 'block part3'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part4 ? 'block hidden' : 'block part4'
+                this.props.editRight.part4 || this.props.editRight.part6? 'block hidden' : 'block part4'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part5 ? 'block hidden' : 'block part5'
+                this.props.editRight.part5? 'block hidden' : 'block part5'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part6 ? 'block hidden' : 'block part6'
+                this.props.editRight.part6 || this.props.editRight.part6? 'block hidden' : 'block part6'
               }
             ></div>
             <div className='switch' style={this.props.new||this.state.canEdit>3||!this.state.isCurrent?{display:'none'}:{}}>
@@ -2435,7 +2479,7 @@ class WorkSheetDetail extends React.Component {
                       </Row>
                       <Row>
                         <Col span={2}>割板人</Col>
-                        <Col span={4}>
+                        <Col span={3}>
                         <div
                             onClick={() => {
                               this.setState({ showWorker: true ,fillName:'C3_678797343880',fillNum:'C3_682642236468',fillId:'C3_682642226248'});
@@ -2446,7 +2490,7 @@ class WorkSheetDetail extends React.Component {
                           </div>
                         </Col>
                         <Col span={3}>割板时间</Col>
-                        <Col className="multInput" span={5}>
+                        <Col className="multInput" span={7}>
                           <input
                             value={this.state.sheetData.C3_678797351896}
                             onChange={v => {
@@ -2467,7 +2511,7 @@ class WorkSheetDetail extends React.Component {
                             }}
                           />
                         </Col>
-                        <Col span={5}>切割板尺寸</Col>
+                        <Col span={4}>切割板尺寸</Col>
                         <Col className="multInput" span={5}>
                           <input
                             value={this.state.sheetData.C3_678797366895}
