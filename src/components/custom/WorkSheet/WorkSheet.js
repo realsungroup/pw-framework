@@ -1,16 +1,17 @@
 import React from 'react';
 import './WorkSheet.less';
-import { Select, Button,message,DatePicker } from 'antd';
+import { Select, Button,message,DatePicker,Modal,Input,Spin } from 'antd';
 import { TableData } from '../../common/loadableCommon';
 import WorkSheetDetail from '../WorkSheetDetail';
 import http from 'Util20/api';
-
+const { TextArea } = Input;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 class WorkSheet extends React.Component {
   constructor(props){
     super(props)
    this.state={
+     loading:false,
       depa:[
         {
           depaId:'',
@@ -105,6 +106,9 @@ class WorkSheet extends React.Component {
         if(res.data[n].ColName=='sheetStatus'){
           this.setState({sheetStatus:res.data[n].DisplayOptions})
         }
+        if(res.data[n].ColName=='C3_682782291042'){
+          this.setState({zfyy:res.data[n].DisplayOptions})
+        }
         n++;
       }
       this.getDepa();
@@ -178,11 +182,58 @@ class WorkSheet extends React.Component {
       isNew=false;
       value = v;
     }
+    this.handleRefresh();
     this.setState({showDetails:value,curSheetId:ID,isNew:isNew});
+  }
+  //修改评论
+  handleModi = async() =>{
+    this.setState({loading:true})
+
+    let res;
+    try {
+      res = await http().modifyRecords({
+        resid: 678790254230,
+        data:[
+          {
+            REC_ID:this.state.cid,
+            C3_682368706409:this.state.fb
+          }
+        ]
+      });
+      this.setState({loading:false,showModi:false});
+      this.handleRefresh();
+      message.success('保存成功');
+      console.log(res)
+    } catch (error) {
+      this.setState({loading:false})
+      message.error(error.message);
+      console.log(error);
+    }
   }
   render() {
     return (
       <div className="sheetlist">
+        <Modal
+         visible={this.state.showModi}
+         onOk={()=>{this.handleModi();}}
+         onCancel={() => {
+           this.setState({ showModi: false });
+         }}
+         destroyOnClose
+         width={'80vw'}
+        >
+          <div>
+            <Spin spinning={this.state.loading}>
+            <p>请输入客户评价：</p>
+            <TextArea
+                              value={this.state.fb}
+                              onChange={v => {
+                                this.setState({fb:v.target.value})
+                              }}
+                            /></Spin>
+          </div>
+        </Modal>
+        
         <div className='filterLine'>
           <ul>
           <li>
@@ -303,11 +354,25 @@ class WorkSheet extends React.Component {
                 customRowBtns={[
                   (record, btnSize) => {
                     return (
+                      <>
                       <Button
                         onClick={()=>{this.showDetails(true,record.C3_682281119677)}}
                       >
                         查看
                       </Button>
+                      {
+                        record.sheetStatus=='已完成'?
+                        <Button onClick={()=>{
+                          this.setState({
+                            fb:record.C3_682368706409,
+                            cid:record.REC_ID,
+                            showModi:true
+                          })
+                        }}>
+                          填写用户反馈
+                        </Button>:null
+                      }
+                      </>
                     );
                   }
                 ]}
@@ -323,6 +388,7 @@ class WorkSheet extends React.Component {
                 handleRefresh={()=>{this.handleRefresh()}}
                 curSheetId={this.state.curSheetId}
                 colData={this.state.colData}
+                zfyy={this.state.zfyy}
              >
               </WorkSheetDetail>   
         </div>

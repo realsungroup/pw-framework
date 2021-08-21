@@ -258,6 +258,19 @@ const mapping =[
     id:'682635648524',
     process:'start',
     mapping:[
+      {
+        from:'C3_682039853604',
+        to:'C3_682371274376',
+        memeo:'最终评定人'
+      },{
+        from:'C3_682642803657',
+        to:'C3_682377803370',
+        memo:'最终评定人工号'
+      },{
+        from:'C3_682642812388',
+        to:'C3_682371322856',
+        memo:'最终评定人编号'
+      }
     ]
   },
   {
@@ -930,12 +943,13 @@ class WorkSheetDetail extends React.Component {
   }
   //报废/取消订单
   endSheet = async(v)=>{
-    this.setState({loading:true,process:'正在操作'})
+    this.setState({loading:true,showZuofei:false,process:'正在操作'})
     let res;
     let data={
       REC_ID:this.state.sheetData.REC_ID,
       sheetStatus:v,
-      C3_682377833865:'非正常终止'
+      C3_682377833865:'非正常终止',
+      C3_682782291042:this.state.sheetData.C3_682782291042
     }
     try {
       res = await http().modifyRecords({
@@ -999,6 +1013,45 @@ class WorkSheetDetail extends React.Component {
         >
           <span>{this.state.process}</span>
         </div>
+        <Modal
+         visible={this.state.showZuofei}
+         onOk={()=>{
+           if(!this.state.sheetData.C3_682782291042){
+             message.error('请选择作废原因')
+           }else{
+            this.endSheet('已作废')}
+           }
+          }
+         onCancel={() => {
+           this.setState({ showZuofei: false });
+         }}
+         destroyOnClose
+         width={'80vw'}
+        >
+          <div>
+            <p>请选择作废原因：</p>
+            <Select
+              value={this.state.sheetData.C3_682782291042}
+              style={{width:'200px'}}
+              onChange={v => {
+                this.changeSheet(
+                  'C3_682782291042',
+                  v
+                );
+              }}
+            >
+              {
+                this.props.zfyy?this.props.zfyy.map(
+                  (item)=>{
+                    return(
+                      <Option value={item}>{item}</Option>
+                    )
+                  }
+                ):null
+              }
+            </Select>
+          </div>
+        </Modal>
         <Modal
          visible={this.state.showModi}
          onOk={()=>{this.handleModi();}}
@@ -1123,7 +1176,7 @@ class WorkSheetDetail extends React.Component {
           <div style={{ width: '100%', height: '80vh' }}>
             <TableData
               resid="680642915078"
-              cmswhere={`C3_682375876703 = '${this.state.sheetData.C3_682369620435}'`}
+              cmswhere={`recidWO = '${this.state.sheetData.C3_682281119677}'`}
               subtractH={180}
               hasAdd={false}
               hasRowView={true}
@@ -1139,54 +1192,7 @@ class WorkSheetDetail extends React.Component {
           </div>
         </Modal>
 
-        <Modal
-          visible={this.state.showGoods}
-          footer={null}
-          onCancel={() => {
-            this.setState({ showGoods: false });
-          }}
-          destroyOnClose
-          width={'80vw'}
-        >
-          <div style={{ width: '100%', height: '80vh' }}>
-            <TableData
-              resid="678789197967"
-              subtractH={180}
-              hasAdd={true}
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={false}
-              hasRowSelection={false}
-              hasAdvSearch={false}
-              importConfig={null}
-              customRowBtns={[
-                (record, btnSize) => {
-                  return (
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        let obj = this.state.sheetData;
-                        this.state.sheetData.C3_682369620435 = record.productid;
-                        this.state.sheetData.C3_678796779827 =
-                          record.C3_679066211152;
-
-                        this.setState({
-                          showGoods: false,
-                          sheetData: obj
-                        });
-                      }}
-                    >
-                      选择
-                    </Button>
-                  );
-                }
-              ]}
-            />
-          </div>
-        </Modal>
+      
 
         <Modal
           visible={this.state.showImg}
@@ -1331,15 +1337,19 @@ class WorkSheetDetail extends React.Component {
                   </a>
                 ) : null}
                 <div className="left">
-                  <input
-                    id="ss"
-                    name="ss"
-                    type="file"
-                    onChange={v => {
-                      this.imgUp(v);
-                    }}
-                    accept="image"
-                  />
+                  {!this.props.view && this.props.editRight.part1?
+                   <input
+                   id="ss"
+                   name="ss"
+                   type="file"
+                   onChange={v => {
+                     this.imgUp(v);
+                   }}
+                   accept="image"
+                 />:null
+                  
+                  }
+                 
                 </div>
               </div>
             </div>
@@ -1356,7 +1366,7 @@ class WorkSheetDetail extends React.Component {
                       this.setState({ showRelCon: true });
                     }}
                   >
-                    产看关联反馈
+                    查看关联反馈
                   </span>
                   <p>{this.state.sheetData.C3_682368706409}</p>
                 </div>
@@ -1413,14 +1423,7 @@ class WorkSheetDetail extends React.Component {
                   <li className="right">取消订单</li>
 
               </Popconfirm>
-              <Popconfirm
-                  title="确认作废吗？"
-                  onConfirm={() => {
-                    this.endSheet('已作废')
-                  }}
-                >
-                  <li className="right">作废订单</li>
-                  </Popconfirm>
+                  <li className="right" onClick={()=>{this.setState({showZuofei:true})}}>作废订单</li>
                 </>
               ) : null}
               {
@@ -1431,7 +1434,7 @@ class WorkSheetDetail extends React.Component {
               }
             </ul>
           </div>
-          <div className="workSheetForm">
+          <div className={this.props.view?'workSheetForm views':"workSheetForm"}>
             <div
               className={
                 this.props.editRight.part1||this.props.new ? 'block hidden' : 'block part1'
@@ -1439,17 +1442,17 @@ class WorkSheetDetail extends React.Component {
             ></div>
             <div
               className={
-                this.props.editRight.part2 || this.props.editRight.part6? 'block hidden' : 'block part2'
+                this.props.editRight.part2? 'block hidden' : 'block part2'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part3 || this.props.editRight.part6 ? 'block hidden' : 'block part3'
+                this.props.editRight.part3? 'block hidden' : 'block part3'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part4 || this.props.editRight.part6? 'block hidden' : 'block part4'
+                this.props.editRight.part4? 'block hidden' : 'block part4'
               }
             ></div>
             <div
@@ -1546,14 +1549,15 @@ class WorkSheetDetail extends React.Component {
                         </Col>
                         <Col span={3}>产品名称</Col>
                         <Col span={7}>
-                          <div
-                            onClick={() => {
-                              this.setState({ showGoods: true });
+                        <input
+                            value={this.state.sheetData.C3_678796779827}
+                            onChange={v => {
+                              this.changeSheet(
+                                'C3_678796779827',
+                                v.target.value
+                              );
                             }}
-                            style={{ height: '24px', cursor: 'pointer' }}
-                          >
-                            {this.state.sheetData.C3_678796779827}
-                          </div>
+                          />
                         </Col>
                         <Col span={2}>数量</Col>
                         <Col span={2}>
@@ -1905,6 +1909,7 @@ class WorkSheetDetail extends React.Component {
                             </span>
                             <TextArea
                               value={this.state.sheetData.C3_678796951598}
+                              style={{textAlign:'left',textIndent:'.5rem'}}
                               onChange={v => {
                                 this.changeSheet(
                                   'C3_678796951598',
@@ -2459,6 +2464,7 @@ class WorkSheetDetail extends React.Component {
                             </span>
                             <TextArea
                               value={this.state.sheetData.C3_678797335509}
+                              style={{textAlign:'left',textIndent:'.5rem'}}
                               onChange={v => {
                                 this.changeSheet(
                                   'C3_678797335509',
@@ -2672,6 +2678,7 @@ class WorkSheetDetail extends React.Component {
                               切割要备注：
                             </span>
                             <TextArea
+                              style={{textAlign:'left',textIndent:'.5rem'}}
                               value={this.state.sheetData.C3_678797387551}
                               onChange={v => {
                                 this.changeSheet(
@@ -2767,9 +2774,11 @@ class WorkSheetDetail extends React.Component {
                         <Col span={2}>
                         <div
                             onClick={() => {
+                              if((this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')){
                               this.setState({ showWorker: true ,fillName:'C3_678797430424',fillNum:'C3_682642384633',fillId:'C3_682642361945'});
+                              }
                             }}
-                            style={{height: '24px', cursor: 'pointer' }}
+                            style={(this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')?{height: '24px', cursor: 'pointer' }:{height:'24px'}}
                           >
                             {this.state.sheetData.C3_678797430424}
                           </div>
@@ -2800,9 +2809,11 @@ class WorkSheetDetail extends React.Component {
                         <Col span={2}>
                         <div
                             onClick={() => {
+                              if((this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')){
                               this.setState({ showWorker: true ,fillName:'C3_678797462885',fillNum:'C3_682642439955',fillId:'C3_682642425303'});
+                              }
                             }}
-                            style={{height: '24px', cursor: 'pointer' }}
+                            style={(this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')?{height: '24px', cursor: 'pointer' }:{height:'24px'}}
                           >
                             {this.state.sheetData.C3_678797462885}
                           </div>
@@ -2836,9 +2847,11 @@ class WorkSheetDetail extends React.Component {
                         <Col span={2}>
                         <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_678797394318',fillNum:'C3_682642472381',fillId:'C3_682642483380'});
+                              if((this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')){
+                                this.setState({ showWorker: true ,fillName:'C3_678797394318',fillNum:'C3_682642472381',fillId:'C3_682642483380'});
+                              }
                             }}
-                            style={{height: '24px', cursor: 'pointer' }}
+                            style={(this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')?{height: '24px', cursor: 'pointer' }:{height:'24px'}}
                           >
                             {this.state.sheetData.C3_678797394318}
                           </div>
@@ -2906,6 +2919,7 @@ class WorkSheetDetail extends React.Component {
                               装刀备注：
                             </span>
                             <TextArea
+                              style={{textAlign:'left',textIndent:'.5rem'}}
                               value={this.state.sheetData.C3_682034065524}
                               onChange={v => {
                                 this.changeSheet(

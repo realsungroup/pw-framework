@@ -974,3 +974,9 @@ export const WorkSheetShowBoard = Loadable({
     return minLoading;
   }
 });
+export const WorkSheetViews = Loadable({
+  loader: () => import('./WorkSheetViews'),
+  loading() {
+    return minLoading;
+  }
+});

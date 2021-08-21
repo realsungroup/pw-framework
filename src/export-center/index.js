@@ -192,5 +192,6 @@ export {
   MonthlySettlementLock,
   OfficeSupply,
   WorkSheet,
-  WorkSheetShowBoard
+  WorkSheetShowBoard,
+  WorkSheetViews
 } from '../components/custom/loadableCustom';
