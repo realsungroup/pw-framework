@@ -14,6 +14,7 @@ class App extends Component {
             '06155983-b505-4b41-89b1-75cd63ad3cf2',
             'ec25ecfb-388d-4b86-9932-853e8c34474d'
           ]}
+          // regionIndexCodes={['root000000']}
         ></DoorsSelect>
       </TemplateWrap>
     );

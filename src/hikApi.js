@@ -67,3 +67,12 @@ export const getRegionTreeByName = (indexCodes, regionName) => {
     regionName
   });
 };
+
+/**
+ * 查询门禁点列表
+ */
+export const queryDoors = data => {
+  return hikInstance.post('/api/v1/queryDoors', {
+    ...data
+  });
+};

@@ -189,6 +189,11 @@ class RegionSelect extends React.Component {
     this.setState({ expandedKeys });
   };
 
+  handleSelect = selectedKeys => {
+    const { onRegionSelect } = this.props;
+    onRegionSelect && onRegionSelect(selectedKeys[0]);
+  };
+
   render() {
     const {
       regionTree,
@@ -199,12 +204,13 @@ class RegionSelect extends React.Component {
     } = this.state;
     return (
       <div className="region-select">
-        <Spin spinning={loading}>
-          <div>设备所在区域</div>
+        <Spin spinning={loading} style={{ height: '100%' }}>
+          <div className="region-select__header">设备所在区域</div>
           <Search
             style={{ marginBottom: 8 }}
             placeholder="搜索区域名称"
             onSearch={this.onSearch}
+            size="small"
           />
 
           {!!regionTree.length && (
@@ -214,6 +220,7 @@ class RegionSelect extends React.Component {
               autoExpandParent={autoExpandParent}
               loadData={this.onLoadData}
               key={treeKey}
+              onSelect={this.handleSelect}
             >
               {this.loop(regionTree)}
             </Tree>
