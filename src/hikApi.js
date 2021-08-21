@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { constants } from 'crypto';
 
 const hikApiBaseURL = window.pwConfig[process.env.NODE_ENV].hikApiBaseURL;
 
@@ -42,4 +43,27 @@ hikInstance.interceptors.response.use(
  */
 export const getRootRegion = () => {
   return hikInstance.get('/api/v1/getRootRegion');
+};
+
+export const getSubRegions = data => {
+  return hikInstance.post('/api/v1/getSubRegions', data);
+};
+
+/**
+ * 根据编号获取区域详细信息
+ */
+export const getRegionInfo = indexCodes => {
+  return hikInstance.post('/api/v1/getRegionInfo', {
+    indexCodes
+  });
+};
+
+/**
+ * 根据编号获取区域详细信息
+ */
+export const getRegionTreeByName = (indexCodes, regionName) => {
+  return hikInstance.post('/api/v1/getRegionTreeByName', {
+    indexCodes,
+    regionName
+  });
 };
