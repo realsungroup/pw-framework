@@ -379,11 +379,25 @@ class WorkSheetDetail extends React.Component {
       await this.getHistories(nextProps.curSheetId);
     }
   };
+  getNewVersion = async()=>{
+    let objEmpty={}
+    if(this.props.colData){
+      let n =0;
+      let colData = this.props.colData
+      while(n<colData.length){
+        objEmpty[colData[n].ColName]=''
+        n++;
+      }
+    }
+    this.setState({sheetData: objEmpty})
+    await this.getHistories(this.props.curSheetId);
+  }
   //获取历史数据
   //产品线ID,版本号
   getHistories = async (v, version) => {
     this.setState({ loading: true, process: '正在读取历史数据' });
     let cms = `C3_682281119677 = '${v}'`;
+    let curCanEdit=99;
     if (version) {
       cms += ` and C3_680644411481 ='${version}'`;
     }
@@ -419,7 +433,16 @@ class WorkSheetDetail extends React.Component {
           curCharaId=res.data[n].curChara;
           curSheetId= res.data[n].C3_682281119677;
           if(res.data[n].C3_682377833865=='已完成' && res.data[n].sheetStatus=='进行中'){
-            curCharaId = res.data[n].C3_682444277336;    
+            curCharaId = res.data[n].C3_682444277336;   
+            curCanEdit=0;
+          }else{
+            curCanEdit=1;
+          }
+          if(res.data[n].C3_682377833865=='已完成' && res.data[n].curDepaId==this.props.mesId && res.data[n].C3_682540168336!='Y'){
+            curCanEdit=9;
+          }
+          if(!this.props.mesId){
+            curCanEdit=9;
           }
         }
         his.push({
@@ -461,12 +484,18 @@ class WorkSheetDetail extends React.Component {
       }
       if (version) {
         this.setState({ isCurrent:isCurrent,loading: false, process: '',imgUrl:res.data[0].imgUrl });
+        if(curCanEdit!=99){
+          this.setState({canEdit:curCanEdit});
+        }
         console.log('ll',lineID, curID, sheetID)
         this.getTargetLine(lineID, curID, sheetID);
         
       } else {
         if(curSheetData){
           this.setState({imgUrl:curSheetData.imgUrl,sheetData:curSheetData,curModiReason:curSheetData.C3_680644227339});
+        }
+        if(curCanEdit!=99){
+          this.setState({canEdit:curCanEdit});
         }
         this.setState({ loading: false, process: '', histories: his});
         this.getTargetLine(curLineId, curCharaId, curSheetId);
@@ -890,6 +919,35 @@ class WorkSheetDetail extends React.Component {
       console.log(e.message);
     }
   }
+vertiRec= async(v)=>{
+  this.setState({loading:true,process:'正在验证工作单状态'});
+  let res;
+  try {
+    res = await http().getTable({
+      resid: '678790254230',
+      cmswhere:`REC_ID = '${this.state.sheetData.REC_ID}'`
+    });
+    if(res.data[0].C3_680644403785=='Y'){
+      if(v=='ed'){
+          this.endFlow()
+      }else if(v=='st'){
+        this.startFlow();
+      }
+    }else{
+      message.info('当前不是最新版本，更新版本后请重新操作');
+      this.getNewVersion();
+    }
+   
+  this.setState({loading:false,process:''})
+
+  } catch (e) {
+  this.setState({loading:false,process:''})
+
+    message.error(e.message);
+    console.log(e.message);
+  }
+}
+
   endFlow = async()=>{
     this.setState({loading:true,process:'正在结束'})
 
@@ -1467,9 +1525,13 @@ class WorkSheetDetail extends React.Component {
             ></div>
             <div className='switch' style={this.props.new||this.state.canEdit>3||!this.state.isCurrent?{display:'none'}:{}}>
               {this.state.canEdit>0?
-              <Button type='danger' onClick={()=>{this.endFlow()}}>结束当前流程</Button>
+              <Button type='danger' onClick={()=>{
+                this.vertiRec('ed');
+              }}>结束当前流程</Button>
               :
-              <Button type='primary' onClick={()=>{this.startFlow()}}>开始当前流程</Button>
+              <Button type='primary' onClick={()=>{
+                this.vertiRec('st');
+              }}>开始当前流程</Button>
               }
             </div>
             <div id="toPrint">

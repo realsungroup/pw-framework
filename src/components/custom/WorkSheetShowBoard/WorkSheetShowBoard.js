@@ -185,10 +185,13 @@ class WorkSheetShowBoard extends React.Component {
           arr.push(res.data[n]);
         }
         if (
-          res.data[n].C3_682377833865 == '已完成' &&
-          res.data[n].C3_682540168336 == 'N'
+          res.data[n].C3_682377833865 == '已完成'
         ) {
-          unstart.push(res.data[n]);
+          if(res.data[n].C3_682540168336 == 'N'){
+            unstart.push(res.data[n]);
+          }else{
+            ing.push(res.data[n]);
+          }
         } else if (res.data[n].C3_682377833865 == '进行中') {
           ing.push(res.data[n]);
         } else if (res.data[n].C3_682377833865 == '已作废') {
