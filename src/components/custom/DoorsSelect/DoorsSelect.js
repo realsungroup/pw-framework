@@ -7,6 +7,9 @@ import { Button } from 'antd';
 import { remove } from 'lodash';
 import PropTypes from 'prop-types';
 
+/**
+ * 门禁点选择组件
+ */
 class DoorsSelect extends React.Component {
   static propTypes = {
     /**

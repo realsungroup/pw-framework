@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Form, Input, message } from 'antd';
+import { Modal, Form, Input, message, Spin } from 'antd';
 import DoorsSelect from '../DoorsSelect';
 import './AddDoorsModal.less';
 import http from 'Util20/api';
@@ -7,16 +7,28 @@ import http from 'Util20/api';
 class AddDoorsModal extends React.Component {
   state = {
     regionIndexCodes: [],
-    doors: []
+    doors: [],
+    loading: false
   };
 
-  componentDidMount = async () => {
-    // TODO: 从 realsun 平台获取区域管辖表，得到能够管辖的区域 indexCodes 列表
+  componentDidMount = () => {
+    this.getRegionIndexCodes();
+  };
+
+  getRegionIndexCodes = async () => {
+    this.setState({ loading: true });
+    let res;
+    try {
+      res = await http().getTable({
+        resid: 682964730936
+      });
+    } catch (err) {
+      this.setState({ loading: false });
+      return message.error(err.message);
+    }
     this.setState({
-      regionIndexCodes: [
-        '06155983-b505-4b41-89b1-75cd63ad3cf2',
-        'ec25ecfb-388d-4b86-9932-853e8c34474d'
-      ]
+      regionIndexCodes: res.data.map(record => record.regionIndexCode),
+      loading: false
     });
   };
 
@@ -38,7 +50,9 @@ class AddDoorsModal extends React.Component {
   };
 
   submitData = async values => {
+    this.setState({ loading: true });
     const { doors } = this.state;
+
     try {
       await http().saveRecordAndSubTables({
         data: [
@@ -56,6 +70,10 @@ class AddDoorsModal extends React.Component {
                 resid: '682507735244',
                 maindata: {
                   indexCode: door.indexCode,
+                  name: door.name,
+                  regionIndexCode: door.regionIndexCode,
+                  region: door.regionPathName,
+                  control: door.doorNo,
                   _state: 'added',
                   _id: index + 1
                 }
@@ -65,8 +83,12 @@ class AddDoorsModal extends React.Component {
         ]
       });
     } catch (err) {
+      this.setState({ loading: false });
       return message.error(err.message);
     }
+    this.setState({ loading: false });
+    const { onSuccess } = this.props;
+    onSuccess && onSuccess();
   };
 
   handleSelectedDoorsChange = doors => {
@@ -76,7 +98,7 @@ class AddDoorsModal extends React.Component {
   render() {
     const { ...otherProps } = this.props;
     const { getFieldDecorator } = this.props.form;
-    const { regionIndexCodes } = this.state;
+    const { regionIndexCodes, loading } = this.state;
     return (
       <Modal
         {...otherProps}
@@ -84,7 +106,7 @@ class AddDoorsModal extends React.Component {
         title="添加门禁分组"
         onOk={this.handleSubmit}
       >
-        <div>
+        <Spin spinning={loading}>
           <Form>
             <h2>基本信息</h2>
             <Form.Item label="门禁分组名称">
@@ -103,11 +125,13 @@ class AddDoorsModal extends React.Component {
               )}
             </Form.Item>
           </Form>
-          <DoorsSelect
-            regionIndexCodes={regionIndexCodes}
-            onSelectedDoorsChange={this.handleSelectedDoorsChange}
-          ></DoorsSelect>
-        </div>
+          {!!regionIndexCodes.length && (
+            <DoorsSelect
+              regionIndexCodes={regionIndexCodes}
+              onSelectedDoorsChange={this.handleSelectedDoorsChange}
+            ></DoorsSelect>
+          )}
+        </Spin>
       </Modal>
     );
   }
