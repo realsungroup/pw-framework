@@ -5,8 +5,23 @@ import SelectDoors from './SelectDoors';
 import SelectedDoors from './SelectedDoors';
 import { Button } from 'antd';
 import { remove } from 'lodash';
+import PropTypes from 'prop-types';
 
 class DoorsSelect extends React.Component {
+  static propTypes = {
+    /**
+     * 根区域列表的 indexCodes 数组
+     * 默认：-
+     */
+    regionIndexCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
+
+    /**
+     * 选择的门禁点改变时的回调
+     * 默认：-
+     */
+    onSelectedDoorsChange: PropTypes.func
+  };
+
   state = {
     // 左侧：区域状态
     selectedRegionIndexCode: '',
