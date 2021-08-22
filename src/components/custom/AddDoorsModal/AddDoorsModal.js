@@ -33,7 +33,6 @@ class AddDoorsModal extends React.Component {
   };
 
   handleSubmit = () => {
-    console.log('11');
     const { validateFields } = this.props.form;
     const { doors } = this.state;
 
