@@ -1,13 +1,10 @@
 import React from 'react';
 import { Modal, Form, Input, message, Spin } from 'antd';
 import DoorsSelect from '../DoorsSelect';
-import './AddDoorsModal.less';
+import './ModifyDoorsModal.less';
 import http from 'Util20/api';
 
-const realsunApiBaseURL =
-  window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
-
-class AddDoorsModal extends React.Component {
+class ModifyDoorsModal extends React.Component {
   state = {
     regionIndexCodes: [],
     doors: [],
@@ -22,7 +19,7 @@ class AddDoorsModal extends React.Component {
     this.setState({ loading: true });
     let res;
     try {
-      res = await http({ baseURL: realsunApiBaseURL }).getTable({
+      res = await http().getTable({
         resid: 682964730936
       });
     } catch (err) {
@@ -56,7 +53,7 @@ class AddDoorsModal extends React.Component {
     const { doors } = this.state;
 
     try {
-      await http({ baseURL: realsunApiBaseURL }).saveRecordAndSubTables({
+      await http().saveRecordAndSubTables({
         data: [
           {
             resid: '682507600534',
@@ -76,7 +73,6 @@ class AddDoorsModal extends React.Component {
                   regionIndexCode: door.regionIndexCode,
                   region: door.regionPathName,
                   control: door.doorNo,
-                  describe: door.description,
                   _state: 'added',
                   _id: index + 1
                 }
@@ -106,7 +102,7 @@ class AddDoorsModal extends React.Component {
       <Modal
         {...otherProps}
         width={1180}
-        title="添加门禁分组"
+        title="修改门禁分组"
         onOk={this.handleSubmit}
       >
         <Spin spinning={loading}>
@@ -140,4 +136,4 @@ class AddDoorsModal extends React.Component {
   }
 }
 
-export default Form.create()(AddDoorsModal);
+export default Form.create()(ModifyDoorsModal);
