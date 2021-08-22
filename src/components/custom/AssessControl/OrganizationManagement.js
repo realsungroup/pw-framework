@@ -2,6 +2,8 @@ import React from 'react';
 import { Icon, Tabs, Button, Modal, Upload, message } from 'antd';
 import './AssessControl.less';
 import TableData from 'Common/data/TableData';
+import AddDoorsModal from '../AddDoorsModal';
+import ModifyDoorsModal from '../ModifyDoorsModal';
 
 const { TabPane } = Tabs;
 const uploadProps = {
@@ -31,7 +33,11 @@ class OrganizationManagement extends React.Component {
       isViewEntranceModalOpen: false, //控制查看门禁点信息模态窗
       needRemoveData: {}, //待删除数据
       selectedRowData: {}, //选中行的数据
-      isImportExcelModalOpen: false
+      isImportExcelModalOpen: false,
+      addDoorVisible: false,
+      modifyDoorsVisible: false,
+      modifyRecord: null,
+      doorsTableKey: 0,
     };
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
@@ -257,7 +263,8 @@ class OrganizationManagement extends React.Component {
             </div>
             <div>
               <TableData
-                resid={682695547484}
+                key={this.state.doorsTableKey}
+                resid={682507600534}
                 baseURL={this.baseURL}
                 height={'calc(100vh - 138px)'}
                 subtractH={190}
@@ -281,7 +288,7 @@ class OrganizationManagement extends React.Component {
                 ) => {
                   return (
                     <div>
-                      <Button type="primary" key="4">
+                      <Button type="primary" key="4" onClick={() => this.setState({ addDoorVisible: true })}>
                         添加
                       </Button>
                       <Button
@@ -300,7 +307,7 @@ class OrganizationManagement extends React.Component {
                 }}
                 customRowBtns={[
                   (record, btnSize) => {
-                    return <Button key="1">编辑</Button>;
+                    return <Button key="1" size={btnSize} onClick={() => this.setState({modifyDoorsVisible: true, modifyRecord: record})}>编辑</Button>;
                   },
                   (record, btnSize) => {
                     return (
@@ -333,7 +340,10 @@ class OrganizationManagement extends React.Component {
                   }
                 ]}
               />
+              {this.state.addDoorVisible && <AddDoorsModal visible={this.state.addDoorVisible} onSuccess={() => this.setState({addDoorVisible: false, doorsTableKey: this.state.doorsTableKey + 1 })} onCancel={() => this.setState({ addDoorVisible: false})}></AddDoorsModal>}
+              {this.state.modifyDoorsVisible && <ModifyDoorsModal visible={this.state.modifyDoorsVisible} record={this.state.modifyRecord} onSuccess={() => this.setState({modifyDoorsVisible: false, modifyRecord: null, doorsTableKey: this.state.doorsTableKey + 1})} onCancel={() => this.setState({ addDoorVisible: false })}></ModifyDoorsModal>}
             </div>
+            
             <Modal
               visible={isViewEntranceModalOpen}
               title="人员分组详情"
