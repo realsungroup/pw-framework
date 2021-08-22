@@ -1,9 +1,26 @@
 import React from 'react';
-import { Icon, Tabs, Button, Modal } from 'antd';
+import { Icon, Tabs, Button, Modal, Upload, message } from 'antd';
 import './AssessControl.less';
 import TableData from 'Common/data/TableData';
 
 const { TabPane } = Tabs;
+const uploadProps = {
+  name: 'file',
+  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  headers: {
+    authorization: 'authorization-text'
+  },
+  onChange(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  }
+};
 
 class OrganizationManagement extends React.Component {
   constructor(props) {
@@ -13,7 +30,8 @@ class OrganizationManagement extends React.Component {
       isDeleteOrgModalOpen: false, //控制删除分组信息模态窗
       isViewEntranceModalOpen: false, //控制查看门禁点信息模态窗
       needRemoveData: {}, //待删除数据
-      selectedRowData: {} //选中行的数据
+      selectedRowData: {}, //选中行的数据
+      isImportExcelModalOpen: false
     };
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
@@ -35,7 +53,8 @@ class OrganizationManagement extends React.Component {
     this.setState({
       isViewPersonModalOpen: false,
       isDeleteOrgModalOpen: false,
-      isViewEntranceModalOpen: false
+      isViewEntranceModalOpen: false,
+      isImportExcelModalOpen: false
     });
   };
 
@@ -45,7 +64,9 @@ class OrganizationManagement extends React.Component {
       isDeleteOrgModalOpen,
       needRemoveData,
       selectedRowData,
-      isViewEntranceModalOpen
+      isViewEntranceModalOpen,
+
+      isImportExcelModalOpen
     } = this.state;
     return (
       <div className="OrganizationManagement">
@@ -89,7 +110,15 @@ class OrganizationManagement extends React.Component {
                       <Button type="primary" key="4">
                         按组织添加
                       </Button>
-                      <Button type="primary" key="5">
+                      <Button
+                        type="primary"
+                        key="5"
+                        onClick={() => {
+                          this.setState({
+                            isImportExcelModalOpen: true
+                          });
+                        }}
+                      >
                         Excel导入添加
                       </Button>
                       <Button
@@ -200,6 +229,20 @@ class OrganizationManagement extends React.Component {
                         ? `此操作可能会影响已配置的权限，确认删除所选的${needRemoveData.length}个人员分组？`
                         : `此操作可能会影响已配置的权限，确认删除人员分组${needRemoveData[0].name}`)}
                   </span>
+                </div>
+              </Modal>
+
+              <Modal
+                visible={isImportExcelModalOpen}
+                onCancel={this.closeAllModal}
+                onOk={this.removeOrg}
+              >
+                <div>
+                  <Upload {...uploadProps}>
+                    <Button>
+                      <Icon type="upload" /> Click to Upload
+                    </Button>
+                  </Upload>
                 </div>
               </Modal>
             </div>
