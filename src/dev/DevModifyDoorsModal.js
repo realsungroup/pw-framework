@@ -9,7 +9,15 @@ class App extends Component {
   render() {
     return (
       <TemplateWrap>
-        <ModifyDoorsModal visible></ModifyDoorsModal>
+        <ModifyDoorsModal
+          visible
+          record={{
+            name: '分组1',
+            describe: '分组描述',
+            groupId: 682971487808,
+            REC_ID: 682971487808
+          }}
+        ></ModifyDoorsModal>
       </TemplateWrap>
     );
   }

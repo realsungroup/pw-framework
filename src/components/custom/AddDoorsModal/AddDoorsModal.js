@@ -3,11 +3,19 @@ import { Modal, Form, Input, message, Spin } from 'antd';
 import DoorsSelect from '../DoorsSelect';
 import './AddDoorsModal.less';
 import http from 'Util20/api';
+import PropTypes from 'prop-types';
 
 const realsunApiBaseURL =
   window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
 
 class AddDoorsModal extends React.Component {
+  static propTypes = {
+    /**
+     * 添加成功的回调
+     */
+    onSuccess: PropTypes.func.isRequired
+  };
+
   state = {
     regionIndexCodes: [],
     doors: [],
@@ -91,6 +99,7 @@ class AddDoorsModal extends React.Component {
     }
     this.setState({ loading: false });
     const { onSuccess } = this.props;
+    message.success('添加成功');
     onSuccess && onSuccess();
   };
 

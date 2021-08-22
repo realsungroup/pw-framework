@@ -1,14 +1,33 @@
 import React from 'react';
-import { Modal, Form, Input, message, Spin } from 'antd';
-import DoorsSelect from '../DoorsSelect';
+import { Modal, Form, Input, message, Spin, Button } from 'antd';
 import './ModifyDoorsModal.less';
 import http from 'Util20/api';
+import TableData from 'Common/data/TableData';
+import DoorsSelect from '../DoorsSelect';
+import PropTypes from 'prop-types';
+
+const realsunApiBaseURL =
+  window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
 
 class ModifyDoorsModal extends React.Component {
+  static propTypes = {
+    /**
+     * 门禁分组记录
+     */
+    record: PropTypes.object.isRequired,
+    /**
+     * 修改成功的回调
+     */
+    onSuccess: PropTypes.func.isRequired
+  };
+
   state = {
     regionIndexCodes: [],
     doors: [],
-    loading: false
+    loading: false,
+    doorsSelectVisible: false,
+    doorsSelectLoading: false,
+    tableDataKey: 0
   };
 
   componentDidMount = () => {
@@ -19,7 +38,7 @@ class ModifyDoorsModal extends React.Component {
     this.setState({ loading: true });
     let res;
     try {
-      res = await http().getTable({
+      res = await http({ baseURL: realsunApiBaseURL }).getTable({
         resid: 682964730936
       });
     } catch (err) {
@@ -34,50 +53,25 @@ class ModifyDoorsModal extends React.Component {
 
   handleSubmit = () => {
     const { validateFields } = this.props.form;
-    const { doors } = this.state;
-
     validateFields((err, values) => {
       if (err) {
         return;
       }
-      if (!doors.length) {
-        return message.error('请选择门禁点');
-      }
-
       this.submitData(values);
     });
   };
 
   submitData = async values => {
     this.setState({ loading: true });
-    const { doors } = this.state;
-
+    const { record } = this.props;
     try {
-      await http().saveRecordAndSubTables({
+      await http({ baseURL: realsunApiBaseURL }).modifyRecords({
+        resid: '682507600534',
+        isEditOrAdd: true,
         data: [
           {
-            resid: '682507600534',
-            // 主表记录
-            maindata: {
-              ...values,
-              _state: 'added',
-              _id: 1
-            },
-            // 子表数据
-            subdata: doors.map((door, index) => {
-              return {
-                resid: '682507735244',
-                maindata: {
-                  indexCode: door.indexCode,
-                  name: door.name,
-                  regionIndexCode: door.regionIndexCode,
-                  region: door.regionPathName,
-                  control: door.doorNo,
-                  _state: 'added',
-                  _id: index + 1
-                }
-              };
-            })
+            REC_ID: record.REC_ID,
+            ...values
           }
         ]
       });
@@ -87,6 +81,7 @@ class ModifyDoorsModal extends React.Component {
     }
     this.setState({ loading: false });
     const { onSuccess } = this.props;
+    message.success('修改成功');
     onSuccess && onSuccess();
   };
 
@@ -94,44 +89,135 @@ class ModifyDoorsModal extends React.Component {
     this.setState({ doors });
   };
 
-  render() {
-    const { ...otherProps } = this.props;
-    const { getFieldDecorator } = this.props.form;
-    const { regionIndexCodes, loading } = this.state;
+  actionBarExtra = ({ size }) => {
     return (
-      <Modal
-        {...otherProps}
-        width={1180}
-        title="修改门禁分组"
-        onOk={this.handleSubmit}
+      <Button
+        size={size}
+        onClick={() => this.setState({ doorsSelectVisible: true })}
       >
-        <Spin spinning={loading}>
-          <Form>
-            <h2>基本信息</h2>
-            <Form.Item label="门禁分组名称">
-              {getFieldDecorator('name', {
-                rules: [
-                  {
-                    required: true,
-                    message: `请输入门禁分组名称`
-                  }
-                ]
-              })(<Input style={{ width: 400 }} />)}
-            </Form.Item>
-            <Form.Item label="描述">
-              {getFieldDecorator('describe', {})(
-                <Input.TextArea style={{ width: 400 }} />
-              )}
-            </Form.Item>
-          </Form>
+        添加
+      </Button>
+    );
+  };
+
+  handleAddDoors = async () => {
+    const { doors } = this.state;
+
+    this.setState({ doorsSelectLoading: true });
+    const { record } = this.props;
+
+    try {
+      await http({ baseURL: realsunApiBaseURL }).addRecords({
+        resid: '682507735244',
+        data: doors.map((door, index) => {
+          return {
+            groupId: record.groupId,
+            indexCode: door.indexCode,
+            name: door.name,
+            regionIndexCode: door.regionIndexCode,
+            region: door.regionPathName,
+            control: door.doorNo,
+            _state: 'added',
+            _id: index + 1
+          };
+        })
+      });
+    } catch (err) {
+      this.setState({
+        doorsSelectLoading: false,
+        tableDataKey: this.state.tableDataKey + 1
+      });
+      return message.error(err.message);
+    }
+    this.setState({
+      doorsSelectLoading: false,
+      doorsSelectVisible: false,
+      tableDataKey: this.state.tableDataKey + 1
+    });
+    message.success('添加成功');
+  };
+
+  getTableDataRef = element => {
+    console.log('element:', element);
+    this.tableDataRef = element;
+  };
+
+  render() {
+    const { record, ...otherProps } = this.props;
+    const { getFieldDecorator } = this.props.form;
+    const {
+      regionIndexCodes,
+      loading,
+      doorsSelectVisible,
+      doorsSelectLoading,
+      tableDataKey
+    } = this.state;
+    return (
+      <>
+        <Modal
+          {...otherProps}
+          width={1180}
+          title="修改门禁分组"
+          onOk={this.handleSubmit}
+        >
+          <Spin spinning={loading}>
+            <Form>
+              <h2>基本信息</h2>
+              <Form.Item label="门禁分组名称">
+                {getFieldDecorator('name', {
+                  initialValue: record.name,
+                  rules: [
+                    {
+                      required: true,
+                      message: `请输入门禁分组名称`
+                    }
+                  ]
+                })(<Input style={{ width: 400 }} />)}
+              </Form.Item>
+              <Form.Item label="描述">
+                {getFieldDecorator('describe', {
+                  initialValue: record.describe
+                })(<Input.TextArea style={{ width: 400 }} />)}
+              </Form.Item>
+            </Form>
+            <TableData
+              key={tableDataKey}
+              height={360}
+              baseURL={realsunApiBaseURL}
+              resid={682507600534}
+              subresid={682507735244}
+              hostrecid={record.REC_ID}
+              dataMode="sub"
+              hasModify={false}
+              hasImport={false}
+              hasDownload={false}
+              hasAdvSearch={false}
+              hasZoomInOut={false}
+              importConfig={null}
+              hasRowModify={false}
+              hasRowView={false}
+              hasAdd={false}
+              actionBarExtra={this.actionBarExtra}
+            ></TableData>
+          </Spin>
+        </Modal>
+        <Modal
+          width={1180}
+          visible={doorsSelectVisible}
+          onCancel={() =>
+            this.setState({ doorsSelectVisible: false, doors: [] })
+          }
+          onOk={this.handleAddDoors}
+          confirmLoading={doorsSelectLoading}
+        >
           {!!regionIndexCodes.length && (
             <DoorsSelect
               regionIndexCodes={regionIndexCodes}
               onSelectedDoorsChange={this.handleSelectedDoorsChange}
             ></DoorsSelect>
           )}
-        </Spin>
-      </Modal>
+        </Modal>
+      </>
     );
   }
 }
