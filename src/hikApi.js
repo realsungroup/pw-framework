@@ -106,3 +106,12 @@ export const getSubOrgs = parentOrgIndexCode => {
     )}`
   );
 };
+
+/**
+ * 查询人员列表
+ */
+export const queryPersons = data => {
+  return hikInstance.post('/api/v1/queryPersons', {
+    ...data
+  });
+};
