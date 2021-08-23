@@ -332,7 +332,8 @@ class WorkSheetDetail extends React.Component {
     sheetData: {},
     customers: [],
     canEdit:9,
-    isCurrent:true
+    isCurrent:true,
+    materialResid:''
   };
   async componentDidMount() {
     this.getUserinfo();
@@ -391,6 +392,27 @@ class WorkSheetDetail extends React.Component {
     }
     this.setState({sheetData: objEmpty})
     await this.getHistories(this.props.curSheetId);
+  }
+  openMaterial = (resid,id,name,specifications) =>{
+    this.setState({
+      showMaterial:true,
+      materialResid:resid,
+      materialId:id,
+      materialName:name,
+      specifications:specifications
+    })
+  }
+  selectMaterial=(id,name,specifications)=>{
+    let obj=this.state.sheetData;
+    obj[this.state.materialId]=id;
+    obj[this.state.materialName]=name;
+    obj[this.state.specifications]=specifications;
+    console.log(obj)
+    this.setState({
+      showMaterial:false,
+      sheetData:obj,
+      materialResid:''
+    })
   }
   //获取历史数据
   //产品线ID,版本号
@@ -1132,6 +1154,47 @@ vertiRec= async(v)=>{
                             />
           </div>
         </Modal>
+        {/* 选择材料 */}
+        <Modal
+          visible={this.state.showMaterial}
+          onCancel={() => {
+            this.setState({ showMaterial: false });
+          }}
+          destroyOnClose
+          width={'80vw'}
+        >
+          <div style={{ width: '100%', height: '80vh' }}>
+            <TableData
+              resid={this.state.materialResid}
+              subtractH={180}
+              hasAdd={true}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={false}
+              hasAdvSearch={false}
+              importConfig={null}
+              customRowBtns={[
+                (record, btnSize) => {
+                  return (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.selectMaterial(record.C3_683034399830,record.nameMaterial,record.C3_683033548389);
+                      }}
+                    >
+                      选择
+                    </Button>
+                  );
+                }
+              ]}
+            />
+          </div>
+        </Modal>
+
         <Modal
           visible={this.state.showWorker}
           footer={null}
@@ -1985,27 +2048,15 @@ vertiRec= async(v)=>{
                       <Row>
                         <Col span={2}>刀材名称</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678796959023}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678796959023',
-                                v.target.value
-                              );
-                            }}
-                          />
+                          <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683035125174','C3_683040874941','C3_678796959023','C3_678796966324')}}>
+                            {this.state.sheetData.C3_678796959023}
+                          </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678796966324}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678796966324',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683035125174','C3_683040874941','C3_678796959023','C3_678796966324')}}>
+                            {this.state.sheetData.C3_678796966324}
+                          </div>
                         </Col>
                         <Col span={2}>数量</Col>
                         <Col span={2}>
@@ -2021,27 +2072,15 @@ vertiRec= async(v)=>{
                         </Col>
                         <Col span={2}>齿刀名称</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797062420}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797062420',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039361907','C3_683040889423','C3_678797062420','C3_678797068641')}}>
+                            {this.state.sheetData.C3_678797062420}
+                          </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797068641}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797068641',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039361907','C3_683040889423','C3_678797062420','C3_678797068641')}}>
+                            {this.state.sheetData.C3_678797068641}
+                          </div>
                         </Col>
                         <Col span={2}>数量</Col>
                         <Col span={2}>
@@ -2059,30 +2098,19 @@ vertiRec= async(v)=>{
                       <Row>
                         <Col span={2}>痕线名称</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678796981497}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678796981497',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039619977','C3_683040902438','C3_678796981497','C3_678796989327')}}>
+                            {this.state.sheetData.C3_678796981497}
+                          </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678796989327}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678796989327',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039619977','C3_683040902438','C3_678796981497','C3_678796989327')}}>
+                            {this.state.sheetData.C3_678796989327}
+                          </div>
                         </Col>
                         <Col span={2}>数量</Col>
                         <Col span={2}>
+                          
                           <input
                             value={this.state.sheetData.C3_678797024313}
                             onChange={v => {
@@ -2095,27 +2123,15 @@ vertiRec= async(v)=>{
                         </Col>
                         <Col span={2}>孔类名称</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797082671}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797082671',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039701609','C3_683040913014','C3_678797082671','C3_678797088953')}}>
+                            {this.state.sheetData.C3_678797082671}
+                          </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797088953}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797088953',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039701609','C3_683040913014','C3_678797082671','C3_678797088953')}}>
+                            {this.state.sheetData.C3_678797088953}
+                          </div>
                         </Col>
                         <Col span={2}>数量</Col>
                         <Col span={2}>
@@ -2133,27 +2149,15 @@ vertiRec= async(v)=>{
                       <Row>
                         <Col span={2}>销类名称</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797032289}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797032289',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039776730','C3_683040924143','C3_678797032289','C3_678797041936')}}>
+                            {this.state.sheetData.C3_678797032289}
+                          </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797041936}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797041936',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039776730','C3_683040924143','C3_678797032289','C3_678797041936')}}>
+                            {this.state.sheetData.C3_678797041936}
+                          </div>
                         </Col>
                         <Col span={2}>数量</Col>
                         <Col span={2}>
@@ -2169,27 +2173,15 @@ vertiRec= async(v)=>{
                         </Col>
                         <Col span={2}>其他</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797101119}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797101119',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039844740','C3_683040940386','C3_678797101119','C3_678797109062')}}>
+                            {this.state.sheetData.C3_678797101119}
+                          </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678797109062}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678797109062',
-                                v.target.value
-                              );
-                            }}
-                          />
+                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039844740','C3_683040940386','C3_678797101119','C3_678797109062')}}>
+                            {this.state.sheetData.C3_678797109062}
+                          </div>
                         </Col>
                         <Col span={2}>数量</Col>
                         <Col span={2}>

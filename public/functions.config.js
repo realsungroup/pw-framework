@@ -10434,3 +10434,159 @@ window[682879751431] = {
     // resid: 777
   } // 组件所接收的 props
 };
+//客户信息管理
+window[683026674831] = {
+  name: 'TableData', // 组件名称，
+  title: '客户信息管理', // 功能模块名称
+  props: {
+    resid: 680643338700,
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasBackBtn: false,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    isUseFormDefine: true,
+    subtractH: 200
+  }
+};
+//原材料管理管理
+window[683033638016] = {
+  name: 'TabsTableData', // 组件名称，
+  title: '原材料管理', // 功能模块名称
+  props: [
+    [
+      {
+        TabsTitle: '刀材',
+        resid: 683035125174,
+        hasAdd: true,
+        hasBeBtns: false,
+        hasModify: true,
+        hasBackBtn: false,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        isUseFormDefine: true,
+        subtractH: 200
+
+      },
+      {
+        TabsTitle: '齿刀',
+        resid: 683039361907,
+        hasAdd: true,
+        hasBeBtns: false,
+        hasModify: true,
+        hasBackBtn: false,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        isUseFormDefine: true,
+        subtractH: 200
+
+      },
+      {
+        TabsTitle: '痕线',
+        resid: 683039619977,
+        hasAdd: true,
+        hasBeBtns: false,
+        hasModify: true,
+        hasBackBtn: false,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        isUseFormDefine: true,
+        subtractH: 200
+
+      },
+      {
+        TabsTitle: '孔类',
+        resid: 683039701609,
+        hasAdd: true,
+        hasBeBtns: false,
+        hasModify: true,
+        hasBackBtn: false,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        isUseFormDefine: true,
+        subtractH: 200
+
+      },
+      {
+        TabsTitle: '销类',
+        resid: 683039776730,
+        hasAdd: true,
+        hasBeBtns: false,
+        hasModify: true,
+        hasBackBtn: false,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        isUseFormDefine: true,
+        subtractH: 200
+
+      },{
+        TabsTitle: '其他',
+        resid: 683039844740,
+        hasAdd: true,
+        hasBeBtns: false,
+        hasModify: true,
+        hasBackBtn: false,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        isUseFormDefine: true,
+        subtractH: 200
+
+      },
+    ]
+  ]
+};
+// 领料管理
+window[683044202614] = {
+  name: 'TabsTableData',
+  title: '领用管理',
+  props: [
+    [
+      {
+        TabsTitle: '待领用',
+        resid: 683044782850,
+        cmswhere:`ISNULL( C3_682642625234,'')=''`,
+        hasAdd: false,
+        hasBeBtns: false,
+        hasModify: true,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: false,
+        isUseFormDefine: true,
+        subtractH: 200,
+        recordFormUseAbsolute:true
+
+      },
+      {
+        TabsTitle: '已领用',
+        resid: 683044782850,
+        cmswhere:`C3_682642625234 > 0`,
+        hasAdd: false,
+        hasBeBtns: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: true,
+        subtractH: 200,
+        recordFormUseAbsolute:true
+      }
+    ]
+  ]
+};
