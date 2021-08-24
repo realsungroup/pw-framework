@@ -1,35 +1,21 @@
 import React from 'react';
+import http from 'Util20/api';
 import { Icon, Tabs, Button, Modal, Upload, message } from 'antd';
 import './AssessControl.less';
 import TableData from 'Common/data/TableData';
 import AddDoorsModal from '../AddDoorsModal';
 import ModifyDoorsModal from '../ModifyDoorsModal';
+import AddOrgByImportExcel from '../AddOrgByImportExcel/AddOrgByImportExcel';
 
 const { TabPane } = Tabs;
-const uploadProps = {
-  name: 'file',
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  headers: {
-    authorization: 'authorization-text'
-  },
-  onChange(info) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  }
-};
 
 class OrganizationManagement extends React.Component {
   constructor(props) {
     super();
     this.state = {
       isViewPersonModalOpen: false, //控制查看人员信息模态窗
-      isDeleteOrgModalOpen: false, //控制删除分组信息模态窗
+      isDeleteOrgModalOpen: false, //控制删除门禁分组信息模态窗
+      isDeletePersonModalOpen: false, //控制删除人员分组信息模态窗
       isViewEntranceModalOpen: false, //控制查看门禁点信息模态窗
       needRemoveData: {}, //待删除数据
       selectedRowData: {}, //选中行的数据
@@ -37,7 +23,7 @@ class OrganizationManagement extends React.Component {
       addDoorVisible: false,
       modifyDoorsVisible: false,
       modifyRecord: null,
-      doorsTableKey: 0,
+      doorsTableKey: 0
     };
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
@@ -45,11 +31,39 @@ class OrganizationManagement extends React.Component {
 
   /**
    * 删除分组，分为单独删除和批量删除
-   *
+   *@param {String} 删除分组类型 org--门禁 person--人员
    */
-  removeOrg = () => {
+  removeOrg = async type => {
     const { needRemoveData } = this.state;
-    console.log(needRemoveData);
+    const mainTableResid = type === 'org' ? '682695547484' : '682695515421';
+    const sonTableResid = type === 'org' ? '682695559871' : '682695529883';
+    let result1,
+      result2 = null;
+    let count = 0;
+    needRemoveData.map(async item => {
+      try {
+        result1 = await http({ baseURL: this.baseURL }).removeRecords({
+          resid: mainTableResid,
+          data: [{ REC_ID: item.REC_ID }]
+        });
+        result2 = await http({ baseURL: this.baseURL }).removeRecords({
+          resid: sonTableResid,
+          data: [{ REC_ID: item.REC_ID }]
+        });
+        count++;
+        if (count === needRemoveData.length) {
+          this.setState({
+            isDeleteOrgModalOpen: false,
+            isDeletePersonModalOpen: false
+          });
+          this.tableDataRef.handleRefresh();
+          message.success('删除成功');
+        }
+      } catch (error) {
+        message.error(error.message);
+        console.log(error.message);
+      }
+    });
   };
 
   /**
@@ -59,6 +73,7 @@ class OrganizationManagement extends React.Component {
     this.setState({
       isViewPersonModalOpen: false,
       isDeleteOrgModalOpen: false,
+      isDeletePersonModalOpen: false,
       isViewEntranceModalOpen: false,
       isImportExcelModalOpen: false
     });
@@ -71,7 +86,7 @@ class OrganizationManagement extends React.Component {
       needRemoveData,
       selectedRowData,
       isViewEntranceModalOpen,
-
+      isDeletePersonModalOpen,
       isImportExcelModalOpen
     } = this.state;
     return (
@@ -179,6 +194,22 @@ class OrganizationManagement extends React.Component {
                 ]}
               />
 
+              {/* 通过Excel导入人员分组信息 */}
+              {isImportExcelModalOpen && (
+                <AddOrgByImportExcel
+                  visible={isImportExcelModalOpen}
+                  onOk={() =>
+                    this.setState({
+                      isImportExcelModalOpen: false
+                    })
+                  }
+                  onCancel={() =>
+                    this.setState({ isImportExcelModalOpen: false })
+                  }
+                ></AddOrgByImportExcel>
+              )}
+
+              {/* 人员分组详情 */}
               <Modal
                 visible={isViewPersonModalOpen}
                 title="人员分组详情"
@@ -201,7 +232,7 @@ class OrganizationManagement extends React.Component {
                       <TableData
                         resid={682695529883}
                         baseURL={this.baseURL}
-                        cmswhere={`groupId = ${selectedRowData.REC_ID}`}
+                        cmswhere={`groupId = ${selectedRowData.groupId}`}
                         height={'calc(100vh - 138px)'}
                         subtractH={190}
                         hasAdd={false}
@@ -222,10 +253,13 @@ class OrganizationManagement extends React.Component {
                 </div>
               </Modal>
 
+              {/* 删除人员分组模态框 */}
               <Modal
                 visible={isDeleteOrgModalOpen}
                 onCancel={this.closeAllModal}
-                onOk={this.removeOrg}
+                onOk={() => {
+                  this.removeOrg('org');
+                }}
                 okButtonProps={{ type: 'danger' }}
               >
                 <div>
@@ -235,20 +269,6 @@ class OrganizationManagement extends React.Component {
                         ? `此操作可能会影响已配置的权限，确认删除所选的${needRemoveData.length}个人员分组？`
                         : `此操作可能会影响已配置的权限，确认删除人员分组${needRemoveData[0].name}`)}
                   </span>
-                </div>
-              </Modal>
-
-              <Modal
-                visible={isImportExcelModalOpen}
-                onCancel={this.closeAllModal}
-                onOk={this.removeOrg}
-              >
-                <div>
-                  <Upload {...uploadProps}>
-                    <Button>
-                      <Icon type="upload" /> Click to Upload
-                    </Button>
-                  </Upload>
                 </div>
               </Modal>
             </div>
@@ -264,7 +284,7 @@ class OrganizationManagement extends React.Component {
             <div>
               <TableData
                 key={this.state.doorsTableKey}
-                resid={682507600534}
+                resid={682695547484}
                 baseURL={this.baseURL}
                 height={'calc(100vh - 138px)'}
                 subtractH={190}
@@ -288,7 +308,11 @@ class OrganizationManagement extends React.Component {
                 ) => {
                   return (
                     <div>
-                      <Button type="primary" key="4" onClick={() => this.setState({ addDoorVisible: true })}>
+                      <Button
+                        type="primary"
+                        key="4"
+                        onClick={() => this.setState({ addDoorVisible: true })}
+                      >
                         添加
                       </Button>
                       <Button
@@ -296,6 +320,7 @@ class OrganizationManagement extends React.Component {
                         key="6"
                         onClick={() => {
                           this.setState({
+                            isDeletePersonModalOpen: true,
                             needRemoveData: dataSource.dataSource
                           });
                         }}
@@ -307,7 +332,20 @@ class OrganizationManagement extends React.Component {
                 }}
                 customRowBtns={[
                   (record, btnSize) => {
-                    return <Button key="1" size={btnSize} onClick={() => this.setState({modifyDoorsVisible: true, modifyRecord: record})}>编辑</Button>;
+                    return (
+                      <Button
+                        key="1"
+                        size={btnSize}
+                        onClick={() =>
+                          this.setState({
+                            modifyDoorsVisible: true,
+                            modifyRecord: record
+                          })
+                        }
+                      >
+                        编辑
+                      </Button>
+                    );
                   },
                   (record, btnSize) => {
                     return (
@@ -315,6 +353,7 @@ class OrganizationManagement extends React.Component {
                         key="2"
                         onClick={() => {
                           this.setState({
+                            isDeletePersonModalOpen: true,
                             needRemoveData: [record]
                           });
                         }}
@@ -340,14 +379,59 @@ class OrganizationManagement extends React.Component {
                   }
                 ]}
               />
-              {this.state.addDoorVisible && <AddDoorsModal visible={this.state.addDoorVisible} onSuccess={() => this.setState({addDoorVisible: false, doorsTableKey: this.state.doorsTableKey + 1 })} onCancel={() => this.setState({ addDoorVisible: false})}></AddDoorsModal>}
-              {this.state.modifyDoorsVisible && <ModifyDoorsModal visible={this.state.modifyDoorsVisible} record={this.state.modifyRecord} onSuccess={() => this.setState({modifyDoorsVisible: false, modifyRecord: null, doorsTableKey: this.state.doorsTableKey + 1})} onCancel={() => this.setState({ addDoorVisible: false })}></ModifyDoorsModal>}
+              {/* 删除门禁分组模态框 */}
+              <Modal
+                visible={isDeletePersonModalOpen}
+                onCancel={this.closeAllModal}
+                onOk={() => {
+                  this.removeOrg('person');
+                }}
+                okButtonProps={{ type: 'danger' }}
+              >
+                <div>
+                  <span>
+                    {needRemoveData[0] &&
+                      (needRemoveData.length > 1
+                        ? `此操作可能会影响已配置的权限，确认删除所选的${needRemoveData.length}个门禁分组？`
+                        : `此操作可能会影响已配置的权限，确认删除门禁分组${needRemoveData[0].name}`)}
+                  </span>
+                </div>
+              </Modal>
+
+              {this.state.addDoorVisible && (
+                <AddDoorsModal
+                  visible={this.state.addDoorVisible}
+                  onSuccess={() =>
+                    this.setState({
+                      addDoorVisible: false,
+                      doorsTableKey: this.state.doorsTableKey + 1
+                    })
+                  }
+                  onCancel={() => this.setState({ addDoorVisible: false })}
+                ></AddDoorsModal>
+              )}
+              {this.state.modifyDoorsVisible && (
+                <ModifyDoorsModal
+                  visible={this.state.modifyDoorsVisible}
+                  record={this.state.modifyRecord}
+                  onSuccess={() =>
+                    this.setState({
+                      modifyDoorsVisible: false,
+                      modifyRecord: null,
+                      doorsTableKey: this.state.doorsTableKey + 1
+                    })
+                  }
+                  onCancel={() => this.setState({ addDoorVisible: false })}
+                ></ModifyDoorsModal>
+              )}
             </div>
-            
+
+            {/* 查看门禁分组详情 */}
             <Modal
               visible={isViewEntranceModalOpen}
-              title="人员分组详情"
+              title="门禁分组详情"
               onCancel={this.closeAllModal}
+              onOk={this.closeAllModal}
               width={'80%'}
             >
               <div>
