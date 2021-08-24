@@ -22,11 +22,15 @@ class PersonsSelectByOrg extends React.Component {
      * 选择的人员改变时的回调
      * 默认：-
      */
-    onSelectedPersonsChange: PropTypes.func
+    onSelectedPersonsChange: PropTypes.func,
+    /**
+     * 需要排除的人员
+     */
+    excludePersons: PropTypes.array
   };
 
   state = {
-    // 左侧：区域状态
+    // 左侧：组织状态
     selectedOrgIndexCode: '',
 
     // 中间：选择人员
@@ -77,10 +81,12 @@ class PersonsSelectByOrg extends React.Component {
 
   handleFetchNewPersons = persons => {
     const { rightAllPersons } = this.state;
+    const { excludePersons = [] } = this.props;
+    const needExcludePersons = [...excludePersons, ...rightAllPersons];
 
     const newPersons = [...persons];
     remove(newPersons, door => {
-      return !!rightAllPersons.find(item => item.personId === door.personId);
+      return !!needExcludePersons.find(item => item.personId === door.personId);
     });
 
     this.setState({ persons: newPersons });
@@ -96,9 +102,9 @@ class PersonsSelectByOrg extends React.Component {
       rightSelectedRowKeys
     } = this.state;
     return (
-      <div className="doors-select">
+      <div className="persons-select-by-org">
         {/* <h2>门禁点列表</h2> */}
-        <div className="doors-select__doors">
+        <div className="persons-select-by-org__doors">
           <OrgSelect
             orgIndexCodes={orgIndexCodes}
             onOrgSelect={this.handleOrgSelect}
@@ -125,16 +131,16 @@ class PersonsSelectByOrg extends React.Component {
             }}
           ></SelectPersons>
 
-          <div className="doors-select__buttons">
+          <div className="persons-select-by-org__buttons">
             <Button
-              className="doors-select__button"
+              className="persons-select-by-org__button"
               disabled={!selectedRowKeys.length}
               onClick={this.handleToRight}
             >
               {'>'}
             </Button>
             <Button
-              className="doors-select__button"
+              className="persons-select-by-org__button"
               disabled={!rightSelectedRowKeys.length}
               onClick={this.handleToLeft}
             >
