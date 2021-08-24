@@ -69,10 +69,49 @@ export const getRegionTreeByName = (indexCodes, regionName) => {
 };
 
 /**
+ * 根据组织名称获取组织树
+ */
+export const getOrgTreeByName = (orgIndexCodes, orgName) => {
+  return hikInstance.post('/api/v1/getOrgTreeByName', {
+    orgIndexCodes,
+    orgName
+  });
+};
+
+/**
  * 查询门禁点列表
  */
 export const queryDoors = data => {
   return hikInstance.post('/api/v1/queryDoors', {
+    ...data
+  });
+};
+
+/**
+ * 查询部门
+ */
+export const queryDepartments = data => {
+  return hikInstance.post('/api/v1/queryDepartments', {
+    ...data
+  });
+};
+
+/**
+ * 根据父组织编号获取下级组织列表
+ */
+export const getSubOrgs = parentOrgIndexCode => {
+  return hikInstance.get(
+    `/api/v1/getSubOrgs?parentOrgIndexCode=${encodeURIComponent(
+      parentOrgIndexCode
+    )}`
+  );
+};
+
+/**
+ * 查询人员列表
+ */
+export const queryPersons = data => {
+  return hikInstance.post('/api/v1/queryPersons', {
     ...data
   });
 };

@@ -1,36 +1,17 @@
 import React from 'react';
 import { Tree, Input, message, Spin, Empty } from 'antd';
+import './RegionSelect.less';
 import {
-  queryDepartments,
   getSubRegions,
   getRegionInfo,
-  getRegionTreeByName,
-  getOrgTreeByName,
-  getSubOrgs
-} from '../../../hikApi';
-import PropTypes from 'prop-types';
-import './OrgSelect.less';
+  getRegionTreeByName
+} from '../../../../hikApi';
 
 const { TreeNode } = Tree;
 
 const { Search } = Input;
 
-/**
- * 组织树组件
- */
-class OrgSelect extends React.Component {
-  static propTypes = {
-    /**
-     * 根组织 indexCodes 列表
-     */
-    orgIndexCodes: PropTypes.arrayOf(PropTypes.string).isRequired,
-
-    /**
-     * 组织节点选择时的回调
-     */
-    onOrgSelect: PropTypes.func
-  };
-
+class RegionSelect extends React.Component {
   state = {
     loading: false,
     regionTree: [],
@@ -45,14 +26,10 @@ class OrgSelect extends React.Component {
 
   initData = async () => {
     this.setState({ loading: true });
-    const { orgIndexCodes } = this.props;
+    const { regionIndexCodes } = this.props;
     let res;
     try {
-      res = await queryDepartments({
-        orgIndexCodes: orgIndexCodes.join(','),
-        pageNo: 1,
-        pageSize: 1000
-      });
+      res = await getRegionInfo(regionIndexCodes);
     } catch (err) {
       this.setState({ loading: false });
       return message.error(err.message);
@@ -72,11 +49,16 @@ class OrgSelect extends React.Component {
     if (treeNode.props.children) {
       return;
     }
-    const { orgIndexCode } = treeNode.props;
+    const { indexCode: parentIndexCode } = treeNode.props;
 
     const {
       data: { list }
-    } = await getSubOrgs(orgIndexCode);
+    } = await getSubRegions({
+      parentIndexCode,
+      resourceType: 'region',
+      pageNo: 1,
+      pageSize: 1000
+    });
 
     treeNode.props.dataRef.children = list;
 
@@ -110,29 +92,29 @@ class OrgSelect extends React.Component {
       return this.initData();
     }
     const result = this.state.regionTree.find(region =>
-      region.orgName.includes(value)
+      region.name.includes(value)
     );
     if (result) {
       return this.setState({ searchValue: value });
     }
 
     this.setState({ loading: true, searchValue: value });
-    const { orgIndexCodes } = this.props;
+    const { regionIndexCodes } = this.props;
     let res;
     try {
-      res = await getOrgTreeByName(orgIndexCodes, value);
+      res = await getRegionTreeByName(regionIndexCodes, value);
     } catch (err) {
       this.setState({ loading: false });
       return message.error(err.message);
     }
 
-    const regionTree = res.data.orgTree;
+    const regionTree = res.data.regionTree;
 
     const dataList = [];
     const generateList = data => {
       for (let i = 0; i < data.length; i++) {
         const node = data[i];
-        const { orgName: key } = node;
+        const { name: key } = node;
         dataList.push({ key, title: key });
         if (node.children) {
           generateList(node.children);
@@ -146,13 +128,14 @@ class OrgSelect extends React.Component {
       for (let i = 0; i < tree.length; i++) {
         const node = tree[i];
         if (node.children && node.children.length) {
-          if (node.children.some(item => item.orgName === key)) {
-            parentKey = node.orgIndexCode;
+          if (node.children.some(item => item.name === key)) {
+            parentKey = node.indexCode;
           } else if (getParentKey(key, node.children)) {
             parentKey = getParentKey(key, node.children);
           }
         }
       }
+      console.log('parentKey:', parentKey);
       return parentKey;
     };
 
@@ -176,9 +159,9 @@ class OrgSelect extends React.Component {
   loop = data => {
     const { searchValue } = this.state;
     return data.map(item => {
-      const index = item.orgName.indexOf(searchValue);
-      const beforeStr = item.orgName.substr(0, index);
-      const afterStr = item.orgName.substr(index + searchValue.length);
+      const index = item.name.indexOf(searchValue);
+      const beforeStr = item.name.substr(0, index);
+      const afterStr = item.name.substr(index + searchValue.length);
       const name =
         index > -1 ? (
           <span>
@@ -187,22 +170,17 @@ class OrgSelect extends React.Component {
             {afterStr}
           </span>
         ) : (
-          <span>{item.orgName}</span>
+          <span>{item.name}</span>
         );
       if (item.children && item.children.length) {
         return (
-          <TreeNode key={item.orgIndexCode} title={name} dataRef={item}>
+          <TreeNode key={item.indexCode} title={name} dataRef={item}>
             {this.loop(item.children)}
           </TreeNode>
         );
       }
       return (
-        <TreeNode
-          key={item.orgIndexCode}
-          title={name}
-          {...item}
-          dataRef={item}
-        />
+        <TreeNode key={item.indexCode} title={name} {...item} dataRef={item} />
       );
     });
   };
@@ -212,8 +190,8 @@ class OrgSelect extends React.Component {
   };
 
   handleSelect = selectedKeys => {
-    const { onOrgSelect } = this.props;
-    onOrgSelect && onOrgSelect(selectedKeys[0]);
+    const { onRegionSelect } = this.props;
+    onRegionSelect && onRegionSelect(selectedKeys[0]);
   };
 
   render() {
@@ -225,12 +203,12 @@ class OrgSelect extends React.Component {
       treeKey
     } = this.state;
     return (
-      <div className="org-select">
+      <div className="region-select">
         <Spin spinning={loading} style={{ height: '100%' }}>
-          <div className="org-select__header">人员所属组织</div>
+          <div className="region-select__header">设备所在区域</div>
           <Search
             style={{ marginBottom: 8 }}
-            placeholder="搜索组织名称"
+            placeholder="搜索区域名称"
             onSearch={this.onSearch}
             size="small"
           />
@@ -255,4 +233,4 @@ class OrgSelect extends React.Component {
   }
 }
 
-export default OrgSelect;
+export default RegionSelect;
