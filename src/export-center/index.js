@@ -193,5 +193,6 @@ export {
   OfficeSupply,
   WorkSheet,
   WorkSheetShowBoard,
-  WorkSheetViews
+  WorkSheetViews,
+  ViewManger
 } from '../components/custom/loadableCustom';

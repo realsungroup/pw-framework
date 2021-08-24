@@ -980,3 +980,9 @@ export const WorkSheetViews = Loadable({
     return minLoading;
   }
 });
+export const ViewManger = Loadable({
+  loader: () => import('./ViewManger'),
+  loading() {
+    return minLoading;
+  }
+});

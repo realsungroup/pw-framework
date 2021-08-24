@@ -1,0 +1,63 @@
+.wrap{
+    width:100vw;
+    height:100vh;
+    padding:1rem;
+    *{
+        margin:0;
+        padding:0;
+        box-sizing: border-box;
+    }
+    &>div{
+        width:calc(50vw - 1.25rem);
+    }
+    .left{
+        float: left;
+        margin-right: .5rem;
+    }
+    .right{
+        float:right;
+        .title{
+            overflow: hidden;
+            h3,div{
+                display: inline-block;
+                float: left;
+            }
+            div{
+                float:right
+            }
+            .anticon svg{
+                position: relative;
+                top:-7px;
+            }
+        }
+        .board{
+            height:calc(100vh - 4.25rem);
+        }
+    }
+    .showBoard{
+        .title{
+            background-color: #fff;
+            margin-bottom: 0.25rem;
+            padding:0 1rem;
+            line-height: 2rem;
+            h3{
+
+            }
+        }
+        .board{
+            background-color: #fff;
+            padding:1rem;
+        }
+    }
+    .today{
+        margin-bottom: .5rem;
+        .board{
+            height:45vh;
+        }
+    }
+    .curMon{
+        .board{
+            height:calc(55vh - 7rem);
+        }
+    }
+}

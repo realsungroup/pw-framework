@@ -79,7 +79,7 @@ class WorkSheetShowBoard extends React.Component {
             show: false
           },
           data: chartObj.data,
-          color: ['#52c41a', '#13c2c2', '#faad14', '#8c8c8c', '#f5222d']
+          color: ['#13c2c2', '#faad14', '#8c8c8c', '#f5222d']
         }
       ]
     };

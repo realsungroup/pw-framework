@@ -333,13 +333,33 @@ class WorkSheetDetail extends React.Component {
     customers: [],
     canEdit:9,
     isCurrent:true,
-    materialResid:''
+    materialResid:'',
+    minL:false
   };
   async componentDidMount() {
+    let dom = document.getElementById('sheetForm');
+    if(dom.offsetWidth<843){
+      this.setState({minL:true});
+    }else{
+      this.setState({minL:false});
+
+    }
     this.getUserinfo();
+    window.addEventListener('resize',this.handleResize.bind(this));
+  }
+  componentWillUnmount(){
+    window.removeEventListener('resize',this.handleResize.bind(this));
 
   }
+  handleResize = e =>{
+    let dom = document.getElementById('sheetForm');
+    if(dom.offsetWidth<843){
+      this.setState({minL:true});
+    }else{
+      this.setState({minL:false});
 
+    }
+  }
   componentWillReceiveProps = async nextProps => {
     let objEmpty={}
 
@@ -1555,7 +1575,7 @@ vertiRec= async(v)=>{
               }
             </ul>
           </div>
-          <div className={this.props.view?'workSheetForm views':"workSheetForm"}>
+          <div className={this.props.view?(this.state.minL?'workSheetForm views minLeft':'workSheetForm views'):(this.state.minL?"workSheetForm minLeft":"workSheetForm")} id='sheetForm'>
             <div
               className={
                 this.props.editRight.part1||this.props.new ? 'block hidden' : 'block part1'

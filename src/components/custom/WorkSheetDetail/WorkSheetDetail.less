@@ -196,6 +196,11 @@
     text-align: center;
     padding:1rem;
     position: relative;
+    &.minLeft{
+      .block{
+        left: 1rem;
+      }
+    }
     .switch{
       position: absolute;
       width:102px;
@@ -215,6 +220,7 @@
       z-index: 999;
       width:794px;
       left:calc(50% - 397px);
+      
       &.hidden{
         display: none;
       }

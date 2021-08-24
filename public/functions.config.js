@@ -10590,3 +10590,11 @@ window[683044202614] = {
     ]
   ]
 };
+window[683055611729] = {
+  name: 'ViewManger', // 组件名称，这里为定制组件名称
+  title: '看板', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    // resid: 777
+  } // 组件所接收的 props
+};
