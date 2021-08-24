@@ -35,7 +35,7 @@ class AssessControl extends Component {
         iconType: 'folder-open',
         title: '分组管理',
         render: () => {
-          return <p>分组管理</p>;
+          return <OrganizationManagement />;
         }
       },
       {
