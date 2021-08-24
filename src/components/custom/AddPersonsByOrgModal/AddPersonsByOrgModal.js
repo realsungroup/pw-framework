@@ -118,7 +118,7 @@ class AddPersonsByOrgModal extends React.Component {
       <Modal
         {...otherProps}
         width={1180}
-        title="添加门禁分组"
+        title="添加人员分组"
         onOk={this.handleSubmit}
       >
         <Spin spinning={loading}>

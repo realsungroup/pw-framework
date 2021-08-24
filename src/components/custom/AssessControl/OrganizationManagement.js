@@ -4,6 +4,8 @@ import './AssessControl.less';
 import TableData from 'Common/data/TableData';
 import AddDoorsModal from '../AddDoorsModal';
 import ModifyDoorsModal from '../ModifyDoorsModal';
+import AddPersonsByOrgModal from '../AddPersonsByOrgModal';
+import ModifyPersonsByOrgModal from '../ModifyPersonsByOrgModal';
 
 const { TabPane } = Tabs;
 const uploadProps = {
@@ -38,6 +40,10 @@ class OrganizationManagement extends React.Component {
       modifyDoorsVisible: false,
       modifyRecord: null,
       doorsTableKey: 0,
+      addPersonVisible: false,
+      personGroupKey: 0,
+      modifyPersonsVisible: false,
+      selectedPersonGroupRecord: null,
     };
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
@@ -89,6 +95,7 @@ class OrganizationManagement extends React.Component {
             </div>
             <div>
               <TableData
+                key={this.state.personGroupKey}
                 resid={682695515421}
                 baseURL={this.baseURL}
                 height={'calc(100vh - 138px)'}
@@ -113,7 +120,7 @@ class OrganizationManagement extends React.Component {
                 ) => {
                   return (
                     <div>
-                      <Button type="primary" key="4">
+                      <Button type="primary" key="4" onClick={() => this.setState({addPersonVisible: true,})}>
                         按组织添加
                       </Button>
                       <Button
@@ -144,7 +151,7 @@ class OrganizationManagement extends React.Component {
                 }}
                 customRowBtns={[
                   (record, btnSize) => {
-                    return <Button key="1">编辑</Button>;
+                    return <Button key="1" onClick={() => this.setState({modifyPersonsVisible: true, selectedPersonGroupRecord: record})} size={btnSize}>编辑</Button>;
                   },
                   (record, btnSize) => {
                     return (
@@ -178,6 +185,10 @@ class OrganizationManagement extends React.Component {
                   }
                 ]}
               />
+
+              {this.state.addPersonVisible && <AddPersonsByOrgModal visible={this.state.addPersonVisible} onSuccess={() => this.setState({addPersonVisible: false, personGroupKey: this.state.personGroupKey + 1})} onCancel={() => this.setState({addPersonVisible: false})}></AddPersonsByOrgModal>}
+
+              {this.state.modifyPersonsVisible && <ModifyPersonsByOrgModal record={this.state.selectedPersonGroupRecord} visible={this.state.modifyPersonsVisible}  onSuccess={() => this.setState({modifyPersonsVisible: false, personGroupKey: this.state.personGroupKey + 1, selectedPersonGroupRecord: null})} onCancel={() => this.setState({modifyPersonsVisible: false, selectedPersonGroupRecord: null,})} ></ModifyPersonsByOrgModal>}
 
               <Modal
                 visible={isViewPersonModalOpen}
