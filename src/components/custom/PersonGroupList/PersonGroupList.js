@@ -11,15 +11,28 @@ const realsunApiBaseURL =
 class PersonGroupList extends React.Component {
   static propTypes = {
     /**
+     * 人员分组列表
+     */
+    personGroupList: PropTypes.array.isRequired,
+
+    /**
      * 人员分组被选中时的回调
      */
-    onGroupSelect: PropTypes.func
+    onGroupSelect: PropTypes.func.isRequired,
+
+    /**
+     * 获取到了人员分组列表时的回调
+     */
+    onFetchPersonGroupList: PropTypes.func.isRequired,
+
+    /**
+     * 选中的人员分组 key
+     */
+    selectedRowKeys: PropTypes.array
   };
 
   state = {
-    searchValue: '',
-    list: [],
-    selectedRowKeys: []
+    searchValue: ''
   };
 
   columns = [
@@ -45,13 +58,13 @@ class PersonGroupList extends React.Component {
     } catch (err) {
       return message.error(err.message);
     }
-    this.setState({ list: res.data });
+    const { onFetchPersonGroupList } = this.props;
+    onFetchPersonGroupList && onFetchPersonGroupList(res.data);
   };
 
-  handleRowSelectionChange = (selectedRowKeys, selectedRows) => {
+  handleRowSelectionChange = selectedRowKeys => {
     const { onGroupSelect } = this.props;
-    this.setState({ selectedRowKeys });
-    onGroupSelect && onGroupSelect(selectedRows);
+    onGroupSelect && onGroupSelect(selectedRowKeys);
   };
 
   filterList = list => {
@@ -60,13 +73,14 @@ class PersonGroupList extends React.Component {
   };
 
   render() {
-    const { searchValue, list, selectedRowKeys } = this.state;
-    const dataSource = this.filterList(list);
+    const { searchValue } = this.state;
+    const { personGroupList, selectedRowKeys } = this.props;
+    const dataSource = this.filterList(personGroupList);
 
     return (
       <div className="person-group-list">
         <div className="person-group-list__header">
-          待选择人员分组({selectedRowKeys.length}/{list.length})
+          待选择人员分组({selectedRowKeys.length}/{personGroupList.length})
         </div>
         <Search
           value={searchValue}
@@ -85,6 +99,7 @@ class PersonGroupList extends React.Component {
             selectedRowKeys,
             onChange: this.handleRowSelectionChange
           }}
+          rowKey="groupId"
         ></Table>
       </div>
     );
