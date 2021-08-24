@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb, Icon, Divider } from 'antd';
 import OrganizationManagement from './OrganizationManagement';
+import AssessConfig from '../AssessConfig/AssessConfig';
 
 const { Header, Content, Sider } = Layout;
 
@@ -12,11 +13,11 @@ class AssessControl extends Component {
     this.state = {
       loading: false,
       selectedMenu: {
-        key: 'two',
-        iconType: 'folder-open',
-        title: '分组管理',
+        key: 'one',
+        iconType: 'setting',
+        title: '权限配置',
         render: () => {
-          return <OrganizationManagement />;
+          return <AssessConfig />;
         }
       },
       collapsed: false
@@ -27,7 +28,7 @@ class AssessControl extends Component {
         iconType: 'setting',
         title: '权限配置',
         render: () => {
-          return <p>权限配置</p>;
+          return <AssessConfig />;
         }
       },
       {
