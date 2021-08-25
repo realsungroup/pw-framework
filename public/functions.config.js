@@ -10462,7 +10462,7 @@ window[683033638016] = {
         TabsTitle: '刀材',
         resid: 683035125174,
         hasAdd: true,
-        hasBeBtns: false,
+        hasBeBtns: true,
         hasModify: true,
         hasBackBtn: false,
         hasDelete: true,

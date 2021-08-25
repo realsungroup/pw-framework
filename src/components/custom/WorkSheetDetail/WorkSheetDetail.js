@@ -337,13 +337,7 @@ class WorkSheetDetail extends React.Component {
     minL:false
   };
   async componentDidMount() {
-    let dom = document.getElementById('sheetForm');
-    if(dom.offsetWidth<843){
-      this.setState({minL:true});
-    }else{
-      this.setState({minL:false});
-
-    }
+    
     this.getUserinfo();
     window.addEventListener('resize',this.handleResize.bind(this));
   }
@@ -361,8 +355,8 @@ class WorkSheetDetail extends React.Component {
     }
   }
   componentWillReceiveProps = async nextProps => {
+    
     let objEmpty={}
-
     if(this.props.colData){
       let n =0;
       let colData = this.props.colData
@@ -371,6 +365,7 @@ class WorkSheetDetail extends React.Component {
         n++;
       }
     }
+   
     //初始化
     if (nextProps.new) {
       this.setState({ loading: true });
@@ -410,6 +405,7 @@ class WorkSheetDetail extends React.Component {
         n++;
       }
     }
+
     this.setState({sheetData: objEmpty})
     await this.getHistories(this.props.curSheetId);
   }
@@ -437,6 +433,27 @@ class WorkSheetDetail extends React.Component {
   //获取历史数据
   //产品线ID,版本号
   getHistories = async (v, version) => {
+    let objEmpty={}
+    if(this.props.colData){
+      let n =0;
+      let colData = this.props.colData
+      while(n<colData.length){
+        objEmpty[colData[n].ColName]=''
+        n++;
+      }
+    }
+    console.log(objEmpty)
+
+    this.setState({sheetData: objEmpty})
+
+    let dom = document.getElementById('sheetForm');
+    if(dom.offsetWidth<843){
+      console.log('w',dom.offsetWidth)
+      this.setState({minL:true});
+    }else{
+      this.setState({minL:false});
+    }
+
     this.setState({ loading: true, process: '正在读取历史数据' });
     let cms = `C3_682281119677 = '${v}'`;
     let curCanEdit=99;

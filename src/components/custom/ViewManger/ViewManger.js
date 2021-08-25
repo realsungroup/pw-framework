@@ -3,6 +3,7 @@ import './ViewManger.less';
 import echarts from 'echarts';
 import moment from 'moment';
 import { Select, Button, message, DatePicker, Modal, Spin } from 'antd';
+import { Link } from 'react-router-dom';
 import WorkSheetDetail from '../WorkSheetDetail';
 import http from 'Util20/api';
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
@@ -13,12 +14,20 @@ class ViewManger extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading:false
+      loading:false,
+      stDate:'',
+      edDate:'',
+      range:[null,null]
     };
   }
 
   async componentDidMount() {
     this.getSheetData();
+    let edDate = new Date();
+    let stDate=moment(edDate).subtract(1, "weeks");
+    console.log([stDate,edDate])
+    this.setState({range:[moment(stDate),moment(edDate)]});
+    this.getStorageData(stDate,edDate);
   }
   //获取工作单
   getSheetData=async()=>{
@@ -34,10 +43,12 @@ class ViewManger extends React.Component {
     let ing2=[];
     let res;
     this.setState({loading:true});
+
+    
+
     let myDate = new Date();
     let myMonth  = myDate.getMonth()+1;
     let myDay = myDate.getDate();
-    console.log(myDay)
     if(Number(myMonth)<10){
       myMonth='0'+myMonth;
     }
@@ -104,8 +115,117 @@ class ViewManger extends React.Component {
     }
   }
   //获取库存
-  getStorageData=async()=>{
+  getStorageData=async(stDate,edDate)=>{
+    let st=stDate||this.state.stDate;
+    let ed=edDate||this.state.edDate;
+    let cha=moment(ed).diff(moment(st),'day');
+    cha=cha+1;
+    st=moment(st).format('YYYY-MM-DD');
+    ed=moment(ed).format('YYYY-MM-DD');
+    let res;
+    let res2;
+    let brids=[];
+    try {
+      res = await http().getTable({
+        resid: 683033976511,
+        cmswhere:`C3_683035044033 > '${st}' and C3_683035044033 < '${ed+' 23:59:59'}'`
+      });
+      //获取全部种类
+      res2 = await http().getTable({
+        resid: 678789180740,
+      });
+      let b=0;
+      let obj={}
+      while(b<res2.data.length){
+        obj[res2.data[b].C3_683034399830]=res2.data[b];
+        let str=res2.data[b].nameMaterial+'-'+res2.data[b].C3_683029916595+'('+res2.data[b].unit+')'
+        brids.push(str)
+        b++;
+      }
+      
+      let date = [];
+      let n=st.substring(8,11);
+      let e=ed.substring(8,11);
+      
+      n=Number(n);
+      let nn=n;
+      // e=Number(e)+1;
+      e=n+cha;
+      let ee=e;
+      while(n<e){
+        date.push(n)
+        b=0;
+        while(b<res2.data.length){
+          let array = obj[res2.data[b].C3_683034399830].data||[];
+          array.push('--')
+          obj[res2.data[b].C3_683034399830].data=array
+          b++;
+        }
+        n++;
+      }
+      let nnn=nn; 
+      while(nn<ee){
+        let c=res.data.length;
+        while(c>0){
+          let str=res.data[c-1].C3_683035044033;
+          str=str.substring(8,10);
+          if(nn==str){
+            obj[res.data[c-1].C3_683034441250].data[nn-nnn]=res.data[c-1].C3_683034015401
+          }
+          c--;
+        }
+        nn++;
+      }
+      n=0;
+      let toInsArr=[];
+      while(n<res2.data.length){
+        let a = obj[res2.data[n].C3_683034399830].data;
+        let c=0;
+        let cur=0;
+        let d=0;
+        let prev=0;
+        obj[res2.data[n].C3_683034399830].name=obj[res2.data[n].C3_683034399830].nameMaterial+'-'+obj[res2.data[n].C3_683034399830].C3_683029916595+'('+obj[res2.data[n].C3_683034399830].unit+')'
+        obj[res2.data[n].C3_683034399830].type='bar';
+        while(c<a.length){
+          if(a[c]=='--'){
+            if(c==a.length-1){
+              while(d<a.length){
+                a[d]=cur;
+                d++;
+              }
+            }
+          }else{
+            if(d==0){
+              cur=a[c];
+              prev=a[c];
+            }else{
+              cur=prev;
+              prev=a[c];
+            }
+            while(d<c){
+              a[d]=cur;
+              d++;
+            }
+            d++;
+          }
+          c++;
+        }
+        toInsArr.push(obj[res2.data[n].C3_683034399830])
+        n++;
+      }
 
+      let toIns={
+        date:date,
+        brids:brids,
+        series:toInsArr
+      }
+      console.log(toIns);
+
+      this.instantiation3(toIns)
+    } catch (error) {
+      message.error(error.message);
+    this.setState({loading:false});
+    }
   }
  //实例化echarts
  instantiation = chartObj => {
@@ -170,7 +290,6 @@ class ViewManger extends React.Component {
 
 //实例化echarts
 instantiation2 = chartObj => {
-  console.log('chartObj2',chartObj)
   let myDate = new Date();
   let myMonth = myDate.getMonth()+1;
   let myDay = myDate.getDate();
@@ -258,7 +377,6 @@ instantiation2 = chartObj => {
     }
     n++;
   }
-  console.log('date',date)
   if (chartObj.total) {
     total = chartObj.total;
   }
@@ -329,6 +447,50 @@ instantiation2 = chartObj => {
   option && myChart.setOption(option);
 };
 
+//实例化echarts
+instantiation3 = chartObj => {
+  let chartDom = document.getElementById('showBoard3');
+  let myChart = echarts.init(chartDom);
+  let option;
+  option = {
+    title: {
+        text: '材料库存统计',
+        height:'32px'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: chartObj.brids,
+        top:'32px'
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            dataView: {show: true, readOnly: false},
+            magicType: {show: true, type: ['line', 'bar']},
+            restore: {show: true},
+            saveAsImage: {show: true}
+        }
+    },
+    calculable: true,
+    xAxis: [
+        {
+            type: 'category',
+            data: chartObj.date
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value'
+        }
+    ],
+    series:chartObj.series
+};
+  option && myChart.setOption(option);
+};
+
+
   render() {
     return (
       <Spin spinning={this.state.loading}>
@@ -339,8 +501,17 @@ instantiation2 = chartObj => {
             <div className='title'>
             <h3>今日生产情况</h3>
             </div>
-            <div className='board' id='showBoard'>
+            <Link
+                        to={{
+                          pathname: '/fnmodule',
+                          search: `?resid=682879751431&recid=682879812377&type=看板&title=车间看板`
+                        }}
+                        target="_self"
+                      >
+                       <div className='board' id='showBoard'>
             </div>
+                      </Link>
+            
           </div>
           <div className='showBoard curMon'>
           <div className='title '>
@@ -356,11 +527,18 @@ instantiation2 = chartObj => {
               <h3>库存情况</h3>
               <div>
                 <RangePicker
+                  value={this.state.range}
+                  onChange={
+                    (v)=>{
+                      this.setState({range:v});
+                      this.getStorageData(v[0],v[1])
+                    }
+                  }
                   size='small'
                 />
               </div>
             </div>
-            <div className='board'>
+            <div className='board' id='showBoard3'>
             </div>
           </div>
         </div>

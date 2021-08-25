@@ -163,6 +163,10 @@ class WorkSheetShowBoard extends React.Component {
   //获取当前进行中和未开始的订单
   getSheets = async mesId => {
     this.setState({ loading2: true });
+    let resCol = await http().getTableColumnDefine({
+      resid: 678790254230,
+    });
+    this.setState({colData:resCol.data});
     let res;
     let res2;
     try {
@@ -382,6 +386,7 @@ class WorkSheetShowBoard extends React.Component {
                 clearData={this.state.clearData}
                 curSheetId={this.state.curSheetId}
                 mesId={this.state.mesId}
+                colData={this.state.colData}
              >
               </WorkSheetDetail>   
         </div>
