@@ -566,23 +566,29 @@ class IDLTransferVerifyAction extends Component {
                       不通过审核
                     </Button>
                   )}
-
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      this.approve('Y');
-
-                      // if (this.state.userId === this.state.HRManagerNumId) {
-                      // this.setState({
-                      //   HRTextModal: true
-                      // });
-                      // } else {
-                      //   this.approve('Y');
-                      // }
-                    }}
-                  >
-                    {this.state.isTarget == 'Y' ? '确认' : '保存并通过审核'}
-                  </Button>
+                  {this.state.HRManagerNumId === this.state.userId ? (
+                    this.state.toCheckFront.effortDate ? (
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          this.approve('Y');
+                        }}
+                      >
+                        {this.state.isTarget == 'Y' ? '确认' : '保存并通过审核'}
+                      </Button>
+                    ) : (
+                      <span>请选择生效日期</span>
+                    )
+                  ) : (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.approve('Y');
+                      }}
+                    >
+                      {this.state.isTarget == 'Y' ? '确认' : '保存并通过审核'}
+                    </Button>
+                  )}
                 </>
               ) : null
             }

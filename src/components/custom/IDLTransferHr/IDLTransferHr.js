@@ -2135,7 +2135,7 @@ class IDLTransferHr extends Component {
                     {this.state.cms ==
                     `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
                       this.state.toCheckFront.effortDate &&
-                      this.state.toCheckFront.jobId ? (
+                      this.state.iiviJobCode ? (
                         <Button
                           type="primary"
                           style={{ padding: '0 8px' }}
