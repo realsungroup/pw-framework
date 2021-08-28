@@ -115,3 +115,12 @@ export const queryPersons = data => {
     ...data
   });
 };
+
+/**
+ * 校验人员信息
+ */
+export const validPersons = data => {
+  return hikInstance.post('/api/v1/validPersons', {
+    ...data
+  });
+};

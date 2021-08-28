@@ -6,7 +6,7 @@ import TableData from 'Common/data/TableData';
 import AddDoorsModal from '../AddDoorsModal';
 import ModifyDoorsModal from '../ModifyDoorsModal';
 
-import AddOrgByImportExcel from '../AddOrgByImportExcel/AddOrgByImportExcel';
+import AddPersonGroupByImportExcel from '../AddPersonGroupByImportExcel';
 
 import AddPersonsByOrgModal from '../AddPersonsByOrgModal';
 import ModifyPersonsByOrgModal from '../ModifyPersonsByOrgModal';
@@ -208,7 +208,7 @@ class OrganizationManagement extends React.Component {
 
               {/* 通过Excel导入人员分组信息 */}
               {isImportExcelModalOpen && (
-                <AddOrgByImportExcel
+                <AddPersonGroupByImportExcel
                   visible={isImportExcelModalOpen}
                   onOk={() =>
                     this.setState({
@@ -218,7 +218,7 @@ class OrganizationManagement extends React.Component {
                   onCancel={() =>
                     this.setState({ isImportExcelModalOpen: false })
                   }
-                ></AddOrgByImportExcel>
+                ></AddPersonGroupByImportExcel>
               )}
 
               {/* 人员分组详情 */}

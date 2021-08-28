@@ -86,8 +86,7 @@ class AddPersonsByOrgModal extends React.Component {
                   name: person.personName,
                   jobNo: person.jobNo,
                   org: person.orgPathName,
-                  failMsg: 'success',
-                  _state: 'added',
+                  _state: 'editoradd',
                   _id: index + 1
                 }
               };

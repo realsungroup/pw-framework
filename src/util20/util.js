@@ -171,3 +171,15 @@ export const getGBEMClassName = prefix => {
     return `${prefix}__${suffix}`;
   };
 };
+
+export const getAccessToken = () => {
+  const userInfoString = localStorage.getItem('userInfo');
+  let accessToken;
+  try {
+    const userInfo = JSON.parse(userInfoString);
+    accessToken = userInfo.AccessToken;
+  } catch (err) {
+    accessToken = '';
+  }
+  return accessToken;
+};
