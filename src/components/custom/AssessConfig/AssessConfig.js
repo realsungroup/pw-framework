@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Tabs, Button, Modal } from 'antd';
 import './AssessConfig.less';
-import ConfigByPersonGroup from './AssessConfig';
+import ConfigByPersonGroup from './ConfigByPersonGroup';
 
 const { TabPane } = Tabs;
 
@@ -17,7 +17,7 @@ class AssessConfig extends React.Component {
     const {} = this.state;
     return (
       <div className="OrganizationManagement">
-        <Tabs defaultActiveKey="person">
+        <Tabs defaultActiveKey="personGroup">
           <TabPane tab="按人员分组配置权限" key="personGroup">
             <ConfigByPersonGroup />
           </TabPane>
