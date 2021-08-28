@@ -210,14 +210,12 @@ class OrganizationManagement extends React.Component {
               {isImportExcelModalOpen && (
                 <AddPersonGroupByImportExcel
                   visible={isImportExcelModalOpen}
-                  onOk={() =>
-                    this.setState({
-                      isImportExcelModalOpen: false
-                    })
-                  }
                   onCancel={() =>
                     this.setState({ isImportExcelModalOpen: false })
                   }
+                  onSuccess={() => {
+                    this.setState({ isImportExcelModalOpen: false, personGroupKey: this.state.personGroupKey + 1 })
+                  }}
                 ></AddPersonGroupByImportExcel>
               )}
 
