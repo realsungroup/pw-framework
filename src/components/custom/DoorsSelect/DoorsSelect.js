@@ -101,7 +101,7 @@ class DoorsSelect extends React.Component {
     } = this.state;
     return (
       <div className="doors-select">
-        <h2>门禁点列表</h2>
+        {/* <h2>门禁点列表</h2> */}
         <div className="doors-select__doors">
           <RegionSelect
             regionIndexCodes={regionIndexCodes}
