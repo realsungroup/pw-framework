@@ -8,8 +8,15 @@ const { Search } = Input;
 const realsunApiBaseURL =
   window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
 
+/**
+ * 门禁分组列表组件
+ */
 class DoorGroupList extends React.Component {
   static propTypes = {
+    /**
+     * 门禁分组列表
+     */
+    doorGroupList: PropTypes.array,
     /**
      * 门禁分组被选中时的回调
      */
@@ -17,9 +24,7 @@ class DoorGroupList extends React.Component {
   };
 
   state = {
-    searchValue: '',
-    list: [],
-    selectedRowKeys: []
+    searchValue: ''
   };
 
   columns = [
@@ -45,13 +50,13 @@ class DoorGroupList extends React.Component {
     } catch (err) {
       return message.error(err.message);
     }
-    this.setState({ list: res.data });
+    const { onFetchDoorGroupList } = this.props;
+    onFetchDoorGroupList && onFetchDoorGroupList(res.data);
   };
 
-  handleRowSelectionChange = (selectedRowKeys, selectedRows) => {
+  handleRowSelectionChange = selectedRowKeys => {
     const { onGroupSelect } = this.props;
-    this.setState({ selectedRowKeys });
-    onGroupSelect && onGroupSelect(selectedRows);
+    onGroupSelect && onGroupSelect(selectedRowKeys);
   };
 
   filterList = list => {
@@ -60,13 +65,14 @@ class DoorGroupList extends React.Component {
   };
 
   render() {
-    const { searchValue, list, selectedRowKeys } = this.state;
-    const dataSource = this.filterList(list);
+    const { searchValue } = this.state;
+    const { doorGroupList, selectedRowKeys } = this.props;
+    const dataSource = this.filterList(doorGroupList);
 
     return (
       <div className="door-group-list">
         <div className="door-group-list__header">
-          待选择门禁分组({selectedRowKeys.length}/{list.length})
+          待选择门禁分组({selectedRowKeys.length}/{doorGroupList.length})
         </div>
         <Search
           value={searchValue}
@@ -85,6 +91,7 @@ class DoorGroupList extends React.Component {
             selectedRowKeys,
             onChange: this.handleRowSelectionChange
           }}
+          rowKey="groupId"
         ></Table>
       </div>
     );
