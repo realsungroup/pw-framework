@@ -31,13 +31,14 @@ class DoorGroupSelect extends React.Component {
     const rightRows = remove(newGroupList, item => {
       return !!selectedRowKeys.find(key => key === item.groupId);
     });
+    const newRightRows = [...this.state.rightRows, ...rightRows]
     this.setState({
       doorGroupList: newGroupList,
-      rightRows,
+      rightRows: newRightRows,
       selectedRowKeys: []
     });
     const { onGroupSelect } = this.props;
-    onGroupSelect && onGroupSelect(rightRows);
+    onGroupSelect && onGroupSelect(newRightRows);
   };
 
   handleToLeft = () => {

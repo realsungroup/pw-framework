@@ -124,3 +124,21 @@ export const validPersons = data => {
     ...data
   });
 };
+
+/**
+ * 添加人员分组权限
+ */
+export const addPersonGroupRight = data => {
+  return hikInstance.post('/api/v1/addPersonGroupRight', {
+    ...data
+  });
+};
+
+/**
+ * 查询权限配置单进度
+ */
+export const authConfigProgress = data => {
+  return hikInstance.post('/api/v1/authConfigProgress', {
+    ...data
+  });
+};

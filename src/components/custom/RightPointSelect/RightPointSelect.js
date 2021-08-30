@@ -20,7 +20,21 @@ class RightPointSelect extends React.Component {
     /**
      * 门禁分组/点选择改变时的回调
      */
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+
+    /**
+     * 激活的标签页 key
+     */
+    activeKey: PropTypes.string.isRequired,
+
+    /**
+     * 区域 indexCode 列表
+     */
+    regionIndexCodes: PropTypes.array.isRequired
+  };
+
+  static defaultProps = {
+    activeKey: '门禁分组'
   };
 
   state = {

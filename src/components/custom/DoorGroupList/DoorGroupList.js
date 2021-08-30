@@ -43,7 +43,7 @@ class DoorGroupList extends React.Component {
     let res;
     try {
       res = await http({ baseURL: realsunApiBaseURL }).getRecordAndSubTables({
-        resid: 682507600534,
+        resid: 683210011323,
         subresid: 682507735244,
         getsubresource: 1
       });

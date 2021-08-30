@@ -51,7 +51,7 @@ class PersonGroupList extends React.Component {
     let res;
     try {
       res = await http({ baseURL: realsunApiBaseURL }).getRecordAndSubTables({
-        resid: 682507819904,
+        resid: 683209898302,
         subresid: 682507890263,
         getsubresource: 1
       });

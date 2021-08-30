@@ -31,13 +31,14 @@ class PersonGroupSelect extends React.Component {
     const rightRows = remove(newPersonGroupList, item => {
       return !!selectedRowKeys.find(key => key === item.groupId);
     });
+    const newRightRows = [...this.state.rightRows, ...rightRows]
     this.setState({
       personGroupList: newPersonGroupList,
-      rightRows,
+      rightRows: newRightRows,
       selectedRowKeys: []
     });
     const { onGroupSelect } = this.props;
-    onGroupSelect && onGroupSelect(rightRows);
+    onGroupSelect && onGroupSelect(newRightRows);
   };
 
   handleToLeft = () => {
