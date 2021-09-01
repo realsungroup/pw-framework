@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb, Icon, Divider } from 'antd';
 import OrganizationManagement from './OrganizationManagement';
 import AssessConfig from '../AssessConfig/AssessConfig';
+import AssessDownloadRecord from '../AssessDownloadRecord/AssessDownloadRecord';
 
 const { Header, Content, Sider } = Layout;
 
@@ -52,7 +53,7 @@ class AssessControl extends Component {
         iconType: 'cloud-download',
         title: '权限下载记录',
         render: () => {
-          return <p>1223</p>;
+          return <AssessDownloadRecord />;
         }
       }
     ];
