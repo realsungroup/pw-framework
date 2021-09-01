@@ -4910,7 +4910,7 @@ window[642855262376] = {
 };
 window[642855273462] = {
   // name: 'TableData', // 组件名称，
-  name: 'MainTableSubTables', // 组件名称，
+  name: 'RecruitmentNeeds', // 组件名称，
   title: '已审核招聘需求', // 功能模块名称
   props: {
     baseURL: 'http://10.108.2.66:1001/',
@@ -4937,7 +4937,24 @@ window[642855273462] = {
         // height: 500
         width: 1250
       },
-      subtractH: 200
+      subtractH: 200,
+      labelRequiredList: [
+        'Specify',
+        'Dept',
+        'Status',
+        'Pay Type',
+        'Job Grade Level',
+        'Relocation Eligible?',
+        'Incentive Eligible?',
+        'Budget Quarter',
+        'Dept. Code',
+        'Project Code',
+        '1)',
+        'Name',
+        'KEY JOB DUTIES & RESPONSIBILITIES:',
+        '% of Travel',
+        'SKILLS & QUALIFICATIONS:'
+      ]
     },
     subTablesProps: {
       518464309741: {

@@ -1104,7 +1104,9 @@ class IDLTransferHr extends Component {
       Approve: '已通过',
       ApproveRemark: this.state.C3_632503853105,
       effortDate: date,
-      hrEndApprove: 'Y'
+      hrEndApprove: 'Y',
+      C3_614084927323: this.state.toCheckFront.C3_614084927323,
+      C3_614084928408: this.state.toCheckFront.C3_614084928408
     };
     let res2 = await http().modifyRecords({
       resid: 632255761674,
@@ -2070,7 +2072,10 @@ class IDLTransferHr extends Component {
                   showAlertCms: ``
                 });
               } else {
-                this.setState({ showAlert: false, showAlertCms: `` });
+                this.setState({
+                  showAlert: false,
+                  showAlertCms: ``
+                });
               }
             }}
           >
@@ -2101,6 +2106,7 @@ class IDLTransferHr extends Component {
           <Modal
             width={'90vw'}
             visible={this.state.visible}
+            destroyOnClose
             footer={
               this.state.cms ==
               `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
@@ -2135,7 +2141,9 @@ class IDLTransferHr extends Component {
                     {this.state.cms ==
                     `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
                       this.state.toCheckFront.effortDate &&
-                      this.state.iiviJobCode ? (
+                      this.state.iiviJobCode &&
+                      this.state.toCheckFront.C3_614084928408 &&
+                      this.state.toCheckFront.C3_614084927323 ? (
                         <Button
                           type="primary"
                           style={{ padding: '0 8px' }}
@@ -2147,7 +2155,7 @@ class IDLTransferHr extends Component {
                           保存并通过审核
                         </Button>
                       ) : (
-                        ' 请先填写生效日期和岗位代码'
+                        '生效日期、岗位代码、考情审批经理总监是必填项'
                       )
                     ) : (
                       <Button
@@ -2162,7 +2170,7 @@ class IDLTransferHr extends Component {
                 )
               ) : null
             }
-            onCancel={() => this.setState({ visible: false })}
+            onCancel={() => this.setState({ visible: false, iiviJobCode: '' })}
           >
             <div className="toCheck" style={{ height: '60vh' }}>
               <div
@@ -2303,6 +2311,36 @@ class IDLTransferHr extends Component {
                         }}
                       >
                         搜索岗位
+                      </Button>
+                      <br />
+                      <b>考勤审批经理：</b>
+                      <span>{this.state.toCheckFront.C3_614084928408}</span>
+                      <Button
+                        size="small"
+                        icon="search"
+                        onClick={() => {
+                          this.setState({
+                            showAllMen: true,
+                            curMen: 'C3_614084928408'
+                          });
+                        }}
+                      >
+                        选择人员
+                      </Button>
+                      <br />
+                      <b>考勤审批总监：</b>
+                      <span>{this.state.toCheckFront.C3_614084927323}</span>
+                      <Button
+                        size="small"
+                        icon="search"
+                        onClick={() => {
+                          this.setState({
+                            showAllMen: true,
+                            curMen: 'C3_614084927323'
+                          });
+                        }}
+                      >
+                        选择人员
                       </Button>
                       <br />
                     </>
@@ -2556,7 +2594,56 @@ class IDLTransferHr extends Component {
               </div>
             </div>
           </Modal>
-
+          <Modal
+            title={'选择人员'}
+            width={'90vw'}
+            visible={this.state.showAllMen}
+            footer={null}
+            onCancel={() => this.setState({ showAllMen: false })}
+          >
+            <div
+              style={{
+                width: '100%',
+                height: 'calc(80vh - 104px)',
+                position: 'relative'
+              }}
+            >
+              <TableData
+                resid={666203805903}
+                baseURL={WuxiHr03BaseURL}
+                downloadURL={this.downloadURL}
+                hasRowView={false}
+                subtractH={220}
+                hasAdd={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                style={{ height: '100%' }}
+                hasRowView={false}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <Button
+                        onClick={() => {
+                          let curMen = this.state.curMen;
+                          let obj = this.state.toCheckFront;
+                          obj[curMen] = record.C3_419343735913;
+                          this.setState({
+                            showAllMen: false,
+                            toCheckFront: obj
+                          });
+                        }}
+                      >
+                        选择
+                      </Button>
+                    );
+                  }
+                ]}
+              />
+            </div>
+          </Modal>
           <Modal
             title={'选择Job Code'}
             width={'90vw'}
