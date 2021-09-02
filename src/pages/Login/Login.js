@@ -223,7 +223,7 @@ class Login extends React.Component {
       this.setState({ loading: true });
       let res;
       try {
-        res = http({ baseURL: baseURL }).forgetPassword({
+        res = http().forgetPassword({
           badgeno: this.state.userNameLogin,
           enterprisecode: parseInt((100000 * Math.random()) ^ Math.random()),
           sendEmail: 'Y'
@@ -263,7 +263,7 @@ class Login extends React.Component {
       this.setState({ loading: true });
       let res;
       try {
-        res = await http({ baseURL: baseURL }).getResetPassword({
+        res = await http().getResetPassword({
           userid: this.state.userNameLogin,
           newpass1: this.state.PSWNew,
           resetcode: this.state.OTP
