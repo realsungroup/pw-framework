@@ -25,7 +25,7 @@ class MultiPrint extends React.Component {
     window.location.reload();
   };
   //渲染打印页面
-  renderPages = async (dataSource, selectedRowKeys) => {
+  renderPages = (dataSource, selectedRowKeys) => {
     if (selectedRowKeys.length < 1) {
       message.error('请先选择要打印的记录！');
     } else {
@@ -38,7 +38,7 @@ class MultiPrint extends React.Component {
           }
         });
       });
-      await this.setState({ pages: Reldata, showPage: true });
+      this.setState({ pages: Reldata, showPage: true });
       let _this = this;
       let t = setInterval(function() {
         if (_this.refs.toPrint.innerHTML.length > 0) {
