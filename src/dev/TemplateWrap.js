@@ -54,7 +54,8 @@ class TemplateWrap extends Component {
       visible: false,
       code: 'demo',
       password: '1234@qwer',
-      baseURL
+      baseURL,
+      uiVisible: typeof props.visible === 'boolean' ? props.visible : true
     };
 
     http.setDefaultBaseURL(baseURL);
@@ -106,7 +107,7 @@ class TemplateWrap extends Component {
 
   render() {
     // 国际化
-    const { visible, baseURL, code, password } = this.state;
+    const { visible, baseURL, code, password, uiVisible } = this.state;
     const language = getItem('language') || '中文';
     setItem('language', language);
 
@@ -126,79 +127,94 @@ class TemplateWrap extends Component {
     return (
       <LocaleProvider locale={localeAntd}>
         <IntlProvider locale={locale} messages={messages}>
-          <div style={{ height: '100%', width: '100%' }}>
-            <div style={wrapperStyle}>
-              <span>基地址：</span>
-              <Input
-                value={baseURL}
-                onChange={e => {
-                  const value = e.target.value;
-                  this.setState({ baseURL: value });
-                  http.setDefaultBaseURL(value);
-                  setItem('templateWrapBaseURL', value);
-                }}
-              ></Input>
-            </div>
-            <div style={wrapperStyle}>
-              <Button
-                style={style}
-                onClick={this.handleLoginClick}
-                type="primary"
-              >
-                登录
-              </Button>
-            </div>
-
-            <div style={wrapperStyle}>
-              <Button
-                style={style}
-                onClick={this.handleClearCache}
-                type="primary"
-              >
-                清除缓存
-              </Button>
-            </div>
-
-            <div style={wrapperStyle}>
-              <Radio.Group
-                style={style}
-                value={language}
-                onChange={this.handleLanguageSelectChange}
-              >
-                <Radio.Button value="中文">中文</Radio.Button>
-                <Radio.Button value="English">English</Radio.Button>
-              </Radio.Group>
-            </div>
-
-            <div style={{ marginTop: 16 }}>{this.props.children}</div>
-            <Modal
-              visible={visible}
-              onCancel={() => this.setState({ visible: false })}
-              footer={null}
+          <>
+            <Button
+              onClick={() =>
+                this.setState({ uiVisible: !this.state.uiVisible })
+              }
             >
-              <Form>
-                <Form.Item>
-                  <Input
-                    value={code}
-                    placeholder="用户名"
-                    onChange={e => this.setState({ code: e.target.value })}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Input
-                    value={password}
-                    placeholder="密码"
-                    onChange={e => this.setState({ password: e.target.value })}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Button type="primary" onClick={this.handleSubmit} block>
-                    登录
-                  </Button>
-                </Form.Item>
-              </Form>
-            </Modal>
-          </div>
+              toggle
+            </Button>
+            <div style={{ height: '100%', width: '100%' }}>
+              {uiVisible && (
+                <>
+                  <div style={wrapperStyle}>
+                    <span>基地址：</span>
+                    <Input
+                      value={baseURL}
+                      onChange={e => {
+                        const value = e.target.value;
+                        this.setState({ baseURL: value });
+                        http.setDefaultBaseURL(value);
+                        setItem('templateWrapBaseURL', value);
+                      }}
+                    ></Input>
+                  </div>
+                  <div style={wrapperStyle}>
+                    <Button
+                      style={style}
+                      onClick={this.handleLoginClick}
+                      type="primary"
+                    >
+                      登录
+                    </Button>
+                  </div>
+
+                  <div style={wrapperStyle}>
+                    <Button
+                      style={style}
+                      onClick={this.handleClearCache}
+                      type="primary"
+                    >
+                      清除缓存
+                    </Button>
+                  </div>
+
+                  <div style={wrapperStyle}>
+                    <Radio.Group
+                      style={style}
+                      value={language}
+                      onChange={this.handleLanguageSelectChange}
+                    >
+                      <Radio.Button value="中文">中文</Radio.Button>
+                      <Radio.Button value="English">English</Radio.Button>
+                    </Radio.Group>
+                  </div>
+                </>
+              )}
+
+              <div style={{ marginTop: 16 }}>{this.props.children}</div>
+              <Modal
+                visible={visible}
+                onCancel={() => this.setState({ visible: false })}
+                footer={null}
+              >
+                <Form>
+                  <Form.Item>
+                    <Input
+                      value={code}
+                      placeholder="用户名"
+                      onChange={e => this.setState({ code: e.target.value })}
+                    />
+                  </Form.Item>
+                  <Form.Item>
+                    <Input
+                      value={password}
+                      placeholder="密码"
+                      onChange={e =>
+                        this.setState({ password: e.target.value })
+                      }
+                    />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" onClick={this.handleSubmit} block>
+                      登录
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Modal>
+            </div>
+          </>
         </IntlProvider>
       </LocaleProvider>
     );

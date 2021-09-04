@@ -200,13 +200,6 @@ class DoorGroupTable extends React.Component {
     ];
     const columnsAll = [
       {
-        title: '计划模板',
-        dataIndex: 'plane',
-        key: 'plane',
-        ellipsis: true,
-        width: '15%'
-      },
-      {
         title: '权限有效期',
         dataIndex: 'effectDate',
         key: 'effectDate',
@@ -269,7 +262,7 @@ class DoorGroupTable extends React.Component {
       selectedRecord,
       date
     } = this.state;
-    const { selectedRowKeys, personGroupList } = this.props;
+    const { selectedRowKeys = [], personGroupList = [] } = this.props;
 
     // 对props的值作处理
     let selectedPersonGroupList = [{ name: '' }];
@@ -287,7 +280,7 @@ class DoorGroupTable extends React.Component {
       <div className="">
         <Collapse defaultActiveKey={['1', '2']}>
           <Panel
-            header={`门禁分组(${groupData.length}个门禁分组，内含n个门禁点)`}
+            header={`门禁分组`}
             key="1"
             extra={this.renderSearchGroup()}
             style={customPanelStyle}

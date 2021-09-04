@@ -21,9 +21,9 @@ class AssessConfig extends React.Component {
           <TabPane tab="按人员分组配置权限" key="personGroup">
             <ConfigByPersonGroup />
           </TabPane>
-          <TabPane tab="按组织分配权限" key="org"></TabPane>
+          {/* <TabPane tab="按组织分配权限" key="org"></TabPane>
           <TabPane tab="按人员配置权限" key="person"></TabPane>
-          <TabPane tab="按门禁点配置权限" key="entrancePoint"></TabPane>
+          <TabPane tab="按门禁点配置权限" key="entrancePoint"></TabPane> */}
         </Tabs>
       </div>
     );

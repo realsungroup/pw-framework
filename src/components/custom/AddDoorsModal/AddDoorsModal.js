@@ -108,15 +108,15 @@ class AddDoorsModal extends React.Component {
   };
 
   render() {
-    const { ...otherProps } = this.props;
+    const { onSuccess, ...otherProps } = this.props;
     const { getFieldDecorator } = this.props.form;
     const { regionIndexCodes, loading } = this.state;
     return (
       <Modal
-        {...otherProps}
         width={1180}
         title="添加门禁分组"
         onOk={this.handleSubmit}
+        {...otherProps}
       >
         <Spin spinning={loading}>
           <Form>

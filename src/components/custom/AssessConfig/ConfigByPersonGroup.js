@@ -1,8 +1,9 @@
 import React from 'react';
-import { Layout, DatePicker, Button, Modal, Table, Input, Divider } from 'antd';
+import { Layout, DatePicker, Button, Modal, message, Divider } from 'antd';
 import './AssessConfig.less';
 import DoorGroupTable from '../DoorGroupTable/DoorGroupTable';
 import PersonGourpList from '../PersonGroupList/PersonGroupList';
+import AddPersonGroupRightModal from '../AddPersonGroupRightModal';
 
 const { RangePicker } = DatePicker;
 const { Header, Content, Footer, Sider } = Layout;
@@ -14,7 +15,8 @@ class ConfigByPersonGroup extends React.Component {
       selectedRowKeys: [],
       personGroupList: [],
       isDeleteModalOpen: false,
-      isDeleteModalOpen: false
+      isDeleteModalOpen: false,
+      addVisible: false
     };
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
@@ -54,7 +56,8 @@ class ConfigByPersonGroup extends React.Component {
       selectedRowKeys,
       personGroupList,
       isDeleteModalOpen,
-      isModifyModalOpen
+      isModifyModalOpen,
+      addVisible
     } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -66,7 +69,14 @@ class ConfigByPersonGroup extends React.Component {
           <Header>
             <div className="header-button-container">
               <span className="header-button-style">
-                <Button icon="plus" type="default" key="1" onClick={() => {}}>
+                <Button
+                  icon="plus"
+                  type="default"
+                  key="1"
+                  onClick={() => {
+                    this.setState({ addVisible: true });
+                  }}
+                >
                   添加权限
                 </Button>
               </span>
@@ -147,6 +157,16 @@ class ConfigByPersonGroup extends React.Component {
             </div>
           </div>
         </Modal>
+        {addVisible && (
+          <AddPersonGroupRightModal
+            visible={addVisible}
+            onSuccess={() => {
+              message.success('添加成功');
+              this.setState({ addVisible: false });
+            }}
+            onCancel={() => this.setState({ addVisible: false })}
+          ></AddPersonGroupRightModal>
+        )}
       </div>
     );
   }

@@ -77,8 +77,8 @@ class AddPersonGroupRightModal extends React.Component {
     const { timeRange } = values;
     const accessToken = getAccessToken();
 
-    const startTime = timeRange[0];
-    const endTime = timeRange[1];
+    const startTime = timeRange[0].format(`YYYY-MM-DD`) + 'T00:00:00';
+    const endTime = timeRange[1].format('YYYY-MM-DD') + 'T23:59:59';
 
     const personGroupRightList = [];
     personGroupList.forEach(personGroup => {
