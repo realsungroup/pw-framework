@@ -33,8 +33,21 @@ class AddPersonGroupRightModal extends React.Component {
     progressLoading: true
   };
 
+
   componentDidMount = () => {
-    this.getRegionIndexCodes();
+    if (this.props.visible) {
+      this.getRegionIndexCodes();
+    }
+  };
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (
+      prevProps.visible !== this.props.visible &&
+      this.props.visible === true &&
+      !this.state.regionIndexCodes.length
+    ) {
+      this.getRegionIndexCodes();
+    }
   };
 
   getRegionIndexCodes = async () => {

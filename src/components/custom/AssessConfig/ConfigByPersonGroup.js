@@ -166,16 +166,15 @@ class ConfigByPersonGroup extends React.Component {
             </div>
           </div>
         </Modal>
-        {addVisible && (
-          <AddPersonGroupRightModal
-            visible={addVisible}
-            onSuccess={() => {
-              message.success('添加成功');
-              this.setState({ addVisible: false });
-            }}
-            onCancel={() => this.setState({ addVisible: false })}
-          ></AddPersonGroupRightModal>
-        )}
+        <AddPersonGroupRightModal
+          visible={addVisible}
+          onSuccess={() => {
+            message.success('添加成功');
+            this.setState({ addVisible: false });
+          }}
+          onCancel={() => this.setState({ addVisible: false })}
+          destroyOnClose
+        ></AddPersonGroupRightModal>
       </div>
     );
   }
