@@ -4,6 +4,7 @@ import './AssessConfig.less';
 import DoorGroupTable from '../DoorGroupTable/DoorGroupTable';
 import PersonGourpList from '../PersonGroupList/PersonGroupList';
 import AddPersonGroupRightModal from '../AddPersonGroupRightModal';
+import PropTypes from 'prop-types';
 
 const { RangePicker } = DatePicker;
 const { Header, Content, Footer, Sider } = Layout;
@@ -16,7 +17,8 @@ class ConfigByPersonGroup extends React.Component {
       personGroupList: [],
       isDeleteModalOpen: false,
       isDeleteModalOpen: false,
-      addVisible: false
+      addVisible: false,
+      selectedPersonGroupId: ''
     };
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
@@ -57,7 +59,8 @@ class ConfigByPersonGroup extends React.Component {
       personGroupList,
       isDeleteModalOpen,
       isModifyModalOpen,
-      addVisible
+      addVisible,
+      selectedPersonGroupId
     } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -118,14 +121,20 @@ class ConfigByPersonGroup extends React.Component {
                   onGroupSelect={selectedRowKeys =>
                     this.setState({ selectedRowKeys })
                   }
+                  selectedPersonGroupId={selectedPersonGroupId}
+                  onSelectedPersonGroupIdChange={selectedPersonGroupId =>
+                    this.setState({ selectedPersonGroupId })
+                  }
                 ></PersonGourpList>
               </Sider>
               <Divider type="vertical" style={{ minHeight: '75vh' }} />
               <Content>
-                <DoorGroupTable
-                  selectedRowKeys={selectedRowKeys}
-                  personGroupList={personGroupList}
-                />
+                {selectedPersonGroupId && (
+                  <DoorGroupTable
+                    selectedPersonGroupId={selectedPersonGroupId}
+                    personGroupList={personGroupList}
+                  />
+                )}
               </Content>
             </Layout>
           </Content>

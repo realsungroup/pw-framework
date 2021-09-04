@@ -1,18 +1,24 @@
 import React from 'react';
 import {
-  Layout,
-  Tabs,
   DatePicker,
   Modal,
   Table,
   Input,
   Icon,
   Collapse,
-  message
+  message,
+  Spin,
+  Button
 } from 'antd';
 import './DoorGroupTable.less';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import http from 'Util20/api';
+import { queryDoors } from '../../../hikApi';
+import DoorGroupListModal from './DoorGroupListModal';
+
+const realsunApiBaseURL =
+  window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
 
 const customPanelStyle = {
   background: '#fff'
@@ -25,10 +31,16 @@ const { RangePicker } = DatePicker;
 class DoorGroupTable extends React.Component {
   static propTypes = {
     /**
-     * 选中的人员分组 key,会根据数组的第一个REC_ID查询数据
+     * 选中的人员分组 id
      */
-    selectedRowKeys: PropTypes.array
+    selectedPersonGroupId: PropTypes.string.isRequired
   };
+
+  // 所有的门禁点
+  allDoors = [];
+
+  // 所有的门禁分组
+  allDoorGroups = [];
 
   state = {
     selectedRowKeys: [],
@@ -38,66 +50,114 @@ class DoorGroupTable extends React.Component {
     isModifyModalOpen: false,
     selectedRecord: null,
     date: [],
-    groupData: [
-      {
-        groupName: '测试1',
-        describe: '用来测试的数据',
-        plane: '默认模板',
-        effectDate: '2021/12/12-2021/12/12'
-      },
-      {
-        groupName: '测试1',
-        describe: '用来测试的数据',
-        plane: '默认模板',
-        effectDate: '2021.12.12-2021.12.12'
-      }
-    ],
-    doorData: [
-      {
-        point: '测试1',
-        area: '用来测试的数据',
-        plane: '默认模板',
-        effectDate: '2021.12.12-2021.12.12'
-      },
-      {
-        groupName: '测试1',
-        describe: '用来测试的数据',
-        plane: '默认模板',
-        effectDate: '2021.12.12-2021.12.12'
-      }
-    ]
+
+    groupList: [],
+    doorList: [],
+    loading: false,
+    doorGroupTableVisible: false,
+    doorGroupListDataSource: [],
+    doorGroupListModalTitle: '',
+    doorGroupName: '',
+    doorName: ''
   };
 
-  /**
-   * 钩子函数，用来监听props变化
-   * @param {*} props
-   * @param {*} state
-   * @returns
-   */
-  static getDerivedStateFromProps(props, state) {
-    const { selectedRowKeys } = props;
-    if (props.selectedRowKeys !== state.selectedRowKeys) {
-      return { selectedRowKeys };
+  componentDidMount = async () => {
+    await Promise.all([this.getAllDoors(), this.getAllDoorGroups()]);
+    if (this.props.selectedPersonGroupId) {
+      this.getData();
     }
-    return null;
-  }
+  };
 
-  /**
-   * 搜索门禁分组组件
-   */
-  renderSearchGroup = () => {
-    return (
-      <Search
-        placeholder="搜索门禁分组名称"
-        onClick={e => {
-          if (e && e.stopPropagation) {
-            e.stopPropagation();
-          } else {
-            window.event.cancelBubble = true;
-          }
-        }}
-      ></Search>
-    );
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevProps.selectedPersonGroupId !== this.props.selectedPersonGroupId) {
+      this.getData();
+    }
+  };
+
+  getAllDoors = async () => {
+    let res;
+    try {
+      res = await queryDoors({
+        pageNo: 1,
+        pageSize: 1000
+      });
+    } catch (err) {
+      return message.error(err.message);
+    }
+    this.allDoors = res.data.list;
+  };
+
+  getAllDoorGroups = async () => {
+    let res;
+    try {
+      res = await http({ baseURL: realsunApiBaseURL }).getTable({
+        resid: 683210011323,
+        subresid: 682507735244
+      });
+    } catch (err) {
+      return message.error(err.message);
+    }
+    this.allDoorGroups = res.data;
+  };
+
+  getData = async () => {
+    this.setState({ loading: true });
+    const { selectedPersonGroupId } = this.props;
+    let res;
+    try {
+      res = await http({ baseURL: realsunApiBaseURL }).getTable({
+        resid: 684097503067,
+        cmswhere: `personGroupId = '${selectedPersonGroupId}'`
+      });
+    } catch (err) {
+      this.setState({ loading: false });
+      return message.error(err.message);
+    }
+    const groupList = [];
+    const doorList = [];
+    res.data.forEach(item => {
+      if (item.doorType === 'group') {
+        groupList.push(item);
+      } else if (item.doorType === 'door') {
+        doorList.push(item);
+      }
+    });
+
+    this.processGroupListDetails(groupList);
+    this.processDoorListDetails(doorList);
+
+    this.setState({
+      groupList,
+      doorList,
+      loading: false,
+      doorGroupName: '',
+      doorName: ''
+    });
+  };
+
+  processGroupListDetails = groupList => {
+    const allDoorGroups = this.allDoorGroups;
+    groupList.forEach(groupRecord => {
+      const result = allDoorGroups.find(
+        item => String(item.groupId) === groupRecord.groupId
+      );
+      if (result) {
+        groupRecord.groupDetail = result;
+      }
+    });
+    return groupList;
+  };
+
+  processDoorListDetails = async doorList => {
+    const allDoors = this.allDoors;
+    doorList.forEach(doorRecord => {
+      const result = allDoors.find(
+        item => item.indexCode === doorRecord.doorIndexCode
+      );
+      if (result) {
+        doorRecord.doorDetail = { ...result };
+      }
+    });
   };
 
   /**
@@ -119,29 +179,11 @@ class DoorGroupTable extends React.Component {
   };
 
   /**
-   * 根据选中列的最后一项，确定右侧表格展示何种数据
-   * @param {String} recid
-   */
-  getDataBySelectedRowKeys = async recid => {
-    console.log(recid);
-    let res1, res2;
-    try {
-      // res1 = await http().getTable({
-      //   resid:1
-      // })
-    } catch (error) {
-      console.log(error);
-      message.error(error.message);
-    }
-  };
-
-  /**
    * 删除授权
    * @param {object} record
    */
   removeAssess = () => {
     const { selectedRecord } = this.state;
-    console.log(selectedRecord);
     this.closeAllModal();
   };
 
@@ -165,156 +207,219 @@ class DoorGroupTable extends React.Component {
     });
   };
 
-  render() {
-    const columnsGroup = [
-      {
-        title: '门禁分组',
-        dataIndex: 'groupName',
-        key: 'groupName',
-        ellipsis: true,
-        width: '20%'
-      },
-      {
-        title: '分组详情',
-        dataIndex: 'describe',
-        key: 'describe',
-        ellipsis: true,
-        width: '30%'
+  commonColumns = [
+    {
+      title: '权限有效期',
+      dataIndex: '权限有效期',
+      key: '权限有效期',
+      render: (text, record) => {
+        const { startTime, endTime } = record;
+        return `${moment(startTime).format('YYYY/MM/DD')} - ${moment(
+          endTime
+        ).format('YYYY/MM/DD')}`;
       }
-    ];
-    const columnsDoor = [
-      {
-        title: '门禁点',
-        dataIndex: 'point',
-        key: 'point',
-        ellipsis: true,
-        width: '20%'
-      },
-      {
-        title: '所在区域',
-        dataIndex: 'area',
-        key: 'area',
-        ellipsis: true,
-        width: '30%'
+    },
+    {
+      title: '操作',
+      dataIndex: '操作',
+      key: '操作',
+      ellipsis: true,
+      render: (text, record) => {
+        return (
+          <div>
+            <span style={{ marginRight: '12px' }}>
+              <Icon
+                type="delete"
+                onClick={() => {
+                  this.setState({
+                    isDeleteModalOpen: true,
+                    selectedRecord: record
+                  });
+                }}
+              />
+            </span>
+            <span>
+              <Icon
+                type="dashboard"
+                onClick={() => {
+                  // this.setState(
+                  //   {
+                  //     isModifyModalOpen: true,
+                  //     selectedRecord: record,
+                  //     date: record.effectDate
+                  //       .split('-')
+                  //       .map(item => moment(item, 'YYYY-MM-DD hh:mm:ss'))
+                  //   },
+                  //   () => {
+                  //     console.log(record.effectDate.split('-'), date);
+                  //   }
+                  // );
+                }}
+              />
+            </span>
+          </div>
+        );
       }
-    ];
-    const columnsAll = [
-      {
-        title: '权限有效期',
-        dataIndex: 'effectDate',
-        key: 'effectDate',
-        width: 180,
-        width: '20%'
-      },
-      {
-        title: '操作',
-        dataIndex: '',
-        key: 'x',
-        width: '15%',
-        render: (text, record) => {
-          return (
-            <div>
-              <span style={{ marginRight: '12px' }}>
-                <Icon
-                  type="delete"
-                  onClick={() => {
-                    this.setState({
-                      isDeleteModalOpen: true,
-                      selectedRecord: record
-                    });
-                  }}
-                />
-              </span>
-              <span>
-                <Icon
-                  type="dashboard"
-                  onClick={() => {
-                    this.setState(
-                      {
-                        isModifyModalOpen: true,
-                        selectedRecord: record,
-                        date: record.effectDate
-                          .split('-')
-                          .map(item => moment(item, 'YYYY-MM-DD hh:mm:ss'))
-                      },
-                      () => {
-                        console.log(record.effectDate.split('-'), date);
-                      }
-                    );
-                  }}
-                />
-              </span>
-            </div>
-          );
+    }
+  ];
+
+  groupColumns = [
+    {
+      title: '门禁分组',
+      dataIndex: 'groupDetail.name',
+      key: 'groupDetail.name',
+      ellipsis: true
+    },
+    {
+      title: '分组详情',
+      dataIndex: '分组详情',
+      key: '分组详情',
+      ellipsis: true,
+      render: (text, record, index) => {
+        let count = 0,
+          subdata = [];
+        if (Array.isArray(record.groupDetail.subdata)) {
+          count = record.groupDetail.subdata.length;
+          subdata = record.groupDetail.subdata;
         }
+        return (
+          <a
+            href="javascript:;"
+            onClick={() =>
+              this.setState({
+                doorGroupTableVisible: true,
+                doorGroupListDataSource: subdata,
+                doorGroupListModalTitle: record.groupDetail.name
+              })
+            }
+          >
+            {`${count}(${subdata.map(item => `${item.name}`).join(',')})`}
+          </a>
+        );
       }
-    ];
+    },
+    ...this.commonColumns
+  ];
+
+  doorColumns = [
+    {
+      title: '门禁点',
+      dataIndex: 'doorDetail.name',
+      key: 'doorDetail.name',
+      ellipsis: true
+    },
+    {
+      title: '所在区域',
+      dataIndex: 'doorDetail.regionPathName',
+      key: 'doorDetail.regionPathName',
+      ellipsis: true
+    },
+    ...this.commonColumns
+  ];
+
+  render() {
     const tableFooter = {
       pagination: {
         pageSize: 5
       }
     };
     const {
-      groupData,
-      doorData,
+      groupList,
+      doorList,
       isModifyModalOpen,
-      isDeleteModalOpen,
-      selectedRecord,
-      date
+      date,
+      loading,
+      doorGroupTableVisible,
+      doorGroupListDataSource,
+      doorGroupListModalTitle,
+      doorGroupName,
+      doorName
     } = this.state;
-    const { selectedRowKeys = [], personGroupList = [] } = this.props;
-
-    // 对props的值作处理
-    let selectedPersonGroupList = [{ name: '' }];
-    if (selectedRowKeys.length >= 1) {
-      selectedPersonGroupList = personGroupList.filter(
-        item =>
-          item.REC_ID.toString() === selectedRowKeys[selectedRowKeys.length - 1]
-      );
-      this.getDataBySelectedRowKeys(
-        selectedRowKeys[selectedRowKeys.length - 1]
-      );
-    }
 
     return (
-      <div className="">
-        <Collapse defaultActiveKey={['1', '2']}>
-          <Panel
-            header={`门禁分组`}
-            key="1"
-            extra={this.renderSearchGroup()}
-            style={customPanelStyle}
-          >
-            <Table
-              columns={[...columnsGroup, ...columnsAll]}
-              dataSource={groupData}
-              {...tableFooter}
-            />
-          </Panel>
-          <Panel
-            header={`门禁点(${doorData.length})`}
-            key="2"
-            extra={this.renderSearchDoor()}
-            style={customPanelStyle}
-          >
-            <Table
-              columns={[...columnsDoor, ...columnsAll]}
-              dataSource={doorData}
-              {...tableFooter}
-            />
-          </Panel>
-        </Collapse>
-
-        {/* 删除权限 */}
-        <Modal
-          visible={isDeleteModalOpen}
-          onCancel={this.closeAllModal}
-          onOk={this.removeAssess}
-        >
-          <span>{`确定删除${selectedPersonGroupList.length >= 1 &&
-            selectedPersonGroupList[0].name}的${selectedRecord &&
-            selectedRecord.groupName}权限？`}</span>
-        </Modal>
+      <div className="door-group-table">
+        <Spin spinning={loading}>
+          <Collapse defaultActiveKey={['1', '2']}>
+            <Panel
+              header={
+                <div
+                  style={{
+                    display: 'inline-block',
+                    height: 32,
+                    lineHeight: '32px'
+                  }}
+                >
+                  门禁分组
+                </div>
+              }
+              key="1"
+              extra={(() => {
+                return (
+                  <Search
+                    placeholder="搜索门禁分组名称"
+                    onChange={e =>
+                      this.setState({ doorGroupName: e.target.value })
+                    }
+                    onClick={e => e.stopPropagation()}
+                  ></Search>
+                );
+              })()}
+              style={customPanelStyle}
+            >
+              <Table
+                columns={this.groupColumns}
+                dataSource={groupList.filter(item => {
+                  if (!doorGroupName) {
+                    return true;
+                  }
+                  if (item.groupDetail.name.includes(doorGroupName)) {
+                    return true;
+                  }
+                  return false;
+                })}
+                {...tableFooter}
+              />
+            </Panel>
+            <Panel
+              header={
+                <div
+                  style={{
+                    display: 'inline-block',
+                    height: 32,
+                    lineHeight: '32px'
+                  }}
+                >
+                  门禁点
+                </div>
+              }
+              key="2"
+              extra={(() => {
+                return (
+                  <Search
+                    placeholder="搜索门禁点名称"
+                    onChange={e => this.setState({ doorName: e.target.value })}
+                    onClick={e => e.stopPropagation()}
+                  ></Search>
+                );
+              })()}
+              style={customPanelStyle}
+            >
+              <Table
+                columns={this.doorColumns}
+                dataSource={doorList.filter(item => {
+                  if (!doorName) {
+                    return true;
+                  }
+                  if (item.doorDetail.name.includes(doorName)) {
+                    return true;
+                  }
+                  return false;
+                })}
+                {...tableFooter}
+              />
+            </Panel>
+          </Collapse>
+        </Spin>
 
         {/* 修改有效期 */}
         <Modal
@@ -334,6 +439,13 @@ class DoorGroupTable extends React.Component {
             </div>
           </div>
         </Modal>
+        <DoorGroupListModal
+          visible={doorGroupTableVisible}
+          onCancel={() => this.setState({ doorGroupTableVisible: false })}
+          dataSource={doorGroupListDataSource}
+          title={doorGroupListModalTitle}
+          destroyOnClose
+        ></DoorGroupListModal>
       </div>
     );
   }

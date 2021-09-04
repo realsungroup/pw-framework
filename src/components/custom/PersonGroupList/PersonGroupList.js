@@ -3,7 +3,7 @@ import './PersonGroupList.less';
 import { Input, Table, message } from 'antd';
 import http from 'Util20/api';
 import PropTypes from 'prop-types';
-
+import classNames from 'classnames';
 const { Search } = Input;
 const realsunApiBaseURL =
   window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
@@ -28,7 +28,17 @@ class PersonGroupList extends React.Component {
     /**
      * 选中的人员分组 key
      */
-    selectedRowKeys: PropTypes.array
+    selectedRowKeys: PropTypes.array,
+
+    /**
+     * 选中的人员分组 id
+     */
+    selectedPersonGroupId: PropTypes.string,
+
+    /**
+     * 选中的人员分组 id 改变时的回调
+     */
+    onSelectedPersonGroupIdChange: PropTypes.func
   };
 
   state = {
@@ -58,8 +68,13 @@ class PersonGroupList extends React.Component {
     } catch (err) {
       return message.error(err.message);
     }
-    const { onFetchPersonGroupList } = this.props;
+    const {
+      onFetchPersonGroupList,
+      onSelectedPersonGroupIdChange
+    } = this.props;
     onFetchPersonGroupList && onFetchPersonGroupList(res.data);
+    onSelectedPersonGroupIdChange &&
+      onSelectedPersonGroupIdChange(`${res.data[0].groupId}`);
   };
 
   handleRowSelectionChange = selectedRowKeys => {
@@ -74,7 +89,11 @@ class PersonGroupList extends React.Component {
 
   render() {
     const { searchValue } = this.state;
-    const { personGroupList, selectedRowKeys } = this.props;
+    const {
+      personGroupList,
+      selectedRowKeys,
+      selectedPersonGroupId
+    } = this.props;
     const dataSource = this.filterList(personGroupList);
 
     return (
@@ -100,6 +119,24 @@ class PersonGroupList extends React.Component {
             onChange: this.handleRowSelectionChange
           }}
           rowKey="groupId"
+          rowClassName={(record, index) =>
+            classNames({
+              'person-group-list__selected':
+                String(record.groupId) === String(selectedPersonGroupId)
+            })
+          }
+          onRow={record => {
+            return {
+              onClick: event => {
+                const { onSelectedPersonGroupIdChange } = this.props;
+                if (onSelectedPersonGroupIdChange) {
+                  if (String(record.groupId) !== selectedPersonGroupId) {
+                    onSelectedPersonGroupIdChange(record.groupId);
+                  }
+                }
+              }
+            };
+          }}
         ></Table>
       </div>
     );
