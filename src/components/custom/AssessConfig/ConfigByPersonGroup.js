@@ -31,8 +31,6 @@ class ConfigByPersonGroup extends React.Component {
 
   state = {
     selectedRowKeys: [],
-    isDeleteModalOpen: false,
-    isDeleteModalOpen: false,
 
     addVisible: false,
     selectedPersonGroupId: '',
@@ -52,7 +50,6 @@ class ConfigByPersonGroup extends React.Component {
    */
   closeAllModal = () => {
     this.setState({
-      isDeleteModalOpen: false,
       isModifyModalOpen: false
     });
   };
@@ -155,20 +152,78 @@ class ConfigByPersonGroup extends React.Component {
     }, 3000);
   };
 
+  handleRemoveAllRight = () => {
+    const { selectedRowKeys, personGroupList } = this.state;
+    const personGroups = [];
+
+    selectedRowKeys.forEach(key => {
+      const result = personGroupList.find(item => item.groupId === key);
+      if (result) {
+        personGroups.push(result);
+      }
+    });
+
+    const removeRight = async personGroupIds => {
+      this.setState({ progressVisible: true });
+
+      // 获取人员分组权限表记录
+      let res;
+      try {
+        res = await http({ baseURL: realsunApiBaseURL }).getTable({
+          resid: 684097503067,
+          cmswhere: `personGroupId in (${personGroupIds
+            .map(id => `'${id}'`)
+            .join(',')})`
+        });
+      } catch (err) {
+        this.setState({ progressVisible: false });
+        return message.error(err.message);
+      }
+
+      const records = res.data;
+      const recIds = records.map(item => `${item.REC_ID}`);
+
+      if (!recIds.length) {
+        message.info('您选择的人员分组没有配置权限');
+        this.setState({ progressVisible: false });
+      } else {
+        let res;
+        try {
+          res = await removeRightById(recIds);
+        } catch (err) {
+          this.setState({ progressVisible: false });
+          return message.error(err.message);
+        }
+        const taskIds = res.data.taskIds;
+        if (taskIds && taskIds.length) {
+          this.getRemoveProgress(taskIds, records);
+        } else {
+          message.error('删除失败');
+        }
+      }
+    };
+
+    Modal.confirm({
+      title: '提示',
+      content: `确定删除 ${personGroups
+        .map(item => item.name)
+        .join(',')} 的所有权限？`,
+      onOk: () => {
+        Modal.destroyAll();
+        removeRight(selectedRowKeys);
+      }
+    });
+  };
+
   render() {
     const {
       selectedRowKeys,
       personGroupList,
-      isDeleteModalOpen,
       isModifyModalOpen,
       addVisible,
       selectedPersonGroupId,
       percent
     } = this.state;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange
-    };
     return (
       <div className="configByPersonGroup-style">
         <Layout>
@@ -191,9 +246,7 @@ class ConfigByPersonGroup extends React.Component {
                   icon="delete"
                   type="default"
                   key="2"
-                  onClick={() => {
-                    this.setState({ isDeleteModalOpen: true });
-                  }}
+                  onClick={this.handleRemoveAllRight}
                   disabled={!selectedRowKeys.length}
                 >
                   删除权限
@@ -246,15 +299,6 @@ class ConfigByPersonGroup extends React.Component {
             </Layout>
           </Content>
         </Layout>
-
-        {/* 删除权限 */}
-        <Modal
-          visible={isDeleteModalOpen}
-          onCancel={this.closeAllModal}
-          onOk={this.removeAssess}
-        >
-          <span>{`确定删除确定删除所选的 ${selectedRowKeys.length} 个人员分组的所有权限？？`}</span>
-        </Modal>
 
         {/* 修改有效期 */}
         <Modal
