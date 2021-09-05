@@ -142,3 +142,12 @@ export const authConfigProgress = data => {
     ...data
   });
 };
+
+/**
+ * 通过人员分组权限表 id 删除权限
+ */
+export const removeRightById = personGroupRightRecIds => {
+  return hikInstance.post('/api/v1/removeRightById', {
+    personGroupRightRecIds
+  });
+};

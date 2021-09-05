@@ -29,10 +29,8 @@ class AddPersonGroupRightModal extends React.Component {
     doorGroupList: [],
     doors: [],
     showPorgress: false,
-    progress: 0,
-    progressLoading: true
+    progress: 0
   };
-
 
   componentDidMount = () => {
     if (this.props.visible) {
@@ -132,7 +130,6 @@ class AddPersonGroupRightModal extends React.Component {
       {
         loading: false,
         showProgress: true,
-        progressLoading: true,
         taskId: res.data.taskId
       },
       this.getAuthConfigProgress
@@ -145,7 +142,6 @@ class AddPersonGroupRightModal extends React.Component {
 
   getAuthConfigProgress = () => {
     const { taskId } = this.state;
-
     setTimeout(async () => {
       let res;
       try {
@@ -160,7 +156,7 @@ class AddPersonGroupRightModal extends React.Component {
       } else {
         this.handleReFillRecords();
       }
-    }, 1000);
+    }, 3000);
   };
 
   handleReFillRecords = async () => {
@@ -172,7 +168,7 @@ class AddPersonGroupRightModal extends React.Component {
         cmswhere: `taskId = '${taskId}'`
       });
     } catch (err) {
-      this.setState({ progressLoading: false });
+      this.setState({ progress: 0 });
       return message.error(err.message);
     }
 
@@ -185,16 +181,16 @@ class AddPersonGroupRightModal extends React.Component {
         }))
       });
     } catch (err) {
-      this.setState({ progressLoading: false });
+      this.setState({ progress: 0 });
       return message.error(err.message);
     }
 
-    this.setState({ progressLoading: false, progress: 100 });
+    this.setState({ progress: 100 });
   };
 
   handleSuccess = () => {
     const { onSuccess } = this.props;
-    this.setState({ showProgress: false });
+    this.setState({ showProgress: false, progress: 0 });
     onSuccess && onSuccess();
   };
 
@@ -247,19 +243,33 @@ class AddPersonGroupRightModal extends React.Component {
         <Modal
           visible={this.state.showProgress}
           title="进度"
-          okButtonProps={{ disabled: this.state.progressLoading }}
-          cancelButtonProps={{ disabled: this.state.progressLoading }}
+          okButtonProps={{ disabled: this.state.progress !== 100 }}
+          cancelButtonProps={{ disabled: this.state.progress !== 100 }}
           onOk={this.handleSuccess}
           onCancel={this.handleSuccess}
+          closable={false}
+          maskClosable={false}
         >
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <Progress type="circle" percent={this.state.progress} />
+          <div>
+            <div
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                flexWrap: 'wrap'
+              }}
+            >
+              <Progress type="circle" percent={this.state.progress} />
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: 8
+              }}
+            >
+              {this.state.progress === 100 ? '添加成功' : '添加中，请稍等...'}
+            </div>
           </div>
         </Modal>
       </>

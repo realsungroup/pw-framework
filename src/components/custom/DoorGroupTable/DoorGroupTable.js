@@ -8,13 +8,18 @@ import {
   Collapse,
   message,
   Spin,
-  Button
+  Tooltip,
+  Progress
 } from 'antd';
 import './DoorGroupTable.less';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import http from 'Util20/api';
-import { queryDoors } from '../../../hikApi';
+import {
+  queryDoors,
+  removeRightById,
+  authConfigProgress
+} from '../../../hikApi';
 import DoorGroupListModal from './DoorGroupListModal';
 
 const realsunApiBaseURL =
@@ -33,7 +38,12 @@ class DoorGroupTable extends React.Component {
     /**
      * 选中的人员分组 id
      */
-    selectedPersonGroupId: PropTypes.string.isRequired
+    selectedPersonGroupId: PropTypes.string.isRequired,
+
+    /**
+     * 人员分组列表
+     */
+    personGroupList: PropTypes.array
   };
 
   // 所有的门禁点
@@ -46,7 +56,6 @@ class DoorGroupTable extends React.Component {
     selectedRowKeys: [],
     searchGroupValue: '',
     searchDoorValue: '',
-    isDeleteModalOpen: false,
     isModifyModalOpen: false,
     selectedRecord: null,
     date: [],
@@ -58,7 +67,9 @@ class DoorGroupTable extends React.Component {
     doorGroupListDataSource: [],
     doorGroupListModalTitle: '',
     doorGroupName: '',
-    doorName: ''
+    doorName: '',
+    percent: 0,
+    progressVisible: false
   };
 
   componentDidMount = async () => {
@@ -131,7 +142,8 @@ class DoorGroupTable extends React.Component {
       doorList,
       loading: false,
       doorGroupName: '',
-      doorName: ''
+      doorName: '',
+      percent: 0
     });
   };
 
@@ -179,15 +191,6 @@ class DoorGroupTable extends React.Component {
   };
 
   /**
-   * 删除授权
-   * @param {object} record
-   */
-  removeAssess = () => {
-    const { selectedRecord } = this.state;
-    this.closeAllModal();
-  };
-
-  /**
    * 修改权限有效期
    * @param {object} record
    */
@@ -202,8 +205,7 @@ class DoorGroupTable extends React.Component {
    */
   closeAllModal = () => {
     this.setState({
-      isModifyModalOpen: false,
-      isDeleteModalOpen: false
+      isModifyModalOpen: false
     });
   };
 
@@ -228,34 +230,36 @@ class DoorGroupTable extends React.Component {
         return (
           <div>
             <span style={{ marginRight: '12px' }}>
-              <Icon
-                type="delete"
-                onClick={() => {
-                  this.setState({
-                    isDeleteModalOpen: true,
-                    selectedRecord: record
-                  });
-                }}
-              />
+              <Tooltip title="删除权限">
+                <Icon
+                  type="delete"
+                  onClick={() => {
+                    const { onRemove } = this.props;
+                    onRemove && onRemove(record);
+                  }}
+                />
+              </Tooltip>
             </span>
             <span>
-              <Icon
-                type="dashboard"
-                onClick={() => {
-                  // this.setState(
-                  //   {
-                  //     isModifyModalOpen: true,
-                  //     selectedRecord: record,
-                  //     date: record.effectDate
-                  //       .split('-')
-                  //       .map(item => moment(item, 'YYYY-MM-DD hh:mm:ss'))
-                  //   },
-                  //   () => {
-                  //     console.log(record.effectDate.split('-'), date);
-                  //   }
-                  // );
-                }}
-              />
+              <Tooltip title="修改有效期">
+                <Icon
+                  type="dashboard"
+                  onClick={() => {
+                    // this.setState(
+                    //   {
+                    //     isModifyModalOpen: true,
+                    //     selectedRecord: record,
+                    //     date: record.effectDate
+                    //       .split('-')
+                    //       .map(item => moment(item, 'YYYY-MM-DD hh:mm:ss'))
+                    //   },
+                    //   () => {
+                    //     console.log(record.effectDate.split('-'), date);
+                    //   }
+                    // );
+                  }}
+                />
+              </Tooltip>
             </span>
           </div>
         );
@@ -333,7 +337,9 @@ class DoorGroupTable extends React.Component {
       doorGroupListDataSource,
       doorGroupListModalTitle,
       doorGroupName,
-      doorName
+      doorName,
+      percent,
+      progressVisible
     } = this.state;
 
     return (
