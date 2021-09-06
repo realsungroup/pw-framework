@@ -199,6 +199,7 @@
     &.minLeft{
       .block{
         left: 1rem;
+        width:100%;
       }
     }
     .switch{
@@ -449,10 +450,25 @@
         }
       }
     }
-    .reasons,.feedback{
+    .reasons,.feedback,.bitainxiang{
       background:#fff;
       margin-top:1rem;
       padding:1rem;
+      ul{
+        list-style: none;
+      }
+      li{
+        &:before{
+          display: 'inline-block';
+          content:'√ '
+        }
+      }
+      .alert{
+        &:before{
+          content:'! '
+        }
+        color:#f5222d;
+      }
       b,span{
         line-height: 1.5rem;
       }

@@ -16,6 +16,7 @@ import {
 import { TableData } from '../../common/loadableCommon';
 import moment from 'moment';
 import debounce from 'lodash/debounce';
+import Bitianxiang from './Bitianxiang.json';
 
 import http from 'Util20/api';
 import { userInfo } from 'os';
@@ -334,7 +335,8 @@ class WorkSheetDetail extends React.Component {
     canEdit:9,
     isCurrent:true,
     materialResid:'',
-    minL:false
+    minL:false,
+    bitianxiang:[]
   };
   async componentDidMount() {
     
@@ -370,8 +372,9 @@ class WorkSheetDetail extends React.Component {
     if (nextProps.new) {
       this.setState({ loading: true });
       this.getProductLines();
-     
+      this.setState({bitianxiang:[]});
       this.setState({
+        bitianxiang:Bitianxiang[0].biTian,
         productLines: [],
         productLinesValue: '请选择工作流',
         productLineTree: {
@@ -433,6 +436,7 @@ class WorkSheetDetail extends React.Component {
   //获取历史数据
   //产品线ID,版本号
   getHistories = async (v, version) => {
+    
     let objEmpty={}
     if(this.props.colData){
       let n =0;
@@ -446,13 +450,7 @@ class WorkSheetDetail extends React.Component {
 
     this.setState({sheetData: objEmpty})
 
-    let dom = document.getElementById('sheetForm');
-    if(dom.offsetWidth<843){
-      console.log('w',dom.offsetWidth)
-      this.setState({minL:true});
-    }else{
-      this.setState({minL:false});
-    }
+    
 
     this.setState({ loading: true, process: '正在读取历史数据' });
     let cms = `C3_682281119677 = '${v}'`;
@@ -541,6 +539,23 @@ class WorkSheetDetail extends React.Component {
         });
         n++;
       }
+      let dom = document.getElementById('sheetForm');
+    if(dom.offsetWidth<843){
+      console.log('w',dom.offsetWidth)
+      this.setState({minL:true});
+    }else{
+      this.setState({minL:false});
+    }
+    //设置必填项
+    let arrBitian = Bitianxiang;
+    let btC=0;
+    this.setState({bitianxiang:[]});
+    while(btC<arrBitian.length){
+      if(arrBitian[btC].processID==curID){
+        this.setState({bitianxiang:arrBitian[btC].biTian});
+      }
+      btC++;
+    }
       if (version) {
         this.setState({ isCurrent:isCurrent,loading: false, process: '',imgUrl:res.data[0].imgUrl });
         if(curCanEdit!=99){
@@ -666,6 +681,7 @@ class WorkSheetDetail extends React.Component {
     let userInfo = localStorage.getItem('userInfo');
     userInfo = JSON.parse(userInfo);
     userInfo = userInfo.UserInfo;
+    console.log('json',Bitianxiang)
     this.setState({ userInfo: userInfo });
   };
 
@@ -841,6 +857,20 @@ class WorkSheetDetail extends React.Component {
       message.error('请添加图纸！')
       return false
     };
+
+    //检查必填项
+    let v = 0;
+    let bol=false;
+    while(v<this.state.bitianxiang.length){
+      if(!this.state.sheetData[this.state.bitianxiang[v].id]){
+        bol=true
+      }
+      v++;
+    }
+    if(bol){
+      message.error('尚有未填写的必填项！');
+      return false;
+    }
     this.setState({ loading: true, process: '保存中' });
     let obj = this.state.sheetData;
     obj.C3_682267546275 = this.state.productLinesValue;
@@ -886,6 +916,19 @@ class WorkSheetDetail extends React.Component {
   };
   //复制新建
   copyAdd = async () => {
+     //检查必填项
+     let v = 0;
+     let bol=false;
+     while(v<this.state.bitianxiang.length){
+       if(!this.state.sheetData[this.state.bitianxiang[v].id]){
+         bol=true
+       }
+       v++;
+     }
+     if(bol){
+       message.error('尚有未填写的必填项！');
+       return false;
+     }
     this.setState({loading:true,process:'复制中'})
     let obj = {};
     obj.C3_682267546275 = this.state.productLinesValue;
@@ -1008,7 +1051,21 @@ vertiRec= async(v)=>{
 }
 
   endFlow = async()=>{
-    this.setState({loading:true,process:'正在结束'})
+
+    this.setState({loading:true,process:'正在验证必填项'})
+    let v = 0;
+    let bol=false;
+    while(v<this.state.bitianxiang.length){
+      if(!this.state.sheetData[this.state.bitianxiang[v].id]){
+        bol=true
+      }
+      v++;
+    }
+    if(bol){
+      message.error('尚有未填写的必填项！');
+    }else{
+
+      this.setState({loading:true,process:'正在结束'})
 
     let res;
     let data = this.state.sheetData;
@@ -1049,6 +1106,11 @@ vertiRec= async(v)=>{
       message.error(e.message);
       console.log(e.message);
     }
+
+    }
+
+
+    
   }
   //姓名,编号,工号
   selectPeople=(nam,number,id)=>{
@@ -1437,7 +1499,7 @@ vertiRec= async(v)=>{
                           <div>
                             <span>从 {item2.date1 ? item2.date1 : '--'}</span>
                             <span>至 {item2.date2 ? item2.date2 : '--'}</span>
-                            <span>{item2.date1!='--' ? item2.name : '--'}</span>
+                            <span>{item2.date1!='--' ?(item2.rolename!='派工'? item2.name:'') : '--'}</span>
                             <span>{item2.rolename}</span>
                           </div>
                         </li>
@@ -1511,12 +1573,27 @@ vertiRec= async(v)=>{
                 </div>
               </div>
             </div>
+            <div className="bitainxiang">
+                  <div>当前流程必填项：</div>
+                  <ul>
+                  {
+                    this.state.bitianxiang.map(item=>{
+                      return(
+                        <li className={this.state.sheetData[item.id]?'':'alert'}>
+                          {item.name}
+                        </li>
+                      )
+                    })
+                  }
+                  </ul>
+                </div>
             {this.props.new ? null : (
               <>
                 <div className="reasons">
                   <b>修改原因：</b>
                   <p>{this.state.curModiReason}</p>
                 </div>
+                
                 <div className="feedback">
                   <b>用户反馈：</b>
                   <span

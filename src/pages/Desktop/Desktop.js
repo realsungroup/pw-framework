@@ -26,6 +26,7 @@ import DesktopBottomBar from './DesktopBottomBar';
 import { delay } from 'lodash';
 import Img from 'Common/ui/Img';
 
+
 import './Desktop.less';
 
 const { SubMenu } = Menu;
@@ -851,7 +852,7 @@ class Desktop extends React.Component {
         <ContextMenuTrigger id="desktop__trigger-area">
           <div className="desktop__main" ref={this.getDesktopMainRef}>
             {this.renderFolders()}
-            <img src={logoPng} alt="logo" className="desktop__main-logo" />
+            {/* <img src={logoPng} alt="logo" className="desktop__main-logo" /> */}
           </div>
         </ContextMenuTrigger>
         {/* 桌面底部 bar */}

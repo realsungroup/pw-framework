@@ -10598,3 +10598,18 @@ window[683055611729] = {
     // resid: 777
   } // 组件所接收的 props
 };
+
+//人员信息
+window[683324251042] = {
+  name: 'TableDataWrap',
+  title: '员工管理',
+  props: {
+    resid: 682683140687,
+    subtractH: 190,
+    // height:500,
+    hasModify: true,
+    hasDelete: true,
+    hasRowView: true,
+    hasRowSelection: true
+  }
+};

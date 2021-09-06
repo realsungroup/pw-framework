@@ -30,7 +30,8 @@ class WorkSheet extends React.Component {
         part1:false
       },
       curSheetId:'',
-      isNew:true
+      isNew:true,
+      isTongji:false
   }
   }
   
@@ -43,11 +44,21 @@ class WorkSheet extends React.Component {
 
   //获取新建订单权限
   getRight=async()=>{
-    // //获取localstorage的部门代码
+    //获取localstorage的部门代码
     // let res;
-    // let depaID=localStorage.getItem('userInfo');
-    // depaID=JSON.parse(depaID);
-    // depaID=depaID.UserInfo.EMP_DEPID;
+    let depaID=localStorage.getItem('userInfo');
+    depaID=JSON.parse(depaID);
+    depaID=depaID.UserInfo.GroupList;
+    depaID=depaID.substring(1,depaID.length-1);
+    depaID=depaID.split(',')
+    let n = 0;
+    while(n<depaID.length){
+      depaID[n]=depaID[n].substring(1,depaID[n].length-1);
+      if(depaID[n]=='684243850125'){
+        this.setState({isTongji:true});
+      }
+      n++;
+    }
     // //获取pw后台的新建权限
     // try {
     //   res = await http().getTable({
@@ -345,9 +356,10 @@ class WorkSheet extends React.Component {
                 actionBarExtra={({ dataSource, selectedRowKeys }) => {
                   return (
                     <>
+                    {this.state.isTongji?null:
                       <Button onClick={()=>{this.showDetails();}}>
                         新建
-                    </Button>
+                    </Button>}
                     </>
                   );
                 }}
@@ -361,7 +373,7 @@ class WorkSheet extends React.Component {
                         查看
                       </Button>
                       {
-                        record.sheetStatus=='已完成'?
+                        record.sheetStatus=='已完成' && (!this.state.isTongji)?
                         <Button onClick={()=>{
                           this.setState({
                             fb:record.C3_682368706409,

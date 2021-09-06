@@ -163,6 +163,8 @@ class WorkSheetShowBoard extends React.Component {
   //获取当前进行中和未开始的订单
   getSheets = async mesId => {
     this.setState({ loading2: true });
+    let stDate = new Date();
+      stDate = moment(stDate).format('YYYY-MM-DD');
     let resCol = await http().getTableColumnDefine({
       resid: 678790254230,
     });
@@ -172,7 +174,7 @@ class WorkSheetShowBoard extends React.Component {
     try {
       res = await http().getTable({
         resid: 679066070181,
-        cmswhere: `(curDepaId = '${mesId}' and C3_682377833865 ='进行中') or (C3_682540124939 = '${mesId}' and C3_682377833865 = '已完成')`
+        cmswhere: `(curDepaId = '${mesId}' and C3_682377833865 ='进行中') or (C3_682540124939 = '${mesId}' and C3_682377833865 = '已完成') and C3_678796788873 > '${stDate}'`
       });
       let n = 0;
       let emergy = [];
@@ -206,8 +208,7 @@ class WorkSheetShowBoard extends React.Component {
         n++;
       }
       //获取已完成的
-      let stDate = new Date();
-      stDate = moment(stDate).format('YYYY-MM-DD');
+      
       res2 = await http().getTable({
         resid: 682377608634,
         cmswhere: `C3_682379434328 > '${stDate}' and C3_682377764470 = '${mesId}' and C3_682378769806 = '已完成' and islast = 'Y'`
