@@ -143,10 +143,11 @@ class PaySettleAccounts extends React.Component {
 
   handleDownload = async () => {
     this.setState({ downloadLoading: true });
-    const {
+    let {
       downloadFile,
       baseURL,
       downloadBaseURL,
+      cmsWhere = '',
       cparm1 = '',
       cparm2 = '',
       cparm3 = '',
@@ -162,7 +163,7 @@ class PaySettleAccounts extends React.Component {
       675809001517,
       '',
       '',
-      '',
+      `Month = '${this.state.month.format('YYYYMM')}'`,
       undefined,
       undefined,
       cparm1,

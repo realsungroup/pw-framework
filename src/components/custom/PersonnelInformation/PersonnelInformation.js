@@ -23,7 +23,7 @@ class PersonnelInformation extends React.Component {
     const { selectedDepartment } = this.state;
     return (
       <div className="personnel-information">
-        <Tabs defaultActiveKey="1">
+        {/* <Tabs defaultActiveKey="1">
           <TabPane key="1" tab="在职人员基本信息" style={tabPaneStyle}>
             <div className="personnel-information-base">
               <div className="department-tree-wrapper">
@@ -148,27 +148,27 @@ class PersonnelInformation extends React.Component {
               role={role}
               rootId={60867}
             />
-          </TabPane>
-          <TabPane key="4" tab="人员岗位信息" style={tabPaneStyle}>
-            <TableData
-              baseURL={baseURL}
-              resid={665600662172}
-              wrappedComponentRef={element => (this.tableDataRef = element)}
-              refTargetComponentName="TableData"
-              subtractH={180}
-              hasAdd={false}
-              hasRowView={true}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={false}
-              hasRowSelection={false}
-              actionBarWidth={200}
-              downloadBaseURL={downloadBaseURL}
-            />
-          </TabPane>
-        </Tabs>
+          </TabPane> */}
+        {/* <TabPane key="4" tab="人员岗位信息" style={tabPaneStyle}> */}
+        <TableData
+          baseURL={baseURL}
+          resid={665600662172}
+          wrappedComponentRef={element => (this.tableDataRef = element)}
+          refTargetComponentName="TableData"
+          subtractH={180}
+          hasAdd={false}
+          hasRowView={true}
+          hasRowDelete={false}
+          hasRowEdit={false}
+          hasDelete={false}
+          hasModify={false}
+          hasRowModify={false}
+          hasRowSelection={false}
+          actionBarWidth={200}
+          downloadBaseURL={downloadBaseURL}
+        />
+        {/* </TabPane> */}
+        {/* </Tabs> */}
       </div>
     );
   }
