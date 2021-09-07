@@ -28,6 +28,8 @@ import { IntlProvider, addLocaleData } from 'react-intl';
 
 import '../antd-media.less';
 import './TemplateWrap.less';
+import 'antd/dist/antd.css';
+import 'pw-components/lib/components/common/styles/TableData.less';
 
 addLocaleData([...en, ...zh]);
 

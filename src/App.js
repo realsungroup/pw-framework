@@ -37,6 +37,7 @@ import {
   PageContainer,
   NotFound
 } from './pages/loadablePage';
+import 'pw-components/lib/components/common/styles/TableData.less';
 
 addLocaleData([...en, ...zh]);
 

@@ -12,12 +12,9 @@ import DoorGroupTable from '../DoorGroupTable/DoorGroupTable';
 import PersonGourpList from '../PersonGroupList/PersonGroupList';
 import AddPersonGroupRightModal from '../AddPersonGroupRightModal';
 import PropTypes from 'prop-types';
-import {
-  queryDoors,
-  removeRightById,
-  authConfigProgress
-} from '../../../hikApi';
+import { removeRightById, authConfigProgress } from '../../../hikApi';
 import http from 'Util20/api';
+import moment from 'moment';
 import './AssessConfig.less';
 
 const realsunApiBaseURL =
@@ -37,35 +34,14 @@ class ConfigByPersonGroup extends React.Component {
     doorGroupTableKey: 1,
     percent: 0,
     progressVisible: false,
-    personGroupList: []
+    personGroupList: [],
+
+    startTime: null,
+    endTime: null
   };
 
-  onSelectChange = selectedRowKeys => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    this.setState({ selectedRowKeys });
-  };
-
-  /**
-   * 关闭所有模态框
-   */
-  closeAllModal = () => {
-    this.setState({
-      isModifyModalOpen: false
-    });
-  };
-
-  /**
-   * 删除权限配置
-   */
-  removeAssess = () => {
-    this.closeAllModal();
-  };
-
-  /**
-   * 修改权限有效期
-   */
-  modifyAssessDate = () => {
-    this.closeAllModal();
+  handleModifyAuthDate = () => {
+    
   };
 
   handleRemoveRight = record => {
@@ -222,7 +198,9 @@ class ConfigByPersonGroup extends React.Component {
       isModifyModalOpen,
       addVisible,
       selectedPersonGroupId,
-      percent
+      percent,
+      startTime,
+      endTime
     } = this.state;
     return (
       <div className="configByPersonGroup-style">
@@ -300,22 +278,24 @@ class ConfigByPersonGroup extends React.Component {
           </Content>
         </Layout>
 
-        {/* 修改有效期 */}
         <Modal
+          title="修改权限有效期"
           visible={isModifyModalOpen}
-          onCancel={this.closeAllModal}
-          onOk={this.modifyAssessDate}
+          onOk={this.handleModifyAuthDate}
+          okButtonProps={{ disabled: !startTime || !endTime }}
+          onCancel={() => this.setState({ isModifyModalOpen: false })}
         >
-          <div style={{ margin: '8px 8px 16px 8px' }}>
-            <span>设置权限有效期</span>
-            <div>
-              <RangePicker
-                onChange={(date, dateString) => {
-                  console.log(date, dateString);
-                }}
-              ></RangePicker>
-            </div>
-          </div>
+          <RangePicker
+            value={[startTime, endTime]}
+            style={{ width: '100%' }}
+            onChange={date => {
+              if (date) {
+                this.setState({ startTime: date[0], endTime: date[1] });
+              } else {
+                this.setState({ startTime: null, endTime: null });
+              }
+            }}
+          ></RangePicker>
         </Modal>
         <AddPersonGroupRightModal
           visible={addVisible}

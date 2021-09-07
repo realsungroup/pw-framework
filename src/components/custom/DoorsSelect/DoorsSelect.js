@@ -22,21 +22,32 @@ class DoorsSelect extends React.Component {
      * 选择的门禁点改变时的回调
      * 默认：-
      */
-    onSelectedDoorsChange: PropTypes.func
+    onSelectedDoorsChange: PropTypes.func,
+
+    /**
+     * 默认已经选中的 doors
+     */
+    defaultSelectedDoors: PropTypes.array
   };
 
-  state = {
-    // 左侧：区域状态
-    selectedRegionIndexCode: '',
+  constructor(props) {
+    super(props);
 
-    // 中间：选择门禁点的状态
-    doors: [],
-    selectedRowKeys: [],
+    const { defaultSelectedDoors = [] } = props;
 
-    // 右侧：列表状态
-    rightAllDoors: [],
-    rightSelectedRowKeys: []
-  };
+    this.state = {
+      // 左侧：区域状态
+      selectedRegionIndexCode: '',
+
+      // 中间：选择门禁点的状态
+      doors: [],
+      selectedRowKeys: [],
+
+      // 右侧：列表状态
+      rightAllDoors: defaultSelectedDoors,
+      rightSelectedRowKeys: []
+    };
+  }
 
   handleRegionSelect = regionIndexCode => {
     this.setState({ selectedRegionIndexCode: regionIndexCode });
@@ -77,6 +88,9 @@ class DoorsSelect extends React.Component {
       rightSelectedRowKeys: [],
       doors: [...doors, ...removedRightDoors]
     });
+
+    const { onSelectedDoorsChange } = this.props;
+    onSelectedDoorsChange && onSelectedDoorsChange(newRightAllDoors);
   };
 
   handleFetchNewDoors = doors => {
