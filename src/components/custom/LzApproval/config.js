@@ -38,22 +38,22 @@ export const inApplication = {
         hasRowDelete: false,
         height: 500
       }
-    },
-    {
-      subTableName: '带出厂物品信息',
-      subResid: 669820837743,
-      tableProps: {
-        hasAdd: false,
-        hasModify: false,
-        hasDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        hasRowDelete: false,
-        subtractH: 196,
-        height: 500,
-        defaultColumnWidth: 100
-      }
     }
+    // {
+    //   subTableName: '带出厂物品信息',
+    //   subResid: 669820837743,
+    //   tableProps: {
+    //     hasAdd: false,
+    //     hasModify: false,
+    //     hasDelete: false,
+    //     hasRowModify: false,
+    //     hasRowView: false,
+    //     hasRowDelete: false,
+    //     subtractH: 196,
+    //     height: 500,
+    //     defaultColumnWidth: 100
+    //   }
+    // }
   ]
 };
 // 已审批
@@ -90,22 +90,22 @@ export const applyForAbnormal = {
         hasRowDelete: false,
         height: 500
       }
-    },
-    {
-      subTableName: '带出厂物品信息',
-      subResid: 669820837743,
-      tableProps: {
-        hasAdd: false,
-        hasModify: false,
-        hasDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        hasRowDelete: false,
-        subtractH: 196,
-        height: 500,
-        defaultColumnWidth: 100
-      }
     }
+    // {
+    //   subTableName: '带出厂物品信息',
+    //   subResid: 669820837743,
+    //   tableProps: {
+    //     hasAdd: false,
+    //     hasModify: false,
+    //     hasDelete: false,
+    //     hasRowModify: false,
+    //     hasRowView: false,
+    //     hasRowDelete: false,
+    //     subtractH: 196,
+    //     height: 500,
+    //     defaultColumnWidth: 100
+    //   }
+    // }
   ]
 };
 
@@ -146,22 +146,22 @@ export const refused = {
         hasRowDelete: false,
         height: 500
       }
-    },
-    {
-      subTableName: '带出厂物品信息',
-      subResid: 669820837743,
-      tableProps: {
-        hasAdd: false,
-        hasModify: false,
-        hasDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        hasRowDelete: false,
-        subtractH: 196,
-        height: 500,
-        defaultColumnWidth: 100
-      }
     }
+    // {
+    //   subTableName: '带出厂物品信息',
+    //   subResid: 669820837743,
+    //   tableProps: {
+    //     hasAdd: false,
+    //     hasModify: false,
+    //     hasDelete: false,
+    //     hasRowModify: false,
+    //     hasRowView: false,
+    //     hasRowDelete: false,
+    //     subtractH: 196,
+    //     height: 500,
+    //     defaultColumnWidth: 100
+    //   }
+    // }
   ]
 };
 
@@ -202,21 +202,21 @@ export const history = {
         hasRowDelete: false,
         height: 500
       }
-    },
-    {
-      subTableName: '带出厂物品信息',
-      subResid: 669820837743,
-      tableProps: {
-        hasAdd: false,
-        hasModify: false,
-        hasDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        hasRowDelete: false,
-        subtractH: 196,
-        height: 500,
-        defaultColumnWidth: 100
-      }
     }
+    // {
+    //   subTableName: '带出厂物品信息',
+    //   subResid: 669820837743,
+    //   tableProps: {
+    //     hasAdd: false,
+    //     hasModify: false,
+    //     hasDelete: false,
+    //     hasRowModify: false,
+    //     hasRowView: false,
+    //     hasRowDelete: false,
+    //     subtractH: 196,
+    //     height: 500,
+    //     defaultColumnWidth: 100
+    //   }
+    // }
   ]
 };

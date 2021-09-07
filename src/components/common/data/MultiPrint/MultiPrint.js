@@ -14,6 +14,7 @@ class MultiPrint extends React.Component {
       pages: []
     };
     const Module = props.module;
+    this.renderPages = this.renderPages.bind(this);
   }
   handlePrint = () => {
     // 打印
@@ -31,6 +32,7 @@ class MultiPrint extends React.Component {
     } else {
       let data = dataSource;
       let Reldata = [];
+
       data.map(item => {
         selectedRowKeys.map(items => {
           if (item.REC_ID === items) {

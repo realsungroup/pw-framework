@@ -125,6 +125,7 @@ class LzAFFOSPeopleList extends React.Component {
         render: (text, record) => (
           <Select
             style={{ width: '100%' }}
+            value={text}
             onChange={v => {
               console.log(record.key, this.state.dataSource);
               let obj = this.state.dataSource;
@@ -200,7 +201,8 @@ class LzAFFOSPeopleList extends React.Component {
 
       sheetJson.map((item, index) => {
         const newInfo = {};
-        newInfo.key = count + index;
+        // newInfo.key = count + index;
+        newInfo.key = count - 1 + index;
         newInfo.C3_605716828937 = item.访客姓名;
         newInfo.C3_605716867680 = item.登记证件类型;
         newInfo.C3_614704116070 = item.登记证件号码;
@@ -209,9 +211,13 @@ class LzAFFOSPeopleList extends React.Component {
         importData.push(newInfo);
       });
       ctx.setState({
-        count: count + importData.length,
-        dataSource: [...importData, ...dataSource]
+        count: importData.length + count - 1,
+        dataSource: importData
       });
+      // ctx.setState({
+      //   count: count + importData.length,
+      //   dataSource: [...importData, ...dataSource]
+      // });
     };
     reader.readAsArrayBuffer(file);
     this.setState({
