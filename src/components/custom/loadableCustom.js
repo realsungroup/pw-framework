@@ -1004,3 +1004,10 @@ export const AssessControl = Loadable({
     return minLoading;
   }
 });
+
+export const CollectTaskDefine = Loadable({
+  loader: () => import('./CollectTaskDefine'),
+  loading() {
+    return minLoading;
+  }
+});

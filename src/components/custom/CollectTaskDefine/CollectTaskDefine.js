@@ -132,8 +132,7 @@ class CollectTaskDefine extends React.Component {
       loading: false,
       visible: false,
       tableDataKey: this.state.tableDataKey + 1,
-      selectedDoors: [],
-      
+      selectedDoors: []
     });
   };
 
@@ -168,6 +167,7 @@ class CollectTaskDefine extends React.Component {
     return (
       <div className="collect-task-define">
         <TableData
+          baseURL={realsunApiBaseURL}
           key={tableDataKey}
           resid="681055931420"
           subtractH={170}
@@ -304,7 +304,7 @@ class CollectTaskDefine extends React.Component {
                 })(<Switch checkedChildren="开" unCheckedChildren="关" />)
               )}
             </Form.Item>
-            <Form.Item label="任务间隔时间秒">
+            <Form.Item label="任务间隔时间秒（秒）">
               {mode === 'view' ? (
                 <div>{record.taskInterval}</div>
               ) : (
@@ -321,7 +321,7 @@ class CollectTaskDefine extends React.Component {
               )}
             </Form.Item>
 
-            <Form.Item label="开始时间偏移量">
+            <Form.Item label="开始时间偏移量（分钟）">
               {mode === 'view' ? (
                 <div>{record.startMinutesOffset}</div>
               ) : (

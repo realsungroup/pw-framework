@@ -18,7 +18,8 @@ export {
   TableDataVisitor,
   TableDataVisitorG,
   TableDataScheduling,
-  TabsTableData
+  TabsTableData,
+  CollectTaskDefine
 } from '../components/custom/loadableCustom';
 
 // custom
