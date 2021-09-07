@@ -134,35 +134,35 @@ export const inExaminationAndApproval = {
         // noWidthFieldsIndex: [1]
       }
     },
-    {
-      subTableName: '带出厂物品信息',
-      subResid: 669820837743,
-      tableProps: {
-        addText: '添加物品信息',
-        hasAdd: true,
-        hasModify: false,
-        hasDelete: false,
-        hasRowModify: true,
-        hasRowView: false,
-        hasRowDelete: false,
-        hasRowEdit: true,
-        rowEditFormName: 'default',
-        height: 600,
-        defaultColumnWidth: 100,
-        actionBarWidth: 120,
-        subtractH: 185,
-        actionBarFixed: false,
-        rowEditAddPosition: 'start',
-        hasRowEditAdd: true,
-        size: 'small',
-        storeWay: 'fe',
-        formProps: { saveReopen: true, saveOpenText: '保存并继续添加人员' },
-        importConfig: {
-          mode: 'fe',
-          saveFE: true
-        }
-      }
-    },
+    // {
+    //   subTableName: '带出厂物品信息',
+    //   subResid: 669820837743,
+    //   tableProps: {
+    //     addText: '添加物品信息',
+    //     hasAdd: true,
+    //     hasModify: false,
+    //     hasDelete: false,
+    //     hasRowModify: true,
+    //     hasRowView: false,
+    //     hasRowDelete: false,
+    //     hasRowEdit: true,
+    //     rowEditFormName: 'default',
+    //     height: 600,
+    //     defaultColumnWidth: 100,
+    //     actionBarWidth: 120,
+    //     subtractH: 185,
+    //     actionBarFixed: false,
+    //     rowEditAddPosition: 'start',
+    //     hasRowEditAdd: true,
+    //     size: 'small',
+    //     storeWay: 'fe',
+    //     formProps: { saveReopen: true, saveOpenText: '保存并继续添加人员' },
+    //     importConfig: {
+    //       mode: 'fe',
+    //       saveFE: true
+    //     }
+    //   }
+    // },
     {
       subTableName: '审批记录',
       subResid: 605989494375,
@@ -238,21 +238,21 @@ export const approved = {
         isSetColumnWidth: true
       }
     },
-    {
-      subTableName: '带出厂物品信息',
-      subResid: 669820837743,
-      tableProps: {
-        hasAdd: false,
-        hasModify: false,
-        hasDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        hasRowDelete: false,
-        subtractH: 196,
-        height: 500,
-        defaultColumnWidth: 100
-      }
-    },
+    // {
+    //   subTableName: '带出厂物品信息',
+    //   subResid: 669820837743,
+    //   tableProps: {
+    //     hasAdd: false,
+    //     hasModify: false,
+    //     hasDelete: false,
+    //     hasRowModify: false,
+    //     hasRowView: false,
+    //     hasRowDelete: false,
+    //     subtractH: 196,
+    //     height: 500,
+    //     defaultColumnWidth: 100
+    //   }
+    // },
     {
       subTableName: '审批记录',
       subResid: 605989494375,
@@ -311,21 +311,21 @@ export const refused = {
         defaultColumnWidth: 100
       }
     },
-    {
-      subTableName: '带出厂物品信息',
-      subResid: 669820837743,
-      tableProps: {
-        hasAdd: false,
-        hasModify: false,
-        hasDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        hasRowDelete: false,
-        subtractH: 196,
-        height: 500,
-        defaultColumnWidth: 100
-      }
-    },
+    // {
+    //   subTableName: '带出厂物品信息',
+    //   subResid: 669820837743,
+    //   tableProps: {
+    //     hasAdd: false,
+    //     hasModify: false,
+    //     hasDelete: false,
+    //     hasRowModify: false,
+    //     hasRowView: false,
+    //     hasRowDelete: false,
+    //     subtractH: 196,
+    //     height: 500,
+    //     defaultColumnWidth: 100
+    //   }
+    // },
     {
       subTableName: '审批记录',
       subResid: 605989494375,
@@ -384,21 +384,21 @@ export const history = {
         defaultColumnWidth: 100
       }
     },
-    {
-      subTableName: '带出厂物品信息',
-      subResid: 669820837743,
-      tableProps: {
-        hasAdd: false,
-        hasModify: false,
-        hasDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        hasRowDelete: false,
-        subtractH: 196,
-        height: 500,
-        defaultColumnWidth: 100
-      }
-    },
+    // {
+    //   subTableName: '带出厂物品信息',
+    //   subResid: 669820837743,
+    //   tableProps: {
+    //     hasAdd: false,
+    //     hasModify: false,
+    //     hasDelete: false,
+    //     hasRowModify: false,
+    //     hasRowView: false,
+    //     hasRowDelete: false,
+    //     subtractH: 196,
+    //     height: 500,
+    //     defaultColumnWidth: 100
+    //   }
+    // },
     {
       subTableName: '审批记录',
       subResid: 605989494375,

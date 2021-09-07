@@ -462,7 +462,7 @@ class DeliverApprovalForm extends React.Component {
                     </tr>
                   );
                 })}
-                <tr>
+                {/* <tr>
                   <th colSpan="9">
                     <h3>带出厂物品信息</h3>
                   </th>
@@ -478,7 +478,7 @@ class DeliverApprovalForm extends React.Component {
                       变更信息
                     </Button>
                   </th>
-                </tr>
+                </tr> */}
                 <tr>
                   <th className="thCss">
                     <label>物品名称</label>

@@ -130,6 +130,7 @@ class DeliverList extends React.Component {
         render: (text, record) => (
           <Select
             style={{ width: '100%' }}
+            value={text}
             onChange={v => {
               console.log(record.key, this.state.dataSource);
               let obj = this.state.dataSource;
@@ -203,7 +204,8 @@ class DeliverList extends React.Component {
       var sheetJson = XLSX.utils.sheet_to_json(ctx._sheet1);
       sheetJson.map((item, index) => {
         const newInfo = {};
-        newInfo.key = count + index;
+        newInfo.key = count - 1 + index;
+        // newInfo.key = count + index;
         console.log('state', ctx.state.dataSource);
         newInfo.carNum = item.车辆号码;
         newInfo.C3_605719242294 = item.司机姓名;
@@ -213,9 +215,13 @@ class DeliverList extends React.Component {
         importData.push(newInfo);
       });
       ctx.setState({
-        count: count + importData.length,
-        dataSource: [...importData, ...dataSource]
+        count: importData.length + count - 1,
+        dataSource: importData
       });
+      // ctx.setState({
+      //   count: count + importData.length,
+      //   dataSource: [...importData, ...dataSource]
+      // });
     };
     reader.readAsArrayBuffer(file);
     this.setState({
@@ -260,22 +266,22 @@ class DeliverList extends React.Component {
 
   //向父组件发送施工人员名单
   sendBuilderList = () => {
-    if (
-      this.state.dataSource.find(item => {
-        if (
-          !/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(
-            item.C3_605719242955
-          ) &&
-          item.C3_605719242802 == '身份证'
-        ) {
-          message.info(`${item.C3_605719242294}的证件号码有误，请重新填写`);
-          return false;
-        } else if (!item.C3_605719242802) {
-          message.info(`${item.C3_605719242294}的证件类型未填写`);
-        }
-        return true;
-      })
-    ) {
+    let p = true;
+    this.state.dataSource.find(item => {
+      if (
+        !/^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(
+          item.C3_605719242955
+        ) &&
+        item.C3_605719242802 == '身份证'
+      ) {
+        message.info(`${item.C3_605719242294}的证件号码有误，请重新填写`);
+        p = false;
+      } else if (!item.C3_605719242802) {
+        message.info(`${item.C3_605719242294}的证件类型未填写`);
+        p = false;
+      }
+    });
+    if (p == true) {
       this.props.getBuilderList(this.state.dataSource);
     }
   };
