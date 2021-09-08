@@ -442,7 +442,7 @@ export default class ViProvider extends React.Component {
                           </Button>
                         </th>
                       </tr> */}
-                      <tr>
+                      {/* <tr>
                         <th className="thCss">
                           <label>物品名称</label>
                         </th>
@@ -458,7 +458,7 @@ export default class ViProvider extends React.Component {
                         <th colSpan="3" className="thCss">
                           <label>物品图片</label>
                         </th>
-                      </tr>
+                      </tr> */}
                       {this.state.goodsInfo.map(item => {
                         return (
                           <tr>
