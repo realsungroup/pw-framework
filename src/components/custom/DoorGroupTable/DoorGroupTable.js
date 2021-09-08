@@ -245,18 +245,8 @@ class DoorGroupTable extends React.Component {
                 <Icon
                   type="dashboard"
                   onClick={() => {
-                    // this.setState(
-                    //   {
-                    //     isModifyModalOpen: true,
-                    //     selectedRecord: record,
-                    //     date: record.effectDate
-                    //       .split('-')
-                    //       .map(item => moment(item, 'YYYY-MM-DD hh:mm:ss'))
-                    //   },
-                    //   () => {
-                    //     console.log(record.effectDate.split('-'), date);
-                    //   }
-                    // );
+                    const { onModifyDate } = this.props;
+                    onModifyDate && onModifyDate(record);
                   }}
                 />
               </Tooltip>

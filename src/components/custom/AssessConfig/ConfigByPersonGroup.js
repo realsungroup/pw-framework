@@ -12,7 +12,11 @@ import DoorGroupTable from '../DoorGroupTable/DoorGroupTable';
 import PersonGourpList from '../PersonGroupList/PersonGroupList';
 import AddPersonGroupRightModal from '../AddPersonGroupRightModal';
 import PropTypes from 'prop-types';
-import { removeRightById, authConfigProgress } from '../../../hikApi';
+import {
+  removeRightById,
+  authConfigProgress,
+  modifyDateByIds
+} from '../../../hikApi';
 import http from 'Util20/api';
 import moment from 'moment';
 import './AssessConfig.less';
@@ -37,11 +41,140 @@ class ConfigByPersonGroup extends React.Component {
     personGroupList: [],
 
     startTime: null,
-    endTime: null
+    endTime: null,
+
+    progressMode: '', // 进度模式：'remove' 删除的进度 | 'modify' 修改有效期的进度
+    modifyDateRecord: null
   };
 
-  handleModifyAuthDate = () => {
-    
+  handleModifyAuthDate = record => {
+    const { startTime, endTime } = record;
+    this.setState({
+      isModifyModalOpen: true,
+      modifyDateRecord: record,
+      startTime: moment(startTime),
+      endTime: moment(endTime)
+    });
+  };
+
+  handleModifyAllAuthDate = () => {
+    const {
+      startTime: start,
+      endTime: end,
+      selectedRowKeys,
+      personGroupList,
+      modifyDateRecord
+    } = this.state;
+    if (!start || !end) {
+      return message.error('请选择有效期');
+    }
+    if (modifyDateRecord) {
+      if (
+        start.format('YYYY-MM-DDTHH:mm:ss') === modifyDateRecord.startTime &&
+        end.format('YYYY-MM-DDTHH:mm:ss') === modifyDateRecord.endTime
+      ) {
+        return message.error('有效期没有改变');
+      }
+    }
+
+    let msg = '';
+    const personGroups = [];
+    if (modifyDateRecord) {
+      const result = personGroupList.find(
+        item => item.groupId === modifyDateRecord.personGroupId
+      );
+      console.log({ modifyDateRecord });
+      msg = `您确定要修改 ${result.name} 的 ${modifyDateRecord.groupDetail.name} 的有效期吗？`;
+    } else {
+      selectedRowKeys.forEach(key => {
+        const result = personGroupList.find(item => item.groupId === key);
+        if (result) {
+          personGroups.push(result);
+        }
+      });
+      msg = `您确定要修改 ${personGroups
+        .map(item => item.name)
+        .join(',')} 的有效期吗？`;
+    }
+
+    const startTime = start.format('YYYY-MM-DDTHH:mm:ss');
+    const endTime = end.format('YYYY-MM-DDTHH:mm:ss');
+
+    const requestAll = async personGroupIds => {
+      this.setState({ progressVisible: true, progressMode: 'modify' });
+
+      // 获取人员分组权限表记录
+      let res;
+      try {
+        res = await http({ baseURL: realsunApiBaseURL }).getTable({
+          resid: 684097503067,
+          cmswhere: `personGroupId in (${personGroupIds
+            .map(id => `'${id}'`)
+            .join(',')})`
+        });
+      } catch (err) {
+        this.setState({ progressVisible: false });
+        return message.error(err.message);
+      }
+
+      const records = res.data;
+      const recIds = records.map(item => `${item.REC_ID}`);
+
+      if (!recIds.length) {
+        message.info('您选择的人员分组没有配置权限');
+        this.setState({ progressVisible: false });
+      } else {
+        let res;
+        try {
+          res = await modifyDateByIds(recIds, startTime, endTime);
+        } catch (err) {
+          this.setState({ progressVisible: false });
+          return message.error(err.message);
+        }
+        const taskIds = res.data.taskIds;
+        if (taskIds && taskIds.length) {
+          this.getModifyDateProgress(taskIds, records, { startTime, endTime });
+        } else {
+          message.error('删除失败');
+        }
+      }
+    };
+
+    const request = async () => {
+      let res;
+      try {
+        res = await modifyDateByIds(
+          [`${modifyDateRecord.REC_ID}`],
+          startTime,
+          endTime
+        );
+      } catch (err) {
+        this.setState({ progressVisible: false });
+        return message.error(err.message);
+      }
+      const taskIds = res.data.taskIds;
+      if (taskIds && taskIds.length) {
+        this.getModifyDateProgress(taskIds, [modifyDateRecord], {
+          startTime,
+          endTime
+        });
+      } else {
+        message.error('删除失败');
+      }
+    };
+
+    Modal.confirm({
+      title: '提示',
+      content: msg,
+      onOk: () => {
+        Modal.destroyAll();
+        if (modifyDateRecord) {
+          request(selectedRowKeys);
+        } else {
+          requestAll(selectedRowKeys);
+        }
+      }
+    });
   };
 
   handleRemoveRight = record => {
@@ -57,7 +190,7 @@ class ConfigByPersonGroup extends React.Component {
     }
 
     const removeRight = async record => {
-      this.setState({ progressVisible: true });
+      this.setState({ progressVisible: true, progressMode: 'remove' });
       let res;
       try {
         res = await removeRightById([`${record.REC_ID}`]);
@@ -83,8 +216,8 @@ class ConfigByPersonGroup extends React.Component {
     });
   };
 
-  getRemoveProgress = async (taskIds, records) => {
-    this.setState({ progressVisible: true });
+  getModifyDateProgress = async (taskIds, records, { startTime, endTime }) => {
+    this.setState({ progressVisible: true, progressMode: 'modify' });
     setTimeout(async () => {
       let resList;
       try {
@@ -105,7 +238,55 @@ class ConfigByPersonGroup extends React.Component {
 
       if (percent < 100) {
         this.setState({ percent });
-        this.getRemoveProgress(taskIds);
+        this.getModifyDateProgress(taskIds, records, { startTime, endTime });
+      } else {
+        // 任务完成了，修改人员分组权限表记录
+        try {
+          await http({ baseURL: realsunApiBaseURL }).modifyRecords({
+            resid: 684097503067,
+            data: records.map(record => ({
+              REC_ID: record.REC_ID,
+              startTime,
+              endTime
+            }))
+          });
+        } catch (err) {
+          this.setState({ progressVisible: false });
+          return message.error(err.message);
+        }
+        message.success('修改成功');
+        this.setState({
+          percent: 100,
+          doorGroupTableKey: this.state.doorGroupTableKey + 1,
+          isModifyModalOpen: false
+        });
+      }
+    }, 3000);
+  };
+
+  getRemoveProgress = async (taskIds, records) => {
+    this.setState({ progressVisible: true, progressMode: 'remove' });
+    setTimeout(async () => {
+      let resList;
+      try {
+        resList = await Promise.all(
+          taskIds.map(taskId => authConfigProgress({ taskId }))
+        );
+      } catch (err) {
+        return message.error(err.message);
+      }
+
+      const total = taskIds.length * 100;
+      let currentTotal = 0;
+      resList.forEach(res => {
+        currentTotal += res.data.percent;
+      });
+
+      const percent = Math.floor(currentTotal / total) * 100;
+
+      if (percent < 100) {
+        this.setState({ percent });
+        this.getRemoveProgress(taskIds, records);
       } else {
         // 任务完成了，删除人员分组权限表记录
         try {
@@ -140,7 +321,7 @@ class ConfigByPersonGroup extends React.Component {
     });
 
     const removeRight = async personGroupIds => {
-      this.setState({ progressVisible: true });
+      this.setState({ progressVisible: true, progressMode: 'remove' });
 
       // 获取人员分组权限表记录
       let res;
@@ -200,7 +381,9 @@ class ConfigByPersonGroup extends React.Component {
       selectedPersonGroupId,
       percent,
       startTime,
-      endTime
+      endTime,
+      progressMode,
+      modifyDateRecord
     } = this.state;
     return (
       <div className="configByPersonGroup-style">
@@ -236,7 +419,10 @@ class ConfigByPersonGroup extends React.Component {
                   type="default"
                   key="3"
                   onClick={() => {
-                    this.setState({ isModifyModalOpen: true });
+                    this.setState({
+                      isModifyModalOpen: true,
+                      modifyDateRecord: null
+                    });
                   }}
                   disabled={!selectedRowKeys.length}
                 >
@@ -271,6 +457,7 @@ class ConfigByPersonGroup extends React.Component {
                     personGroupList={personGroupList}
                     key={this.state.doorGroupTableKey}
                     onRemove={this.handleRemoveRight}
+                    onModifyDate={this.handleModifyAuthDate}
                   />
                 )}
               </Content>
@@ -281,7 +468,7 @@ class ConfigByPersonGroup extends React.Component {
         <Modal
           title="修改权限有效期"
           visible={isModifyModalOpen}
-          onOk={this.handleModifyAuthDate}
+          onOk={this.handleModifyAllAuthDate}
           okButtonProps={{ disabled: !startTime || !endTime }}
           onCancel={() => this.setState({ isModifyModalOpen: false })}
         >
@@ -311,7 +498,7 @@ class ConfigByPersonGroup extends React.Component {
         ></AddPersonGroupRightModal>
 
         <Modal
-          title="删除进度"
+          title={progressMode === 'remove' ? '删除进度' : '修改有效期进度'}
           visible={this.state.progressVisible}
           okButtonProps={{ disabled: percent !== 100 }}
           cancelButtonProps={{ disabled: percent !== 100 }}
@@ -338,7 +525,14 @@ class ConfigByPersonGroup extends React.Component {
                 marginTop: 8
               }}
             >
-              {percent === 100 ? '删除成功' : '删除中，请稍等...'}
+              {(() => {
+                if (progressMode === 'remove') {
+                  return percent === 100 ? '删除成功' : '删除中，请稍等...';
+                }
+                return percent === 100
+                  ? '修改有效期成功'
+                  : '修改有效期中，请稍等...';
+              })()}
             </div>
           </div>
         </Modal>

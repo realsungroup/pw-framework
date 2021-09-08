@@ -151,3 +151,12 @@ export const removeRightById = personGroupRightRecIds => {
     personGroupRightRecIds
   });
 };
+
+/**
+ * 通过人员分组权限表 id 修改权限有效期
+ */
+export const modifyDateByIds = (personGroupRightRecIds, startTime, endTime) => {
+  return hikInstance.post('/api/v1/modifyDateByIds', {
+    personGroupRightRecIds
+  });
+};
