@@ -1377,6 +1377,7 @@ class ProbationForms extends React.Component {
     if (!data.REC_ID) {
       return message.info('请先保存');
     }
+    data.C3_623863682701 = '';
     this.setState({ loading: true });
     try {
       const res = await http().modifyRecords({
