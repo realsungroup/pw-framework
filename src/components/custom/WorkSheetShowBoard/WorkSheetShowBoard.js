@@ -79,7 +79,7 @@ class WorkSheetShowBoard extends React.Component {
             show: false
           },
           data: chartObj.data,
-          color: ['#13c2c2', '#faad14', '#8c8c8c', '#f5222d']
+          color: ['#13c2c2', '#faad14', '#1890ff', '#f5222d','#666666']
         }
       ]
     };
@@ -174,7 +174,7 @@ class WorkSheetShowBoard extends React.Component {
     try {
       res = await http().getTable({
         resid: 679066070181,
-        cmswhere: `(curDepaId = '${mesId}' and C3_682377833865 ='进行中') or (C3_682540124939 = '${mesId}' and C3_682377833865 = '已完成') and C3_678796788873 > '${stDate}'`
+        cmswhere: `(curDepaId = '${mesId}' and C3_678796788873 > '${stDate}' and C3_682377833865 = '已完成') or (curDepaId = '${mesId}' and C3_682377833865 = '进行中' and C3_678796788873 > '${stDate}' ) or (curDepaId = '${mesId}' and C3_682377833865 = '非正常终止') or (C3_682540124939 = '${mesId}' and C3_682377833865 = '已完成')`
       });
       let n = 0;
       let emergy = [];
@@ -193,16 +193,16 @@ class WorkSheetShowBoard extends React.Component {
         if (
           res.data[n].C3_682377833865 == '已完成'
         ) {
-          if(res.data[n].C3_682540168336 == 'N'){
+          if(( res.data[n].curDepaId != mesId) && (res.data[n].C3_682540168336 == 'N')){
             unstart.push(res.data[n]);
-          }else{
+          }else if(( res.data[n].curDepaId == mesId) && (res.data[n].C3_682540168336 == 'Y')){
             ing.push(res.data[n]);
           }
         } else if (res.data[n].C3_682377833865 == '进行中') {
           ing.push(res.data[n]);
-        } else if (res.data[n].C3_682377833865 == '已作废') {
+        } else if (res.data[n].sheetStatus == '已作废') {
           zf.push(res.data[n]);
-        } else if (res.data[n].C3_682377833865 == '已取消') {
+        } else if (res.data[n].sheetStatus == '已取消') {
           qx.push(res.data[n]);
         }
         n++;
@@ -338,19 +338,23 @@ class WorkSheetShowBoard extends React.Component {
                   <h3>{item.C3_678796779827}</h3>
                 </div>
                 <div>
-                  <p>
-                    {item.C3_682377833865 == '工作中'
-                      ? item.curProName
-                      : item.C3_682444267100}{' '}
-                    {item.C3_682377833865 == '工作中'
-                      ? item.C3_682371274376
-                      : ''}
-                  </p>
-                  <p>
-                    {item.C3_682377833865 == '工作中'
-                      ? item.C3_682379482255 + '开始'
-                      : '未开始'}
-                  </p>
+                  {item.sheetStatus=='已作废'||item.sheetStatus=='已取消'?
+                  <p>已{item.sheetStatus=='已作废'?'作废':'取消'}</p>
+                  :<><p>
+                  {item.C3_682377833865 == '工作中'
+                    ? item.curProName
+                    : item.C3_682444267100}{' '}
+                  {item.C3_682377833865 == '工作中'
+                    ? item.C3_682371274376
+                    : ''}
+                </p>
+                <p>
+                  {item.C3_682377833865 == '工作中'
+                    ? item.C3_682379482255 + '开始'
+                    : '未开始'}
+                </p></>
+                  }
+                  
                 </div>
                 <div>
                 <p

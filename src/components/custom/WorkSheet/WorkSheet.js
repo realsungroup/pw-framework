@@ -140,6 +140,7 @@ class WorkSheet extends React.Component {
     try {
       res = await http().getTable({
         resid: 681075873039,
+        cmswhere:`show = 'Y'`
       });
       this.setState({depa:res.data})
       console.log(res)
@@ -352,6 +353,7 @@ class WorkSheet extends React.Component {
                 hasRowModify={false}
                 hasRowSelection={false}
                 hasAdvSearch={false}
+                hasBeBtns={true}
                 importConfig={null}
                 actionBarExtra={({ dataSource, selectedRowKeys }) => {
                   return (

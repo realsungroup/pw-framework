@@ -250,53 +250,26 @@ const mapping =[
         to:'C3_678797411331',
         memeo:'弯刀结束时间',
         type:'string'
-
       }
     ]
   },
   //检验人
   {
-    id:'682635648524',
-    process:'start',
-    mapping:[
-      {
-        from:'C3_682039853604',
-        to:'C3_682371274376',
-        memeo:'最终评定人'
-      },{
-        from:'C3_682642803657',
-        to:'C3_682377803370',
-        memo:'最终评定人工号'
-      },{
-        from:'C3_682642812388',
-        to:'C3_682371322856',
-        memo:'最终评定人编号'
-      }
-    ]
-  },
-  {
-    id:'682635648524',
-    process:'end',
-    mapping:[
-    ]
-  },
-  //最终评定
-  {
     id:'682635881582',
     process:'start',
     mapping:[
       {
         from:'C3_682039853604',
         to:'C3_682371274376',
-        memeo:'最终评定人'
+        memeo:'检验人'
       },{
         from:'C3_682642803657',
         to:'C3_682377803370',
-        memo:'最终评定人工号'
+        memo:'检验人人工号'
       },{
         from:'C3_682642812388',
         to:'C3_682371322856',
-        memo:'最终评定人编号'
+        memo:'检验人人编号'
       }
     ]
   },
@@ -305,7 +278,7 @@ const mapping =[
     process:'end',
     mapping:[
     ]
-  },
+  }
 ]
 const baseURL =
 window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
@@ -398,6 +371,7 @@ class WorkSheetDetail extends React.Component {
     } else {
       this.setState({sheetData: objEmpty})
       await this.getHistories(nextProps.curSheetId);
+      await this.getFiles(nextProps.curSheetId);
     }
   };
   getNewVersion = async()=>{
@@ -1008,7 +982,15 @@ class WorkSheetDetail extends React.Component {
     data.C3_682379496968='';
     data.C3_682377833865='进行中';
     console.log('data',data)
-
+    //检验的开始时间
+    if(data.curChara=='682635881582'){
+      let mT=new Date();
+      let mm = mT.getMonth()+1;
+      let dd = mT.getDate();
+      let hh = mT.getHours();
+      let m=mT.getMinutes()
+      data.C3_678797501456=mm+'/'+dd+' '+hh+':'+m;
+    }
     try {
       res = await http().modifyRecords({
         resid: '678790254230',
@@ -1092,6 +1074,11 @@ vertiRec= async(v)=>{
       data.C3_682379496968=myTime;
       data.C3_682377833865='已完成';
       if(data.curChara=='682635881582'){
+        let string = data.C3_678797501456;
+        let mT=new Date();
+        let hh = mT.getHours();
+        let m=mT.getMinutes()
+        data.C3_678797501456= string+'至'+hh+':'+m;
         data.sheetStatus='已完成'
       }
     try {
@@ -1251,16 +1238,32 @@ vertiRec= async(v)=>{
     console.log('list',list)
     try {
       res = await http().addRecords({
-        resid: '678790254230',
+        resid: '684428871273',
         data: list,
         isEditOrAdd: 'true'
       });
-      console.log('res',res)
+      console.log('file2Del',this.state.file2Del)
       res2 = await http().removeRecords({
-        resid: '678790254230',
+        resid: '684428871273',
         data: this.state.file2Del,
       });
     this.setState({loading:false,process:'',file2Del:[]})
+    } catch (e) {
+    this.setState({loading:false,process:''})
+      message.error(e.message);
+      console.log(e.message);
+    }
+  }
+  getFiles=async(sheetid)=>{
+    console.log('jinlaile',sheetid)
+    this.setState({loading:true,process:'正在读取附件'});
+    let res;
+    try {
+      res = await http().getTable({
+        resid: '684428871273',
+        cmswhere:`sheetRecid = '${sheetid}'`
+      });
+    this.setState({loading:false,fileList:res.data,process:'',file2Del:[]})
     } catch (e) {
     this.setState({loading:false,process:''})
       message.error(e.message);
@@ -1657,11 +1660,10 @@ vertiRec= async(v)=>{
                 </div>
               </div>
             </div>
-            {
-              this.props.editRight.part1?
+            
               
               <div className="files">
-                <h3>附件：</h3>
+              <b>附件：</b>
               <div className="fileList">
                 <ul>
                   {
@@ -1671,9 +1673,11 @@ vertiRec= async(v)=>{
                           <a href={item.fileAddress} target='_blank' >
                             {item.fileName}
                           </a>
+                          {
+                          this.props.editRight.part1?
                           <span onClick={()=>{
                             this.deleteFile(index);
-                          }}>删除</span>
+                          }}>删除</span>:null}
                         </li>
                       )
                     })
@@ -1699,11 +1703,9 @@ vertiRec= async(v)=>{
               </div>
             </div>
               
-              :null
-            }
             
             <div className="bitainxiang">
-                  <div>当前流程必填项：</div>
+                  <div>当前流程必填项：{this.state.bitianxiang.length==0?'无':null}</div>
                   <ul>
                   {
                     this.state.bitianxiang.map(item=>{
@@ -1821,12 +1823,12 @@ vertiRec= async(v)=>{
             ></div>
             <div
               className={
-                this.props.editRight.part5? 'block hidden' : 'block part5'
+                this.props.editRight.part4? 'block hidden' : 'block part5'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part6 || this.props.editRight.part6? 'block hidden' : 'block part6'
+                this.props.editRight.part4 ? 'block hidden' : 'block part6'
               }
             ></div>
             <div className='switch' style={this.props.new||this.state.canEdit>3||!this.state.isCurrent?{display:'none'}:{}}>
@@ -2198,7 +2200,7 @@ vertiRec= async(v)=>{
                           </div>
                          
                         </Col>
-                        <Col span={2}>送货单号</Col>
+                        <Col span={this.props.editRight.part1?'2':'10'}>送货单号</Col>
                         <Col span={3}>
                           <input
                             value={this.state.sheetData.C3_678796898023}
@@ -2210,7 +2212,10 @@ vertiRec= async(v)=>{
                             }}
                           />
                         </Col>
-                        <Col span={2}>价格</Col>
+                        {this.props.editRight.part1?
+                        
+                          <>
+                           <Col span={2}>价格</Col>
                         <Col span={2}>
                           <input
                             value={this.state.sheetData.C3_678796906793}
@@ -2226,12 +2231,12 @@ vertiRec= async(v)=>{
                           span={2}
                           style={{ cursor: 'pointer' }}
                           className={
-                            this.state.sheetData.C3_681948661141 == 'Y'
+                            this.state.sheetData.C3_678796915338 == 'Y'
                               ? 'selected'
                               : ''
                           }
                           onClick={() => {
-                            this.changeBol('C3_681948661141');
+                            this.changeBol('C3_678796915338');
                           }}
                         >
                           含税
@@ -2240,16 +2245,19 @@ vertiRec= async(v)=>{
                           span={2}
                           style={{ cursor: 'pointer' }}
                           className={
-                            this.state.sheetData.C3_681948667231 == 'Y'
+                            !this.state.sheetData.C3_678796915338 == 'Y'
                               ? 'selected'
                               : ''
                           }
                           onClick={() => {
-                            this.changeBol('C3_681948667231');
+                            this.changeBol('C3_678796915338');
                           }}
                         >
                           不含税
                         </Col>
+                          </>:null
+                      }
+                       
                         <Col span={2}>复核人</Col>
                         <Col span={4}>
                         <div
