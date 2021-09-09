@@ -317,6 +317,8 @@ class WorkSheetDetail extends React.Component {
   state = {
     loading: false,
     process: '',
+    fileList:[],//附件列表
+    file2Del:[],//要删除的附件
     productLines: [],
     productLinesValue: '请选择工作流',
     productLineTree: {
@@ -614,7 +616,8 @@ class WorkSheetDetail extends React.Component {
     this.setState({ imgfile: e });
     let files = e.target.files || e.dataTransfer.files;
     if (!files.length) return;
-    let type = files[0].type; //文件的类型，判断是否是图片
+    let type = files[0].name; 
+    type=type.split('.')
     let size = files[0].size; //文件的大小，判断图片的大小
     if (size > 5242880) {
       alert('请选择5M以内的图片！');
@@ -903,8 +906,8 @@ class WorkSheetDetail extends React.Component {
         data: [this.state.sheetData]
       });
       this.setState({ loading: false, process: '' });
-
-      message.success('添加成功');
+      await this.saveFiles(res.data[0].REC_ID);
+      await message.success('添加成功');
       this.props.handleRefresh();
       this.props.backFunc();
     } catch (e) {
@@ -1183,6 +1186,87 @@ vertiRec= async(v)=>{
     }
   }
 
+  //删除池里的文件
+  deleteFile=(index)=>{
+    let arr = this.state.fileList;
+    if(arr[index].REC_ID){
+      let arr2=this.state.file2Del;
+      arr2.push(arr[index]);
+      this.setState({file2Del:arr2})
+    }
+    arr.splice(index,1);
+    this.setState({fileList:arr});
+  }
+  //添加文件到池子里
+  addFile=(e)=>{
+      let files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
+      console.log(e.target.files[0])
+      let type = files[0].name; //文件的类型，判断是否是图片
+      type=type.split('.')
+      console.log(type,type[1])
+
+      // let size = files[0].size; //文件的大小，判断图片的大小
+      // if (size > 5242880) {
+      //   alert('请选择5M以内的文件！');
+      //   return false;
+      // }
+      this.setState({ loading: true, process: '正在上传文件' });
+    this.uploadFile(
+      files[0],
+      `http://kingofdinner.realsun.me:1201/api/AliyunOss/PutOneImageObject?bucketname=nutritiontower&srctype=${
+        type[1]
+      }`,
+      'cloud'
+    ).then(
+      result => {
+        let arr = this.state.fileList;
+        arr.push({
+          sheetRecid:this.props.curSheetId||'',
+          fileAddress:result,
+          fileName:files[0].name
+        })
+        this.setState({ loading: false, fileList:arr ,process:''});
+      },
+      err => {
+        //图片上传异常！
+        this.setState({ loading: false, process: '' });
+      }
+    );
+  }
+  //保存附件到附件表
+  saveFiles=async(recid)=>{
+    console.log('jinlaile',recid)
+    this.setState({loading:true,process:'正在保存附件'})
+    let res;
+    let res2;
+    let list = this.state.fileList;
+    let n=0;
+    if(recid){
+      while(n<list.length){
+        list[n].sheetRecid=recid;
+        n++;
+      }
+    }
+    console.log('list',list)
+    try {
+      res = await http().addRecords({
+        resid: '678790254230',
+        data: list,
+        isEditOrAdd: 'true'
+      });
+      console.log('res',res)
+      res2 = await http().removeRecords({
+        resid: '678790254230',
+        data: this.state.file2Del,
+      });
+    this.setState({loading:false,process:'',file2Del:[]})
+    } catch (e) {
+    this.setState({loading:false,process:''})
+      message.error(e.message);
+      console.log(e.message);
+    }
+  }
   render() {
     return (
       <div className="sheetDetails">
@@ -1573,6 +1657,51 @@ vertiRec= async(v)=>{
                 </div>
               </div>
             </div>
+            {
+              this.props.editRight.part1?
+              
+              <div className="files">
+                <h3>附件：</h3>
+              <div className="fileList">
+                <ul>
+                  {
+                    this.state.fileList.map((item,index)=>{
+                      return(
+                        <li index={index}>
+                          <a href={item.fileAddress} target='_blank' >
+                            {item.fileName}
+                          </a>
+                          <span onClick={()=>{
+                            this.deleteFile(index);
+                          }}>删除</span>
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+                  {this.props.editRight.part1?
+                <div className="left">
+
+                   <input
+                   id="ss"
+                   name="ss"
+                   type="file"
+                   onChange={v => {
+                     this.addFile(v);
+                   }}
+                 />
+                 <span style={{float:'right',cursor:'pointer',color:'#1890ff'}} onClick={()=>{this.saveFiles()}}>保存</span>
+                </div>
+                 :null
+                  
+                  }
+                 
+              </div>
+            </div>
+              
+              :null
+            }
+            
             <div className="bitainxiang">
                   <div>当前流程必填项：</div>
                   <ul>

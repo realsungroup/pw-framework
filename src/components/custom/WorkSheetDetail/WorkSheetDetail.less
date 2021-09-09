@@ -416,6 +416,30 @@
     background-color: #e8e8e8;
     height:calc(100vh - 2.5rem);
     padding:.5rem;
+    .files{
+      width:100%;
+      background-color: #fff;
+      padding:.5rem .5rem 1rem;
+      margin-top: 1rem;
+      .fileList{
+        ul{
+          list-style: none;
+          li{
+            margin:.5rem;
+            padding: 0 .5rem;
+            overflow: hidden;
+            &:hover{
+              background-color: #eee;
+            }
+          }
+          span{
+            color:#f5222d;
+            cursor:pointer;
+            float:right;
+          }
+        }
+      }
+    }
     .pics{
       width:100%;
       .toChange{
