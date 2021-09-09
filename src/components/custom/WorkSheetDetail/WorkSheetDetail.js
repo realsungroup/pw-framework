@@ -20,6 +20,7 @@ import Bitianxiang from './Bitianxiang.json';
 
 import http from 'Util20/api';
 import { userInfo } from 'os';
+import { isConstructorDeclaration } from 'typescript';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -371,7 +372,6 @@ class WorkSheetDetail extends React.Component {
     } else {
       this.setState({sheetData: objEmpty})
       await this.getHistories(nextProps.curSheetId);
-      await this.getFiles(nextProps.curSheetId);
     }
   };
   getNewVersion = async()=>{
@@ -412,7 +412,7 @@ class WorkSheetDetail extends React.Component {
   //获取历史数据
   //产品线ID,版本号
   getHistories = async (v, version) => {
-    
+    this.setState({fileList:[]})
     let objEmpty={}
     if(this.props.colData){
       let n =0;
@@ -441,6 +441,9 @@ class WorkSheetDetail extends React.Component {
         resid: '678790254230',
         cmswhere: cms
       });
+      if(res.data[0]){
+        await this.getFiles(res.data[0].C3_680644203469);
+      }
       let n = 0;
       let his = [];
       let lineID = '';
@@ -844,7 +847,7 @@ class WorkSheetDetail extends React.Component {
       }
       v++;
     }
-    if(bol){
+    if(bol && this.state.sheetData.C3_684517424980!='Y'){
       message.error('尚有未填写的必填项！');
       return false;
     }
@@ -894,18 +897,18 @@ class WorkSheetDetail extends React.Component {
   //复制新建
   copyAdd = async () => {
      //检查必填项
-     let v = 0;
-     let bol=false;
-     while(v<this.state.bitianxiang.length){
-       if(!this.state.sheetData[this.state.bitianxiang[v].id]){
-         bol=true
-       }
-       v++;
-     }
-     if(bol){
-       message.error('尚有未填写的必填项！');
-       return false;
-     }
+    //  let v = 0;
+    //  let bol=false;
+    //  while(v<this.state.bitianxiang.length){
+    //    if(!this.state.sheetData[this.state.bitianxiang[v].id]){
+    //      bol=true
+    //    }
+    //    v++;
+    //  }
+    //  if(bol){
+    //    message.error('尚有未填写的必填项！');
+    //    return false;
+    //  }
     this.setState({loading:true,process:'复制中'})
     let obj = {};
     obj.C3_682267546275 = this.state.productLinesValue;
@@ -941,6 +944,7 @@ class WorkSheetDetail extends React.Component {
         resid: '678790254230',
         data: [obj]
       });
+      await this.saveFiles(res.data[0].C3_680644203469,true);
       this.props.handleRefresh();
       this.setState({loading:false,process:''});
       this.props.backFunc();
@@ -1138,7 +1142,7 @@ vertiRec= async(v)=>{
   //修改表单
   handleModi=async()=>{
     //将当前表单最新字段清空
-    this.setState({showModi:false,loading:'true',process:'更新工作单状态'})
+    this.setState({showModi:false,loading:'true',process:'改版开单中'})
     let res;
     let res2;
     let res3;
@@ -1147,22 +1151,53 @@ vertiRec= async(v)=>{
         resid: '678790254230',
         cmswhere:`C3_682281119677 = '${this.props.curSheetId}' and C3_680644403785 = 'Y'`
       });
-      let obj=res.data[0];
-      obj.C3_680644403785='';
+      let obj0=res.data[0];
+      obj0.C3_680644403785='';
       res2 = await http().modifyRecords({
         resid: '678790254230',
-        data:[obj]
+        data:[obj0]
       });
       this.setState({process:'修改工作单数据'})
-      obj=this.state.sheetData;
-      obj.C3_680644411481 = '';
-      obj.imgUrl=this.state.imgUrl;
-      let myDate = new Date();
-      obj.C3_680644251256 = myDate;
+
+      let obj = {};
+        obj.C3_682267546275 = this.state.productLinesValue;
+        obj.sheetStatus = '进行中';
+        obj.C3_682377833865 = '已完成';
+        obj.C3_680644403785 = 'Y';
+        obj.curPro = this.state.productLineTree[678789327168][0].productflowjobid;
+        obj.imgUrl = this.state.imgUrl;
+        obj.curChara = this.state.productLineTree[678789327168][0][678789448828][0].productflowjobroleid;
+        let nxt = this.calNext(
+          this.state.productLineTree[678789327168][0][678789448828][0]
+            .productflowjobroleid
+        );
+        let myTime = new Date();
+        obj.C3_682379482255=myTime;
+        obj.C3_682379496968=myTime;
+        obj.C3_682444277336 = nxt.productflowjobroleid;
+        let counter = 0;
+        while(counter<mapping[0].mapping.length){
+          obj[mapping[0].mapping[counter].to]=this.state.sheetData[mapping[0].mapping[counter].from]
+          counter++;
+        }
+        let arr=['C3_678796887001','C3_682639109504','C3_682639124047','C3_682507133563','C3_682369620435','C3_678796788873','C3_678796797075','C3_678796767356','C3_682184234543','C3_678796779827','C3_681946447748','C3_681946858588','C3_681946866036','C3_681946874849','C3_681946885747','C3_681946907063','C3_681946916803','C3_681946932592','C3_681946943505','C3_681946949984','C3_681946967641','C3_681948129430','C3_681948140445','C3_681948156177','C3_681948368196','C3_678796830965','C3_678796898023','C3_678796906793','C3_681948661141','C3_678796943530','C3_682641632966','C3_682641647401','C3_678796951598','C3_678796959023','C3_678796966324','C3_678796973541','C3_678797062420','C3_678797068641','C3_678797075331','C3_678796981497','C3_678796989327','C3_678797024313','C3_678797082671','C3_678797088953','C3_678797095425','C3_678797032289','C3_678797041936','C3_678797050598','C3_678797101119','C3_678797109062','C3_681949749757','C3_678797141752','C3_678797207647']
+        counter=0;
+        while(counter<arr.length){
+          obj[arr[counter]]=this.state.sheetData[arr[counter]];
+          counter++;
+        }
+        obj.C3_684517424980='Y';
+
+      // obj=this.state.sheetData;
+      // obj.C3_680644411481 = '';
+      // obj.imgUrl=this.state.imgUrl;
+      // let myDate = new Date();
+      // obj.C3_680644251256 = myDate;
       res = await http().addRecords({
         resid: '678790254230',
         data: [obj]
       });
+      await this.saveFiles(res.data[0].C3_680644203469,true);
       this.getHistories(this.props.curSheetId);
     this.setState({loading:false,process:''});
     message.success('修改成功')
@@ -1222,7 +1257,7 @@ vertiRec= async(v)=>{
     );
   }
   //保存附件到附件表
-  saveFiles=async(recid)=>{
+  saveFiles=async(recid,isCopy)=>{
     console.log('jinlaile',recid)
     this.setState({loading:true,process:'正在保存附件'})
     let res;
@@ -1232,6 +1267,9 @@ vertiRec= async(v)=>{
     if(recid){
       while(n<list.length){
         list[n].sheetRecid=recid;
+        if(isCopy){
+          delete list[n].REC_ID;
+        }
         n++;
       }
     }
@@ -1242,11 +1280,13 @@ vertiRec= async(v)=>{
         data: list,
         isEditOrAdd: 'true'
       });
-      console.log('file2Del',this.state.file2Del)
-      res2 = await http().removeRecords({
-        resid: '684428871273',
-        data: this.state.file2Del,
-      });
+      if(!isCopy){
+        res2 = await http().removeRecords({
+          resid: '684428871273',
+          data: this.state.file2Del,
+        });
+      }
+      
     this.setState({loading:false,process:'',file2Del:[]})
     } catch (e) {
     this.setState({loading:false,process:''})
@@ -1263,7 +1303,7 @@ vertiRec= async(v)=>{
         resid: '684428871273',
         cmswhere:`sheetRecid = '${sheetid}'`
       });
-    this.setState({loading:false,fileList:res.data,process:'',file2Del:[]})
+    this.setState({fileList:res.data,process:'',file2Del:[]})
     } catch (e) {
     this.setState({loading:false,process:''})
       message.error(e.message);
@@ -1703,21 +1743,24 @@ vertiRec= async(v)=>{
               </div>
             </div>
               
-            
+            {this.state.sheetData.C3_684517424980=='Y'?null:
             <div className="bitainxiang">
-                  <div>当前流程必填项：{this.state.bitianxiang.length==0?'无':null}</div>
-                  <ul>
-                  {
-                    this.state.bitianxiang.map(item=>{
-                      return(
-                        <li className={this.state.sheetData[item.id]?'':'alert'}>
-                          {item.name}
-                        </li>
-                      )
-                    })
-                  }
-                  </ul>
-                </div>
+            <div>当前流程必填项：{this.state.bitianxiang.length==0?'无':null}</div>
+            <ul>
+            {
+              this.state.bitianxiang.map(item=>{
+                return(
+                  <li className={this.state.sheetData[item.id]?'':'alert'}>
+                    {item.name}
+                  </li>
+                )
+              })
+            }
+            </ul>
+          </div>
+            
+            }
+            
             {this.props.new ? null : (
               <>
                 <div className="reasons">
@@ -1753,7 +1796,7 @@ vertiRec= async(v)=>{
                  <li>保存</li>
 
              </Popconfirm>
-                :<li onClick={()=>{this.setState({showModi:true})}}>保存修改</li>
+                :<li onClick={()=>{this.setState({showModi:true})}}>改版开单</li>
                  
               ) : null}
 
@@ -1869,7 +1912,7 @@ vertiRec= async(v)=>{
                   </div>
                   <h4>无锡美银精工磨具有限公司产品制作工程单</h4>
                   <p>
-                    No. <b>{this.state.sheetData.C3_682281119677}</b>
+                    No. <b>{this.state.sheetData.C3_684517500134}</b>
                   </p>
                 </div>
                 <div className="timer">

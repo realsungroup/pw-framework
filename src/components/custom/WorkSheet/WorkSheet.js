@@ -3,6 +3,7 @@ import './WorkSheet.less';
 import { Select, Button,message,DatePicker,Modal,Input,Spin } from 'antd';
 import { TableData } from '../../common/loadableCommon';
 import WorkSheetDetail from '../WorkSheetDetail';
+import DeliveryNote from '../DeliveryNote';
 import http from 'Util20/api';
 const { TextArea } = Input;
 const { Option } = Select;
@@ -197,6 +198,10 @@ class WorkSheet extends React.Component {
     this.handleRefresh();
     this.setState({showDetails:value,curSheetId:ID,isNew:isNew});
   }
+  //显示送货单
+  showDelivery=(id)=>{
+    this.setState({showDel:true})
+  }
   //修改评论
   handleModi = async() =>{
     this.setState({loading:true})
@@ -359,9 +364,14 @@ class WorkSheet extends React.Component {
                   return (
                     <>
                     {this.state.isTongji?null:
+                    <>
                       <Button onClick={()=>{this.showDetails();}}>
-                        新建
-                    </Button>}
+                        新建工作单
+                    </Button>
+                    <Button onClick={()=>{this.showDelivery();}}>
+                    新建送货单
+                </Button></>
+                    }
                     </>
                   );
                 }}
@@ -405,6 +415,11 @@ class WorkSheet extends React.Component {
                 zfyy={this.state.zfyy}
              >
               </WorkSheetDetail>   
+        </div>
+        <div className='delContent' 
+        // style={this.state.showDel?{display:'block'}:{display:'none'}}
+        >
+          <DeliveryNote></DeliveryNote>
         </div>
       </div>
 

@@ -41,6 +41,8 @@ class ViewManger extends React.Component {
     let done2=[];
     let all2=[];
     let ing2=[];
+    let gaiban=[]
+    let gaiban2=[]
     let res;
     this.setState({loading:true});
 
@@ -66,22 +68,28 @@ class ViewManger extends React.Component {
       let n = 0;
       while(n<res.data.length){
         all2.push(res.data[n]);
-        if(res.data[n].sheetStatus=='已作废'){
+        if(res.data[n].C3_684517424980=='Y'){
+          gaiban2.push(res.data[n])
+        }else if(res.data[n].sheetStatus=='已作废'){
           junk2.push(res.data[n]);
         }else if(res.data[n].sheetStatus=='已取消'){
           qx2.push(res.data[n]);
-        }else if(res.data[n].sheetStatus=='已完成'){
+        }
+        if(res.data[n].sheetStatus=='已完成'){
           done2.push(res.data[n]);
         }else if(res.data[n].sheetStatus=='进行中'){
         ing2.push(res.data[n]);
         };
         if(moment(res.data[n].REC_CRTTIME)>moment(myYear+'-'+myMonth+'-'+myDay)){
           all.push(res.data[n]);
-          if(res.data[n].sheetStatus=='已作废'){
+          if(res.data[n].C3_684517424980=='Y'){
+            gaiban.push(res.data[n])
+          }else if(res.data[n].sheetStatus=='已作废'){
             junk.push(res.data[n]);
           }else if(res.data[n].sheetStatus=='已取消'){
             qx.push(res.data[n]);
-          }else if(res.data[n].sheetStatus=='已完成'){
+          }
+          if(res.data[n].sheetStatus=='已完成'){
             done.push(res.data[n]);
           }else if(res.data[n].sheetStatus=='进行中'){
           ing.push(res.data[n]);
@@ -96,7 +104,8 @@ class ViewManger extends React.Component {
           { value: done.length, name: '已完成：' + done.length },
           { value: ing.length, name: '进行中：' + ing.length },
           { value: qx.length, name: '取消：' + qx.length },
-          { value: junk.length, name: '作废：' + junk.length }
+          { value: junk.length, name: '作废：' + junk.length },
+          { value: gaiban.length, name: '改版：' + gaiban.length },
         ]
       };
       let chartObj2 = {
@@ -104,7 +113,8 @@ class ViewManger extends React.Component {
         done2:done2,
         junk2:junk2,
         qx2:qx2,
-        ing2:ing2
+        ing2:ing2,
+        gaiban2:gaiban2
       }
       this.instantiation(chartObj);
       this.instantiation2(chartObj2);
@@ -281,7 +291,7 @@ class ViewManger extends React.Component {
           show: false
         },
         data: chartObj.data,
-        color: ['#13c2c2', '#faad14', '#8c8c8c', '#f5222d']
+        color: ['#13c2c2', '#faad14', '#8c8c8c', '#f5222d','#aada41']
       }
     ]
   };
@@ -304,6 +314,7 @@ instantiation2 = chartObj => {
   let done=[];
   let all=[];
   let ing=[];
+  let gaiban=[];
   while(n<(Number(myDay)+1)){
     date.push(n);
     junk.push(0);
@@ -311,6 +322,7 @@ instantiation2 = chartObj => {
     done.push(0);
     all.push(0);
     ing.push(0);
+    gaiban.push(0);
     n++;
   }
   n=0;
@@ -334,6 +346,19 @@ instantiation2 = chartObj => {
     while(c<Number(myDay)){
       if(num==(c+1)){
         junk[c]=junk[c]+1;
+      }
+      c++
+    }
+    n++;
+  }
+  n=0;
+  while(n<chartObj.gaiban2.length){
+    let num = chartObj.gaiban2[n].REC_CRTTIME.substring(8,11);
+    num = Number(num);
+    let c = 0;
+    while(c<Number(myDay)){
+      if(num==(c+1)){
+        gaiban[c]=gaiban[c]+1;
       }
       c++
     }
@@ -388,7 +413,7 @@ instantiation2 = chartObj => {
       trigger: 'axis'
   },
   legend: {
-      data: ['合计', '已完成', '进行中', '取消', '作废']
+      data: ['合计', '已完成', '进行中', '取消', '作废','改版']
   },
   grid: {
       left: '3%',
@@ -441,6 +466,12 @@ instantiation2 = chartObj => {
           type: 'bar',
           stack: '总量',
           data: junk,color: '#f5222d'
+      },
+      {
+          name: '改版',
+          type: 'bar',
+          stack: '总量',
+          data: gaiban,color: '#aada41'
       }
   ]
   };
