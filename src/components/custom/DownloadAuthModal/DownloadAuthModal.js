@@ -1,23 +1,36 @@
 import React from 'react';
-import { Modal, Form, message, Spin, DatePicker, Progress, Icon } from 'antd';
+import {
+  Modal,
+  Form,
+  message,
+  Spin,
+  DatePicker,
+  Progress,
+  Icon,
+  List,
+  Tooltip
+} from 'antd';
 import http from 'Util20/api';
 import PropTypes from 'prop-types';
-import { addPersonGroupRight, authConfigProgress } from '../../../hikApi';
-import { getAccessToken } from 'Util20/util';
+import {
+  authConfigProgress,
+  authDownload,
+  authDownloadProgress
+} from '../../../hikApi';
 import DoorsSelect from '../DoorsSelect';
+import { cloneDeep, chunk } from 'lodash';
+import { errorCodeMap } from './errorCodeMap';
 import './DownloadAuthModal.less';
 
 const realsunApiBaseURL =
   window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
 
-const { RangePicker } = DatePicker;
-
 class DownloadAuthModal extends React.Component {
   static propTypes = {
     /**
-     * 添加成功的回调
+     * 点击完成按钮的回调
      */
-    onSuccess: PropTypes.func.isRequired
+    onComplete: PropTypes.func
   };
 
   state = {
@@ -25,6 +38,7 @@ class DownloadAuthModal extends React.Component {
     loading: false,
     selectedDoors: [],
     progressVisible: false,
+    doorsProgress: []
   };
 
   componentDidMount = () => {
@@ -50,62 +64,107 @@ class DownloadAuthModal extends React.Component {
 
   handleSubmit = () => {
     const { selectedDoors } = this.state;
-    console.log({ selectedDoors });
-  };
-
-  submitData = async values => {
-    this.setState({ loading: true });
-    const { doorGroupList, doors, personGroupList } = this.state;
-    const { timeRange } = values;
-    const accessToken = getAccessToken();
-
-    const startTime = timeRange[0];
-    const endTime = timeRange[1];
-
-    const personGroupRightList = [];
-    personGroupList.forEach(personGroup => {
-      if (doorGroupList.length) {
-        doorGroupList.forEach(doorGroup => {
-          personGroupRightList.push({
-            personGroupId: personGroup.groupId,
-            doorType: 'group',
-            groupId: doorGroup.groupId
-          });
+    Modal.confirm({
+      title: '再次确认',
+      content: (
+        <div>
+          <div>您确定要下载权限到以下门禁点吗？</div>
+          <ul style={{ paddingLeft: 24 }}>
+            {selectedDoors.map(door => (
+              <li key={door.indexCode}>{door.name}</li>
+            ))}
+          </ul>
+        </div>
+      ),
+      onOk: () => {
+        const doorsProgress = cloneDeep(selectedDoors);
+        doorsProgress.forEach(door => {
+          door.percent = 0;
+          door.time = 999;
+          door.finishedCount = 0;
+          door.total = 0;
+          door.errorCode = 0;
         });
-      }
-      if (doors.length) {
-        doors.forEach(door => {
-          personGroupRightList.push({
-            personGroupId: personGroup.groupId,
-            doorType: 'door',
-            doorIndexCode: door.indexCode
-          });
-        });
+
+        this.setState(
+          { doorsProgress, progressVisible: true },
+          this.startDownload
+        );
       }
     });
+  };
+
+  startDownload = async () => {
+    const { selectedDoors } = this.state;
+    const list = chunk(selectedDoors, 100);
 
     let res;
     try {
-      res = await addPersonGroupRight({
-        accessToken,
-        personGroupRightList,
-        startTime,
-        endTime
-      });
+      res = await Promise.all(
+        list.map(selectedDoors =>
+          authDownload({
+            taskType: 4,
+            resourceInfos: selectedDoors.map(door => ({
+              resourceIndexCode: door.indexCode,
+              resourceType: 'door',
+              channelNos: [1]
+            }))
+          })
+        )
+      );
     } catch (err) {
-      this.setState({ loading: false });
       return message.error(err.message);
     }
+    const taskIds = [];
+    res.forEach(item => {
+      taskIds.push(item.data.taskId);
+    });
+    this.getProgress(taskIds);
+  };
 
-    this.setState(
-      {
-        loading: false,
-        showProgress: true,
-        progressLoading: true,
-        taskId: res.data.taskId
-      },
-      this.getAuthConfigProgress
-    );
+  getProgress = taskIds => {
+    setTimeout(async () => {
+      let res;
+      try {
+        res = await Promise.all(
+          taskIds.map(taskId => authDownloadProgress({ taskId }))
+        );
+      } catch (err) {
+        return message.error(err.message);
+      }
+
+      const allDoorsProgress = [];
+      res.forEach(resItem => {
+        if (
+          resItem &&
+          resItem.data &&
+          Array.isArray(resItem.data.resourceDownloadProgress)
+        ) {
+          allDoorsProgress.push(...resItem.data.resourceDownloadProgress);
+        }
+      });
+
+      const { doorsProgress } = this.state;
+      const newDoorsProgress = cloneDeep(doorsProgress);
+
+      newDoorsProgress.forEach(door => {
+        const result = allDoorsProgress.find(
+          item => item.resourceInfo.channelIndexCodes[0] === door.indexCode
+        );
+        door.percent = result.downloadPercent;
+        door.time = result.leftTime;
+        door.finishedCount = result.downloadPersonCount;
+        door.total = result.totalPersonCount;
+        door.errorCode = result.errorCode;
+      });
+
+      const isAllOver = doorsProgress.every(door => door.percent === 100);
+
+      this.setState({ doorsProgress: newDoorsProgress });
+      if (!isAllOver) {
+        this.getProgress(taskIds);
+      }
+    }, 3000);
   };
 
   handleSelectedDoorsChange = doors => {
@@ -161,19 +220,32 @@ class DownloadAuthModal extends React.Component {
     this.setState({ progressLoading: false, progress: 100 });
   };
 
-  handleSuccess = () => {
-    const { onSuccess } = this.props;
-    this.setState({ showProgress: false });
-    onSuccess && onSuccess();
-  };
-
   handleSelectedDoorsChange = selectedDoors => {
     this.setState({ selectedDoors });
   };
 
   render() {
-    const { onSuccess, ...otherProps } = this.props;
-    const { regionIndexCodes, loading, selectedDoors, progressVisible } = this.state;
+    const { onComplete, ...otherProps } = this.props;
+    const {
+      regionIndexCodes,
+      loading,
+      selectedDoors,
+      progressVisible,
+      doorsProgress
+    } = this.state;
+
+    let downloadingCount = 0;
+    let downloadOverCount = 0;
+
+    if (progressVisible) {
+      doorsProgress.forEach(item => {
+        if (item.percent !== 100) {
+          downloadingCount += 1;
+        } else {
+          downloadOverCount += 1;
+        }
+      });
+    }
 
     return (
       <>
@@ -202,7 +274,72 @@ class DownloadAuthModal extends React.Component {
             </div>
           </Spin>
         </Modal>
-        <Modal visible={progressVisible}></Modal>
+        <Modal
+          visible={progressVisible}
+          title="下载权限进度"
+          closable={false}
+          okText="完成"
+          okButtonProps={{
+            disabled: downloadOverCount !== doorsProgress.length
+          }}
+          width={800}
+          onOk={() => {
+            this.setState({ progressVisible: false });
+            const { onComplete } = this.props;
+            onComplete && onComplete();
+          }}
+        >
+          <List
+            header={
+              <div>
+                正在下载 {downloadingCount} 个，下载完成 {downloadOverCount}
+              </div>
+            }
+            bordered
+            dataSource={doorsProgress}
+            renderItem={item => (
+              <List.Item
+                key={item.indexCode}
+                className="download-auth-modal__progress-list"
+              >
+                <div className="download-auth-modal__progress-list-left">
+                  <div style={{ width: 120 }}>{item.name}</div>
+                  <div className="download-auth-modal__progress-bar">
+                    <Progress
+                      percent={item.percent}
+                      style={{ width: 200 }}
+                      status={(() => {
+                        if (item.errorCode !== 0) {
+                          return 'exception';
+                        }
+                      })()}
+                    />
+                    <div>
+                      ({item.finishedCount}/{item.total})
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  {(() => {
+                    if (item.errorCode !== 0) {
+                      const errorObj = errorCodeMap[item.errorCode];
+                      console.log({ errorObj });
+                      return (
+                        <Tooltip
+                          title={errorObj ? errorObj.desc : item.errorCode}
+                        >
+                          {errorObj ? errorObj.name : item.errorCode}
+                        </Tooltip>
+                      );
+                    }
+                    return `大约剩余 ${item.time} 秒`;
+                  })()}
+                </div>
+              </List.Item>
+            )}
+          />
+        </Modal>
       </>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Breadcrumb, Icon, Divider } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Divider, Button } from 'antd';
 import OrganizationManagement from './OrganizationManagement';
 import AssessConfig from '../AssessConfig/AssessConfig';
 import AssessDownloadRecord from '../AssessDownloadRecord/AssessDownloadRecord';
@@ -94,11 +94,22 @@ class AssessControl extends Component {
           </Menu>
         </Sider>
         <Layout style={{ background: '#fff', padding: 0 }}>
-          <Header style={{ background: '#fff', marginBottom: '-40px' }}>
+          <Header
+            style={{
+              background: '#fff',
+              display: 'flex',
+              height: 32,
+              justifyContent: 'space-between',
+              alignItems: 'flex-end'
+            }}
+          >
             <Breadcrumb style={{ margin: '8px 0 0 -32px' }}>
               <Breadcrumb.Item>门禁管理</Breadcrumb.Item>
               <Breadcrumb.Item>{selectedMenu.title}</Breadcrumb.Item>
             </Breadcrumb>
+            <Button size="small" icon="download">
+              下载权限
+            </Button>
           </Header>
           <Divider style={{ margin: '8px' }} />
           <Content style={{ margin: '0 16px 16px' }}>

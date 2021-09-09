@@ -157,6 +157,26 @@ export const removeRightById = personGroupRightRecIds => {
  */
 export const modifyDateByIds = (personGroupRightRecIds, startTime, endTime) => {
   return hikInstance.post('/api/v1/modifyDateByIds', {
-    personGroupRightRecIds
+    personGroupRightRecIds,
+    startTime,
+    endTime
+  });
+};
+
+/**
+ * 通过人员分组权限表 id 修改权限有效期
+ */
+export const authDownload = data => {
+  return hikInstance.post('/api/v1/authDownload', {
+    ...data
+  });
+};
+
+/**
+ * 查询下载任务进度
+ */
+export const authDownloadProgress = data => {
+  return hikInstance.post('/api/v1/authDownloadProgress', {
+    ...data
   });
 };
