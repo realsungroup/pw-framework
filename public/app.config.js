@@ -239,7 +239,7 @@ window.pwConfig = {
   production: {
     // 地址
     baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
-    realsunApiBaseURL: 'http://kingofdinner.realsun.me:17001/',
+    realsunApiBaseURL: 'http://192.168.6.161:9091/',
     hikApiBaseURL: 'http://114.55.35.96:7700/', // 海康接口层基地址
     collectApiBaseURL: 'http://114.55.35.96:7800/',
     basename: '/',
