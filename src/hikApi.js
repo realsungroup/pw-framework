@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { constants } from 'crypto';
 
 const hikApiBaseURL = window.pwConfig[process.env.NODE_ENV].hikApiBaseURL;
 

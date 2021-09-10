@@ -9,14 +9,17 @@ import {
   Switch,
   InputNumber,
   Spin,
-  Table
+  Table,
+  Tabs
 } from 'antd';
 import { TableData } from 'pw-components';
 import DoorsSelect from '../DoorsSelect';
 import { getRootRegion, queryDoors } from '../../../hikApi';
 import http from 'Util20/api';
+import ManualCollectData from './ManualCollectData';
 import './CollectTaskDefine.less';
-const { Option } = Select;
+
+const { TabPane } = Tabs;
 
 const realsunApiBaseURL =
   window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
@@ -165,68 +168,84 @@ class CollectTaskDefine extends React.Component {
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <div className="collect-task-define">
-        <TableData
-          baseURL={realsunApiBaseURL}
-          key={tableDataKey}
-          resid="681055931420"
-          subtractH={170}
-          hasAdd={false}
-          hasModify={false}
-          hasRowModify={false}
-          hasRowView={false}
-          actionBarExtra={(
-            dataSource,
-            selectedRowKeys,
-            data,
-            recordFormData,
-            size
-          ) => {
-            return (
-              <>
-                <Button
-                  size="small"
-                  onClick={() => this.setState({ visible: true, mode: 'add' })}
-                >
-                  添加
-                </Button>
-              </>
-            );
-          }}
-          customRowBtns={[
-            (record, btnSize) => {
-              return (
-                <>
-                  <Button
-                    type="primary"
-                    size={btnSize}
-                    onClick={() =>
-                      this.setState({ visible: true, mode: 'view', record })
-                    }
-                  >
-                    查看
-                  </Button>
-                  <Button
-                    type="primary"
-                    size={btnSize}
-                    onClick={() => {
-                      this.setState({ record }, () => {
-                        const selectedDoors = this.getSelectedDoors();
-                        this.setState({
-                          selectedDoors,
-                          visible: true,
-                          mode: 'modify'
-                        });
-                      });
-                    }}
-                  >
-                    修改
-                  </Button>
-                </>
-              );
-            }
-          ]}
-        ></TableData>
+      <div style={{ width: '100%', height: '100%' }}>
+        <Tabs defaultActiveKey="任务定义表">
+          <TabPane tab="任务定义表" key="任务定义表">
+            <div className="collect-task-define">
+              <TableData
+                baseURL={realsunApiBaseURL}
+                key={tableDataKey}
+                resid="681055931420"
+                subtractH={170}
+                hasAdd={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowView={false}
+                height={660}
+                actionBarExtra={(
+                  dataSource,
+                  selectedRowKeys,
+                  data,
+                  recordFormData,
+                  size
+                ) => {
+                  return (
+                    <>
+                      <Button
+                        size="small"
+                        onClick={() =>
+                          this.setState({ visible: true, mode: 'add' })
+                        }
+                      >
+                        添加
+                      </Button>
+                    </>
+                  );
+                }}
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <>
+                        <Button
+                          type="primary"
+                          size={btnSize}
+                          onClick={() =>
+                            this.setState({
+                              visible: true,
+                              mode: 'view',
+                              record
+                            })
+                          }
+                        >
+                          查看
+                        </Button>
+                        <Button
+                          type="primary"
+                          size={btnSize}
+                          onClick={() => {
+                            this.setState({ record }, () => {
+                              const selectedDoors = this.getSelectedDoors();
+                              this.setState({
+                                selectedDoors,
+                                visible: true,
+                                mode: 'modify'
+                              });
+                            });
+                          }}
+                        >
+                          修改
+                        </Button>
+                      </>
+                    );
+                  }
+                ]}
+              ></TableData>
+            </div>
+          </TabPane>
+          <TabPane tab="手动采集数据" key="手动采集数据">
+            <ManualCollectData></ManualCollectData>
+          </TabPane>
+        </Tabs>
 
         <Modal
           width={1180}
