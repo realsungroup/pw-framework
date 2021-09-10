@@ -240,8 +240,8 @@ window.pwConfig = {
     // 地址
     baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     realsunApiBaseURL: 'http://192.168.6.161:9091/',
-    hikApiBaseURL: 'http://114.55.35.96:7700/', // 海康接口层基地址
-    collectApiBaseURL: 'http://114.55.35.96:7800/',
+    hikApiBaseURL: 'http://192.168.6.162:7700/', // 海康接口层基地址
+    collectApiBaseURL: 'http://192.168.6.162:7800/',
     basename: '/',
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
