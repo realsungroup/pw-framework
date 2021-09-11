@@ -10613,3 +10613,55 @@ window[683324251042] = {
     hasRowSelection: true
   }
 };
+
+window[684710485802] = {
+  name: 'TabsTableData',
+  title: '数据表格',
+  props: [
+    [
+      {
+        TabsTitle: '工程单',
+        resid: 678790254230,
+        hasAdd: false,
+        hasBeBtns: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: true,
+        subtractH: 200,
+        recordFormUseAbsolute:true
+
+      },
+      {
+        TabsTitle: '送货单',
+        resid: 684709694605,
+        hasAdd: false,
+        hasBeBtns: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: true,
+        subtractH: 200,
+        recordFormUseAbsolute:true,
+      },
+      {
+        TabsTitle: '送货单关联工程单',
+        resid: 684709960176,
+        hasAdd: false,
+        hasBeBtns: false,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: true,
+        subtractH: 200,
+        recordFormUseAbsolute:true
+      }
+    ]
+  ]
+};
