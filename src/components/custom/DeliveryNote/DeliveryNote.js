@@ -204,7 +204,7 @@ class DeliveryNote extends React.Component {
           C3_684709996844:s[n].C3_678796779827,
           C3_684710017537:s[n].C3_681946447748,
           C3_684710028635:s[n].C3_678796906793,
-          C3_684710040036:s[n].C3_684710040036,
+          C3_684710040036:s[n].C3_684709867684,
           C3_684710051566:s[n].C3_684710051566,
           _state: 'added',
           _id: 1
@@ -393,7 +393,6 @@ class DeliveryNote extends React.Component {
                         onChange={(v)=>{
                           this.changeSheetData('C3_684710051566',key,v.target.value,true)
                         }}
-                        type='number'
                         style={{
                           width:'100%',
                           border:'none'
