@@ -1,23 +1,19 @@
 import React from 'react';
 import './DeliveryNote.less';
-import echarts from 'echarts';
-import moment from 'moment';
-import { Select, Button, message, DatePicker, Modal, Spin } from 'antd';
-import { Link } from 'react-router-dom';
-import WorkSheetDetail from '../WorkSheetDetail';
 import http from 'Util20/api';
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
-
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+import moment from 'moment';
+import { Button, message, DatePicker, Modal, Spin } from 'antd';
+import { TableData } from '../../common/loadableCommon';
 class DeliveryNote extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       loading:false,
-      stDate:'',
-      edDate:'',
-      range:[null,null]
+      sheets:[],
+      C3_684709867684:0,
+      CNY:'零',
+      C3_684709779164:'',//付款方式
+      C3_684709721632:'',//客户名
     };
   }
 
@@ -27,25 +23,235 @@ class DeliveryNote extends React.Component {
     // 打印
     const bodyHtml = window.document.body.innerHTML;
 
-    var footstr = '</body>';
-    var newstr = document.getElementById('toPrintDel').innerHTML;
-    console.log(newstr)
-    var style =
-      '<style> th{padding:0 .5rem;line-height: 1.5rem;height: 1.5rem;}</style>';
-    var headstr = '<html><head><title></title>' + style + '</head><body>';
+    let footstr = '</body>';
+    let newstr = document.getElementById('toPrintDel').innerHTML;
+    let style =
+      '<style> th{padding:0 .5rem;line-height: 1.5rem;height: 1.5rem;}.ant-calendar-picker i{display:none;.ant-calendar-picker input{border:none;}}</style>';
+    let headstr = '<html><head><title></title>' + style + '</head><body>';
     document.body.innerHTML = headstr + newstr + footstr;
     window.print();
     window.document.body.innerHTML = bodyHtml;
     window.location.reload();
   };
+  componentWillReceiveProps = async nextProps => {
+    let data = nextProps.data;
+    this.setState({
+      loading:false,
+      sheets:[],
+      C3_684709867684:0,
+      CNY:'零',
+      C3_684709779164:'',//付款方式
+      C3_684709721632:'',//客户名
+      C3_684709897259:'',//制表人姓名
+      showWorker:false,
+      showCustomers:false
+    })
+    this.dataArrangement(data);
+    console.log(data)
+    }
 
+    changeNumMoneyToChinese(money)
+    {
+        let cnNums = new Array("零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"); //汉字的数字
+        let cnIntRadice = new Array("", "拾", "佰", "仟"); //基本单位
+        let cnIntUnits = new Array("", "万", "亿", "兆"); //对应整数部分扩展单位
+        let cnDecUnits = new Array("角", "分", "毫", "厘"); //对应小数部分单位
+        let cnInteger = "整"; //整数金额时后面跟的字符
+        let cnIntLast = "元"; //整型完以后的单位
+        let maxNum = 999999999999999.9999; //最大处理的数字
+        let IntegerNum; //金额整数部分
+        let DecimalNum; //金额小数部分
+        let ChineseStr = ""; //输出的中文金额字符串
+        let parts; //分离金额后用的数组，预定义    
+        let Symbol="";//正负值标记
+        if (money == "") {
+            return "";
+        }
+    
+        money = parseFloat(money);
+        if (money >= maxNum) {
+            alert('超出最大处理数字');
+            return "";
+        }
+        if (money == 0) {
+            ChineseStr = cnNums[0] + cnIntLast + cnInteger;
+            return ChineseStr;
+        }
+        if(money<0)
+        {
+            money=-money;
+            Symbol="负 ";        
+        }
+        money = money.toString(); //转换为字符串
+        if (money.indexOf(".") == -1) {
+            IntegerNum = money;
+            DecimalNum = '';
+        } else {
+            parts = money.split(".");
+            IntegerNum = parts[0];
+            DecimalNum = parts[1].substr(0, 4);
+        }
+        if (parseInt(IntegerNum, 10) > 0) { //获取整型部分转换
+            let zeroCount = 0;
+            let IntLen = IntegerNum.length;
+            for (let i = 0; i < IntLen; i++) {
+                let n = IntegerNum.substr(i, 1);
+                let p = IntLen - i - 1;
+                let q = p / 4;
+                let m = p % 4;
+                if (n == "0") {
+                    zeroCount++;
+                }
+                else {
+                    if (zeroCount > 0) {
+                        ChineseStr += cnNums[0];
+                    }
+                    zeroCount = 0; //归零
+                    ChineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
+                }
+                if (m == 0 && zeroCount < 4) {
+                    ChineseStr += cnIntUnits[q];
+                }
+            }
+            ChineseStr += cnIntLast;
+            //整型部分处理完毕
+        }
+        if (DecimalNum != '') { //小数部分
+            let decLen = DecimalNum.length;
+            for (let i = 0; i < decLen; i++) {
+                let n = DecimalNum.substr(i, 1);
+                if (n != '0') {
+                    ChineseStr += cnNums[Number(n)] + cnDecUnits[i];
+                }
+            }
+        }
+        if (ChineseStr == '') {
+            ChineseStr += cnNums[0] + cnIntLast + cnInteger;
+        } else if (DecimalNum == '') {
+            ChineseStr += cnInteger;
+        }
+        ChineseStr = Symbol +ChineseStr;
+        
+        return ChineseStr;
+    }
+    
+  
+  dataArrangement=(data)=>{
+    let sheets=[];
+    let n = 0;
+    let date = new Date();
+    date=moment(date);
+    this.setState({date});
+    let total=0;
+    while(n<7){
+        if(data){
+          if(n<data.length){
+            if(n==0){
+              this.setState({
+                C3_684709721632:data[0].C3_678796767356,
+                C3_684709729783:data[0].C3_682184234543,
+              })
+            }
+            let obj = data[n];
+            if(obj.C3_681946447748&&obj.C3_678796906793){
+              obj.C3_684709867684=Number(obj.C3_681946447748)*Number(obj.C3_678796906793);
+            }else{
+              obj.C3_684709867684=0;
+            }
+            total= total + obj.C3_684709867684;
+            sheets.push(data[n])
+          }else{
+            sheets.push({})
+          }
+        };
+        n++;
+    }
+    let CNY = this.changeNumMoneyToChinese(total);
+    this.setState({sheets,C3_684709867684:total,CNY})
+  }
+  changeSheetData=(id,key,v,cal)=>{
+    console.log(key,id,v,this.state.sheets)
+    let arr = this.state.sheets;
+    let obj  =arr[key];
+    obj[id]=v;
+    if(!cal){
+      if(obj.C3_681946447748&&obj.C3_678796906793){
+        obj.C3_684709867684=Number(obj.C3_681946447748)*Number(obj.C3_678796906793);
+      }else{
+        obj.C3_684709867684=0;
+      }
+    }
+    let n = 0;
+    let total = 0;
+    while(n<arr.length){
+      total+=Number(arr[n].C3_684709867684||0);
+      n++;
+    }
+    let CNY = this.changeNumMoneyToChinese(total);
+    this.setState({sheets:arr,CNY,C3_684709867684:total});
+  }
+  handleSubmit=async()=>{
+    this.setState({loading:true});
+    let res;
+    let arr=[];
+    let n = 0;
+    let s=this.state.sheets;
+    while(n<s.length){
+      arr.push({
+        resid: '684709960176',
+        maindata:{
+          C3_684709974730:s[n].C3_680644203469,
+          C3_684709996844:s[n].C3_678796779827,
+          C3_684710017537:s[n].C3_681946447748,
+          C3_684710028635:s[n].C3_678796906793,
+          C3_684710040036:s[n].C3_684710040036,
+          C3_684710051566:s[n].C3_684710051566,
+          _state: 'added',
+          _id: 1
+        },
+       _id:n
+      })
+      n++;
+    }
+    console.log('sub',arr)
+    try {
+      res = await http().saveRecordAndSubTables({
+        data: [
+          {
+            resid: '684709694605',
+            maindata: {
+              C3_684709721632: this.state.C3_684709721632, 
+              C3_684709729783: this.state.C3_684709721632, 
+              C3_684709769640:this.state.date,
+              C3_684709779164:this.state.C3_684709779164,
+              C3_684709867684:this.state.C3_684709867684,
+              C3_684709897259:this.state.C3_684709897259,
+              C3_684709906752:this.state.C3_684709906752,
+              _state: 'added',
+              _id: 1
+            },
+            subdata: arr
+          }
+        ]
+      });
+      message.success('添加成功');
+    this.setState({loading:false});
 
+      this.props.backFunc();
+      this.props.handleRefresh();
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+  }
   render() {
     return (
       <Spin spinning={this.state.loading}>
 
      <div className="wrap">
-       <Button onClick={()=>{this.handlePrintDel();}} type={'primary'}>打印</Button>
+       <Button onClick={()=>{this.handlePrintDel();}} style={{padding:'0 8px',marginRight:'8px'}}>打印</Button>
+       <Button onClick={()=>{this.props.backFunc();}} style={{padding:'0 8px',marginRight:'8px'}}>返回</Button>
+       <Button onClick={()=>{this.handleSubmit();}} style={{padding:'0 8px'}} type={'primary'}>提交</Button>
         <div id='toPrintDel' style={{width:'794px',marginLeft:'calc(50% - 397px)'}}>
           <div style={{width:'794px',padding:'1rem',boxSizing:'border-box'}}>
           <div style={{overflow:'hidden'}}>
@@ -61,196 +267,151 @@ class DeliveryNote extends React.Component {
         </div>
         <div style={{overflow:'hidden',textAlign:'left',marginTop:'1rem'}}>
               <div style={{float:'left',width:'40%'}}>
-                <p>客户名称：<big style={{fontSize:'1.5rem',fontWeight:'bold'}}>皓丰机械</big></p>
+                <p style={{cursor:'pointer'}} onClick={() => {
+                  this.setState({ showCustomers: true });
+                }}>客户名称：<big style={{fontSize:'1.5rem',fontWeight:'bold'}}
+                >
+                  {this.state.C3_684709721632}
+                  </big></p>
                 <p>付款方式：
-                  <span style={{marginLeft:'1rem'}}>□ 现金</span>
-                  <span style={{marginLeft:'1rem'}}>□ 月结</span>
-                  <span style={{marginLeft:'1rem'}}>□ 支票</span>
+                  <span style={{marginLeft:'1rem',cursor:'pointer'}} onClick={()=>{
+                    this.setState({C3_684709779164:'现金'}) }}>{this.state.C3_684709779164=='现金'?'√':'□'} 现金</span>
+                  <span style={{marginLeft:'1rem',cursor:'pointer'}} onClick={()=>{
+                    this.setState({C3_684709779164:'月结'})}}>{this.state.C3_684709779164=='月结'?'√':'□'} 月结</span>
+                  <span style={{marginLeft:'1rem',cursor:'pointer'}} onClick={()=>{
+                    this.setState({C3_684709779164:'支票'})}}>{this.state.C3_684709779164=='支票'?'√':'□'} 支票</span>
                 </p>
               </div>
               <div style={{float:'left',width:'40%',textIndent:'26%'}}>
                 <big style={{fontWeight:'1.5rem'}}>送货单</big>
               </div>
               <div style={{float:'left',width:'20%'}}>
-                <p>送货单号：ME00033758</p>
-                <p>日期：2021-05-28</p>
+                <p>送货单号：{this.state.C3_684709750566}</p>
+                <p>日期：
+
+                <DatePicker
+                value={this.state.date}
+                style={{cursor:'pointer',width:'110px'}}
+                onChange={(v)=>{
+                  this.setState({date:v})
+                }}
+                />
+                </p>
               </div>
             </div>
             <div style={{marginTop:'1rem',overflow:'hidden'}}>
               <table border='1' style={{textAlign:'left',width:'calc(100% - 1rem)',float:'left'}}>
                 <tr style={{textAlign:'center'}}>
-                  <th style={{width:'15%'}}>
+                  <th style={{width:'12%'}}>
                     工程单号
                   </th>
-                  <th style={{width:'30%'}}>
+                  <th style={{width:'25%'}}>
                     产品名称
                   </th>
-                  <th style={{width:'8%'}}>
+                  <th style={{width:'15%'}}>
                     数量
                   </th>
-                  <th style={{width:'8%'}}>
+                  <th style={{width:'15%'}}>
                     单价
                   </th>
-                  <th style={{width:'14%'}}>
+                  <th style={{width:'15%'}}>
                     金额
                   </th>
                   <th>
                     备注
                   </th>
                 </tr>
-                <tr>
-                  <th>
-                    my0112613
-                  </th>
-                  <th>
-                  100*100
-                  </th>
-                  <th>
-                  2
-                  </th>
-                  <th>
-                  70
-                  </th>
-                  <th>
-                    140
-                  </th>
-                  <th>
-                  
-                  </th>
-                  
-                </tr>
-                <tr>
-                  <th>
+                {this.state.sheets.map((item,key)=>{
+                  return(
+                    <tr>
+                    <th>
+                      <input 
+                        value={item.C3_680644203469}
+                        onChange={(v)=>{
+                          this.changeSheetData('C3_68064420346',key,v.target.value)
+                        }}
+                        style={{
+                          width:'100%',
+                          border:'none'
+                        }}
+                      />
+                    </th>
+                    <th>
+                    <input 
+                        value={item.C3_678796779827}
+                        onChange={(v)=>{
+                          this.changeSheetData('C3_678796779827',key,v.target.value)
+                        }}
+                        style={{
+                          width:'100%',
+                          border:'none'
+                        }}
+                      />
+                    </th>
+                    <th>
+                    <input 
+                        value={item.C3_681946447748}
+                        onChange={(v)=>{
+                          this.changeSheetData('C3_681946447748',key,v.target.value)
+                        }}
+                        type='number'
+                        style={{
+                          width:'100%',
+                          border:'none'
+                        }}
+                      />
+                    </th>
+                    <th>
+                    <input 
+                        value={item.C3_678796906793}
+                        onChange={(v)=>{
+                          this.changeSheetData('C3_678796906793',key,v.target.value)
+                        }}
+                        type='number'
+                        style={{
+                          width:'100%',
+                          border:'none'
+                        }}
+                      />
+                    </th>
+                    <th>
+                      <input 
+                        value={item.C3_684709867684}
+                        onChange={(v)=>{
+                          this.changeSheetData('C3_684709867684',key,v.target.value,true)
+                        }}
+                        type='number'
+                        style={{
+                          width:'100%',
+                          border:'none'
+                        }}
+                      />
+                    </th>
+                    <th>
+                    <input 
+                        value={item.C3_684710051566}
+                        onChange={(v)=>{
+                          this.changeSheetData('C3_684710051566',key,v.target.value,true)
+                        }}
+                        type='number'
+                        style={{
+                          width:'100%',
+                          border:'none'
+                        }}
+                      />
                     
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
+                    </th>
                     
-                  </th>
-                  <th>
-                  
-                  </th>
-                  
-                </tr>
-                <tr>
-                  <th>
-                    
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                    
-                  </th>
-                  <th>
-                  
-                  </th>
-                  
-                </tr>
-                <tr>
-                  <th>
-                    
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                    
-                  </th>
-                  <th>
-                  
-                  </th>
-                  
-                </tr>
-                <tr>
-                  <th>
-                    
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                    
-                  </th>
-                  <th>
-                  
-                  </th>
-                  
-                </tr>
-                <tr>
-                  <th>
-                    
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                    
-                  </th>
-                  <th>
-                  
-                  </th>
-                  
-                </tr>
-                <tr>
-                  <th>
-                    
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                  
-                  </th>
-                  <th>
-                    
-                  </th>
-                  <th>
-                  
-                  </th>
-                  
-                </tr>
+                  </tr>
+                  )
+                })}
+                
                 <tr>
                   <th style={{textAlign:'right'}}>
                     合计：
                   </th>
                   <th>
-                  
+                
                   </th>
                   <th>
                   
@@ -259,7 +420,21 @@ class DeliveryNote extends React.Component {
                   
                   </th>
                   <th>
-                    
+                  <input 
+                        value={this.state.C3_684709867684}
+                        onChange={(v)=>{
+                          let CNY = this.changeNumMoneyToChinese(v.target.value);
+                          this.setState({
+                            C3_684709867684:v.target.value,
+                            CNY
+                          });
+                        }}
+                        type='number'
+                        style={{
+                          width:'100%',
+                          border:'none'
+                        }}
+                      />
                   </th>
                   <th>
                   
@@ -268,7 +443,20 @@ class DeliveryNote extends React.Component {
                 </tr>
                 <tr>
                   <th colspan={7}>
-                    合计金额（大写）：人民币肆佰贰拾元整
+                  合计金额（大写）：人民币
+                    <input
+                      value={this.state.CNY}
+                      style={{
+                        border:'none',
+                        fontWeight:'bold',
+                        width:'calc(100% - 170px)'
+                      }}
+                      onChange={
+                        (v)=>{
+                          this.setState({CNY:v.target.value});
+                        }
+                      }
+                    />
                   </th>
                 </tr>
               </table>
@@ -279,7 +467,10 @@ class DeliveryNote extends React.Component {
             <div style={{overflow:'hidden',textAlign:'left'}}>
               <p style={{float:'left',lineHeight:'1.5rem',width:'50%'}}>送货人：</p>
               <p style={{float:'left',lineHeight:'1.5rem',width:'25%'}}>客户签收：</p>
-              <p style={{float:'left',lineHeight:'1.5rem',width:'25%'}}>制表人：张三</p>
+              <p style={{float:'left',lineHeight:'1.5rem',width:'25%',cursor:'pointer'}} 
+              onClick={() => {
+                              this.setState({ showWorker: true
+                            })}}>制表人：{this.state.C3_684709897259}</p>
             </div>
             <div  style={{textAlign:'left'}}>
               <p>客户须知：</p>
@@ -288,6 +479,96 @@ class DeliveryNote extends React.Component {
             </div>
             </div>
         </div>
+
+        <Modal
+          visible={this.state.showCustomers}
+          footer={null}
+          onCancel={() => {
+            this.setState({ showCustomers: false });
+          }}
+          destroyOnClose
+          width={'80vw'}
+        >
+          <div style={{ width: '100%', height: '80vh' }}>
+            <TableData
+              resid="680643338700"
+              subtractH={180}
+              hasAdd={true}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={false}
+              hasAdvSearch={false}
+              importConfig={null}
+              customRowBtns={[
+                (record, btnSize) => {
+                  return (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.setState({
+                          showCustomers: false,
+                          C3_684709721632:record.nameCustomer,
+                          C3_684709729783:record.idCustomer
+                        });
+                      }}
+                    >
+                      选择
+                    </Button>
+                  );
+                }
+              ]}
+            />
+          </div>
+        </Modal>
+
+<Modal
+visible={this.state.showWorker}
+footer={null}
+onCancel={() => {
+  this.setState({ showWorker: false });
+}}
+destroyOnClose
+width={'80vw'}
+>
+<div style={{ width: '100%', height: '80vh' }}>
+  <TableData
+    resid="682683140687"
+    subtractH={180}
+    hasAdd={true}
+    hasRowView={false}
+    hasRowDelete={false}
+    hasRowEdit={false}
+    hasDelete={false}
+    hasModify={false}
+    hasRowModify={false}
+    hasRowSelection={false}
+    hasAdvSearch={false}
+    importConfig={null}
+    customRowBtns={[
+      (record, btnSize) => {
+        return (
+          <Button
+            type="primary"
+            onClick={() => {
+              this.setState({
+                C3_684709897259:record.C3_227192484125,
+                C3_684709906752:record.C3_227192472953,
+                showWorker:false
+              })
+            }}
+          >
+            选择
+          </Button>
+        );
+      }
+    ]}
+  />
+</div>
+</Modal>
       </div>
       </Spin>
     );

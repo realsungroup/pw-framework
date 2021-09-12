@@ -199,8 +199,12 @@ class WorkSheet extends React.Component {
     this.setState({showDetails:value,curSheetId:ID,isNew:isNew});
   }
   //显示送货单
-  showDelivery=(id)=>{
-    this.setState({showDel:true})
+  showDelivery=(bol,id)=>{
+    let b=true;
+    if(bol!=null){
+      b=false;
+    }
+    this.setState({showDel:b})
   }
   //修改评论
   handleModi = async() =>{
@@ -356,7 +360,7 @@ class WorkSheet extends React.Component {
                 hasDelete={false}
                 hasModify={false}
                 hasRowModify={false}
-                hasRowSelection={false}
+                hasRowSelection={true}
                 hasAdvSearch={false}
                 hasBeBtns={true}
                 importConfig={null}
@@ -368,7 +372,19 @@ class WorkSheet extends React.Component {
                       <Button onClick={()=>{this.showDetails();}}>
                         新建工作单
                     </Button>
-                    <Button onClick={()=>{this.showDelivery();}}>
+                    <Button onClick={()=>{
+                      let data = dataSource;
+                      let Reldata = [];
+                      data.map(item => {
+                        selectedRowKeys.map(items => {
+                          if (item.REC_ID === items) {
+                            Reldata.push(item);
+                          }
+                        });
+                      });
+                      this.setState({selectedData:Reldata});
+                      this.showDelivery();
+                      }}>
                     新建送货单
                 </Button></>
                     }
@@ -417,9 +433,15 @@ class WorkSheet extends React.Component {
               </WorkSheetDetail>   
         </div>
         <div className='delContent' 
-        // style={this.state.showDel?{display:'block'}:{display:'none'}}
+        style={this.state.showDel?{display:'block'}:{display:'none'}}
         >
-          <DeliveryNote></DeliveryNote>
+          <DeliveryNote
+          backFunc={()=>{this.showDelivery(false)}}
+          handleRefresh={()=>{this.handleRefresh()}}
+          data={
+            this.state.selectedData
+          }
+          ></DeliveryNote>
         </div>
       </div>
 
