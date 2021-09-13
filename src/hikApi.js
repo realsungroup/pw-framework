@@ -44,6 +44,13 @@ export const getRootRegion = () => {
   return hikInstance.get('/api/v1/getRootRegion');
 };
 
+/**
+ * 获取所有的区域
+ */
+export const getAllRegions = () => {
+  return hikInstance.get('/api/v1/getAllRegions');
+};
+
 export const getSubRegions = data => {
   return hikInstance.post('/api/v1/getSubRegions', data);
 };
@@ -176,6 +183,24 @@ export const authDownload = data => {
  */
 export const authDownloadProgress = data => {
   return hikInstance.post('/api/v1/authDownloadProgress', {
+    ...data
+  });
+};
+
+/**
+ * 查询权限下载记录
+ */
+export const queryDownloadRecords = data => {
+  return hikInstance.post('/api/v1/queryDownloadRecords', {
+    ...data
+  });
+};
+
+/**
+ * 查询设备通道的人员权限下载详情
+ */
+export const queryDownloadDetail = data => {
+  return hikInstance.post('/api/v1/queryDownloadDetail', {
     ...data
   });
 };

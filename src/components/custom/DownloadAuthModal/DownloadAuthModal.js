@@ -11,6 +11,7 @@ import {
   Tooltip
 } from 'antd';
 import http from 'Util20/api';
+import { errorCodeMap } from 'Util20/errorCodeMap';
 import PropTypes from 'prop-types';
 import {
   authConfigProgress,
@@ -19,7 +20,6 @@ import {
 } from '../../../hikApi';
 import DoorsSelect from '../DoorsSelect';
 import { cloneDeep, chunk } from 'lodash';
-import { errorCodeMap } from './errorCodeMap';
 import './DownloadAuthModal.less';
 
 const realsunApiBaseURL =
