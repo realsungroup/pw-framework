@@ -32,7 +32,12 @@ class WorkSheet extends React.Component {
       },
       curSheetId:'',
       isNew:true,
-      isTongji:false
+      isTongji:false,
+      sheetBrid:'工作单',
+      filterSTA2:'',
+      filterSTB2:'',
+      cms2:``,
+      cms3:`1<0`
   }
   }
   
@@ -184,6 +189,14 @@ class WorkSheet extends React.Component {
       cms
     })
   }
+  //根据筛选条件显示送货单
+  getData2=async()=>{
+    let cms2 = `C3_684709769640 > '${this.state.filterSTA2}' and C3_684709769640 < '${this.state.filterSTB2}'`
+    this.setState({
+      cms2,
+      cms3:`1<0`
+    })
+  }
   //显示详情页
   showDetails=(v,id)=>{
     console.log('id',id)
@@ -257,94 +270,140 @@ class WorkSheet extends React.Component {
         
         <div className='filterLine'>
           <ul>
-          <li>
-              状态：
-              <Select
-                style={{ width: 120 }}
-                placeholder="请选择状态"
-                value={this.state.filterStatus}
-                onChange={(v) =>{
-                  this.setState({filterStatus: v})
-                }}
-              >
-                {this.state.sheetStatus.map(item => (
-                  <Option value={item}>
-                    {item}
-                  </Option>
-                ))}
-              </Select>
-            </li>
-            <li>
-              接单时间：
-              <RangePicker
-                value={this.state.filterST}
+          <li className='bridFilter'>
+            <p className={this.state.sheetBrid=='工作单'?'current':''} onClick={()=>{
+              this.setState({sheetBrid:'工作单'})
+            }}>工作单</p>
+            <p className={this.state.sheetBrid=='送货单'?'current':''} onClick={()=>{
+              this.setState({sheetBrid:'送货单'})
+            }}>送货单</p>
+          </li>
+          {this.state.sheetBrid=='工作单'?
+                <>
+                <li>
+                    状态：
+                    <Select
+                      style={{ width: 120 }}
+                      placeholder="请选择状态"
+                      value={this.state.filterStatus}
+                      onChange={(v) =>{
+                        this.setState({filterStatus: v})
+                      }}
+                    >
+                      {this.state.sheetStatus.map(item => (
+                        <Option value={item}>
+                          {item}
+                        </Option>
+                      ))}
+                    </Select>
+                  </li>
+                  <li>
+                    接单时间：
+                    <RangePicker
+                      value={this.state.filterST}
 
-                onChange={(dates, dateString) => {
-                  console.log(dates, dateString);
-                  let cmswhere = this.state.cmswhere;
-                  if (dateString[0] && dateString[1]) {
-                    this.setState({filterST:dates,filterSTA:dateString[0],filterSTB:dateString[1]});
-                  }
-                }}
-              ></RangePicker>
-            </li>
-            <li>
-              交货时间：
-              <RangePicker
-                value={this.state.filterED}
-                onChange={(dates, dateString) => {
-                  console.log(dates, dateString);
-                  let cmswhere = this.state.cmswhere;
-                  if (dateString[0] && dateString[1]) {
-                    this.setState({filterED:dates,filterEDA:dateString[0],filterEDB:dateString[1]});
-                  }
-                }}
-              ></RangePicker>
-            </li>
-            <li>
-              部门：
-              <Select
-                style={{ width: 120 }}
-                placeholder="请选择部门"
-                value={this.state.filterDepa}
-                onChange={(v) =>{
-                  this.setState({filterDepa: v})
-                }}
-              >
-                {this.state.depa.map(item => (
-                  <Option value={item.depaId}>
-                    {item.depaName}
-                  </Option>
-                ))}
-              </Select>
-            </li>
-            <li>
-            <Button type='primary' style={{marginRight:'.5rem'}}onClick={()=>{
-              this.getData();
-            }}>确认</Button>
-            <Button
-              onClick={
-                ()=>{
-                  this.setState({
-                    filterStatus:'',
-                    filterST:null,
-                    filterED:null,
-                    filterSTA:'',
-                    filterSTB:'',
-                    filterEDA:'',
-                    filterEDB:'',
-                    filterDepa:'',
-                    cms: ``
-                  })
-                }
-              }
-            >
-              重置
-            </Button>
-            </li>
+                      onChange={(dates, dateString) => {
+                        console.log(dates, dateString);
+                        let cmswhere = this.state.cmswhere;
+                        if (dateString[0] && dateString[1]) {
+                          this.setState({filterST:dates,filterSTA:dateString[0],filterSTB:dateString[1]});
+                        }
+                      }}
+                    ></RangePicker>
+                  </li>
+                  <li>
+                    交货时间：
+                    <RangePicker
+                      value={this.state.filterED}
+                      onChange={(dates, dateString) => {
+                        console.log(dates, dateString);
+                        let cmswhere = this.state.cmswhere;
+                        if (dateString[0] && dateString[1]) {
+                          this.setState({filterED:dates,filterEDA:dateString[0],filterEDB:dateString[1]});
+                        }
+                      }}
+                    ></RangePicker>
+                  </li>
+                  <li>
+                    部门：
+                    <Select
+                      style={{ width: 120 }}
+                      placeholder="请选择部门"
+                      value={this.state.filterDepa}
+                      onChange={(v) =>{
+                        this.setState({filterDepa: v})
+                      }}
+                    >
+                      {this.state.depa.map(item => (
+                        <Option value={item.depaId}>
+                          {item.depaName}
+                        </Option>
+                      ))}
+                    </Select>
+                  </li>
+                  <li>
+                  <Button type='primary' style={{marginRight:'.5rem'}}onClick={()=>{
+                    this.getData();
+                  }}>确认</Button>
+                  <Button
+                    onClick={
+                      ()=>{
+                        this.setState({
+                          filterStatus:'',
+                          filterST:null,
+                          filterED:null,
+                          filterSTA:'',
+                          filterSTB:'',
+                          filterEDA:'',
+                          filterEDB:'',
+                          filterDepa:'',
+                          cms: ``
+                        })
+                      }
+                    }
+                  >
+                    重置
+                  </Button>
+                  </li>
+                  </>:<>
+                  <li>
+                    日期：
+                    <RangePicker
+                      value={this.state.filterST2}
+
+                      onChange={(dates, dateString) => {
+                        if (dateString[0] && dateString[1]) {
+                          this.setState({filterST2:dates,filterSTA2:dateString[0],filterSTB2:dateString[1]});
+                        }
+                      }}
+                    ></RangePicker>
+                  </li>
+                  <li>
+                  <Button type='primary' style={{marginRight:'.5rem'}}onClick={()=>{
+                    this.getData2();
+                  }}>确认</Button>
+                  <Button
+                    onClick={
+                      ()=>{
+                        this.setState({
+                          filterST2:null,
+                          filterSTA2:'',
+                          filterSTB2:'',
+                          cms2: ``,
+                          cms3:`1<0`
+                        })
+                      }
+                    }
+                  >
+                    重置
+                  </Button>
+                  </li>
+                  </>
+          }
+          
           </ul>
         </div>
-        <div className='table'>
+        <div className='table' style={this.state.sheetBrid=='工作单'?{}:{display:'none'}}>
               <TableData
                 resid="682730277282"
                 wrappedComponentRef={element =>
@@ -418,6 +477,70 @@ class WorkSheet extends React.Component {
                 ]}
               />
         </div>
+
+        <div className='tableDelivery' style={this.state.sheetBrid=='工作单'?{display:'none'}:{}}>
+              <div className='main'>
+              <TableData
+                resid="684709694605"
+                wrappedComponentRef={element =>
+                  (this.tableDataRef = element)
+                }
+                cmswhere={this.state.cms2}
+                refTargetComponentName="TableData2"
+                onRowClick={v => {
+                  this.setState({
+                    cms3: `C3_684709983325 = '${v.C3_684709750566}'`
+                  });
+                }}
+                subtractH={180}
+                hasAdd={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                hasAdvSearch={false}
+                hasBeBtns={true}
+                importConfig={null}
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        onClick={()=>{this.showDelivery(null,record.REC_ID)}}
+                      >
+                        查看
+                      </Button>
+                    );
+                  }
+                ]}
+              />
+              </div>
+              <div className='sub'>
+              <TableData
+                resid="684709960176"
+                wrappedComponentRef={element =>
+                  (this.tableDataRef = element)
+                }e
+                cmswhere={this.state.cms3}
+                subtractH={180}
+                hasAdd={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                hasAdvSearch={false}
+                hasBeBtns={true}
+                importConfig={null}
+              />
+              </div>
+             
+        </div>
+
         <div className='detailContent' style={this.state.showDetails?{display:'block'}:{display:'none'}}>
              
              <WorkSheetDetail

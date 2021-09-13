@@ -244,6 +244,23 @@ class DeliveryNote extends React.Component {
       console.log(error);
     }
   }
+  getDelivery = async(id) =>{
+    let res;
+    this.setState({loading:true});
+    try {
+      res = await http().getRecordAndSubTables({
+        resid: 681075873039,
+        subresid:684709960176,
+        cmswhere: `REC_ID = '${id}'`,
+        getsubresource: 1
+      });
+      this.setState({loading:false});
+    } catch (error) {
+      message.error(error.message);
+      this.setState({loading:false});
+      console.log(error);
+    }
+  }
   render() {
     return (
       <Spin spinning={this.state.loading}>

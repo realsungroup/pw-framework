@@ -13,11 +13,45 @@
         float:left;
         margin-right:1rem;
       }
+      .bridFilter{
+        overflow: hidden;
+        p{
+          padding:0 8px;
+          cursor:pointer;
+          line-height: 2rem;
+          border:1px solid #ddd;
+          float: left;
+          border-radius:8px 0 0 8px;
+          margin-bottom: 0;
+          &:last-child{
+            border-right:1px solid #ddd;
+            border-radius:0 8px 8px 0;
+          }
+        }
+        .current{
+          color: #1890ff;
+          border-color: #1890ff;
+          border-right:1px solid #1890ff;
+          &:last-child{
+            border-left:1px solid #1890ff;
+             border-right:1px solid #1890ff;
+
+          }
+        }
+      }
     }
   }
-  .table{
+  .table,.tableDelivery{
     width:100vw;
-    height:calc(100vh - 64px);
+    height:calc(100vh - 66px);
+  }
+  .tableDelivery{
+    .main{
+      height:calc(60vh - 66px);
+    }
+    .sub{
+      height:40vh;
+    }
   }
   .detailContent,.delContent{
     width:100vw;
