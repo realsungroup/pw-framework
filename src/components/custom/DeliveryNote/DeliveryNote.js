@@ -26,7 +26,7 @@ class DeliveryNote extends React.Component {
     let footstr = '</body>';
     let newstr = document.getElementById('toPrintDel').innerHTML;
     let style =
-      '<style> th{padding:0 .5rem;line-height: 1.5rem;height: 1.5rem;}.ant-calendar-picker i{display:none;.ant-calendar-picker input{border:none;}}</style>';
+      '<style> th{padding:0 .5rem;line-height: 1.5rem;height: 1.5rem;}.ant-calendar-picker i{display:none;.ant-calendar-picker input{border:none;}}input{background:rgba(0,0,0,0)!important;border:0px solid #fff!important;}.dateP{display:none;}</style>';
     let headstr = '<html><head><title></title>' + style + '</head><body>';
     document.body.innerHTML = headstr + newstr + footstr;
     window.print();
@@ -43,11 +43,16 @@ class DeliveryNote extends React.Component {
       C3_684709779164:'',//付款方式
       C3_684709721632:'',//客户名
       C3_684709897259:'',//制表人姓名
+      C3_684709906752:'',
+      C3_684709729783:'',
+      C3_684709750566:'',
       showWorker:false,
       showCustomers:false
     })
     this.dataArrangement(data);
-    console.log(data)
+      if(nextProps.selId){
+        this.getDelivery(nextProps.selId);
+      }
     }
 
     changeNumMoneyToChinese(money)
@@ -141,7 +146,8 @@ class DeliveryNote extends React.Component {
     let n = 0;
     let date = new Date();
     date=moment(date);
-    this.setState({date});
+    let dateStr = moment(date).format('YYYY-MM-DD');
+    this.setState({date,dateStr});
     let total=0;
     while(n<7){
         if(data){
@@ -190,6 +196,62 @@ class DeliveryNote extends React.Component {
     let CNY = this.changeNumMoneyToChinese(total);
     this.setState({sheets:arr,CNY,C3_684709867684:total});
   }
+  handleModi=async()=>{
+    this.setState({loading:true});
+    let res;
+    let arr=[];
+    let n = 0;
+    let s=this.state.sheets;
+    while(n<s.length){
+      arr.push({
+        resid: '684709960176',
+        maindata:{
+          C3_684709974730:s[n].C3_680644203469,
+          C3_684709996844:s[n].C3_678796779827,
+          C3_684710017537:s[n].C3_681946447748,
+          C3_684710028635:s[n].C3_678796906793,
+          C3_684710040036:s[n].C3_684709867684,
+          C3_684710051566:s[n].C3_684710051566,
+          REC_ID:s[n].REC_ID,
+          _state: 'modified',
+          _id: 1
+        },
+       _id:n
+      })
+      n++;
+    }
+    try {
+      res = await http().saveRecordAndSubTables({
+        data: [
+          {
+            resid: '684709694605',
+            maindata: {
+              C3_684709721632: this.state.C3_684709721632, 
+              C3_684709729783: this.state.C3_684709721632, 
+              C3_684709769640:this.state.date,
+              C3_684709779164:this.state.C3_684709779164,
+              C3_684709867684:this.state.C3_684709867684,
+              C3_684709897259:this.state.C3_684709897259,
+              C3_684709906752:this.state.C3_684709906752,
+              REC_ID:this.state.REC_ID,
+              _state: 'modified',
+              _id: 1
+            },
+            subdata: arr
+          }
+        ]
+      });
+      message.success('修改成功');
+    this.setState({loading:false});
+
+      this.props.backFunc();
+      this.props.handleRefresh();
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+
+  }
   handleSubmit=async()=>{
     this.setState({loading:true});
     let res;
@@ -213,7 +275,6 @@ class DeliveryNote extends React.Component {
       })
       n++;
     }
-    console.log('sub',arr)
     try {
       res = await http().saveRecordAndSubTables({
         data: [
@@ -249,12 +310,46 @@ class DeliveryNote extends React.Component {
     this.setState({loading:true});
     try {
       res = await http().getRecordAndSubTables({
-        resid: 681075873039,
+        resid: 684709694605,
         subresid:684709960176,
-        cmswhere: `REC_ID = '${id}'`,
+        cmswhere: `C3_684709750566 = '${id}'`,
         getsubresource: 1
       });
-      this.setState({loading:false});
+      let CNY = this.changeNumMoneyToChinese(res.data[0].C3_684709867684);
+      let arr = res.data[0][684709960176];
+      let n = 0 ;
+      while(n<7){
+        if(arr[n]){
+          arr[n].C3_680644203469=arr[n].C3_684709974730;
+          arr[n].C3_678796779827=arr[n].C3_684709996844;
+          arr[n].C3_681946447748=arr[n].C3_684710017537;
+          arr[n].C3_678796906793=arr[n].C3_684710028635;
+          arr[n].C3_684709867684=arr[n].C3_684710040036;
+        }else{
+          arr.push({})
+        }
+        n++;
+      }
+      if(res.data.length>0){
+        this.setState({
+          loading:false,
+          sheets:arr,
+          C3_684709867684:res.data[0].C3_684709867684,
+          CNY,
+          C3_684709779164:res.data[0].C3_684709779164,//付款方式
+          C3_684709721632:res.data[0].C3_684709721632,//客户名
+          C3_684709897259:res.data[0].C3_684709897259,//制表人姓名
+          C3_684709906752:res.data[0].C3_684709906752,
+          C3_684709729783:res.data[0].C3_684709729783,
+          C3_684709750566:res.data[0].C3_684709750566,
+          REC_ID:res.data[0].REC_ID,
+          showWorker:false,
+          showCustomers:false
+        })
+      }else{
+        this.setState({loading:false});
+      }
+      console.log('deli',res)
     } catch (error) {
       message.error(error.message);
       this.setState({loading:false});
@@ -268,7 +363,14 @@ class DeliveryNote extends React.Component {
      <div className="wrap">
        <Button onClick={()=>{this.handlePrintDel();}} style={{padding:'0 8px',marginRight:'8px'}}>打印</Button>
        <Button onClick={()=>{this.props.backFunc();}} style={{padding:'0 8px',marginRight:'8px'}}>返回</Button>
-       <Button onClick={()=>{this.handleSubmit();}} style={{padding:'0 8px'}} type={'primary'}>提交</Button>
+       <Button onClick={()=>{
+         if(this.state.REC_ID){
+          this.handleModi();
+         }else{
+          this.handleSubmit();
+         }
+         
+         }} style={{padding:'0 8px'}} type={'primary'}>提交</Button>
         <div id='toPrintDel' style={{width:'794px',marginLeft:'calc(50% - 397px)'}}>
           <div style={{width:'794px',padding:'1rem',boxSizing:'border-box'}}>
           <div style={{overflow:'hidden'}}>
@@ -299,13 +401,14 @@ class DeliveryNote extends React.Component {
                     this.setState({C3_684709779164:'支票'})}}>{this.state.C3_684709779164=='支票'?'√':'□'} 支票</span>
                 </p>
               </div>
-              <div style={{float:'left',width:'40%',textIndent:'26%'}}>
-                <big style={{fontWeight:'1.5rem'}}>送货单</big>
+              <div style={{float:'left',width:'40%',textIndent:'16%'}}>
+                <big style={{fontSize:'1.5rem',fontWeight:'bold'}}>送货单</big>
               </div>
               <div style={{float:'left',width:'20%'}}>
                 <p>送货单号：{this.state.C3_684709750566}</p>
                 <p>日期：
-
+                <span className='hid'>{this.state.dateStr}</span>
+                <span className='dateP'>
                 <DatePicker
                 value={this.state.date}
                 style={{cursor:'pointer',width:'110px'}}
@@ -313,6 +416,7 @@ class DeliveryNote extends React.Component {
                   this.setState({date:v})
                 }}
                 />
+                </span>
                 </p>
               </div>
             </div>
@@ -345,7 +449,7 @@ class DeliveryNote extends React.Component {
                       <input 
                         value={item.C3_680644203469}
                         onChange={(v)=>{
-                          this.changeSheetData('C3_68064420346',key,v.target.value)
+                          this.changeSheetData('C3_680644203469',key,v.target.value)
                         }}
                         style={{
                           width:'100%',

@@ -217,6 +217,9 @@ class WorkSheet extends React.Component {
     if(bol!=null){
       b=false;
     }
+    if(id){
+      this.setState({selId:id});
+    }
     this.setState({showDel:b})
   }
   //修改评论
@@ -441,7 +444,7 @@ class WorkSheet extends React.Component {
                           }
                         });
                       });
-                      this.setState({selectedData:Reldata});
+                      this.setState({selectedData:Reldata,selId:''});
                       this.showDelivery();
                       }}>
                     新建送货单
@@ -508,7 +511,9 @@ class WorkSheet extends React.Component {
                   (record, btnSize) => {
                     return (
                       <Button
-                        onClick={()=>{this.showDelivery(null,record.REC_ID)}}
+                        onClick={()=>{
+                          this.showDelivery(null,record.C3_684709750566)}
+                        }
                       >
                         查看
                       </Button>
@@ -563,6 +568,9 @@ class WorkSheet extends React.Component {
           handleRefresh={()=>{this.handleRefresh()}}
           data={
             this.state.selectedData
+          }
+          selId={
+            this.state.selId
           }
           ></DeliveryNote>
         </div>
