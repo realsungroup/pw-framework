@@ -217,6 +217,30 @@ class WorkSheetShowBoard extends React.Component {
       done=res2.data;
       console.log(res2,done)
       let newArr = emergy.concat(arr);
+      n =0;
+      let cms=``;
+      while(n<done.length){
+        if(n==0){
+          cms=`REC_ID = '${done[n].C3_682377626479}'`
+        }else{
+          cms=cms+` or REC_ID = '${done[n].C3_682377626479}'`
+        }
+        n++;
+      }
+      let res3=await http().getTable({
+        resid: 679066070181,
+        cmswhere: cms
+      });
+      
+      if(res3.data.length>0){
+        n=0;
+        let res3Arr = res3.data
+        while(n<res3Arr.length){
+          res3Arr[n].finished=true;
+          n++;
+        }
+        newArr = newArr.concat(res3Arr);
+      }
       let chartObj = {
         total: done.length+ing.length+unstart.length+qx.length+zf.length,
         data: [
@@ -327,18 +351,20 @@ class WorkSheetShowBoard extends React.Component {
             return (
               <div
                 className={
-                  item.C3_682507133563 == 'Y' ? 'emergy sheet' : 'sheet'
+                  item.finished?'finished sheet':(item.C3_682507133563 == 'Y' ? 'emergy sheet' : 'sheet')
                 }
                
               >
                 <div>
                   <label>
-                    {item.C3_682507133563 == 'Y' ? '加急' : '不加急'}
+                    {item.finished?'已完成':
+                    (item.C3_682507133563 == 'Y' ? '加急' : '不加急')
+                    }
                   </label>
                   <h3>{item.C3_678796779827}</h3>
                 </div>
                 <div>
-                  {item.sheetStatus=='已作废'||item.sheetStatus=='已取消'?
+                  {item.finished?'':(item.sheetStatus=='已作废'||item.sheetStatus=='已取消'?
                   <p>已{item.sheetStatus=='已作废'?'作废':'取消'}</p>
                   :<><p>
                   {item.C3_682377833865 == '工作中'
@@ -352,7 +378,7 @@ class WorkSheetShowBoard extends React.Component {
                   {item.C3_682377833865 == '工作中'
                     ? item.C3_682379482255 + '开始'
                     : '未开始'}
-                </p></>
+                </p></>)
                   }
                   
                 </div>

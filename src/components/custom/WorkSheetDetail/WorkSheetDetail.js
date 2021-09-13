@@ -291,6 +291,12 @@ class WorkSheetDetail extends React.Component {
   state = {
     loading: false,
     process: '',
+    modalFileImg:[],
+    file1:[],
+    file2:[],
+    file3:[],
+    file4:[],
+    showfile:false,
     fileList:[],//附件列表
     file2Del:[],//要删除的附件
     productLines: [],
@@ -367,7 +373,12 @@ class WorkSheetDetail extends React.Component {
         curModiReason: '',
         loading: false,
         process: '',
-        sheetData: objEmpty
+        sheetData: objEmpty,
+        file1:[],
+        file2:[],
+        file3:[],
+        file4:[],
+        modalFileImg:[],
       });
     } else {
       this.setState({sheetData: objEmpty})
@@ -924,6 +935,7 @@ class WorkSheetDetail extends React.Component {
     );
     let myTime = new Date();
     obj.C3_682379482255=myTime;
+    obj.REC_ID='';
     obj.C3_682379496968=myTime;
     obj.C3_682444277336 = nxt.productflowjobroleid;
     let counter = 0;
@@ -1172,9 +1184,14 @@ vertiRec= async(v)=>{
             .productflowjobroleid
         );
         let myTime = new Date();
+        let myDate = moment(myTime).format('YYYY-MM-DD hh:mm:ss');
+        obj.C3_680644411481=myDate;
         obj.C3_682379482255=myTime;
         obj.C3_682379496968=myTime;
+        obj.C3_680644227339=this.state.sheetData.C3_680644227339;
+        obj.C3_680644251256=myTime;
         obj.C3_682444277336 = nxt.productflowjobroleid;
+        obj.REC_ID='';
         let counter = 0;
         while(counter<mapping[0].mapping.length){
           obj[mapping[0].mapping[counter].to]=this.state.sheetData[mapping[0].mapping[counter].from]
@@ -1200,6 +1217,8 @@ vertiRec= async(v)=>{
       await this.saveFiles(res.data[0].C3_680644203469,true);
       this.getHistories(this.props.curSheetId);
     this.setState({loading:false,process:''});
+    this.props.handleRefresh();
+    this.props.backFunc();
     message.success('修改成功')
     } catch (e) {
     this.setState({showModi:false,loading:false,process:''})
@@ -1244,7 +1263,7 @@ vertiRec= async(v)=>{
       result => {
         let arr = this.state.fileList;
         arr.push({
-          sheetRecid:this.props.curSheetId||'',
+          sheetRecid:this.state.sheetData.C3_680644203469||'',
           fileAddress:result,
           fileName:files[0].name
         })
@@ -1303,13 +1322,118 @@ vertiRec= async(v)=>{
         resid: '684428871273',
         cmswhere:`sheetRecid = '${sheetid}'`
       });
-    this.setState({fileList:res.data,process:'',file2Del:[]})
+      //整理附件位置
+      let n = 0;
+      let arrDef=[];
+      let file1=[];
+      let file2=[];
+      let file3=[];
+      let file4=[];
+      while(n<res.data.length){
+        if(!res.data[n].C3_684857844445){
+          arrDef.push(res.data[n])
+        }else if(res.data[n].C3_684857844445 =='part1'){
+          file1.push(res.data[n])
+        }else if(res.data[n].C3_684857844445 =='part2'){
+          file2.push(res.data[n])
+        }else if(res.data[n].C3_684857844445 =='part3'){
+          file3.push(res.data[n])
+        }else if(res.data[n].C3_684857844445 =='part4'){
+          file4.push(res.data[n])
+        }
+        n++
+      }
+    this.setState({fileList:arrDef,file1,file2,file3,file4,process:'',file2Del:[]})
     } catch (e) {
     this.setState({loading:false,process:''})
       message.error(e.message);
       console.log(e.message);
     }
   }
+  //展示表内图片
+  showfile=(v,r)=>{
+    this.setState({modalFileImg:this.state[v],showfile:true,fileRight:r});
+  }
+  //删除表内图片
+  handleDelImg=async(item,index)=>{
+    this.setState({loading:true,process:'删除图片中'});
+    let file2Del=[item];
+    let res;
+    try{
+      res = await http().removeRecords({
+        resid: '684428871273',
+        data: file2Del,
+      });
+      let arr = this.state.modalFileImg;
+      arr.splice(index,1);
+      message.success('已删除');
+      this.setState({[this.state.editRight]:arr,modalFileImg:arr,loading:false,process:''});
+
+    }catch(e){
+      console.log(e.message);
+      message.error(e.message);
+    this.setState({loading:false,process:''});
+
+    }
+  }
+  //添加表内图片
+  fileImgUp = async(v,r)=>{
+    this.setState({
+      loading:true,
+      process:'上传图片中'
+    });
+    let files = v.target.files || v.dataTransfer.files;
+    if (!files.length) return;
+    let type = files[0].name; 
+    type=type.split('.')
+    let size = files[0].size; //文件的大小，判断图片的大小
+    if (size > 5242880) {
+      alert('请选择5M以内的图片！');
+      return false;
+    }
+    this.uploadFile(
+      files[0],
+      `http://kingofdinner.realsun.me:1201/api/AliyunOss/PutOneImageObject?bucketname=nutritiontower&srctype=${
+        type[1]
+      }`,
+      'cloud'
+    ).then(
+      result => {
+        this.upImgData(result,files[0].name,r)
+      },
+      err => {
+        //图片上传异常！
+        this.setState({ loading: false, process: '' });
+      }
+    );
+  }
+upImgData=async(result,name,r)=>{
+        let res;
+        let data=[
+          {
+            fileAddress:result,
+            sheetRecid:this.state.sheetData.C3_680644203469,
+            fileName:name,
+            C3_684857844445:r
+          }
+        ]
+        try{
+          res = await http().addRecords({
+            resid: '684428871273',
+            data,
+          });
+          message.success('添加成功');
+          let arr = this.state.modalFileImg;
+          arr.push(data[0]);
+          this.setState({[this.state.editRight]:arr,modalFileImg:arr,loading:false,process:''});
+        }catch(e){
+          console.log(e.message);
+          message.error(e.message);
+        this.setState({loading:false,process:''});
+    
+        }
+}
+
   render() {
     return (
       <div className="sheetDetails">
@@ -1523,7 +1647,7 @@ vertiRec= async(v)=>{
           <div style={{ width: '100%', height: '80vh' }}>
             <TableData
               resid="680642915078"
-              cmswhere={`recidWO = '${this.state.sheetData.C3_682281119677}'`}
+              cmswhere={`idCustomer = '${this.state.sheetData.C3_682184234543}'`}
               subtractH={180}
               hasAdd={false}
               hasRowView={true}
@@ -1539,8 +1663,53 @@ vertiRec= async(v)=>{
           </div>
         </Modal>
 
-      
-
+      <Modal
+          visible={this.state.showfile}
+          footer={null}
+          onCancel={() => {
+            this.setState({ showfile: false });
+          }}
+          destroyOnClose
+          width={'80vw'}
+        >
+         { this.props.editRight[this.state.fileRight]?
+          <>添加图片： <input
+                   id="ss"
+                   name="ss"
+                   type="file"
+                   onChange={v => {
+                     this.fileImgUp(v,this.state.fileRight);
+                   }}
+                   accept="image"
+                 /></>:null}
+          <ul style={{listStyle:'none',padding:'0',overflow:'hidden'}}>
+            {
+              this.state.modalFileImg.map((item,index)=>{
+                return(
+                  <li style={{marginTop:'8px',marginRight:'16px',float:'left'}}>
+                    <a href={item.fileAddress} target='_blank'><img src={item.fileAddress} style={{maxWidth:'100%',background:'#999'}}/></a>
+                    {
+                     this.props.editRight[this.state.fileRight]?
+                     <Popconfirm
+                      title="确认删除吗？"
+                      onConfirm={() => {
+                        this.handleDelImg(item,index);
+                      }}
+                    >
+                     <span style={{color:'#f5222d',marginLeft:'8px',cursor:'pointer'}}>删除</span>
+                    </Popconfirm>
+                     :null
+                    }
+                  </li>
+                )
+              })
+            }
+            
+          </ul>
+          {
+              this.state.modalFileImg.length>0?'':<div style={{textAlign:'center',fontSize:'1rem',fontWeight:'bold',paddingBottom:'1rem'}}>没有图片</div>
+            }
+        </Modal>
         <Modal
           visible={this.state.showImg}
           footer={null}
@@ -1844,6 +2013,30 @@ vertiRec= async(v)=>{
             </ul>
           </div>
           <div className={this.props.view?(this.state.minL?'workSheetForm views minLeft':'workSheetForm views'):(this.state.minL?"workSheetForm minLeft":"workSheetForm")} id='sheetForm'>
+              <span className='clickShow' 
+              style={this.state.minL?{top:'247px',left:'185px'}:{top:'247px',left:'calc(50% - 230px)'}}
+              onClick={()=>{this.showfile('file1','part1')}}
+              >
+                查看图片{this.state.file1.length>0?'':'(暂无)'}
+              </span>
+              <span className='clickShow' 
+                style={this.state.minL?{top:'454px',left:'159px'}:{top:'454px',left:'calc(50% - 256px)'}}
+                onClick={()=>{this.showfile('file2','part2')}}
+              >
+                 查看图片{this.state.file2.length>0?'':'(暂无)'}
+              </span>
+              <span className='clickShow' 
+                style={this.state.minL?{top:'585px',left:'173px'}:{top:'585px',left:'calc(50% - 242px)'}}
+                onClick={()=>{this.showfile('file3','part3')}}
+              >
+                 查看图片{this.state.file3.length>0?'':'(暂无)'}
+              </span>
+              <span className='clickShow' 
+                style={this.state.minL?{top:'717px',left:'159px'}:{top:'717px',left:'calc(50% - 256px)'}}
+                onClick={()=>{this.showfile('file4','part4')}}
+              >
+                 查看图片{this.state.file4.length>0?'':'(暂无)'}
+              </span>
             <div
               className={
                 this.props.editRight.part1||this.props.new ? 'block hidden' : 'block part1'
@@ -2809,6 +3002,7 @@ vertiRec= async(v)=>{
                               }}
                             >
                               制图备注：
+                              
                             </span>
                             <TextArea
                               value={this.state.sheetData.C3_678797335509}
