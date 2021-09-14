@@ -158,15 +158,15 @@ class DeliverApprovalForm extends React.Component {
                     <th colSpan="2" className="thCss">
                       <label>登记证件类型</label>
                     </th>
-                    <th colSpan="2" className="thCss">
+                    <th colSpan="4" className="thCss">
                       <label>登记证件号码</label>
                     </th>
                     <th colSpan="2" className="thCss">
                       <label>访客手机号码</label>
                     </th>
-                    <th colSpan="2" className="thCss">
+                    {/* <th colSpan="2" className="thCss">
                       <label>照片链接</label>
-                    </th>
+                    </th> */}
                   </tr>
                   {deliverList.map((item, index) => {
                     // console.log(item);

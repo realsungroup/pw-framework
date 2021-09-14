@@ -135,58 +135,58 @@ class GoodsInfoForm1 extends React.Component {
         editable: true,
         width: '30%'
       },
-      {
-        title: '照片链接',
-        dataIndex: 'photo1',
-        width: '30%',
-        render: (text, record) => (
-          <Upload
-            onChange={this.handleFileChange}
-            fileList={this.state.dataSource.find(key => key == record.key)}
-            // fileList={this.state.fileList}
-            onRemove={v => {
-              this.setState({ fileList: [] });
-              this.state.dataSource.map((item, index) => {
-                if (item.key == record.key) {
-                  item.name = '';
-                  item.url = '';
-                  item.status = '';
-                  item.uid = moment().format();
-                  item.photo1 = '';
-                }
-              });
-            }}
-            customRequest={async file => {
-              const res = await uploadFile(file.file);
-              this.setState({
-                fileList: [
-                  {
-                    name: file.file.name,
-                    url: res,
-                    status: 'done',
-                    uid: moment().format(),
-                    photo1: res
-                  }
-                ]
-              });
-              this.state.dataSource.map((item, index) => {
-                if (item.key == record.key) {
-                  item.name = file.file.name;
-                  item.url = res;
-                  item.status = 'done';
-                  item.uid = moment().format();
-                  item.photo1 = res;
-                }
-              });
-              message.info('照片上传成功');
-            }}
-          >
-            <Button>
-              <Icon type="upload" /> 上传附件
-            </Button>
-          </Upload>
-        )
-      },
+      // {
+      //   title: '照片链接',
+      //   dataIndex: 'photo1',
+      //   width: '30%',
+      //   render: (text, record) => (
+      //     <Upload
+      //       onChange={this.handleFileChange}
+      //       fileList={this.state.dataSource.find(key => key == record.key)}
+      //       // fileList={this.state.fileList}
+      //       onRemove={v => {
+      //         this.setState({ fileList: [] });
+      //         this.state.dataSource.map((item, index) => {
+      //           if (item.key == record.key) {
+      //             item.name = '';
+      //             item.url = '';
+      //             item.status = '';
+      //             item.uid = moment().format();
+      //             item.photo1 = '';
+      //           }
+      //         });
+      //       }}
+      //       customRequest={async file => {
+      //         const res = await uploadFile(file.file);
+      //         this.setState({
+      //           fileList: [
+      //             {
+      //               name: file.file.name,
+      //               url: res,
+      //               status: 'done',
+      //               uid: moment().format(),
+      //               photo1: res
+      //             }
+      //           ]
+      //         });
+      //         this.state.dataSource.map((item, index) => {
+      //           if (item.key == record.key) {
+      //             item.name = file.file.name;
+      //             item.url = res;
+      //             item.status = 'done';
+      //             item.uid = moment().format();
+      //             item.photo1 = res;
+      //           }
+      //         });
+      //         message.info('照片上传成功');
+      //       }}
+      //     >
+      //       <Button>
+      //         <Icon type="upload" /> 上传附件
+      //       </Button>
+      //     </Upload>
+      //   )
+      // },
       {
         title: '操作',
         dataIndex: 'operation',

@@ -86,7 +86,7 @@ class VisitorApplyVIP extends React.Component {
       title: '温馨提示',
       content: (
         <div>
-          <p>VIP访客指外部审核人员、政府官员及公司内部VIP</p>
+          <p>VIP访客申请指有其他相关需求的重要访客。</p>
         </div>
       ),
       onOk() {}
