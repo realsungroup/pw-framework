@@ -232,8 +232,8 @@ class SelectPersonFirstK extends Component {
                   {
                     type: 'list',
                     title: '按级别添加',
-                    resid: 449335746776,
-                    nameField: 'C3_587136281870'
+                    resid: 666268376334,
+                    nameField: 'type'
                   },
                   {
                     type: 'tree',
