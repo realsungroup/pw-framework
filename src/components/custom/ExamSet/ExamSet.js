@@ -156,7 +156,6 @@ class ExamSet extends Component {
         resid: 607188996053,
         cmswhere: `C3_607172879503 =${id}`
       });
-      console.log(res.data);
       this.setState({
         AllQuestions: res.data,
         loading: false
@@ -399,7 +398,6 @@ class ExamSet extends Component {
         break;
       }
       case '3': {
-        console.log('判斷', questions[2]);
         terminaldata = [
           {
             C3_607172879503: queryId,
@@ -411,21 +409,42 @@ class ExamSet extends Component {
         ];
       }
     }
-    console.log('最终的ong', terminaldata);
     this.setState({
       visible2: false,
-      laoding: true
+      loading: true
     });
+    this.vertiRec(terminaldata[0].C3_607025683659, terminaldata);
+  };
+  //验证是否有重复的题目，有的话自动加符号
+  vertiRec = async (v, terminaldata) => {
     let res;
     try {
-      res = await http().addRecords({
+      res = await http().getTable({
         resid: 607188996053,
-        data: terminaldata
+        cmswhere: `C3_607025683659 = '${v}'`
       });
       console.log(res);
-      this.setState({ laoding: false });
-      this.getThisQueryQuestions(queryId);
-      this.renderGetAllQuestions();
+      if (res.data.length > 0) {
+        let cmd = v.charAt(v.length - 1);
+        let str = v;
+        if (cmd == '.') {
+          str = str.substring(0, str.length - 1) + ' .';
+        } else {
+          str = v + `.`;
+        }
+        this.vertiRec(str, terminaldata);
+      } else {
+        let arr = terminaldata;
+        arr[0].C3_607025683659 = v;
+        let res2 = await http().addRecords({
+          resid: 607188996053,
+          data: arr
+        });
+        console.log(res2);
+        this.setState({ loading: false });
+        this.getThisQueryQuestions(arr[0].C3_607172879503);
+        this.renderGetAllQuestions();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -740,7 +759,6 @@ class ExamSet extends Component {
   }
 
   renderGetSingleChoice(item, index) {
-    console.log({ item });
     if (!item.subdata) {
       return;
     }
@@ -1376,17 +1394,12 @@ class ExamSet extends Component {
         }
       });
     }
-    this.setState({
-      CurrentQuestionVisible: false,
-      loading: false
-    });
     let res;
     try {
       res = await http().modifyRecords({
         resid: 607188996053,
         data: terminaldata
       });
-      console.log(res);
       this.getThisQueryQuestions(queryId);
       this.renderGetAllQuestions();
       this.setState({ loading: false });
@@ -1394,6 +1407,10 @@ class ExamSet extends Component {
       console.error(err);
       return message.error(err.message);
     }
+    this.setState({
+      CurrentQuestionVisible: false,
+      loading: false
+    });
   };
 
   // 删除试题
