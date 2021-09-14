@@ -72,7 +72,6 @@ class DeliverApprovalForm extends React.Component {
       : moment(); //结束时间初始值
     return (
       <Modal
-
         title="填写提送货人员申请"
         width="90%"
         visible={showDeliverApprovalModal}
@@ -432,15 +431,15 @@ class DeliverApprovalForm extends React.Component {
                   <th className="thCss">
                     <label>登记证件类型</label>
                   </th>
-                  <th colSpan="2" className="thCss">
+                  <th colSpan="4" className="thCss">
                     <label>登记证件号码</label>
                   </th>
                   <th colSpan="2" className="thCss">
                     <label>访客手机号码</label>
                   </th>
-                  <th colSpan="3" className="thCss">
+                  {/* <th colSpan="3" className="thCss">
                     <label>照片链接</label>
-                  </th>
+                  </th> */}
                 </tr>
                 {deliverList.map((item, index) => {
                   return (

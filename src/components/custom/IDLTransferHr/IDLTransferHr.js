@@ -2265,6 +2265,10 @@ class IDLTransferHr extends Component {
                   className="showContent"
                   style={{ marginTop: 24, width: '100%', marginLeft: '0' }}
                 >
+                  {this.state.cms ==
+                  `hrEndApprove = 'Y' and C3_653481734712 = '${this.state.right.location}'` ? (
+                    <span style={{ color: '#f5222d' }}>*</span>
+                  ) : null}
                   <b>生效时间：</b>
                   <DatePicker
                     value={this.state.toCheckFront.effortDate}
@@ -2297,7 +2301,10 @@ class IDLTransferHr extends Component {
                   {this.state.cms ==
                   `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
                     <>
-                      <b>岗位代码：</b>
+                      <b>
+                        <span style={{ color: '#f5222d' }}>*</span>
+                        岗位代码：
+                      </b>
                       <span>
                         {this.state.jId
                           ? this.state.jId
@@ -2313,7 +2320,10 @@ class IDLTransferHr extends Component {
                         搜索岗位
                       </Button>
                       <br />
-                      <b>考勤审批经理：</b>
+                      <b>
+                        <span style={{ color: '#f5222d' }}>*</span>
+                        考勤审批经理：
+                      </b>
                       <span>{this.state.toCheckFront.C3_614084928408}</span>
                       <Button
                         size="small"
@@ -2328,7 +2338,10 @@ class IDLTransferHr extends Component {
                         选择人员
                       </Button>
                       <br />
-                      <b>考勤审批总监：</b>
+                      <b>
+                        <span style={{ color: '#f5222d' }}>*</span>
+                        考勤审批总监：
+                      </b>
                       <span>{this.state.toCheckFront.C3_614084927323}</span>
                       <Button
                         size="small"
