@@ -45,6 +45,51 @@ export const getRootRegion = () => {
 };
 
 /**
+ * 通过姓名查询人员列表
+ */
+export const queryPersonsByName = name => {
+  return hikInstance.get(
+    `/api/v1/queryPersonsByName?personName=${encodeURIComponent(name)}`
+  );
+};
+
+/**
+ * 通过部门名称查询部门列表
+ */
+export const queryOrgsByName = orgName => {
+  return hikInstance.get(
+    `/api/v1/queryOrgsByName?orgName=${encodeURIComponent(orgName)}`
+  );
+};
+
+/**
+ * 通过门禁点名称查询门禁点列表
+ */
+export const queryDoorsByName = name => {
+  return hikInstance.get(
+    `/api/v1/queryDoorsByName?name=${encodeURIComponent(name)}`
+  );
+};
+
+/**
+ * 通过设备名称查询设备
+ */
+export const queryDevicesByName = name => {
+  return hikInstance.get(
+    `/api/v1/queryDevicesByName?name=${encodeURIComponent(name)}`
+  );
+};
+
+/**
+ * 通过区域名称查询区域
+ */
+export const queryRegionsByName = regionName => {
+  return hikInstance.get(
+    `/api/v1/queryRegionsByName?regionName=${encodeURIComponent(regionName)}`
+  );
+};
+
+/**
  * 获取所有的区域
  */
 export const getAllRegions = () => {
@@ -201,6 +246,15 @@ export const queryDownloadRecords = data => {
  */
 export const queryDownloadDetail = data => {
   return hikInstance.post('/api/v1/queryDownloadDetail', {
+    ...data
+  });
+};
+
+/**
+ * 查询权限条目列表
+ */
+export const queryAuthItemList = data => {
+  return hikInstance.post('/api/v1/queryAuthItemList', {
     ...data
   });
 };
