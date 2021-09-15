@@ -3,6 +3,7 @@ import { Layout, Menu, Breadcrumb, Icon, Divider, Button } from 'antd';
 import OrganizationManagement from './OrganizationManagement';
 import AssessConfig from '../AssessConfig/AssessConfig';
 import AuthDownloadRecord from '../AuthDownloadRecord';
+import AuthAllQuery from '../AuthAllQuery';
 
 const { Header, Content, Sider } = Layout;
 
@@ -45,7 +46,7 @@ class AssessControl extends Component {
         iconType: 'file-search',
         title: '权限综合查询',
         render: () => {
-          return <p>1223</p>;
+          return <AuthAllQuery></AuthAllQuery>;
         }
       },
       {

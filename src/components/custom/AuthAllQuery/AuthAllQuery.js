@@ -698,7 +698,7 @@ class AuthAllQuery extends Component {
             </Select>
           </Form.Item>
 
-          <Form.Item label="人脸" className="auth-all-query__form-item">
+          <Form.Item label="配置时间" className="auth-all-query__form-item">
             <RangePicker
               value={configTime}
               onChange={configTime => this.setState({ configTime })}
