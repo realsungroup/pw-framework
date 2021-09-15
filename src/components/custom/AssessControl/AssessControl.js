@@ -4,6 +4,7 @@ import OrganizationManagement from './OrganizationManagement';
 import AssessConfig from '../AssessConfig/AssessConfig';
 import AuthDownloadRecord from '../AuthDownloadRecord';
 import AuthAllQuery from '../AuthAllQuery';
+import DownloadAuthModal from '../DownloadAuthModal';
 
 const { Header, Content, Sider } = Layout;
 
@@ -22,7 +23,8 @@ class AssessControl extends Component {
           return <AssessConfig />;
         }
       },
-      collapsed: false
+      collapsed: false,
+      downloadVisible: false
     };
     this.menus = [
       {
@@ -61,7 +63,7 @@ class AssessControl extends Component {
   }
 
   render() {
-    const { loading, selectedMenu, collapsed } = this.state;
+    const { loading, selectedMenu, collapsed, downloadVisible } = this.state;
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Sider
@@ -108,7 +110,11 @@ class AssessControl extends Component {
               <Breadcrumb.Item>门禁管理</Breadcrumb.Item>
               <Breadcrumb.Item>{selectedMenu.title}</Breadcrumb.Item>
             </Breadcrumb>
-            <Button size="small" icon="download">
+            <Button
+              size="small"
+              icon="download"
+              onClick={() => this.setState({ downloadVisible: true })}
+            >
               下载权限
             </Button>
           </Header>
@@ -117,6 +123,12 @@ class AssessControl extends Component {
             {selectedMenu.render()}
           </Content>
         </Layout>
+        {downloadVisible && (
+          <DownloadAuthModal
+            visible={downloadVisible}
+            onCancel={() => this.setState({ downloadVisible: false })}
+          />
+        )}
       </Layout>
     );
   }

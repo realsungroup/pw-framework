@@ -90,7 +90,7 @@ class AuthAllQuery extends Component {
 
     pagination: {
       current: 1,
-      pageSize: 10,
+      pageSize: 5,
       total: 0
     },
 
@@ -432,6 +432,7 @@ class AuthAllQuery extends Component {
   };
 
   handleTableChange = pagination => {
+    console.log({pagination})
     this.handleSearch(pagination.current);
   };
 
