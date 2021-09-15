@@ -12,7 +12,6 @@ import {
 } from 'antd';
 import './AuthAllQuery.less';
 import {
-  queryDoors,
   getAllRegions,
   queryDownloadRecords,
   queryDownloadDetail,
@@ -21,11 +20,13 @@ import {
   queryDoorsByName,
   queryDevicesByName,
   queryRegionsByName,
-  queryAuthItemList
+  queryAuthItemList,
+  queryPersons,
+  queryDoors
 } from '../../../hikApi';
 import { errorCodeMap } from 'Util20/errorCodeMap';
 import moment from 'moment';
-import { debounce } from 'lodash';
+import { debounce, uniq } from 'lodash';
 
 const baseURLAPI = window.pwConfig[process.env.NODE_ENV].customURLs.hikBaseURL;
 
@@ -91,10 +92,25 @@ class AuthAllQuery extends Component {
       current: 1,
       pageSize: 10,
       total: 0
-    }
+    },
+
+    dataSource: [],
+    allDoors: []
   };
 
   componentDidMount = async () => {
+    let res;
+    try {
+      res = await queryDoors({
+        pageNo: 1,
+        pageSize: 1000
+      });
+    } catch (err) {
+      return message.error(err.message);
+    }
+
+    this.setState({ allDoors: res.data.list });
+
     // this.handleSearch(1);
   };
 
@@ -181,141 +197,68 @@ class AuthAllQuery extends Component {
 
   columns = [
     {
-      title: '任务编号',
-      dataIndex: 'downloadResultId',
-      key: 'downloadResultId'
+      title: '姓名',
+      dataIndex: 'personName',
+      key: 'personName'
+    },
+    {
+      title: '工号',
+      dataIndex: 'jobNo',
+      key: 'jobNo'
+    },
+    {
+      title: '所属组织',
+      dataIndex: 'orgPathName',
+      key: 'orgPathName'
     },
     {
       title: '门禁点',
       dataIndex: 'doorName',
       key: 'doorName'
     },
-    // {
-    //   title: '所在区域',
-    //   dataIndex: 'doorName',
-    //   key: 'doorName'
-    // },
     {
-      title: '下载结果',
-      dataIndex: '下载结果',
-      key: '下载结果',
+      title: '权限有效期',
+      dataIndex: '权限有效期',
+      key: '权限有效期',
       render: (text, record) => {
-        const {
-          downloadResult,
-          downloadPersonCount,
-          successedPersonCount,
-          failedPersonCount
-        } = record;
-        let point, count;
-        if (downloadResult === 0) {
-          point = (
-            <>
-              <div
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: '#3fca8e',
-                  marginRight: 4
-                }}
-              ></div>
-              <div>成功</div>
-            </>
-          );
-          count = (
-            <div>
-              ({downloadPersonCount}/{downloadPersonCount})
-            </div>
-          );
-        } else if (downloadResult === 1) {
-          point = (
-            <>
-              <div
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: '#ff5b00',
-                  marginRight: 4
-                }}
-              ></div>
-              <div>失败</div>
-            </>
-          );
-          count = (
-            <div>
-              ({downloadPersonCount}/{downloadPersonCount})
-            </div>
-          );
-        } else if (downloadResult === 2) {
-          point = (
-            <>
-              <div
-                style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: '#ebebeb',
-                  marginRight: 4
-                }}
-              ></div>
-              <div>部分成功</div>
-            </>
-          );
-          count = (
-            <div>
-              ({successedPersonCount}/{failedPersonCount}/{downloadPersonCount})
-            </div>
-          );
-        }
+        const { startTime, endTime } = record;
+        const newStartTime = startTime
+          ? moment(startTime).format('YYYY/MM/DD')
+          : null;
+        const newEndTIme = endTime
+          ? moment(endTime).format('YYYY/MM/DD')
+          : null;
 
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            {point}
-            {count}
+          <div>
+            {newStartTime} - {newEndTIme}
           </div>
         );
       }
     },
     {
-      title: '下载开始时间',
-      dataIndex: 'startTime',
-      key: 'startTime'
+      title: '门禁点区域',
+      dataIndex: 'doorRegion',
+      key: 'doorRegion'
     },
     {
-      title: '下载结束时间',
-      dataIndex: 'endTime',
-      key: 'endTime'
+      title: '配置时间',
+      dataIndex: 'configTime',
+      key: 'configTime'
     },
     {
-      title: '描述',
-      dataIndex: '描述',
-      key: '描述',
+      title: '人脸',
+      dataIndex: '人脸',
+      key: '人脸',
       render: (text, record) => {
-        const { errorCode } = record;
-        const errorCodeMapObj = errorCodeMap[errorCode];
-        const msg = errorCodeMapObj ? errorCodeMapObj.name : errorCode;
-        return <div>{msg}</div>;
-      }
-    },
-    {
-      title: '操作',
-      dataIndex: '操作',
-      key: '操作',
-      render: (text, record) => {
-        return (
-          <Button
-            size="small"
-            type="primary"
-            onClick={() => {
-              this.setState({ record, viewVisible: true }, () => {
-                this.handleFetchDetail(1);
-              });
-            }}
-          >
-            查看详情
-          </Button>
+        const { faceStatus } = record;
+        const result = faceStatusOptions.find(
+          option => option.value === faceStatus
         );
+        if (result) {
+          return <div>{result.label}</div>;
+        }
+        return '';
       }
     }
   ];
@@ -394,26 +337,57 @@ class AuthAllQuery extends Component {
       this.setState({ loading: false });
       return message.error(err.message);
     }
-    // const { doors } = this.state;
-    // res.data.list.forEach(item => {
-    //   const doorIndexCode = item.resourceInfo.channelIndexCodes[0];
-    //   const result = doors.find(item => item.indexCode === doorIndexCode);
-    //   if (result) {
-    //     item.doorName = result.name;
-    //   } else {
-    //     item.doorName = doorIndexCode;
-    //   }
-    // });
-    // this.setState({
-    //   dataSource: [...res.data.list],
-    //   loading: false,
-    //   pagination: {
-    //     ...this.state.pagination,
-    //     total: res.data.total,
-    //     current: pageNo,
-    //     pageSize
-    //   }
-    // });
+
+    let personIds = [];
+    let doorIndexCodes = [];
+    res.data.list.forEach(item => {
+      personIds.push(item.personId);
+      doorIndexCodes.push(item.channelIndexCode);
+    });
+    personIds = uniq(personIds);
+    doorIndexCodes = uniq(doorIndexCodes);
+    let personRes;
+    try {
+      personRes = await queryPersons({
+        personIds: personIds.join(','),
+        pageNo: 1,
+        pageSize: 1000
+      });
+    } catch (err) {
+      this.setState({ loading: false });
+      return message.error(err.message);
+    }
+    const personList = personRes.data.list;
+    const doorList = this.state.allDoors;
+
+    res.data.list.forEach(item => {
+      const { personId, channelIndexCode } = item;
+      const personResult = personList.find(item => item.personId === personId);
+      if (personResult) {
+        item.personName = personResult.personName;
+        item.jobNo = personResult.jobNo;
+        item.orgPathName = personResult.orgPathName;
+      }
+
+      const doorResult = doorList.find(
+        door => door.indexCode === channelIndexCode
+      );
+      if (doorResult) {
+        item.doorName = doorResult.name;
+        item.doorRegion = doorResult.regionPathName;
+      }
+    });
+
+    this.setState({
+      dataSource: res.data.list,
+      pagination: {
+        ...this.state.pagination,
+        pageNo,
+        pageSize,
+        total: res.data.total
+      },
+      loading: false,
+    });
   };
 
   handleFetchDetail = async (
@@ -560,7 +534,8 @@ class AuthAllQuery extends Component {
 
       faceStatus,
 
-      configTime
+      configTime,
+      dataSource
     } = this.state;
     return (
       <div className="auth-all-query">
@@ -740,7 +715,7 @@ class AuthAllQuery extends Component {
         </div>
 
         <div className="auth-all-query__table">
-          {/* <Table
+          <Table
             size="small"
             bordered
             columns={this.columns}
@@ -749,7 +724,7 @@ class AuthAllQuery extends Component {
             rowKey="downloadResultId"
             pagination={this.state.pagination}
             onChange={this.handleTableChange}
-          ></Table> */}
+          ></Table>
         </div>
       </div>
     );
