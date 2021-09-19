@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Form, Input, message, Spin, Button } from 'antd';
 import './ModifyPersonsByOrgModal.less';
 import http from 'Util20/api';
-import TableData from 'Common/data/TableData';
+import { TableData } from 'pw-components';
 import PersonsSelectByOrg from '../PersonsSelectByOrg';
 import PropTypes from 'prop-types';
 
@@ -63,7 +63,7 @@ class ModifyPersonsByOrgModal extends React.Component {
 
   submitData = async values => {
     this.setState({ loading: true });
-    const { record } = this.props;
+    const { record = {} } = this.props;
     try {
       await http({ baseURL: realsunApiBaseURL }).modifyRecords({
         resid: '682507819904',
@@ -155,6 +155,7 @@ class ModifyPersonsByOrgModal extends React.Component {
           width={1180}
           title="修改人员分组"
           onOk={this.handleSubmit}
+          destroyOnClose
         >
           <Spin spinning={loading}>
             <Form>

@@ -80,7 +80,7 @@ class AddPersonGroupByImportExcel extends React.Component {
   };
 
   getRecords = recordArr => {
-    const fileArr = ['personId', 'name', 'jobNo', 'org'];
+    const fileArr = ['jobNo', 'name'];
     const records = [];
     recordArr.forEach(record => {
       const recordItem = {};
@@ -96,27 +96,20 @@ class AddPersonGroupByImportExcel extends React.Component {
     {
       title: '行号',
       dataIndex: 'rowIndex',
-      key: 'rowIndex'
-    },
-    {
-      title: '编号',
-      dataIndex: 'personId',
-      key: 'personId'
-    },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name'
+      key: 'rowIndex',
+      width: 100
     },
     {
       title: '工号',
       dataIndex: 'jobNo',
-      key: 'jobNo'
+      key: 'jobNo',
+      width: 200
     },
     {
-      title: '所属组织',
-      dataIndex: 'org',
-      key: 'org'
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name',
+      width: 200
     }
   ];
 
@@ -125,7 +118,19 @@ class AddPersonGroupByImportExcel extends React.Component {
     {
       title: '错误信息',
       dataIndex: 'errorMessage',
-      key: 'errorMessage'
+      key: 'errorMessage',
+      render: text => {
+        return <div style={{ color: '#f00' }}>{text}</div>;
+      }
+    }
+  ];
+
+  validColumns = [
+    ...this.columns,
+    {
+      title: '',
+      dataIndex: '',
+      key: 'test'
     }
   ];
 
@@ -213,7 +218,7 @@ class AddPersonGroupByImportExcel extends React.Component {
         {...otherProps}
       >
         <Form>
-          <Form.Item label="门禁分组名称">
+          <Form.Item label="人员分组名称">
             {getFieldDecorator('name', {
               rules: [
                 {
@@ -262,16 +267,18 @@ class AddPersonGroupByImportExcel extends React.Component {
             dataSource={this.state.inValidPersons}
             rowKey={(record, index) => `${record.personId}-${index}`}
             pagination={{ pageSize: 10 }}
+            bordered
           ></Table>
         )}
         {isValidateComplete && (
           <Table
             size="small"
             title={() => <h4 style={{ color: '#34a853' }}>有效的人员</h4>}
-            columns={this.columns}
+            columns={this.validColumns}
             dataSource={this.state.validPersons}
             rowKey={(record, index) => `${record.personId}-${index}`}
             pagination={{ pageSize: 10 }}
+            bordered
           ></Table>
         )}
       </Modal>
