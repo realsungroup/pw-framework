@@ -10066,10 +10066,10 @@ pure-render-deepcompare-decorator@^1.0.3:
   version "1.0.3"
   resolved "https://registry.npm.taobao.org/pure-render-deepcompare-decorator/download/pure-render-deepcompare-decorator-1.0.3.tgz#44698aabc966f0dd9ef81b66a361cd56329dcb17"
 
-pw-components@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.nlark.com/pw-components/download/pw-components-0.2.0.tgz#e0b6cfa1e3a1f416fd37c8afc21de940040f6ab1"
-  integrity sha1-4LbPoeOh9Bb9N8ivwh3pQAQParE=
+pw-components@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.npmjs.org/pw-components/-/pw-components-0.2.2.tgz#1d6ab7f737c531c06c79c90c76ed653a68b3700d"
+  integrity sha512-l02hqx7JYQ6tlkkX3eL8QGnbhxhgBguVkjEjW+jSXr24zGidtS4pFCoiV+FfOR4jAQFAkwYLeK/CkUzuhgmj+Q==
   dependencies:
     "@ant-design/colors" "^4.0.5"
     "@ant-design/icons-react" "^2.0.1"

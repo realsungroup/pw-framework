@@ -49,7 +49,6 @@ class AddPersonsByOrgModal extends React.Component {
   handleSubmit = () => {
     const { validateFields } = this.props.form;
     const { persons } = this.state;
-
     validateFields((err, values) => {
       if (err) {
         return;
@@ -57,7 +56,6 @@ class AddPersonsByOrgModal extends React.Component {
       if (!persons.length) {
         return message.error('请选择人员');
       }
-
       this.submitData(values);
     });
   };
@@ -119,6 +117,13 @@ class AddPersonsByOrgModal extends React.Component {
         width={1180}
         title="添加人员分组"
         onOk={this.handleSubmit}
+        confirmLoading={loading}
+        onCancel={() => {
+          if (loading) {
+            return message.info('正在添加中，请稍后再关闭弹窗...');
+          }
+          otherProps.onCancel && otherProps.onCancel();
+        }}
       >
         <Spin spinning={loading}>
           <Form>

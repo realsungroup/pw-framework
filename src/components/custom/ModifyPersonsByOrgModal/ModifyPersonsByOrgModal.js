@@ -27,11 +27,50 @@ class ModifyPersonsByOrgModal extends React.Component {
     loading: false,
     personsSelectVisible: false,
     personsSelectLoading: false,
-    tableDataKey: 0
+    tableDataKey: 0,
+    isReuqestExcludePersons: false,
+    selectedPersons: [],
+    addLoading: false
   };
 
   componentDidMount = () => {
     this.getOrgIndexCodes();
+  };
+
+  openAddModal = () => {
+    this.setState({
+      personsSelectVisible: true
+    });
+  };
+
+  getAllSelectedPersons = async () => {
+    const { record = {} } = this.props;
+    this.setState({ addLoading: true });
+    let res;
+    try {
+      res = await http({ baseURL: realsunApiBaseURL }).getSubTable({
+        resid: 682507819904,
+        subresid: 682507890263,
+        hostrecid: record.REC_ID
+      });
+    } catch (err) {
+      this.setState({ addLoading: false });
+      return message.error(err.message);
+    }
+    this.setState({
+      selectedPersons: res.data.map(record => {
+        return {
+          ...record,
+          personName: record.name,
+          jobNo: record.jobNo,
+          orgPathName: record.org,
+          personId: record.personId
+        };
+      }),
+      isReuqestExcludePersons: true,
+      addLoading: false
+    });
+    this.openAddModal();
   };
 
   getOrgIndexCodes = async () => {
@@ -93,7 +132,10 @@ class ModifyPersonsByOrgModal extends React.Component {
     return (
       <Button
         size={size}
-        onClick={() => this.setState({ personsSelectVisible: true })}
+        onClick={() => {
+          this.getAllSelectedPersons();
+        }}
+        loading={this.state.addLoading}
       >
         添加
       </Button>
@@ -102,6 +144,9 @@ class ModifyPersonsByOrgModal extends React.Component {
 
   handleAddPersons = async () => {
     const { persons } = this.state;
+    if (!persons.length) {
+      return message.info('没有选择人员');
+    }
 
     this.setState({ personsSelectLoading: true });
     const { record } = this.props;
@@ -131,7 +176,8 @@ class ModifyPersonsByOrgModal extends React.Component {
     this.setState({
       personsSelectLoading: false,
       personsSelectVisible: false,
-      tableDataKey: this.state.tableDataKey + 1
+      tableDataKey: this.state.tableDataKey + 1,
+      selectedPersons: []
     });
     message.success('添加成功');
   };
@@ -146,16 +192,17 @@ class ModifyPersonsByOrgModal extends React.Component {
       loading,
       personsSelectVisible,
       personsSelectLoading,
-      tableDataKey
+      tableDataKey,
+      selectedPersons
     } = this.state;
     return (
       <>
         <Modal
-          {...otherProps}
           width={1180}
           title="修改人员分组"
           onOk={this.handleSubmit}
           destroyOnClose
+          {...otherProps}
         >
           <Spin spinning={loading}>
             <Form>
@@ -180,7 +227,7 @@ class ModifyPersonsByOrgModal extends React.Component {
             <TableData
               subtractH={190}
               key={tableDataKey}
-              height={360}
+              height={420}
               baseURL={realsunApiBaseURL}
               resid={682507819904}
               subresid={682507890263}
@@ -205,20 +252,23 @@ class ModifyPersonsByOrgModal extends React.Component {
           title="添加人员"
           width={1180}
           visible={personsSelectVisible}
-          onCancel={() =>
-            this.setState({ personsSelectVisible: false, persons: [] })
-          }
-          onOk={this.handleAddPersons}
+          cancelButtonProps={{ disabled: personsSelectLoading }}
+          onCancel={() => {
+            if (!personsSelectLoading) {
+              this.setState({ personsSelectVisible: false, persons: [] });
+            } else {
+              message.info('添加人员中，请稍后关闭弹窗...');
+            }
+          }}
           confirmLoading={personsSelectLoading}
           destroyOnClose
+          onOk={this.handleAddPersons}
         >
           {!!orgIndexCodes.length && (
             <PersonsSelectByOrg
               orgIndexCodes={orgIndexCodes}
               onSelectedPersonsChange={this.handleSelectedPersonsChange}
-              excludePersons={
-                this.tableDataRef ? this.tableDataRef.getDataSource() : []
-              }
+              selectedPersons={selectedPersons}
             ></PersonsSelectByOrg>
           )}
         </Modal>

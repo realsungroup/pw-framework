@@ -154,9 +154,9 @@ class AddPersonGroupByImportExcel extends React.Component {
                 resid: '682507890263',
                 maindata: {
                   personId: person.personId,
-                  name: person.name,
                   jobNo: person.jobNo,
-                  org: person.org,
+                  name: person.name,
+                  org: person.orgPathName,
                   _state: 'editoradd',
                   _id: index + 1
                 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { message, Checkbox, Table, Spin, Input, Select } from 'antd';
 import './SelectPersons.less';
-import { queryDoors, queryPersons } from '../../../../hikApi';
+import { queryDoors, queryPersons, queryAllPersons } from '../../../../hikApi';
 
 const { Search } = Input;
 const { Option } = Select;
@@ -24,7 +24,7 @@ class SelectPersons extends React.Component {
     optionType: 0, // 下拉选项类型：0 表示姓名 | 1 表示工号
     searchValue: '',
     pagination: { current: 1, pageSize: 10, total: 0 },
-    maxTotal: 0
+    total: 0
   };
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -39,13 +39,11 @@ class SelectPersons extends React.Component {
       return;
     }
     this.setState({ loading: true });
-    const { isSubOrg, pagination, optionType, searchValue } = this.state;
+    const { isSubOrg, optionType, searchValue } = this.state;
     let res;
     const data = {
       orgIndexCodes: selectedOrgIndexCode,
-      isSubOrg,
-      pageNo: pagination.current,
-      pageSize: pagination.pageSize
+      isSubOrg
     };
     if (optionType === 0 && searchValue) {
       data.personName = searchValue;
@@ -61,18 +59,14 @@ class SelectPersons extends React.Component {
     }
 
     try {
-      res = await queryPersons(data);
+      res = await queryAllPersons(data);
     } catch (err) {
       this.setState({ loading: false });
       return message.error(err.message);
     }
     this.setState({
       loading: false,
-      pagination: {
-        ...this.state.pagination,
-        total: Math.ceil(res.data.total / this.state.pagination.pageSize)
-      },
-      maxTotal: Math.max(this.state.maxTotal, res.data.total)
+      total: res.data.total
     });
 
     const { onFetchNewPersons } = this.props;
@@ -101,32 +95,24 @@ class SelectPersons extends React.Component {
     this.setState({ isSubOrg: e.target.checked }, this.getPersons);
   };
 
-  handleTableChange = pagination => {
-    this.setState({ pagination: { ...pagination } }, () => {
-      this.props.selectedOrgIndexCode && this.getPersons();
-    });
-  };
-
   handleSearch = () => {
     this.props.selectedOrgIndexCode && this.getPersons();
   };
 
   render() {
+    const { isSubOrg, loading, optionType, total, searchValue } = this.state;
     const {
-      isSubOrg,
-      loading,
-      optionType,
-      pagination,
-      maxTotal,
-      searchValue
-    } = this.state;
-    const { persons, selectedRowKeys, onPersonSelect } = this.props;
+      persons,
+      selectedRowKeys,
+      onPersonSelect,
+      selectedPersons
+    } = this.props;
     return (
       <div className="select-persons">
         <Spin spinning={loading}>
           <div className="select-persons__header">
             <div>
-              待选择人员({selectedRowKeys.length}/{maxTotal})
+              待选择人员({selectedRowKeys.length}/{persons.length})
             </div>
             <div>
               <Checkbox
@@ -165,9 +151,10 @@ class SelectPersons extends React.Component {
               onChange: onPersonSelect
             }}
             dataSource={persons}
-            pagination={pagination}
+            pagination={false}
             rowKey="personId"
             onChange={this.handleTableChange}
+            scroll={{ y: 300 }}
           ></Table>
         </Spin>
       </div>

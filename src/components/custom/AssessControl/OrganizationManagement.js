@@ -486,7 +486,7 @@ class OrganizationManagement extends React.Component {
                       <TableData
                         resid={682695529883}
                         baseURL={realsunApiBaseURL}
-                        cmswhere={`groupId = ${selectedRowData.groupId}`}
+                        cmswhere={`groupId = '${selectedRowData.groupId}'`}
                         height={420}
                         subtractH={170}
                         hasAdd={false}

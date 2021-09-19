@@ -24,9 +24,18 @@ class PersonsSelectByOrg extends React.Component {
      */
     onSelectedPersonsChange: PropTypes.func,
     /**
-     * 需要排除的人员
+     * 已选择的人员
      */
-    excludePersons: PropTypes.array
+    selectedPersons: PropTypes.array,
+    /**
+     * 是否在右侧显示已选择的人员
+     */
+    isShowSelectedPersons: PropTypes.bool
+  };
+
+  static defaultProps = {
+    isShowSelectedPersons: false,
+    selectedPersons: []
   };
 
   state = {
@@ -39,7 +48,9 @@ class PersonsSelectByOrg extends React.Component {
     selectedRows: [],
 
     // 右侧：列表状态
-    rightAllPersons: [],
+    rightAllPersons: [
+      ...(this.props.isShowSelectedPersons ? this.props.selectedPersons : [])
+    ],
     rightSelectedRowKeys: []
   };
 
@@ -77,16 +88,21 @@ class PersonsSelectByOrg extends React.Component {
       rightSelectedRowKeys: [],
       persons: [...persons, ...removedRightPersons]
     });
+
+    const { onSelectedPersonsChange } = this.props;
+    onSelectedPersonsChange && onSelectedPersonsChange(newRightAllPersons);
   };
 
   handleFetchNewPersons = persons => {
+    const { selectedPersons } = this.props;
     const { rightAllPersons } = this.state;
-    const { excludePersons = [] } = this.props;
-    const needExcludePersons = [...excludePersons, ...rightAllPersons];
+    const needExcludePersons = [...rightAllPersons, ...selectedPersons];
 
     const newPersons = [...persons];
-    remove(newPersons, door => {
-      return !!needExcludePersons.find(item => item.personId === door.personId);
+    remove(newPersons, person => {
+      return !!needExcludePersons.find(
+        item => item.personId === person.personId
+      );
     });
 
     this.setState({ persons: newPersons });
@@ -129,6 +145,10 @@ class PersonsSelectByOrg extends React.Component {
               }
               this.setState({ selectedRowKeys, selectedRows: newSelectedRows });
             }}
+            selectedPersons={[
+              ...rightAllPersons,
+              ...this.props.selectedPersons
+            ]}
           ></SelectPersons>
 
           <div className="persons-select-by-org__buttons">

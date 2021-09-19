@@ -168,6 +168,15 @@ export const queryPersons = data => {
 };
 
 /**
+ * 查询所有人员列表
+ */
+export const queryAllPersons = data => {
+  return hikInstance.post('/api/v1/queryAllPersons', {
+    ...data
+  });
+};
+
+/**
  * 校验人员信息
  */
 export const validPersons = data => {

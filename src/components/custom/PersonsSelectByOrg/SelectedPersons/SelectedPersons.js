@@ -52,7 +52,7 @@ class SelectedPersons extends React.Component {
   };
 
   render() {
-    const { persons, selectedRowKeys, onPersonSelect } = this.props;
+    const { persons = [], selectedRowKeys, onPersonSelect } = this.props;
     const { optionType, searchValue } = this.state;
     const filteredPersons = this.filterPersons(persons);
 
@@ -90,7 +90,8 @@ class SelectedPersons extends React.Component {
             onChange: onPersonSelect
           }}
           dataSource={filteredPersons}
-          pagination={{ pageSize: 10 }}
+          pagination={false}
+          scroll={{ y: 300 }}
           rowKey="personId"
         ></Table>
       </div>
