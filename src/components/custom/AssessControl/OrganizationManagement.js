@@ -115,17 +115,15 @@ class OrganizationManagement extends React.Component {
             <div>
               <TableData
                 key={this.state.doorsTableKey}
-                resid={682507600534}
+                resid={683210011323}
                 baseURL={realsunApiBaseURL}
                 height={'calc(100vh - 138px)'}
                 subtractH={190}
                 hasAdd={false}
                 hasModify={false}
-                hasDelete={false}
                 hasRowEdit={false}
                 hasRowModify={false}
                 hasRowView={false}
-                hasRowDelete={false}
                 hasRowSelection={true}
                 actionBarExtra={this.actionBarExtra}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -143,20 +141,9 @@ class OrganizationManagement extends React.Component {
                         type="primary"
                         key="4"
                         onClick={() => this.setState({ addDoorVisible: true })}
+                        size="small"
                       >
                         添加
-                      </Button>
-                      <Button
-                        type="danger"
-                        key="6"
-                        onClick={() => {
-                          this.setState({
-                            isDeletePersonModalOpen: true,
-                            needRemoveData: dataSource.dataSource
-                          });
-                        }}
-                      >
-                        删除
                       </Button>
                     </div>
                   );
@@ -175,21 +162,6 @@ class OrganizationManagement extends React.Component {
                         }
                       >
                         编辑
-                      </Button>
-                    );
-                  },
-                  (record, btnSize) => {
-                    return (
-                      <Button
-                        key="2"
-                        onClick={() => {
-                          this.setState({
-                            isDeletePersonModalOpen: true,
-                            needRemoveData: [record]
-                          });
-                        }}
-                      >
-                        删除
                       </Button>
                     );
                   },
