@@ -92,7 +92,7 @@ class ModifyDoorsModal extends React.Component {
   };
 
   getSelectedDoors = async () => {
-    this.setState({ addLoading: true });
+    this.setState({ addLoading: true, doors: [] });
     const { record } = this.props;
     let res;
     try {
@@ -126,6 +126,9 @@ class ModifyDoorsModal extends React.Component {
 
   handleAddDoors = async () => {
     const { doors } = this.state;
+    if (!doors.length) {
+      return message.error('请选择门禁点');
+    }
 
     this.setState({ doorsSelectLoading: true });
     const { record } = this.props;
@@ -156,7 +159,8 @@ class ModifyDoorsModal extends React.Component {
     this.setState({
       doorsSelectLoading: false,
       doorsSelectVisible: false,
-      tableDataKey: this.state.tableDataKey + 1
+      tableDataKey: this.state.tableDataKey + 1,
+      doors: []
     });
     message.success('添加成功');
   };
@@ -183,6 +187,10 @@ class ModifyDoorsModal extends React.Component {
           width={1180}
           title="修改门禁分组"
           onOk={this.handleSubmit}
+          onCancel={() => {
+            this.setState({ doors: [] });
+            otherProps.onCancel && otherProps.onCancel();
+          }}
         >
           <Spin spinning={loading}>
             <Form>
@@ -234,6 +242,7 @@ class ModifyDoorsModal extends React.Component {
           }
           onOk={this.handleAddDoors}
           confirmLoading={doorsSelectLoading}
+          destroyOnClose
         >
           {!!regionIndexCodes.length && (
             <DoorsSelect

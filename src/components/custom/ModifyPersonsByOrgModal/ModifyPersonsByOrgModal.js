@@ -177,7 +177,8 @@ class ModifyPersonsByOrgModal extends React.Component {
       personsSelectLoading: false,
       personsSelectVisible: false,
       tableDataKey: this.state.tableDataKey + 1,
-      selectedPersons: []
+      selectedPersons: [],
+      persons: []
     });
     message.success('添加成功');
   };
@@ -259,6 +260,7 @@ class ModifyPersonsByOrgModal extends React.Component {
             } else {
               message.info('添加人员中，请稍后关闭弹窗...');
             }
+            this.setState({ persons: [] });
           }}
           confirmLoading={personsSelectLoading}
           destroyOnClose

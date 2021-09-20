@@ -30,22 +30,22 @@ class DoorsSelect extends React.Component {
     selectedDoors: PropTypes.array
   };
 
-  constructor(props) {
-    super(props);
+  static defaultProps = {
+    selectedDoors: []
+  };
 
-    this.state = {
-      // 左侧：区域状态
-      selectedRegionIndexCode: '',
+  state = {
+    // 左侧：区域状态
+    selectedRegionIndexCode: '',
 
-      // 中间：选择门禁点的状态
-      doors: [],
-      selectedRowKeys: [],
+    // 中间：选择门禁点的状态
+    doors: [],
+    selectedRowKeys: [],
 
-      // 右侧：列表状态
-      rightAllDoors: [],
-      rightSelectedRowKeys: []
-    };
-  }
+    // 右侧：列表状态
+    rightAllDoors: [],
+    rightSelectedRowKeys: []
+  };
 
   handleRegionSelect = regionIndexCode => {
     this.setState({ selectedRegionIndexCode: regionIndexCode });
