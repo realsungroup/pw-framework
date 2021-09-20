@@ -25,15 +25,13 @@ class DoorsSelect extends React.Component {
     onSelectedDoorsChange: PropTypes.func,
 
     /**
-     * 默认已经选中的 doors
+     * 已经选择的 doors
      */
-    defaultSelectedDoors: PropTypes.array
+    selectedDoors: PropTypes.array
   };
 
   constructor(props) {
     super(props);
-
-    const { defaultSelectedDoors = [] } = props;
 
     this.state = {
       // 左侧：区域状态
@@ -44,7 +42,7 @@ class DoorsSelect extends React.Component {
       selectedRowKeys: [],
 
       // 右侧：列表状态
-      rightAllDoors: defaultSelectedDoors,
+      rightAllDoors: [],
       rightSelectedRowKeys: []
     };
   }
@@ -94,13 +92,15 @@ class DoorsSelect extends React.Component {
   };
 
   handleFetchNewDoors = doors => {
+    const { selectedDoors } = this.props;
     const { rightAllDoors } = this.state;
 
     const newDoors = [...doors];
     remove(newDoors, door => {
-      return !!rightAllDoors.find(item => item.indexCode === door.indexCode);
+      return !![...rightAllDoors, ...selectedDoors].find(
+        item => item.indexCode === door.indexCode
+      );
     });
-
     this.setState({ doors: newDoors });
   };
 

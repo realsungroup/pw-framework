@@ -25,7 +25,6 @@ class OrganizationManagement extends React.Component {
     this.state = {
       isViewPersonModalOpen: false, //控制查看人员信息模态窗
       isDeleteOrgModalOpen: false, //控制删除门禁分组信息模态窗
-      isDeletePersonModalOpen: false, //控制删除人员分组信息模态窗
       isViewEntranceModalOpen: false, //控制查看门禁点信息模态窗
       needRemoveData: {}, //待删除数据
       selectedRowData: {}, //选中行的数据
@@ -65,8 +64,7 @@ class OrganizationManagement extends React.Component {
         count++;
         if (count === needRemoveData.length) {
           this.setState({
-            isDeleteOrgModalOpen: false,
-            isDeletePersonModalOpen: false
+            isDeleteOrgModalOpen: false
           });
           this.tableDataRef.handleRefresh();
           message.success('删除成功');
@@ -85,7 +83,6 @@ class OrganizationManagement extends React.Component {
     this.setState({
       isViewPersonModalOpen: false,
       isDeleteOrgModalOpen: false,
-      isDeletePersonModalOpen: false,
       isViewEntranceModalOpen: false,
       isImportExcelModalOpen: false
     });
@@ -98,7 +95,6 @@ class OrganizationManagement extends React.Component {
       needRemoveData,
       selectedRowData,
       isViewEntranceModalOpen,
-      isDeletePersonModalOpen,
       isImportExcelModalOpen
     } = this.state;
     return (
@@ -182,24 +178,6 @@ class OrganizationManagement extends React.Component {
                   }
                 ]}
               />
-              {/* 删除门禁分组模态框 */}
-              <Modal
-                visible={isDeletePersonModalOpen}
-                onCancel={this.closeAllModal}
-                onOk={() => {
-                  this.removeOrg('person');
-                }}
-                okButtonProps={{ type: 'danger' }}
-              >
-                <div>
-                  <span>
-                    {needRemoveData[0] &&
-                      (needRemoveData.length > 1
-                        ? `此操作可能会影响已配置的权限，确认删除所选的${needRemoveData.length}个门禁分组？`
-                        : `此操作可能会影响已配置的权限，确认删除门禁分组${needRemoveData[0].name}`)}
-                  </span>
-                </div>
-              </Modal>
 
               {this.state.addDoorVisible && (
                 <AddDoorsModal

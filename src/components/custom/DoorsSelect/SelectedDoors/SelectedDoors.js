@@ -36,6 +36,7 @@ class SelectedDoors extends React.Component {
           dataSource={doors}
           pagination={false}
           rowKey="indexCode"
+          scroll={{ y: 320 }}
         ></Table>
       </div>
     );

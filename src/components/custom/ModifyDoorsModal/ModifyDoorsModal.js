@@ -27,7 +27,9 @@ class ModifyDoorsModal extends React.Component {
     loading: false,
     doorsSelectVisible: false,
     doorsSelectLoading: false,
-    tableDataKey: 0
+    tableDataKey: 0,
+    addLoading: false,
+    selectedDoors: []
   };
 
   componentDidMount = () => {
@@ -89,11 +91,33 @@ class ModifyDoorsModal extends React.Component {
     this.setState({ doors });
   };
 
+  getSelectedDoors = async () => {
+    this.setState({ addLoading: true });
+    const { record } = this.props;
+    let res;
+    try {
+      res = await http({ baseURL: realsunApiBaseURL }).getSubTable({
+        resid: 683210011323,
+        subresid: 682507735244,
+        hostrecid: record.REC_ID
+      });
+    } catch (err) {
+      this.setState({ addLoading: false });
+      return;
+    }
+    this.setState({
+      doorsSelectVisible: true,
+      selectedDoors: res.data,
+      addLoading: false
+    });
+  };
+
   actionBarExtra = ({ size }) => {
     return (
       <Button
         size={size}
-        onClick={() => this.setState({ doorsSelectVisible: true })}
+        loading={this.state.addLoading}
+        onClick={this.getSelectedDoors}
       >
         添加
       </Button>
@@ -202,6 +226,7 @@ class ModifyDoorsModal extends React.Component {
           </Spin>
         </Modal>
         <Modal
+          title="添加门禁点"
           width={1180}
           visible={doorsSelectVisible}
           onCancel={() =>
@@ -214,6 +239,7 @@ class ModifyDoorsModal extends React.Component {
             <DoorsSelect
               regionIndexCodes={regionIndexCodes}
               onSelectedDoorsChange={this.handleSelectedDoorsChange}
+              selectedDoors={this.state.selectedDoors}
             ></DoorsSelect>
           )}
         </Modal>
