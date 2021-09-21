@@ -9141,6 +9141,11 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/performance-now/download/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
 
+performant-array-to-tree@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.npmjs.org/performant-array-to-tree/-/performant-array-to-tree-1.9.1.tgz#24897a56dedaa00c1f9c1a7e7ba92103008d1059"
+  integrity sha512-t+Hiy1HbKTVXg+mdcDUwPwAGgrLMtNUOhs2vV0M9MG2aAfnXQT9czAadksufMnf75h4xYU014HqlQ91JZ4XdlA==
+
 picomatch@^2.2.3:
   version "2.3.0"
   resolved "https://registry.nlark.com/picomatch/download/picomatch-2.3.0.tgz#f1f061de8f6a4bf022892e2d128234fb98302972"

@@ -24,6 +24,16 @@ const { TabPane } = Tabs;
 const realsunApiBaseURL =
   window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
 
+const getDefaultBaseURL = () => {
+  const env = process.env.NODE_ENV;
+  let baseURL;
+  if (env === 'development') {
+    baseURL = 'http://kingofdinner.realsun.me:17001/';
+  } else {
+    baseURL = 'http://192.168.6.161:9091/';
+  }
+  return baseURL;
+};
 class CollectTaskDefine extends React.Component {
   state = {
     mode: 'add', // 'add' 添加 | 'modify' 修改 | 'view' 查看
@@ -66,7 +76,6 @@ class CollectTaskDefine extends React.Component {
   };
 
   handleSelectedDoorsChange = selectedDoors => {
-    console.log({ selectedDoors });
     this.setState({ selectedDoors });
   };
 
@@ -294,7 +303,8 @@ class CollectTaskDefine extends React.Component {
                 <div>{record.baseUrl}</div>
               ) : (
                 getFieldDecorator('baseUrl', {
-                  initialValue: mode === 'add' ? undefined : record.baseUrl,
+                  initialValue:
+                    mode === 'add' ? getDefaultBaseURL() : record.baseUrl,
                   rules: [
                     {
                       required: true,
@@ -393,6 +403,7 @@ class CollectTaskDefine extends React.Component {
                     regionIndexCodes={[indexCode]}
                     onSelectedDoorsChange={this.handleSelectedDoorsChange}
                     defaultSelectedDoors={mode === 'add' ? [] : selectedDoors}
+                    max={1}
                   ></DoorsSelect>
                 )
               );

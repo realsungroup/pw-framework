@@ -1,11 +1,11 @@
 import React from 'react';
-import './DoorsSelect.less';
 import RegionSelect from './RegionSelect';
 import SelectDoors from './SelectDoors';
 import SelectedDoors from './SelectedDoors';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { remove } from 'lodash';
 import PropTypes from 'prop-types';
+import './DoorsSelect.less';
 
 /**
  * 门禁点选择组件
@@ -27,7 +27,12 @@ class DoorsSelect extends React.Component {
     /**
      * 已经选择的 doors
      */
-    selectedDoors: PropTypes.array
+    selectedDoors: PropTypes.array,
+
+    /**
+     * 选择的最多数量
+     */
+    max: PropTypes.number
   };
 
   static defaultProps = {
@@ -53,6 +58,7 @@ class DoorsSelect extends React.Component {
 
   handleToRight = () => {
     const { selectedRowKeys, doors, rightAllDoors } = this.state;
+    const { max } = this.props;
 
     const newDoors = [...doors];
     const removedDoors = remove(newDoors, door => {
@@ -60,6 +66,10 @@ class DoorsSelect extends React.Component {
     });
 
     const newRightAllDoors = [...rightAllDoors, ...removedDoors];
+
+    if (max && newRightAllDoors.length > max) {
+      return message.error(`最多选择 ${max} 个门禁点`);
+    }
 
     this.setState({
       rightAllDoors: newRightAllDoors,
