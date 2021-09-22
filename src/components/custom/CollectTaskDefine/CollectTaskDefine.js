@@ -17,6 +17,7 @@ import DoorsSelect from '../DoorsSelect';
 import { getRootRegion, queryDoors } from '../../../hikApi';
 import http from 'Util20/api';
 import ManualCollectData from './ManualCollectData';
+import TargetTableSelect from './TargetTableSelect';
 import './CollectTaskDefine.less';
 
 const { TabPane } = Tabs;
@@ -283,7 +284,7 @@ class CollectTaskDefine extends React.Component {
               )}
             </Form.Item>
 
-            <Form.Item label="刷卡目标表">
+            <Form.Item label="刷卡目标表" style={{ width: 400 }}>
               {mode === 'view' ? (
                 <div>{record.tableresid}</div>
               ) : (
@@ -292,10 +293,10 @@ class CollectTaskDefine extends React.Component {
                   rules: [
                     {
                       required: true,
-                      message: `请输入刷卡目标表`
+                      message: `请选择刷卡目标表`
                     }
                   ]
-                })(<Input style={{ width: 400 }} />)
+                })(<TargetTableSelect />)
               )}
             </Form.Item>
             <Form.Item label="目标表api地址">
@@ -402,8 +403,9 @@ class CollectTaskDefine extends React.Component {
                   <DoorsSelect
                     regionIndexCodes={[indexCode]}
                     onSelectedDoorsChange={this.handleSelectedDoorsChange}
-                    defaultSelectedDoors={mode === 'add' ? [] : selectedDoors}
-                    max={1}
+                    selectedDoors={mode === 'add' ? [] : selectedDoors}
+                    max={10}
+                    isShowSelectedDoors
                   ></DoorsSelect>
                 )
               );

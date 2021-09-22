@@ -30,13 +30,19 @@ class DoorsSelect extends React.Component {
     selectedDoors: PropTypes.array,
 
     /**
+     * 是否在右侧显示已选择的 doors
+     */
+    isShowSelectedDoors: PropTypes.bool,
+
+    /**
      * 选择的最多数量
      */
     max: PropTypes.number
   };
 
   static defaultProps = {
-    selectedDoors: []
+    selectedDoors: [],
+    isShowSelectedDoors: false
   };
 
   state = {
@@ -48,7 +54,9 @@ class DoorsSelect extends React.Component {
     selectedRowKeys: [],
 
     // 右侧：列表状态
-    rightAllDoors: [],
+    rightAllDoors: [
+      ...(this.props.isShowSelectedDoors ? this.props.selectedDoors : [])
+    ],
     rightSelectedRowKeys: []
   };
 

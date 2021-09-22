@@ -1,13 +1,12 @@
 import React from 'react';
-import { Select, message, Dropdown, TreeSelect } from 'antd';
+import { message, TreeSelect } from 'antd';
 import http from 'Util20/api';
 import { arrayToTree } from 'performant-array-to-tree';
 
-const { TreeNode } = TreeSelect;
-
 class TargetTableSelect extends React.Component {
   state = {
-    tree: []
+    tree: [],
+    list: []
   };
 
   componentDidMount = async () => {
@@ -21,24 +20,15 @@ class TargetTableSelect extends React.Component {
       this.setState({ loading: false });
       return message.error(err.message);
     }
-    const tree = arrayToTree(
-      [
-        ...res.data,
-        {
-          RES_ID: 685113093507,
-          RES_PID: -1,
-          RES_NAME: '刷卡目标表'
-        }
-      ],
-      {
-        id: 'RES_ID',
-        parentId: 'RES_PID',
-        dataField: null,
-        rootParentIds: {
-          '-1': true
-        }
+    const list = [...res.data];
+    const tree = arrayToTree(res.data, {
+      id: 'RES_ID',
+      parentId: 'RES_PID',
+      dataField: null,
+      rootParentIds: {
+        '685113093507': true
       }
-    );
+    });
 
     const addProp = nodes => {
       nodes.forEach(node => {
@@ -53,27 +43,37 @@ class TargetTableSelect extends React.Component {
     addProp(tree);
     this.setState({
       loading: false,
-      tree
+      tree,
+      value: this.props.value,
+      list
     });
   };
 
   onChange = value => {
-    console.log({ value });
+    const { list } = this.state;
+    const result = list.find(item => item.RES_ID === value);
+    if (['沪东', '长兴'].includes(result.RES_NAME)) {
+      return message.error('不能选择沪东或长兴');
+    }
+
+    const { onChange } = this.props;
+    onChange && onChange(value);
+    this.setState({ value });
   };
 
   render() {
-    const { tree } = this.state;
+    const { tree, value, style } = this.state;
     return (
       <TreeSelect
-        showSearch
-        style={{ width: '100%' }}
-        value={this.state.value}
+        value={value}
         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
         placeholder="请选择目标表"
         allowClear
         treeDefaultExpandAll
         onChange={this.onChange}
         treeData={tree}
+        style={style}
+        showSearch={false}
       ></TreeSelect>
     );
   }
