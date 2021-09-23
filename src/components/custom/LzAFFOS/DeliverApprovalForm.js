@@ -31,18 +31,18 @@ class DeliverApprovalForm extends React.Component {
 
   disabledTime = current => {
     const workDate1 = this.props.form.getFieldValue('C3_605703980025');
-    const workDate3 = moment(workDate1).add(15, 'd');
+    const workDate3 = moment(workDate1).add(13, 'd');
     return current && current > workDate3;
   };
 
-  //检查时间间隔是否超过15天
+  //检查时间间隔是否超过14天
   checkTime = () => {
     if (!this.props.toDeliverApprovalFormData.isLongDeliver) {
       const workDate1 = this.props.form.getFieldValue('C3_605703980025');
       const workDate2 = this.props.form.getFieldValue('C3_605703992046');
-      const workDate3 = moment(workDate1).add(15, 'd');
+      const workDate3 = moment(workDate1).add(13, 'd');
       if (moment(workDate3).isBefore(workDate2, 'day')) {
-        message.info('送货时间不得超过15天');
+        message.info('送货时间不得超过14天');
       }
     }
   };
