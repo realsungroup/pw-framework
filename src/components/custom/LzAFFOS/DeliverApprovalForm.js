@@ -426,38 +426,53 @@ class DeliverApprovalForm extends React.Component {
                 </tr>
                 <tr>
                   <th className="thCss">
+                    <label>车牌号</label>
+                  </th>
+                  <th className="thCss">
                     <label>访客姓名</label>
                   </th>
                   <th className="thCss">
                     <label>登记证件类型</label>
                   </th>
-                  <th colSpan="4" className="thCss">
+                  <th colspan={2} className="thCss">
                     <label>登记证件号码</label>
                   </th>
-                  <th colSpan="2" className="thCss">
-                    <label>访客手机号码</label>
+                  <th className="thCss">
+                    <label>访客电话</label>
                   </th>
                   {/* <th colSpan="3" className="thCss">
                     <label>照片链接</label>
                   </th> */}
+                  <th className="thCss">
+                    <label>货运代理公司名称</label>
+                  </th>
+                  <th className="thCss">
+                    <label>访客事由</label>
+                  </th>
                 </tr>
                 {deliverList.map((item, index) => {
                   return (
                     <tr>
+                      <th className="thCss">
+                        <label>{item.C3_645723303105}</label>
+                      </th>
                       <th className="thCss">
                         <label>{item.C3_605716828937}</label>
                       </th>
                       <th className="thCss">
                         <label>{item.C3_605716867680}</label>
                       </th>
-                      <th colSpan="2" className="thCss">
+                      <th colspan={2} className="thCss">
                         <label>{item.C3_614704116070}</label>
                       </th>
-                      <th colSpan="2" className="thCss">
+                      <th className="thCss">
                         <label>{item.C3_606412134505}</label>
                       </th>
-                      <th colSpan="3" className="thCss">
-                        <label>{item.photo}</label>
+                      <th className="thCss">
+                        <label>{item.comName}</label>
+                      </th>
+                      <th className="thCss">
+                        <label>{item.C3_605979568870}</label>
                       </th>
                     </tr>
                   );

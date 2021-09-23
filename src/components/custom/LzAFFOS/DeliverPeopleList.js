@@ -114,6 +114,12 @@ class DeliverPeopleList extends React.Component {
     let _this = this;
     this.columns = [
       {
+        title: '车牌号',
+        dataIndex: 'C3_645723303105',
+        editable: true,
+        width: '10%'
+      },
+      {
         title: '访客姓名',
         dataIndex: 'C3_605716828937',
         editable: true,
@@ -149,13 +155,25 @@ class DeliverPeopleList extends React.Component {
         title: '登记证件号码',
         dataIndex: 'C3_614704116070',
         editable: true,
-        width: '20%'
+        width: '30%'
       },
       {
-        title: '访客手机号码',
+        title: '访客电话',
         dataIndex: 'C3_606412134505',
         editable: true,
-        width: '20%'
+        width: '10%'
+      },
+      {
+        title: '货运代理公司名称',
+        dataIndex: 'comName',
+        editable: true,
+        width: '10%'
+      },
+      {
+        title: '访问事由',
+        dataIndex: 'C3_605979568870',
+        editable: true,
+        width: '10%'
       },
       // {
       //   title: '照片链接',
