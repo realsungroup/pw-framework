@@ -25,7 +25,7 @@ const { TabPane } = Tabs;
 const realsunApiBaseURL =
   window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
 
-const getDefaultBaseURL = () => {
+export const getDefaultBaseURL = () => {
   const env = process.env.NODE_ENV;
   let baseURL;
   if (env === 'development') {
@@ -179,7 +179,7 @@ class CollectTaskDefine extends React.Component {
 
     return (
       <div style={{ width: '100%', height: '100%' }}>
-        <Tabs defaultActiveKey="任务定义表">
+        <Tabs defaultActiveKey="手动采集数据">
           <TabPane tab="任务定义表" key="任务定义表">
             <div className="collect-task-define">
               <TableData

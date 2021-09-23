@@ -39,3 +39,10 @@ collectInstance.interceptors.response.use(
 export const collectData = data => {
   return collectInstance.post('/api/v1/collectData', { ...data });
 };
+
+/**
+ * 采集刷脸数据
+ */
+export const collectDataProgress = () => {
+  return collectInstance.get('/api/v1/collectDataProgress');
+};

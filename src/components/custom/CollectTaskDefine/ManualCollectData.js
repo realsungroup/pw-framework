@@ -1,8 +1,18 @@
 import React from 'react';
-import { Select, Button, Modal, Form, Input, message, DatePicker } from 'antd';
+import {
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  DatePicker,
+  Progress
+} from 'antd';
 import DoorsSelect from '../DoorsSelect';
-import { collectData } from '../../../collectApi';
+import { collectData, collectDataProgress } from '../../../collectApi';
 import { getRootRegion } from '../../../hikApi';
+import TargetTableSelect from './TargetTableSelect';
+import { getDefaultBaseURL } from './CollectTaskDefine';
 
 const { RangePicker } = DatePicker;
 
@@ -12,11 +22,16 @@ class ManualCollectData extends React.Component {
 
     // form's fields
     tableresid: '',
-    baseUrl: '',
+    baseUrl: getDefaultBaseURL(),
     receiveStartTime: null,
     receiveEndTime: null,
     eventTypes: '196893',
-    selectedDoors: []
+    selectedDoors: [],
+    progressVisible: false,
+    percent: 0,
+    total: 0,
+    current: 0,
+    isRun: false
   };
 
   columns = [
@@ -33,8 +48,10 @@ class ManualCollectData extends React.Component {
   ];
 
   componentDidMount = async () => {
+    this.getIsRun();
+
     this.setState({ loading: true });
-    let res, queryDoorsRes;
+    let res;
     try {
       res = await getRootRegion();
     } catch (err) {
@@ -45,6 +62,17 @@ class ManualCollectData extends React.Component {
       indexCode: res.data.indexCode,
       loading: false
     });
+  };
+
+  getIsRun = async () => {
+    let res;
+    try {
+      res = await collectDataProgress();
+    } catch (err) {
+      return message.error(err.message);
+    }
+    const { isRun } = res.data;
+    this.setState({ isRun });
   };
 
   handleSelectedDoorsChange = selectedDoors => {
@@ -92,24 +120,24 @@ class ManualCollectData extends React.Component {
       content: (
         <div>
           <h4>您确定按照如下配置采集刷脸数据吗？</h4>
-          <div>
+          <div style={{ marginLeft: 8, marginTop: 16 }}>
             <h4>刷卡目标表:</h4>
             {tableresid}
           </div>
-          <div>
+          <div style={{ marginLeft: 8, marginTop: 16 }}>
             <h4>目标表api地址:</h4>
             {baseUrl}
           </div>
-          <div>
+          <div style={{ marginLeft: 8, marginTop: 16 }}>
             <h4>数据入库时间范围:</h4>
             {receiveStartTime.format('YYYY-MM-DD HH:mm:ss')} -
-            {receiveEndTime.format('YY-MM-DD HH:mm:ss')}
+            {receiveEndTime.format('YYYY-MM-DD HH:mm:ss')}
           </div>
-          <div>
+          <div style={{ marginLeft: 8, marginTop: 16 }}>
             <h4>事件类型列表:</h4>
             {eventTypes}
           </div>
-          <div>
+          <div style={{ marginLeft: 8, marginTop: 16 }}>
             <h4>门禁点:</h4>
             {selectedDoors.map(door => door.name).join(',')}
           </div>
@@ -132,7 +160,7 @@ class ManualCollectData extends React.Component {
     let res;
     try {
       res = await collectData({
-        tableresid,
+        tableresid: `${tableresid}`,
         baseUrl,
         receiveStartTime: `${receiveStartTime.format(
           'YYYY-MM-DDTHH:mm:ss'
@@ -146,11 +174,33 @@ class ManualCollectData extends React.Component {
     }
 
     if (res.data.records) {
-      Modal.info({
-        title: '操作成功',
-        content: `正在采集中，采集数量：${res.data.records.length}`
-      });
+      this.setState({ progressVisible: true }, this.getProgress);
     }
+  };
+
+  getProgress = () => {
+    setTimeout(async () => {
+      let res;
+      try {
+        res = await collectDataProgress();
+      } catch (err) {
+        this.getProgress();
+        return message.error(err.message);
+      }
+      const { total, current } = res.data;
+
+      if (total === 0 && current === 0) {
+        this.setState({ percent: 100, isRun: false });
+      } else {
+        this.setState({
+          percent: Math.floor((current / total) * 100),
+          total,
+          current,
+          isRun: true
+        });
+        this.getProgress();
+      }
+    }, 1000);
   };
 
   render() {
@@ -167,11 +217,20 @@ class ManualCollectData extends React.Component {
         }}
       >
         <Form>
-          <Form.Item label="刷卡目标表">
-            <Input
-              style={{ width: 400 }}
+          {this.state.isRun && (
+            <Button
+              type="primary"
+              onClick={() =>
+                this.setState({ progressVisible: true }, this.getProgress)
+              }
+            >
+              采集任务正在运行，点击查看采集进度
+            </Button>
+          )}
+          <Form.Item label="刷卡目标表" style={{ width: 400 }}>
+            <TargetTableSelect
               value={this.state.tableresid}
-              onChange={e => this.setState({ tableresid: e.target.value })}
+              onChange={value => this.setState({ tableresid: value })}
             />
           </Form.Item>
           <Form.Item label="目标表api地址">
@@ -215,7 +274,7 @@ class ManualCollectData extends React.Component {
             <DoorsSelect
               regionIndexCodes={[indexCode]}
               onSelectedDoorsChange={this.handleSelectedDoorsChange}
-              defaultSelectedDoors={mode === 'add' ? [] : selectedDoors}
+              max={10}
             ></DoorsSelect>
           )}
         </Form>
@@ -229,6 +288,41 @@ class ManualCollectData extends React.Component {
             确定
           </Button>
         </div>
+        <Modal
+          title="采集进度"
+          visible={this.state.progressVisible}
+          onCancel={() => this.setState({ progressVisible: false })}
+          onOk={() => this.setState({ progressVisible: false })}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              flexWrap: 'wrap'
+            }}
+          >
+            <div
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center'
+              }}
+            >
+              <Progress type="circle" percent={this.state.percent} />
+            </div>
+
+            <div
+              style={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: 16
+              }}
+            >
+              <span>{this.state.current}</span>/<span>{this.state.total}</span>
+            </div>
+          </div>
+        </Modal>
       </div>
     );
   }
