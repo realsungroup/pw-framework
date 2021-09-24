@@ -17,8 +17,12 @@ class DeliverApprovalForm extends React.Component {
   static propTypes = {};
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      disabledTime: ''
+    };
   }
+
+  componentDidMount() {}
 
   //控制是否经过管控区
   changeIsControl = v => {
@@ -31,7 +35,8 @@ class DeliverApprovalForm extends React.Component {
 
   disabledTime = current => {
     const workDate1 = this.props.form.getFieldValue('C3_605703980025');
-    const workDate3 = moment(workDate1).add(13, 'd');
+    const workDate3 = moment(workDate1).add(14, 'd');
+    console.log(current && current > workDate3);
     return current && current > workDate3;
   };
 
@@ -40,7 +45,7 @@ class DeliverApprovalForm extends React.Component {
     if (!this.props.toDeliverApprovalFormData.isLongDeliver) {
       const workDate1 = this.props.form.getFieldValue('C3_605703980025');
       const workDate2 = this.props.form.getFieldValue('C3_605703992046');
-      const workDate3 = moment(workDate1).add(13, 'd');
+      const workDate3 = moment(workDate1).add(14, 'd');
       if (moment(workDate3).isBefore(workDate2, 'day')) {
         message.info('送货时间不得超过14天');
       }

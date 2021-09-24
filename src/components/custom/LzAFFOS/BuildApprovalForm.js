@@ -163,10 +163,10 @@ class BuildApprovlForm extends React.Component {
   disabledTime = current => {
     const workDate1 = this.props.form.getFieldValue('C3_605703980025');
     if (this.props.form.getFieldValue('isLong') === '长期施工') {
-      const workDate3 = moment(workDate1).add(13, 'd');
+      const workDate3 = moment(workDate1).add(14, 'd');
       return current && current > workDate3;
     } else {
-      const workDate4 = moment(workDate1).add(6, 'd');
+      const workDate4 = moment(workDate1).add(7, 'd');
       return current && current > workDate4;
     }
   };
@@ -174,12 +174,12 @@ class BuildApprovlForm extends React.Component {
     const workDate1 = this.props.form.getFieldValue('C3_605703980025');
     const workDate2 = this.props.form.getFieldValue('C3_605703992046');
     if (this.props.form.getFieldValue('isLong') === '长期施工') {
-      const workDate3 = moment(workDate1).add(13, 'd');
+      const workDate3 = moment(workDate1).add(14, 'd');
       if (moment(workDate3).isBefore(workDate2, 'day')) {
         message.info('施工时间不得超过14天');
       }
     } else {
-      const workDate4 = moment(workDate1).add(6, 'd');
+      const workDate4 = moment(workDate1).add(7, 'd');
       if (moment(workDate4).isBefore(workDate2, 'day')) {
         message.info('施工时间不得超过7天');
       }
