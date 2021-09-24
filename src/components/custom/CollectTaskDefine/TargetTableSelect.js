@@ -3,6 +3,9 @@ import { message, TreeSelect } from 'antd';
 import http from 'Util20/api';
 import { arrayToTree } from 'performant-array-to-tree';
 
+const realsunApiBaseURL =
+  window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
+
 class TargetTableSelect extends React.Component {
   state = {
     tree: [],
@@ -19,7 +22,7 @@ class TargetTableSelect extends React.Component {
     this.setState({ loading: true });
     let res;
     try {
-      res = await http().getUserAppLinks({
+      res = await http({ baseURL: realsunApiBaseURL }).getUserAppLinks({
         parentresid
       });
     } catch (err) {
@@ -32,7 +35,7 @@ class TargetTableSelect extends React.Component {
       parentId: 'RES_PID',
       dataField: null,
       rootParentIds: {
-        [`${parentresid}`]: true,
+        [`${parentresid}`]: true
       }
     });
 
