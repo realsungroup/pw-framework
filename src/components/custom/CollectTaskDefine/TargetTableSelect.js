@@ -10,11 +10,17 @@ class TargetTableSelect extends React.Component {
   };
 
   componentDidMount = async () => {
+    let parentresid;
+    if (process.env.NODE_ENV === 'development') {
+      parentresid = 685113093507;
+    } else {
+      parentresid = 685354717933;
+    }
     this.setState({ loading: true });
     let res;
     try {
       res = await http().getUserAppLinks({
-        parentresid: 685113093507
+        parentresid
       });
     } catch (err) {
       this.setState({ loading: false });
@@ -26,7 +32,7 @@ class TargetTableSelect extends React.Component {
       parentId: 'RES_PID',
       dataField: null,
       rootParentIds: {
-        '685113093507': true
+        [`${parentresid}`]: true,
       }
     });
 
