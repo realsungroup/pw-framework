@@ -204,15 +204,14 @@ class RegionSelect extends React.Component {
     } = this.state;
     return (
       <div className="region-select">
-        <Spin spinning={loading} style={{ height: '100%' }}>
-          <div className="region-select__header">设备所在区域</div>
-          <Search
-            style={{ marginBottom: 8 }}
-            placeholder="搜索区域名称"
-            onSearch={this.onSearch}
-            size="small"
-          />
-
+        <div className="region-select__header">设备所在区域</div>
+        <Search
+          style={{ marginBottom: 8 }}
+          placeholder="搜索区域名称"
+          onSearch={this.onSearch}
+          size="small"
+        />
+        <div className="region-select__tree-wrapper">
           {!!regionTree.length && (
             <Tree
               onExpand={this.onExpand}
@@ -227,7 +226,7 @@ class RegionSelect extends React.Component {
           )}
 
           {!regionTree.length && <Empty />}
-        </Spin>
+        </div>
       </div>
     );
   }

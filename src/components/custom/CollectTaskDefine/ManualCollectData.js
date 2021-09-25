@@ -174,7 +174,10 @@ class ManualCollectData extends React.Component {
     }
 
     if (res.data.records) {
-      this.setState({ progressVisible: true }, this.getProgress);
+      this.setState(
+        { progressVisible: true, total: res.data.records.length },
+        this.getProgress
+      );
     }
   };
 
@@ -190,7 +193,11 @@ class ManualCollectData extends React.Component {
       const { total, current } = res.data;
 
       if (total === 0 && current === 0) {
-        this.setState({ percent: 100, isRun: false });
+        this.setState({
+          percent: 100,
+          isRun: false,
+          current: this.state.total
+        });
       } else {
         this.setState({
           percent: Math.floor((current / total) * 100),
@@ -204,7 +211,7 @@ class ManualCollectData extends React.Component {
   };
 
   render() {
-    const { indexCode, loading, mode, selectedDoors } = this.state;
+    const { indexCode, loading } = this.state;
 
     return (
       <div
@@ -213,7 +220,8 @@ class ManualCollectData extends React.Component {
           height: '100%',
           display: 'flex',
           justifyContent: 'center',
-          flexWrap: 'wrap'
+          flexWrap: 'wrap',
+          background: '#fff'
         }}
       >
         <Form>

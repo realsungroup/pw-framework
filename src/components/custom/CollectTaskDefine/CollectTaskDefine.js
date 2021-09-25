@@ -178,7 +178,7 @@ class CollectTaskDefine extends React.Component {
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <div style={{ width: '100%', height: '100%' }}>
+      <div style={{ width: '100%', height: '100%', background: '#fff' }}>
         <Tabs defaultActiveKey="手动采集数据">
           <TabPane tab="任务定义表" key="任务定义表">
             <div className="collect-task-define">
