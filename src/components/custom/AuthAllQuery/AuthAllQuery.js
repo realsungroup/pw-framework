@@ -90,12 +90,15 @@ class AuthAllQuery extends Component {
 
     pagination: {
       current: 1,
-      pageSize: 5,
-      total: 0
+      pageSize: 20,
+      total: 0,
+      showTotal: total => `共 ${total} 条`
     },
 
     dataSource: [],
-    allDoors: []
+    allDoors: [],
+
+    scroll: { y: 100 }
   };
 
   componentDidMount = async () => {
@@ -110,8 +113,14 @@ class AuthAllQuery extends Component {
     }
 
     this.setState({ allDoors: res.data.list });
+    this.setScroll();
+  };
 
-    // this.handleSearch(1);
+  setScroll = () => {
+    const wH = window.innerHeight;
+    const otherH = 54 + 160 + 24 + 64 + 70;
+    const y = wH - otherH;
+    this.setState({ scroll: { y } });
   };
 
   detailColumns = [
@@ -199,24 +208,24 @@ class AuthAllQuery extends Component {
     {
       title: '姓名',
       dataIndex: 'personName',
-      key: 'personName'
+      key: 'personName',
+      width: 200
     },
     {
+      width: 200,
       title: '工号',
       dataIndex: 'jobNo',
       key: 'jobNo'
     },
     {
+      width: 200,
       title: '所属组织',
       dataIndex: 'orgPathName',
       key: 'orgPathName'
     },
+    { width: 200, title: '门禁点', dataIndex: 'doorName', key: 'doorName' },
     {
-      title: '门禁点',
-      dataIndex: 'doorName',
-      key: 'doorName'
-    },
-    {
+      width: 200,
       title: '权限有效期',
       dataIndex: '权限有效期',
       key: '权限有效期',
@@ -237,16 +246,19 @@ class AuthAllQuery extends Component {
       }
     },
     {
+      width: 200,
       title: '门禁点区域',
       dataIndex: 'doorRegion',
       key: 'doorRegion'
     },
     {
+      width: 200,
       title: '配置时间',
       dataIndex: 'configTime',
       key: 'configTime'
     },
     {
+      width: 200,
       title: '人脸',
       dataIndex: '人脸',
       key: '人脸',
@@ -382,11 +394,11 @@ class AuthAllQuery extends Component {
       dataSource: res.data.list,
       pagination: {
         ...this.state.pagination,
-        pageNo,
+        current: pageNo,
         pageSize,
         total: res.data.total
       },
-      loading: false,
+      loading: false
     });
   };
 
@@ -432,7 +444,6 @@ class AuthAllQuery extends Component {
   };
 
   handleTableChange = pagination => {
-    console.log({pagination})
     this.handleSearch(pagination.current);
   };
 
@@ -717,14 +728,14 @@ class AuthAllQuery extends Component {
 
         <div className="auth-all-query__table">
           <Table
-            size="small"
             bordered
             columns={this.columns}
             dataSource={dataSource}
             loading={this.state.loading}
             rowKey="downloadResultId"
-            pagination={this.state.pagination}
+            pagination={{ ...this.state.pagination }}
             onChange={this.handleTableChange}
+            scroll={{ ...this.state.scroll, x: 1600 }}
           ></Table>
         </div>
       </div>

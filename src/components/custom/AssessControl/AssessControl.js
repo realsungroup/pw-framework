@@ -24,7 +24,8 @@ class AssessControl extends Component {
         }
       },
       collapsed: false,
-      downloadVisible: false
+      downloadVisible: false,
+      selectedKeys: ['one']
     };
     this.menus = [
       {
@@ -76,13 +77,14 @@ class AssessControl extends Component {
           <div className="logo" />
           <Menu
             theme="dark"
-            defaultSelectedKeys={['one']}
+            selectedKeys={this.state.selectedKeys}
             mode="inline"
             onSelect={e => {
               this.setState({
                 selectedMenu: this.menus.find(item => {
                   return item.key === e.key;
-                })
+                }),
+                selectedKeys: [e.key]
               });
             }}
           >
@@ -110,13 +112,15 @@ class AssessControl extends Component {
               <Breadcrumb.Item>门禁管理</Breadcrumb.Item>
               <Breadcrumb.Item>{selectedMenu.title}</Breadcrumb.Item>
             </Breadcrumb>
-            <Button
-              size="small"
-              icon="download"
-              onClick={() => this.setState({ downloadVisible: true })}
-            >
-              下载权限
-            </Button>
+            {this.state.selectedKeys[0] === 'two' && (
+              <Button
+                size="small"
+                icon="download"
+                onClick={() => this.setState({ downloadVisible: true })}
+              >
+                下载权限
+              </Button>
+            )}
           </Header>
           <Divider style={{ margin: '8px' }} />
           <Content style={{ margin: '0 16px 16px' }}>
