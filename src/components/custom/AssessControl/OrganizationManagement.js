@@ -459,25 +459,6 @@ class OrganizationManagement extends React.Component {
                   </div>
                 </div>
               </Modal>
-
-              {/* 删除人员分组模态框 */}
-              <Modal
-                visible={isDeleteOrgModalOpen}
-                onCancel={this.closeAllModal}
-                onOk={() => {
-                  this.removeOrg('org');
-                }}
-                okButtonProps={{ type: 'danger' }}
-              >
-                <div>
-                  <span>
-                    {needRemoveData[0] &&
-                      (needRemoveData.length > 1
-                        ? `此操作可能会影响已配置的权限，确认删除所选的${needRemoveData.length}个人员分组？`
-                        : `此操作可能会影响已配置的权限，确认删除人员分组${needRemoveData[0].name}`)}
-                  </span>
-                </div>
-              </Modal>
             </div>
           </TabPane>
         </Tabs>

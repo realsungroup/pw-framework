@@ -29,7 +29,8 @@ class AddPersonGroupRightModal extends React.Component {
     doorGroupList: [],
     doors: [],
     showPorgress: false,
-    progress: 0
+    progress: 0,
+    taskIds: []
   };
 
   componentDidMount = () => {
@@ -130,7 +131,7 @@ class AddPersonGroupRightModal extends React.Component {
       {
         loading: false,
         showProgress: true,
-        taskId: res.data.taskId
+        taskIds: res.data.taskList.map(res => res.taskId)
       },
       this.getAuthConfigProgress
     );
@@ -141,31 +142,40 @@ class AddPersonGroupRightModal extends React.Component {
   };
 
   getAuthConfigProgress = () => {
-    const { taskId } = this.state;
+    const { taskIds } = this.state;
     setTimeout(async () => {
-      let res;
+      let resList;
       try {
-        res = await authConfigProgress({ taskId });
+        resList = await Promise.all(
+          taskIds.map(taskId => authConfigProgress({ taskId }))
+        );
       } catch (err) {
         return message.error(err.message);
       }
-      const percent = res.data.percent;
+
+      const total = resList.length * 100;
+      let current = 0;
+      resList.forEach(res => {
+        current += res.data.percent;
+      });
+      const percent = Math.floor((current / total) * 100);
+
       if (percent < 100) {
         this.setState({ progress: percent });
         this.getAuthConfigProgress();
       } else {
         this.handleReFillRecords();
       }
-    }, 3000);
+    }, 1000);
   };
 
   handleReFillRecords = async () => {
-    const { taskId } = this.state;
+    const { taskIds } = this.state;
     let res;
     try {
       res = await http({ baseURL: realsunApiBaseURL }).getTable({
         resid: 682509589511,
-        cmswhere: `taskId = '${taskId}'`
+        cmswhere: `taskId = '${taskIds.join(',')}'`
       });
     } catch (err) {
       this.setState({ progress: 0 });

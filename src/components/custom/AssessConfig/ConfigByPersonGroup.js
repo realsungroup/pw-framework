@@ -44,7 +44,8 @@ class ConfigByPersonGroup extends React.Component {
     endTime: null,
 
     progressMode: '', // 进度模式：'remove' 删除的进度 | 'modify' 修改有效期的进度
-    modifyDateRecord: null
+    modifyDateRecord: null,
+    modifyDateLoading: false
   };
 
   handleModifyAuthDate = record => {
@@ -101,7 +102,11 @@ class ConfigByPersonGroup extends React.Component {
     const endTime = end.format('YYYY-MM-DDTHH:mm:ss');
 
     const requestAll = async personGroupIds => {
-      this.setState({ progressVisible: true, progressMode: 'modify' });
+      this.setState({
+        progressVisible: true,
+        progressMode: 'modify',
+        modifyDateLoading: true
+      });
 
       // 获取人员分组权限表记录
       let res;
@@ -128,9 +133,10 @@ class ConfigByPersonGroup extends React.Component {
         try {
           res = await modifyDateByIds(recIds, startTime, endTime);
         } catch (err) {
-          this.setState({ progressVisible: false });
+          this.setState({ progressVisible: false, modifyDateLoading: false });
           return message.error(err.message);
         }
+        this.setState({ modifyDateLoading: false, isModifyModalOpen: false });
         const taskIds = res.data.taskIds;
         if (taskIds && taskIds.length) {
           this.getModifyDateProgress(taskIds, records, { startTime, endTime });
@@ -198,9 +204,9 @@ class ConfigByPersonGroup extends React.Component {
         this.setState({ progressVisible: false });
         return message.error(err.message);
       }
-      const taskId = res.data.taskIds[0];
-      if (taskId) {
-        this.getRemoveProgress([taskId], [record]);
+      const taskIds = res.data.taskIds;
+      if (taskIds && taskIds.length) {
+        this.getRemoveProgress(taskIds, [record]);
       } else {
         message.error('删除失败');
       }
@@ -471,6 +477,7 @@ class ConfigByPersonGroup extends React.Component {
           onOk={this.handleModifyAllAuthDate}
           okButtonProps={{ disabled: !startTime || !endTime }}
           onCancel={() => this.setState({ isModifyModalOpen: false })}
+          confirmLoading={this.state.modifyDateLoading}
         >
           <RangePicker
             value={[startTime, endTime]}
