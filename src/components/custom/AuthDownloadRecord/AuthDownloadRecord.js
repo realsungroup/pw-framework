@@ -448,7 +448,7 @@ class AuthDownloadRecord extends Component {
     this.setState({
       doorIndexCode: undefined,
       regionIndexCode: undefined,
-      downloadResult: '全部',
+      downloadResult: -1,
       startTimes: null,
       endTimes: null
     });
