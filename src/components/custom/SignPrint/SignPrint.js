@@ -1,10 +1,12 @@
 import React from 'react';
 import './SignPrint.less';
-import { Tabs } from 'antd';
+import { Tabs, Select, Modal, Button } from 'antd';
 import { MultiPrint } from '../../common/loadableCommon';
 import TableData from '../../common/data/TableData';
+import http from 'Util20/api';
 
 const { TabPane } = Tabs;
+const { Option } = Select;
 const Template = props => {
   return (
     <div
@@ -145,23 +147,93 @@ class SignPrint extends React.Component {
     super(props);
     this.state = {
       showPage: false,
-      pages: []
+      pages: [],
+      queryId: 685980682824,
+      filterV: '',
+      filters: [],
+      tableId: [
+        {
+          queryId: 685980682824,
+          name: '已提交签名'
+        },
+        {
+          queryId: 685980705980,
+          name: '未提交签名'
+        }
+      ]
     };
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.staffComBaseURL;
     this.dlEmployDownloadURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.staffComDownloadURL;
   }
+  componentDidMount() {
+    this.getFilters();
+  }
+  getFilters = async () => {
+    this.setState({ loading: true });
+    let res;
+    try {
+      res = await http({ baseURL: this.baseURL }).getTable({
+        resid: 685963177745
+      });
+      let arr = [];
+      let n = 0;
+      console.log('res', res);
+      while (n < res.data.length) {
+        arr.push({ name: res.data[n].verName, version: res.data[n].version });
+        n++;
+      }
+      this.setState({
+        filters: arr,
+        loading: false,
+        filterV: arr[0].version
+      });
+    } catch (e) {
+      console.log(e.message);
+      this.setState({ loading: false });
+    }
+  };
+  changeFilter = v => {
+    this.setState({ filterV: v });
+  };
   render() {
     return (
       <div className="SignPrint">
         <Tabs defaultActiveKey="1">
-          <TabPane tab="已完成" key="1">
+          <TabPane tab="按版本查看完成情况" key="1">
+            <div className="filter">
+              版本号：
+              <Select
+                value={this.state.filterV}
+                style={{ width: 120 }}
+                onChange={v => {
+                  this.changeFilter(v);
+                }}
+              >
+                {this.state.filters.map(item => {
+                  return <Option value={item.version}>{item.name}</Option>;
+                })}
+              </Select>
+              完成情况：
+              <Select
+                value={this.state.queryId}
+                style={{ width: 120 }}
+                onChange={v => {
+                  this.setState({ queryId: v });
+                }}
+              >
+                {this.state.tableId.map(item => {
+                  return <Option value={item.queryId}>{item.name}</Option>;
+                })}
+              </Select>
+            </div>
             <div className="inner">
               <MultiPrint
                 baseURL={this.baseURL}
                 downloadBaseURL={this.dlEmployDownloadURL}
-                resid={657125820752}
+                cmswhere={`version = '${this.state.filterV}'`}
+                resid={this.state.queryId}
               >
                 {data => {
                   return <Template data={data} />;
@@ -169,12 +241,37 @@ class SignPrint extends React.Component {
               </MultiPrint>
             </div>
           </TabPane>
-          <TabPane tab="未完成" key="2">
+          <TabPane tab="按员工查看完成情况" key="2">
+            <Modal
+              visible={this.state.showModal}
+              onCancel={() => {
+                this.setState({ showModal: false });
+              }}
+              width={'80vw'}
+              footer={null}
+            >
+              <div style={{ height: '80vh' }}>
+                <TableData
+                  baseURL={this.baseURL}
+                  downloadBaseURL={this.dlEmployDownloadURL}
+                  resid={685977480098}
+                  cmswhere={`C3_634066603834 = '${this.state.peopleId}'`}
+                  subtractH={180}
+                  hasAdd={false}
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasRowModify={false}
+                  hasRowSelection={false}
+                  hasAdvSearch={false}
+                />
+              </div>
+            </Modal>
             <div className="inner">
               <TableData
-                baseURL={this.baseURL}
-                downloadBaseURL={this.dlEmployDownloadURL}
-                resid={658838729515}
+                resid={609599795438}
                 subtractH={180}
                 hasAdd={false}
                 hasRowView={false}
@@ -185,6 +282,24 @@ class SignPrint extends React.Component {
                 hasRowModify={false}
                 hasRowSelection={false}
                 hasAdvSearch={false}
+                customRowBtns={[
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        type="primary"
+                        size={btnSize}
+                        onClick={() => {
+                          this.setState({
+                            showModal: true,
+                            peopleId: record.C3_227192472953
+                          });
+                        }}
+                      >
+                        查看签署记录
+                      </Button>
+                    );
+                  }
+                ]}
               />
             </div>
           </TabPane>
