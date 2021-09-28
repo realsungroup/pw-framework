@@ -40,8 +40,8 @@ class MultiPrint extends React.Component {
           }
         });
       });
-      this.setState({ pages: Reldata, showPage: true });
       let _this = this;
+      _this.setState({ pages: Reldata, showPage: true });
       let t = setInterval(function() {
         if (_this.refs.toPrint.innerHTML.length > 0) {
           clearInterval(t);

@@ -70,7 +70,9 @@ const Template = props => {
           boxSizing: 'border-box'
         }}
       >
-        本人特此确认：本人已收到并已仔细阅读了日期为2020年10月1日的《员工数据隐私政策》（政策编号：HR-013）（
+        本人特此确认：本人已收到并已仔细阅读了日期为
+        {props.data.actiDateStr}
+        的《员工数据隐私政策》（政策编号：{props.data.verName}）（
         <b>“该政策”</b>）。
         <br />
         <br />
@@ -179,10 +181,13 @@ class SignPrint extends React.Component {
       });
       let arr = [];
       let n = 0;
-      console.log('res', res);
       while (n < res.data.length) {
-        arr.push({ name: res.data[n].verName, version: res.data[n].version });
+        arr.push({
+          name: res.data[n].verName,
+          version: res.data[n].version
+        });
         n++;
+        console.log('res', arr);
       }
       this.setState({
         filters: arr,
