@@ -112,7 +112,7 @@ class AssessControl extends Component {
               <Breadcrumb.Item>门禁管理</Breadcrumb.Item>
               <Breadcrumb.Item>{selectedMenu.title}</Breadcrumb.Item>
             </Breadcrumb>
-            {this.state.selectedKeys[0] === 'two' && (
+            {this.state.selectedKeys[0] === 'one' && (
               <Button
                 size="small"
                 icon="download"

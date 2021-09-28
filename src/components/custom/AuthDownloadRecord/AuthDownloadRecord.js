@@ -434,7 +434,7 @@ class AuthDownloadRecord extends Component {
     }
     this.setState({
       viewLoading: false,
-      detailDataSource: res.data.list,
+      detailDataSource: res.data.list ? res.data.list : [],
       detailPagination: {
         ...this.state.detailPagination,
         pageNo,

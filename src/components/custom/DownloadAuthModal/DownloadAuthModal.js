@@ -148,9 +148,9 @@ class DownloadAuthModal extends React.Component {
       const newDoorsProgress = cloneDeep(doorsProgress);
 
       newDoorsProgress.forEach(door => {
-        const result = allDoorsProgress.find(
-          item => item.resourceInfo.channelIndexCodes[0] === door.indexCode
-        );
+        const result = allDoorsProgress.find(item => {
+          return item.resourceInfo.channelIndexCodes[0] === door.indexCode;
+        });
         door.percent = result.downloadPercent;
         door.time = result.leftTime;
         door.finishedCount = result.downloadPersonCount;
@@ -322,7 +322,7 @@ class DownloadAuthModal extends React.Component {
 
                 <div>
                   {(() => {
-                    if (item.errorCode !== 0) {
+                    if (![0, null].includes(item.errorCode)) {
                       const errorObj = errorCodeMap[item.errorCode];
                       console.log({ errorObj });
                       return (

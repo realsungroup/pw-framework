@@ -301,7 +301,8 @@ class AuthAllQuery extends Component {
       doorIndexCode,
       controlIndexCode,
       regionIndexCode,
-      configTime
+      configTime,
+      faceStatus
     } = this.state;
     if (!personId && !orgIndexCode && !doorIndexCode) {
       return message.error('为确保有效查询，请至少输入一项查询条件。');
@@ -336,6 +337,9 @@ class AuthAllQuery extends Component {
         startTime,
         endTime
       };
+    }
+    if (faceStatus !== -1) {
+      conditions.faceStatus = [faceStatus];
     }
 
     let res;
