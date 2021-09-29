@@ -26,21 +26,10 @@ class MultiPrint extends React.Component {
     window.location.reload();
   };
   //渲染打印页面
-  renderPages = (dataSource, selectedRowKeys) => {
-    if (selectedRowKeys.length < 1) {
-      message.error('请先选择要打印的记录！');
-    } else {
-      let data = dataSource;
-      let Reldata = [];
-
-      data.map(item => {
-        selectedRowKeys.map(items => {
-          if (item.REC_ID === items) {
-            Reldata.push(item);
-          }
-        });
-      });
-      let _this = this;
+  renderPages = (dataSource, selectedRowKeys, single) => {
+    let _this = this;
+    if (single) {
+      let Reldata = [dataSource];
       _this.setState({ pages: Reldata, showPage: true });
       let t = setInterval(function() {
         if (_this.refs.toPrint.innerHTML.length > 0) {
@@ -48,6 +37,27 @@ class MultiPrint extends React.Component {
           _this.handlePrint();
         }
       }, 500);
+    } else {
+      if (selectedRowKeys.length < 1) {
+        message.error('请先选择要打印的记录！');
+      } else {
+        let data = dataSource;
+        let Reldata = [];
+        data.map(item => {
+          selectedRowKeys.map(items => {
+            if (item.REC_ID === items) {
+              Reldata.push(item);
+            }
+          });
+        });
+        _this.setState({ pages: Reldata, showPage: true });
+        let t = setInterval(function() {
+          if (_this.refs.toPrint.innerHTML.length > 0) {
+            clearInterval(t);
+            _this.handlePrint();
+          }
+        }, 500);
+      }
     }
   };
   render() {
@@ -67,9 +77,9 @@ class MultiPrint extends React.Component {
           hasDelete={false}
           hasModify={false}
           hasRowModify={false}
-          hasRowSelection={true}
+          hasRowSelection={this.props.single ? false : true}
           actionBarExtra={({ dataSource, selectedRowKeys }) => {
-            return (
+            return this.props.single ? null : (
               <Button
                 onClick={() => {
                   this.renderPages(dataSource, selectedRowKeys);
@@ -79,6 +89,23 @@ class MultiPrint extends React.Component {
               </Button>
             );
           }}
+          customRowBtns={
+            this.props.single
+              ? [
+                  (record, btnSize) => {
+                    return (
+                      <Button
+                        onClick={() => {
+                          this.renderPages(record, null, true);
+                        }}
+                      >
+                        打印
+                      </Button>
+                    );
+                  }
+                ]
+              : null
+          }
         />
         <div
           className="beforePrint"

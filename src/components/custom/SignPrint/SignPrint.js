@@ -4,6 +4,7 @@ import { Tabs, Select, Modal, Button } from 'antd';
 import { MultiPrint } from '../../common/loadableCommon';
 import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
+import moment from 'moment';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -12,7 +13,7 @@ const Template = props => {
     <div
       style={{
         width: '1150px',
-        height: '1620px',
+        height: 'auto',
         background: '#fff',
         pageBreakAfter: 'always'
       }}
@@ -184,7 +185,8 @@ class SignPrint extends React.Component {
       while (n < res.data.length) {
         arr.push({
           name: res.data[n].verName,
-          version: res.data[n].version
+          version: res.data[n].version,
+          date: moment(res.data[n].actiDate).format('YYYYMMDD')
         });
         n++;
         console.log('res', arr);
@@ -211,13 +213,17 @@ class SignPrint extends React.Component {
               版本号：
               <Select
                 value={this.state.filterV}
-                style={{ width: 120 }}
+                style={{ width: 200 }}
                 onChange={v => {
                   this.changeFilter(v);
                 }}
               >
                 {this.state.filters.map(item => {
-                  return <Option value={item.version}>{item.name}</Option>;
+                  return (
+                    <Option value={item.version}>
+                      {item.name}（{item.date}）
+                    </Option>
+                  );
                 })}
               </Select>
               完成情况：
@@ -256,22 +262,17 @@ class SignPrint extends React.Component {
               footer={null}
             >
               <div style={{ height: '80vh' }}>
-                <TableData
+                <MultiPrint
                   baseURL={this.baseURL}
                   downloadBaseURL={this.dlEmployDownloadURL}
-                  resid={685977480098}
                   cmswhere={`C3_634066603834 = '${this.state.peopleId}'`}
-                  subtractH={180}
-                  hasAdd={false}
-                  hasRowView={false}
-                  hasRowDelete={false}
-                  hasRowEdit={false}
-                  hasDelete={false}
-                  hasModify={false}
-                  hasRowModify={false}
-                  hasRowSelection={false}
-                  hasAdvSearch={false}
-                />
+                  resid={this.state.queryId}
+                  single={true}
+                >
+                  {data => {
+                    return <Template data={data} />;
+                  }}
+                </MultiPrint>
               </div>
             </Modal>
             <div className="inner">
