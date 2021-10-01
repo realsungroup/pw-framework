@@ -87,7 +87,9 @@ class AddPersonGroupByImportExcel extends React.Component {
       record.forEach((value, index) => {
         recordItem[fileArr[index]] = value;
       });
-      records.push(recordItem);
+      if (Object.keys(recordItem).length) {
+        records.push(recordItem);
+      }
     });
     return records;
   };
