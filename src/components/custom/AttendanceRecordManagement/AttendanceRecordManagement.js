@@ -15,7 +15,7 @@ class AttendanceRecordManagement extends Component {
         date: [moment().startOf('day'), moment().endOf('day')],
         controller: '',
         entranceArea: '',
-        entrancePoint: [],
+        entrancePoint: undefined,
         eventType: '全部',
         org: '',
         personNum: '',
@@ -62,9 +62,9 @@ class AttendanceRecordManagement extends Component {
     const startTime = date[0].toJSON(); //事件开始时间，ISOS格式
     const endTime = date[1].toJSON(); //事件结束时间，ISOS格式
     const receiveEndTime = date[1].add(1, 'd').toJSON(); //数据入库结束时间，ISOS格式
-    const doorName = entrancePoint.length >= 1 ? entrancePoint[0] : '';
-    const readerDevIndexCodes =
-      entrancePoint.length >= 1 ? [entrancePoint[1]] : [];
+    // const doorName = entrancePoint.length >= 1 ? entrancePoint[0] : '';
+    // const readerDevIndexCodes =
+    //   entrancePoint.length >= 1 ? [entrancePoint[1]] : [];
 
     const url = `${baseURLAPI}api/v1/queryDoorEvents`;
     fetch(url, {
@@ -75,9 +75,9 @@ class AttendanceRecordManagement extends Component {
       body: JSON.stringify({
         pageNo: 1,
         pageSize: 1000,
-        doorIndexCodes: [],
-        doorName: doorName,
-        readerDevIndexCodes: readerDevIndexCodes,
+        doorIndexCodes: entrancePoint ? [entrancePoint] : undefined,
+        // doorName: doorName,
+        // readerDevIndexCodes: readerDevIndexCodes,
         startTime: startTime,
         endTime: endTime,
         receiveStartTime: startTime,
@@ -91,6 +91,9 @@ class AttendanceRecordManagement extends Component {
     })
       .then(response => response.json())
       .then(json => {
+        if (json.error === 1) {
+          return message.error(json.message);
+        }
         if (json.data.list.length === 0) {
           message.info('无相关记录');
         } else {

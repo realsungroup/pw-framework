@@ -15,9 +15,16 @@ const baseURLAPI = window.pwConfig[process.env.NODE_ENV].customURLs.hikBaseURL;
 
 const mainTableResid = 651688414274; //主表resid
 const addPersonSyncResid = 681988079880; //人员添加异常
-const modifyPersonSyncResid = 680878876091; //人员修改异常
+
 const addOrgSyncResid = 681990438067; //部门添加异常
-const modifyOrgSyncResid = 680878876091; //部门修改异常
+let modifyOrgSyncResid = 680878876091; //部门修改异常
+
+let modifyPersonSyncResid = 680878876091; //人员修改异常
+
+if (process.env.NODE_ENV === 'production') {
+  modifyPersonSyncResid = 685114666358;
+  modifyOrgSyncResid = 685114916039;
+}
 
 /**
  * 人事信息管理
@@ -231,7 +238,7 @@ class PersonnelInformationManagement extends React.Component {
               hasDelete={false}
               wrappedComponentRef={element => (this.tableDataRef = element)}
               refTargetComponentName="TableData"
-              subtractH={180}
+              subtractH={220}
               actionBarWidth={200}
               recordFormUseAbsolute={true}
               recordFormContainerProps={{ width: 1000 }}
@@ -348,7 +355,7 @@ class PersonnelInformationManagement extends React.Component {
                       hasAdd={false}
                       hasModify={false}
                       hasDelete={false}
-                      subtractH={180}
+                      subtractH={220}
                       actionBarWidth={200}
                       wrappedComponentRef={element =>
                         (this.tableDataRef = element)
@@ -390,7 +397,7 @@ class PersonnelInformationManagement extends React.Component {
                         (this.tableDataRef = element)
                       }
                       refTargetComponentName="TableData"
-                      subtractH={180}
+                      subtractH={220}
                       actionBarWidth={200}
                       style={{ height: 'calc(100vh - 160px)' }}
                       hasRowSelection={true}
@@ -454,7 +461,7 @@ class PersonnelInformationManagement extends React.Component {
                         (this.tableDataRef = element)
                       }
                       refTargetComponentName="TableData"
-                      subtractH={180}
+                      subtractH={220}
                       actionBarWidth={200}
                       style={{ height: 'calc(100vh - 160px)' }}
                       hasRowSelection={true}
@@ -492,7 +499,7 @@ class PersonnelInformationManagement extends React.Component {
                         (this.tableDataRef = element)
                       }
                       refTargetComponentName="TableData"
-                      subtractH={180}
+                      subtractH={220}
                       actionBarWidth={200}
                       style={{ height: 'calc(100vh - 160px)' }}
                       hasRowSelection={true}

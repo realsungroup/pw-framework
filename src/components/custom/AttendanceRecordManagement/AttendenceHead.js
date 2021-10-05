@@ -374,7 +374,7 @@ class AttendenceHead extends Component {
                 <span>门禁点</span>
               </div>
               <div>
-                {getFieldDecorator('entrancePoint', { initialValue: [] })(
+                {getFieldDecorator('entrancePoint', {})(
                   <Select
                     showSearch
                     style={{ width: 'calc(25vw - 24px)' }}
@@ -388,10 +388,7 @@ class AttendenceHead extends Component {
                   >
                     {entrancePointList.map(item => {
                       return (
-                        <Option
-                          value={[item.name, item.indexCode]}
-                          key={item.indexCode}
-                        >
+                        <Option value={item.indexCode} key={item.indexCode}>
                           {item.name}
                         </Option>
                       );
@@ -575,6 +572,7 @@ class AttendenceHead extends Component {
 
 export default Form.create({
   onValuesChange: (props, changedValues, allValues) => {
+    console.log({ allValues });
     props.getSearchValues(allValues);
   }
 })(AttendenceHead);

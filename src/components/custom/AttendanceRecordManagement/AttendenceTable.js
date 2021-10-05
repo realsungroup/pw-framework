@@ -3,93 +3,95 @@ import { Button, Divider, DatePicker, Table } from 'antd';
 import './AttendanceRecordManagement.less';
 import ExportJsonExcel from 'js-export-excel';
 
-const columns = [
-  {
-    title: '人员姓名',
-    dataIndex: 'personName',
-    key: 'personName',
-    // ellipsis: true,
-    width: 150
-  },
-  {
-    title: '工号',
-    dataIndex: 'jobNo',
-    key: 'jobNo',
-    // ellipsis: true,
-    width: 150
-  },
-  {
-    title: '卡号',
-    dataIndex: 'cardNo',
-    ellipsis: true,
-    key: 'cardNo',
-    width: 150
-  },
-  {
-    title: '所属组织',
-    dataIndex: 'orgName',
-    ellipsis: true,
-    key: 'orgName',
-    width: 250
-  },
-  {
-    title: '门禁点',
-    dataIndex: 'doorName',
-    ellipsis: true,
-    key: 'doorName',
-    width: 150
-  },
-  {
-    title: '控制器',
-    dataIndex: 'devName',
-    ellipsis: true,
-    key: 'devName',
-    width: 150
-  },
-  {
-    title: '门禁点区域',
-    dataIndex: 'doorRegionIndexCode',
-    ellipsis: true,
-    key: 'doorRegionIndexCode',
-    width: 250
-  },
-  {
-    title: '出/入',
-    dataIndex: 'inAndOutType',
-    ellipsis: true,
-    key: 'inAndOutType',
-    width: 100
-  },
-  {
-    title: '事件类型',
-    dataIndex: 'eventType',
-    ellipsis: true,
-    key: 'eventType',
-    width: 150
-  },
-  {
-    title: '抓拍图片',
-    dataIndex: 'picUri',
-    ellipsis: true,
-    key: 'picUri',
-    width: 250
-  },
-  {
-    title: '事件时间',
-    dataIndex: 'eventTime',
-    ellipsis: true,
-    key: 'eventTime',
-    fixed: 'right',
-    width: 200
-  }
-];
-const dataSource = [];
-
 class AttendenceTable extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+
+  columns = [
+    {
+      title: '人员姓名',
+      dataIndex: 'personName',
+      key: 'personName',
+      // ellipsis: true,
+      width: 150
+    },
+    {
+      title: '工号',
+      dataIndex: 'jobNo',
+      key: 'jobNo',
+      // ellipsis: true,
+      width: 150
+    },
+    {
+      title: '卡号',
+      dataIndex: 'cardNo',
+      ellipsis: true,
+      key: 'cardNo',
+      width: 150
+    },
+    {
+      title: '所属组织',
+      dataIndex: 'orgName',
+      ellipsis: true,
+      key: 'orgName',
+      width: 250
+    },
+    {
+      title: '门禁点',
+      dataIndex: 'doorName',
+      ellipsis: true,
+      key: 'doorName',
+      width: 150
+    },
+    {
+      title: '控制器',
+      dataIndex: 'devName',
+      ellipsis: true,
+      key: 'devName',
+      width: 150
+    },
+    {
+      title: '门禁点区域',
+      dataIndex: 'doorRegionIndexCode',
+      ellipsis: true,
+      key: 'doorRegionIndexCode',
+      width: 250
+    },
+    {
+      title: '出/入',
+      dataIndex: 'inAndOutType',
+      ellipsis: true,
+      key: 'inAndOutType',
+      width: 100
+    },
+    {
+      title: '事件类型',
+      dataIndex: 'eventType',
+      ellipsis: true,
+      key: 'eventType',
+      width: 150
+    },
+    {
+      title: '抓拍图片',
+      dataIndex: 'picUri',
+      ellipsis: false,
+      key: 'picUri',
+      width: 250,
+      render: text => {
+        return <div style={{ width: 220 }}>{text}</div>;
+      }
+    },
+    {
+      title: '事件时间',
+      dataIndex: 'eventTime',
+      ellipsis: true,
+      key: 'eventTime',
+      fixed: 'right',
+      width: 200
+    }
+  ];
 
   componentDidMount = () => {};
 
@@ -140,6 +142,14 @@ class AttendenceTable extends Component {
     toExcel.saveExcel();
   };
 
+  getScroll = () => {
+    const x = this.columns.reduce((acc, cur) => {
+      return acc + cur.width;
+    }, 0);
+
+    return { x, y: 240 };
+  };
+
   render() {
     const {} = this.state;
     const { eventData } = this.props;
@@ -170,11 +180,11 @@ class AttendenceTable extends Component {
                 marginRight: '8px',
                 marginLeft: '8px'
               }}
-              columns={columns}
+              columns={this.columns}
               dataSource={eventData}
               bordered
               size="middle"
-              scroll={{ x: 220, y: 240 }}
+              scroll={this.getScroll()}
               pagination={{
                 showSizeChanger: true,
                 showQuickJumper: true,
