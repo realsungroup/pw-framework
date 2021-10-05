@@ -116,20 +116,25 @@ class AttendenceTable extends Component {
       '抓拍图片',
       '事件时间'
     ];
+    const sheetHeaderMap = {
+      人员姓名: 'personName',
+      工号: 'jobNo',
+      卡号: 'cardNo',
+      所属组织: 'orgName',
+      门禁点: 'doorName',
+      控制器: 'devName',
+      门禁点区域: 'doorRegionIndexCode',
+      '出/入': 'inAndOutType',
+      事件类型: 'eventType',
+      抓拍图片: 'picUri',
+      事件时间: 'eventTime'
+    };
     const sheetData = eventData.map(item => {
-      return {
-        卡号: item.personName,
-        工号: item.jobNo,
-        卡号: item.cardNo,
-        所属组织: item.orgName,
-        门禁点: item.doorName,
-        控制器: item.devName,
-        门禁点区域: item.doorRegionIndexCode,
-        '出/入': item.inAndOutType,
-        事件类型: item.eventType,
-        抓拍图片: item.picUrl,
-        事件时间: item.eventTime
-      };
+      const obj = {};
+      Object.entries(sheetHeaderMap).forEach(([key, value]) => {
+        obj[key] = item[value];
+      });
+      return obj;
     });
     option.datas = [
       {
@@ -138,6 +143,8 @@ class AttendenceTable extends Component {
         sheetHeader: sheetHeader
       }
     ];
+
+    console.log({ option });
     var toExcel = new ExportJsonExcel(option);
     toExcel.saveExcel();
   };
