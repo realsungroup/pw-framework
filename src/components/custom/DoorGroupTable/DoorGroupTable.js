@@ -43,7 +43,16 @@ class DoorGroupTable extends React.Component {
     /**
      * 人员分组列表
      */
-    personGroupList: PropTypes.array
+    personGroupList: PropTypes.array,
+
+    /**
+     * 模式
+     */
+    mode: PropTypes.oneOf(['personGroup', 'org'])
+  };
+
+  static propTypes = {
+    mode: 'personGroup'
   };
 
   // 所有的门禁点
@@ -73,9 +82,16 @@ class DoorGroupTable extends React.Component {
   };
 
   componentDidMount = async () => {
-    await Promise.all([this.getAllDoors(), this.getAllDoorGroups()]);
-    if (this.props.selectedPersonGroupId) {
-      this.getData();
+    const { mode, selectedPersonGroupId, orgIndexCode } = this.props;
+    if (mode === 'personGroup') {
+      await Promise.all([this.getAllDoors(), this.getAllDoorGroups()]);
+      if (selectedPersonGroupId) {
+        this.getData();
+      }
+    } else {
+      if (orgIndexCode) {
+        this.getDataByOrgIndexCode();
+      }
     }
   };
 
@@ -112,6 +128,42 @@ class DoorGroupTable extends React.Component {
   };
 
   getData = async () => {
+    this.setState({ loading: true });
+    const { selectedPersonGroupId } = this.props;
+    let res;
+    try {
+      res = await http({ baseURL: realsunApiBaseURL }).getTable({
+        resid: 684097503067,
+        cmswhere: `personGroupId = '${selectedPersonGroupId}'`
+      });
+    } catch (err) {
+      this.setState({ loading: false });
+      return message.error(err.message);
+    }
+    const groupList = [];
+    const doorList = [];
+    res.data.forEach(item => {
+      if (item.doorType === 'group') {
+        groupList.push(item);
+      } else if (item.doorType === 'door') {
+        doorList.push(item);
+      }
+    });
+
+    this.processGroupListDetails(groupList);
+    this.processDoorListDetails(doorList);
+
+    this.setState({
+      groupList,
+      doorList,
+      loading: false,
+      doorGroupName: '',
+      doorName: '',
+      percent: 0
+    });
+  };
+
+  getDataByOrgIndexCode = async () => {
     this.setState({ loading: true });
     const { selectedPersonGroupId } = this.props;
     let res;

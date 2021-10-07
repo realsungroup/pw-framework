@@ -28,7 +28,16 @@ class OrgSelect extends React.Component {
     /**
      * 组织节点选择时的回调
      */
-    onOrgSelect: PropTypes.func
+    onOrgSelect: PropTypes.func,
+
+    /**
+     * 是否有标题
+     */
+    hasTitle: PropTypes.string
+  };
+
+  static propTypes = {
+    hasTitle: false
   };
 
   state = {
@@ -224,10 +233,11 @@ class OrgSelect extends React.Component {
       autoExpandParent,
       treeKey
     } = this.state;
+    const { hasTitle } = this.props;
     return (
       <div className="org-select">
         <Spin spinning={loading} style={{ height: '100%' }}>
-          <div className="org-select__header">人员所属组织</div>
+          {hasTitle && <div className="org-select__header">人员所属组织</div>}
           <Search
             style={{ marginBottom: 8 }}
             placeholder="搜索组织名称"
