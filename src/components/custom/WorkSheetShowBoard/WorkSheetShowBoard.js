@@ -174,7 +174,7 @@ class WorkSheetShowBoard extends React.Component {
     try {
       res = await http().getTable({
         resid: 679066070181,
-        cmswhere: `(curDepaId = '${mesId}' and C3_678796788873 > '${stDate}' and C3_682377833865 = '已完成') or (curDepaId = '${mesId}' and C3_682377833865 = '进行中' and C3_678796788873 > '${stDate}' ) or (curDepaId = '${mesId}' and C3_682377833865 = '非正常终止') or (C3_682540124939 = '${mesId}' and C3_682377833865 = '已完成')`
+        cmswhere: `(curDepaId = '${mesId}' and C3_678796788873 > '${stDate}' and C3_682377833865 = '已完成') or (curDepaId = '${mesId}' and C3_682377833865 = '进行中' ) or (curDepaId = '${mesId}' and C3_682377833865 = '非正常终止') or (C3_682540124939 = '${mesId}' and C3_682377833865 = '已完成')`
       });
       let n = 0;
       let emergy = [];
@@ -228,7 +228,7 @@ class WorkSheetShowBoard extends React.Component {
         n++;
       }
       let res3=await http().getTable({
-        resid: 679066070181,
+        resid: 687113114913,
         cmswhere: cms
       });
       
