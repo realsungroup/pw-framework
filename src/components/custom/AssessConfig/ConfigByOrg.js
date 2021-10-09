@@ -463,9 +463,11 @@ class ConfigByOrg extends React.Component {
                 {orgIndexCodes.length && (
                   <OrgSelect
                     orgIndexCodes={orgIndexCodes}
-                    onOrgSelect={orgIndexCode =>
-                      this.setState({ orgIndexCode })
-                    }
+                    onOrgSelect={orgIndexCode => {
+                      if (orgIndexCode) {
+                        this.setState({ orgIndexCode });
+                      }
+                    }}
                   ></OrgSelect>
                 )}
               </Sider>

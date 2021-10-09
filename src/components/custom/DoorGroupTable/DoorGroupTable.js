@@ -83,8 +83,8 @@ class DoorGroupTable extends React.Component {
 
   componentDidMount = async () => {
     const { mode, selectedPersonGroupId, orgIndexCode } = this.props;
+    await Promise.all([this.getAllDoors(), this.getAllDoorGroups()]);
     if (mode === 'personGroup') {
-      await Promise.all([this.getAllDoors(), this.getAllDoorGroups()]);
       if (selectedPersonGroupId) {
         this.getData();
       }
@@ -165,12 +165,12 @@ class DoorGroupTable extends React.Component {
 
   getDataByOrgIndexCode = async () => {
     this.setState({ loading: true });
-    const { selectedPersonGroupId } = this.props;
+    const { orgIndexCode } = this.props;
     let res;
     try {
       res = await http({ baseURL: realsunApiBaseURL }).getTable({
-        resid: 684097503067,
-        cmswhere: `personGroupId = '${selectedPersonGroupId}'`
+        resid: 686951200660,
+        cmswhere: `orgIndexCode = '${orgIndexCode}'`
       });
     } catch (err) {
       this.setState({ loading: false });
