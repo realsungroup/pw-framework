@@ -17,7 +17,9 @@ class AssessConfig extends React.Component {
   render() {
     return (
       <div className="OrganizationManagement">
-        <Tabs defaultActiveKey="org">
+        <Tabs
+        // defaultActiveKey="personGroup"
+        >
           <TabPane tab="按人员分组配置权限" key="personGroup">
             <ConfigByPersonGroup />
           </TabPane>
