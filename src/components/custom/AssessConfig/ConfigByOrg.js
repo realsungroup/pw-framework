@@ -80,64 +80,107 @@ class ConfigByOrg extends React.Component {
     this.setState({ selectedRowRecIds });
   };
 
-  handleModifyAllAuthDate = () => {
+  handleModifyAllAuthDate = (multiple = false) => {
     const {
       startTime: start,
       endTime: end,
       selectedRowKeys,
       modifyDateRecord,
-      orgList
+      orgList,
+      selectedRowRecIds
     } = this.state;
     if (!start || !end) {
       return message.error('请选择有效期');
     }
-    if (
-      start.format('YYYY-MM-DDTHH:mm:ss') === modifyDateRecord.startTime &&
-      end.format('YYYY-MM-DDTHH:mm:ss') === modifyDateRecord.endTime
-    ) {
-      return message.error('有效期没有改变');
+    if (!multiple) {
+      if (
+        start.format('YYYY-MM-DDTHH:mm:ss') === modifyDateRecord.startTime &&
+        end.format('YYYY-MM-DDTHH:mm:ss') === modifyDateRecord.endTime
+      ) {
+        return message.error('有效期没有改变');
+      }
+
+      let msg = '';
+      const result = orgList.find(
+        org => org.orgIndexCode === modifyDateRecord.orgIndexCode
+      );
+      msg = `您确定要修改 ${result.orgName} 的 ${modifyDateRecord.groupDetail.name} 的有效期吗？`;
+
+      const startTime = start.format('YYYY-MM-DDTHH:mm:ss');
+      const endTime = end.format('YYYY-MM-DDTHH:mm:ss');
+      const request = async () => {
+        let res;
+        try {
+          res = await modifyOrgDateByIds(
+            [`${modifyDateRecord.REC_ID}`],
+            startTime,
+            endTime
+          );
+        } catch (err) {
+          this.setState({ progressVisible: false });
+          return message.error(err.message);
+        }
+        const taskIds = res.data.taskIds;
+        if (taskIds && taskIds.length) {
+          this.getModifyDateProgress(taskIds, [modifyDateRecord], {
+            startTime,
+            endTime
+          });
+        } else {
+          message.error('删除失败');
+        }
+      };
+
+      Modal.confirm({
+        title: '提示',
+        content: msg,
+        onOk: () => {
+          Modal.destroyAll();
+          request(selectedRowKeys);
+        }
+      });
+    } else {
+      const startTime = start.format('YYYY-MM-DDTHH:mm:ss');
+      const endTime = end.format('YYYY-MM-DDTHH:mm:ss');
+      const request = async () => {
+        let res;
+        try {
+          res = await modifyOrgDateByIds(
+            selectedRowRecIds.map(recId => String(recId)),
+            startTime,
+            endTime
+          );
+        } catch (err) {
+          this.setState({ progressVisible: false });
+          return message.error(err.message);
+        }
+        const taskIds = res.data.taskIds;
+
+        this.setState({ selectedRowRecIds: [] });
+
+        if (taskIds && taskIds.length) {
+          this.getModifyDateProgress(
+            taskIds,
+            selectedRowRecIds.map(recId => ({ REC_ID: recId })),
+            {
+              startTime,
+              endTime
+            }
+          );
+        } else {
+          message.error('删除失败');
+        }
+      };
+
+      Modal.confirm({
+        title: '提示',
+        content: `您确定要修改选中权限的有效日期吗？`,
+        onOk: () => {
+          Modal.destroyAll();
+          request(selectedRowKeys);
+        }
+      });
     }
-
-    let msg = '';
-    const result = orgList.find(
-      org => org.orgIndexCode === modifyDateRecord.orgIndexCode
-    );
-    msg = `您确定要修改 ${result.orgName} 的 ${modifyDateRecord.groupDetail.name} 的有效期吗？`;
-
-    const startTime = start.format('YYYY-MM-DDTHH:mm:ss');
-    const endTime = end.format('YYYY-MM-DDTHH:mm:ss');
-
-    const request = async () => {
-      let res;
-      try {
-        res = await modifyOrgDateByIds(
-          [`${modifyDateRecord.REC_ID}`],
-          startTime,
-          endTime
-        );
-      } catch (err) {
-        this.setState({ progressVisible: false });
-        return message.error(err.message);
-      }
-      const taskIds = res.data.taskIds;
-      if (taskIds && taskIds.length) {
-        this.getModifyDateProgress(taskIds, [modifyDateRecord], {
-          startTime,
-          endTime
-        });
-      } else {
-        message.error('删除失败');
-      }
-    };
-
-    Modal.confirm({
-      title: '提示',
-      content: msg,
-      onOk: () => {
-        Modal.destroyAll();
-        request(selectedRowKeys);
-      }
-    });
   };
 
   handleRemoveRight = record => {
@@ -369,7 +412,7 @@ class ConfigByOrg extends React.Component {
                   删除权限
                 </Button>
               </span>
-              {/* <span className="header-button-style">
+              <span className="header-button-style">
                 <Button
                   icon="dashboard"
                   type="default"
@@ -380,11 +423,11 @@ class ConfigByOrg extends React.Component {
                       modifyDateRecord: null
                     });
                   }}
-                  disabled={!selectedRowKeys.length}
+                  disabled={!selectedRowRecIds.length}
                 >
                   修改有效期
                 </Button>
-              </span> */}
+              </span>
             </div>
           </Header>
           <Content>
@@ -422,7 +465,7 @@ class ConfigByOrg extends React.Component {
         <Modal
           title="修改权限有效期"
           visible={isModifyModalOpen}
-          onOk={this.handleModifyAllAuthDate}
+          onOk={() => this.handleModifyAllAuthDate(true)}
           okButtonProps={{ disabled: !startTime || !endTime }}
           onCancel={() => this.setState({ isModifyModalOpen: false })}
           confirmLoading={this.state.modifyDateLoading}
