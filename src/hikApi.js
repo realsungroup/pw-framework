@@ -242,6 +242,17 @@ export const modifyDateByIds = (personGroupRightRecIds, startTime, endTime) => {
 };
 
 /**
+ * 通过组织权限表 id 修改权限有效期
+ */
+export const modifyOrgDateByIds = (orgRightRecIds, startTime, endTime) => {
+  return hikInstance.post('/api/v1/modifyOrgDateByIds', {
+    orgRightRecIds,
+    startTime,
+    endTime
+  });
+};
+
+/**
  * 通过人员分组权限表 id 修改权限有效期
  */
 export const authDownload = data => {

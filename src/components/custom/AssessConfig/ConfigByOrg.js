@@ -14,7 +14,7 @@ import {
   removeRightById,
   removeOrgRightById,
   authConfigProgress,
-  modifyDateByIds
+  modifyOrgDateByIds
 } from '../../../hikApi';
 import http from 'Util20/api';
 import moment from 'moment';
@@ -81,93 +81,32 @@ class ConfigByOrg extends React.Component {
       startTime: start,
       endTime: end,
       selectedRowKeys,
-      personGroupList,
-      modifyDateRecord
+      modifyDateRecord,
+      orgList
     } = this.state;
     if (!start || !end) {
       return message.error('请选择有效期');
     }
-    if (modifyDateRecord) {
-      if (
-        start.format('YYYY-MM-DDTHH:mm:ss') === modifyDateRecord.startTime &&
-        end.format('YYYY-MM-DDTHH:mm:ss') === modifyDateRecord.endTime
-      ) {
-        return message.error('有效期没有改变');
-      }
+    if (
+      start.format('YYYY-MM-DDTHH:mm:ss') === modifyDateRecord.startTime &&
+      end.format('YYYY-MM-DDTHH:mm:ss') === modifyDateRecord.endTime
+    ) {
+      return message.error('有效期没有改变');
     }
 
     let msg = '';
-    const personGroups = [];
-    if (modifyDateRecord) {
-      const result = personGroupList.find(
-        item => item.groupId === modifyDateRecord.personGroupId
-      );
-      console.log({ modifyDateRecord });
-      msg = `您确定要修改 ${result.name} 的 ${modifyDateRecord.groupDetail.name} 的有效期吗？`;
-    } else {
-      selectedRowKeys.forEach(key => {
-        const result = personGroupList.find(item => item.groupId === key);
-        if (result) {
-          personGroups.push(result);
-        }
-      });
-      msg = `您确定要修改 ${personGroups
-        .map(item => item.name)
-        .join(',')} 的有效期吗？`;
-    }
+    const result = orgList.find(
+      org => org.orgIndexCode === modifyDateRecord.orgIndexCode
+    );
+    msg = `您确定要修改 ${result.orgName} 的 ${modifyDateRecord.groupDetail.name} 的有效期吗？`;
 
     const startTime = start.format('YYYY-MM-DDTHH:mm:ss');
     const endTime = end.format('YYYY-MM-DDTHH:mm:ss');
 
-    const requestAll = async personGroupIds => {
-      this.setState({
-        progressVisible: true,
-        progressMode: 'modify',
-        modifyDateLoading: true
-      });
-
-      // 获取人员分组权限表记录
-      let res;
-      try {
-        res = await http({ baseURL: realsunApiBaseURL }).getTable({
-          resid: 684097503067,
-          cmswhere: `personGroupId in (${personGroupIds
-            .map(id => `'${id}'`)
-            .join(',')})`
-        });
-      } catch (err) {
-        this.setState({ progressVisible: false });
-        return message.error(err.message);
-      }
-
-      const records = res.data;
-      const recIds = records.map(item => `${item.REC_ID}`);
-
-      if (!recIds.length) {
-        message.info('您选择的人员分组没有配置权限');
-        this.setState({ progressVisible: false });
-      } else {
-        let res;
-        try {
-          res = await modifyDateByIds(recIds, startTime, endTime);
-        } catch (err) {
-          this.setState({ progressVisible: false, modifyDateLoading: false });
-          return message.error(err.message);
-        }
-        this.setState({ modifyDateLoading: false, isModifyModalOpen: false });
-        const taskIds = res.data.taskIds;
-        if (taskIds && taskIds.length) {
-          this.getModifyDateProgress(taskIds, records, { startTime, endTime });
-        } else {
-          message.error('删除失败');
-        }
-      }
-    };
-
     const request = async () => {
       let res;
       try {
-        res = await modifyDateByIds(
+        res = await modifyOrgDateByIds(
           [`${modifyDateRecord.REC_ID}`],
           startTime,
           endTime
@@ -192,11 +131,7 @@ class ConfigByOrg extends React.Component {
       content: msg,
       onOk: () => {
         Modal.destroyAll();
-        if (modifyDateRecord) {
-          request(selectedRowKeys);
-        } else {
-          requestAll(selectedRowKeys);
-        }
+        request(selectedRowKeys);
       }
     });
   };
@@ -262,10 +197,10 @@ class ConfigByOrg extends React.Component {
         this.setState({ percent });
         this.getModifyDateProgress(taskIds, records, { startTime, endTime });
       } else {
-        // 任务完成了，修改人员分组权限表记录
+        // 任务完成了，修改组织权限表记录
         try {
           await http({ baseURL: realsunApiBaseURL }).modifyRecords({
-            resid: 684097503067,
+            resid: 686951200660,
             data: records.map(record => ({
               REC_ID: record.REC_ID,
               startTime,
