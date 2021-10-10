@@ -363,6 +363,20 @@ class DoorGroupTable extends React.Component {
     ...this.commonColumns
   ];
 
+  getRowSelection = () => {
+    const { mode, selectedRowKeys, onRowSelectionChange } = this.props;
+    if (mode !== 'org') {
+      return;
+    }
+    return {
+      selectedRowKeys,
+      onChange: (selectedRowKeys, selectedRows) => {
+        onRowSelectionChange &&
+          onRowSelectionChange(selectedRowKeys, selectedRows);
+      }
+    };
+  };
+
   render() {
     const tableFooter = {
       pagination: {
@@ -426,6 +440,8 @@ class DoorGroupTable extends React.Component {
                   return false;
                 })}
                 {...tableFooter}
+                rowSelection={this.getRowSelection()}
+                rowKey="REC_ID"
               />
             </Panel>
             <Panel
@@ -464,6 +480,8 @@ class DoorGroupTable extends React.Component {
                   return false;
                 })}
                 {...tableFooter}
+                rowSelection={this.getRowSelection()}
+                rowKey="REC_ID"
               />
             </Panel>
           </Collapse>

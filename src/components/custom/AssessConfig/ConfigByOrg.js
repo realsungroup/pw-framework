@@ -11,7 +11,6 @@ import {
 import DoorGroupTable from '../DoorGroupTable/DoorGroupTable';
 import AddOrgRightModal from '../AddOrgRightModal';
 import {
-  removeRightById,
   removeOrgRightById,
   authConfigProgress,
   modifyOrgDateByIds
@@ -49,7 +48,8 @@ class ConfigByOrg extends React.Component {
 
     orgIndexCodes: [],
     orgIndexCode: '',
-    orgList: []
+    orgList: [],
+    selectedRowRecIds: []
   };
 
   componentDidMount = async () => {
@@ -74,6 +74,10 @@ class ConfigByOrg extends React.Component {
       startTime: moment(startTime),
       endTime: moment(endTime)
     });
+  };
+
+  handleRowSelectionChange = selectedRowRecIds => {
+    this.setState({ selectedRowRecIds });
   };
 
   handleModifyAllAuthDate = () => {
@@ -267,35 +271,12 @@ class ConfigByOrg extends React.Component {
   };
 
   handleRemoveAllRight = () => {
-    const { selectedRowKeys, personGroupList } = this.state;
-    const personGroups = [];
+    const { selectedRowRecIds } = this.state;
 
-    selectedRowKeys.forEach(key => {
-      const result = personGroupList.find(item => item.groupId === key);
-      if (result) {
-        personGroups.push(result);
-      }
-    });
-
-    const removeRight = async personGroupIds => {
+    const removeRight = async () => {
       this.setState({ progressVisible: true, progressMode: 'remove' });
 
-      // 获取人员分组权限表记录
-      let res;
-      try {
-        res = await http({ baseURL: realsunApiBaseURL }).getTable({
-          resid: 684097503067,
-          cmswhere: `personGroupId in (${personGroupIds
-            .map(id => `'${id}'`)
-            .join(',')})`
-        });
-      } catch (err) {
-        this.setState({ progressVisible: false });
-        return message.error(err.message);
-      }
-
-      const records = res.data;
-      const recIds = records.map(item => `${item.REC_ID}`);
+      const recIds = selectedRowRecIds;
 
       if (!recIds.length) {
         message.info('您选择的人员分组没有配置权限');
@@ -303,14 +284,18 @@ class ConfigByOrg extends React.Component {
       } else {
         let res;
         try {
-          res = await removeRightById(recIds);
+          res = await removeOrgRightById(recIds.map(recId => String(recId)));
         } catch (err) {
           this.setState({ progressVisible: false });
           return message.error(err.message);
         }
+        this.setState({ selectedRowRecIds: [] });
         const taskIds = res.data.taskIds;
         if (taskIds && taskIds.length) {
-          this.getRemoveProgress(taskIds, records);
+          this.getRemoveProgress(
+            taskIds,
+            recIds.map(recId => ({ REC_ID: recId }))
+          );
         } else {
           message.error('删除失败');
         }
@@ -319,12 +304,10 @@ class ConfigByOrg extends React.Component {
 
     Modal.confirm({
       title: '提示',
-      content: `确定删除 ${personGroups
-        .map(item => item.name)
-        .join(',')} 的所有权限？`,
+      content: `确定删除选中的权限吗？`,
       onOk: () => {
         Modal.destroyAll();
-        removeRight(selectedRowKeys);
+        removeRight();
       }
     });
   };
@@ -355,7 +338,8 @@ class ConfigByOrg extends React.Component {
       endTime,
       progressMode,
       modifyDateRecord,
-      orgIndexCodes
+      orgIndexCodes,
+      selectedRowRecIds
     } = this.state;
     return (
       <div className="configByPersonGroup-style">
@@ -374,18 +358,18 @@ class ConfigByOrg extends React.Component {
                   添加权限
                 </Button>
               </span>
-              {/* <span className="header-button-style">
+              <span className="header-button-style">
                 <Button
                   icon="delete"
                   type="default"
                   key="2"
                   onClick={this.handleRemoveAllRight}
-                  disabled={!selectedRowKeys.length}
+                  disabled={!selectedRowRecIds.length}
                 >
                   删除权限
                 </Button>
               </span>
-              <span className="header-button-style">
+              {/* <span className="header-button-style">
                 <Button
                   icon="dashboard"
                   type="default"
@@ -426,6 +410,8 @@ class ConfigByOrg extends React.Component {
                     onRemove={this.handleRemoveRight}
                     onModifyDate={this.handleModifyAuthDate}
                     orgIndexCode={orgIndexCode}
+                    onRowSelectionChange={this.handleRowSelectionChange}
+                    selectedRowKeys={selectedRowRecIds}
                   />
                 )}
               </Content>
