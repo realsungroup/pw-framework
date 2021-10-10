@@ -195,6 +195,15 @@ export const addPersonGroupRight = data => {
 };
 
 /**
+ * 添加组织权限
+ */
+export const addOrgRight = data => {
+  return hikInstance.post('/api/v1/addOrgRight', {
+    ...data
+  });
+};
+
+/**
  * 查询权限配置单进度
  */
 export const authConfigProgress = data => {

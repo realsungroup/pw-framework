@@ -2,14 +2,12 @@ import React from 'react';
 import { Tree, Input, message, Spin, Empty } from 'antd';
 import {
   queryDepartments,
-  getSubRegions,
-  getRegionInfo,
-  getRegionTreeByName,
   getOrgTreeByName,
   getSubOrgs
 } from '../../../hikApi';
 import PropTypes from 'prop-types';
 import './OrgSelect.less';
+import { tree2list } from 'Util20/util';
 
 const { TreeNode } = Tree;
 
@@ -33,16 +31,27 @@ class OrgSelect extends React.Component {
     /**
      * 是否有标题
      */
-    hasTitle: PropTypes.string
+    hasTitle: PropTypes.string,
+
+    /**
+     * 节点前添加 Checkbox 复选框
+     */
+    checkable: PropTypes.bool,
+
+    /**
+     * 获取到的组织列表改变时的回调
+     */
+    onOrgListChange: PropTypes.func
   };
 
   static propTypes = {
-    hasTitle: false
+    hasTitle: false,
+    checkable: false
   };
 
   state = {
     loading: false,
-    regionTree: [],
+    orgTree: [],
     autoExpandParent: true,
     searchValue: '',
     treeKey: 0
@@ -51,6 +60,8 @@ class OrgSelect extends React.Component {
   componentDidMount = () => {
     this.initData();
   };
+
+  componentDidUpdate(prevProps, prevState) {}
 
   initData = async () => {
     this.setState({ loading: true });
@@ -69,11 +80,14 @@ class OrgSelect extends React.Component {
 
     if (res && res.data && Array.isArray(res.data.list)) {
       this.setState({
-        regionTree: res.data.list,
+        orgTree: res.data.list,
         loading: false,
         searchValue: '',
         treeKey: this.state.treeKey + 1
       });
+      const orgList = tree2list(res.data.list);
+      const { onOrgListChange } = this.props;
+      onOrgListChange && onOrgListChange(orgList);
     }
   };
 
@@ -89,17 +103,38 @@ class OrgSelect extends React.Component {
 
     treeNode.props.dataRef.children = list;
 
+    const newOrgTree = [...this.state.orgTree];
     this.setState({
-      regionTree: [...this.state.regionTree],
+      orgTree: newOrgTree,
       treeKey: this.state.treeKey + 1
     });
+
+    const orgList = tree2list(newOrgTree);
+    const { onOrgListChange } = this.props;
+    onOrgListChange && onOrgListChange(orgList);
+  };
+
+  getDisableCheckbox = item => {
+    const { checkable, disableCheckedKeys } = this.props;
+    if (checkable && disableCheckedKeys) {
+      const { orgIndexCode } = item;
+      if (disableCheckedKeys.includes(orgIndexCode)) {
+        return true;
+      }
+    }
+    return false;
   };
 
   renderTreeNodes = data =>
     data.map(item => {
       if (item.children && item.children.length) {
         return (
-          <TreeNode title={item.name} key={item.indexCode} dataRef={item}>
+          <TreeNode
+            title={item.name}
+            key={item.indexCode}
+            dataRef={item}
+            disableCheckbox={this.getDisableCheckbox(item)}
+          >
             {this.renderTreeNodes(item.children)}
           </TreeNode>
         );
@@ -110,6 +145,7 @@ class OrgSelect extends React.Component {
           key={item.indexCode}
           {...item}
           dataRef={item}
+          disableCheckbox={this.getDisableCheckbox(item)}
         />
       );
     });
@@ -118,7 +154,7 @@ class OrgSelect extends React.Component {
     if (!value) {
       return this.initData();
     }
-    const result = this.state.regionTree.find(region =>
+    const result = this.state.orgTree.find(region =>
       region.orgName.includes(value)
     );
     if (result) {
@@ -135,7 +171,7 @@ class OrgSelect extends React.Component {
       return message.error(err.message);
     }
 
-    const regionTree = res.data.orgTree;
+    const orgTree = res.data.orgTree || [];
 
     const dataList = [];
     const generateList = data => {
@@ -148,7 +184,7 @@ class OrgSelect extends React.Component {
         }
       }
     };
-    generateList(regionTree);
+    generateList(orgTree);
 
     const getParentKey = (key, tree) => {
       let parentKey;
@@ -168,7 +204,7 @@ class OrgSelect extends React.Component {
     const expandedKeys = dataList
       .map(item => {
         if (item.title.indexOf(this.state.searchValue) > -1) {
-          return getParentKey(item.key, regionTree);
+          return getParentKey(item.key, orgTree);
         }
         return null;
       })
@@ -176,7 +212,7 @@ class OrgSelect extends React.Component {
 
     this.setState({
       loading: false,
-      regionTree,
+      orgTree,
       expandedKeys,
       treeKey: this.state.treeKey + 1
     });
@@ -200,7 +236,12 @@ class OrgSelect extends React.Component {
         );
       if (item.children && item.children.length) {
         return (
-          <TreeNode key={item.orgIndexCode} title={name} dataRef={item}>
+          <TreeNode
+            key={item.orgIndexCode}
+            title={name}
+            dataRef={item}
+            disableCheckbox={this.getDisableCheckbox(item)}
+          >
             {this.loop(item.children)}
           </TreeNode>
         );
@@ -211,6 +252,7 @@ class OrgSelect extends React.Component {
           title={name}
           {...item}
           dataRef={item}
+          disableCheckbox={this.getDisableCheckbox(item)}
         />
       );
     });
@@ -225,15 +267,23 @@ class OrgSelect extends React.Component {
     onOrgSelect && onOrgSelect(selectedKeys[0]);
   };
 
+  getCheckedKeys = () => {
+    const { checkable, checkedKeys } = this.props;
+    if (checkable) {
+      return checkedKeys;
+    }
+    return;
+  };
+
   render() {
     const {
-      regionTree,
+      orgTree,
       loading,
       expandedKeys,
       autoExpandParent,
       treeKey
     } = this.state;
-    const { hasTitle } = this.props;
+    const { hasTitle, checkable, onCheck } = this.props;
     return (
       <div className="org-select">
         <Spin spinning={loading} style={{ height: '100%' }}>
@@ -245,7 +295,7 @@ class OrgSelect extends React.Component {
             size="small"
           />
 
-          {!!regionTree.length && (
+          {!!orgTree.length && (
             <Tree
               onExpand={this.onExpand}
               expandedKeys={expandedKeys}
@@ -253,12 +303,16 @@ class OrgSelect extends React.Component {
               loadData={this.onLoadData}
               key={treeKey}
               onSelect={this.handleSelect}
+              checkable={checkable}
+              onCheck={onCheck}
+              checkedKeys={this.getCheckedKeys()}
+              checkStrictly
             >
-              {this.loop(regionTree)}
+              {this.loop(orgTree)}
             </Tree>
           )}
 
-          {!regionTree.length && <Empty />}
+          {!orgTree.length && <Empty />}
         </Spin>
       </div>
     );

@@ -9,9 +9,7 @@ import {
   Progress
 } from 'antd';
 import DoorGroupTable from '../DoorGroupTable/DoorGroupTable';
-import PersonGourpList from '../PersonGroupList/PersonGroupList';
-import AddPersonGroupRightModal from '../AddPersonGroupRightModal';
-import PropTypes from 'prop-types';
+import AddOrgRightModal from '../AddOrgRightModal';
 import {
   removeRightById,
   authConfigProgress,
@@ -508,7 +506,7 @@ class ConfigByOrg extends React.Component {
             }}
           ></RangePicker>
         </Modal>
-        <AddPersonGroupRightModal
+        <AddOrgRightModal
           visible={addVisible}
           onSuccess={() => {
             message.success('添加成功');
@@ -519,7 +517,8 @@ class ConfigByOrg extends React.Component {
           }}
           onCancel={() => this.setState({ addVisible: false })}
           destroyOnClose
-        ></AddPersonGroupRightModal>
+          orgIndexCodes={orgIndexCodes}
+        ></AddOrgRightModal>
 
         <Modal
           title={progressMode === 'remove' ? '删除进度' : '修改有效期进度'}

@@ -183,3 +183,17 @@ export const getAccessToken = () => {
   }
   return accessToken;
 };
+
+export const tree2list = tree => {
+  const ret = [];
+  const f = list => {
+    ret.push(...list);
+    list.forEach(item => {
+      if (Array.isArray(item.children) && item.children.length) {
+        f(item.children);
+      }
+    });
+  };
+  f(tree);
+  return ret;
+};
