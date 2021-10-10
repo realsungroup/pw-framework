@@ -12,6 +12,7 @@ import DoorGroupTable from '../DoorGroupTable/DoorGroupTable';
 import AddOrgRightModal from '../AddOrgRightModal';
 import {
   removeRightById,
+  removeOrgRightById,
   authConfigProgress,
   modifyDateByIds
 } from '../../../hikApi';
@@ -47,7 +48,8 @@ class ConfigByOrg extends React.Component {
     modifyDateLoading: false,
 
     orgIndexCodes: [],
-    orgIndexCode: ''
+    orgIndexCode: '',
+    orgList: []
   };
 
   componentDidMount = async () => {
@@ -200,22 +202,20 @@ class ConfigByOrg extends React.Component {
   };
 
   handleRemoveRight = record => {
-    const { selectedPersonGroupId, personGroupList } = this.state;
-    const personGroup = personGroupList.find(
-      item => item.groupId === selectedPersonGroupId
-    );
+    const { orgList, orgIndexCode } = this.state;
+    const orgItem = orgList.find(org => org.orgIndexCode === orgIndexCode);
     let msg = '';
     if (record.doorType === 'door') {
-      msg = `确定删除 ${personGroup.name} 的 ${record.doorDetail.name} 权限？`;
+      msg = `确定删除 ${orgItem.orgName} 的 ${record.doorDetail.name} 权限？`;
     } else if (record.doorType === 'group') {
-      msg = `确定删除 ${personGroup.name} 的 ${record.groupDetail.name} 权限？`;
+      msg = `确定删除 ${orgItem.orgName} 的 ${record.groupDetail.name} 权限？`;
     }
 
     const removeRight = async record => {
       this.setState({ progressVisible: true, progressMode: 'remove' });
       let res;
       try {
-        res = await removeRightById([`${record.REC_ID}`]);
+        res = await removeOrgRightById([`${record.REC_ID}`]);
       } catch (err) {
         this.setState({ progressVisible: false });
         return message.error(err.message);
@@ -313,7 +313,7 @@ class ConfigByOrg extends React.Component {
         // 任务完成了，删除人员分组权限表记录
         try {
           await http({ baseURL: realsunApiBaseURL }).removeRecords({
-            resid: 684097503067,
+            resid: 686951200660,
             data: records.map(record => ({
               REC_ID: record.REC_ID
             }))
@@ -394,6 +394,19 @@ class ConfigByOrg extends React.Component {
     });
   };
 
+  handleOrgSelect = orgIndexCode => {
+    if (orgIndexCode) {
+      this.setState({
+        orgIndexCode,
+        doorGroupTableKey: this.state.doorGroupTableKey + 1
+      });
+    }
+  };
+
+  handleOrgListChange = orgList => {
+    this.setState({ orgList });
+  };
+
   render() {
     const {
       selectedRowKeys,
@@ -426,7 +439,7 @@ class ConfigByOrg extends React.Component {
                   添加权限
                 </Button>
               </span>
-              <span className="header-button-style">
+              {/* <span className="header-button-style">
                 <Button
                   icon="delete"
                   type="default"
@@ -452,7 +465,7 @@ class ConfigByOrg extends React.Component {
                 >
                   修改有效期
                 </Button>
-              </span>
+              </span> */}
             </div>
           </Header>
           <Content>
@@ -461,11 +474,9 @@ class ConfigByOrg extends React.Component {
                 {orgIndexCodes.length && (
                   <OrgSelect
                     orgIndexCodes={orgIndexCodes}
-                    onOrgSelect={orgIndexCode => {
-                      if (orgIndexCode) {
-                        this.setState({ orgIndexCode });
-                      }
-                    }}
+                    onOrgSelect={this.handleOrgSelect}
+                    selectedKeys={[orgIndexCode]}
+                    onOrgListChange={this.handleOrgListChange}
                   ></OrgSelect>
                 )}
               </Sider>
@@ -479,6 +490,7 @@ class ConfigByOrg extends React.Component {
                     key={this.state.doorGroupTableKey}
                     onRemove={this.handleRemoveRight}
                     onModifyDate={this.handleModifyAuthDate}
+                    orgIndexCode={orgIndexCode}
                   />
                 )}
               </Content>

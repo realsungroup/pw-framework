@@ -41,7 +41,17 @@ class OrgSelect extends React.Component {
     /**
      * 获取到的组织列表改变时的回调
      */
-    onOrgListChange: PropTypes.func
+    onOrgListChange: PropTypes.func,
+
+    /**
+     * 选中的树节点
+     */
+    selectedKeys: PropTypes.array,
+
+    /**
+     * 请求组织完后的回调
+     */
+    onFetchedOrg: PropTypes.func
   };
 
   static propTypes = {
@@ -60,8 +70,6 @@ class OrgSelect extends React.Component {
   componentDidMount = () => {
     this.initData();
   };
-
-  componentDidUpdate(prevProps, prevState) {}
 
   initData = async () => {
     this.setState({ loading: true });
@@ -86,8 +94,12 @@ class OrgSelect extends React.Component {
         treeKey: this.state.treeKey + 1
       });
       const orgList = tree2list(res.data.list);
-      const { onOrgListChange } = this.props;
+      const { onOrgListChange, onOrgSelect } = this.props;
       onOrgListChange && onOrgListChange(orgList);
+      orgList &&
+        orgList.length &&
+        onOrgSelect &&
+        onOrgSelect(orgList[0].orgIndexCode);
     }
   };
 
@@ -283,7 +295,7 @@ class OrgSelect extends React.Component {
       autoExpandParent,
       treeKey
     } = this.state;
-    const { hasTitle, checkable, onCheck } = this.props;
+    const { hasTitle, checkable, onCheck, selectedKeys } = this.props;
     return (
       <div className="org-select">
         <Spin spinning={loading} style={{ height: '100%' }}>
@@ -307,6 +319,7 @@ class OrgSelect extends React.Component {
               onCheck={onCheck}
               checkedKeys={this.getCheckedKeys()}
               checkStrictly
+              selectedKeys={selectedKeys}
             >
               {this.loop(orgTree)}
             </Tree>
