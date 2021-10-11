@@ -366,10 +366,10 @@ export default class ViProvider extends React.Component {
                         </th>
                       </tr>
 
-                      {/* 施工人员清单 */}
+                      {/* 进出口提送货人员清单 */}
                       <tr>
                         <th colSpan="9">
-                          <h3>施工人员清单</h3>
+                          <h3>进出口提送货人员清单</h3>
                         </th>
                       </tr>
                       <tr>

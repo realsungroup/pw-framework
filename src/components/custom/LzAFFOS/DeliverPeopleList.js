@@ -281,7 +281,10 @@ class DeliverPeopleList extends React.Component {
         newInfo.C3_605716828937 = item.访客姓名;
         newInfo.C3_605716867680 = item.登记证件类型;
         newInfo.C3_614704116070 = item.登记证件号码;
-        newInfo.C3_606412134505 = item.访客手机号码;
+        newInfo.C3_606412134505 = item.访客电话;
+        newInfo.C3_645723303105 = item.车牌号;
+        newInfo.comName = item.货运代理公司名称;
+        newInfo.C3_605979568870 = item.访问事由;
         importData.push(newInfo);
       });
       ctx.setState({
