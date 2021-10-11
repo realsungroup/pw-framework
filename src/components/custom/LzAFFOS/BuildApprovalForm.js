@@ -703,7 +703,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -726,7 +725,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -751,7 +749,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -774,7 +771,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -799,7 +795,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -1024,7 +1019,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -1046,7 +1040,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -1070,7 +1063,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -1092,7 +1084,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -1116,7 +1107,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -1138,7 +1128,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -1162,7 +1151,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
@@ -1185,7 +1173,6 @@ class BuildApprovlForm extends React.Component {
                           <Select className="selectCss">
                             <Option value="是">是</Option>
                             <Option value="否">否</Option>
-                            <Option value="不适用">不适用</Option>
                           </Select>
                         )}
                       </th>
