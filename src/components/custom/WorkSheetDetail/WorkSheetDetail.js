@@ -444,10 +444,7 @@ class WorkSheetDetail extends React.Component {
     }
     console.log(objEmpty)
 
-    this.setState({sheetData: objEmpty})
-
-    
-
+    this.setState({sheetData: objEmpty});
     this.setState({ loading: true, process: '正在读取历史数据' });
     let cms = `C3_682281119677 = '${v}'`;
     let curCanEdit=99;
@@ -556,7 +553,7 @@ class WorkSheetDetail extends React.Component {
       btC++;
     }
       if (version) {
-        this.setState({ isCurrent:isCurrent,loading: false, process: '',imgUrl:res.data[0].imgUrl });
+        this.setState({ isCurrent:isCurrent,process: '',imgUrl:res.data[0].imgUrl });
         if(curCanEdit!=99){
           this.setState({canEdit:curCanEdit});
         }
@@ -570,7 +567,7 @@ class WorkSheetDetail extends React.Component {
         if(curCanEdit!=99){
           this.setState({canEdit:curCanEdit});
         }
-        this.setState({ loading: false, process: '', histories: his});
+        this.setState({process: '', histories: his});
         this.getTargetLine(curLineId, curCharaId, curSheetId);
         console.log(curLineId, curCharaId, curSheetId)
       }
@@ -1035,8 +1032,6 @@ class WorkSheetDetail extends React.Component {
         data: [data]
       });
       message.success('已经开始');
-      this.setState({loading:false,process:''})
-
       this.getHistories(this.props.curSheetId);
     } catch (e) {
       this.setState({loading:false,process:''})
@@ -1062,8 +1057,6 @@ vertiRec= async(v)=>{
       message.info('当前不是最新版本，更新版本后请重新操作');
       this.getNewVersion();
     }
-   
-  this.setState({loading:false,process:''})
 
   } catch (e) {
   this.setState({loading:false,process:''})
@@ -1126,7 +1119,6 @@ vertiRec= async(v)=>{
       });
       message.success('已经结束');
       this.getHistories(this.props.curSheetId);
-    this.setState({loading:false,process:''})
 
     } catch (e) {
     this.setState({loading:false,process:''})

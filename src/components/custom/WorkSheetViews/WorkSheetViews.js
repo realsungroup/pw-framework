@@ -26,7 +26,7 @@ class WorkSheetViews extends React.Component {
         part1:false
       },
       filter:[
-        {id:'all',value:'全部'},{id:'681076169400',value:'工程部'},{id:'681076179960',value:'激光部'},{id:'681076187961',value:'制造部'},{id:'681076208531',value:'质检部'}
+        {id:'all',value:'全部'},{id:'681076169400',value:'工程部'},{id:'681076179960',value:'激光部'},{id:'681076187961',value:'制造部'}
       ]
     };
   }
@@ -65,7 +65,7 @@ class WorkSheetViews extends React.Component {
     let res;
     let junk=[];
     let done=[];
-    let depaId=[{id:'681076169400',value:'工程部'},{id:'681076179960',value:'激光部'},{id:'681076187961',value:'制造部'},{id:'681076208531',value:'质检部'}];
+    let depaId=[{id:'681076169400',value:'工程部'},{id:'681076179960',value:'激光部'},{id:'681076187961',value:'制造部'}];
     let sheetData={};
     let all=[]
     try {
@@ -84,7 +84,7 @@ class WorkSheetViews extends React.Component {
           let c=0;
           all.push(res.data[n]);
           while(c<depaId.length){
-            if((res.data[n].curDepaId==depaId[c].id&&res.data[n].C3_682377833865=='工作中')||(res.data[n].C3_682540124939==depaId[c].id&&res.data[n].C3_682377833865=='已完成')){
+            if((res.data[n].curDepaId==depaId[c].id&&res.data[n].C3_682377833865=='进行中')||(res.data[n].C3_682540124939==depaId[c].id&&res.data[n].C3_682377833865=='已完成')){
               let arr=sheetData[depaId[c].id]||[];
               let obj =res.data[n];
               if(res.data[n].C3_682540124939==depaId[c].id&&res.data[n].C3_682377833865=='已完成'){

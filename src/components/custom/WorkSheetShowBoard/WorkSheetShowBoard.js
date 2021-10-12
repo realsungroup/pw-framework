@@ -227,6 +227,9 @@ class WorkSheetShowBoard extends React.Component {
         }
         n++;
       }
+      if(cms==``){
+        cms=`1=0`
+      }
       let res3=await http().getTable({
         resid: 687113114913,
         cmswhere: cms
@@ -235,11 +238,25 @@ class WorkSheetShowBoard extends React.Component {
       if(res3.data.length>0){
         n=0;
         let res3Arr = res3.data
+        let res3N=[];
         while(n<res3Arr.length){
           res3Arr[n].finished=true;
+          let v = 0;
+          let bol=false;
+          while(v<done.length){
+            if(res3Arr[n].C3_684517500134==done[v].C3_684868072961){
+              if(res3Arr[n].C3_682377764470==mesId){
+                bol=true;
+              }
+            }
+            v++;
+          }
+          if(!bol){
+            res3N.push(res3Arr[n])
+          }
           n++;
         }
-        newArr = newArr.concat(res3Arr);
+        newArr = newArr.concat(res3N);
       }
       let chartObj = {
         total: done.length+ing.length+unstart.length+qx.length+zf.length,
@@ -252,6 +269,7 @@ class WorkSheetShowBoard extends React.Component {
         ]
       };
       this.instantiation(chartObj);
+      console.log('A',newArr)
       this.setState({ sheets: newArr, loading2: false, sheetsAll: newArr });
 
       console.log(res);
@@ -269,7 +287,7 @@ class WorkSheetShowBoard extends React.Component {
     let arrUn = [];
     let arrAl = [];
     while (n < arr.length) {
-      if (arr[n].C3_682377833865 == '工作中') {
+      if (arr[n].C3_682377833865 == '进行中') {
         arrAl.push(arr[n]);
       } else {
         arrUn.push(arr[n]);
@@ -338,7 +356,6 @@ class WorkSheetShowBoard extends React.Component {
               已开始
             </div>
             <div
-              className={this.state.filter == '已开始' ? 'current' : ''}
               onClick={() => {
                 this.getRight();
               }}
@@ -353,7 +370,7 @@ class WorkSheetShowBoard extends React.Component {
                 className={
                   item.finished?'finished sheet':(item.C3_682507133563 == 'Y' ? 'emergy sheet' : 'sheet')
                 }
-               
+               style={(item.sheetStatus=='已完成'&&(!item.finished))?{display:'none'}:{}}
               >
                 <div>
                   <label>
@@ -367,15 +384,15 @@ class WorkSheetShowBoard extends React.Component {
                   {item.finished?'':(item.sheetStatus=='已作废'||item.sheetStatus=='已取消'?
                   <p>已{item.sheetStatus=='已作废'?'作废':'取消'}</p>
                   :<><p>
-                  {item.C3_682377833865 == '工作中'
+                  {item.C3_682377833865 == '进行中'
                     ? item.curProName
                     : item.C3_682444267100}{' '}
-                  {item.C3_682377833865 == '工作中'
+                  {item.C3_682377833865 == '进行中'
                     ? item.C3_682371274376
                     : ''}
                 </p>
                 <p>
-                  {item.C3_682377833865 == '工作中'
+                  {item.C3_682377833865 == '进行中'
                     ? item.C3_682379482255 + '开始'
                     : '未开始'}
                 </p></>)
