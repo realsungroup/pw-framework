@@ -339,11 +339,11 @@ class WorkSheetDetail extends React.Component {
     }
   }
   componentWillReceiveProps = async nextProps => {
-    
+    let _this=this;
     let objEmpty={}
-    if(this.props.colData){
+    if(_this.props.colData){
       let n =0;
-      let colData = this.props.colData
+      let colData = _this.props.colData
       while(n<colData.length){
         objEmpty[colData[n].ColName]=''
         n++;
@@ -352,10 +352,10 @@ class WorkSheetDetail extends React.Component {
    
     //初始化
     if (nextProps.new) {
-      this.setState({ loading: true });
-      this.getProductLines();
-      this.setState({bitianxiang:[]});
-      this.setState({
+      _this.setState({ loading: true });
+      _this.getProductLines();
+      _this.setState({bitianxiang:[]});
+      _this.setState({
         bitianxiang:Bitianxiang[0].biTian,
         productLines: [],
         productLinesValue: '请选择工作流',
@@ -380,9 +380,18 @@ class WorkSheetDetail extends React.Component {
         file4:[],
         modalFileImg:[],
       });
+      let ti=setTimeout(function(){
+        let dom = document.getElementById('sheetForm');
+          if(dom.offsetWidth<843){
+          console.log('w',dom.offsetWidth)
+          _this.setState({minL:true});
+        }else{
+          _this.setState({minL:false});
+        }
+      },100)
     } else {
-      this.setState({sheetData: objEmpty})
-      await this.getHistories(nextProps.curSheetId);
+      _this.setState({sheetData: objEmpty})
+      await _this.getHistories(nextProps.curSheetId);
     }
   };
   getNewVersion = async()=>{
@@ -895,6 +904,19 @@ class WorkSheetDetail extends React.Component {
       });
       this.setState({ loading: false, process: '' });
       await this.saveFiles(res.data[0].REC_ID);
+      //填上关联的工作单resid
+      let filedata = this.state.file1;
+      if(filedata.length>0){
+        let n = 0;
+        while(n<filedata.length){
+          filedata[n].sheetRecid=res.data[0].C3_680644203469;
+          n++;
+        }
+        let res2 = await http().modifyRecords({
+          resid: '684428871273',
+          data:filedata
+        });
+      }
       await message.success('添加成功');
       this.props.handleRefresh();
       this.props.backFunc();
@@ -1305,7 +1327,6 @@ vertiRec= async(v)=>{
           data: this.state.file2Del,
         });
       }
-      
     this.setState({loading:false,process:'',file2Del:[]})
     } catch (e) {
     this.setState({loading:false,process:''})
@@ -1424,7 +1445,7 @@ upImgData=async(result,name,r)=>{
           });
           message.success('添加成功');
           let arr = this.state.modalFileImg;
-          arr.push(data[0]);
+          arr.push(res.data[0]);
           this.setState({[this.state.editRight]:arr,modalFileImg:arr,loading:false,process:''});
         }catch(e){
           console.log(e.message);
@@ -1903,7 +1924,10 @@ upImgData=async(result,name,r)=>{
                      this.addFile(v);
                    }}
                  />
-                 <span style={{float:'right',cursor:'pointer',color:'#1890ff'}} onClick={()=>{this.saveFiles()}}>保存</span>
+                 {
+                  this.props.new?null:<span style={{float:'right',cursor:'pointer',color:'#1890ff'}} onClick={()=>{this.saveFiles()}}>保存</span>
+                 }
+                 
                 </div>
                  :null
                   
