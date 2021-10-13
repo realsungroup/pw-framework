@@ -160,6 +160,8 @@ class DownloadAuthModal extends React.Component {
 
       const isAllOver = doorsProgress.every(door => door.percent === 100);
 
+      console.log({ newDoorsProgress });
+
       this.setState({ doorsProgress: newDoorsProgress });
       if (!isAllOver) {
         this.getProgress(taskIds);
@@ -309,12 +311,12 @@ class DownloadAuthModal extends React.Component {
                       percent={item.percent}
                       style={{ width: 200 }}
                       status={(() => {
-                        if (item.errorCode !== 0) {
+                        if (item.errorCode !== 0 && item.errorCode !== null) {
                           return 'exception';
                         }
                       })()}
                     />
-                    <div>
+                    <div style={{ marginLeft: 16 }}>
                       ({item.finishedCount}/{item.total})
                     </div>
                   </div>

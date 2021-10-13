@@ -464,6 +464,7 @@ class ConfigByPersonGroup extends React.Component {
                     key={this.state.doorGroupTableKey}
                     onRemove={this.handleRemoveRight}
                     onModifyDate={this.handleModifyAuthDate}
+                    mode="personGroup"
                   />
                 )}
               </Content>

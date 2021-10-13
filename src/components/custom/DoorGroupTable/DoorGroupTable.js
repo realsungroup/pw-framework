@@ -96,8 +96,18 @@ class DoorGroupTable extends React.Component {
   };
 
   componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.selectedPersonGroupId !== this.props.selectedPersonGroupId) {
-      this.getData();
+    const { mode } = this.props;
+
+    if (mode === 'personGroup') {
+      if (
+        prevProps.selectedPersonGroupId !== this.props.selectedPersonGroupId
+      ) {
+        this.getData();
+      }
+    } else {
+      if (prevProps.orgIndexCode !== this.props.orgIndexCode) {
+        this.getDataByOrgIndexCode();
+      }
     }
   };
 

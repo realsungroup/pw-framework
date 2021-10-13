@@ -616,7 +616,6 @@ class AuthDownloadRecord extends Component {
 
         <div className="auth-download-record__table">
           <Table
-            size="small"
             bordered
             columns={this.columns}
             dataSource={dataSource}
