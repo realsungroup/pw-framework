@@ -130,7 +130,7 @@ class IDLTransferHr extends Component {
   handlemodiJobCode = async (value, recid) => {
     try {
       let res = await http().modifyRecords({
-        resid: 632255761674,
+        resid: 687436566987,
         data: [
           {
             REC_ID: recid,
@@ -206,7 +206,7 @@ class IDLTransferHr extends Component {
         let appNum = '';
         try {
           proposal = await http().getTable({
-            resid: 632255761674,
+            resid: 687436566987,
             cmswhere: `changeID = '${recid}'`
           });
           appNum = proposal.data[0].applyPersonId;
@@ -831,7 +831,7 @@ class IDLTransferHr extends Component {
         data: toAdd
       });
       let res3 = await http().modifyRecords({
-        resid: 632255761674,
+        resid: 687436566987,
         data: data
       });
       this.setState({ loading: false });
@@ -862,7 +862,7 @@ class IDLTransferHr extends Component {
 
         try {
           res = await http().modifyRecords({
-            resid: 632255761674,
+            resid: 687436566987,
             data: [
               {
                 REC_ID: this.state.toCheckFront.REC_ID,
@@ -896,7 +896,7 @@ class IDLTransferHr extends Component {
             date = moment(date).format('YYYY-MM-DD');
           }
           res = await http().modifyRecords({
-            resid: 632255761674,
+            resid: 687436566987,
             data: [
               {
                 REC_ID: this.state.toCheckFront.REC_ID,
@@ -920,7 +920,7 @@ class IDLTransferHr extends Component {
           }
 
           var res3 = await http().modifyRecords({
-            resid: 632255761674,
+            resid: 687436566987,
             data: [{ REC_ID: this.state.toCheckFront.REC_ID }]
           });
 
@@ -1109,7 +1109,7 @@ class IDLTransferHr extends Component {
       C3_614084928408: this.state.toCheckFront.C3_614084928408
     };
     let res2 = await http().modifyRecords({
-      resid: 632255761674,
+      resid: 687436566987,
       data: [obj]
     });
     if (res2.data.length > 0) {
@@ -1187,7 +1187,7 @@ class IDLTransferHr extends Component {
     console.log(obj);
     try {
       res = await http().modifyRecords({
-        resid: 632255761674,
+        resid: 687436566987,
         data: [obj]
       });
       if (res.Error == 0) {
@@ -1237,7 +1237,7 @@ class IDLTransferHr extends Component {
     this.setState({ loading: false, HCList: list1, list725: list2 });
     // try {
     //   res = await http().getTableColumnDefine({
-    //     resid: 632255761674
+    //     resid: 687436566987
     //   });
     //   var arr;
     //   var arr2;
@@ -1399,7 +1399,7 @@ class IDLTransferHr extends Component {
     arr.map(item => {
       try {
         http().modifyRecords({
-          resid: 632255761674,
+          resid: 687436566987,
           data: [
             {
               REC_ID: item.REC_ID,
@@ -2758,7 +2758,7 @@ class IDLTransferHr extends Component {
                 this.state.right.HCPreApprove == 'Y' ||
                 this.state.right.HRPreApprove == 'Y' ? (
                   <TableData
-                    resid={632255761674}
+                    resid={687436566987}
                     cmswhere={this.state.cms}
                     hasRowView={false}
                     hasAdd={false}

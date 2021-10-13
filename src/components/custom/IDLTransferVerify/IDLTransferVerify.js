@@ -9,7 +9,8 @@ import {
   Modal,
   message,
   Input,
-  DatePicker
+  DatePicker,
+  Popconfirm
 } from 'antd';
 import './IDLTransferVerify.less';
 import TableData from '../../common/data/TableData';
@@ -63,7 +64,7 @@ class IDLTransferVerify extends Component {
       canApprove: false, //是否为当前审批人
       cms: `(headcount = 'waiting' or hrPreAprrove ='waiting')`,
       userId: jobNum,
-      cmsView: `(headcount = 'waiting' or hrPreAprrove ='waiting') and applyPersonNum = '${jobNum}'`,
+      cmsView: `(headcount = 'waiting' or hrPreAprrove ='waiting') and applyPersonNum = '${jobNum}' and isnull(isCanceld,'') = ''`,
       visible: false,
       C3_632503844784: '', //记录编号
       toCheck: [],
@@ -81,6 +82,29 @@ class IDLTransferVerify extends Component {
     };
   }
   componentDidMount() {}
+  //撤销提交
+  handleCancel = async recid => {
+    let res;
+    this.setState({ loading: true });
+    try {
+      res = await http().modifyRecords({
+        resid: 632255761674,
+        data: [
+          {
+            REC_ID: recid,
+            isCanceld: 'Y'
+          }
+        ]
+      });
+      message.success('撤销成功！');
+      this.tableDataRef.handleRefresh();
+      this.setState({ loading: false });
+    } catch (e) {
+      console.log(e.message);
+      this.setState({ loading: false });
+      message.error(e.message);
+    }
+  };
   //  判断是否为发起人
   judgetrigger = v => {
     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -746,7 +770,7 @@ class IDLTransferVerify extends Component {
                 this.setState({
                   selection: '1',
                   cms: `(hrPreAprrove ='waiting' or headcount = 'waiting')`,
-                  cmsView: `(hrPreAprrove ='waiting' or headcount = 'waiting') and applyPersonNum = '${this.state.userId}'`
+                  cmsView: `(hrPreAprrove ='waiting' or headcount = 'waiting') and applyPersonNum = '${this.state.userId}' and isnull(isCanceld,'') = ''`
                 });
               }}
             >
@@ -758,11 +782,23 @@ class IDLTransferVerify extends Component {
                 this.setState({
                   selection: '2',
                   cms: `Approve = '审核中' and isnull(isStreamEnd,'') = ''`,
-                  cmsView: `Approve = '审核中' and isnull(isStreamEnd,'') = '' and applyPersonNum = '${this.state.userId}'`
+                  cmsView: `Approve = '审核中' and isnull(isStreamEnd,'') = '' and applyPersonNum = '${this.state.userId}' and isnull(isCanceld,'') = ''`
                 });
               }}
             >
               审核中
+            </p>
+            <p
+              className={this.state.selection == '5' ? 'current' : null}
+              onClick={() => {
+                this.setState({
+                  selection: '5',
+                  cms: `isCanceld = 'Y'`,
+                  cmsView: `isCanceld = 'Y' and applyPersonNum = '${this.state.userId}'`
+                });
+              }}
+            >
+              已撤销
             </p>
             <p
               className={this.state.selection == '3' ? 'current' : null}
@@ -770,7 +806,7 @@ class IDLTransferVerify extends Component {
                 this.setState({
                   selection: '3',
                   cms: `Approve = '未通过'`,
-                  cmsView: `Approve = '未通过' and applyPersonNum = '${this.state.userId}'`
+                  cmsView: `Approve = '未通过' and applyPersonNum = '${this.state.userId}' and isnull(isCanceld,'') = ''`
                 });
               }}
             >
@@ -782,12 +818,13 @@ class IDLTransferVerify extends Component {
                 this.setState({
                   selection: '4',
                   cms: `isStreamEnd = 'Y'`,
-                  cmsView: `isStreamEnd = 'Y' and applyPersonNum = '${this.state.userId}' and hrEndApprove = 'Y'`
+                  cmsView: `isStreamEnd = 'Y' and applyPersonNum = '${this.state.userId}' and hrEndApprove = 'Y' and isnull(isCanceld,'') = ''`
                 });
               }}
             >
               已通过
             </p>
+
             {/* <p className={this.state.selection=='4'?'current':null} onClick={()=>{this.setState({selection:'4',cms:'all'})}}>全部</p> */}
           </div>
           <div
@@ -820,13 +857,28 @@ class IDLTransferVerify extends Component {
               customRowBtns={[
                 record => {
                   return (
-                    <Button
-                      onClick={() => {
-                        this.showOverlay(record);
-                      }}
-                    >
-                      确认信息
-                    </Button>
+                    <>
+                      <Button
+                        onClick={() => {
+                          this.showOverlay(record);
+                        }}
+                      >
+                        确认信息
+                      </Button>
+                      {this.state.selection == '1' ||
+                      this.state.selection == '2' ? (
+                        <Popconfirm
+                          title="确认撤销?"
+                          onConfirm={() => {
+                            this.handleCancel(record.REC_ID);
+                          }}
+                          okText="Yes"
+                          cancelText="No"
+                        >
+                          <Button>撤销</Button>
+                        </Popconfirm>
+                      ) : null}
+                    </>
                   );
                 }
               ]}

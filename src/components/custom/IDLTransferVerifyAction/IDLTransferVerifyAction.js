@@ -116,7 +116,7 @@ class IDLTransferVerifyAction extends Component {
     }
     try {
       let res2 = await http().getTable({
-        resid: 634660498796,
+        resid: 687437400162,
         cmswhere: `C3_634660564341='${v}'`
       });
       this.setState({ approveRec: res2 });
@@ -238,7 +238,7 @@ class IDLTransferVerifyAction extends Component {
     str = str.substring(0, str.length - 3);
     try {
       res2 = await http().getTable({
-        resid: 634660498796,
+        resid: 687437400162,
         cmswhere: str
       });
       n = 0;
@@ -254,7 +254,7 @@ class IDLTransferVerifyAction extends Component {
         n++;
       }
       res = await http().modifyRecords({
-        resid: 634660498796,
+        resid: 687437400162,
         data: objGroup
       });
 
@@ -1087,7 +1087,7 @@ class IDLTransferVerifyAction extends Component {
           >
             <TableData
               resid={
-                this.state.selection == '1' ? '637176902794' : '634660498796'
+                this.state.selection == '1' ? '637176902794' : '687437400162'
               }
               isUseBESize={true}
               cmswhere={this.state.cms}
