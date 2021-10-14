@@ -8,7 +8,7 @@ import CollectTaskDefine from '../components/custom/CollectTaskDefine';
 class App extends Component {
   render() {
     return (
-      <TemplateWrap>
+      <TemplateWrap visible={false}>
         <div style={{ height: 500 }}>
           <CollectTaskDefine></CollectTaskDefine>
         </div>

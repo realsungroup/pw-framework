@@ -10,7 +10,9 @@ import {
   InputNumber,
   Spin,
   Table,
-  Tabs
+  Tabs,
+  DatePicker,
+  notification
 } from 'antd';
 import { TableData } from 'pw-components';
 import DoorsSelect from '../DoorsSelect';
@@ -19,7 +21,12 @@ import http from 'Util20/api';
 import ManualCollectData from './ManualCollectData';
 import TargetTableSelect from './TargetTableSelect';
 import './CollectTaskDefine.less';
+import {
+  runCollectDataTaskByTaskId,
+  collectDataTaskByTaskIdIsRun
+} from '../../../collectApi';
 
+const { RangePicker } = DatePicker;
 const { TabPane } = Tabs;
 
 const realsunApiBaseURL =
@@ -43,7 +50,13 @@ class CollectTaskDefine extends React.Component {
     selectedDoors: [],
     record: null,
     tableDataKey: 1,
-    allDoors: []
+    allDoors: [],
+    manualCollectLoadingMap: {},
+    timeModalVisible: false,
+    selectedRecord: null,
+    receiveStartTime: null,
+    receiveEndTime: null,
+    timeModalLoading: false
   };
 
   columns = [
@@ -165,6 +178,89 @@ class CollectTaskDefine extends React.Component {
     return doors;
   };
 
+  handleManualCollect = async record => {
+    const taskId = record.taskid;
+    this.setState({
+      manualCollectLoadingMap: {
+        ...this.state.manualCollectLoadingMap,
+        [taskId]: true
+      }
+    });
+
+    // 查询是否该任务是否在运行
+    let res;
+    try {
+      res = await collectDataTaskByTaskIdIsRun(taskId);
+    } catch (err) {
+      this.setState({
+        manualCollectLoadingMap: {
+          ...this.state.manualCollectLoadingMap,
+          [taskId]: false
+        }
+      });
+      return message.error(err.message);
+    }
+
+    this.setState({
+      manualCollectLoadingMap: {
+        ...this.state.manualCollectLoadingMap,
+        [taskId]: false
+      }
+    });
+
+    if (res && res.data && res.data.isRun) {
+      const { current, total, error } = res.data;
+      let progress;
+      if (total !== 0) {
+        progress = Math.floor((current / total) * 100);
+      } else {
+        progress = 100;
+      }
+
+      if (error && Array.isArray(error) && error.length > 0) {
+        const msg = error.join(',');
+        notification.error({
+          message: '任务运行错误提示',
+          description: msg
+        });
+      }
+
+      return message.info(`任务正在运行，请稍等。进度：${progress}%`);
+    }
+
+    // 显示选择时间段的 Modal
+    this.setState({ selectedRecord: record }, () => {
+      this.setState({ timeModalVisible: true });
+    });
+  };
+
+  handleSubmitTime = async () => {
+    const { selectedRecord, receiveStartTime, receiveEndTime } = this.state;
+    const { taskid: taskId } = selectedRecord;
+
+    if (!receiveStartTime || !receiveEndTime) {
+      return message.error('请选择数据入库时间范围');
+    }
+
+    this.setState({ timeModalLoading: true });
+    const startTime = `${receiveStartTime.format('YYYY-MM-DDTHH:mm:ss')}+08:00`;
+    const endTime = `${receiveEndTime.format('YYYY-MM-DDTHH:mm:ss')}+08:00`;
+    let res;
+    try {
+      res = await runCollectDataTaskByTaskId(taskId, startTime, endTime);
+    } catch (err) {
+      this.setState({ timeModalLoading: false });
+      return message.error(err.message);
+    }
+    this.setState({ timeModalLoading: false, timeModalVisible: false });
+    message.success(
+      `操作成功！有 ${res &&
+        res.data &&
+        Array.isArray(res.data.records) &&
+        res.data.records.length} 条数据`
+    );
+  };
+
   render() {
     const {
       visible,
@@ -179,7 +275,7 @@ class CollectTaskDefine extends React.Component {
 
     return (
       <div style={{ width: '100%', height: '100%', background: '#fff' }}>
-        <Tabs defaultActiveKey="手动采集数据">
+        <Tabs defaultActiveKey="任务定义表">
           <TabPane tab="任务定义表" key="任务定义表">
             <div className="collect-task-define">
               <TableData
@@ -244,6 +340,16 @@ class CollectTaskDefine extends React.Component {
                           }}
                         >
                           修改
+                        </Button>
+                        <Button
+                          type="primary"
+                          size={btnSize}
+                          onClick={() => this.handleManualCollect(record)}
+                          loading={
+                            this.state.manualCollectLoadingMap[record.taskid]
+                          }
+                        >
+                          手动采集
                         </Button>
                       </>
                     );
@@ -411,6 +517,35 @@ class CollectTaskDefine extends React.Component {
               );
             })()}
           </Form>
+        </Modal>
+
+        <Modal
+          visible={this.state.timeModalVisible}
+          title="选择数据入库时间范围"
+          onCancel={() => this.setState({ timeModalVisible: false })}
+          onOk={this.handleSubmitTime}
+          confirmLoading={this.state.timeModalLoading}
+        >
+          <Form.Item label="数据入库时间范围">
+            <RangePicker
+              showTime={{ format: 'HH:mm' }}
+              style={{ width: 400 }}
+              value={[this.state.receiveStartTime, this.state.receiveEndTime]}
+              onChange={dates => {
+                if (dates) {
+                  this.setState({
+                    receiveStartTime: dates[0],
+                    receiveEndTime: dates[1]
+                  });
+                } else {
+                  this.setState({
+                    receiveStartTime: null,
+                    receiveEndTime: null
+                  });
+                }
+              }}
+            />
+          </Form.Item>
         </Modal>
       </div>
     );

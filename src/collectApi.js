@@ -46,3 +46,27 @@ export const collectData = data => {
 export const collectDataProgress = () => {
   return collectInstance.get('/api/v1/collectDataProgress');
 };
+
+/**
+ * 通过任务编号运行采集任务
+ */
+export const runCollectDataTaskByTaskId = (
+  taskId,
+  receiveStartTime,
+  receiveEndTime
+) => {
+  return collectInstance.post('/api/v1/runCollectDataTaskByTaskId', {
+    taskId,
+    receiveStartTime,
+    receiveEndTime
+  });
+};
+
+/**
+ * 获取通过任务编号运行的任务是否正在运行
+ */
+export const collectDataTaskByTaskIdIsRun = taskId => {
+  return collectInstance.post('/api/v1/collectDataTaskByTaskIdIsRun', {
+    taskId
+  });
+};
