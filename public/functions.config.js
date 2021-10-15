@@ -10401,3 +10401,10 @@ window[680957487737] = {
     ]
   ]
 };
+window[687629239980] = {
+  name: 'ShVisit',
+  title: '办公用品申请',
+  props: {
+    choosePeopleResid: 678368669087
+  }
+};
