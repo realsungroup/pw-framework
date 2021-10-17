@@ -18,11 +18,21 @@ import {
 } from '../../../hikApi';
 import { errorCodeMap } from 'Util20/errorCodeMap';
 import moment from 'moment';
+import AuthDownloadRecordDetailModal from '../AuthDownloadRecordDetailModal';
 
 const baseURLAPI = window.pwConfig[process.env.NODE_ENV].customURLs.hikBaseURL;
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+
+const taskOptTypeMap = {
+  0: '初始化下载',
+  1: '异动下载',
+  2: '指定下载',
+  3: '快速下载',
+  4: '自动下载',
+  5: '同步下载'
+};
 
 class AuthDownloadRecord extends Component {
   state = {
@@ -37,7 +47,9 @@ class AuthDownloadRecord extends Component {
     regions: [],
     regionsFetching: false,
 
-    downloadResult: -1,
+    // TODO: 默认需要改为 -1
+    // downloadResult: -1,
+    downloadResult: 0,
 
     startTimes: null,
     endTimes: null,
@@ -46,7 +58,8 @@ class AuthDownloadRecord extends Component {
     pagination: {
       current: 1,
       pageSize: 10,
-      total: 0
+      total: 0,
+      showTotal: total => `总共 ${total} 条数据`
     },
     viewVisible: false,
     detailDataSource: [],
@@ -256,10 +269,15 @@ class AuthDownloadRecord extends Component {
       dataIndex: '描述',
       key: '描述',
       render: (text, record) => {
-        const { errorCode } = record;
+        const { taskOptType, errorCode } = record;
         const errorCodeMapObj = errorCodeMap[errorCode];
         const msg = errorCodeMapObj ? errorCodeMapObj.name : errorCode;
-        return <div>{msg}</div>;
+        const type = taskOptTypeMap[`${taskOptType}`];
+        return (
+          <div>
+            [{type}]{msg}
+          </div>
+        );
       }
     },
     {
@@ -272,9 +290,7 @@ class AuthDownloadRecord extends Component {
             size="small"
             type="primary"
             onClick={() => {
-              this.setState({ record, viewVisible: true }, () => {
-                this.handleFetchDetail(1);
-              });
+              this.setState({ record, viewVisible: true });
             }}
           >
             查看详情
@@ -415,35 +431,6 @@ class AuthDownloadRecord extends Component {
     });
   };
 
-  handleFetchDetail = async (
-    pageNo,
-    pageSize = this.state.detailPagination.pageSize
-  ) => {
-    const { record } = this.state;
-    this.setState({ viewLoading: true });
-    let res;
-    try {
-      res = await queryDownloadDetail({
-        pageNo,
-        pageSize,
-        downloadResultId: record.downloadResultId
-      });
-    } catch (err) {
-      this.setState({ viewLoading: false });
-      return message.error(err.message);
-    }
-    this.setState({
-      viewLoading: false,
-      detailDataSource: res.data.list ? res.data.list : [],
-      detailPagination: {
-        ...this.state.detailPagination,
-        pageNo,
-        pageSize,
-        total: res.total
-      }
-    });
-  };
-
   handleReset = () => {
     this.setState({
       doorIndexCode: undefined,
@@ -470,7 +457,8 @@ class AuthDownloadRecord extends Component {
       downloadResult,
       startTimes,
       endTimes,
-      dataSource
+      dataSource,
+      record
     } = this.state;
     return (
       <div className="auth-download-record">
@@ -625,30 +613,13 @@ class AuthDownloadRecord extends Component {
             onChange={this.handleTableChange}
           ></Table>
         </div>
-
-        <Modal
-          visible={this.state.viewVisible}
-          title="下载详情"
-          width={1100}
-          footer={null}
-          onCancel={() =>
-            this.setState({
-              viewVisible: false,
-              detailPagination: {
-                current: 1,
-                pageSize: 10,
-                total: 0
-              }
-            })
-          }
-        >
-          <Table
-            size="small"
-            columns={this.detailColumns}
-            dataSource={this.state.detailDataSource}
-            bordered
-          ></Table>
-        </Modal>
+        {this.state.viewVisible && (
+          <AuthDownloadRecordDetailModal
+            downloadResultId={record.downloadResultId}
+            visible={this.state.viewVisible}
+            onCancel={() => this.setState({ viewVisible: false })}
+          ></AuthDownloadRecordDetailModal>
+        )}
       </div>
     );
   }
