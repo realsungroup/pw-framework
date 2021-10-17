@@ -47,9 +47,7 @@ class AuthDownloadRecord extends Component {
     regions: [],
     regionsFetching: false,
 
-    // TODO: 默认需要改为 -1
-    // downloadResult: -1,
-    downloadResult: 0,
+    downloadResult: -1,
 
     startTimes: null,
     endTimes: null,
