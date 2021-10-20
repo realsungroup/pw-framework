@@ -190,7 +190,10 @@ class CollectTaskDefine extends React.Component {
     // 查询是否该任务是否在运行
     let res;
     try {
-      res = await collectDataTaskByTaskIdIsRun(taskId);
+      res = await http({ baseURL: realsunApiBaseURL }).getTable({
+        resid: 681055931420,
+        cmswhere: `taskid = '${taskId}'`
+      });
     } catch (err) {
       this.setState({
         manualCollectLoadingMap: {
@@ -201,37 +204,28 @@ class CollectTaskDefine extends React.Component {
       return message.error(err.message);
     }
 
-    this.setState({
-      manualCollectLoadingMap: {
-        ...this.state.manualCollectLoadingMap,
-        [taskId]: false
-      }
-    });
-
-    if (res && res.data && res.data.isRun) {
-      const { current, total, error } = res.data;
-      let progress;
-      if (total !== 0) {
-        progress = Math.floor((current / total) * 100);
-      } else {
-        progress = 100;
-      }
-
-      if (error && Array.isArray(error) && error.length > 0) {
-        const msg = error.join(',');
-        notification.error({
-          message: '任务运行错误提示',
-          description: msg
+    if (
+      res &&
+      Array.isArray(res.data) &&
+      res.data.length &&
+      res.data[0].taskid === taskId
+    ) {
+      const taskRecord = res.data[0];
+      this.setState({
+        manualCollectLoadingMap: {
+          ...this.state.manualCollectLoadingMap,
+          [taskId]: false
+        }
+      });
+      if (!taskRecord.progress) {
+        // 显示选择时间段的 Modal
+        this.setState({ selectedRecord: record }, () => {
+          this.setState({ timeModalVisible: true });
         });
+      } else {
+        message.info(`当前任务正在运行，请稍等。进度：${taskRecord.progress}%`);
       }
-
-      return message.info(`任务正在运行，请稍等。进度：${progress}%`);
     }
-
-    // 显示选择时间段的 Modal
-    this.setState({ selectedRecord: record }, () => {
-      this.setState({ timeModalVisible: true });
-    });
   };
 
   handleSubmitTime = async () => {
