@@ -1,6 +1,6 @@
 {
   "name": "pw-components",
-  "version": "21.3.0",
+  "version": "21.3.1",
   "private": true,
   "dependencies": {
     "@ant-design/colors": "^4.0.5",
@@ -158,11 +158,12 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "run-s run-build add-suffix",
+    "build": "run-s change-version run-build add-suffix",
     "test": "node scripts/test.js",
     "run-build": "node --max_old_space_size=4000 scripts/build.js",
     "add-suffix": "node scripts/addSuffixToPublicJsFile.js",
-    "dll": "webpack -p --progress --config ./config/webpack.config.vendor.js"
+    "dll": "webpack -p --progress --config ./config/webpack.config.vendor.js",
+    "change-version": "node scripts/change-version.js"
   },
   "eslintConfig": {
     "extends": "react-app"
