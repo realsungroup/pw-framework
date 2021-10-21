@@ -14,6 +14,7 @@ import { defaultLogin, domainLogin } from 'Util/api';
 import PageBody from '../components/PageBody';
 import SwitchHome from '../components/SwitchHome';
 import http from 'Util20/api';
+import { getUserInfo } from 'Util20/util';
 import folderPng from './assets/folder.png';
 import qs from 'qs';
 import './PageContainer.less';
@@ -30,12 +31,14 @@ import { OrgChartData } from '../../components/common/loadableCommon';
 import DesktopBg from './DesktopBg';
 import defaultDesktopBg from './DesktopBg/assets/05.jpg';
 import JobArchitectureDiagram from '../../components/custom/PostAndPersonnel/PostArchitecture/ArchitectureDiagram';
-
 import {
   DesktopColorPicker,
   DesktopDashboard,
   DesktopPersonCenter
 } from '../Desktop/loadableDesktop';
+import { getSingleLoginToken } from '../../hikApi';
+
+const hikPageURL = window.pwConfig[process.env.NODE_ENV].hikPageURL;
 
 const {
   domainLoginConfig,
@@ -191,7 +194,7 @@ export default class PageContainer extends React.Component {
       http({ baseURL: attendanceMonthChangeUrl }).saveUserAttMonth({
         yearmonth: moment().format('YYYYMM')
       });
-    } catch (err) { }
+    } catch (err) {}
 
     this.setState({
       desktopStyle
@@ -343,50 +346,53 @@ export default class PageContainer extends React.Component {
 
     // 桌面的文件夹
     const folders = dealApps([...res.data, ...(res.userdefined || [])]);
-    this.setState({ folders, fixedApps: res.userdefined, allApps: res.data }, () => {
-      const appArr = [];
-      // 第一次打开桌面时，默认打开的 app
-      if (isFirst) {
-        folders.some(folder =>
-          folder.apps.some(app => {
-            if (app.title === defaultOpenWindow) {
-              appArr.push({ app, typeName: folder.typeName });
-              return true;
-            }
-          })
-        );
-      }
-      // 地址栏有某个功能模块的 querystring 的话，也直接打开窗口
-      const search = this.props.history.location.search.substring(1);
-      const qsObj = qs.parse(search);
-      if (qsObj.resid && qsObj.recid && qsObj.type && qsObj.title) {
-        let temp = folders.some(folder =>
-          folder.apps.some(app => {
-            if (app.title === qsObj.title) {
-              app.fnmoduleUrl = `fnmodule${this.props.history.location.search}`;
-              appArr.push({ app, typeName: folder.typeName });
-              return true;
-            }
-          })
-        );
-
-        // 若后端未定义这个入口（即改入口由前端定义的）
-        if (!temp) {
-          appArr.push({
-            app: {
-              appName: qsObj.title,
-              title: qsObj.title,
-              name: qsObj.title,
-              ResID: qsObj.resid,
-              REC_ID: qsObj.recid,
-              fnmoduleUrl: `fnmodule${this.props.history.location.search}`
-            },
-            typeName: qsObj.type
-          });
+    this.setState(
+      { folders, fixedApps: res.userdefined, allApps: res.data },
+      () => {
+        const appArr = [];
+        // 第一次打开桌面时，默认打开的 app
+        if (isFirst) {
+          folders.some(folder =>
+            folder.apps.some(app => {
+              if (app.title === defaultOpenWindow) {
+                appArr.push({ app, typeName: folder.typeName });
+                return true;
+              }
+            })
+          );
         }
+        // 地址栏有某个功能模块的 querystring 的话，也直接打开窗口
+        const search = this.props.history.location.search.substring(1);
+        const qsObj = qs.parse(search);
+        if (qsObj.resid && qsObj.recid && qsObj.type && qsObj.title) {
+          let temp = folders.some(folder =>
+            folder.apps.some(app => {
+              if (app.title === qsObj.title) {
+                app.fnmoduleUrl = `fnmodule${this.props.history.location.search}`;
+                appArr.push({ app, typeName: folder.typeName });
+                return true;
+              }
+            })
+          );
+
+          // 若后端未定义这个入口（即改入口由前端定义的）
+          if (!temp) {
+            appArr.push({
+              app: {
+                appName: qsObj.title,
+                title: qsObj.title,
+                name: qsObj.title,
+                ResID: qsObj.resid,
+                REC_ID: qsObj.recid,
+                fnmoduleUrl: `fnmodule${this.props.history.location.search}`
+              },
+              typeName: qsObj.type
+            });
+          }
+        }
+        this.handleOpenWindow(appArr);
       }
-      this.handleOpenWindow(appArr);
-    });
+    );
     return res;
   };
 
@@ -419,7 +425,7 @@ export default class PageContainer extends React.Component {
   };
 
   handleRemindItemClick = (resid, url) => {
-    console.log(this.props, resid)
+    console.log(this.props, resid);
     const app = this.state.allApps.find(item => {
       return item.ResID == resid;
     });
@@ -523,6 +529,23 @@ export default class PageContainer extends React.Component {
     });
   };
 
+  handleOpenHikPage = async () => {
+    const userInfo = getUserInfo();
+    // let userCode = userInfo.UserCode;
+    let userCode = 'admin';
+    let res;
+    try {
+      res = await getSingleLoginToken(hikPageURL, userCode);
+    } catch (err) {
+      return message.error(err.message);
+    }
+
+    if (res && res.data && res.data.token) {
+      const url = `${hikPageURL}/bic/ssoService/v1/tokenLogin?token=${res.data.token}&service=${hikPageURL}/portal/ui/index`;
+      window.open(url);
+    }
+  };
+
   /**
    * 打开窗口
    * @params {array} appArr，如：[{ app, typeName }]
@@ -531,6 +554,15 @@ export default class PageContainer extends React.Component {
     const { activeApps, desktopStyle } = this.state;
     // app, typeName
     const arr = [];
+
+    if (
+      Array.isArray(appArr) &&
+      appArr.length === 1 &&
+      appArr[0].app &&
+      appArr[0].app.name === '按组织授权管理'
+    ) {
+      return this.handleOpenHikPage();
+    }
 
     if (desktopStyle === 'DESKTOP') {
       if (
@@ -911,7 +943,7 @@ export default class PageContainer extends React.Component {
   setThemeColor = themeColor => {
     window.less
       .modifyVars({ '@primary-color': themeColor })
-      .then(() => { })
+      .then(() => {})
       .catch(err => {
         console.log({ err });
         message.error(err.message);
@@ -1201,13 +1233,13 @@ export default class PageContainer extends React.Component {
                 }}
               />
             ) : (
-                <Icon
-                  type="shrink"
-                  onClick={() => {
-                    this.setState({ headerVisible: true });
-                  }}
-                />
-              )}
+              <Icon
+                type="shrink"
+                onClick={() => {
+                  this.setState({ headerVisible: true });
+                }}
+              />
+            )}
           </div>
         </div>
       );

@@ -184,6 +184,17 @@ export const getAccessToken = () => {
   return accessToken;
 };
 
+export const getUserInfo = () => {
+  let userInfo;
+  const userInfoString = localStorage.getItem('userInfo');
+  try {
+    userInfo = JSON.parse(userInfoString);
+  } catch (err) {
+    userInfo = undefined;
+  }
+  return userInfo;
+}
+
 export const tree2list = tree => {
   const ret = [];
   const f = list => {

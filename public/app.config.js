@@ -12,6 +12,7 @@ window.pwConfig = {
     realsunApiBaseURL: 'http://kingofdinner.realsun.me:17001/',
     hikApiBaseURL: 'http://localhost:7001/', // 海康接口层基地址
     collectApiBaseURL: 'http://localhost:7002/', // 海康接口层基地址
+    hikPageURL: 'https://114.55.35.96',
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
@@ -242,6 +243,7 @@ window.pwConfig = {
     realsunApiBaseURL: 'http://192.168.6.161:9091/',
     hikApiBaseURL: 'http://192.168.6.162:7700/', // 海康接口层基地址
     collectApiBaseURL: 'http://192.168.6.162:7800/',
+    hikPageURL: 'https://192.168.6.162',
     basename: '/',
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址

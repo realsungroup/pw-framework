@@ -296,3 +296,13 @@ export const queryAuthItemList = data => {
     ...data
   });
 };
+
+/**
+ * 查询权限条目列表
+ */
+export const getSingleLoginToken = (hikPageURL, userCode) => {
+  return hikInstance.post('/api/v1/getSingleLoginToken', {
+    hikPageURL,
+    userCode
+  });
+};
