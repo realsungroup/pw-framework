@@ -900,7 +900,7 @@ class WorkSheetDetail extends React.Component {
         data: [this.state.sheetData]
       });
       this.setState({ loading: false, process: '' });
-      await this.saveFiles(res.data[0].REC_ID);
+      await this.saveFiles(res.data[0].C3_680644203469);
       //填上关联的工作单resid
       let filedata = this.state.file1;
       if(filedata.length>0){
