@@ -193,5 +193,6 @@ export {
   HolidayBalanceQuery,
   HRLeaveApp,
   MonthlySettlementLock,
-  OfficeSupply
+  OfficeSupply,
+  ShVisit
 } from '../components/custom/loadableCustom';

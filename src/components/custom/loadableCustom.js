@@ -970,3 +970,9 @@ export const OfficeSupply = Loadable({
     return minLoading;
   }
 });
+export const ShVisit = Loadable({
+  loader: () => import('./ShVisit'),
+  loading() {
+    return minLoading;
+  }
+});
