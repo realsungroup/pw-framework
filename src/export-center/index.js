@@ -11,3 +11,5 @@ export { LzTable } from '../loadableComponents';
 // 定制组件
 
 export { PatientInfo } from '../components/custom/loadableCustom';
+
+export { ExportData } from '../components/custom/loadableCustom';

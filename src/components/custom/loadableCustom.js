@@ -23,3 +23,10 @@ export const LzMenuForms = Loadable({
     return minLoading;
   }
 });
+
+export const ExportData = Loadable({
+  loader: () => import('./ExportData'),
+  loading() {
+    return minLoading;
+  }
+});
