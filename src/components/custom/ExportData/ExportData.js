@@ -373,7 +373,7 @@ class ExportData extends React.Component {
   handleFirstColAdvSearchConfirm = (where, searchList) => {
     const { menuList, currentIndex } = this.state;
     const option = { cmswhere: where };
-    // this.getRecordList(menuList[currentIndex].RES_ID, option);
+    this.getRecordList(menuList[currentIndex].RES_ID, option);
     this.setState({
       searchList,
       cmswhere: where,
