@@ -240,6 +240,7 @@ class ExportData extends React.Component {
         },
       ],
     };
+    console.log("option",{option},{sheetData},{arr},{recordList})
     var toExcel = new ExportJsonExcel(option); //new
     toExcel.saveExcel(); //保存
 
@@ -289,6 +290,7 @@ class ExportData extends React.Component {
       return message.error(err.message);
     }
     this.fields = this.getFields(res.cmscolumninfo);
+    console.log("res.data",res.data)
     this.setState({
       recordList: res.data,
       loading: false,
@@ -373,7 +375,7 @@ class ExportData extends React.Component {
   handleFirstColAdvSearchConfirm = (where, searchList) => {
     const { menuList, currentIndex } = this.state;
     const option = { cmswhere: where };
-    // this.getRecordList(menuList[currentIndex].RES_ID, option);
+    this.getRecordList(menuList[currentIndex].RES_ID, option);
     this.setState({
       searchList,
       cmswhere: where,
