@@ -40,7 +40,7 @@ window.pwConfig = {
       HeadCountBaseURL: 'http://10.108.21.41:2001/',
       PostArchitectureBaseURL: 'http://ehrwebapi.realsun.me/',
       PostArchitectureDownloadBaseURL: 'http://10.108.21.41:2001/',
-      comprehensiveQueryBaseURL: 'http://ehrweb.realsun.me/', //综合查询
+      comprehensiveQueryBaseURL: 'http://ehrwebapi.realsun.me/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
@@ -236,7 +236,7 @@ window.pwConfig = {
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
     // 切换考勤月份的基地址
-    attendanceMonthChangeUrl: 'http://ehrweb.realsun.me/',
+    attendanceMonthChangeUrl: 'http://ehrwebapi.realsun.me/',
     fileDownloadConfig: {
       629462405981: {
         fileType: 'mdb'
@@ -252,14 +252,14 @@ window.pwConfig = {
 
     //各定制组件需用到的基地址
     customURLs: {
-      attendanceBaseURL: 'http://ehrweb.realsun.me/', //考勤审批
+      attendanceBaseURL: 'http://ehrwebapi.realsun.me/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
 
-      HeadCountBaseURL: 'http://ehrweb.realsun.me/',
-      PostArchitectureBaseURL: 'http://ehrweb.realsun.me/',
-      comprehensiveQueryBaseURL: 'http://ehrweb.realsun.me/', //综合查询
+      HeadCountBaseURL: 'http://ehrwebapi.realsun.me/',
+      PostArchitectureBaseURL: 'http://ehrwebapi.realsun.me/',
+      comprehensiveQueryBaseURL: 'http://ehrwebapi.realsun.me/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
       onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
@@ -270,9 +270,9 @@ window.pwConfig = {
       WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
       AchievementsBaseURL: 'http://pwkwebapi.realsun.me/',
-      RBASchedulingBaseURL: 'http://ehrweb.realsun.me', //RBA排班基地址
+      RBASchedulingBaseURL: 'http://ehrwebapi.realsun.me', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
-      WuxiHr03BaseURL: 'http://ehrweb.realsun.me/', //80端口非定制组件基地址
+      WuxiHr03BaseURL: 'http://ehrwebapi.realsun.me/', //80端口非定制组件基地址
       WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //员工沟通平台数据基地址
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //员工沟通平台下载基地址
@@ -396,7 +396,7 @@ window.pwConfig = {
       },
       {
         dblinkname: 'ehr',
-        baseurl: 'http://ehrweb.realsun.me'
+        baseurl: 'http://ehrwebapi.realsun.me'
       }
     ],
 

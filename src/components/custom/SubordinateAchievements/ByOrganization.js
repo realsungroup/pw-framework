@@ -132,6 +132,7 @@ class ByOrganization extends React.Component {
       }
       this.p1 = makeCancelable(http(httpParams).getByProcedureWithId(options));
       const res = await this.p1.promise;
+      console.log('res',res)
       const treeData = this.getTreeData(res.data);
       this.setState({ treeData, loading: false });
     } catch (error) {
