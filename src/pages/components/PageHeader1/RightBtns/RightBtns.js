@@ -33,6 +33,8 @@ import ReminderList from './ReminderList';
 import PersonCenter from '../../../PersonCenter';
 import AttendanceMonth from '../../AttendanceMonth';
 import { getGBEMClassName } from 'Util20/util';
+import { getCollectVersion } from '../../../../collectApi';
+import { getHikApiVersion } from '../../../../hikApi';
 
 const hasAttendanceMonth =
   window.pwConfig[process.env.NODE_ENV].hasAttendanceMonth;
@@ -60,11 +62,32 @@ class RightBtns extends React.Component {
       // 数据分析
       dataAnalyseTaskIds: [], // 数据分析任务 id 列表
       versionDescVisible: false,
-      personCenterVisible: false
+      personCenterVisible: false,
+      collectVersion: '加载中...', // 采集数据服务的版本
+      hikApiVersion: '加载中...' // 接口服务的版本
     };
   }
 
-  componentDidMount = () => { };
+  componentDidMount = async () => {
+    let res;
+    try {
+      res = await getCollectVersion();
+    } catch (err) {
+      this.setState({ collectVersion: err.message });
+    }
+    if (res && res.data && res.data.version) {
+      this.setState({ collectVersion: res.data.version });
+    }
+
+    try {
+      res = await getHikApiVersion();
+    } catch (err) {
+      this.setState({ hikApiVersion: err.message });
+    }
+    if (res && res.data && res.data.version) {
+      this.setState({ hikApiVersion: res.data.version });
+    }
+  };
 
   getDataAnalyseData = async () => {
     let res;
@@ -175,7 +198,7 @@ class RightBtns extends React.Component {
       this.props.form.getFieldValue('password2') !== undefined &&
       this.props.form.getFieldValue('password2') !== '' &&
       this.props.form.getFieldValue('password1') ===
-      this.props.form.getFieldValue('password2')
+        this.props.form.getFieldValue('password2')
     ) {
       try {
         const response = await changePassword(
@@ -353,6 +376,10 @@ class RightBtns extends React.Component {
     this.setState({ versionDescVisible: !this.state.versionDescVisible });
   };
 
+  handleRestartHikDataSyncHudong = () => {};
+
+  handleRestartHudongCollectData = () => {};
+
   render() {
     const {
       visible,
@@ -507,29 +534,67 @@ class RightBtns extends React.Component {
           }
         >
           <div className="right-btns__about-modal-content">
-            <Checkbox
-              style={{ marginLeft: 12 }}
-              checked={this.state.checked}
-              disabled={this.state.disabled}
-              onChange={() => this.setState({ checked: true })}
-            />
-            <div
-              className="right-btns__about-modal-version"
-              style={{ marginLeft: 30 }}
-            >
-              <strong>Power Works</strong>
-              <strong>
-                <FM id="RightBtns.Version" defaultMessage="版本：" />
-                {version}
-              </strong>
+            <div className="right-btns__about-modal-content-item">
+              <Checkbox
+                style={{ marginLeft: 12 }}
+                checked={this.state.checked}
+                disabled={this.state.disabled}
+                onChange={() => this.setState({ checked: true })}
+              />
+              <div
+                className="right-btns__about-modal-version"
+                style={{ marginLeft: 30 }}
+              >
+                <strong>Power Works</strong>
+                <strong>
+                  <FM id="RightBtns.Version" defaultMessage="版本：" />
+                  {version}
+                </strong>
+              </div>
+              <div className="right-btns__about-modal-btn">
+                <Button size="small" onClick={this.handleVersionDescBtnClick}>
+                  <FM
+                    id="RightBtns.VersionUpdate"
+                    defaultMessage="版本更新说明"
+                  />
+                </Button>
+              </div>
             </div>
-            <div className="right-btns__about-modal-btn">
-              <Button size="small" onClick={this.handleVersionDescBtnClick}>
-                <FM
-                  id="RightBtns.VersionUpdate"
-                  defaultMessage="版本更新说明"
-                />
-              </Button>
+            <div className="right-btns__about-modal-content-item">
+              <Checkbox
+                style={{ marginLeft: 12 }}
+                checked
+                disabled={this.state.disabled}
+                onChange={() => this.setState({ checked: true })}
+              />
+              <div
+                className="right-btns__about-modal-version"
+                style={{ marginLeft: 30 }}
+              >
+                <strong>hik-data-sync-hudong(数据同步接口服务)</strong>
+                <strong>
+                  <FM id="RightBtns.Version" defaultMessage="版本：" />
+                  {this.state.hikApiVersion}
+                </strong>
+              </div>
+            </div>
+            <div className="right-btns__about-modal-content-item">
+              <Checkbox
+                style={{ marginLeft: 12 }}
+                checked
+                disabled={this.state.disabled}
+                onChange={() => this.setState({ checked: true })}
+              />
+              <div
+                className="right-btns__about-modal-version"
+                style={{ marginLeft: 30 }}
+              >
+                <strong>hudong-collect-data(数据采集服务)</strong>
+                <strong>
+                  <FM id="RightBtns.Version" defaultMessage="版本：" />
+                  {this.state.collectVersion}
+                </strong>
+              </div>
             </div>
           </div>
           {versionDescVisible && (

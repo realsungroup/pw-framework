@@ -70,3 +70,7 @@ export const collectDataTaskByTaskIdIsRun = taskId => {
     taskId
   });
 };
+
+export const getCollectVersion = () => {
+  return collectInstance.get('/api/v1/version');
+};

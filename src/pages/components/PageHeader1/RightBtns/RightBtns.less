@@ -54,8 +54,19 @@
   }
   &__about-modal-content {
     display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+  &__about-modal-content-item {
+    &:first-child {
+      border-top: none;
+    }
+    display: flex;
+    justify-content: flex-start;
     flex-wrap: nowrap;
     align-items: center;
+    border-top: 1px solid #e8e8e8;
+    padding: 16px 0;
   }
   &__about-modal-version {
     display: flex;

@@ -306,3 +306,7 @@ export const getSingleLoginToken = (hikPageURL, userCode) => {
     userCode
   });
 };
+
+export const getHikApiVersion = () => {
+  return hikInstance.get('/api/v1/version');
+};
