@@ -1,20 +1,19 @@
 /** less 文件中引入背景图有 bug，所以使用 css */
 .login__left-part {
-  background-image: url('./images/login-red.png');
+  background-image: url('./images/login-left.png');
   background-size: auto 100%;
-  filter:brightness(1.5);
 }
 
 .ant-col .ant-btn-block,.ant-col .ant-btn-primary,.ant-col .ant-btn-primary:hover,.ant-col .ant-btn-primary:before,.ant-col .ant-btn-primary:after{
-  background-color: #A11D21!important;
-  border-color: #A11D21!important;
+  background-color: #0050b3!important;
+  border-color: #0050b3!important;
 }
 .login__right-part a,.login__right-part a:hover{
-  color:#A11D21;
+  color:#0050b3;
 }
 .login__right-part a:active{
-  color:#6B171A;
+  color:#1890ff;
 }
 .login__right-part .ant-input:focus,.login__right-part .ant-input:hover,.login__right-part .ant-input-affix-wrapper:hover .ant-input:not(.ant-input-disabled){
-  border-color: #A11D21;
+  border-color: #0050b3;
 }

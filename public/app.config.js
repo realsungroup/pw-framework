@@ -146,7 +146,7 @@ window.pwConfig = {
 
     // 主题
     themeColor: {
-      '@primary-color': '#A11D21'
+      '@primary-color': '#0050b3'
     }, // 默认主题色
 
     // 锁屏
@@ -366,7 +366,7 @@ window.pwConfig = {
 
     // 主题
     themeColor: {
-      '@primary-color': '#A11D21'
+      '@primary-color': '#0050b3'
     }, // 默认主题色
 
     // 锁屏
