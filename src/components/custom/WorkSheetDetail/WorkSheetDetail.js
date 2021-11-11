@@ -1079,6 +1079,7 @@ vertiRec= async(v)=>{
     }
     if(bol){
       message.error('尚有未填写的必填项！');
+    this.setState({loading:false})
     }else{
 
       this.setState({loading:true,process:'正在结束'})
@@ -1846,10 +1847,13 @@ upImgData=async(result,name,r)=>{
           </div>
           <div className="rightContent">
             <div className="pics">
-              <div className="toChange">
+              <div className='tuzhi' onClick={()=>{this.setState({showQi:!this.state.showQi})}}>图纸<span style={{color:'#1890ff'}}>（{this.state.showQi?'点击展开':'点击收起'}）</span>：</div>
+              <div className="toChange"
+                    style={this.state.showQi?{height:'0',minHeight:'0',lineHeight:'0'}:{}}
+              >
                 {this.state.imgUrl ? (
                   <img
-                    style={{ maxWidth: '100%' }}
+                    style={this.state.showQi?{height:'0'}:{ maxWidth: '100%'}}
                     src={this.state.imgUrl}
                     onClick={() => {
                       this.setState({ showImg: true });
@@ -1885,7 +1889,7 @@ upImgData=async(result,name,r)=>{
             
               
               <div className="files">
-              <b>附件：</b>
+              <b style={{marginLeft:'.5rem'}}>附件：</b>
               <div className="fileList">
                 <ul>
                   {
@@ -1930,7 +1934,7 @@ upImgData=async(result,name,r)=>{
               
             {this.state.sheetData.C3_684517424980=='Y'?null:
             <div className="bitainxiang">
-            <div>当前流程必填项：{this.state.bitianxiang.length==0?'无':null}</div>
+            <div><b>当前流程必填项：{this.state.bitianxiang.length==0?'无':null}</b></div>
             <ul>
             {
               this.state.bitianxiang.map(item=>{
@@ -2065,12 +2069,12 @@ upImgData=async(result,name,r)=>{
             ></div>
             <div
               className={
-                this.props.editRight.part3? 'block hidden' : 'block part3'
+                this.props.editRight.part3||this.props.editRight.part1? 'block hidden' : 'block part3'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part4? 'block hidden' : 'block part4'
+                this.props.editRight.part4||this.props.editRight.part1? 'block hidden' : 'block part4'
               }
             ></div>
             <div
