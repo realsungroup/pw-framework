@@ -12,7 +12,7 @@ class OnDutyTrainingApp extends Component {
   componentDidMount = () => {
     const applyinfo = JSON.parse(localStorage.getItem('userInfo'));
     this.setState({
-      trainerName: applyinfo.Data
+      trainerName: applyinfo.SysUserInfo.UserEmpCode
     });
   };
   render() {
@@ -22,7 +22,7 @@ class OnDutyTrainingApp extends Component {
       <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
         <TableData
           resid={664295226124}
-          cmswhere={`trainer = '${trainerName}' or trainMember = '${trainerName}'`}
+          cmswhere={`trainerMemberId = '${trainerName}' or trainMemberId2 = '${trainerName}'`}
           hasBeBtns={true}
           hasRowSelection={true}
           hasAdd={false}

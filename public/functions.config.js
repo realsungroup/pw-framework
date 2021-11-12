@@ -7706,8 +7706,6 @@ window[642858651331] = {
   name: 'MainTableSubTables', // 组件名称，
   title: '个人财年评估表', // 功能模块名称
   props: {
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
     resid: 467806334724,
     mainTableProps: {
       actionBarWidth: 200,
@@ -7746,8 +7744,6 @@ window[642858661984] = {
   name: 'TableData', // 组件名称，
   title: '绩效评估财年定义', // 功能模块名称
   props: {
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
     isUseFormDefine: false,
     resid: 420161931474,
     actionBarWidth: 200,
@@ -7772,8 +7768,6 @@ window[642858671562] = {
   name: 'TableData', // 组件名称，
   title: '评价选项', // 功能模块名称
   props: {
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
     resid: 420151178050,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7798,8 +7792,6 @@ window[642858680954] = {
   name: 'TableData', // 组件名称，
   title: '不参评人员', // 功能模块名称
   props: {
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
     resid: 464112827627,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7830,8 +7822,6 @@ window[642858691148] = {
   name: 'TableData', // 组件名称，
   title: '当前参评人员', // 功能模块名称
   props: {
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
     resid: 426074830919,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7859,8 +7849,6 @@ window[642858700263] = {
   name: 'TableData', // 组件名称，
   title: '部门评级评优设置', // 功能模块名称
   props: {
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
     resid: 434932652492,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7886,8 +7874,6 @@ window[642858711892] = {
   name: 'TableData', // 组件名称，
   title: '下属评级评优设置', // 功能模块名称
   props: {
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
     resid: 442065444190,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7912,8 +7898,6 @@ window[642858815692] = {
   name: 'TableData', // 组件名称，
   title: '绩效历史记录查看', // 功能模块名称
   props: {
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
     resid: 564509985230,
     actionBarWidth: 200,
     hasAdd: true,
@@ -7939,8 +7923,6 @@ window[642858825314] = {
   name: 'TableData', // 组件名称，
   title: '未提交人员', // 功能模块名称
   props: {
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
     resid: 612897333692,
     actionBarWidth: 200,
     hasAdd: true,
