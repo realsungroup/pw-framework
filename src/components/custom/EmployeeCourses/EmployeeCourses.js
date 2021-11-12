@@ -373,8 +373,8 @@ class EmployeeCourses extends React.Component {
         str = selectedCourse.passTime.substring(0, 10)
       }
       approvalRecords.push({
-        name: selectedCourse.HRName,
-        employeeID: selectedCourse.HRNum,
+        name: '*',
+        employeeID: '*',
         time: str,
         result: last_result
       });

@@ -1356,7 +1356,8 @@ class CreatePlan extends React.Component {
             </TabPane>
             <TabPane tab="员工个人发展" key="3">
               <TableData
-                resid={624564627997}
+                resid={629825195225}
+                cmswhere={`personID = '${this.state.listNo}'`}
                 hasModify={false}
                 hasDelete={false}
                 hasAdd={false}

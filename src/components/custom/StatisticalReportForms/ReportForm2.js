@@ -282,6 +282,9 @@ class ReportForm1 extends React.Component {
           var numnum=arr[n][c].courseScore||'0%';
           numnum=numnum.substring(0,numnum.length-1);
           numnum=Number(numnum);
+          if(numnum<0){
+            numnum=0
+          }
           arr2.push(numnum)
           c++;
         }
@@ -345,7 +348,7 @@ class ReportForm1 extends React.Component {
 
       this._echarts.hideLoading();
       let source = res.data.map(item => {
-        return [item.C3_613941384328 + item.quarter, Number(item.avgTrain).toFixed(2)];
+        return [item.C3_613941384328 + item.quarter, Number(item.avgTrain).toFixed(2)<0?0:Number(item.avgTrain).toFixed(2)];
       });
       this._echarts.setOption({
         dataset: {
