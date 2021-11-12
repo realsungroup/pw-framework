@@ -1447,7 +1447,7 @@ class ProbationForms extends React.Component {
     doc.addSection({
       headers: {
         default: new Header({
-          children: [new Paragraph({ children: [logo26] })]
+          children: []
         })
       },
       footers: {
