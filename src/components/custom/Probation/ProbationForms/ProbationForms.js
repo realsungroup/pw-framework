@@ -2604,7 +2604,11 @@ class ProbationForms extends React.Component {
                   title="确认提交转正申请？"
                   onConfirm={this.positiveApply}
                 >
-                  <Button type="primary" style={{ marginRight: 16 }}>
+                  <Button
+                    type="primary"
+                    loading={this.state.loading}
+                    style={{ marginRight: 16 }}
+                  >
                     申请转正
                   </Button>
                 </Popconfirm>
