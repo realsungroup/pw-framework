@@ -200,7 +200,8 @@ class CustomForm1 extends React.Component {
     startTime,
     endTime,
     selectedTypeId,
-    currentUserCode
+    currentUserCode,
+    bol
   ) => {
     try {
       let res = await http().getFieldBySql({
@@ -233,6 +234,11 @@ class CustomForm1 extends React.Component {
             timeLength: false
           }
         });
+      }
+      if(bol){
+        return this.state.chooseAllDay
+        ? this.state.allDayTimeLength
+        : timeLength
       }
     } catch (error) {
       console.log(error);
@@ -311,7 +317,10 @@ class CustomForm1 extends React.Component {
 
       return message.info('请上传附件');
     }
-    const { startTime, endTime, timeLength } = filledData;
+    const { startTime, endTime} = filledData;
+    let timeLength = filledData.filledData;
+    timeLength =  this.getTimeLength(startTime, endTime, selectedTypeId, currentUserCode,true);
+
     try {
       let result = await this.judgeCanSubmit(
         startTime,
@@ -371,15 +380,22 @@ class CustomForm1 extends React.Component {
     selectedTypeId,
     currentUserCode
   ) => {
-    try {
-      let res = await http().getFieldBySql({
-        dblink: 'ehr',
-        sql: `select dbo.[fn_check_regvocation](${selectedTypeId},'${startTime}','${endTime}','${currentUserCode}',${timeLength} )`
-      });
-      return res;
-    } catch (error) {
-      throw error;
+    if(timeLength>0){
+      try {
+        let res = await http().getFieldBySql({
+          dblink: 'ehr',
+          sql: `select dbo.[fn_check_regvocation](${selectedTypeId},'${startTime}','${endTime}','${currentUserCode}',${timeLength} )`
+        });
+        return res;
+      } catch (error) {
+        throw error;
+      }
+    }else{
+      return {
+        data:'时间长度必须大于0'
+      };
     }
+    
   };
   handleDateChange = item => v => {
     this.setState({

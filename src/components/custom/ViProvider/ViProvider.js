@@ -170,6 +170,9 @@ export default class ViProvider extends React.Component {
           C3_605719340594: this.state.C3_605719340594,
           C3_605719340781: this.state.C3_605719340781,
           C3_605718146773: this.state.C3_605718146773,
+          C3_605719340947: this.state.C3_605719340947, //工号
+          C3_605719341114: this.state.C3_605719341114, //姓名
+          C3_612024366364: this.state.C3_612024366364, //编号
           C3_605718133807: '送货人员',
           _state: 'added',
           _id: 1
@@ -299,6 +302,50 @@ export default class ViProvider extends React.Component {
                 </Button>
               ]}
             >
+              <Modal
+                title="选择审批人"
+                width="90%"
+                visible={this.state.showChoose}
+                onCancel={() => {
+                  this.setState({
+                    showChoose: false
+                  });
+                }}
+                footer={[]}
+              >
+                <div style={{ height: '70vh' }}>
+                  <TableData
+                    resid="690300234867"
+                    hasAdd={false}
+                    hasRowView={false}
+                    hasRowDelete={false}
+                    hasRowEdit={false}
+                    hasDelete={false}
+                    hasModify={false}
+                    hasRowModify={false}
+                    hasRowSelection={false}
+                    hasAdvSearch={false}
+                    customRowBtns={[
+                      record => {
+                        return (
+                          <Button
+                            onClick={() => {
+                              this.setState({
+                                C3_605719340947: record.C3_690300251445, //工号
+                                C3_605719341114: record.C3_690300267492, //姓名
+                                C3_612024366364: record.C3_690300259273, //编号
+                                showChoose: false
+                              });
+                            }}
+                          >
+                            选择
+                          </Button>
+                        );
+                      }
+                    ]}
+                  />
+                </div>
+              </Modal>
               <Form>
                 <div className="changeAntCss">
                   <table border="1">
@@ -337,7 +384,7 @@ export default class ViProvider extends React.Component {
                         </th>
                       </tr>
                       <tr>
-                        <th colSpan="3">
+                        <th colSpan="2">
                           <label>
                             有效开始时间(时长为3个月)<font color="red">*</font>
                           </label>
@@ -353,7 +400,7 @@ export default class ViProvider extends React.Component {
                             }}
                           />
                         </th>
-                        <th colSpan="2">
+                        <th colSpan="1">
                           <label>
                             有效结束时间<font color="red">*</font>
                           </label>
@@ -363,6 +410,31 @@ export default class ViProvider extends React.Component {
                             value={this.state.C3_605719340781}
                             disabled
                           />
+                        </th>
+                        <th colSpan="1">
+                          <label>
+                            送货审批人<font color="red">*</font>
+                          </label>
+                        </th>
+                        <th colSpan="1">
+                          <div
+                            style={
+                              this.state.C3_605719341114
+                                ? {
+                                    color: '#999',
+                                    fontSize: '14px',
+                                    cursor: 'pointer'
+                                  }
+                                : { fontSize: '14px', cursor: 'pointer' }
+                            }
+                            onClick={() => {
+                              this.setState({ showChoose: true });
+                            }}
+                          >
+                            {this.state.C3_605719341114
+                              ? this.state.C3_605719341114
+                              : '点击选择'}
+                          </div>
                         </th>
                       </tr>
 
