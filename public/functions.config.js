@@ -7822,7 +7822,7 @@ window[642858691148] = {
   name: 'TableData', // 组件名称，
   title: '当前参评人员', // 功能模块名称
   props: {
-    resid: 426074830919,
+    resid: 690300630152,
     actionBarWidth: 200,
     hasAdd: true,
     hasBeBtns: true,
