@@ -10338,7 +10338,7 @@ window[680957487737] = {
       {
         TabsTitle: '待审核',
         resid: 680892074596,
-        baseURL: 'http://kingofdinner.realsun.me:1201/',
+        baseURL: 'http://kingofdinner.realsun.me:12001/',
         downloadBaseURL: 'http://kingofdinner.realsun.me:1200/',
         hasAdd: true,
         hasBeBtns: true,
@@ -10353,7 +10353,7 @@ window[680957487737] = {
       {
         TabsTitle: '已审核',
         resid: 680892093510,
-        baseURL: 'http://kingofdinner.realsun.me:1201/',
+        baseURL: 'http://kingofdinner.realsun.me:12001/',
         downloadBaseURL: 'http://kingofdinner.realsun.me:1200/',
         hasAdd: true,
         hasBeBtns: true,
@@ -10368,7 +10368,7 @@ window[680957487737] = {
       {
         TabsTitle: '已拒绝',
         resid: 680892103237,
-        baseURL: 'http://kingofdinner.realsun.me:1201/',
+        baseURL: 'http://kingofdinner.realsun.me:12001/',
         downloadBaseURL: 'http://kingofdinner.realsun.me:1200/',
         hasAdd: true,
         hasBeBtns: true,
