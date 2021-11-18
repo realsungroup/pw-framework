@@ -36,7 +36,7 @@ window.pwConfig = {
       attendanceBaseURL: 'http://ehrwebapi.realsun.me/', //考勤审批
       attendanceDownloadURL: 'http://ehrweb.realsun.me/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://ehrwebapi.realsun.me/',
-      laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
+      laowuURL: 'http://kingofdinner.realsun.me:1091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.21.41:2001/',
       PostArchitectureBaseURL: 'http://ehrwebapi.realsun.me/',
       PostArchitectureDownloadBaseURL: 'http://10.108.21.41:2001/',
@@ -49,13 +49,13 @@ window.pwConfig = {
       headquartersDownloadURL: 'http://ehrweb.realsun.me/', //总部工作流管理-总部工作流下载URl
       WzBaseURL: 'http://ngrok8.realsun.me:7071', //物资管理
       WzDownloadURL: 'http://ngrok8.realsun.me:7071', //物资管理
-      OnlineTrainingManagerBaseURL: 'http://kingofdinner.realsun.me:9091/',
+      OnlineTrainingManagerBaseURL: 'http://kingofdinner.realsun.me:1091/',
       AchievementsBaseURL: 'http://pwkwebapi.realsun.me/', //绩效定制页面基地址
       RBASchedulingBaseURL: 'http://ehrwebapi.realsun.me', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://ehrweb.realsun.me/', //RBA排班下载基地址
       WuxiHr03BaseURL: 'http://ehrwebapi.realsun.me', //80端口非定制组件基地址
       WuxiHr03DownloadBaseURL: 'http://ehrweb.realsun.me/', //80端口非定制组件下载基地址
-      staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
+      staffComBaseURL: 'http://kingofdinner.realsun.me:1091/', //在线培训数据查询
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
       importTemplateDownloadURL:
         'http://ehrweb.realsun.me/rispweb/upfiles/transtem.xls' //岗位任职导入模板下载链接
@@ -255,7 +255,7 @@ window.pwConfig = {
       attendanceBaseURL: 'http://ehrwebapi.realsun.me/', //考勤审批
       attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
-      laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
+      laowuURL: 'http://kingofdinner.realsun.me:1091/', //劳务公司打印
 
       HeadCountBaseURL: 'http://ehrwebapi.realsun.me/',
       PostArchitectureBaseURL: 'http://ehrwebapi.realsun.me/',
@@ -274,7 +274,7 @@ window.pwConfig = {
       RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
       WuxiHr03BaseURL: 'http://ehrwebapi.realsun.me/', //80端口非定制组件基地址
       WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
-      staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //员工沟通平台数据基地址
+      staffComBaseURL: 'http://kingofdinner.realsun.me:1091/', //员工沟通平台数据基地址
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //员工沟通平台下载基地址
       importTemplateDownloadURL:
         'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
