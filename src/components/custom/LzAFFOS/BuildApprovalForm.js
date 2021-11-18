@@ -686,7 +686,7 @@ class BuildApprovlForm extends React.Component {
                     <tr>
                       <th colSpan="3">
                         <label>
-                          承包方的Finisar施工EHS培训是否完成
+                          承包方的施工EHS培训是否完成
                           <font color="red">*</font>
                         </label>
                       </th>

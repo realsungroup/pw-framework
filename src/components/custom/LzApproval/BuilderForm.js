@@ -200,7 +200,7 @@ class BuildApprovlForm extends React.Component {
                   </tr>
                   <tr>
                     <th colSpan="3">
-                      <label>承包方的Finisar施工EHS培训是否完成</label>
+                      <label>承包方的施工EHS培训是否完成</label>
                     </th>
                     <th>
                       <label>{approvalInfo.isTrained}</label>

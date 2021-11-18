@@ -1837,7 +1837,7 @@ window[614706766207] = {
   name: 'RelievePerson',
   title: '符合解除人员',
   props: {
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ehrwebapi.realsun.me/',
     downloadBaseURL: 'http://10.108.2.66:80'
     //   resid: 614709186509,
     //   recordFormFormWidth: '90%',
@@ -9962,7 +9962,7 @@ window[662294305216] = {
   name: 'AnnualLeaveQuery', // 组件名称，
   title: '年假查询', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ehrwebapi.realsun.me/',
     员工年假季度账户表: '662169346288',
     员工年假使用明细表: '662169358054'
   }
@@ -9971,7 +9971,7 @@ window[663690700084] = {
   name: 'AnnualLeaveManage', // 组件名称，
   title: '年假管理', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:9091'
+    baseURL: 'http://ehrwebapi.realsun.me/'
   }
 };
 //在岗培训审批
@@ -9986,7 +9986,7 @@ window[671543192998] = {
   name: 'ExportPersonnelChanges', // 组件名称，
   title: '变动记录导出', // 功能模块名称
   props: {
-    baseURL: 'http://10.108.2.66:9091'
+    baseURL: 'http://ehrwebapi.realsun.me/'
   }
 };
 
@@ -10198,7 +10198,7 @@ window[676485269974] = {
   title: '年假管理——考勤员用', // 功能模块名称
   props: {
     resid: 668272811088,
-    baseURL: 'http://10.108.2.66:9091',
+    baseURL: 'http://ehrwebapi.realsun.me/',
     hasAdd: false,
     hasBeBtns: false,
     hasModify: false,
