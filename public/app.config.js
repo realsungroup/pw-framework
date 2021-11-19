@@ -239,7 +239,7 @@ window.pwConfig = {
   // 生产环境
   production: {
     // 地址
-    baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    baseURL: 'http://192.168.6.161:1001/', // 请求的基地址
     realsunApiBaseURL: 'http://192.168.6.161:9091/',
     hikApiBaseURL: 'http://192.168.6.162:7700/', // 海康接口层基地址
     collectApiBaseURL: 'http://192.168.6.162:7800/',
