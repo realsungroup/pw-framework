@@ -43,7 +43,7 @@ window.pwConfig = {
       comprehensiveQueryBaseURL: 'http://ehrwebapi.realsun.me/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
-      onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
+      onlineTrainning: 'http://kingofdinner.realsun.me:1091', //在线培训数据查询
       onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
       headquartersBaseURL: 'http://pwkwebapi.realsun.me', //总部工作流管理-总部工作流
       headquartersDownloadURL: 'http://ehrweb.realsun.me/', //总部工作流管理-总部工作流下载URl
@@ -262,13 +262,13 @@ window.pwConfig = {
       comprehensiveQueryBaseURL: 'http://ehrwebapi.realsun.me/', //综合查询
       dlEmployBaseURL: 'http://kingofdinner.realsun.me:1201/', //DL招聘-DL管理员
       dlEmployDownloadURL: 'http://kingofdinner.realsun.me:1200/', //DL招聘-DL管理员下载URl
-      onlineTrainning: 'https://finisar26.realsun.me:1101', //在线培训数据查询
+      onlineTrainning: 'http://kingofdinner.realsun.me:1091', //在线培训数据查询
       onlineTrainningDownload: 'http://finisar26.realsun.me:1100/', //在线培训数据下载
       headquartersBaseURL: 'http://pwkwebapi.realsun.me/', //总部工作流管理-总部工作流
       headquartersDownloadURL: 'http://10.108.2.66:1000', //总部工作流管理-总部工作流下载URl
       WzBaseURL: 'http://10.108.2.66:2001', //物资管理
       WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
-      OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
+      OnlineTrainingManagerBaseURL: 'http://kingofdinner.realsun.me:1091',
       AchievementsBaseURL: 'http://pwkwebapi.realsun.me/',
       RBASchedulingBaseURL: 'http://ehrwebapi.realsun.me', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
