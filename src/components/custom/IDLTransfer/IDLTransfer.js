@@ -136,7 +136,7 @@ class IDLTransfer extends Component {
     });
     this.setState({ companyArr: res.data });
     if (res.data) {
-      this.setState({ depaFilter: res.data[1].C3_419448436728 });
+      this.setState({ depaFilter: res.data[1].C3_419448448137});
     }
   };
   //获取地址栏参数跳转页面
@@ -420,7 +420,7 @@ class IDLTransfer extends Component {
       // 设置arr初始值
       n = 0;
       while (n < obj.length) {
-        if (obj[n].C3_417731575935 != 'Y' && obj[n].C3_419448436728) {
+        if (obj[n].C3_417731575935 != 'Y' && obj[n].DEP_id) {
           //一级部门C3_461011945566
           //二级部门C3_461011949004
           //三级部门C3_461011961036
@@ -1000,8 +1000,8 @@ class IDLTransfer extends Component {
                                 resid={632327119162}
                                 cmswhere={
                                   this.state.companyV == '100'
-                                    ? `C3_419339113187 != '' and C3_419448436728 = '菲尼萨光电通讯科技(无锡)有限公司'`
-                                    : `C3_419339113187 != '' and C3_419448436728 = '菲尼萨光电通讯(上海)有限公司'`
+                                    ? `C3_419339113187 != '' and C3_419448448137	 = '100'`
+                                    : `C3_419339113187 != '' and C3_419448448137	 = '2000'`
                                 }
                                 hasRowView={false}
                                 subtractH={220}
@@ -1931,7 +1931,7 @@ class IDLTransfer extends Component {
                             height={'80vh'}
                           >
                             <Select
-                              placeholder="请选择级别"
+                              placeholder="请选择公司"
                               style={{ width: 240 }}
                               value={this.state.depaFilter}
                               onChange={v => {
@@ -1941,7 +1941,7 @@ class IDLTransfer extends Component {
                               {this.state.companyArr.map((item, key) => {
                                 return (
                                   <Option
-                                    value={item.C3_419448436728}
+                                    value={item.DEP_id}
                                     key={key}
                                   >
                                     {item.C3_419448436728}
@@ -1963,7 +1963,7 @@ class IDLTransfer extends Component {
                                 hasDownload={false}
                                 resid={632327119162}
                                 actionBarWidth={80}
-                                cmswhere={`C3_419339113187 != '' and C3_419448436728 = '${this.state.depaFilter}'`}
+                                cmswhere={`C3_419339113187 != '' and C3_419448448137 = '${this.state.depaFilter}'`}
                                 hasRowView={false}
                                 subtractH={220}
                                 hasAdd={false}
