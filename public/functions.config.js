@@ -10416,6 +10416,7 @@ window[687976347225] = {
       {
         resid: 687801974358,
         TabsTitle: '未审批',
+        recordFormUseAbsolute: true,
         recordFormFormWidth: '90%',
         hasBeBtns: true,
         hasModify: false,
@@ -10428,6 +10429,7 @@ window[687976347225] = {
       },
       {
         resid: 687823032125,
+        recordFormUseAbsolute: true,
         TabsTitle: '已审批',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -10449,6 +10451,7 @@ window[687976386945] = {
     [
       {
         resid: 687801999108,
+        recordFormUseAbsolute: true,
         TabsTitle: '全部',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -10462,6 +10465,7 @@ window[687976386945] = {
       },
       {
         resid: 687823076582,
+        recordFormUseAbsolute: true,
         TabsTitle: '访问中',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -10475,6 +10479,7 @@ window[687976386945] = {
       },
       {
         resid: 687823090661,
+        recordFormUseAbsolute: true,
         TabsTitle: '访问结束',
         recordFormFormWidth: '90%',
         hasBeBtns: true,
@@ -10484,6 +10489,42 @@ window[687976386945] = {
         hasRowDelete: false,
         hasRowModify: false,
         hasRowView: false,
+        subtractH: 220
+      }
+    ]
+  ]
+};
+window[690562274466] = {
+  name: 'TabsTableData',
+  title: '行政审批',
+  props: [
+    [
+      {
+        resid: 687980162545,
+        recordFormUseAbsolute: true,
+        TabsTitle: '待审批',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        subtractH: 220
+      },
+      {
+        resid: 690560730751,
+        recordFormUseAbsolute: true,
+        TabsTitle: '已审批',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
         subtractH: 220
       }
     ]

@@ -147,6 +147,27 @@ export default class LzAFFOS extends React.Component {
     });
   };
 
+  setFiles = v => {
+    let arr = [];
+    let n = 0;
+    while (n < v.length) {
+      arr.push(v[n]);
+      n++;
+    }
+    if (arr.length != 0) {
+      if (arr.length == 1) {
+        arr.push({ name: '', url: '' });
+      }
+      let value = this.state.value;
+      value.file1 = arr[0].name;
+      value.file2 = arr[1].name;
+      value.file1Address = arr[0].url;
+      value.file2Address = arr[1].url;
+      this.setState({
+        value
+      });
+    }
+  };
   getInfluentedManageInfo = async num => {
     let res;
     try {
@@ -1074,6 +1095,7 @@ export default class LzAFFOS extends React.Component {
                   buildArrangeDept: this.state.buildArrangeDept,
                   goodsInfo: this.state.goodsInfo
                 }}
+                setFiles={this.setFiles}
                 getValues={this.getValues}
                 openApprovalModal={this.openApprovalModal}
                 openShortApprovalModal={this.openShortApprovalModal}

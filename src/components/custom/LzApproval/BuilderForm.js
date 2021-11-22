@@ -118,6 +118,20 @@ class BuildApprovlForm extends React.Component {
               </tr>
               <tr>
                 <th colSpan="3">
+                  <label>本次施工是否需要临时使用厂务能源</label>
+                </th>
+                <th colSpan="1">
+                  <label>{approvalInfo.needEnergy}</label>
+                </th>
+                <th colSpan="3">
+                  <label>本次施工是否需要永久使用厂务能源</label>
+                </th>
+                <th colSpan="2">
+                  <label>{approvalInfo.needEnergyForever}</label>
+                </th>
+              </tr>
+              <tr>
+                <th colSpan="3">
                   <label>场务负责工程师</label>
                 </th>
                 <th>
