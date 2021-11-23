@@ -63,7 +63,6 @@ const labels = [
 const labels2 = [
   {
     name: '饮用水',
-    class: 'normal',
     id: 'C3_687636521478',
     children: [
       {
@@ -74,7 +73,6 @@ const labels2 = [
   },
   {
     name: '会议室',
-    class: 'normal',
     id: 'C3_687636541790',
     children: [
       {
@@ -111,6 +109,10 @@ const labels2 = [
         labelId: 'C3_687636630725'
       },
       {
+        labelName: '餐标：',
+        labelId: 'C3_690976041942'
+      },
+      {
         labelName: '送餐时间：',
         labelId: 'C3_687636678443',
         type: 'time'
@@ -133,6 +135,10 @@ const labels2 = [
       {
         labelName: '数量：',
         labelId: 'C3_687637038205'
+      },
+      {
+        labelName: '餐标：',
+        labelId: 'C3_690976041942'
       },
       {
         labelName: '送餐时间：',

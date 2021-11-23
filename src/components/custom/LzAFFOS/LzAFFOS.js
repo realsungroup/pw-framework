@@ -813,7 +813,8 @@ export default class LzAFFOS extends React.Component {
       value: {},
       approvalPeopleList: emptyApprovalPeopleList
     });
-    this.tableDataRef.handleRefresh();
+    // this.tableDataRef.handleRefresh();
+    window.location.reload();
     this.setState({
       loading: false
     });
@@ -1458,100 +1459,6 @@ export default class LzAFFOS extends React.Component {
                   ]}
                 />
               </div>
-              {/* 施工人员打印模态框 */}
-              <Modal
-                width="61%"
-                visible={printBuilderModal}
-                title="施工申请审批"
-                onCancel={() => {
-                  this.setState({
-                    printBuilderModal: false
-                  });
-                }}
-                footer={[
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      console.log('开始打印');
-                      this.doPrint('builder');
-                      this.setState({
-                        isPrint: true
-                      });
-                    }}
-                  >
-                    打印
-                  </Button>,
-                  <Button
-                    onClick={() => {
-                      this.setState({
-                        printBuilderModal: false,
-                        isPrint: false
-                      });
-                    }}
-                  >
-                    关闭
-                  </Button>
-                ]}
-              >
-                <div id="printBuilderForm">
-                  <div className="printBody">
-                    <BuilderForm
-                      toBuilderFormInfo={{
-                        approvalInfo: record,
-                        builderList: builderList,
-                        approvalList: approvalList1,
-                        isPrint: isPrint
-                      }}
-                    />
-                  </div>
-                </div>
-              </Modal>
-              {/* 送货人员打印模态框 */}
-              <Modal
-                width="61%"
-                visible={printDeliverModal}
-                title="提送货申请审批"
-                onCancel={() => {
-                  this.setState({
-                    printDeliverModal: false
-                  });
-                }}
-                footer={[
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      console.log('开始打印');
-                      this.doPrint('deliver');
-                    }}
-                  >
-                    打印
-                  </Button>,
-                  <Button
-                    onClick={() => {
-                      this.setState({
-                        printDeliverModal: false,
-                        isPrint: false
-                      });
-                    }}
-                  >
-                    关闭
-                  </Button>
-                ]}
-              >
-                <div id="printDeliverForm">
-                  <div className="printBody">
-                    <DeliverForm
-                      toDeliverFormInfo={{
-                        approvalInfo: record,
-                        deliverList: deliverList,
-                        approvalList: approvalList1,
-                        isPrint: isPrint,
-                        isLongBuilder: isLongBuilder
-                      }}
-                    />
-                  </div>
-                </div>
-              </Modal>
             </TabPane>
             <TabPane tab="已拒绝" key="已拒绝">
               <div style={{ height: 'calc(100vh - 60px)' }}>
@@ -1562,16 +1469,29 @@ export default class LzAFFOS extends React.Component {
               <div style={{ height: 'calc(100vh - 60px)' }}>
                 <TableData
                   {...history}
-                  customtrBtns={[
+                  customRowBtns={[
                     (record, btnSize) => {
                       return (
-                        <Button
-                          onClick={() => {
-                            this.reApply(record);
-                          }}
-                        >
-                          重新申请
-                        </Button>
+                        <>
+                          <Button
+                            style={{ width: '104px' }}
+                            onClick={() => {
+                              this.showRecord(record);
+                              this.setState({
+                                isPrint: true
+                              });
+                            }}
+                          >
+                            打印申请单
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              this.reApply(record);
+                            }}
+                          >
+                            重新申请
+                          </Button>
+                        </>
                       );
                     }
                   ]}
@@ -1579,6 +1499,100 @@ export default class LzAFFOS extends React.Component {
               </div>
             </TabPane>
           </Tabs>
+          {/* 施工人员打印模态框 */}
+          <Modal
+            width="61%"
+            visible={printBuilderModal}
+            title="施工申请审批"
+            onCancel={() => {
+              this.setState({
+                printBuilderModal: false
+              });
+            }}
+            footer={[
+              <Button
+                type="primary"
+                onClick={() => {
+                  console.log('开始打印');
+                  this.doPrint('builder');
+                  this.setState({
+                    isPrint: true
+                  });
+                }}
+              >
+                打印
+              </Button>,
+              <Button
+                onClick={() => {
+                  this.setState({
+                    printBuilderModal: false,
+                    isPrint: false
+                  });
+                }}
+              >
+                关闭
+              </Button>
+            ]}
+          >
+            <div id="printBuilderForm">
+              <div className="printBody">
+                <BuilderForm
+                  toBuilderFormInfo={{
+                    approvalInfo: record,
+                    builderList: builderList,
+                    approvalList: approvalList1,
+                    isPrint: isPrint
+                  }}
+                />
+              </div>
+            </div>
+          </Modal>
+          {/* 送货人员打印模态框 */}
+          <Modal
+            width="61%"
+            visible={printDeliverModal}
+            title="提送货申请审批"
+            onCancel={() => {
+              this.setState({
+                printDeliverModal: false
+              });
+            }}
+            footer={[
+              <Button
+                type="primary"
+                onClick={() => {
+                  console.log('开始打印');
+                  this.doPrint('deliver');
+                }}
+              >
+                打印
+              </Button>,
+              <Button
+                onClick={() => {
+                  this.setState({
+                    printDeliverModal: false,
+                    isPrint: false
+                  });
+                }}
+              >
+                关闭
+              </Button>
+            ]}
+          >
+            <div id="printDeliverForm">
+              <div className="printBody">
+                <DeliverForm
+                  toDeliverFormInfo={{
+                    approvalInfo: record,
+                    deliverList: deliverList,
+                    approvalList: approvalList1,
+                    isPrint: isPrint,
+                    isLongBuilder: isLongBuilder
+                  }}
+                />
+              </div>
+            </div>
+          </Modal>
           {!!abnormalNum && (
             <div className="lz-affo__abnormal-num">{abnormalNum}</div>
           )}

@@ -155,14 +155,14 @@ class BuildApprovlForm extends React.Component {
     } else if (
       isLongBuilder &&
       this.props.form.getFieldValue('maybePolluted') === '是' &&
-      this.props.form.getFieldValue('measureDefence') !== '是'
+      this.props.form.getFieldValue('measureDefence') === ''
     ) {
       message.info('请说明防止作业中产生之灰尘污染结净室的措施[洁净室培训]');
       return;
     } else if (
       isLongBuilder &&
       this.props.form.getFieldValue('useChemist') === '是' &&
-      this.props.form.getFieldValue('emergency') !== '是'
+      this.props.form.getFieldValue('emergency') === ''
     ) {
       message.info(
         '请说明防止作业中/作业后化学品逸散/翻洒及火灾防护之措施[洁净室培训]'
