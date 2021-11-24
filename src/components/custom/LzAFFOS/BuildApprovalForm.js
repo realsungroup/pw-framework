@@ -168,6 +168,19 @@ class BuildApprovlForm extends React.Component {
         '请说明防止作业中/作业后化学品逸散/翻洒及火灾防护之措施[洁净室培训]'
       );
       return;
+    } else if (
+      (this.props.form.getFieldValue('needEnergyForever') == 'Y' ||
+        this.props.form.getFieldValue('needEnergy') == 'Y') &&
+      this.state.fileList.length < 1
+    ) {
+      message.info('请上传施工能源需求表');
+      return;
+    } else if (
+      this.props.form.getFieldValue('needEnergyForever') == 'Y' &&
+      this.props.form.getFieldValue('needEnergy') == 'Y' &&
+      this.state.fileList.length < 2
+    ) {
+      message.info('请上传所有类型的施工能源需求表');
     } else {
       this.props.setFiles(this.state.fileList);
       this.props.form.validateFields((error, value) => {

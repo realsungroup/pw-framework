@@ -907,6 +907,19 @@ export default class ShVisit extends Component {
                         </>
                       ) : (
                         <>
+                          <Button
+                            size="small"
+                            onClick={() => {
+                              this.showModalSelect(
+                                '687802185213',
+                                'C3_687802215088',
+                                'C3_687636717177'
+                              );
+                            }}
+                            style={{ marginRight: 8 }}
+                          >
+                            选择酒店
+                          </Button>
                           <label>指定酒店名称：</label>
                           <Input
                             onChange={v => {
@@ -915,7 +928,7 @@ export default class ShVisit extends Component {
                               });
                             }}
                             value={this.state.C3_687636717177}
-                            style={{ width: '160px' }}
+                            style={{ width: '320px' }}
                           />
                         </>
                       )}
