@@ -2454,6 +2454,7 @@ class ProbationForms extends React.Component {
                   removeObjective={this.removeObjective}
                   modifyObjective={this.modifyObjective}
                   roleName={roleName}
+                  majorName={employeeInformation.director}
                   openModifyProbationObjectiveModal={
                     this.openModifyProbationObjectiveModal
                   }

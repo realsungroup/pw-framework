@@ -58,7 +58,11 @@ window.pwConfig = {
       importTemplateDownloadURL:
         'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
       importJobTemplateDownloadURL:
-        'http://10.108.2.66/rispweb/upfiles/transtem.zip' //岗位任职导入模板下载链接
+        'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
+      energyTable:
+        'http://10.108.2.66/rispweb/upfiles/施工能源需求表-临时.xlsx',
+      energyTableForever:
+        'http://10.108.2.66/rispweb/upfiles/施工能源需求表-永久.xlsx'
     },
 
     // 绩效-我的评估表功能用到的子表
@@ -277,7 +281,11 @@ window.pwConfig = {
       importTemplateDownloadURL:
         'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
       importJobTemplateDownloadURL:
-        'http://10.108.2.66/rispweb/upfiles/transtem.zip' //岗位任职导入模板下载链接
+        'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
+      energyTable:
+        'http://10.108.2.66/rispweb/upfiles/施工能源需求表-临时.xlsx',
+      energyTableForever:
+        'http://10.108.2.66/rispweb/upfiles/施工能源需求表-永久.xlsx'
     },
     // 绩效-我的评估表功能用到的子表
     achievementSubResid: {

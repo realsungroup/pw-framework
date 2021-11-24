@@ -13,8 +13,11 @@ import {
   DatePicker,
   TimePicker,
   Input,
-  message
+  message,
+  Icon,
+  Upload
 } from 'antd';
+import { uploadFile } from '../../../util/api';
 import React from 'react';
 import './LzAFFOS.less';
 import moment from 'moment';
@@ -24,15 +27,33 @@ class BuildApprovlForm extends React.Component {
   static propTypes = {};
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      fileList: []
+    };
   }
-
+  /**
+   * 上传文件
+   */
+  handleFileChange = info => {
+    let { fileList } = info;
+    this.setState({ fileList });
+    console.log(info);
+  };
   //将值传父组件
   submit = () => {
     const { isLongBuilder } = this.props.toFormMsg;
     //提交前校验
-    if (this.props.form.getFieldValue('influentedManage') === '') {
+    if (this.props.form.getFieldValue('influentedDepa') === '') {
+      message.info('未填写受施工影响部门');
+      return;
+    } else if (this.props.form.getFieldValue('influentedManage') === '') {
       message.info('未填写受施工影响部门负责人');
+      return;
+    } else if (this.props.form.getFieldValue('needEnergy') === '') {
+      message.info('未填写施工是否需要临时能源');
+      return;
+    } else if (this.props.form.getFieldValue('needEnergyForever') === '') {
+      message.info('未填写施工是否需要永久能源');
       return;
     } else if (this.props.form.getFieldValue('factoryEngineer') === '') {
       message.info('未填写厂务负责工程师');
@@ -134,20 +155,34 @@ class BuildApprovlForm extends React.Component {
     } else if (
       isLongBuilder &&
       this.props.form.getFieldValue('maybePolluted') === '是' &&
-      this.props.form.getFieldValue('measureDefence') !== '是'
+      this.props.form.getFieldValue('measureDefence') === ''
     ) {
       message.info('请说明防止作业中产生之灰尘污染结净室的措施[洁净室培训]');
       return;
     } else if (
       isLongBuilder &&
       this.props.form.getFieldValue('useChemist') === '是' &&
-      this.props.form.getFieldValue('emergency') !== '是'
+      this.props.form.getFieldValue('emergency') === ''
     ) {
       message.info(
         '请说明防止作业中/作业后化学品逸散/翻洒及火灾防护之措施[洁净室培训]'
       );
       return;
+    } else if (
+      (this.props.form.getFieldValue('needEnergyForever') == 'Y' ||
+        this.props.form.getFieldValue('needEnergy') == 'Y') &&
+      this.state.fileList.length < 1
+    ) {
+      message.info('请上传施工能源需求表');
+      return;
+    } else if (
+      this.props.form.getFieldValue('needEnergyForever') == 'Y' &&
+      this.props.form.getFieldValue('needEnergy') == 'Y' &&
+      this.state.fileList.length < 2
+    ) {
+      message.info('请上传所有类型的施工能源需求表');
     } else {
+      this.props.setFiles(this.state.fileList);
       this.props.form.validateFields((error, value) => {
         this.props.parent.getValues(this, value);
       });
@@ -362,7 +397,9 @@ class BuildApprovlForm extends React.Component {
                     )}
                   </th>
                   <th colSpan="2">
-                    <label>受施工影响部门</label>
+                    <label>
+                      受施工影响部门<font color="red">*</font>
+                    </label>
                   </th>
                   <th>
                     {getFieldDecorator('influentedDepa', {
@@ -498,6 +535,99 @@ class BuildApprovlForm extends React.Component {
                         style={{ width: '45%' }}
                       />
                     )}
+                  </th>
+                </tr>
+                <tr>
+                  <th colSpan="3">
+                    <label>
+                      本次施工是否需要临时使用厂务能源<font color="red">*</font>
+                      <a
+                        href={
+                          window.pwConfig[process.env.NODE_ENV].customURLs
+                            .energyTable
+                        }
+                        target="_blank"
+                      >
+                        点击下载施工能源需求表-临时
+                      </a>
+                    </label>
+                  </th>
+                  <th colSpan="1">
+                    {getFieldDecorator('needEnergy', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入该信息'
+                        }
+                      ]
+                    })(
+                      <Select
+                        onChange={this.changeIsControl}
+                        className="selectCss"
+                      >
+                        <Option value="Y">是</Option>
+                        <Option value="N">否</Option>
+                      </Select>
+                    )}
+                  </th>
+                  <th colSpan="3">
+                    <label>
+                      本次施工是否需要永久使用厂务能源<font color="red">*</font>
+                      <a
+                        href={
+                          window.pwConfig[process.env.NODE_ENV].customURLs
+                            .energyTableForever
+                        }
+                        target="_blank"
+                      >
+                        点击下载施工能源需求表-永久
+                      </a>
+                    </label>
+                  </th>
+                  <th colSpan="1">
+                    {getFieldDecorator('needEnergyForever', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入该信息'
+                        }
+                      ]
+                    })(
+                      <Select
+                        onChange={this.changeIsControl}
+                        className="selectCss"
+                      >
+                        <Option value="Y">是</Option>
+                        <Option value="N">否</Option>
+                      </Select>
+                    )}
+                  </th>
+                  <th colSpan="1">
+                    <Upload
+                      onChange={this.handleFileChange}
+                      fileList={this.state.fileList}
+                      customRequest={async file => {
+                        const res = await uploadFile(file.file);
+                        let { fileList } = this.state;
+                        let name =
+                          moment().format('YYYYMMDDHHMMSS') + file.file.name;
+                        fileList[fileList.length - 1] = {
+                          name: name,
+                          url: res,
+                          status: 'done',
+                          uid: -fileList.length
+                        };
+                        this.setState({
+                          fileList
+                        });
+                      }}
+                    >
+                      <Button disabled={this.state.fileList.length > 1}>
+                        上传能源需求表
+                      </Button>
+                    </Upload>
                   </th>
                 </tr>
                 <tr>
@@ -980,7 +1110,7 @@ class BuildApprovlForm extends React.Component {
                       </th>
                       <th colSpan="3">
                         <label>
-                          是：请说明防止作业中/作业后化学品逸散/翻洒及火灾防护之措施
+                          是：请说明防止作业中/作业后化学品逸散/翻洒及火灾防护之措施2
                         </label>
                       </th>
                       <th colSpan="2">

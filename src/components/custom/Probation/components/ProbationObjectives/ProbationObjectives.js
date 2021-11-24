@@ -71,6 +71,12 @@ const ProbationObjectives = props => {
           )}
         </div>
         <div className="probation-objectives_audit-stage">
+          {probationObjectives.length == 0 ? (
+            <span style={{ color: '#f5222d' }}>
+              直接主管{props.majorName ? props.majorName : ''}
+              尚未填写完成工作目标评估与评分，填写完成后，新员工方可提交转正申请。
+            </span>
+          ) : null}
           {probationObjectives.map((item, index) => (
             <div className="probation-objectives_audit-stage_objective-card">
               {props.auth.hasDelete && editable && (

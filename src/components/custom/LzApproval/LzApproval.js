@@ -385,6 +385,27 @@ export default class LzApproval extends React.Component {
               }
             >
               <div id="printBuilderForm">
+                <div style={{ marginTop: 24 }}>
+                  <div>附件：</div>
+                  {record.file1 ? (
+                    <ul>
+                      <li>
+                        <a href={record.file1Address} target="_blank">
+                          {record.file1}
+                        </a>
+                      </li>
+                      {record.file2 ? (
+                        <li>
+                          <a href={record.file2Address} target="_blank">
+                            {record.file2}
+                          </a>
+                        </li>
+                      ) : null}
+                    </ul>
+                  ) : (
+                    <div>无</div>
+                  )}
+                </div>
                 <div className="printBody">
                   <BuilderForm
                     toBuilderFormInfo={{
