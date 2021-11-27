@@ -10,7 +10,7 @@ class AccessControl extends React.Component {
     this.baseURL =
       window.pwConfig[
         process.env.NODE_ENV
-      ].customURLs.attendanceMonthChangeUrl;
+      ].customURLs.attendanceBaseURL;
   }
   
   state={
@@ -62,7 +62,7 @@ class AccessControl extends React.Component {
                 </div>
                 <div className='r'>
                 <TableData
-                baseURL={this.props.baseURL}
+                baseURL={this.baseURL}
                 resid="691171872439"
                 wrappedComponentRef={element =>
                   (this.addModalTableDataRef = element)
