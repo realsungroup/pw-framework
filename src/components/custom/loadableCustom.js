@@ -976,3 +976,10 @@ export const ShVisit = Loadable({
     return minLoading;
   }
 });
+export const AccessControl = Loadable({
+  loader: () => import('./AccessControl'),
+  loading() {
+    return minLoading;
+  }
+});
+
