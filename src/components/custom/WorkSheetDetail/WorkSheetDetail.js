@@ -1290,6 +1290,23 @@ vertiRec= async(v)=>{
       }
     );
   }
+  handleSave=async()=>{
+    this.setState({loading:'true',process:'保存中'})
+    try{
+      let res = await http().modifyRecords({
+        resid: '678790254230',
+        data: [this.state.sheetData]
+      });
+    this.setState({loading:false,process:''})
+    message.success('保存成功');
+    }catch(e){
+      console.log(e.message);
+    this.setState({loading:false,process:''})
+
+    }
+    
+  }
+
   //保存附件到附件表
   saveFiles=async(recid,isCopy)=>{
     console.log('jinlaile',recid)
@@ -2000,6 +2017,13 @@ upImgData=async(result,name,r)=>{
                   <li>复制新建</li>
 
               </Popconfirm>
+              <li
+                   onClick={() => {
+                    this.handleSave();
+                  }}
+                  >
+                    保存修改
+                  </li>
                   <li
                     onClick={() => {
                       this.handlePrint();
@@ -2007,6 +2031,7 @@ upImgData=async(result,name,r)=>{
                   >
                     打印
                   </li>
+                  
                 </>
               ) : null}
 
