@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Input, Modal, Spin, Tabs, Select } from 'antd';
+import { Button, Input, Modal, Spin, Tabs, Select, message } from 'antd';
 import './AccessControl.less';
 import http from '../../../util20/api';
 const { Option } = Select;
@@ -141,6 +141,30 @@ class AccessControl extends React.Component {
       }
     });
   };
+  //点击同步按钮
+  handleSync = async d => {
+    this.setState({ loading: true });
+    console.log(d);
+    let arr = d;
+    let n = 0;
+    while (n < arr.length) {
+      arr[n].C3_498047440296 = 'Y';
+      n++;
+    }
+    try {
+      let res = await http({ baseURL: this.baseURL }).modifyRecords({
+        resid: 666812500033,
+        data: arr
+      });
+      message.success('已提交同步请求');
+      this.tableDataRef.handleRefresh();
+      this.setState({ loading: false });
+    } catch (e) {
+      console.log(e);
+      this.setState({ loading: false });
+      message.error(e.message);
+    }
+  };
   render() {
     const { showModal, showModalInput } = this.state;
     return (
@@ -264,9 +288,7 @@ class AccessControl extends React.Component {
                   down
                   resid="691171872439"
                   cmswhere={this.state.cms}
-                  wrappedComponentRef={element =>
-                    (this.addModalTableDataRef = element)
-                  }
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
                   refTargetComponentName="TableData"
                   subtractH={180}
                   hasAdd={false}
@@ -326,12 +348,12 @@ class AccessControl extends React.Component {
                     全部
                   </Select.Option>
                   <Select.Option
-                    value={`C3_498047440296 = 'Y' and isnull(C3_691167014001,'') = ''`}
+                    value={`C3_498047440296 = 'Y' and isnull(C3_498216153456,'') = '' and isnull(C3_498753689730,'') = ''`}
                   >
                     未同步
                   </Select.Option>
                   <Select.Option
-                    value={`C3_691167014001 !='' and isnull(C3_691167886415,'') = ''`}
+                    value={`C3_498216153456 = 'Y' or C3_498753689730 = 'Y'`}
                   >
                     已同步
                   </Select.Option>
@@ -348,9 +370,7 @@ class AccessControl extends React.Component {
                 down
                 resid="666812500033"
                 cmswhere={this.state.importCms}
-                wrappedComponentRef={element =>
-                  (this.addModalTableDataRef = element)
-                }
+                wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
                 subtractH={180}
                 hasAdd={false}
@@ -360,8 +380,34 @@ class AccessControl extends React.Component {
                 hasDelete={false}
                 hasModify={false}
                 hasRowModify={false}
-                hasRowSelection={false}
+                hasRowSelection={true}
                 hasAdvSearch={false}
+                actionBarExtra={({
+                  dataSource = [],
+                  selectedRowKeys = [],
+                  data = [],
+                  recordFormData,
+                  size
+                }) => {
+                  const selectedRecords = selectedRowKeys.map(key => {
+                    return dataSource.find(item => item.REC_ID === key);
+                  });
+                  return (
+                    <Button
+                      type="primary"
+                      size={size}
+                      loading={this.state.loading}
+                      onClick={() => {
+                        if (!selectedRecords.length) {
+                          return message.info('请选择记录');
+                        }
+                        this.handleSync([...selectedRecords]);
+                      }}
+                    >
+                      同步
+                    </Button>
+                  );
+                }}
               />
             </div>
           </TabPane>
