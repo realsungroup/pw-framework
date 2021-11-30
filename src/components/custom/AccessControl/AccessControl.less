@@ -38,7 +38,6 @@
       padding: 1rem 1rem 0.25rem;
     }
     ul {
-      padding-top: 0.25rem;
       height: calc(100vh - 132px);
       overflow: auto;
       li {
@@ -52,12 +51,13 @@
         }
         & > span {
           display: inline-block;
-          width: calc(100% - 0.5rem - 120px);
+          width: calc(100% - 0.5rem - 80px);
           cursor: pointer;
           vertical-align: middle;
         }
         button {
-          width: 120px;
+          width: 80px;
+          height: 32px;
           vertical-align: middle;
           cursor: pointer;
           text-align: center;
@@ -73,5 +73,36 @@
     width: 80vw;
     height: calc(100vh - 77px);
     float: right;
+  }
+  .rightFilters {
+    overflow: hidden;
+    ul {
+      padding: 0;
+      margin: 0;
+      margin-left: 1rem;
+      overflow: hidden;
+      list-style: none;
+      float: left;
+      cursor: pointer;
+      li {
+        border: 1px solid #bbb;
+        float: left;
+        text-align: center;
+        padding: 0rem 0.5rem;
+        border-radius: 0.5rem 0 0 0.5rem;
+        &:last-child {
+          border-radius: 0 0.5rem 0.5rem 0;
+        }
+        &.current {
+          border: 1px solid #1890ff;
+          color: #fff;
+          background: #1890ff;
+        }
+      }
+    }
+  }
+  .outer {
+    margin-top: 0.5rem;
+    height: calc(100vh - 104px);
   }
 }

@@ -1,14 +1,17 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Input, Modal, Spin, Tabs, Popconfirm } from 'antd';
+import { Button, Input, Modal, Spin, Tabs, Select } from 'antd';
 import './AccessControl.less';
 import http from '../../../util20/api';
+const { Option } = Select;
 const { TabPane } = Tabs;
 class AccessControl extends React.Component {
   constructor(props) {
     super(props);
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+    this.downloadURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   componentDidMount() {
     this.getAllDoors();
@@ -22,7 +25,8 @@ class AccessControl extends React.Component {
       recid: '',
       door: [{ name: '', recid: '' }]
     },
-    cms: ``
+    cms: ``,
+    importCms: `isnull(C3_498047440296,'') = ''`
   };
   //获取所有门的数据
   getAllDoors = async () => {
@@ -137,21 +141,6 @@ class AccessControl extends React.Component {
       }
     });
   };
-  //添加门
-  addRec = async () => {
-    let obj = {
-      组编号: this.state.currentRight.groupId,
-      组名称: this.state.currentRight.group,
-      时间段名称: this.state.currentRight.timeId,
-      时间段编号: this.state.currentRight.time,
-      门编号: this.state.doorId,
-      门名称: this.state.doorName
-    };
-  };
-  //修改门
-  modiRec = async () => {};
-  //删除门
-  delRec = async recid => {};
   render() {
     const { showModal, showModalInput } = this.state;
     return (
@@ -160,51 +149,10 @@ class AccessControl extends React.Component {
           <TabPane tab={'权限查阅'} key={0}>
             <Spin spinning={this.state.loading}>
               <Modal
-                visible={showModalInput}
-                title={'请输入门的信息'}
-                width={320}
-                onCancel={() => {
-                  this.setState({
-                    showModalInput: false,
-                    curecid: '',
-                    doorName: ''
-                  });
-                }}
-                onOk={() => {
-                  if (this.state.curecid) {
-                    this.addRec();
-                  } else {
-                    this.modiRec();
-                  }
-                }}
-                destroyOnClose
-              >
-                <div>
-                  <div style={{ marginBottom: 8 }}>
-                    <span>门编号：</span>
-                    <Input
-                      value={this.state.doorId}
-                      style={{ width: 200 }}
-                      onChange={v => {
-                        this.setState({ doorId: v.target.value });
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <span>门名称：</span>
-                    <Input
-                      value={this.state.doorName}
-                      style={{ width: 200 }}
-                      onChange={v => {
-                        this.setState({ doorName: v.target.value });
-                      }}
-                    />
-                  </div>
-                </div>
-              </Modal>
-              <Modal
                 visible={showModal}
-                title={'涉及的门'}
+                title={
+                  this.state.currentRight.group + this.state.currentRight.time
+                }
                 width={800}
                 footer={null}
                 onCancel={() => {
@@ -213,40 +161,11 @@ class AccessControl extends React.Component {
                 destroyOnClose
               >
                 <div>
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      this.setState({
-                        showModalInput: true,
-                        doorName: '',
-                        curecid: ''
-                      });
-                    }}
-                  >
-                    添加
-                  </Button>
                   <ul className="doors">
                     {this.state.currentRight.door.map(item => {
                       return (
                         <li>
                           <span>{item.name}</span>
-                          <Popconfirm
-                            title="确认进行结算吗？"
-                            onConfirm={this.delRec(item.REC_ID)}
-                          >
-                            <Button type="danger">删除</Button>
-                          </Popconfirm>
-                          <Button
-                            onClick={() => {
-                              this.setState({
-                                showModalInput: true,
-                                doorName: item.name,
-                                curecid: item.REC_ID
-                              });
-                            }}
-                          >
-                            修改
-                          </Button>
                         </li>
                       );
                     })}
@@ -331,7 +250,7 @@ class AccessControl extends React.Component {
                             });
                           }}
                         >
-                          查看涉及的门
+                          查看详情
                         </Button>
                       </li>
                     );
@@ -340,7 +259,9 @@ class AccessControl extends React.Component {
               </div>
               <div className="r">
                 <TableData
+                  downloadBaseURL={this.downloadURL}
                   baseURL={this.baseURL}
+                  down
                   resid="691171872439"
                   cmswhere={this.state.cms}
                   wrappedComponentRef={element =>
@@ -348,21 +269,102 @@ class AccessControl extends React.Component {
                   }
                   refTargetComponentName="TableData"
                   subtractH={180}
-                  hasAdd={true}
+                  hasAdd={false}
                   hasRowView={false}
-                  hasRowDelete={true}
+                  hasRowDelete={false}
                   hasRowEdit={false}
-                  hasDelete={true}
+                  hasDelete={false}
                   hasModify={false}
-                  hasRowModify={true}
-                  hasRowSelection={true}
+                  hasRowModify={false}
+                  hasRowSelection={false}
                   hasAdvSearch={false}
-                  actionBarWidth={160}
                 />
               </div>
             </Spin>
           </TabPane>
-          <TabPane tab={'权限导入'} key={1}></TabPane>
+          <TabPane tab={'权限导入'} key={1}>
+            <div className="rightFilters">
+              <ul>
+                <li
+                  className={
+                    this.state.importCms == `isnull(C3_498047440296,'') = ''`
+                      ? 'current'
+                      : ''
+                  }
+                  onClick={() => {
+                    this.setState({
+                      importCms: `isnull(C3_498047440296,'') = ''`
+                    });
+                  }}
+                >
+                  未提交
+                </li>
+                <li
+                  className={
+                    this.state.importCms == `isnull(C3_498047440296,'') = ''`
+                      ? ''
+                      : 'current'
+                  }
+                  onClick={() => {
+                    this.setState({ importCms: `C3_498047440296 = 'Y'` });
+                  }}
+                >
+                  已提交
+                </li>
+              </ul>
+              {this.state.importCms ==
+              `isnull(C3_498047440296,'') = ''` ? null : (
+                <Select
+                  style={{ width: 120, left: 16 }}
+                  size="small"
+                  onChange={v => {
+                    this.setState({ importCms: v });
+                  }}
+                  value={this.state.importCms}
+                >
+                  <Select.Option value={`C3_498047440296 = 'Y'`}>
+                    全部
+                  </Select.Option>
+                  <Select.Option
+                    value={`C3_498047440296 = 'Y' and isnull(C3_691167014001,'') = ''`}
+                  >
+                    未同步
+                  </Select.Option>
+                  <Select.Option
+                    value={`C3_691167014001 !='' and isnull(C3_691167886415,'') = ''`}
+                  >
+                    已同步
+                  </Select.Option>
+                  <Select.Option value={`C3_691167886415 != ''`}>
+                    同步失败
+                  </Select.Option>
+                </Select>
+              )}
+            </div>
+            <div className="outer">
+              <TableData
+                downloadBaseURL={this.downloadURL}
+                baseURL={this.baseURL}
+                down
+                resid="666812500033"
+                cmswhere={this.state.importCms}
+                wrappedComponentRef={element =>
+                  (this.addModalTableDataRef = element)
+                }
+                refTargetComponentName="TableData"
+                subtractH={180}
+                hasAdd={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                hasAdvSearch={false}
+              />
+            </div>
+          </TabPane>
         </Tabs>
       </div>
     );
