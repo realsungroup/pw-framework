@@ -318,7 +318,9 @@ class WorkSheetDetail extends React.Component {
     isCurrent:true,
     materialResid:'',
     minL:false,
-    bitianxiang:[]
+    bitianxiang:[],
+    filterMaterial:'wood',
+    filterList:'un'
   };
   async componentDidMount() {
     
@@ -328,6 +330,30 @@ class WorkSheetDetail extends React.Component {
   componentWillUnmount(){
     window.removeEventListener('resize',this.handleResize.bind(this));
 
+  }
+  changeListFilter=(l,m,a)=>{
+    let arr 
+    if(!a){
+      arr = this.state.sheetList[l];
+    }else{
+      arr=a
+    }
+   
+    let n =0;
+    let fin=[]
+    while(n<arr.length){
+      if(m=='wood'){
+        if(arr[n].C3_678797141752){
+          fin.push(arr[n])
+        }
+      }else if(m=='plastic'){
+        if(arr[n].C3_678797207647){
+          fin.push(arr[n])
+        }
+      }
+      n++;
+    }
+    this.setState({curSheetList:fin})
   }
   handleResize = e =>{
     let dom = document.getElementById('sheetForm');
@@ -349,11 +375,33 @@ class WorkSheetDetail extends React.Component {
         n++;
       }
     }
-   
+    console.log('sheetData',nextProps.sheetData)
+    if(nextProps.sheetData){
+      let objSheets={
+        ing:[],
+        un:[]
+      }
+      let co=0;
+      while(co<nextProps.sheetData.length){
+        if(nextProps.sheetData[co].C3_682377833865=='进行中'){
+          objSheets.ing.push(nextProps.sheetData[co]);
+        }else{
+          objSheets.un.push(nextProps.sheetData[co]);
+        }
+        co++;
+      }
+      this.changeListFilter('un','wood',objSheets)
+      this.setState({sheetList:objSheets});
+    }
+    
     //初始化
     if (nextProps.new) {
       _this.setState({ loading: true });
-      _this.getProductLines();
+      if(nextProps.sheetData){
+
+      }else{
+        _this.getProductLines();
+      }
       _this.setState({bitianxiang:[]});
       _this.setState({
         bitianxiang:Bitianxiang[0].biTian,
@@ -383,7 +431,6 @@ class WorkSheetDetail extends React.Component {
       let ti=setTimeout(function(){
         let dom = document.getElementById('sheetForm');
           if(dom.offsetWidth<843){
-          console.log('w',dom.offsetWidth)
           _this.setState({minL:true});
         }else{
           _this.setState({minL:false});
@@ -442,7 +489,6 @@ class WorkSheetDetail extends React.Component {
         n++;
       }
     }
-    console.log(objEmpty)
 
     this.setState({sheetData: objEmpty});
     this.setState({ loading: true, process: '正在读取历史数据' });
@@ -558,8 +604,12 @@ class WorkSheetDetail extends React.Component {
           this.setState({canEdit:curCanEdit});
         }
         console.log('ll',lineID, curID, sheetID)
-        this.getTargetLine(lineID, curID, sheetID);
-        
+        if(this.props.sheetData){
+          this.setState({ loading: false });
+
+        }else{
+          this.getTargetLine(lineID, curID, sheetID);
+        }
       } else {
         if(curSheetData){
           this.setState({imgUrl:curSheetData.imgUrl,sheetData:curSheetData,curModiReason:curSheetData.C3_680644227339});
@@ -568,8 +618,13 @@ class WorkSheetDetail extends React.Component {
           this.setState({canEdit:curCanEdit});
         }
         this.setState({process: '', histories: his});
-        this.getTargetLine(curLineId, curCharaId, curSheetId);
-        console.log(curLineId, curCharaId, curSheetId)
+        if(this.props.sheetData){
+          this.setState({ loading: false });
+
+        }else{
+          this.getTargetLine(curLineId, curCharaId, curSheetId);
+
+        }
       }
     } catch (e) {
       console.log(e.message);
@@ -1774,36 +1829,45 @@ upImgData=async(result,name,r)=>{
               </div>
             </div>
           ) : null}
-
-          <ul
+          {
+            this.props.sheetData?
+            <div className={'sheetlist'}>
+              {
+                this.state.curSheetList?<>
+              <div>
+                <div className={this.state.filterList=='un'?'current':''} onClick={()=>{this.setState({filterList:'un'});this.changeListFilter('un',this.state.filterMaterial)}}>未开始</div>
+                <div  className={this.state.filterList=='ing'?'current':''} onClick={()=>{this.setState({filterList:'ing'});this.changeListFilter('ing',this.state.filterMaterial)}}>已开始</div>
+              </div>
+              <div className={'filterMaterial'}>
+                <div className={this.state.filterMaterial=='wood'?'current':''} onClick={()=>{this.setState({filterMaterial:'wood'});this.changeListFilter(this.state.filterList,'wood')}}>
+                  木板
+                </div>
+                <div className={this.state.filterMaterial=='wood'?'':'current'}  onClick={()=>{this.setState({filterMaterial:'plastic'});this.changeListFilter(this.state.filterList,'plastic')}}>
+                  塑料板
+                </div>
+              </div>
+              <ul>
+                {
+                  this.state.curSheetList.map(item=>{
+                    return(
+                      <li>
+                        <p>{item.C3_678796779827}</p>
+                      </li>
+                    )
+                  })
+                }
+              </ul></>
+              :null}
+            </div>
+            
+            :
+            <ul
             style={
               this.props.hasBack
                 ? { margin: '3.3rem .5rem .8rem' }
                 : { margin: '.8rem .5rem' }
             }
           >
-            {/* {
-              this.props.new?
-              <div className='PLSelection'>
-                <Select
-                 style={{ width: '100%',textIndent:'1rem',marginBottom:'1rem'}}
-                 placeholder="请选择生产线"
-                 value={this.state.productLinesValue}
-                 onChange={(v) =>{
-                   this.changeProductLine(v);
-                   this.setState({productLinesValue: v});
-                 }}
-                
-                >
-                {this.state.productLines.map(item => (
-                  <Option value={item.productflowid}>
-                    {item.productflowname}
-                  </Option>
-                ))}
-                </Select>
-              </div>
-              :null
-            } */}
             {this.state.productLineTree[678789327168].map(item => {
               return (
                 <li
@@ -1837,6 +1901,8 @@ upImgData=async(result,name,r)=>{
               );
             })}
           </ul>
+          }
+          
         </div>
         <div className="sheet">
           <div className="historySelections">

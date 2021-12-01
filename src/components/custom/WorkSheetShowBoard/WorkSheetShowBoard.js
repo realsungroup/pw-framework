@@ -435,6 +435,8 @@ class WorkSheetShowBoard extends React.Component {
                 curSheetId={this.state.curSheetId}
                 mesId={this.state.mesId}
                 colData={this.state.colData}
+                sheetData={this.state.sheetsAll}
+
              >
               </WorkSheetDetail>   
         </div>

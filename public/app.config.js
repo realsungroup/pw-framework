@@ -16,7 +16,7 @@ window.pwConfig = {
     //  baseURL:'http://hr.realsun.me:8081/',
     fileDownloadUrl: 'http://kingofdinner.realsun.me:18000/', // 导出 Excel 文件下载基地址
     // 切换考勤月份的基地址
-    attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
+    attendanceMonthChangeUrl: 'http://kingofdinner.realsun.me:17001/',
     fileDownloadConfig: {
       629462405981: {
         fileType: 'mdb'

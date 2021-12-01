@@ -48,6 +48,27 @@
         width:calc(15.625rem - 1px);
       }
     }
+    .sheetlist{
+      margin-top: 40px;
+      &>div{
+        padding:0rem 1rem;
+          background-color: #dadada;
+          overflow: hidden;
+        border-bottom: 1px solid #eee;
+        div{
+          width:50%;
+          float:left;
+          text-align: center;
+        background-color: #fff;
+          padding:0 1rem;
+          cursor:pointer;
+          &.current{
+            color:#1890ff;
+            font-weight: bold;
+          }
+        }
+      }
+    }
     .PLSelection{
       width:100%;
       span{
