@@ -1,10 +1,13 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Input, Modal, Spin, Tabs, Select, message, Table } from 'antd';
+import { Button, Input, Modal, Spin, Tabs, Select, message, DatePicker } from 'antd';
 import './AccessControl.less';
+import moment from 'moment';
 import http from '../../../util20/api';
 const { Option } = Select;
 const { TabPane } = Tabs;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY-MM-DD';
 class AccessControl extends React.Component {
   constructor(props) {
     super(props);
@@ -14,6 +17,10 @@ class AccessControl extends React.Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   componentDidMount() {
+    let edDate = moment().format('YYYY-MM-DD');
+    let stDate = moment().subtract('days',6).format('YYYY-MM-DD');
+    this.setState({edDate,stDate});
+    
     this.getAllDoors();
   }
   state = {
@@ -50,7 +57,6 @@ class AccessControl extends React.Component {
         n++;
       }
       this.setState({ columns: arr });
-      console.log('arr', arr);
       this.setState({ loading: false });
     } catch (e) {
       console.log(e);
@@ -221,10 +227,20 @@ class AccessControl extends React.Component {
     }
   };
   //获取所有明细并筛选同步状态
-  getDetails = async () => {
+  getDetails = async (st,ed) => {
+    this.setState({loading:true});
+    let stDate=this.state.stDate;
+    let edDate=this.state.edDate;
+    if(st){
+      stDate=st;
+    }
+    if(ed){
+      edDate=ed;
+    }
     //明细
     let res = await http({ baseURL: this.baseURL }).getTable({
-      resid: 691681288938
+      resid: 691681288938,
+      cmswhere:`TheDatetime >= '${stDate}' and TheDatetime <= '${edDate}'`
     });
     let n = 0;
     let arr = [];
@@ -250,12 +266,10 @@ class AccessControl extends React.Component {
     let all = [];
     let un = [];
     let done = [];
-
     n = 0;
     while (n < arr.length) {
       let c = 0;
       let bol = false;
-      res2.data[n].key = n;
       all.push(res2.data[n]);
 
       while (c < res2.data.length) {
@@ -276,8 +290,7 @@ class AccessControl extends React.Component {
       all,
       un
     };
-    console.log('obj', obj);
-    this.setState({ orgDetails: obj, detailData: all });
+    this.setState({ orgDetails: obj, detailData: obj[this.state.filterSync] ,loading:false});
   };
   //筛选同步状态
   handleChangeFilter = async v => {
@@ -465,8 +478,23 @@ class AccessControl extends React.Component {
                     同步失败
                   </Select.Option> */}
                     </Select>
+                    <RangePicker
+                      style={{ marginLeft: 24 }}
+                      size="small"
+                      value={this.state.stDate && this.state.edDate ? [
+                        moment(this.state.stDate, dateFormat),
+                        moment(this.state.edDate, dateFormat)
+                      ] : [null, null]}
+                      onChange={(dates, dateString) => {
+                        this.setState({
+                          stDate:dateString[0],
+                          edDate:dateString[1]
+                        });
+                        this.getDetails(dateString[0],dateString[1])
+                      }}
+                    ></RangePicker>
                     <Input
-                      style={{ width: '320px', height: '24px', marginLeft: 24 }}
+                      style={{ width: '320px', height: '24px', marginLeft: 8 }}
                       value={this.state.kw2}
                       onChange={v => {
                         this.setState({ kw2: v.target.value });
