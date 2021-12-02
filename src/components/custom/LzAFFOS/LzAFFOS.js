@@ -802,6 +802,7 @@ export default class LzAFFOS extends React.Component {
         deliverList: [],
         goodsInfo: []
       });
+      window.location.reload();
       Modal.destroyAll();
       message.info('提交成功');
     } catch (err) {
@@ -809,15 +810,14 @@ export default class LzAFFOS extends React.Component {
       message.info(err.message);
       return err.message;
     }
-    this.setState({
-      value: {},
-      approvalPeopleList: emptyApprovalPeopleList
-    });
+    // this.setState({
+    //   value: {},
+    //   approvalPeopleList: emptyApprovalPeopleList
+    // });
     // this.tableDataRef.handleRefresh();
     // this.setState({
     //   loading: false
     // });
-    window.location.reload();
   };
 
   //打开出厂货物信息填写页面
