@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Input, Modal, Spin, Tabs, Select, message } from 'antd';
+import { Button, Input, Modal, Spin, Tabs, Select, message, Table } from 'antd';
 import './AccessControl.less';
 import http from '../../../util20/api';
 const { Option } = Select;
@@ -23,10 +23,13 @@ class AccessControl extends React.Component {
       group: '',
       time: '',
       recid: '',
-      door: [{ name: '', recid: '' }]
+      door: [{ name: '', recid: '' }],
+      filterSync: 0
     },
+    subStatus: 0,
     cms: ``,
-    importCms: `isnull(C3_498047440296,'') = ''`
+    importCms: `isnull(C3_498047440296,'') = ''`,
+    filterSync: 'all'
   };
   //获取所有门的数据
   getAllDoors = async () => {
@@ -164,6 +167,67 @@ class AccessControl extends React.Component {
       this.setState({ loading: false });
       message.error(e.message);
     }
+  };
+  //获取所有明细并筛选同步状态
+  getDetails = async () => {
+    //明细
+    let res = await http({ baseURL: this.baseURL }).getTable({
+      resid: 691681288938
+    });
+    let n = 0;
+    let arr = [];
+    while (n < res.data.length) {
+      let c = 0;
+      let bol = false;
+      while (c < arr.length) {
+        if (res.data[n].ID == arr[c]) {
+          bol = true;
+        }
+        c++;
+      }
+      if (!bol) {
+        arr.push(res.data[c].ID);
+      }
+      n++;
+    }
+    //操作记录
+    let res2 = await http({ baseURL: this.baseURL }).getTable({
+      resid: 666812500033,
+      cmswhere: `C3_498047440296 = 'Y'`
+    });
+    let all = [];
+    let un = [];
+    let done = [];
+
+    n = 0;
+    while (n < arr.length) {
+      let c = 0;
+      let bol = false;
+      all.push(res2.data[n]);
+      while (c < res2.data.length) {
+        if (res2.data[c].C3_691167014001 == arr[n]) {
+          bol = true;
+        }
+        c++;
+      }
+      if (bol) {
+        done.push(res2.data[n]);
+      } else {
+        un.push(res2.data[n]);
+      }
+      n++;
+    }
+    let obj = {
+      done,
+      all,
+      un
+    };
+    console.log('obj', obj);
+    this.setState({ orgDetails: obj, detailData: done });
+  };
+  //筛选同步状态
+  handleChangeFilter = async v => {
+    this.setState({ filterSync: v, detailData: this.state.orgDetails[v] });
   };
   render() {
     const { showModal, showModalInput } = this.state;
@@ -308,58 +372,43 @@ class AccessControl extends React.Component {
             <div className="rightFilters">
               <ul>
                 <li
-                  className={
-                    this.state.importCms == `isnull(C3_498047440296,'') = ''`
-                      ? 'current'
-                      : ''
-                  }
+                  className={this.state.subStatus == 0 ? 'current' : ''}
                   onClick={() => {
                     this.setState({
-                      importCms: `isnull(C3_498047440296,'') = ''`
+                      subStatus: 0
                     });
                   }}
                 >
                   未提交
                 </li>
                 <li
-                  className={
-                    this.state.importCms == `isnull(C3_498047440296,'') = ''`
-                      ? ''
-                      : 'current'
-                  }
+                  className={this.state.subStatus == 1 ? 'current' : ''}
                   onClick={() => {
-                    this.setState({ importCms: `C3_498047440296 = 'Y'` });
+                    this.setState({
+                      subStatus: 1,
+                      filterSync: 'all'
+                    });
+                    this.getDetails();
                   }}
                 >
                   已提交
                 </li>
               </ul>
-              {this.state.importCms ==
-              `isnull(C3_498047440296,'') = ''` ? null : (
+              {this.state.subStatus == 0 ? null : (
                 <Select
                   style={{ width: 120, left: 16 }}
                   size="small"
                   onChange={v => {
-                    this.setState({ importCms: v });
+                    this.handleChangeFilter(v);
                   }}
-                  value={this.state.importCms}
+                  value={this.state.filterSync}
                 >
-                  <Select.Option value={`C3_498047440296 = 'Y'`}>
-                    全部
-                  </Select.Option>
-                  <Select.Option
-                    value={`C3_498047440296 = 'Y' and isnull(C3_498216153456,'') = '' and isnull(C3_498753689730,'') = ''`}
-                  >
-                    未同步
-                  </Select.Option>
-                  <Select.Option
-                    value={`C3_498216153456 = 'Y' or C3_498753689730 = 'Y'`}
-                  >
-                    已同步
-                  </Select.Option>
-                  <Select.Option value={`C3_691167886415 != ''`}>
+                  <Select.Option value={'all'}>全部</Select.Option>
+                  <Select.Option value={'un'}>未同步</Select.Option>
+                  <Select.Option value={'done'}>已同步</Select.Option>
+                  {/* <Select.Option value={3}>
                     同步失败
-                  </Select.Option>
+                  </Select.Option> */}
                 </Select>
               )}
             </div>
@@ -367,7 +416,7 @@ class AccessControl extends React.Component {
               <TableData
                 downloadBaseURL={this.downloadURL}
                 baseURL={this.baseURL}
-                down
+                style={this.state.subStatus == '0' ? {} : { display: 'none' }}
                 resid="666812500033"
                 cmswhere={this.state.importCms}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -392,7 +441,8 @@ class AccessControl extends React.Component {
                   const selectedRecords = selectedRowKeys.map(key => {
                     return dataSource.find(item => item.REC_ID === key);
                   });
-                  return (
+                  return this.state.importCms ==
+                    `isnull(C3_498047440296,'') = ''` ? null : (
                     <Button
                       type="primary"
                       size={size}
@@ -404,7 +454,7 @@ class AccessControl extends React.Component {
                         this.handleSync([...selectedRecords]);
                       }}
                     >
-                      同步
+                      提交
                     </Button>
                   );
                 }}
