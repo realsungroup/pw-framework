@@ -814,10 +814,10 @@ export default class LzAFFOS extends React.Component {
       approvalPeopleList: emptyApprovalPeopleList
     });
     // this.tableDataRef.handleRefresh();
+    // this.setState({
+    //   loading: false
+    // });
     window.location.reload();
-    this.setState({
-      loading: false
-    });
   };
 
   //打开出厂货物信息填写页面
