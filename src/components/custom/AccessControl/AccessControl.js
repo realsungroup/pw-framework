@@ -29,7 +29,33 @@ class AccessControl extends React.Component {
     subStatus: 0,
     cms: ``,
     importCms: `isnull(C3_498047440296,'') = ''`,
-    filterSync: 'all'
+    filterSync: 'all',
+    columns: [],
+    detailData: []
+  };
+  //获取列定义
+  getCol = async () => {
+    this.setState({ loading: true });
+    let arr = [];
+    try {
+      let res = await http({ baseURL: this.baseURL }).getTableColumnDefine({
+        resid: 666812500033
+      });
+      let n = 0;
+      while (n < res.data.length) {
+        res.data[n].title = res.data[n].ColDispName;
+        res.data[n].labeldataIndex = res.data[n].ColName;
+        res.data[n].labelkey = res.data[n].ColName;
+        arr.push(res.data[n]);
+        n++;
+      }
+      this.setState({ columns: arr });
+      console.log('arr', arr);
+      this.setState({ loading: false });
+    } catch (e) {
+      console.log(e);
+      this.setState({ loading: false });
+    }
   };
   //获取所有门的数据
   getAllDoors = async () => {
@@ -47,7 +73,6 @@ class AccessControl extends React.Component {
   };
   //整理数据
   dataPro = arr => {
-    this.setState({ loading: false });
     let n = 0;
     let a = [];
     while (n < arr.length) {
@@ -92,6 +117,7 @@ class AccessControl extends React.Component {
       n++;
     }
     this.setState({ originList: a, rightList: a });
+    this.getCol();
   };
   //点击搜索按钮
   handleSearch = () => {
@@ -144,6 +170,32 @@ class AccessControl extends React.Component {
       }
     });
   };
+  //点击同步搜索
+  handleSearchSync = () => {
+    let k = this.state.kw2;
+    let n = 0;
+    let arr = [];
+    let org = this.state.orgDetails[this.state.filterSync];
+    while (n < org.length) {
+      let bol = false;
+      let obj = org[n];
+      for (let key in obj) {
+        let str = obj[key] + '';
+        if (str.indexOf(k) != -1) {
+          bol = true;
+        }
+      }
+
+      if (bol) {
+        arr.push(obj);
+      }
+      n++;
+    }
+    this.setState({
+      detailData: arr
+    });
+  };
+
   //点击同步按钮
   handleSync = async d => {
     this.setState({ loading: true });
@@ -203,7 +255,9 @@ class AccessControl extends React.Component {
     while (n < arr.length) {
       let c = 0;
       let bol = false;
+      res2.data[n].key = n;
       all.push(res2.data[n]);
+
       while (c < res2.data.length) {
         if (res2.data[c].C3_691167014001 == arr[n]) {
           bol = true;
@@ -223,19 +277,20 @@ class AccessControl extends React.Component {
       un
     };
     console.log('obj', obj);
-    this.setState({ orgDetails: obj, detailData: done });
+    this.setState({ orgDetails: obj, detailData: all });
   };
   //筛选同步状态
   handleChangeFilter = async v => {
     this.setState({ filterSync: v, detailData: this.state.orgDetails[v] });
+    console.log(this.state.orgDetails[v]);
   };
   render() {
     const { showModal, showModalInput } = this.state;
     return (
       <div className="ac">
-        <Tabs>
-          <TabPane tab={'权限查阅'} key={0}>
-            <Spin spinning={this.state.loading}>
+        <Spin spinning={this.state.loading}>
+          <Tabs>
+            <TabPane tab={'权限查阅'} key={0}>
               <Modal
                 visible={showModal}
                 title={
@@ -366,102 +421,163 @@ class AccessControl extends React.Component {
                   hasAdvSearch={false}
                 />
               </div>
-            </Spin>
-          </TabPane>
-          <TabPane tab={'权限导入'} key={1}>
-            <div className="rightFilters">
-              <ul>
-                <li
-                  className={this.state.subStatus == 0 ? 'current' : ''}
-                  onClick={() => {
-                    this.setState({
-                      subStatus: 0
-                    });
-                  }}
-                >
-                  未提交
-                </li>
-                <li
-                  className={this.state.subStatus == 1 ? 'current' : ''}
-                  onClick={() => {
-                    this.setState({
-                      subStatus: 1,
-                      filterSync: 'all'
-                    });
-                    this.getDetails();
-                  }}
-                >
-                  已提交
-                </li>
-              </ul>
-              {this.state.subStatus == 0 ? null : (
-                <Select
-                  style={{ width: 120, left: 16 }}
-                  size="small"
-                  onChange={v => {
-                    this.handleChangeFilter(v);
-                  }}
-                  value={this.state.filterSync}
-                >
-                  <Select.Option value={'all'}>全部</Select.Option>
-                  <Select.Option value={'un'}>未同步</Select.Option>
-                  <Select.Option value={'done'}>已同步</Select.Option>
-                  {/* <Select.Option value={3}>
+            </TabPane>
+            <TabPane tab={'权限导入'} key={1}>
+              <div className="rightFilters">
+                <ul>
+                  <li
+                    className={this.state.subStatus == 0 ? 'current' : ''}
+                    onClick={() => {
+                      this.setState({
+                        subStatus: 0
+                      });
+                    }}
+                  >
+                    未提交
+                  </li>
+                  <li
+                    className={this.state.subStatus == 1 ? 'current' : ''}
+                    onClick={() => {
+                      this.setState({
+                        subStatus: 1,
+                        filterSync: 'all'
+                      });
+                      this.getDetails();
+                    }}
+                  >
+                    已提交
+                  </li>
+                </ul>
+                {this.state.subStatus == 0 ? null : (
+                  <>
+                    <Select
+                      style={{ width: 120, left: 16 }}
+                      size="small"
+                      onChange={v => {
+                        this.handleChangeFilter(v);
+                      }}
+                      value={this.state.filterSync}
+                    >
+                      <Select.Option value={'all'}>全部</Select.Option>
+                      <Select.Option value={'un'}>未同步</Select.Option>
+                      <Select.Option value={'done'}>已同步</Select.Option>
+                      {/* <Select.Option value={3}>
                     同步失败
                   </Select.Option> */}
-                </Select>
-              )}
-            </div>
-            <div className="outer">
-              <TableData
-                downloadBaseURL={this.downloadURL}
-                baseURL={this.baseURL}
-                style={this.state.subStatus == '0' ? {} : { display: 'none' }}
-                resid="666812500033"
-                cmswhere={this.state.importCms}
-                wrappedComponentRef={element => (this.tableDataRef = element)}
-                refTargetComponentName="TableData"
-                subtractH={180}
-                hasAdd={false}
-                hasRowView={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasRowModify={false}
-                hasRowSelection={true}
-                hasAdvSearch={false}
-                actionBarExtra={({
-                  dataSource = [],
-                  selectedRowKeys = [],
-                  data = [],
-                  recordFormData,
-                  size
-                }) => {
-                  const selectedRecords = selectedRowKeys.map(key => {
-                    return dataSource.find(item => item.REC_ID === key);
-                  });
-                  return this.state.importCms ==
-                    `isnull(C3_498047440296,'') = ''` ? null : (
-                    <Button
-                      type="primary"
-                      size={size}
-                      loading={this.state.loading}
-                      onClick={() => {
-                        if (!selectedRecords.length) {
-                          return message.info('请选择记录');
+                    </Select>
+                    <Input
+                      style={{ width: '320px', height: '24px', marginLeft: 24 }}
+                      value={this.state.kw2}
+                      onChange={v => {
+                        this.setState({ kw2: v.target.value });
+                      }}
+                      onKeyUp={e => {
+                        if (e.keyCode == 13) {
+                          this.handleSearchSync();
                         }
-                        this.handleSync([...selectedRecords]);
+                      }}
+                    />
+                    <Button
+                      style={{ width: '72px', marginLeft: '.5rem' }}
+                      type={'primary'}
+                      size={'small'}
+                      onClick={() => {
+                        this.handleSearchSync();
                       }}
                     >
-                      提交
+                      搜索
                     </Button>
-                  );
-                }}
-              />
-            </div>
-          </TabPane>
-        </Tabs>
+                    <Button
+                      style={{ width: '72px', marginLeft: '.5rem' }}
+                      size={'small'}
+                      onClick={() => {
+                        this.handleChangeFilter(this.state.filterSync);
+                      }}
+                    >
+                      重置
+                    </Button>
+                  </>
+                )}
+              </div>
+              <div className="outer">
+                <TableData
+                  downloadBaseURL={this.downloadURL}
+                  baseURL={this.baseURL}
+                  style={this.state.subStatus == '0' ? {} : { display: 'none' }}
+                  resid="666812500033"
+                  cmswhere={this.state.importCms}
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  refTargetComponentName="TableData"
+                  subtractH={180}
+                  hasAdd={false}
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasRowModify={false}
+                  hasRowSelection={true}
+                  hasAdvSearch={false}
+                  actionBarExtra={({
+                    dataSource = [],
+                    selectedRowKeys = [],
+                    data = [],
+                    recordFormData,
+                    size
+                  }) => {
+                    const selectedRecords = selectedRowKeys.map(key => {
+                      return dataSource.find(item => item.REC_ID === key);
+                    });
+                    return this.state.importCms ==
+                      `isnull(C3_498047440296,'') = ''` ? null : (
+                      <Button
+                        type="primary"
+                        size={size}
+                        loading={this.state.loading}
+                        onClick={() => {
+                          if (!selectedRecords.length) {
+                            return message.info('请选择记录');
+                          }
+                          this.handleSync([...selectedRecords]);
+                        }}
+                      >
+                        提交
+                      </Button>
+                    );
+                  }}
+                />
+                {this.state.subStatus == 0 ? null : (
+                  <div className={'csmTable'}>
+                    <table>
+                      <tr>
+                        {this.state.columns.map(item => {
+                          return <th>{item.title}</th>;
+                        })}
+                      </tr>
+                      {this.state.detailData.map((item, key) => {
+                        return (
+                          <tr>
+                            {this.state.columns.map(item2 => {
+                              return (
+                                <td>
+                                  {
+                                    this.state.detailData[key][
+                                      item2.labeldataIndex
+                                    ]
+                                  }
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        );
+                      })}
+                    </table>
+                  </div>
+                )}
+              </div>
+            </TabPane>
+          </Tabs>
+        </Spin>
       </div>
     );
   }
