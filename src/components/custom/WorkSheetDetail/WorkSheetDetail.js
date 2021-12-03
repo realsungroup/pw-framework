@@ -11,7 +11,8 @@ import {
   DatePicker,
   Modal,
   Popconfirm,
-  
+  Switch,
+  Checkbox
 } from 'antd';
 import { TableData } from '../../common/loadableCommon';
 import moment from 'moment';
@@ -25,264 +26,271 @@ import { isConstructorDeclaration } from 'typescript';
 const { Option } = Select;
 const { TextArea } = Input;
 const { RangePicker } = DatePicker;
-const mapping =[
+const mapping = [
   //业务员
   {
-    id:'681834033575',
-    process:'start',
-    mapping:[
+    id: '681834033575',
+    process: 'start',
+    mapping: [
       {
-        from:'C3_678796887001',
-        to:'C3_682371274376',
-        memo:'接单人'
-      },{
-        from:'C3_682639109504',
-        to:'C3_682377803370',
-        memo:'接单人工号'
-      },{
-        from:'C3_682639124047',
-        to:'C3_682371322856',
-        memo:'接单人编号'
+        from: 'C3_678796887001',
+        to: 'C3_682371274376',
+        memo: '接单人'
+      },
+      {
+        from: 'C3_682639109504',
+        to: 'C3_682377803370',
+        memo: '接单人工号'
+      },
+      {
+        from: 'C3_682639124047',
+        to: 'C3_682371322856',
+        memo: '接单人编号'
       }
     ]
   },
   //制图员
   {
-    id:'681846698650',
-    process:'start',
-    mapping:[
+    id: '681846698650',
+    process: 'start',
+    mapping: [
       {
-        from:'C3_678797238397',
-        to:'C3_682371274376',
-        memeo:'制图人'
-      },{
-        from:'C3_682639694068',
-        to:'C3_682377803370',
-        memo:'制图人工号'
-      },{
-        from:'C3_682639703794',
-        to:'C3_682371322856',
-        memo:'制图人编号'
+        from: 'C3_678797238397',
+        to: 'C3_682371274376',
+        memeo: '制图人'
       },
       {
-        from:'CUR_TIME',
-        to:'C3_678797319517',
-        memeo:'制图开始时间',
-        type:'string'
+        from: 'C3_682639694068',
+        to: 'C3_682377803370',
+        memo: '制图人工号'
+      },
+      {
+        from: 'C3_682639703794',
+        to: 'C3_682371322856',
+        memo: '制图人编号'
+      },
+      {
+        from: 'CUR_TIME',
+        to: 'C3_678797319517',
+        memeo: '制图开始时间',
+        type: 'string'
       }
     ]
   },
   {
-    id:'681846698650',
-    process:'end',
-    mapping:[
+    id: '681846698650',
+    process: 'end',
+    mapping: [
       {
-        from:'CUR_TIME',
-        to:'C3_678797328067',
-        memeo:'制图结束时间',
-        type:'string'
+        from: 'CUR_TIME',
+        to: 'C3_678797328067',
+        memeo: '制图结束时间',
+        type: 'string'
       }
     ]
   },
   //割板人
   {
-    id:'681846954720',
-    process:'start',
-    mapping:[
+    id: '681846954720',
+    process: 'start',
+    mapping: [
       {
-        from:'C3_678797343880',
-        to:'C3_682371274376',
-        memeo:'割板人'
-      },{
-        from:'C3_682642226248',
-        to:'C3_682377803370',
-        memo:'割板人工号'
-      },{
-        from:'C3_682642236468',
-        to:'C3_682371322856',
-        memo:'割板人编号'
+        from: 'C3_678797343880',
+        to: 'C3_682371274376',
+        memeo: '割板人'
       },
       {
-        from:'CUR_TIME',
-        to:'C3_678797351896',
-        memeo:'割板开始时间',
-        type:'string'
+        from: 'C3_682642226248',
+        to: 'C3_682377803370',
+        memo: '割板人工号'
+      },
+      {
+        from: 'C3_682642236468',
+        to: 'C3_682371322856',
+        memo: '割板人编号'
+      },
+      {
+        from: 'CUR_TIME',
+        to: 'C3_678797351896',
+        memeo: '割板开始时间',
+        type: 'string'
       }
     ]
   },
   {
-    id:'681846954720',
-    process:'end',
-    mapping:[
+    id: '681846954720',
+    process: 'end',
+    mapping: [
       {
-        from:'CUR_TIME',
-        to:'C3_678797359840',
-        memeo:'割板结束时间',
-        type:'string'
-
+        from: 'CUR_TIME',
+        to: 'C3_678797359840',
+        memeo: '割板结束时间',
+        type: 'string'
       }
     ]
   },
   //派工人
   {
-    id:'682635479559',
-    process:'start',
-    mapping:[
-     
-    ]
+    id: '682635479559',
+    process: 'start',
+    mapping: []
   },
   {
-    id:'682635479559',
-    process:'end',
-    mapping:[
-    ]
+    id: '682635479559',
+    process: 'end',
+    mapping: []
   },
   //装刀人
   {
-    id:'682635497446',
-    process:'start',
-    mapping:[
+    id: '682635497446',
+    process: 'start',
+    mapping: [
       {
-        from:'C3_678797430424',
-        to:'C3_682371274376',
-        memeo:'装刀人'
-      },{
-        from:'C3_682642361945',
-        to:'C3_682377803370',
-        memo:'装刀人工号'
-      },{
-        from:'C3_682642384633',
-        to:'C3_682371322856',
-        memo:'装刀人编号'
+        from: 'C3_678797430424',
+        to: 'C3_682371274376',
+        memeo: '装刀人'
       },
       {
-        from:'CUR_TIME',
-        to:'C3_678797436775',
-        memeo:'装刀开始时间',
-        type:'string'
+        from: 'C3_682642361945',
+        to: 'C3_682377803370',
+        memo: '装刀人工号'
+      },
+      {
+        from: 'C3_682642384633',
+        to: 'C3_682371322856',
+        memo: '装刀人编号'
+      },
+      {
+        from: 'CUR_TIME',
+        to: 'C3_678797436775',
+        memeo: '装刀开始时间',
+        type: 'string'
       }
     ]
   },
   {
-    id:'682635497446',
-    process:'end',
-    mapping:[
+    id: '682635497446',
+    process: 'end',
+    mapping: [
       {
-        from:'CUR_TIME',
-        to:'C3_678797442606',
-        memeo:'装刀结束时间',
-        type:'string'
-
+        from: 'CUR_TIME',
+        to: 'C3_678797442606',
+        memeo: '装刀结束时间',
+        type: 'string'
       }
     ]
   },
-//装刀人2
-{
-  id:'682728251509',
-  process:'start',
-  mapping:[
-    {
-      from:'C3_678797462885',
-      to:'C3_682371274376',
-      memeo:'装刀人2'
-    },{
-      from:'C3_682642425303',
-      to:'C3_682377803370',
-      memo:'装刀人2工号'
-    },{
-      from:'C3_682642439955',
-      to:'C3_682371322856',
-      memo:'装刀人2编号'
-    },
-    {
-      from:'CUR_TIME',
-      to:'C3_678797469831',
-      memeo:'装刀2开始时间',
-      type:'string'
-    }
-  ]
-},
-{
-  id:'682728251509',
-  process:'end',
-  mapping:[
-    {
-      from:'CUR_TIME',
-      to:'C3_678797479749',
-      memeo:'装刀结束时间',
-      type:'string'
-
-    }
-  ]
-},
+  //装刀人2
+  {
+    id: '682728251509',
+    process: 'start',
+    mapping: [
+      {
+        from: 'C3_678797462885',
+        to: 'C3_682371274376',
+        memeo: '装刀人2'
+      },
+      {
+        from: 'C3_682642425303',
+        to: 'C3_682377803370',
+        memo: '装刀人2工号'
+      },
+      {
+        from: 'C3_682642439955',
+        to: 'C3_682371322856',
+        memo: '装刀人2编号'
+      },
+      {
+        from: 'CUR_TIME',
+        to: 'C3_678797469831',
+        memeo: '装刀2开始时间',
+        type: 'string'
+      }
+    ]
+  },
+  {
+    id: '682728251509',
+    process: 'end',
+    mapping: [
+      {
+        from: 'CUR_TIME',
+        to: 'C3_678797479749',
+        memeo: '装刀结束时间',
+        type: 'string'
+      }
+    ]
+  },
 
   //弯刀人
   {
-    id:'682635512931',
-    process:'start',
-    mapping:[
+    id: '682635512931',
+    process: 'start',
+    mapping: [
       {
-        from:'C3_678797394318',
-        to:'C3_682371274376',
-        memeo:'弯刀人'
-      },{
-        from:'C3_682642483380',
-        to:'C3_682377803370',
-        memo:'弯刀人工号'
-      },{
-        from:'C3_682642472381',
-        to:'C3_682371322856',
-        memo:'弯刀人编号'
+        from: 'C3_678797394318',
+        to: 'C3_682371274376',
+        memeo: '弯刀人'
       },
       {
-        from:'CUR_TIME',
-        to:'C3_678797402765',
-        memeo:'弯刀开始时间',
-        type:'string'
+        from: 'C3_682642483380',
+        to: 'C3_682377803370',
+        memo: '弯刀人工号'
+      },
+      {
+        from: 'C3_682642472381',
+        to: 'C3_682371322856',
+        memo: '弯刀人编号'
+      },
+      {
+        from: 'CUR_TIME',
+        to: 'C3_678797402765',
+        memeo: '弯刀开始时间',
+        type: 'string'
       }
     ]
   },
   {
-    id:'682635512931',
-    process:'end',
-    mapping:[
+    id: '682635512931',
+    process: 'end',
+    mapping: [
       {
-        from:'CUR_TIME',
-        to:'C3_678797411331',
-        memeo:'弯刀结束时间',
-        type:'string'
+        from: 'CUR_TIME',
+        to: 'C3_678797411331',
+        memeo: '弯刀结束时间',
+        type: 'string'
       }
     ]
   },
   //检验人
   {
-    id:'682635881582',
-    process:'start',
-    mapping:[
+    id: '682635881582',
+    process: 'start',
+    mapping: [
       {
-        from:'C3_682039853604',
-        to:'C3_682371274376',
-        memeo:'检验人'
-      },{
-        from:'C3_682642803657',
-        to:'C3_682377803370',
-        memo:'检验人人工号'
-      },{
-        from:'C3_682642812388',
-        to:'C3_682371322856',
-        memo:'检验人人编号'
+        from: 'C3_682039853604',
+        to: 'C3_682371274376',
+        memeo: '检验人'
+      },
+      {
+        from: 'C3_682642803657',
+        to: 'C3_682377803370',
+        memo: '检验人人工号'
+      },
+      {
+        from: 'C3_682642812388',
+        to: 'C3_682371322856',
+        memo: '检验人人编号'
       }
     ]
   },
   {
-    id:'682635881582',
-    process:'end',
-    mapping:[
-    ]
+    id: '682635881582',
+    process: 'end',
+    mapping: []
   }
-]
+];
 const baseURL =
-window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
 class WorkSheetDetail extends React.Component {
   constructor(props) {
     super(props);
@@ -291,14 +299,14 @@ class WorkSheetDetail extends React.Component {
   state = {
     loading: false,
     process: '',
-    modalFileImg:[],
-    file1:[],
-    file2:[],
-    file3:[],
-    file4:[],
-    showfile:false,
-    fileList:[],//附件列表
-    file2Del:[],//要删除的附件
+    modalFileImg: [],
+    file1: [],
+    file2: [],
+    file3: [],
+    file4: [],
+    showfile: false,
+    fileList: [], //附件列表
+    file2Del: [], //要删除的附件
     productLines: [],
     productLinesValue: '请选择工作流',
     productLineTree: {
@@ -314,97 +322,92 @@ class WorkSheetDetail extends React.Component {
     curModiReason: '',
     sheetData: {},
     customers: [],
-    canEdit:9,
-    isCurrent:true,
-    materialResid:'',
-    minL:false,
-    bitianxiang:[],
-    filterMaterial:'wood',
-    filterList:'un'
+    canEdit: 9,
+    isCurrent: true,
+    materialResid: '',
+    minL: false,
+    bitianxiang: [],
+    filterMaterial: 'wood',
+    filterList: 'un'
   };
   async componentDidMount() {
-    
     this.getUserinfo();
-    window.addEventListener('resize',this.handleResize.bind(this));
+    window.addEventListener('resize', this.handleResize.bind(this));
   }
-  componentWillUnmount(){
-    window.removeEventListener('resize',this.handleResize.bind(this));
-
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
   }
-  changeListFilter=(l,m,a)=>{
-    let arr 
-    if(!a){
+  changeListFilter = (l, m, a) => {
+    let arr;
+    if (!a) {
       arr = this.state.sheetList[l];
-    }else{
-      arr=a
+    } else {
+      arr = a;
     }
-   
-    let n =0;
-    let fin=[]
-    while(n<arr.length){
-      if(m=='wood'){
-        if(arr[n].C3_678797141752){
-          fin.push(arr[n])
+    let n = 0;
+    let fin = [];
+    while (n < arr.length) {
+      if (m == 'wood') {
+        if (arr[n].C3_678797141752) {
+          fin.push(arr[n]);
         }
-      }else if(m=='plastic'){
-        if(arr[n].C3_678797207647){
-          fin.push(arr[n])
+      } else if (m == 'plastic') {
+        if (arr[n].C3_678797207647) {
+          fin.push(arr[n]);
         }
       }
       n++;
     }
-    this.setState({curSheetList:fin})
-  }
-  handleResize = e =>{
+    this.setState({ curSheetList: fin });
+  };
+  handleResize = e => {
     let dom = document.getElementById('sheetForm');
-    if(dom.offsetWidth<843){
-      this.setState({minL:true});
-    }else{
-      this.setState({minL:false});
-
+    if (dom.offsetWidth < 843) {
+      this.setState({ minL: true });
+    } else {
+      this.setState({ minL: false });
     }
-  }
+  };
   componentWillReceiveProps = async nextProps => {
-    let _this=this;
-    let objEmpty={}
-    if(_this.props.colData){
-      let n =0;
-      let colData = _this.props.colData
-      while(n<colData.length){
-        objEmpty[colData[n].ColName]=''
+    let _this = this;
+    let objEmpty = {};
+    if (_this.props.colData) {
+      let n = 0;
+      let colData = _this.props.colData;
+      while (n < colData.length) {
+        objEmpty[colData[n].ColName] = '';
         n++;
       }
     }
-    console.log('sheetData',nextProps.sheetData)
-    if(nextProps.sheetData){
-      let objSheets={
-        ing:[],
-        un:[]
-      }
-      let co=0;
-      while(co<nextProps.sheetData.length){
-        if(nextProps.sheetData[co].C3_682377833865=='进行中'){
+    console.log('sheetData', nextProps.sheetData);
+    if (nextProps.sheetData) {
+      let objSheets = {
+        ing: [],
+        un: []
+      };
+      let co = 0;
+      while (co < nextProps.sheetData.length) {
+        if (nextProps.sheetData[co].C3_682377833865 == '进行中') {
           objSheets.ing.push(nextProps.sheetData[co]);
-        }else{
+        } else {
           objSheets.un.push(nextProps.sheetData[co]);
         }
         co++;
       }
-      this.changeListFilter('un','wood',objSheets)
-      this.setState({sheetList:objSheets});
+      this.changeListFilter('un', 'wood', objSheets);
+      this.setState({ sheetList: objSheets });
     }
-    
+
     //初始化
     if (nextProps.new) {
       _this.setState({ loading: true });
-      if(nextProps.sheetData){
-
-      }else{
+      if (nextProps.sheetData) {
+      } else {
         _this.getProductLines();
       }
-      _this.setState({bitianxiang:[]});
+      _this.setState({ bitianxiang: [] });
       _this.setState({
-        bitianxiang:Bitianxiang[0].biTian,
+        bitianxiang: Bitianxiang[0].biTian,
         productLines: [],
         productLinesValue: '请选择工作流',
         productLineTree: {
@@ -422,78 +425,78 @@ class WorkSheetDetail extends React.Component {
         loading: false,
         process: '',
         sheetData: objEmpty,
-        file1:[],
-        file2:[],
-        file3:[],
-        file4:[],
-        modalFileImg:[],
+        file1: [],
+        file2: [],
+        file3: [],
+        file4: [],
+        modalFileImg: []
       });
-      let ti=setTimeout(function(){
+      let ti = setTimeout(function() {
         let dom = document.getElementById('sheetForm');
-          if(dom.offsetWidth<843){
-          _this.setState({minL:true});
-        }else{
-          _this.setState({minL:false});
+        if (dom.offsetWidth < 843) {
+          _this.setState({ minL: true });
+        } else {
+          _this.setState({ minL: false });
         }
-      },100)
+      }, 100);
     } else {
-      _this.setState({sheetData: objEmpty})
+      _this.setState({ sheetData: objEmpty });
       await _this.getHistories(nextProps.curSheetId);
     }
   };
-  getNewVersion = async()=>{
-    let objEmpty={}
-    if(this.props.colData){
-      let n =0;
-      let colData = this.props.colData
-      while(n<colData.length){
-        objEmpty[colData[n].ColName]=''
+  getNewVersion = async () => {
+    let objEmpty = {};
+    if (this.props.colData) {
+      let n = 0;
+      let colData = this.props.colData;
+      while (n < colData.length) {
+        objEmpty[colData[n].ColName] = '';
         n++;
       }
     }
 
-    this.setState({sheetData: objEmpty})
+    this.setState({ sheetData: objEmpty });
     await this.getHistories(this.props.curSheetId);
-  }
-  openMaterial = (resid,id,name,specifications) =>{
+  };
+  openMaterial = (resid, id, name, specifications) => {
     this.setState({
-      showMaterial:true,
-      materialResid:resid,
-      materialId:id,
-      materialName:name,
-      specifications:specifications
-    })
-  }
-  selectMaterial=(id,name,specifications)=>{
-    let obj=this.state.sheetData;
-    obj[this.state.materialId]=id;
-    obj[this.state.materialName]=name;
-    obj[this.state.specifications]=specifications;
-    console.log(obj)
+      showMaterial: true,
+      materialResid: resid,
+      materialId: id,
+      materialName: name,
+      specifications: specifications
+    });
+  };
+  selectMaterial = (id, name, specifications) => {
+    let obj = this.state.sheetData;
+    obj[this.state.materialId] = id;
+    obj[this.state.materialName] = name;
+    obj[this.state.specifications] = specifications;
+    console.log(obj);
     this.setState({
-      showMaterial:false,
-      sheetData:obj,
-      materialResid:''
-    })
-  }
+      showMaterial: false,
+      sheetData: obj,
+      materialResid: ''
+    });
+  };
   //获取历史数据
   //产品线ID,版本号
   getHistories = async (v, version) => {
-    this.setState({fileList:[]})
-    let objEmpty={}
-    if(this.props.colData){
-      let n =0;
-      let colData = this.props.colData
-      while(n<colData.length){
-        objEmpty[colData[n].ColName]=''
+    this.setState({ fileList: [] });
+    let objEmpty = {};
+    if (this.props.colData) {
+      let n = 0;
+      let colData = this.props.colData;
+      while (n < colData.length) {
+        objEmpty[colData[n].ColName] = '';
         n++;
       }
     }
 
-    this.setState({sheetData: objEmpty});
+    this.setState({ sheetData: objEmpty });
     this.setState({ loading: true, process: '正在读取历史数据' });
     let cms = `C3_682281119677 = '${v}'`;
-    let curCanEdit=99;
+    let curCanEdit = 99;
     if (version) {
       cms += ` and C3_680644411481 ='${version}'`;
     }
@@ -504,7 +507,7 @@ class WorkSheetDetail extends React.Component {
         resid: '678790254230',
         cmswhere: cms
       });
-      if(res.data[0]){
+      if (res.data[0]) {
         await this.getFiles(res.data[0].C3_680644203469);
       }
       let n = 0;
@@ -513,35 +516,42 @@ class WorkSheetDetail extends React.Component {
       let curID = '';
       let sheetID = '';
       let isCurrent = false;
-      let curLineId='';
-      let curCharaId='';
-      let curSheetId=''
+      let curLineId = '';
+      let curCharaId = '';
+      let curSheetId = '';
       while (n < res.data.length) {
         let str = '';
         if (res.data[n].C3_680644403785 == 'Y') {
           str = 'current';
-          isCurrent=true;
-          curSheetData= res.data[n];
+          isCurrent = true;
+          curSheetData = res.data[n];
           if (curSheetData.C3_678796788873) {
             curSheetData.C3_678796788873 = moment(curSheetData.C3_678796788873);
           }
           if (curSheetData.C3_678796797075) {
             curSheetData.C3_678796797075 = moment(curSheetData.C3_678796797075);
           }
-          curLineId=res.data[n].C3_682267546275;
-          curCharaId=res.data[n].curChara;
-          curSheetId= res.data[n].C3_682281119677;
-          if(res.data[n].C3_682377833865=='已完成' && res.data[n].sheetStatus=='进行中'){
-            curCharaId = res.data[n].C3_682444277336;   
-            curCanEdit=0;
-          }else{
-            curCanEdit=1;
+          curLineId = res.data[n].C3_682267546275;
+          curCharaId = res.data[n].curChara;
+          curSheetId = res.data[n].C3_682281119677;
+          if (
+            res.data[n].C3_682377833865 == '已完成' &&
+            res.data[n].sheetStatus == '进行中'
+          ) {
+            curCharaId = res.data[n].C3_682444277336;
+            curCanEdit = 0;
+          } else {
+            curCanEdit = 1;
           }
-          if(res.data[n].C3_682377833865=='已完成' && res.data[n].curDepaId==this.props.mesId && res.data[n].C3_682540168336!='Y'){
-            curCanEdit=9;
+          if (
+            res.data[n].C3_682377833865 == '已完成' &&
+            res.data[n].curDepaId == this.props.mesId &&
+            res.data[n].C3_682540168336 != 'Y'
+          ) {
+            curCanEdit = 9;
           }
-          if(!this.props.mesId){
-            curCanEdit=9;
+          if (!this.props.mesId) {
+            curCanEdit = 9;
           }
         }
         his.push({
@@ -550,20 +560,27 @@ class WorkSheetDetail extends React.Component {
         });
         lineID = res.data[n].C3_682267546275;
         curID = res.data[n].curChara;
-        if(res.data[n].C3_682377833865=='已完成' && res.data[n].sheetStatus=='进行中'){
-        curID = res.data[n].C3_682444277336;
-        this.setState({canEdit:0});
-        }else{
-          this.setState({canEdit:1});
+        if (
+          res.data[n].C3_682377833865 == '已完成' &&
+          res.data[n].sheetStatus == '进行中'
+        ) {
+          curID = res.data[n].C3_682444277336;
+          this.setState({ canEdit: 0 });
+        } else {
+          this.setState({ canEdit: 1 });
         }
 
-        if(res.data[n].C3_682377833865=='已完成' && res.data[n].curDepaId==this.props.mesId && res.data[n].C3_682540168336!='Y'){
-          this.setState({canEdit:9});
+        if (
+          res.data[n].C3_682377833865 == '已完成' &&
+          res.data[n].curDepaId == this.props.mesId &&
+          res.data[n].C3_682540168336 != 'Y'
+        ) {
+          this.setState({ canEdit: 9 });
         }
-        if(!this.props.mesId){
-          this.setState({canEdit:9});
+        if (!this.props.mesId) {
+          this.setState({ canEdit: 9 });
         }
-        
+
         sheetID = res.data[n].C3_682281119677;
         let sheetData1 = res.data[n];
         if (sheetData1.C3_678796788873) {
@@ -582,48 +599,53 @@ class WorkSheetDetail extends React.Component {
         n++;
       }
       let dom = document.getElementById('sheetForm');
-    if(dom.offsetWidth<843){
-      console.log('w',dom.offsetWidth)
-      this.setState({minL:true});
-    }else{
-      this.setState({minL:false});
-    }
-    //设置必填项
-    let arrBitian = Bitianxiang;
-    let btC=0;
-    this.setState({bitianxiang:[]});
-    while(btC<arrBitian.length){
-      if(arrBitian[btC].processID==curID){
-        this.setState({bitianxiang:arrBitian[btC].biTian});
+      if (dom.offsetWidth < 843) {
+        console.log('w', dom.offsetWidth);
+        this.setState({ minL: true });
+      } else {
+        this.setState({ minL: false });
       }
-      btC++;
-    }
-      if (version) {
-        this.setState({ isCurrent:isCurrent,process: '',imgUrl:res.data[0].imgUrl });
-        if(curCanEdit!=99){
-          this.setState({canEdit:curCanEdit});
+      //设置必填项
+      let arrBitian = Bitianxiang;
+      let btC = 0;
+      this.setState({ bitianxiang: [] });
+      while (btC < arrBitian.length) {
+        if (arrBitian[btC].processID == curID) {
+          this.setState({ bitianxiang: arrBitian[btC].biTian });
         }
-        console.log('ll',lineID, curID, sheetID)
-        if(this.props.sheetData){
+        btC++;
+      }
+      if (version) {
+        this.setState({
+          isCurrent: isCurrent,
+          process: '',
+          imgUrl: res.data[0].imgUrl
+        });
+        if (curCanEdit != 99) {
+          this.setState({ canEdit: curCanEdit });
+        }
+        console.log('ll', lineID, curID, sheetID);
+        if (this.props.sheetData) {
           this.setState({ loading: false });
-
-        }else{
+        } else {
           this.getTargetLine(lineID, curID, sheetID);
         }
       } else {
-        if(curSheetData){
-          this.setState({imgUrl:curSheetData.imgUrl,sheetData:curSheetData,curModiReason:curSheetData.C3_680644227339});
+        if (curSheetData) {
+          this.setState({
+            imgUrl: curSheetData.imgUrl,
+            sheetData: curSheetData,
+            curModiReason: curSheetData.C3_680644227339
+          });
         }
-        if(curCanEdit!=99){
-          this.setState({canEdit:curCanEdit});
+        if (curCanEdit != 99) {
+          this.setState({ canEdit: curCanEdit });
         }
-        this.setState({process: '', histories: his});
-        if(this.props.sheetData){
+        this.setState({ process: '', histories: his });
+        if (this.props.sheetData) {
           this.setState({ loading: false });
-
-        }else{
+        } else {
           this.getTargetLine(curLineId, curCharaId, curSheetId);
-
         }
       }
     } catch (e) {
@@ -665,8 +687,8 @@ class WorkSheetDetail extends React.Component {
     this.setState({ imgfile: e });
     let files = e.target.files || e.dataTransfer.files;
     if (!files.length) return;
-    let type = files[0].name; 
-    type=type.split('.')
+    let type = files[0].name;
+    type = type.split('.');
     let size = files[0].size; //文件的大小，判断图片的大小
     if (size > 5242880) {
       alert('请选择5M以内的图片！');
@@ -733,7 +755,7 @@ class WorkSheetDetail extends React.Component {
     let userInfo = localStorage.getItem('userInfo');
     userInfo = JSON.parse(userInfo);
     userInfo = userInfo.UserInfo;
-    console.log('json',Bitianxiang)
+    console.log('json', Bitianxiang);
     this.setState({ userInfo: userInfo });
   };
 
@@ -804,8 +826,8 @@ class WorkSheetDetail extends React.Component {
                   str1 = '--';
                 }
                 if (res2.data[nnn].C3_682379442485) {
-                  str2 =  res2.data[nnn].C3_682379442485;
-                }else{
+                  str2 = res2.data[nnn].C3_682379442485;
+                } else {
                   str2 = '--';
                 }
 
@@ -905,21 +927,21 @@ class WorkSheetDetail extends React.Component {
     }
     console.log('line', this.state.productLinesValue);
     //检查图纸
-    if(!this.state.imgUrl){
-      message.error('请添加图纸！')
-      return false
-    };
+    if (!this.state.imgUrl) {
+      message.error('请添加图纸！');
+      return false;
+    }
 
     //检查必填项
     let v = 0;
-    let bol=false;
-    while(v<this.state.bitianxiang.length){
-      if(!this.state.sheetData[this.state.bitianxiang[v].id]){
-        bol=true
+    let bol = false;
+    while (v < this.state.bitianxiang.length) {
+      if (!this.state.sheetData[this.state.bitianxiang[v].id]) {
+        bol = true;
       }
       v++;
     }
-    if(bol && this.state.sheetData.C3_684517424980!='Y'){
+    if (bol && this.state.sheetData.C3_684517424980 != 'Y') {
       message.error('尚有未填写的必填项！');
       return false;
     }
@@ -936,14 +958,16 @@ class WorkSheetDetail extends React.Component {
       this.state.productLineTree[678789327168][0][678789448828][0]
         .productflowjobroleid
     );
-    
+
     let myTime = new Date();
-    obj.C3_682379482255=myTime;
-    obj.C3_682379496968=myTime;
+    obj.C3_682379482255 = myTime;
+    obj.C3_682379496968 = myTime;
     obj.C3_682444277336 = nxt.productflowjobroleid;
     let counter = 0;
-    while(counter<mapping[0].mapping.length){
-      obj[mapping[0].mapping[counter].to]=this.state.sheetData[mapping[0].mapping[counter].from]
+    while (counter < mapping[0].mapping.length) {
+      obj[mapping[0].mapping[counter].to] = this.state.sheetData[
+        mapping[0].mapping[counter].from
+      ];
       counter++;
     }
 
@@ -958,15 +982,15 @@ class WorkSheetDetail extends React.Component {
       await this.saveFiles(res.data[0].C3_680644203469);
       //填上关联的工作单resid
       let filedata = this.state.file1;
-      if(filedata.length>0){
+      if (filedata.length > 0) {
         let n = 0;
-        while(n<filedata.length){
-          filedata[n].sheetRecid=res.data[0].C3_680644203469;
+        while (n < filedata.length) {
+          filedata[n].sheetRecid = res.data[0].C3_680644203469;
           n++;
         }
         let res2 = await http().modifyRecords({
           resid: '684428871273',
-          data:filedata
+          data: filedata
         });
       }
       await message.success('添加成功');
@@ -981,7 +1005,7 @@ class WorkSheetDetail extends React.Component {
   };
   //复制新建
   copyAdd = async () => {
-     //检查必填项
+    //检查必填项
     //  let v = 0;
     //  let bol=false;
     //  while(v<this.state.bitianxiang.length){
@@ -994,7 +1018,7 @@ class WorkSheetDetail extends React.Component {
     //    message.error('尚有未填写的必填项！');
     //    return false;
     //  }
-    this.setState({loading:true,process:'复制中'})
+    this.setState({ loading: true, process: '复制中' });
     let obj = {};
     obj.C3_682267546275 = this.state.productLinesValue;
     obj.sheetStatus = '进行中';
@@ -1008,78 +1032,132 @@ class WorkSheetDetail extends React.Component {
         .productflowjobroleid
     );
     let myTime = new Date();
-    obj.C3_682379482255=myTime;
-    obj.REC_ID='';
-    obj.C3_682379496968=myTime;
+    obj.C3_682379482255 = myTime;
+    obj.REC_ID = '';
+    obj.C3_682379496968 = myTime;
     obj.C3_682444277336 = nxt.productflowjobroleid;
     let counter = 0;
-    while(counter<mapping[0].mapping.length){
-      obj[mapping[0].mapping[counter].to]=this.state.sheetData[mapping[0].mapping[counter].from]
+    while (counter < mapping[0].mapping.length) {
+      obj[mapping[0].mapping[counter].to] = this.state.sheetData[
+        mapping[0].mapping[counter].from
+      ];
       counter++;
     }
-    let arr=['C3_678796887001','C3_682639109504','C3_682639124047','C3_682507133563','C3_682369620435','C3_678796788873','C3_678796797075','C3_678796767356','C3_682184234543','C3_678796779827','C3_681946447748','C3_681946858588','C3_681946866036','C3_681946874849','C3_681946885747','C3_681946907063','C3_681946916803','C3_681946932592','C3_681946943505','C3_681946949984','C3_681946967641','C3_681948129430','C3_681948140445','C3_681948156177','C3_681948368196','C3_678796830965','C3_678796898023','C3_678796906793','C3_681948661141','C3_678796943530','C3_682641632966','C3_682641647401','C3_678796951598','C3_678796959023','C3_678796966324','C3_678796973541','C3_678797062420','C3_678797068641','C3_678797075331','C3_678796981497','C3_678796989327','C3_678797024313','C3_678797082671','C3_678797088953','C3_678797095425','C3_678797032289','C3_678797041936','C3_678797050598','C3_678797101119','C3_678797109062','C3_681949749757','C3_678797141752','C3_678797207647']
-    counter=0;
-    while(counter<arr.length){
-      obj[arr[counter]]=this.state.sheetData[arr[counter]];
+    let arr = [
+      'C3_678796887001',
+      'C3_682639109504',
+      'C3_682639124047',
+      'C3_682507133563',
+      'C3_682369620435',
+      'C3_678796788873',
+      'C3_678796797075',
+      'C3_678796767356',
+      'C3_682184234543',
+      'C3_678796779827',
+      'C3_681946447748',
+      'C3_681946858588',
+      'C3_681946866036',
+      'C3_681946874849',
+      'C3_681946885747',
+      'C3_681946907063',
+      'C3_681946916803',
+      'C3_681946932592',
+      'C3_681946943505',
+      'C3_681946949984',
+      'C3_681946967641',
+      'C3_681948129430',
+      'C3_681948140445',
+      'C3_681948156177',
+      'C3_681948368196',
+      'C3_678796830965',
+      'C3_678796898023',
+      'C3_678796906793',
+      'C3_681948661141',
+      'C3_678796943530',
+      'C3_682641632966',
+      'C3_682641647401',
+      'C3_678796951598',
+      'C3_678796959023',
+      'C3_678796966324',
+      'C3_678796973541',
+      'C3_678797062420',
+      'C3_678797068641',
+      'C3_678797075331',
+      'C3_678796981497',
+      'C3_678796989327',
+      'C3_678797024313',
+      'C3_678797082671',
+      'C3_678797088953',
+      'C3_678797095425',
+      'C3_678797032289',
+      'C3_678797041936',
+      'C3_678797050598',
+      'C3_678797101119',
+      'C3_678797109062',
+      'C3_681949749757',
+      'C3_678797141752',
+      'C3_678797207647'
+    ];
+    counter = 0;
+    while (counter < arr.length) {
+      obj[arr[counter]] = this.state.sheetData[arr[counter]];
       counter++;
     }
-    console.log('复制',obj)
+    console.log('复制', obj);
     let res;
     try {
       res = await http().addRecords({
         resid: '678790254230',
         data: [obj]
       });
-      await this.saveFiles(res.data[0].C3_680644203469,true);
+      await this.saveFiles(res.data[0].C3_680644203469, true);
       this.props.handleRefresh();
-      this.setState({loading:false,process:''});
+      this.setState({ loading: false, process: '' });
       this.props.backFunc();
       message.success('复制成功');
-
     } catch (e) {
-      this.setState({loading:false,process:''});
+      this.setState({ loading: false, process: '' });
       message.error(e.message);
       console.log(e.message);
     }
   };
   //开始当前流程
-  startFlow = async()=>{
-    this.setState({loading:true,process:'正在开始'})
+  startFlow = async () => {
+    this.setState({ loading: true, process: '正在开始' });
     let res;
-    let nxtChara=this.calNext(this.state.sheetData.C3_682444277336);
+    let nxtChara = this.calNext(this.state.sheetData.C3_682444277336);
     let myTime = new Date();
     let data = this.state.sheetData;
-    let ins = this.state.sheetData.C3_682444277336
-    let n=0;
-    while(n<mapping.length){
-      if(mapping[n].id==ins && mapping[n].process=='start'){
-        let counter=0;
-        while(counter<mapping[n].mapping.length){
-          let ress=this.state.sheetData[mapping[n].mapping[counter].from];
-          if(mapping[n].mapping[counter].from=='CUR_TIME'){
-            ress=moment(myTime).format('MM-DD HH:MM:SS')
-
+    let ins = this.state.sheetData.C3_682444277336;
+    let n = 0;
+    while (n < mapping.length) {
+      if (mapping[n].id == ins && mapping[n].process == 'start') {
+        let counter = 0;
+        while (counter < mapping[n].mapping.length) {
+          let ress = this.state.sheetData[mapping[n].mapping[counter].from];
+          if (mapping[n].mapping[counter].from == 'CUR_TIME') {
+            ress = moment(myTime).format('MM-DD HH:MM:SS');
           }
-          data[mapping[n].mapping[counter].to]=ress;
+          data[mapping[n].mapping[counter].to] = ress;
           counter++;
         }
       }
       n++;
     }
-    data.curChara=this.state.sheetData.C3_682444277336;
-    data.C3_682444277336=nxtChara.productflowjobroleid;
-    data.C3_682379482255=myTime;
-    data.C3_682379496968='';
-    data.C3_682377833865='进行中';
-    console.log('data',data)
+    data.curChara = this.state.sheetData.C3_682444277336;
+    data.C3_682444277336 = nxtChara.productflowjobroleid;
+    data.C3_682379482255 = myTime;
+    data.C3_682379496968 = '';
+    data.C3_682377833865 = '进行中';
+    console.log('data', data);
     //检验的开始时间
-    if(data.curChara=='682635881582'){
-      let mT=new Date();
-      let mm = mT.getMonth()+1;
+    if (data.curChara == '682635881582') {
+      let mT = new Date();
+      let mm = mT.getMonth() + 1;
       let dd = mT.getDate();
       let hh = mT.getHours();
-      let m=mT.getMinutes()
-      data.C3_678797501456=mm+'/'+dd+' '+hh+':'+m;
+      let m = mT.getMinutes();
+      data.C3_678797501456 = mm + '/' + dd + ' ' + hh + ':' + m;
     }
     try {
       res = await http().modifyRecords({
@@ -1089,123 +1167,118 @@ class WorkSheetDetail extends React.Component {
       message.success('已经开始');
       this.getHistories(this.props.curSheetId);
     } catch (e) {
-      this.setState({loading:false,process:''})
+      this.setState({ loading: false, process: '' });
       message.error(e.message);
       console.log(e.message);
     }
-  }
-vertiRec= async(v)=>{
-  this.setState({loading:true,process:'正在验证工作单状态'});
-  let res;
-  try {
-    res = await http().getTable({
-      resid: '678790254230',
-      cmswhere:`REC_ID = '${this.state.sheetData.REC_ID}'`
-    });
-    if(res.data[0].C3_680644403785=='Y'){
-      if(v=='ed'){
-          this.endFlow()
-      }else if(v=='st'){
-        this.startFlow();
+  };
+  vertiRec = async v => {
+    this.setState({ loading: true, process: '正在验证工作单状态' });
+    let res;
+    try {
+      res = await http().getTable({
+        resid: '678790254230',
+        cmswhere: `REC_ID = '${this.state.sheetData.REC_ID}'`
+      });
+      if (res.data[0].C3_680644403785 == 'Y') {
+        if (v == 'ed') {
+          this.endFlow();
+        } else if (v == 'st') {
+          this.startFlow();
+        }
+      } else {
+        message.info('当前不是最新版本，更新版本后请重新操作');
+        this.getNewVersion();
       }
-    }else{
-      message.info('当前不是最新版本，更新版本后请重新操作');
-      this.getNewVersion();
+    } catch (e) {
+      this.setState({ loading: false, process: '' });
+
+      message.error(e.message);
+      console.log(e.message);
     }
+  };
 
-  } catch (e) {
-  this.setState({loading:false,process:''})
-
-    message.error(e.message);
-    console.log(e.message);
-  }
-}
-
-  endFlow = async()=>{
-
-    this.setState({loading:true,process:'正在验证必填项'})
+  endFlow = async () => {
+    this.setState({ loading: true, process: '正在验证必填项' });
     let v = 0;
-    let bol=false;
-    while(v<this.state.bitianxiang.length){
-      if(!this.state.sheetData[this.state.bitianxiang[v].id]){
-        bol=true
+    let bol = false;
+    while (v < this.state.bitianxiang.length) {
+      if (!this.state.sheetData[this.state.bitianxiang[v].id]) {
+        bol = true;
       }
       v++;
     }
-    if(bol){
+    if (bol) {
       message.error('尚有未填写的必填项！');
-    this.setState({loading:false})
-    }else{
+      this.setState({ loading: false });
+    } else {
+      this.setState({ loading: true, process: '正在结束' });
 
-      this.setState({loading:true,process:'正在结束'})
+      let res;
+      let data = this.state.sheetData;
+      let myTime = new Date();
 
-    let res;
-    let data = this.state.sheetData;
-    let myTime = new Date();
-     
-      let n=0;
-      while(n<mapping.length){
-        if(mapping[n].id==this.state.sheetData.curChara && mapping[n].process=='end'){
-          let counter=0;
-          while(counter<mapping[n].mapping.length){
-            let ress=this.state.sheetData[mapping[n].mapping[counter].from];
-            if(mapping[n].mapping[counter].from=='CUR_TIME'){
-              ress=moment(myTime).format('MM-DD HH:MM:SS')
+      let n = 0;
+      while (n < mapping.length) {
+        if (
+          mapping[n].id == this.state.sheetData.curChara &&
+          mapping[n].process == 'end'
+        ) {
+          let counter = 0;
+          while (counter < mapping[n].mapping.length) {
+            let ress = this.state.sheetData[mapping[n].mapping[counter].from];
+            if (mapping[n].mapping[counter].from == 'CUR_TIME') {
+              ress = moment(myTime).format('MM-DD HH:MM:SS');
             }
-            data[mapping[n].mapping[counter].to]=ress;
+            data[mapping[n].mapping[counter].to] = ress;
             counter++;
           }
         }
         n++;
       }
-      data.C3_682379496968=myTime;
-      data.C3_682377833865='已完成';
-      if(data.curChara=='682635881582'){
+      data.C3_682379496968 = myTime;
+      data.C3_682377833865 = '已完成';
+      if (data.curChara == '682635881582') {
         let string = data.C3_678797501456;
-        let mT=new Date();
+        let mT = new Date();
         let hh = mT.getHours();
-        let m=mT.getMinutes()
-        data.C3_678797501456= string+'至'+hh+':'+m;
-        data.sheetStatus='已完成'
+        let m = mT.getMinutes();
+        data.C3_678797501456 = string + '至' + hh + ':' + m;
+        data.sheetStatus = '已完成';
       }
-    try {
-      res = await http().modifyRecords({
-        resid: '678790254230',
-        data: [data]
-      });
-      message.success('已经结束');
-      this.getHistories(this.props.curSheetId);
+      try {
+        res = await http().modifyRecords({
+          resid: '678790254230',
+          data: [data]
+        });
+        message.success('已经结束');
+        this.getHistories(this.props.curSheetId);
+      } catch (e) {
+        this.setState({ loading: false, process: '' });
 
-    } catch (e) {
-    this.setState({loading:false,process:''})
-
-      message.error(e.message);
-      console.log(e.message);
+        message.error(e.message);
+        console.log(e.message);
+      }
     }
-
-    }
-
-
-    
-  }
+  };
   //姓名,编号,工号
-  selectPeople=(nam,number,id)=>{
+  selectPeople = (nam, number, id) => {
     let obj = this.state.sheetData;
-    obj[this.state.fillName]=nam;
-    obj[this.state.fillNum]=number;
-    obj[this.state.fillId]=id;
-    this.setState({sheetData:obj,showWorker:false});
-  }
+    obj[this.state.fillName] = nam;
+    obj[this.state.fillNum] = number;
+    obj[this.state.fillId] = id;
+    this.setState({ sheetData: obj, showWorker: false });
+  };
   //报废/取消订单
-  endSheet = async(v)=>{
-    this.setState({loading:true,showZuofei:false,process:'正在操作'})
+  endSheet = async v => {
+    this.setState({ loading: true, showZuofei: false, process: '正在操作' });
     let res;
-    let data={
-      REC_ID:this.state.sheetData.REC_ID,
-      sheetStatus:v,
-      C3_682377833865:'非正常终止',
-      C3_682782291042:this.state.sheetData.C3_682782291042
-    }
+    let data = {
+      REC_ID: this.state.sheetData.REC_ID,
+      sheetStatus: v,
+      C3_682377833865: '非正常终止',
+      C3_682782291042: this.state.sheetData.C3_682782291042
+    };
     try {
       res = await http().modifyRecords({
         resid: '678790254230',
@@ -1213,67 +1286,122 @@ vertiRec= async(v)=>{
       });
       message.success(v);
       this.getHistories(this.props.curSheetId);
-    this.setState({loading:false,process:''})
-
+      this.setState({ loading: false, process: '' });
     } catch (e) {
-    this.setState({loading:false,process:''})
+      this.setState({ loading: false, process: '' });
       message.error(e.message);
       console.log(e.message);
     }
-  }
+  };
   //修改表单
-  handleModi=async()=>{
+  handleModi = async () => {
     //将当前表单最新字段清空
-    this.setState({showModi:false,loading:'true',process:'改版开单中'})
+    this.setState({ showModi: false, loading: 'true', process: '改版开单中' });
     let res;
     let res2;
     let res3;
     try {
       res = await http().getTable({
         resid: '678790254230',
-        cmswhere:`C3_682281119677 = '${this.props.curSheetId}' and C3_680644403785 = 'Y'`
+        cmswhere: `C3_682281119677 = '${this.props.curSheetId}' and C3_680644403785 = 'Y'`
       });
-      let obj0=res.data[0];
-      obj0.C3_680644403785='';
+      let obj0 = res.data[0];
+      obj0.C3_680644403785 = '';
       res2 = await http().modifyRecords({
         resid: '678790254230',
-        data:[obj0]
+        data: [obj0]
       });
-      this.setState({process:'修改工作单数据'})
+      this.setState({ process: '修改工作单数据' });
 
       let obj = {};
-        obj.C3_682267546275 = this.state.productLinesValue;
-        obj.sheetStatus = '进行中';
-        obj.C3_682377833865 = '已完成';
-        obj.C3_680644403785 = 'Y';
-        obj.curPro = this.state.productLineTree[678789327168][0].productflowjobid;
-        obj.imgUrl = this.state.imgUrl;
-        obj.curChara = this.state.productLineTree[678789327168][0][678789448828][0].productflowjobroleid;
-        let nxt = this.calNext(
-          this.state.productLineTree[678789327168][0][678789448828][0]
-            .productflowjobroleid
-        );
-        let myTime = new Date();
-        let myDate = moment(myTime).format('YYYY-MM-DD hh:mm:ss');
-        obj.C3_680644411481=myDate;
-        obj.C3_682379482255=myTime;
-        obj.C3_682379496968=myTime;
-        obj.C3_680644227339=this.state.sheetData.C3_680644227339;
-        obj.C3_680644251256=myTime;
-        obj.C3_682444277336 = nxt.productflowjobroleid;
-        obj.REC_ID='';
-        let counter = 0;
-        while(counter<mapping[0].mapping.length){
-          obj[mapping[0].mapping[counter].to]=this.state.sheetData[mapping[0].mapping[counter].from]
-          counter++;
-        }
-        let arr=['C3_678796887001','C3_682639109504','C3_682639124047','C3_682507133563','C3_682369620435','C3_678796788873','C3_678796797075','C3_678796767356','C3_682184234543','C3_678796779827','C3_681946447748','C3_681946858588','C3_681946866036','C3_681946874849','C3_681946885747','C3_681946907063','C3_681946916803','C3_681946932592','C3_681946943505','C3_681946949984','C3_681946967641','C3_681948129430','C3_681948140445','C3_681948156177','C3_681948368196','C3_678796830965','C3_678796898023','C3_678796906793','C3_681948661141','C3_678796943530','C3_682641632966','C3_682641647401','C3_678796951598','C3_678796959023','C3_678796966324','C3_678796973541','C3_678797062420','C3_678797068641','C3_678797075331','C3_678796981497','C3_678796989327','C3_678797024313','C3_678797082671','C3_678797088953','C3_678797095425','C3_678797032289','C3_678797041936','C3_678797050598','C3_678797101119','C3_678797109062','C3_681949749757','C3_678797141752','C3_678797207647']
-        counter=0;
-        while(counter<arr.length){
-          obj[arr[counter]]=this.state.sheetData[arr[counter]];
-          counter++;
-        }
-        obj.C3_684517424980='Y';
+      obj.C3_682267546275 = this.state.productLinesValue;
+      obj.sheetStatus = '进行中';
+      obj.C3_682377833865 = '已完成';
+      obj.C3_680644403785 = 'Y';
+      obj.curPro = this.state.productLineTree[678789327168][0].productflowjobid;
+      obj.imgUrl = this.state.imgUrl;
+      obj.curChara = this.state.productLineTree[678789327168][0][678789448828][0].productflowjobroleid;
+      let nxt = this.calNext(
+        this.state.productLineTree[678789327168][0][678789448828][0]
+          .productflowjobroleid
+      );
+      let myTime = new Date();
+      let myDate = moment(myTime).format('YYYY-MM-DD hh:mm:ss');
+      obj.C3_680644411481 = myDate;
+      obj.C3_682379482255 = myTime;
+      obj.C3_682379496968 = myTime;
+      obj.C3_680644227339 = this.state.sheetData.C3_680644227339;
+      obj.C3_680644251256 = myTime;
+      obj.C3_682444277336 = nxt.productflowjobroleid;
+      obj.REC_ID = '';
+      let counter = 0;
+      while (counter < mapping[0].mapping.length) {
+        obj[mapping[0].mapping[counter].to] = this.state.sheetData[
+          mapping[0].mapping[counter].from
+        ];
+        counter++;
+      }
+      let arr = [
+        'C3_678796887001',
+        'C3_682639109504',
+        'C3_682639124047',
+        'C3_682507133563',
+        'C3_682369620435',
+        'C3_678796788873',
+        'C3_678796797075',
+        'C3_678796767356',
+        'C3_682184234543',
+        'C3_678796779827',
+        'C3_681946447748',
+        'C3_681946858588',
+        'C3_681946866036',
+        'C3_681946874849',
+        'C3_681946885747',
+        'C3_681946907063',
+        'C3_681946916803',
+        'C3_681946932592',
+        'C3_681946943505',
+        'C3_681946949984',
+        'C3_681946967641',
+        'C3_681948129430',
+        'C3_681948140445',
+        'C3_681948156177',
+        'C3_681948368196',
+        'C3_678796830965',
+        'C3_678796898023',
+        'C3_678796906793',
+        'C3_681948661141',
+        'C3_678796943530',
+        'C3_682641632966',
+        'C3_682641647401',
+        'C3_678796951598',
+        'C3_678796959023',
+        'C3_678796966324',
+        'C3_678796973541',
+        'C3_678797062420',
+        'C3_678797068641',
+        'C3_678797075331',
+        'C3_678796981497',
+        'C3_678796989327',
+        'C3_678797024313',
+        'C3_678797082671',
+        'C3_678797088953',
+        'C3_678797095425',
+        'C3_678797032289',
+        'C3_678797041936',
+        'C3_678797050598',
+        'C3_678797101119',
+        'C3_678797109062',
+        'C3_681949749757',
+        'C3_678797141752',
+        'C3_678797207647'
+      ];
+      counter = 0;
+      while (counter < arr.length) {
+        obj[arr[counter]] = this.state.sheetData[arr[counter]];
+        counter++;
+      }
+      obj.C3_684517424980 = 'Y';
 
       // obj=this.state.sheetData;
       // obj.C3_680644411481 = '';
@@ -1284,45 +1412,45 @@ vertiRec= async(v)=>{
         resid: '678790254230',
         data: [obj]
       });
-      await this.saveFiles(res.data[0].C3_680644203469,true);
+      await this.saveFiles(res.data[0].C3_680644203469, true);
       this.getHistories(this.props.curSheetId);
-    this.setState({loading:false,process:''});
-    this.props.handleRefresh();
-    this.props.backFunc();
-    message.success('修改成功')
+      this.setState({ loading: false, process: '' });
+      this.props.handleRefresh();
+      this.props.backFunc();
+      message.success('修改成功');
     } catch (e) {
-    this.setState({showModi:false,loading:false,process:''})
+      this.setState({ showModi: false, loading: false, process: '' });
       message.error(e.message);
       console.log(e.message);
     }
-  }
+  };
 
   //删除池里的文件
-  deleteFile=(index)=>{
+  deleteFile = index => {
     let arr = this.state.fileList;
-    if(arr[index].REC_ID){
-      let arr2=this.state.file2Del;
+    if (arr[index].REC_ID) {
+      let arr2 = this.state.file2Del;
       arr2.push(arr[index]);
-      this.setState({file2Del:arr2})
+      this.setState({ file2Del: arr2 });
     }
-    arr.splice(index,1);
-    this.setState({fileList:arr});
-  }
+    arr.splice(index, 1);
+    this.setState({ fileList: arr });
+  };
   //添加文件到池子里
-  addFile=(e)=>{
-      let files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      console.log(e.target.files[0])
-      let type = files[0].name; //文件的类型，判断是否是图片
-      type=type.split('.')
-      console.log(type,type[1])
+  addFile = e => {
+    let files = e.target.files || e.dataTransfer.files;
+    if (!files.length) return;
+    console.log(e.target.files[0]);
+    let type = files[0].name; //文件的类型，判断是否是图片
+    type = type.split('.');
+    console.log(type, type[1]);
 
-      // let size = files[0].size; //文件的大小，判断图片的大小
-      // if (size > 5242880) {
-      //   alert('请选择5M以内的文件！');
-      //   return false;
-      // }
-      this.setState({ loading: true, process: '正在上传文件' });
+    // let size = files[0].size; //文件的大小，判断图片的大小
+    // if (size > 5242880) {
+    //   alert('请选择5M以内的文件！');
+    //   return false;
+    // }
+    this.setState({ loading: true, process: '正在上传文件' });
     this.uploadFile(
       files[0],
       `http://kingofdinner.realsun.me:1201/api/AliyunOss/PutOneImageObject?bucketname=nutritiontower&srctype=${
@@ -1333,145 +1461,158 @@ vertiRec= async(v)=>{
       result => {
         let arr = this.state.fileList;
         arr.push({
-          sheetRecid:this.state.sheetData.C3_680644203469||'',
-          fileAddress:result,
-          fileName:files[0].name
-        })
-        this.setState({ loading: false, fileList:arr ,process:''});
+          sheetRecid: this.state.sheetData.C3_680644203469 || '',
+          fileAddress: result,
+          fileName: files[0].name
+        });
+        this.setState({ loading: false, fileList: arr, process: '' });
       },
       err => {
         //图片上传异常！
         this.setState({ loading: false, process: '' });
       }
     );
-  }
-  handleSave=async()=>{
-    this.setState({loading:'true',process:'保存中'})
-    try{
+  };
+  handleSave = async () => {
+    this.setState({ loading: 'true', process: '保存中' });
+    try {
       let res = await http().modifyRecords({
         resid: '678790254230',
         data: [this.state.sheetData]
       });
-    this.setState({loading:false,process:''})
-    message.success('保存成功');
-    }catch(e){
+      this.setState({ loading: false, process: '' });
+      message.success('保存成功');
+    } catch (e) {
       console.log(e.message);
-    this.setState({loading:false,process:''})
-
+      this.setState({ loading: false, process: '' });
     }
-    
-  }
+  };
 
   //保存附件到附件表
-  saveFiles=async(recid,isCopy)=>{
-    console.log('jinlaile',recid)
-    this.setState({loading:true,process:'正在保存附件'})
+  saveFiles = async (recid, isCopy) => {
+    console.log('jinlaile', recid);
+    this.setState({ loading: true, process: '正在保存附件' });
     let res;
     let res2;
     let list = this.state.fileList;
-    let n=0;
-    if(recid){
-      while(n<list.length){
-        list[n].sheetRecid=recid;
-        if(isCopy){
+    let n = 0;
+    if (recid) {
+      while (n < list.length) {
+        list[n].sheetRecid = recid;
+        if (isCopy) {
           delete list[n].REC_ID;
         }
         n++;
       }
     }
-    console.log('list',list)
+    console.log('list', list);
     try {
       res = await http().addRecords({
         resid: '684428871273',
         data: list,
         isEditOrAdd: 'true'
       });
-      if(!isCopy){
+      if (!isCopy) {
         res2 = await http().removeRecords({
           resid: '684428871273',
-          data: this.state.file2Del,
+          data: this.state.file2Del
         });
       }
-    this.setState({loading:false,process:'',file2Del:[]})
+      this.setState({ loading: false, process: '', file2Del: [] });
     } catch (e) {
-    this.setState({loading:false,process:''})
+      this.setState({ loading: false, process: '' });
       message.error(e.message);
       console.log(e.message);
     }
-  }
-  getFiles=async(sheetid)=>{
-    console.log('jinlaile',sheetid)
-    this.setState({loading:true,process:'正在读取附件'});
+  };
+  getFiles = async sheetid => {
+    console.log('jinlaile', sheetid);
+    this.setState({ loading: true, process: '正在读取附件' });
     let res;
     try {
       res = await http().getTable({
         resid: '684428871273',
-        cmswhere:`sheetRecid = '${sheetid}'`
+        cmswhere: `sheetRecid = '${sheetid}'`
       });
       //整理附件位置
       let n = 0;
-      let arrDef=[];
-      let file1=[];
-      let file2=[];
-      let file3=[];
-      let file4=[];
-      while(n<res.data.length){
-        if(!res.data[n].C3_684857844445){
-          arrDef.push(res.data[n])
-        }else if(res.data[n].C3_684857844445 =='part1'){
-          file1.push(res.data[n])
-        }else if(res.data[n].C3_684857844445 =='part2'){
-          file2.push(res.data[n])
-        }else if(res.data[n].C3_684857844445 =='part3'){
-          file3.push(res.data[n])
-        }else if(res.data[n].C3_684857844445 =='part4'){
-          file4.push(res.data[n])
+      let arrDef = [];
+      let file1 = [];
+      let file2 = [];
+      let file3 = [];
+      let file4 = [];
+      while (n < res.data.length) {
+        if (!res.data[n].C3_684857844445) {
+          arrDef.push(res.data[n]);
+        } else if (res.data[n].C3_684857844445 == 'part1') {
+          file1.push(res.data[n]);
+        } else if (res.data[n].C3_684857844445 == 'part2') {
+          file2.push(res.data[n]);
+        } else if (res.data[n].C3_684857844445 == 'part3') {
+          file3.push(res.data[n]);
+        } else if (res.data[n].C3_684857844445 == 'part4') {
+          file4.push(res.data[n]);
         }
-        n++
+        n++;
       }
-    this.setState({fileList:arrDef,file1,file2,file3,file4,process:'',file2Del:[]})
+      this.setState({
+        fileList: arrDef,
+        file1,
+        file2,
+        file3,
+        file4,
+        process: '',
+        file2Del: []
+      });
     } catch (e) {
-    this.setState({loading:false,process:''})
+      this.setState({ loading: false, process: '' });
       message.error(e.message);
       console.log(e.message);
     }
-  }
+  };
   //展示表内图片
-  showfile=(v,r)=>{
-    this.setState({modalFileImg:this.state[v],showfile:true,fileRight:r});
-  }
+  showfile = (v, r) => {
+    this.setState({
+      modalFileImg: this.state[v],
+      showfile: true,
+      fileRight: r
+    });
+  };
   //删除表内图片
-  handleDelImg=async(item,index)=>{
-    this.setState({loading:true,process:'删除图片中'});
-    let file2Del=[item];
+  handleDelImg = async (item, index) => {
+    this.setState({ loading: true, process: '删除图片中' });
+    let file2Del = [item];
     let res;
-    try{
+    try {
       res = await http().removeRecords({
         resid: '684428871273',
-        data: file2Del,
+        data: file2Del
       });
       let arr = this.state.modalFileImg;
-      arr.splice(index,1);
+      arr.splice(index, 1);
       message.success('已删除');
-      this.setState({[this.state.editRight]:arr,modalFileImg:arr,loading:false,process:''});
-
-    }catch(e){
+      this.setState({
+        [this.state.editRight]: arr,
+        modalFileImg: arr,
+        loading: false,
+        process: ''
+      });
+    } catch (e) {
       console.log(e.message);
       message.error(e.message);
-    this.setState({loading:false,process:''});
-
+      this.setState({ loading: false, process: '' });
     }
-  }
+  };
   //添加表内图片
-  fileImgUp = async(v,r)=>{
+  fileImgUp = async (v, r) => {
     this.setState({
-      loading:true,
-      process:'上传图片中'
+      loading: true,
+      process: '上传图片中'
     });
     let files = v.target.files || v.dataTransfer.files;
     if (!files.length) return;
-    let type = files[0].name; 
-    type=type.split('.')
+    let type = files[0].name;
+    type = type.split('.');
     let size = files[0].size; //文件的大小，判断图片的大小
     if (size > 5242880) {
       alert('请选择5M以内的图片！');
@@ -1485,41 +1626,53 @@ vertiRec= async(v)=>{
       'cloud'
     ).then(
       result => {
-        this.upImgData(result,files[0].name,r)
+        this.upImgData(result, files[0].name, r);
       },
       err => {
         //图片上传异常！
         this.setState({ loading: false, process: '' });
       }
     );
-  }
-upImgData=async(result,name,r)=>{
-        let res;
-        let data=[
-          {
-            fileAddress:result,
-            sheetRecid:this.state.sheetData.C3_680644203469,
-            fileName:name,
-            C3_684857844445:r
-          }
-        ]
-        try{
-          res = await http().addRecords({
-            resid: '684428871273',
-            data,
-          });
-          message.success('添加成功');
-          let arr = this.state.modalFileImg;
-          arr.push(res.data[0]);
-          this.setState({[this.state.editRight]:arr,modalFileImg:arr,loading:false,process:''});
-        }catch(e){
-          console.log(e.message);
-          message.error(e.message);
-        this.setState({loading:false,process:''});
-    
-        }
-}
+  };
+  upImgData = async (result, name, r) => {
+    let res;
+    let data = [
+      {
+        fileAddress: result,
+        sheetRecid: this.state.sheetData.C3_680644203469,
+        fileName: name,
+        C3_684857844445: r
+      }
+    ];
+    try {
+      res = await http().addRecords({
+        resid: '684428871273',
+        data
+      });
+      message.success('添加成功');
+      let arr = this.state.modalFileImg;
+      arr.push(res.data[0]);
+      this.setState({
+        [this.state.editRight]: arr,
+        modalFileImg: arr,
+        loading: false,
+        process: ''
+      });
+    } catch (e) {
+      console.log(e.message);
+      message.error(e.message);
+      this.setState({ loading: false, process: '' });
+    }
+  };
 
+  handleGroup = v => {
+    this.setState({
+      grouped: v
+    });
+  };
+  handleChecked = v => {
+    this.setState({ checkedAll: v });
+  };
   render() {
     return (
       <div className="sheetDetails">
@@ -1530,64 +1683,56 @@ upImgData=async(result,name,r)=>{
           <span>{this.state.process}</span>
         </div>
         <Modal
-         visible={this.state.showZuofei}
-         onOk={()=>{
-           if(!this.state.sheetData.C3_682782291042){
-             message.error('请选择作废原因')
-           }else{
-            this.endSheet('已作废')}
-           }
-          }
-         onCancel={() => {
-           this.setState({ showZuofei: false });
-         }}
-         destroyOnClose
-         width={'80vw'}
+          visible={this.state.showZuofei}
+          onOk={() => {
+            if (!this.state.sheetData.C3_682782291042) {
+              message.error('请选择作废原因');
+            } else {
+              this.endSheet('已作废');
+            }
+          }}
+          onCancel={() => {
+            this.setState({ showZuofei: false });
+          }}
+          destroyOnClose
+          width={'80vw'}
         >
           <div>
             <p>请选择作废原因：</p>
             <Select
               value={this.state.sheetData.C3_682782291042}
-              style={{width:'200px'}}
+              style={{ width: '200px' }}
               onChange={v => {
-                this.changeSheet(
-                  'C3_682782291042',
-                  v
-                );
+                this.changeSheet('C3_682782291042', v);
               }}
             >
-              {
-                this.props.zfyy?this.props.zfyy.map(
-                  (item)=>{
-                    return(
-                      <Option value={item}>{item}</Option>
-                    )
-                  }
-                ):null
-              }
+              {this.props.zfyy
+                ? this.props.zfyy.map(item => {
+                    return <Option value={item}>{item}</Option>;
+                  })
+                : null}
             </Select>
           </div>
         </Modal>
         <Modal
-         visible={this.state.showModi}
-         onOk={()=>{this.handleModi();}}
-         onCancel={() => {
-           this.setState({ showModi: false });
-         }}
-         destroyOnClose
-         width={'80vw'}
+          visible={this.state.showModi}
+          onOk={() => {
+            this.handleModi();
+          }}
+          onCancel={() => {
+            this.setState({ showModi: false });
+          }}
+          destroyOnClose
+          width={'80vw'}
         >
           <div>
             <p>请输入修改备注：</p>
             <TextArea
-                              value={this.state.sheetData.C3_680644227339}
-                              onChange={v => {
-                                this.changeSheet(
-                                  'C3_680644227339',
-                                  v.target.value
-                                );
-                              }}
-                            />
+              value={this.state.sheetData.C3_680644227339}
+              onChange={v => {
+                this.changeSheet('C3_680644227339', v.target.value);
+              }}
+            />
           </div>
         </Modal>
         {/* 选择材料 */}
@@ -1619,7 +1764,11 @@ upImgData=async(result,name,r)=>{
                     <Button
                       type="primary"
                       onClick={() => {
-                        this.selectMaterial(record.C3_683034399830,record.nameMaterial,record.C3_683033548389);
+                        this.selectMaterial(
+                          record.C3_683034399830,
+                          record.nameMaterial,
+                          record.C3_683033548389
+                        );
                       }}
                     >
                       选择
@@ -1660,7 +1809,11 @@ upImgData=async(result,name,r)=>{
                     <Button
                       type="primary"
                       onClick={() => {
-                        this.selectPeople(record.C3_227192484125,record.C3_305737857578,record.C3_227192472953);
+                        this.selectPeople(
+                          record.C3_227192484125,
+                          record.C3_305737857578,
+                          record.C3_227192472953
+                        );
                       }}
                     >
                       选择
@@ -1749,7 +1902,7 @@ upImgData=async(result,name,r)=>{
           </div>
         </Modal>
 
-      <Modal
+        <Modal
           visible={this.state.showfile}
           footer={null}
           onCancel={() => {
@@ -1758,43 +1911,72 @@ upImgData=async(result,name,r)=>{
           destroyOnClose
           width={'80vw'}
         >
-         { this.props.editRight[this.state.fileRight]?
-          <>添加图片： <input
-                   id="ss"
-                   name="ss"
-                   type="file"
-                   onChange={v => {
-                     this.fileImgUp(v,this.state.fileRight);
-                   }}
-                   accept="image"
-                 /></>:null}
-          <ul style={{listStyle:'none',padding:'0',overflow:'hidden'}}>
-            {
-              this.state.modalFileImg.map((item,index)=>{
-                return(
-                  <li style={{marginTop:'8px',marginRight:'16px',float:'left'}}>
-                    <a href={item.fileAddress} target='_blank'><img src={item.fileAddress} style={{maxWidth:'100%',background:'#999'}}/></a>
-                    {
-                     this.props.editRight[this.state.fileRight]?
-                     <Popconfirm
+          {this.props.editRight[this.state.fileRight] ? (
+            <>
+              添加图片：{' '}
+              <input
+                id="ss"
+                name="ss"
+                type="file"
+                onChange={v => {
+                  this.fileImgUp(v, this.state.fileRight);
+                }}
+                accept="image"
+              />
+            </>
+          ) : null}
+          <ul style={{ listStyle: 'none', padding: '0', overflow: 'hidden' }}>
+            {this.state.modalFileImg.map((item, index) => {
+              return (
+                <li
+                  style={{
+                    marginTop: '8px',
+                    marginRight: '16px',
+                    float: 'left'
+                  }}
+                >
+                  <a href={item.fileAddress} target="_blank">
+                    <img
+                      src={item.fileAddress}
+                      style={{ maxWidth: '100%', background: '#999' }}
+                    />
+                  </a>
+                  {this.props.editRight[this.state.fileRight] ? (
+                    <Popconfirm
                       title="确认删除吗？"
                       onConfirm={() => {
-                        this.handleDelImg(item,index);
+                        this.handleDelImg(item, index);
                       }}
                     >
-                     <span style={{color:'#f5222d',marginLeft:'8px',cursor:'pointer'}}>删除</span>
+                      <span
+                        style={{
+                          color: '#f5222d',
+                          marginLeft: '8px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        删除
+                      </span>
                     </Popconfirm>
-                     :null
-                    }
-                  </li>
-                )
-              })
-            }
-            
+                  ) : null}
+                </li>
+              );
+            })}
           </ul>
-          {
-              this.state.modalFileImg.length>0?'':<div style={{textAlign:'center',fontSize:'1rem',fontWeight:'bold',paddingBottom:'1rem'}}>没有图片</div>
-            }
+          {this.state.modalFileImg.length > 0 ? (
+            ''
+          ) : (
+            <div
+              style={{
+                textAlign: 'center',
+                fontSize: '1rem',
+                fontWeight: 'bold',
+                paddingBottom: '1rem'
+              }}
+            >
+              没有图片
+            </div>
+          )}
         </Modal>
         <Modal
           visible={this.state.showImg}
@@ -1829,80 +2011,186 @@ upImgData=async(result,name,r)=>{
               </div>
             </div>
           ) : null}
-          {
-            this.props.sheetData?
+          {this.props.sheetData ? (
             <div className={'sheetlist'}>
-              {
-                this.state.curSheetList?<>
-              <div>
-                <div className={this.state.filterList=='un'?'current':''} onClick={()=>{this.setState({filterList:'un'});this.changeListFilter('un',this.state.filterMaterial)}}>未开始</div>
-                <div  className={this.state.filterList=='ing'?'current':''} onClick={()=>{this.setState({filterList:'ing'});this.changeListFilter('ing',this.state.filterMaterial)}}>已开始</div>
-              </div>
-              <div className={'filterMaterial'}>
-                <div className={this.state.filterMaterial=='wood'?'current':''} onClick={()=>{this.setState({filterMaterial:'wood'});this.changeListFilter(this.state.filterList,'wood')}}>
-                  木板
-                </div>
-                <div className={this.state.filterMaterial=='wood'?'':'current'}  onClick={()=>{this.setState({filterMaterial:'plastic'});this.changeListFilter(this.state.filterList,'plastic')}}>
-                  塑料板
-                </div>
-              </div>
-              <ul>
-                {
-                  this.state.curSheetList.map(item=>{
-                    return(
-                      <li>
-                        <p>{item.C3_678796779827}</p>
-                      </li>
-                    )
-                  })
-                }
-              </ul></>
-              :null}
-            </div>
-            
-            :
-            <ul
-            style={
-              this.props.hasBack
-                ? { margin: '3.3rem .5rem .8rem' }
-                : { margin: '.8rem .5rem' }
-            }
-          >
-            {this.state.productLineTree[678789327168].map(item => {
-              return (
-                <li
-                  className={
-                    item.current ? 'current' : item.willDo ? 'willDo' : ''
-                  }
-                  style={item.display == 'N' ? { display: 'none' } : {}}
-                >
+              {this.state.curSheetList ? (
+                <>
                   <div>
-                    <div>{item.jobid}</div>
-                    <b>{item.depname}</b>
+                    <div>
+                      <div>
+                        <Select
+                          defaultValue={'un'}
+                          size={'small'}
+                          style={{
+                            width: '100%',
+                            margin: '1px',
+                            padding: 0
+                          }}
+                          onChange={v => {
+                            this.setState({ filterList: v });
+                            this.changeListFilter(v, this.state.filterMaterial);
+                          }}
+                        >
+                          <Option value="un">未开始</Option>
+                          <Option value="ing">已开始</Option>
+                        </Select>
+                      </div>
+                      <div>
+                        <Select
+                          defaultValue={'wood'}
+                          size={'small'}
+                          style={{
+                            width: '100%',
+                            margin: '1px',
+                            padding: 0
+                          }}
+                          onChange={v => {
+                            this.setState({ filterMaterial: v });
+                            this.changeListFilter(this.state.filterList, v);
+                          }}
+                        >
+                          <Option value="wood">木板</Option>
+                          <Option value="plastic">塑料板</Option>
+                        </Select>
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ width: '100%' }}>
+                        按厚度分组：
+                        <Switch
+                          checked={this.state.grouped}
+                          size={'small'}
+                          style={{ mariginTop: '-5px' }}
+                          onChange={() => {
+                            this.handleGroup(!this.state.grouped);
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ padding: '0 4px', textAlign: 'left' }}>
+                        <Checkbox
+                          onChange={v => {
+                            this.handleChecked(v);
+                          }}
+                          value={this.state.checkedAll}
+                        >
+                          全选
+                        </Checkbox>
+                      </div>
+                      <div style={{ height: '21px', padding: 0 }}>
+                        <Button
+                          size={'small'}
+                          style={{
+                            height: 18,
+                            lineHeight: '18px',
+                            marginRight: 4,
+                            padding: '0 4px'
+                          }}
+                        >
+                          已读
+                        </Button>
+                        {this.state.filterList == 'ing' ? (
+                          <Button
+                            size={'small'}
+                            type="danger"
+                            style={{
+                              height: 18,
+                              lineHeight: '18px',
+                              padding: '0 4px'
+                            }}
+                          >
+                            结束
+                          </Button>
+                        ) : (
+                          <Button
+                            size={'small'}
+                            type="primary"
+                            style={{
+                              height: 18,
+                              lineHeight: '18px',
+                              padding: '0 4px'
+                            }}
+                          >
+                            开始
+                          </Button>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <ul>
-                    {item[678789448828].map(item2 => {
-                      return (
-                        <li className={item2.current ? 'current' : ''}>
-                          <b>
-                            {item.jobid}.{item2.roleid}
-                          </b>
-                          <div>
-                            <span>从 {item2.date1 ? item2.date1 : '--'}</span>
-                            <span>至 {item2.date2 ? item2.date2 : '--'}</span>
-                            <span>{item2.date1!='--' ?(item2.rolename!='派工'? item2.name:'') : '--'}</span>
-                            <span>{item2.rolename}</span>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </li>
-              );
-            })}
-          </ul>
-          }
-          
+                  {this.state.grouped ? null : (
+                    <ul>
+                      {this.state.curSheetList.map(item => {
+                        return (
+                          <li>
+                            <div style={{ margin: '0 8px 0 3px' }}>
+                              <Checkbox></Checkbox>
+                              <div className={'dot'}></div>
+                            </div>
+                            <div>
+                              <p>工程单号：{item.C3_684517500134}</p>
+                              <p>
+                                {this.state.filterMaterial == 'wood'
+                                  ? '木板厚度：' + item.C3_678797141752
+                                  : '塑料板厚度：' + item.C3_678797207647}
+                              </p>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </>
+              ) : null}
+            </div>
+          ) : (
+            <ul
+              style={
+                this.props.hasBack
+                  ? { margin: '3.3rem .5rem .8rem' }
+                  : { margin: '.8rem .5rem' }
+              }
+            >
+              {this.state.productLineTree[678789327168].map(item => {
+                return (
+                  <li
+                    className={
+                      item.current ? 'current' : item.willDo ? 'willDo' : ''
+                    }
+                    style={item.display == 'N' ? { display: 'none' } : {}}
+                  >
+                    <div>
+                      <div>{item.jobid}</div>
+                      <b>{item.depname}</b>
+                    </div>
+                    <ul>
+                      {item[678789448828].map(item2 => {
+                        return (
+                          <li className={item2.current ? 'current' : ''}>
+                            <b>
+                              {item.jobid}.{item2.roleid}
+                            </b>
+                            <div>
+                              <span>从 {item2.date1 ? item2.date1 : '--'}</span>
+                              <span>至 {item2.date2 ? item2.date2 : '--'}</span>
+                              <span>
+                                {item2.date1 != '--'
+                                  ? item2.rolename != '派工'
+                                    ? item2.name
+                                    : ''
+                                  : '--'}
+                              </span>
+                              <span>{item2.rolename}</span>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
         <div className="sheet">
           <div className="historySelections">
@@ -1930,13 +2218,31 @@ upImgData=async(result,name,r)=>{
           </div>
           <div className="rightContent">
             <div className="pics">
-              <div className='tuzhi' onClick={()=>{this.setState({showQi:!this.state.showQi})}}>图纸<span style={{color:'#1890ff'}}>（{this.state.showQi?'点击展开':'点击收起'}）</span>：</div>
-              <div className="toChange"
-                    style={this.state.showQi?{height:'0',minHeight:'0',lineHeight:'0'}:{}}
+              <div
+                className="tuzhi"
+                onClick={() => {
+                  this.setState({ showQi: !this.state.showQi });
+                }}
+              >
+                图纸
+                <span style={{ color: '#1890ff' }}>
+                  （{this.state.showQi ? '点击展开' : '点击收起'}）
+                </span>
+                ：
+              </div>
+              <div
+                className="toChange"
+                style={
+                  this.state.showQi
+                    ? { height: '0', minHeight: '0', lineHeight: '0' }
+                    : {}
+                }
               >
                 {this.state.imgUrl ? (
                   <img
-                    style={this.state.showQi?{height:'0'}:{ maxWidth: '100%'}}
+                    style={
+                      this.state.showQi ? { height: '0' } : { maxWidth: '100%' }
+                    }
                     src={this.state.imgUrl}
                     onClick={() => {
                       this.setState({ showImg: true });
@@ -1953,93 +2259,102 @@ upImgData=async(result,name,r)=>{
                   </a>
                 ) : null}
                 <div className="left">
-                  {!this.props.view && this.props.editRight.part1?
-                   <input
-                   id="ss"
-                   name="ss"
-                   type="file"
-                   onChange={v => {
-                     this.imgUp(v);
-                   }}
-                   accept="image"
-                 />:null
-                  
-                  }
-                 
+                  {!this.props.view && this.props.editRight.part1 ? (
+                    <input
+                      id="ss"
+                      name="ss"
+                      type="file"
+                      onChange={v => {
+                        this.imgUp(v);
+                      }}
+                      accept="image"
+                    />
+                  ) : null}
                 </div>
               </div>
             </div>
-            
-              
-              <div className="files">
-              <b style={{marginLeft:'.5rem'}}>附件：</b>
+
+            <div className="files">
+              <b style={{ marginLeft: '.5rem' }}>附件：</b>
               <div className="fileList">
                 <ul>
-                  {
-                    this.state.fileList.map((item,index)=>{
-                      return(
-                        <li index={index}>
-                          <a href={item.fileAddress} target='_blank' >
-                            {item.fileName}
-                          </a>
-                          {
-                          this.props.editRight.part1?
-                          <span onClick={()=>{
-                            this.deleteFile(index);
-                          }}>删除</span>:null}
-                        </li>
-                      )
-                    })
-                  }
+                  {this.state.fileList.map((item, index) => {
+                    return (
+                      <li index={index}>
+                        <a href={item.fileAddress} target="_blank">
+                          {item.fileName}
+                        </a>
+                        {this.props.editRight.part1 ? (
+                          <span
+                            onClick={() => {
+                              this.deleteFile(index);
+                            }}
+                          >
+                            删除
+                          </span>
+                        ) : null}
+                      </li>
+                    );
+                  })}
                 </ul>
-                  {this.props.editRight.part1?
-                <div className="left">
-
-                   <input
-                   id="ss"
-                   name="ss"
-                   type="file"
-                   onChange={v => {
-                     this.addFile(v);
-                   }}
-                 />
-                 {
-                  this.props.new?null:<span style={{float:'right',cursor:'pointer',color:'#1890ff'}} onClick={()=>{this.saveFiles()}}>保存</span>
-                 }
-                 
-                </div>
-                 :null
-                  
-                  }
-                 
+                {this.props.editRight.part1 ? (
+                  <div className="left">
+                    <input
+                      id="ss"
+                      name="ss"
+                      type="file"
+                      onChange={v => {
+                        this.addFile(v);
+                      }}
+                    />
+                    {this.props.new ? null : (
+                      <span
+                        style={{
+                          float: 'right',
+                          cursor: 'pointer',
+                          color: '#1890ff'
+                        }}
+                        onClick={() => {
+                          this.saveFiles();
+                        }}
+                      >
+                        保存
+                      </span>
+                    )}
+                  </div>
+                ) : null}
               </div>
             </div>
-              
-            {this.state.sheetData.C3_684517424980=='Y'?null:
-            <div className="bitainxiang">
-            <div><b>当前流程必填项：{this.state.bitianxiang.length==0?'无':null}</b></div>
-            <ul>
-            {
-              this.state.bitianxiang.map(item=>{
-                return(
-                  <li className={this.state.sheetData[item.id]?'':'alert'}>
-                    {item.name}
-                  </li>
-                )
-              })
-            }
-            </ul>
-          </div>
-            
-            }
-            
+
+            {this.state.sheetData.C3_684517424980 == 'Y' ? null : (
+              <div className="bitainxiang">
+                <div>
+                  <b>
+                    当前流程必填项：
+                    {this.state.bitianxiang.length == 0 ? '无' : null}
+                  </b>
+                </div>
+                <ul>
+                  {this.state.bitianxiang.map(item => {
+                    return (
+                      <li
+                        className={this.state.sheetData[item.id] ? '' : 'alert'}
+                      >
+                        {item.name}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
+
             {this.props.new ? null : (
               <>
                 <div className="reasons">
                   <b>修改原因：</b>
                   <p>{this.state.curModiReason}</p>
                 </div>
-                
+
                 <div className="feedback">
                   <b>用户反馈：</b>
                   <span
@@ -2058,35 +2373,40 @@ upImgData=async(result,name,r)=>{
           <div className="menu">
             <ul>
               {this.props.editRight.part1 ? (
-                this.props.new?
-                <Popconfirm
-                 title="确认保存吗？"
-                 onConfirm={() => {
-                  this.handleCreat();
-                 }}
-               >
-                 <li>保存</li>
-
-             </Popconfirm>
-                :<li onClick={()=>{this.setState({showModi:true})}}>改版开单</li>
-                 
+                this.props.new ? (
+                  <Popconfirm
+                    title="确认保存吗？"
+                    onConfirm={() => {
+                      this.handleCreat();
+                    }}
+                  >
+                    <li>保存</li>
+                  </Popconfirm>
+                ) : (
+                  <li
+                    onClick={() => {
+                      this.setState({ showModi: true });
+                    }}
+                  >
+                    改版开单
+                  </li>
+                )
               ) : null}
 
               {!this.props.new && this.props.editRight.part1 ? (
                 <>
-                <Popconfirm
-                  title="确认复制新建吗？"
-                  onConfirm={() => {
-                    this.copyAdd();
-                  }}
-                >
-                  <li>复制新建</li>
-
-              </Popconfirm>
-              <li
-                   onClick={() => {
-                    this.handleSave();
-                  }}
+                  <Popconfirm
+                    title="确认复制新建吗？"
+                    onConfirm={() => {
+                      this.copyAdd();
+                    }}
+                  >
+                    <li>复制新建</li>
+                  </Popconfirm>
+                  <li
+                    onClick={() => {
+                      this.handleSave();
+                    }}
                   >
                     保存修改
                   </li>
@@ -2097,80 +2417,133 @@ upImgData=async(result,name,r)=>{
                   >
                     打印
                   </li>
-                  
                 </>
               ) : null}
 
-              {!this.props.new && this.props.editRight.part1 && this.state.sheetData.sheetStatus!='已取消'&& this.state.sheetData.sheetStatus!='已作废'? (
+              {!this.props.new &&
+              this.props.editRight.part1 &&
+              this.state.sheetData.sheetStatus != '已取消' &&
+              this.state.sheetData.sheetStatus != '已作废' ? (
                 <>
-                <Popconfirm
-                  title="确认取消吗？"
-                  onConfirm={() => {
-                    this.endSheet('已取消')
-                  }}
-                >
-                  <li className="right">取消订单</li>
-
-              </Popconfirm>
-                  <li className="right" onClick={()=>{this.setState({showZuofei:true})}}>作废订单</li>
+                  <Popconfirm
+                    title="确认取消吗？"
+                    onConfirm={() => {
+                      this.endSheet('已取消');
+                    }}
+                  >
+                    <li className="right">取消订单</li>
+                  </Popconfirm>
+                  <li
+                    className="right"
+                    onClick={() => {
+                      this.setState({ showZuofei: true });
+                    }}
+                  >
+                    作废订单
+                  </li>
                 </>
               ) : null}
-              {
-                this.state.sheetData.sheetStatus=='已取消'?<li className='stoped'>已取消</li>:null
-              }
-              {
-                this.state.sheetData.sheetStatus=='已作废'?<li className='stoped'>已作废</li>:null
-              }
+              {this.state.sheetData.sheetStatus == '已取消' ? (
+                <li className="stoped">已取消</li>
+              ) : null}
+              {this.state.sheetData.sheetStatus == '已作废' ? (
+                <li className="stoped">已作废</li>
+              ) : null}
             </ul>
           </div>
-          <div className={this.props.view?(this.state.minL?'workSheetForm views minLeft':'workSheetForm views'):(this.state.minL?"workSheetForm minLeft":"workSheetForm")} id='sheetForm'>
-              <span className='clickShow' 
-              style={this.state.minL?{top:'247px',left:'185px'}:{top:'247px',left:'calc(50% - 230px)'}}
-              onClick={()=>{this.showfile('file1','part1')}}
-              >
-                查看图片{this.state.file1.length>0?'':'(暂无)'}
-              </span>
-              <span className='clickShow' 
-                style={this.state.minL?{top:'454px',left:'159px'}:{top:'454px',left:'calc(50% - 256px)'}}
-                onClick={()=>{this.showfile('file2','part2')}}
-              >
-                 查看图片{this.state.file2.length>0?'':'(暂无)'}
-              </span>
-              <span className='clickShow' 
-                style={this.state.minL?{top:'585px',left:'173px'}:{top:'585px',left:'calc(50% - 242px)'}}
-                onClick={()=>{this.showfile('file3','part3')}}
-              >
-                 查看图片{this.state.file3.length>0?'':'(暂无)'}
-              </span>
-              <span className='clickShow' 
-                style={this.state.minL?{top:'717px',left:'159px'}:{top:'717px',left:'calc(50% - 256px)'}}
-                onClick={()=>{this.showfile('file4','part4')}}
-              >
-                 查看图片{this.state.file4.length>0?'':'(暂无)'}
-              </span>
+          <div
+            className={
+              this.props.view
+                ? this.state.minL
+                  ? 'workSheetForm views minLeft'
+                  : 'workSheetForm views'
+                : this.state.minL
+                ? 'workSheetForm minLeft'
+                : 'workSheetForm'
+            }
+            id="sheetForm"
+          >
+            <span
+              className="clickShow"
+              style={
+                this.state.minL
+                  ? { top: '247px', left: '185px' }
+                  : { top: '247px', left: 'calc(50% - 230px)' }
+              }
+              onClick={() => {
+                this.showfile('file1', 'part1');
+              }}
+            >
+              查看图片{this.state.file1.length > 0 ? '' : '(暂无)'}
+            </span>
+            <span
+              className="clickShow"
+              style={
+                this.state.minL
+                  ? { top: '454px', left: '159px' }
+                  : { top: '454px', left: 'calc(50% - 256px)' }
+              }
+              onClick={() => {
+                this.showfile('file2', 'part2');
+              }}
+            >
+              查看图片{this.state.file2.length > 0 ? '' : '(暂无)'}
+            </span>
+            <span
+              className="clickShow"
+              style={
+                this.state.minL
+                  ? { top: '585px', left: '173px' }
+                  : { top: '585px', left: 'calc(50% - 242px)' }
+              }
+              onClick={() => {
+                this.showfile('file3', 'part3');
+              }}
+            >
+              查看图片{this.state.file3.length > 0 ? '' : '(暂无)'}
+            </span>
+            <span
+              className="clickShow"
+              style={
+                this.state.minL
+                  ? { top: '717px', left: '159px' }
+                  : { top: '717px', left: 'calc(50% - 256px)' }
+              }
+              onClick={() => {
+                this.showfile('file4', 'part4');
+              }}
+            >
+              查看图片{this.state.file4.length > 0 ? '' : '(暂无)'}
+            </span>
             <div
               className={
-                this.props.editRight.part1||this.props.new ? 'block hidden' : 'block part1'
+                this.props.editRight.part1 || this.props.new
+                  ? 'block hidden'
+                  : 'block part1'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part2? 'block hidden' : 'block part2'
+                this.props.editRight.part2 ? 'block hidden' : 'block part2'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part3||this.props.editRight.part1? 'block hidden' : 'block part3'
+                this.props.editRight.part3 || this.props.editRight.part1
+                  ? 'block hidden'
+                  : 'block part3'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part4||this.props.editRight.part1? 'block hidden' : 'block part4'
+                this.props.editRight.part4 || this.props.editRight.part1
+                  ? 'block hidden'
+                  : 'block part4'
               }
             ></div>
             <div
               className={
-                this.props.editRight.part4? 'block hidden' : 'block part5'
+                this.props.editRight.part4 ? 'block hidden' : 'block part5'
               }
             ></div>
             <div
@@ -2178,16 +2551,35 @@ upImgData=async(result,name,r)=>{
                 this.props.editRight.part4 ? 'block hidden' : 'block part6'
               }
             ></div>
-            <div className='switch' style={this.props.new||this.state.canEdit>3||!this.state.isCurrent?{display:'none'}:{}}>
-              {this.state.canEdit>0?
-              <Button type='danger' onClick={()=>{
-                this.vertiRec('ed');
-              }}>结束当前流程</Button>
-              :
-              <Button type='primary' onClick={()=>{
-                this.vertiRec('st');
-              }}>开始当前流程</Button>
+            <div
+              className="switch"
+              style={
+                this.props.new ||
+                this.state.canEdit > 3 ||
+                !this.state.isCurrent
+                  ? { display: 'none' }
+                  : {}
               }
+            >
+              {this.state.canEdit > 0 ? (
+                <Button
+                  type="danger"
+                  onClick={() => {
+                    this.vertiRec('ed');
+                  }}
+                >
+                  结束当前流程
+                </Button>
+              ) : (
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    this.vertiRec('st');
+                  }}
+                >
+                  开始当前流程
+                </Button>
+              )}
             </div>
             <div id="toPrint">
               <div className="toPrint">
@@ -2266,7 +2658,7 @@ upImgData=async(result,name,r)=>{
                         </Col>
                         <Col span={3}>产品名称</Col>
                         <Col span={7}>
-                        <input
+                          <input
                             value={this.state.sheetData.C3_678796779827}
                             onChange={v => {
                               this.changeSheet(
@@ -2539,15 +2931,21 @@ upImgData=async(result,name,r)=>{
                         <Col span={3}>
                           <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_678796887001',fillNum:'C3_682639124047',fillId:'C3_682639109504'});
+                              this.setState({
+                                showWorker: true,
+                                fillName: 'C3_678796887001',
+                                fillNum: 'C3_682639124047',
+                                fillId: 'C3_682639109504'
+                              });
                             }}
                             style={{ height: '24px', cursor: 'pointer' }}
                           >
                             {this.state.sheetData.C3_678796887001}
                           </div>
-                         
                         </Col>
-                        <Col span={this.props.editRight.part1?'2':'10'}>送货单号</Col>
+                        <Col span={this.props.editRight.part1 ? '2' : '10'}>
+                          送货单号
+                        </Col>
                         <Col span={3}>
                           <input
                             value={this.state.sheetData.C3_678796898023}
@@ -2559,57 +2957,61 @@ upImgData=async(result,name,r)=>{
                             }}
                           />
                         </Col>
-                        {this.props.editRight.part1?
-                        
+                        {this.props.editRight.part1 ? (
                           <>
-                           <Col span={2}>价格</Col>
-                        <Col span={2}>
-                          <input
-                            value={this.state.sheetData.C3_678796906793}
-                            onChange={v => {
-                              this.changeSheet(
-                                'C3_678796906793',
-                                v.target.value
-                              );
-                            }}
-                          />
-                        </Col>
-                        <Col
-                          span={2}
-                          style={{ cursor: 'pointer' }}
-                          className={
-                            this.state.sheetData.C3_678796915338 == 'Y'
-                              ? 'selected'
-                              : ''
-                          }
-                          onClick={() => {
-                            this.changeBol('C3_678796915338');
-                          }}
-                        >
-                          含税
-                        </Col>
-                        <Col
-                          span={2}
-                          style={{ cursor: 'pointer' }}
-                          className={
-                            !this.state.sheetData.C3_678796915338 == 'Y'
-                              ? 'selected'
-                              : ''
-                          }
-                          onClick={() => {
-                            this.changeBol('C3_678796915338');
-                          }}
-                        >
-                          不含税
-                        </Col>
-                          </>:null
-                      }
-                       
+                            <Col span={2}>价格</Col>
+                            <Col span={2}>
+                              <input
+                                value={this.state.sheetData.C3_678796906793}
+                                onChange={v => {
+                                  this.changeSheet(
+                                    'C3_678796906793',
+                                    v.target.value
+                                  );
+                                }}
+                              />
+                            </Col>
+                            <Col
+                              span={2}
+                              style={{ cursor: 'pointer' }}
+                              className={
+                                this.state.sheetData.C3_678796915338 == 'Y'
+                                  ? 'selected'
+                                  : ''
+                              }
+                              onClick={() => {
+                                this.changeBol('C3_678796915338');
+                              }}
+                            >
+                              含税
+                            </Col>
+                            <Col
+                              span={2}
+                              style={{ cursor: 'pointer' }}
+                              className={
+                                !this.state.sheetData.C3_678796915338 == 'Y'
+                                  ? 'selected'
+                                  : ''
+                              }
+                              onClick={() => {
+                                this.changeBol('C3_678796915338');
+                              }}
+                            >
+                              不含税
+                            </Col>
+                          </>
+                        ) : null}
+
                         <Col span={2}>复核人</Col>
                         <Col span={4}>
-                        <div
+                          <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_678796943530',fillNum:'C3_682641647401',fillId:'C3_682641632966'});
+                              this.setState({
+                                showWorker: true,
+                                fillName: 'C3_678796943530',
+                                fillNum: 'C3_682641647401',
+                                fillId: 'C3_682641632966'
+                              });
                             }}
                             style={{ height: '24px', cursor: 'pointer' }}
                           >
@@ -2632,7 +3034,7 @@ upImgData=async(result,name,r)=>{
                             </span>
                             <TextArea
                               value={this.state.sheetData.C3_678796951598}
-                              style={{textAlign:'left',textIndent:'.5rem'}}
+                              style={{ textAlign: 'left', textIndent: '.5rem' }}
                               onChange={v => {
                                 this.changeSheet(
                                   'C3_678796951598',
@@ -2646,13 +3048,33 @@ upImgData=async(result,name,r)=>{
                       <Row>
                         <Col span={2}>刀材名称</Col>
                         <Col span={2}>
-                          <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683035125174','C3_683040874941','C3_678796959023','C3_678796966324')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683035125174',
+                                'C3_683040874941',
+                                'C3_678796959023',
+                                'C3_678796966324'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678796959023}
                           </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683035125174','C3_683040874941','C3_678796959023','C3_678796966324')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683035125174',
+                                'C3_683040874941',
+                                'C3_678796959023',
+                                'C3_678796966324'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678796966324}
                           </div>
                         </Col>
@@ -2670,13 +3092,33 @@ upImgData=async(result,name,r)=>{
                         </Col>
                         <Col span={2}>齿刀名称</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039361907','C3_683040889423','C3_678797062420','C3_678797068641')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683039361907',
+                                'C3_683040889423',
+                                'C3_678797062420',
+                                'C3_678797068641'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678797062420}
                           </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039361907','C3_683040889423','C3_678797062420','C3_678797068641')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683039361907',
+                                'C3_683040889423',
+                                'C3_678797062420',
+                                'C3_678797068641'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678797068641}
                           </div>
                         </Col>
@@ -2696,19 +3138,38 @@ upImgData=async(result,name,r)=>{
                       <Row>
                         <Col span={2}>痕线名称</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039619977','C3_683040902438','C3_678796981497','C3_678796989327')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683039619977',
+                                'C3_683040902438',
+                                'C3_678796981497',
+                                'C3_678796989327'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678796981497}
                           </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039619977','C3_683040902438','C3_678796981497','C3_678796989327')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683039619977',
+                                'C3_683040902438',
+                                'C3_678796981497',
+                                'C3_678796989327'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678796989327}
                           </div>
                         </Col>
                         <Col span={2}>数量</Col>
                         <Col span={2}>
-                          
                           <input
                             value={this.state.sheetData.C3_678797024313}
                             onChange={v => {
@@ -2721,13 +3182,33 @@ upImgData=async(result,name,r)=>{
                         </Col>
                         <Col span={2}>孔类名称</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039701609','C3_683040913014','C3_678797082671','C3_678797088953')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683039701609',
+                                'C3_683040913014',
+                                'C3_678797082671',
+                                'C3_678797088953'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678797082671}
                           </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039701609','C3_683040913014','C3_678797082671','C3_678797088953')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683039701609',
+                                'C3_683040913014',
+                                'C3_678797082671',
+                                'C3_678797088953'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678797088953}
                           </div>
                         </Col>
@@ -2747,13 +3228,33 @@ upImgData=async(result,name,r)=>{
                       <Row>
                         <Col span={2}>销类名称</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039776730','C3_683040924143','C3_678797032289','C3_678797041936')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683039776730',
+                                'C3_683040924143',
+                                'C3_678797032289',
+                                'C3_678797041936'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678797032289}
                           </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039776730','C3_683040924143','C3_678797032289','C3_678797041936')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683039776730',
+                                'C3_683040924143',
+                                'C3_678797032289',
+                                'C3_678797041936'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678797041936}
                           </div>
                         </Col>
@@ -2771,13 +3272,33 @@ upImgData=async(result,name,r)=>{
                         </Col>
                         <Col span={2}>其他</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039844740','C3_683040940386','C3_678797101119','C3_678797109062')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683039844740',
+                                'C3_683040940386',
+                                'C3_678797101119',
+                                'C3_678797109062'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678797101119}
                           </div>
                         </Col>
                         <Col span={2}>规格</Col>
                         <Col span={2}>
-                        <div style={{height:'24px',cursor:'pointer'}} onClick={()=>{this.openMaterial('683039844740','C3_683040940386','C3_678797101119','C3_678797109062')}}>
+                          <div
+                            style={{ height: '24px', cursor: 'pointer' }}
+                            onClick={() => {
+                              this.openMaterial(
+                                '683039844740',
+                                'C3_683040940386',
+                                'C3_678797101119',
+                                'C3_678797109062'
+                              );
+                            }}
+                          >
                             {this.state.sheetData.C3_678797109062}
                           </div>
                         </Col>
@@ -2956,9 +3477,14 @@ upImgData=async(result,name,r)=>{
                       <Row>
                         <Col span={2}>制图人</Col>
                         <Col span={3}>
-                        <div
+                          <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_678797238397',fillNum:'C3_682639703794',fillId:'C3_682639694068'});
+                              this.setState({
+                                showWorker: true,
+                                fillName: 'C3_678797238397',
+                                fillNum: 'C3_682639703794',
+                                fillId: 'C3_682639694068'
+                              });
                             }}
                             style={{ height: '24px', cursor: 'pointer' }}
                           >
@@ -3113,11 +3639,10 @@ upImgData=async(result,name,r)=>{
                               }}
                             >
                               制图备注：
-                              
                             </span>
                             <TextArea
                               value={this.state.sheetData.C3_678797335509}
-                              style={{textAlign:'left',textIndent:'.5rem'}}
+                              style={{ textAlign: 'left', textIndent: '.5rem' }}
                               onChange={v => {
                                 this.changeSheet(
                                   'C3_678797335509',
@@ -3128,25 +3653,39 @@ upImgData=async(result,name,r)=>{
                           </div>
                           <div>
                             <div
-                            onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_681950832269',fillNum:'C3_682642193833',fillId:'C3_682642207323'});
-                            }}
-                            style={{textIndent:'.5rem', height: '24px',textAlign:'left', cursor: 'pointer' }}
-                          >
-                            检验人：{this.state.sheetData.C3_681950832269}
-                          </div>
-                            
+                              onClick={() => {
+                                this.setState({
+                                  showWorker: true,
+                                  fillName: 'C3_681950832269',
+                                  fillNum: 'C3_682642193833',
+                                  fillId: 'C3_682642207323'
+                                });
+                              }}
+                              style={{
+                                textIndent: '.5rem',
+                                height: '24px',
+                                textAlign: 'left',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              检验人：{this.state.sheetData.C3_681950832269}
+                            </div>
                           </div>
                         </Col>
                       </Row>
                       <Row>
                         <Col span={2}>割板人</Col>
                         <Col span={3}>
-                        <div
+                          <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_678797343880',fillNum:'C3_682642236468',fillId:'C3_682642226248'});
+                              this.setState({
+                                showWorker: true,
+                                fillName: 'C3_678797343880',
+                                fillNum: 'C3_682642236468',
+                                fillId: 'C3_682642226248'
+                              });
                             }}
-                            style={{height: '24px', cursor: 'pointer' }}
+                            style={{ height: '24px', cursor: 'pointer' }}
                           >
                             {this.state.sheetData.C3_678797343880}
                           </div>
@@ -3331,7 +3870,7 @@ upImgData=async(result,name,r)=>{
                               切割要备注：
                             </span>
                             <TextArea
-                              style={{textAlign:'left',textIndent:'.5rem'}}
+                              style={{ textAlign: 'left', textIndent: '.5rem' }}
                               value={this.state.sheetData.C3_678797387551}
                               onChange={v => {
                                 this.changeSheet(
@@ -3401,22 +3940,32 @@ upImgData=async(result,name,r)=>{
                         </Col>
                         <Col span={2}>确认人</Col>
                         <Col span={2}>
-                        <div
+                          <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_682033137280',fillNum:'C3_682642278017',fillId:'C3_682642261218'});
+                              this.setState({
+                                showWorker: true,
+                                fillName: 'C3_682033137280',
+                                fillNum: 'C3_682642278017',
+                                fillId: 'C3_682642261218'
+                              });
                             }}
-                            style={{height: '24px', cursor: 'pointer' }}
+                            style={{ height: '24px', cursor: 'pointer' }}
                           >
                             {this.state.sheetData.C3_682033137280}
                           </div>
                         </Col>
                         <Col span={2}>检验人</Col>
                         <Col span={2}>
-                        <div
+                          <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_682033154189',fillNum:'C3_682642309178',fillId:'C3_682642320881'});
+                              this.setState({
+                                showWorker: true,
+                                fillName: 'C3_682033154189',
+                                fillNum: 'C3_682642309178',
+                                fillId: 'C3_682642320881'
+                              });
                             }}
-                            style={{height: '24px', cursor: 'pointer' }}
+                            style={{ height: '24px', cursor: 'pointer' }}
                           >
                             {this.state.sheetData.C3_682033154189}
                           </div>
@@ -3425,13 +3974,38 @@ upImgData=async(result,name,r)=>{
                       <Row>
                         <Col span={2}>装刀人</Col>
                         <Col span={2}>
-                        <div
+                          <div
                             onClick={() => {
-                              if((this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')){
-                              this.setState({ showWorker: true ,fillName:'C3_678797430424',fillNum:'C3_682642384633',fillId:'C3_682642361945'});
+                              if (
+                                (this.state.sheetData.curChara ==
+                                  '682635479559' &&
+                                  this.state.sheetData.C3_682377833865 ==
+                                    '进行中') ||
+                                (this.state.sheetData.curChara ==
+                                  '681846954720' &&
+                                  this.state.sheetData.C3_682377833865 ==
+                                    '已完成')
+                              ) {
+                                this.setState({
+                                  showWorker: true,
+                                  fillName: 'C3_678797430424',
+                                  fillNum: 'C3_682642384633',
+                                  fillId: 'C3_682642361945'
+                                });
                               }
                             }}
-                            style={(this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')?{height: '24px', cursor: 'pointer' }:{height:'24px'}}
+                            style={
+                              (this.state.sheetData.curChara ==
+                                '682635479559' &&
+                                this.state.sheetData.C3_682377833865 ==
+                                  '进行中') ||
+                              (this.state.sheetData.curChara ==
+                                '681846954720' &&
+                                this.state.sheetData.C3_682377833865 ==
+                                  '已完成')
+                                ? { height: '24px', cursor: 'pointer' }
+                                : { height: '24px' }
+                            }
                           >
                             {this.state.sheetData.C3_678797430424}
                           </div>
@@ -3460,17 +4034,41 @@ upImgData=async(result,name,r)=>{
                         </Col>
                         <Col span={3}>第二装刀人</Col>
                         <Col span={2}>
-                        <div
+                          <div
                             onClick={() => {
-                              if((this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')){
-                              this.setState({ showWorker: true ,fillName:'C3_678797462885',fillNum:'C3_682642439955',fillId:'C3_682642425303'});
+                              if (
+                                (this.state.sheetData.curChara ==
+                                  '682635479559' &&
+                                  this.state.sheetData.C3_682377833865 ==
+                                    '进行中') ||
+                                (this.state.sheetData.curChara ==
+                                  '681846954720' &&
+                                  this.state.sheetData.C3_682377833865 ==
+                                    '已完成')
+                              ) {
+                                this.setState({
+                                  showWorker: true,
+                                  fillName: 'C3_678797462885',
+                                  fillNum: 'C3_682642439955',
+                                  fillId: 'C3_682642425303'
+                                });
                               }
                             }}
-                            style={(this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')?{height: '24px', cursor: 'pointer' }:{height:'24px'}}
+                            style={
+                              (this.state.sheetData.curChara ==
+                                '682635479559' &&
+                                this.state.sheetData.C3_682377833865 ==
+                                  '进行中') ||
+                              (this.state.sheetData.curChara ==
+                                '681846954720' &&
+                                this.state.sheetData.C3_682377833865 ==
+                                  '已完成')
+                                ? { height: '24px', cursor: 'pointer' }
+                                : { height: '24px' }
+                            }
                           >
                             {this.state.sheetData.C3_678797462885}
                           </div>
-                         
                         </Col>
                         <Col span={1}>时间</Col>
                         <Col className="multInput" span={6}>
@@ -3498,13 +4096,38 @@ upImgData=async(result,name,r)=>{
                       <Row>
                         <Col span={2}>弯刀人</Col>
                         <Col span={2}>
-                        <div
+                          <div
                             onClick={() => {
-                              if((this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')){
-                                this.setState({ showWorker: true ,fillName:'C3_678797394318',fillNum:'C3_682642472381',fillId:'C3_682642483380'});
+                              if (
+                                (this.state.sheetData.curChara ==
+                                  '682635479559' &&
+                                  this.state.sheetData.C3_682377833865 ==
+                                    '进行中') ||
+                                (this.state.sheetData.curChara ==
+                                  '681846954720' &&
+                                  this.state.sheetData.C3_682377833865 ==
+                                    '已完成')
+                              ) {
+                                this.setState({
+                                  showWorker: true,
+                                  fillName: 'C3_678797394318',
+                                  fillNum: 'C3_682642472381',
+                                  fillId: 'C3_682642483380'
+                                });
                               }
                             }}
-                            style={(this.state.sheetData.curChara=='682635479559' && this.state.sheetData.C3_682377833865=='进行中')||(this.state.sheetData.curChara=='681846954720'&&this.state.sheetData.C3_682377833865=='已完成')?{height: '24px', cursor: 'pointer' }:{height:'24px'}}
+                            style={
+                              (this.state.sheetData.curChara ==
+                                '682635479559' &&
+                                this.state.sheetData.C3_682377833865 ==
+                                  '进行中') ||
+                              (this.state.sheetData.curChara ==
+                                '681846954720' &&
+                                this.state.sheetData.C3_682377833865 ==
+                                  '已完成')
+                                ? { height: '24px', cursor: 'pointer' }
+                                : { height: '24px' }
+                            }
                           >
                             {this.state.sheetData.C3_678797394318}
                           </div>
@@ -3572,7 +4195,7 @@ upImgData=async(result,name,r)=>{
                               装刀备注：
                             </span>
                             <TextArea
-                              style={{textAlign:'left',textIndent:'.5rem'}}
+                              style={{ textAlign: 'left', textIndent: '.5rem' }}
                               value={this.state.sheetData.C3_682034065524}
                               onChange={v => {
                                 this.changeSheet(
@@ -3584,14 +4207,23 @@ upImgData=async(result,name,r)=>{
                           </div>
                           <div>
                             <div
-                            onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_678797488455',fillNum:'C3_682642516846',fillId:'C3_682642505192'});
-                            }}
-                            style={{textIndent:'.5rem',textAlign:'left',height: '24px', cursor: 'pointer' }}
-                          >
-                            检验人：{this.state.sheetData.C3_678797488455}
-                          </div>
-                            
+                              onClick={() => {
+                                this.setState({
+                                  showWorker: true,
+                                  fillName: 'C3_678797488455',
+                                  fillNum: 'C3_682642516846',
+                                  fillId: 'C3_682642505192'
+                                });
+                              }}
+                              style={{
+                                textIndent: '.5rem',
+                                textAlign: 'left',
+                                height: '24px',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              检验人：{this.state.sheetData.C3_678797488455}
+                            </div>
                           </div>
                         </Col>
                       </Row>
@@ -3702,22 +4334,32 @@ upImgData=async(result,name,r)=>{
                         </Col>
                         <Col span={2}>领料人</Col>
                         <Col span={2}>
-                        <div
+                          <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_682034505726',fillNum:'C3_682642545464',fillId:'C3_682642555278'});
+                              this.setState({
+                                showWorker: true,
+                                fillName: 'C3_682034505726',
+                                fillNum: 'C3_682642545464',
+                                fillId: 'C3_682642555278'
+                              });
                             }}
-                            style={{height: '24px', cursor: 'pointer' }}
+                            style={{ height: '24px', cursor: 'pointer' }}
                           >
                             {this.state.sheetData.C3_682034505726}
                           </div>
                         </Col>
                         <Col span={2}>发料人</Col>
                         <Col span={2}>
-                        <div
+                          <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_682034516838',fillNum:'C3_682642568050',fillId:'C3_682642625234'});
+                              this.setState({
+                                showWorker: true,
+                                fillName: 'C3_682034516838',
+                                fillNum: 'C3_682642568050',
+                                fillId: 'C3_682642625234'
+                              });
                             }}
-                            style={{height: '24px', cursor: 'pointer' }}
+                            style={{ height: '24px', cursor: 'pointer' }}
                           >
                             {this.state.sheetData.C3_682034516838}
                           </div>
@@ -4561,22 +5203,32 @@ upImgData=async(result,name,r)=>{
                         </Col>
                         <Col span={2}>送货人</Col>
                         <Col span={3}>
-                        <div
+                          <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_678797515839',fillNum:'C3_682642781988',fillId:'C3_682642791216'});
+                              this.setState({
+                                showWorker: true,
+                                fillName: 'C3_678797515839',
+                                fillNum: 'C3_682642781988',
+                                fillId: 'C3_682642791216'
+                              });
                             }}
-                            style={{height: '24px', cursor: 'pointer' }}
+                            style={{ height: '24px', cursor: 'pointer' }}
                           >
                             {this.state.sheetData.C3_678797515839}
                           </div>
                         </Col>
                         <Col span={2}>检验人</Col>
                         <Col span={2}>
-                        <div
+                          <div
                             onClick={() => {
-                              this.setState({ showWorker: true ,fillName:'C3_682039853604',fillNum:'C3_682642812388',fillId:'C3_682642803657'});
+                              this.setState({
+                                showWorker: true,
+                                fillName: 'C3_682039853604',
+                                fillNum: 'C3_682642812388',
+                                fillId: 'C3_682642803657'
+                              });
                             }}
-                            style={{height: '24px', cursor: 'pointer' }}
+                            style={{ height: '24px', cursor: 'pointer' }}
                           >
                             {this.state.sheetData.C3_682039853604}
                           </div>
