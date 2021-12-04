@@ -22,6 +22,7 @@ import Bitianxiang from './Bitianxiang.json';
 import http from 'Util20/api';
 import { userInfo } from 'os';
 import { isConstructorDeclaration } from 'typescript';
+import { exportDefaultSpecifier } from '@babel/types';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -349,16 +350,21 @@ class WorkSheetDetail extends React.Component {
     while (n < arr.length) {
       if (m == 'wood') {
         if (arr[n].C3_678797141752) {
+          let object=arr[n];
+          object.checked=false;
           fin.push(arr[n]);
         }
       } else if (m == 'plastic') {
         if (arr[n].C3_678797207647) {
+          let object=arr[n];
+          object.checked=false;
           fin.push(arr[n]);
         }
       }
       n++;
     }
     this.setState({ curSheetList: fin });
+    this.handleGroup(this.state.grouped,fin,m);
   };
   handleResize = e => {
     let dom = document.getElementById('sheetForm');
@@ -1665,13 +1671,131 @@ class WorkSheetDetail extends React.Component {
     }
   };
 
-  handleGroup = v => {
+  handleGroup = (v,list,material) => {
+    let k = 'C3_678797141752';
+    let str = 'plastic'
+    if(material){
+      str=material
+    }
+    if(str=='plastic'){
+      k='C3_678797207647'
+    }
+   
+    let l=this.state.curSheetList;
+    if(list){
+      l=list
+    }
+    if(v){
+      let arr =[];
+      let n =0;
+      while(n<l.length){
+        // '木板厚度：' + item.C3_678797141752
+        //  '塑料板厚度：' + item.C3_678797207647
+        let c =0;
+        let bol=false;
+        while(c<arr.length){
+          if(l[n][k]==arr[c][k]){
+            bol=true;
+          }
+          c++;
+        }
+        if(!bol){
+          arr.push(
+            {
+              [k]:l[n][k],
+              children:[]
+            }
+            )
+        }
+        n++;
+      }
+      n=0;
+      while(n<arr.length){
+        let c=0;
+        while(c<l.length){
+          if(arr[n][k]==l[c][k]){
+            let a = arr[n].children;
+            let object=l[c];
+            l[c].checked=false;
+            a.push(l[c]);
+            arr[n].children=a;
+          }
+          c++;
+        }
+        n++;
+      }
+      this.setState({groupedData:arr})
+
+    }else{
+      if(this.state.curSheetList){
+        let n =0;
+        let arr =this.state.curSheetList;
+        while(n<arr.length){
+          arr[n].checked=false;
+          n++;
+        }
+        this.setState({curSheetList:arr});
+      }
+      
+    }
     this.setState({
-      grouped: v
+      grouped: v,
+      checkedAll:false
     });
   };
+  judgeChecked =(arr)=>{
+    let n=0;
+    console.log('arr',arr)
+    if(this.state.grouped){
+      let bol=true;
+      while(n<arr.length){
+        let c=0;
+        while(c<arr[n].children.length){
+          if(!arr[n].children[c].checked){
+            bol=false;
+          }
+          c++;
+        }
+        n++;
+      }
+      this.setState({checkedAll:bol});
+    }else{
+      let bol=true;
+      while(n<arr.length){
+          if(!arr[n].checked){
+            bol=false;
+          }
+        n++;
+      }
+      this.setState({checkedAll:bol});
+    }
+  }
   handleChecked = v => {
-    this.setState({ checkedAll: v });
+    this.setState({ checkedAll: v});
+    console.log('v',v)
+    if(this.state.grouped){
+      let arr=this.state.groupedData;
+      let n=0;
+      while(n<arr.length){
+        let c=0;
+        while(c<arr[n].children.length){
+          arr[n].children[c].checked=v;
+          c++;
+        }
+        n++;
+      }
+      this.setState({groupedData:arr});
+
+    }else{
+    let arr = this.state.curSheetList
+      let n=0;
+      while(n<arr.length){
+        arr[n].checked=v;
+        n++;
+      }
+      this.setState({curSheetList:arr});
+    }
+    
   };
   render() {
     return (
@@ -2002,12 +2126,14 @@ class WorkSheetDetail extends React.Component {
           {this.props.hasBack ? (
             <div className="backLine">
               <div
-                onClick={() => {
-                  this.props.backFunc();
-                }}
               >
+                <span  onClick={() => {
+                  this.props.backFunc();
+                }}>
                 <Icon type="left" />
+                
                 返回
+                </span>
               </div>
             </div>
           ) : null}
@@ -2055,7 +2181,7 @@ class WorkSheetDetail extends React.Component {
                       </div>
                     </div>
                     <div>
-                      <div style={{ width: '100%' }}>
+                      <div style={{ width: '100%',textAlign:'left' }}>
                         按厚度分组：
                         <Switch
                           checked={this.state.grouped}
@@ -2071,9 +2197,9 @@ class WorkSheetDetail extends React.Component {
                       <div style={{ padding: '0 4px', textAlign: 'left' }}>
                         <Checkbox
                           onChange={v => {
-                            this.handleChecked(v);
+                            this.handleChecked(v.target.checked);
                           }}
-                          value={this.state.checkedAll}
+                          checked={this.state.checkedAll}
                         >
                           全选
                         </Checkbox>
@@ -2118,14 +2244,70 @@ class WorkSheetDetail extends React.Component {
                       </div>
                     </div>
                   </div>
-                  {this.state.grouped ? null : (
+                  {this.state.grouped ?
+                          <div  className='groupedList'>
+
+                     {this.state.groupedData.map(((item,key)=>{
+                        return(
+                          <div>
+                            <div> 
+                              <span>{this.state.filterMaterial == 'wood'
+                                  ? '木板厚度：' + item.C3_678797141752
+                                  : '塑料板厚度：' + item.C3_678797207647}
+                              </span>
+                              <span
+                                onClick={()=>{
+                                  let obj=this.state.groupedData
+                                  obj[key].hidden=!obj[key].hidden
+                                  this.setState({groupedData:obj});
+                                }}
+                              >
+                                {item.hidden?'展开':'收起'}
+                              </span>   
+                            </div>
+                            {
+                              item.children.map((item2,key2)=>{
+                                return(
+                                  <ul style={item.hidden?{display:'none'}:{display:'block'}}>
+                                     <li>
+                                      <div style={{ margin: '0 8px 0 3px' }}>
+                                        <Checkbox checked={item2.checked} onChange={(v)=>{
+                                            let obj=this.state.groupedData
+                                            obj[key].children[key2].checked=v.target.checked
+                                            this.setState({groupedData:obj});
+                                            this.judgeChecked(obj);
+
+                                        }}></Checkbox>
+                                        <div className={'dot'} style={item2.isNew?{background:'#f5222d'}:{background:'#fff'}}></div>
+                                      </div>
+                                      <div>
+                                        <p>工程单号：{item2.C3_684517500134}</p>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                )
+                              })
+                            }
+                            </div>
+                        )
+                      }))}
+                      </div>
+                    
+                  
+                  : (
                     <ul>
-                      {this.state.curSheetList.map(item => {
+                      {this.state.curSheetList.map((item,key) => {
                         return (
                           <li>
                             <div style={{ margin: '0 8px 0 3px' }}>
-                              <Checkbox></Checkbox>
-                              <div className={'dot'}></div>
+                              <Checkbox checked={item.checked} onChange={(v)=>{
+                                            let obj=this.state.curSheetList
+                                            obj[key].checked=v.target.checked
+                                            this.setState({curSheetList:obj});
+                                  this.judgeChecked(obj);
+
+                                        }}></Checkbox>
+                              <div className={'dot'} style={item.isNew?{background:'#f5222d'}:{background:'#fff'}}></div>
                             </div>
                             <div>
                               <p>工程单号：{item.C3_684517500134}</p>

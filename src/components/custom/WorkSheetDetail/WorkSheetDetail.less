@@ -76,7 +76,33 @@
           }
         }
       }
-
+      .groupedList{
+        position: relative;
+        overflow: auto;
+        top: 72px;
+        height: calc(100vh - 114px);
+        background-color: rgba(0,0,0,0);
+        &>div{
+          padding:0;
+          &>div{
+            width:100%;
+            float:none;
+            text-align: left;
+            background-color: #f1f1fa;
+            padding:0 1rem;
+            cursor:default;
+            span:last-child{
+              float: right;
+              color:#1890ff;
+              cursor:pointer;
+            }
+          }
+        }
+        ul{
+          top:0;
+          height:auto;
+        }
+      }
       ul {
         position: relative;
         overflow: auto;
@@ -86,19 +112,19 @@
           overflow: hidden;
           cursor: pointer;
           background-color: #fff;
-          padding: 0.5rem 1rem;
+          padding: 0.5rem 1rem 0.5rem 0;
           border: 1px solid #e8e8e8;
           overflow: hidden;
           div {
             float: left;
             .dot {
-              float: none;
               width: 8px;
               height: 8px;
               background-color: #f5222d;
               border-radius: 999px;
               margin-top: 7px;
               margin-left: 3px;
+              margin-right: 5px;
             }
           }
         }
