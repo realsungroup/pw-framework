@@ -23,6 +23,7 @@ import http from 'Util20/api';
 import { userInfo } from 'os';
 import { isConstructorDeclaration } from 'typescript';
 import { exportDefaultSpecifier } from '@babel/types';
+import { stringify } from 'querystring';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -401,7 +402,9 @@ class WorkSheetDetail extends React.Component {
         co++;
       }
       this.changeListFilter('un', 'wood', objSheets);
+      this.setState({filterList:'un',filterMaterial:'wood'});
       this.setState({ sheetList: objSheets });
+      console.log('objSheets',objSheets)
     }
 
     //初始化
@@ -1481,10 +1484,17 @@ class WorkSheetDetail extends React.Component {
   };
   handleSave = async () => {
     this.setState({ loading: 'true', process: '保存中' });
+    let newData = this.state.sheetData;
+    newData.isNew='Y'
     try {
       let res = await http().modifyRecords({
         resid: '678790254230',
-        data: [this.state.sheetData]
+        data: [newData]
+      });
+      this.setState({ process: '正在生成历史记录' });
+      let res2 = await http().addRecords({
+        resid: '678790254231',
+        data: [newData]
       });
       this.setState({ loading: false, process: '' });
       message.success('保存成功');
@@ -1670,7 +1680,46 @@ class WorkSheetDetail extends React.Component {
       this.setState({ loading: false, process: '' });
     }
   };
-
+  //标记已读
+  handleRead=()=>{
+    let n =0;
+    let arr=[]
+    let a = this.state.curSheetList;
+    if(this.state.grouped){
+      a=this.state.groupedData;
+      let c=0;
+      while(n<a.length){
+        while(c<a[n].children.length){
+          if(a[n].children[c].checked){
+          arr.push({REC_ID:a[n].children[c].REC_ID,REC_EDTTIME:a[n].children[c].REC_ID,read:'Y'});
+          a[n].children[c].isNew='';
+          }
+          c++;
+        }
+        n++;
+      }
+      this.setState({groupedData:a});
+    }else{
+      while(n<a.length){
+        if(a[n].checked){
+          arr.push({REC_ID:a[n].REC_ID,REC_EDTTIME:a[n].REC_EDTTIME,read:'Y'});
+          a[n].isNew='';
+        }
+        n++;
+      }
+      this.setState({curSheetList:a});
+    }
+    let array=localStorage.getItem('readStatus');
+    if(array){
+      array=JSON.parse(array);
+    }else{
+      array=[];
+    }
+    array.push(arr);
+    let str = JSON.stringify(array);
+    localStorage.setItem('readStatus',str);
+  }
+//分组
   handleGroup = (v,list,material) => {
     let k = 'C3_678797141752';
     let str = 'plastic'
@@ -1727,9 +1776,12 @@ class WorkSheetDetail extends React.Component {
       this.setState({groupedData:arr})
 
     }else{
-      if(this.state.curSheetList){
+      let arr=this.state.curSheetList;
+      if(list){
+        arr=list;
+      }
+      if(arr){
         let n =0;
-        let arr =this.state.curSheetList;
         while(n<arr.length){
           arr[n].checked=false;
           n++;
@@ -2129,6 +2181,8 @@ class WorkSheetDetail extends React.Component {
               >
                 <span  onClick={() => {
                   this.props.backFunc();
+                  this.changeListFilter('un', 'wood');
+
                 }}>
                 <Icon type="left" />
                 
@@ -2152,6 +2206,7 @@ class WorkSheetDetail extends React.Component {
                             margin: '1px',
                             padding: 0
                           }}
+                          value={this.state.filterList}
                           onChange={v => {
                             this.setState({ filterList: v });
                             this.changeListFilter(v, this.state.filterMaterial);
@@ -2170,7 +2225,9 @@ class WorkSheetDetail extends React.Component {
                             margin: '1px',
                             padding: 0
                           }}
+                          value={this.state.filterMaterial}
                           onChange={v => {
+
                             this.setState({ filterMaterial: v });
                             this.changeListFilter(this.state.filterList, v);
                           }}
@@ -2205,17 +2262,25 @@ class WorkSheetDetail extends React.Component {
                         </Checkbox>
                       </div>
                       <div style={{ height: '21px', padding: 0 }}>
-                        <Button
-                          size={'small'}
-                          style={{
-                            height: 18,
-                            lineHeight: '18px',
-                            marginRight: 4,
-                            padding: '0 4px'
+                        <Popconfirm
+                          title="确认标记成已读吗？"
+                          onConfirm={() => {
+                            this.handleRead();
                           }}
                         >
-                          已读
-                        </Button>
+                          <Button
+                            size={'small'}
+                            style={{
+                              height: 18,
+                              lineHeight: '18px',
+                              marginRight: 4,
+                              padding: '0 4px'
+                            }}
+                          >
+                            已读
+                          </Button>
+                        </Popconfirm>
+                        
                         {this.state.filterList == 'ing' ? (
                           <Button
                             size={'small'}
@@ -3171,7 +3236,7 @@ class WorkSheetDetail extends React.Component {
                               span={2}
                               style={{ cursor: 'pointer' }}
                               className={
-                                !this.state.sheetData.C3_678796915338 == 'Y'
+                                this.state.sheetData.C3_678796915338 == ''
                                   ? 'selected'
                                   : ''
                               }

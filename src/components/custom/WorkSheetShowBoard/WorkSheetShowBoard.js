@@ -153,6 +153,38 @@ class WorkSheetShowBoard extends React.Component {
     }
     console.log('value', value, v);
     this.getRight();
+    if(!v){
+      console.log('寄哪里了')
+       //获取已读状态
+    let newArr=this.state.sheetsAll;
+    let readStatus=localStorage.getItem('readStatus');
+      if(readStatus){
+        readStatus=JSON.parse(readStatus);
+      }else{
+        readStatus=[];
+    }
+    let sc=0;
+    while(sc<readStatus.length){
+      let sc2=0;
+      while(sc2<readStatus[sc].length){
+        let nn=0;
+        while(nn<newArr.length){
+          let j=newArr[nn].REC_ID;
+          if(newArr[nn].C3_684868072961){
+            j=newArr[nn].C3_682377626479;
+          }
+          if((newArr[nn].REC_EDTTIME==readStatus[sc][sc2].REC_EDTTIME)&&(j==readStatus[sc][sc2].REC_ID)){
+            newArr[nn].isNew='';
+          }
+          nn++
+        }
+        sc2++;
+      }
+      sc++;
+    }
+    console.log('G',newArr)
+    this.setState({sheetsAll:newArr});
+    }
     this.setState({
       showDetails: value,
       clearData: value,
@@ -270,9 +302,35 @@ class WorkSheetShowBoard extends React.Component {
       };
       this.instantiation(chartObj);
       console.log('A',newArr)
+      //获取已读状态
+      let readStatus=localStorage.getItem('readStatus');
+        if(readStatus){
+          readStatus=JSON.parse(readStatus);
+        }else{
+          readStatus=[];
+      }
+      let sc=0;
+      while(sc<readStatus.length){
+        let sc2=0;
+        while(sc2<readStatus[sc].length){
+          let nn=0;
+          while(nn<newArr.length){
+            let j=newArr[nn].REC_ID;
+            if(newArr[nn].C3_684868072961){
+              j=newArr[nn].C3_682377626479;
+            }
+            if((newArr[nn].REC_EDTTIME==readStatus[sc][sc2].REC_EDTTIME)&&(j==readStatus[sc][sc2].REC_ID)){
+              newArr[nn].isNew='';
+            }
+            nn++
+          }
+          sc2++;
+        }
+        sc++;
+      }
       this.setState({ sheets: newArr, loading2: false, sheetsAll: newArr });
 
-      console.log(res);
+      console.log('newArr',newArr);
     } catch (error) {
       message.error(error.message);
       this.setState({ loading2: false });
