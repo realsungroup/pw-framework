@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Input, Modal, Spin, Tabs, Select, message, DatePicker } from 'antd';
+import { Button, Input, Modal, Spin, Tabs, Select, message, DatePicker, Checkbox } from 'antd';
 import './AccessControl.less';
 import moment from 'moment';
 import http from '../../../util20/api';
@@ -43,7 +43,8 @@ class AccessControl extends React.Component {
   //获取列定义
   getCol = async () => {
     this.setState({ loading: true });
-    let arr = [];
+    let arr = [{title:'',labeldataIndex:'none',labelkey:'none'}];
+    // let arr = [];
     try {
       let res = await http({ baseURL: this.baseURL }).getTableColumnDefine({
         resid: 666812500033
@@ -201,11 +202,61 @@ class AccessControl extends React.Component {
       detailData: arr
     });
   };
-
   //点击同步按钮
-  handleSync = async d => {
+  handleSync=async(v)=>{
+    this.setState({
+      loading:true
+    });
+    let a = this.state.detailData;
+    let arr=[];
+    let n =0 ;
+    let c=[]
+    if(v=='all'){
+        arr.push({
+          C3_691260319398:'人工',
+          authorityId:'',
+          offSet:'5'
+        })
+    }else{
+      while(n<a.length){
+        if(a[n].checked){
+          let bol=false;
+          let p = 0;
+          while(p<c.length){
+            if(c[p]==a[n].C3_497800103273){
+              bol=true;
+            }
+            p++;
+          }
+          if(!bol){
+            arr.push({
+              C3_691260319398:'人工',
+              authorityId:a[n].C3_497800103273,
+              offSet:'5'
+            });
+            c.push(a[n].C3_497800103273);
+          }
+        }
+        n++;
+        
+      }
+    }
+    try {
+      let res = await http({ baseURL: this.baseURL }).addRecords({
+        resid: 691260187514,
+        data: arr
+      });
+      message.success('已提交同步请求');
+      this.setState({ loading: false });
+    } catch (e) {
+      console.log(e);
+      this.setState({ loading: false });
+      message.error(e.message);
+    }
+  }
+  //点击提交按钮
+  handleSub = async d => {
     this.setState({ loading: true });
-    console.log(d);
     let arr = d;
     let n = 0;
     while (n < arr.length) {
@@ -217,7 +268,7 @@ class AccessControl extends React.Component {
         resid: 666812500033,
         data: arr
       });
-      message.success('已提交同步请求');
+      message.success('已提交');
       this.tableDataRef.handleRefresh();
       this.setState({ loading: false });
     } catch (e) {
@@ -524,6 +575,24 @@ class AccessControl extends React.Component {
                     >
                       重置
                     </Button>
+                    <Button
+                      style={{ width: '104px', marginLeft: '.5rem' }}
+                      size={'small'}
+                      onClick={() => {
+                        this.handleSync('all');
+                      }}
+                    >
+                      全部同步记录
+                    </Button>
+                    <Button
+                      style={{ width: '120px', marginLeft: '.5rem' }}
+                      size={'small'}
+                      onClick={() => {
+                        this.handleSync();
+                      }}
+                    >
+                      同步选中的记录
+                    </Button>
                   </>
                 )}
               </div>
@@ -566,7 +635,7 @@ class AccessControl extends React.Component {
                           if (!selectedRecords.length) {
                             return message.info('请选择记录');
                           }
-                          this.handleSync([...selectedRecords]);
+                          this.handleSub([...selectedRecords]);
                         }}
                       >
                         提交
@@ -585,8 +654,10 @@ class AccessControl extends React.Component {
                       {this.state.detailData.map((item, key) => {
                         return (
                           <tr>
-                            {this.state.columns.map(item2 => {
+                            <td><Checkbox checked={item.checked} onChange={(v)=>{ let arr=this.state.detailData; arr[key].checked=v.target.checked; this.setState({detailData:arr})}}></Checkbox></td>
+                            {this.state.columns.map((item2,key2) => {
                               return (
+                                key2==0?null:
                                 <td>
                                   {
                                     this.state.detailData[key][
