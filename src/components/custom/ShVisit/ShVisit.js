@@ -171,6 +171,13 @@ const labels2 = [
  * 上海访客
  */
 export default class ShVisit extends Component {
+  constructor(props) {
+    super(props);
+    this.baseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.shVisitURL;
+    this.downloadBaseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.shVisitDownLoadURL;
+  }
   state = {
     loading: false,
     visible: false,
@@ -541,7 +548,7 @@ export default class ShVisit extends Component {
     let res;
     let obj = this.state;
     try {
-      let res = await http().addRecords({
+      let res = await http({ baseURL: this.baseURL }).addRecords({
         resid: 687801941061,
         data: [obj]
       });
@@ -620,6 +627,8 @@ export default class ShVisit extends Component {
       <div className="table-data-wrap" style={{ height: '100vh' }}>
         <TableData
           resid={this.state.mainId ? this.state.mainId : '687801941061'}
+          baseURL={this.baseURL}
+          downloadBaseURL={this.downloadBaseURL}
           hasRowView={false}
           hasAdd={false}
           refTargetComponentName="TableData"
@@ -691,6 +700,8 @@ export default class ShVisit extends Component {
           <div style={{ height: '70vh' }}>
             <TableData
               resid={this.state.modalId}
+              baseURL={this.baseURL}
+              downloadBaseURL={this.downloadBaseURL}
               hasRowView={false}
               hasAdd={false}
               refTargetComponentName="TableData"
