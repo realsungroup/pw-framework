@@ -296,15 +296,39 @@
     }
     .switch {
       position: absolute;
-      width: 102px;
       z-index: 999;
-      button {
-        padding: 0 0.5rem;
-        margin: 0 1rem;
-        &:first-child {
-          margin-bottom: 1rem;
+      overflow: hidden;
+      div{
+        float:left;
+        ul{
+          overflow: hidden;
+          list-style: none;
+          li{
+            float:left;
+            cursor: pointer;
+            margin-left:.5rem;
+            background-color:#fff;
+            border:1px solid #e8e8e8;
+            border-radius: 4px;
+            width:2rem;
+            height:2rem;
+            line-height: 2rem;
+            text-align: center;
+            &:hover{
+              border-color: #1890ff;
+              color:#1890ff;
+            }
+          }
+        }
+        button {
+          padding: 0 0.5rem;
+          margin: 0 1rem;
+          &:first-child {
+            margin-bottom: 1rem;
+          }
         }
       }
+      
     }
     .block {
       background-color: rgba(0, 0, 0, 0.05);

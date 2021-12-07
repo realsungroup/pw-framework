@@ -339,12 +339,76 @@ class WorkSheetDetail extends React.Component {
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize.bind(this));
   }
+  //点击下一个按钮
+  handleNxt=(v)=>{
+    let n = 0;
+    let a = this.state.curSheetList;
+    let arr=[]
+    let k=0;
+    let j=[];
+    let bol=false;
+    if(this.state.grouped){
+      a=this.state.groupedData;
+      if(a.length==0){
+        message.info('当前筛选项下的列表为空');
+        return false;
+      }
+      while(n<a.length){
+        let c=0;
+        while(c<a[n].children.length){
+          arr.push(a[n].children[c]);
+          c++;
+        }
+        n++;
+      }
+      n=0;
+      while(n<arr.length){
+        if(arr[n].C3_684517500134==this.state.sheetData.C3_684517500134){
+          k=n;
+          bol=true;
+        }
+        n++;
+      }
+      j=arr;
+    }else{
+      if(a.length==0){
+        message.info('当前筛选项下的列表为空');
+        return false;
+      }
+      while(n<a.length){
+        if(a[n].C3_684517500134==this.state.sheetData.C3_684517500134){
+          k=n;
+          bol=true;
+        }
+        n++;
+      }
+      j=a;
+    }
+    if(!bol){
+      message.info('当前表单不在列表里');
+        return false;
+    }
+    if(v=='left'){
+      if(k-1<0){
+        k=j.length-1;
+      }else{
+        k--;
+      }
+    }else if(v=='right'){
+      if(k+1==j.length){
+        k=0;
+      }else{
+        k++;
+      }
+    }
+    this.props.changeId(j[k].C3_682281119677,true)
+  }
   changeListFilter = (l, m, a) => {
     let arr;
     if (!a) {
       arr = this.state.sheetList[l];
     } else {
-      arr = a;
+      arr = a.all;
     }
     let n = 0;
     let fin = [];
@@ -361,11 +425,20 @@ class WorkSheetDetail extends React.Component {
           object.checked=false;
           fin.push(arr[n]);
         }
+      }else{
+        let object=arr[n];
+        object.checked=false;
+        fin.push(arr[n]);
       }
       n++;
     }
+    console.log('fin',l,m,arr,fin)
     this.setState({ curSheetList: fin });
-    this.handleGroup(this.state.grouped,fin,m);
+    if(m=='all'){
+      this.setState({grouped:false});
+    }else{
+      this.handleGroup(this.state.grouped,fin,m);
+    }
   };
   handleResize = e => {
     let dom = document.getElementById('sheetForm');
@@ -390,7 +463,8 @@ class WorkSheetDetail extends React.Component {
     if (nextProps.sheetData && !nextProps.reSheet) {
       let objSheets = {
         ing: [],
-        un: []
+        un: [],
+        all:[]
       };
       let co = 0;
       while (co < nextProps.sheetData.length) {
@@ -399,10 +473,11 @@ class WorkSheetDetail extends React.Component {
         } else {
           objSheets.un.push(nextProps.sheetData[co]);
         }
+        objSheets.all.push(nextProps.sheetData[co]);
         co++;
       }
-      this.changeListFilter('un', 'wood', objSheets);
-      this.setState({filterList:'un',filterMaterial:'wood'});
+      this.changeListFilter('all', 'all', objSheets);
+      this.setState({filterList:'all',filterMaterial:'all'});
       this.setState({ sheetList: objSheets });
       console.log('objSheets',objSheets)
     }
@@ -1721,6 +1796,14 @@ class WorkSheetDetail extends React.Component {
   }
 //分组
   handleGroup = (v,list,material) => {
+    let m=this.state.filterMaterial;
+    if(material){
+      m=material
+    }
+    if(m=='all'&&v){
+      message.info('无法在“全部材料”筛选条件下进行分组');
+      return false;
+    }
     let k = 'C3_678797141752';
     let str = 'plastic'
     if(material){
@@ -2199,7 +2282,7 @@ class WorkSheetDetail extends React.Component {
                     <div>
                       <div>
                         <Select
-                          defaultValue={'un'}
+                          defaultValue={'all'}
                           size={'small'}
                           style={{
                             width: '100%',
@@ -2212,13 +2295,14 @@ class WorkSheetDetail extends React.Component {
                             this.changeListFilter(v, this.state.filterMaterial);
                           }}
                         >
+                          <Option value="all">全部</Option>
                           <Option value="un">未开始</Option>
                           <Option value="ing">已开始</Option>
                         </Select>
                       </div>
                       <div>
                         <Select
-                          defaultValue={'wood'}
+                          defaultValue={'all'}
                           size={'small'}
                           style={{
                             width: '100%',
@@ -2232,6 +2316,7 @@ class WorkSheetDetail extends React.Component {
                             this.changeListFilter(this.state.filterList, v);
                           }}
                         >
+                          <Option value="all">全部</Option>
                           <Option value="wood">木板</Option>
                           <Option value="plastic">塑料板</Option>
                         </Select>
@@ -2808,8 +2893,10 @@ class WorkSheetDetail extends React.Component {
                   : {}
               }
             >
+              <div>
               {this.state.canEdit > 0 ? (
                 <Button
+                  disabled={this.state.loading}
                   type="danger"
                   onClick={() => {
                     this.vertiRec('ed');
@@ -2819,6 +2906,7 @@ class WorkSheetDetail extends React.Component {
                 </Button>
               ) : (
                 <Button
+                  disabled={this.state.loading}
                   type="primary"
                   onClick={() => {
                     this.vertiRec('st');
@@ -2827,6 +2915,34 @@ class WorkSheetDetail extends React.Component {
                   开始当前流程
                 </Button>
               )}
+              </div>
+              <div>
+                <ul>
+                  <li 
+                   style={
+                    this.state.loading?{background:'#bbb'}:{}
+                  }
+                  onClick={()=>{
+                    if(!this.state.loading){
+                      this.handleNxt('left')
+                    }
+                  }}>
+                    <Icon type="left" />
+                  </li>
+                  <li
+                  style={
+                    this.state.loading?{background:'#bbb'}:{}
+                  }
+                  onClick={()=>{
+                    if(!this.state.loading){
+                      this.handleNxt('right')
+                    }
+                  }}
+                  >
+                    <Icon type="right" />
+                  </li>
+                </ul>
+              </div>
             </div>
             <div id="toPrint">
               <div className="toPrint">
