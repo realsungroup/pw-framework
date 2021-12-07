@@ -2346,7 +2346,7 @@ class WorkSheetDetail extends React.Component {
                                         <div className={'dot'} style={item2.isNew?{background:'#f5222d'}:{background:'#fff'}}></div>
                                       </div>
                                       <div onClick={()=>{this.props.changeId(item2.C3_682281119677,true)}}>
-                                        <p>工程单号：{item2.C3_684517500134}</p>
+                                        <p style={this.state.sheetData.C3_684517500134==item2.C3_684517500134?{color:'#1890ff'}:{}}>工程单号：{item2.C3_684517500134}</p>
                                       </div>
                                     </li>
                                   </ul>
@@ -2375,7 +2375,7 @@ class WorkSheetDetail extends React.Component {
                               <div className={'dot'} style={item.isNew?{background:'#f5222d'}:{background:'#fff'}}></div>
                             </div>
                             <div onClick={()=>{this.props.changeId(item.C3_682281119677,true)}}>
-                              <p>工程单号：{item.C3_684517500134}</p>
+                              <p style={this.state.sheetData.C3_684517500134==item.C3_684517500134?{color:'#1890ff'}:{}}>工程单号：{item.C3_684517500134}</p>
                               <p>
                                 {this.state.filterMaterial == 'wood'
                                   ? '木板厚度：' + item.C3_678797141752
