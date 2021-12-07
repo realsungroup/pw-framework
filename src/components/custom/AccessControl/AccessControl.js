@@ -40,6 +40,30 @@ class AccessControl extends React.Component {
     columns: [],
     detailData: []
   };
+  //全选
+  checkeAll=(v)=>{
+    let arr =this.state.detailData;
+    let n =0;
+    while(n<arr.length){
+      arr[n].checked=v
+      n++;
+    }
+    this.setState({detailData:arr,checkedAll:v});
+  }
+  //单选
+  handleChecked=(v,key)=>{
+    let arr =this.state.detailData;
+    arr[key].checked=v;
+    let bol=true;
+    let n = 0;
+    while(n<arr.length){
+      if(!arr[n].checked){
+        bol=false;
+      }
+      n++;
+    }
+    this.setState({detailData:arr,checkedAll:bol});
+  }
   //获取列定义
   getCol = async () => {
     this.setState({ loading: true });
@@ -493,7 +517,9 @@ class AccessControl extends React.Component {
                     className={this.state.subStatus == 0 ? 'current' : ''}
                     onClick={() => {
                       this.setState({
-                        subStatus: 0
+                        subStatus: 0,
+                        checkedAll:false,
+                        detailData:[]
                       });
                     }}
                   >
@@ -647,14 +673,18 @@ class AccessControl extends React.Component {
                   <div className={'csmTable'}>
                     <table>
                       <tr>
-                        {this.state.columns.map(item => {
-                          return <th>{item.title}</th>;
+                        {this.state.columns.map((item,k) => {
+                          return <th>{k==0?<Checkbox checked={this.state.checkedAll} onChange={
+                            (v)=>{
+                              this.checkeAll(v.target.checked)
+                            }
+                          }></Checkbox>:item.title}</th>;
                         })}
                       </tr>
                       {this.state.detailData.map((item, key) => {
                         return (
                           <tr>
-                            <td><Checkbox checked={item.checked} onChange={(v)=>{ let arr=this.state.detailData; arr[key].checked=v.target.checked; this.setState({detailData:arr})}}></Checkbox></td>
+                            <td><Checkbox checked={item.checked} onChange={(v)=>{this.handleChecked(v.target.checked,key)}}></Checkbox></td>
                             {this.state.columns.map((item2,key2) => {
                               return (
                                 key2==0?null:
