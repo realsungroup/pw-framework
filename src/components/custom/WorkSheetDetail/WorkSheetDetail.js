@@ -387,7 +387,7 @@ class WorkSheetDetail extends React.Component {
       }
     }
     console.log('sheetData', nextProps.sheetData);
-    if (nextProps.sheetData) {
+    if (nextProps.sheetData && !nextProps.reSheet) {
       let objSheets = {
         ing: [],
         un: []
@@ -2345,7 +2345,7 @@ class WorkSheetDetail extends React.Component {
                                         }}></Checkbox>
                                         <div className={'dot'} style={item2.isNew?{background:'#f5222d'}:{background:'#fff'}}></div>
                                       </div>
-                                      <div>
+                                      <div onClick={()=>{this.props.changeId(item2.C3_682281119677,true)}}>
                                         <p>工程单号：{item2.C3_684517500134}</p>
                                       </div>
                                     </li>
@@ -2374,7 +2374,7 @@ class WorkSheetDetail extends React.Component {
                                         }}></Checkbox>
                               <div className={'dot'} style={item.isNew?{background:'#f5222d'}:{background:'#fff'}}></div>
                             </div>
-                            <div>
+                            <div onClick={()=>{this.props.changeId(item.C3_682281119677,true)}}>
                               <p>工程单号：{item.C3_684517500134}</p>
                               <p>
                                 {this.state.filterMaterial == 'wood'

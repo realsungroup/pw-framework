@@ -141,8 +141,11 @@ class WorkSheetShowBoard extends React.Component {
   };
 
   //显示详情页
-  showDetails = (v, id) => {
+  showDetails = (v, id ,b) => {
     console.log('id', id);
+    if(b){
+      this.setState({reSheet:true});
+    }
     let value = true;
     let ID = '';
     let isNew = true;
@@ -154,7 +157,7 @@ class WorkSheetShowBoard extends React.Component {
     console.log('value', value, v);
     this.getRight();
     if(!v){
-      console.log('寄哪里了')
+      this.setState({reSheet:false});
        //获取已读状态
     let newArr=this.state.sheetsAll;
     let readStatus=localStorage.getItem('readStatus');
@@ -494,6 +497,8 @@ class WorkSheetShowBoard extends React.Component {
                 mesId={this.state.mesId}
                 colData={this.state.colData}
                 sheetData={this.state.sheetsAll}
+                changeId={(v,v2)=>{this.showDetails(true,v,v2)}}
+                reSheet={this.state.reSheet}
 
              >
               </WorkSheetDetail>   
