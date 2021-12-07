@@ -406,7 +406,7 @@ class AccessControl extends React.Component {
               <div className="l">
                 <div className="search">
                   <Input
-                    style={{ width: 'calc(100% - 1rem - 144px)' }}
+                    style={{ width: 'calc(100% - 1rem - 144px)' ,textIndent:'.5rem'}}
                     value={this.state.kw}
                     onChange={v => {
                       this.setState({ kw: v.target.value });
