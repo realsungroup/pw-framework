@@ -404,6 +404,8 @@ class WorkSheetDetail extends React.Component {
     this.props.changeId(j[k].C3_682281119677,true)
   }
   changeListFilter = (l, m, a) => {
+    if(this.state.sheetList){
+
     let arr;
     if (!a) {
       arr = this.state.sheetList[l];
@@ -434,11 +436,8 @@ class WorkSheetDetail extends React.Component {
     }
     console.log('fin',l,m,arr,fin)
     this.setState({ curSheetList: fin });
-    if(m=='all'){
-      this.setState({grouped:false});
-    }else{
       this.handleGroup(this.state.grouped,fin,m);
-    }
+  }
   };
   handleResize = e => {
     let dom = document.getElementById('sheetForm');
@@ -567,8 +566,21 @@ class WorkSheetDetail extends React.Component {
     });
   };
   //获取历史数据
+  getHis=async(cms)=>{
+    // 678790254231
+    try {
+      let res = await http().getTable({
+        resid: '678790254231',
+        cmswhere: cms
+      });
+      return res.data
+    }catch(e){
+     console.log(e.message) 
+    }
+
+  }
   //产品线ID,版本号
-  getHistories = async (v, version) => {
+  getHistories = async (v, version,isNew) => {
     this.setState({ fileList: [] });
     let objEmpty = {};
     if (this.props.colData) {
@@ -583,15 +595,22 @@ class WorkSheetDetail extends React.Component {
     this.setState({ sheetData: objEmpty });
     this.setState({ loading: true, process: '正在读取历史数据' });
     let cms = `C3_682281119677 = '${v}'`;
+    let hisData=await this.getHis(cms);
+    console.log('hisData',hisData)
     let curCanEdit = 99;
+    let resID='678790254230'
     if (version) {
       cms += ` and C3_680644411481 ='${version}'`;
+      resID='678790254231';
+    }
+    if(isNew=='Y'){
+      resID='678790254230';
     }
     let res;
     let curSheetData;
     try {
       res = await http().getTable({
-        resid: '678790254230',
+        resid: resID,
         cmswhere: cms
       });
       if (res.data[0]) {
@@ -643,7 +662,8 @@ class WorkSheetDetail extends React.Component {
         }
         his.push({
           status: str,
-          value: res.data[n].C3_680644411481
+          value: res.data[n].C3_680644411481,
+          isNew:'Y'
         });
         lineID = res.data[n].C3_682267546275;
         curID = res.data[n].curChara;
@@ -727,6 +747,17 @@ class WorkSheetDetail extends React.Component {
         }
         if (curCanEdit != 99) {
           this.setState({ canEdit: curCanEdit });
+        }
+        let hisC=0;
+        while(hisC<hisData.length){
+          if(hisC!=0){
+            his.push({
+              status: '',
+              value: hisData[hisC].C3_680644411481,
+              isNew:'N'
+            });
+          }
+          hisC++;
         }
         this.setState({ process: '', histories: his });
         if (this.props.sheetData) {
@@ -1047,6 +1078,8 @@ class WorkSheetDetail extends React.Component {
     );
 
     let myTime = new Date();
+    let myDate = moment(myTime).format('YYYY-MM-DD hh:mm:ss');
+      obj.C3_680644411481 = myDate;
     obj.C3_682379482255 = myTime;
     obj.C3_682379496968 = myTime;
     obj.C3_682444277336 = nxt.productflowjobroleid;
@@ -1064,6 +1097,13 @@ class WorkSheetDetail extends React.Component {
       res = await http().addRecords({
         resid: '678790254230',
         data: [this.state.sheetData]
+      });
+      this.setState({ process: '正在生成历史记录' });
+      let obj =this.state.sheetData;
+      obj.C3_680644403785=''
+      let resHis = await http().addRecords({
+        resid: '678790254231',
+        data: [obj]
       });
       this.setState({ loading: false, process: '' });
       await this.saveFiles(res.data[0].C3_680644203469);
@@ -1119,6 +1159,8 @@ class WorkSheetDetail extends React.Component {
         .productflowjobroleid
     );
     let myTime = new Date();
+    let myDate = moment(myTime).format('YYYY-MM-DD hh:mm:ss');
+      obj.C3_680644411481 = myDate;
     obj.C3_682379482255 = myTime;
     obj.REC_ID = '';
     obj.C3_682379496968 = myTime;
@@ -1195,6 +1237,12 @@ class WorkSheetDetail extends React.Component {
     try {
       res = await http().addRecords({
         resid: '678790254230',
+        data: [obj]
+      });
+      this.setState({ process: '正在生成历史记录' });
+      obj.C3_680644403785='';
+      let resHis = await http().addRecords({
+        resid: '678790254231',
         data: [obj]
       });
       await this.saveFiles(res.data[0].C3_680644203469, true);
@@ -1499,6 +1547,12 @@ class WorkSheetDetail extends React.Component {
         resid: '678790254230',
         data: [obj]
       });
+      this.setState({ process: '正在生成历史记录' });
+      obj.C3_680644403785='';
+      let resHis = await http().addRecords({
+        resid: '678790254231',
+        data: [obj]
+      });
       await this.saveFiles(res.data[0].C3_680644203469, true);
       this.getHistories(this.props.curSheetId);
       this.setState({ loading: false, process: '' });
@@ -1564,12 +1618,16 @@ class WorkSheetDetail extends React.Component {
     this.setState({ loading: 'true', process: '保存中' });
     let newData = this.state.sheetData;
     newData.isNew='Y'
+    let myTime=new Date();
+    let myDate = moment(myTime).format('YYYY-MM-DD hh:mm:ss');
+    newData.C3_680644411481 = myDate;
     try {
       let res = await http().modifyRecords({
         resid: '678790254230',
         data: [newData]
       });
       this.setState({ process: '正在生成历史记录' });
+      newData.C3_680644403785='';
       let res2 = await http().addRecords({
         resid: '678790254231',
         data: [newData]
@@ -1822,6 +1880,17 @@ class WorkSheetDetail extends React.Component {
         }
         n++;
       }
+      let groupedWood = this.grouProcess(arrWood,'C3_678797141752');
+      let groupedPlastic = this.grouProcess(arrPlastic,'C3_678797207647');
+      let groupedNull = [{
+        children:arrNull
+      }]
+      console.log(groupedWood,groupedPlastic,arrNull)
+
+      let arrFin = groupedWood;
+        arrFin=arrFin.concat(groupedPlastic);
+        arrFin=arrFin.concat(groupedNull);
+        this.setState({groupedData:arrFin});
     }else{
       let k = 'C3_678797141752';
       let str = 'plastic'
@@ -1831,12 +1900,37 @@ class WorkSheetDetail extends React.Component {
       if(str=='plastic'){
         k='C3_678797207647'
       }
-     
       let l=this.state.curSheetList;
       if(list){
         l=list
       }
       if(v){
+        let arr = this.grouProcess(l,k)
+        this.setState({groupedData:arr})
+  
+      }else{
+        let arr=this.state.curSheetList;
+        if(list){
+          arr=list;
+        }
+        if(arr){
+          let n =0;
+          while(n<arr.length){
+            arr[n].checked=false;
+            n++;
+          }
+          this.setState({curSheetList:arr});
+        }
+      }
+     
+    }
+    this.setState({
+      grouped: v,
+      checkedAll:false
+    });
+  };
+  //分组过程
+  grouProcess=(l,k)=>{
         let arr =[];
         let n =0;
         while(n<l.length){
@@ -1867,38 +1961,16 @@ class WorkSheetDetail extends React.Component {
             if(arr[n][k]==l[c][k]){
               let a = arr[n].children;
               let object=l[c];
-              l[c].checked=false;
-              a.push(l[c]);
+              object.checked=false;
+              a.push(object);
               arr[n].children=a;
             }
             c++;
           }
           n++;
         }
-        this.setState({groupedData:arr})
-  
-      }else{
-        let arr=this.state.curSheetList;
-        if(list){
-          arr=list;
-        }
-        if(arr){
-          let n =0;
-          while(n<arr.length){
-            arr[n].checked=false;
-            n++;
-          }
-          this.setState({curSheetList:arr});
-        }
-        
-      }
-      this.setState({
-        grouped: v,
-        checkedAll:false
-      });
-    }
-    
-  };
+        return arr
+  }
   judgeChecked =(arr)=>{
     let n=0;
     console.log('arr',arr)
@@ -2422,9 +2494,10 @@ class WorkSheetDetail extends React.Component {
                         return(
                           <div>
                             <div> 
-                              <span>{this.state.filterMaterial == 'wood'
-                                  ? '木板厚度：' + item.C3_678797141752
-                                  : '塑料板厚度：' + item.C3_678797207647}
+                              <span>{item.C3_678797141752
+                                  ? '木板厚度：' + item.C3_678797141752:null}
+                                  {item.C3_678797207647?'塑料板厚度：' + item.C3_678797207647:null}
+                                  {!item.C3_678797207647&&!item.C3_678797141752?'未填写厚度' :null}
                               </span>
                               <span
                                 onClick={()=>{
@@ -2582,7 +2655,7 @@ class WorkSheetDetail extends React.Component {
                       }
                       n++;
                     }
-                    this.getHistories(this.props.curSheetId, item.value);
+                    this.getHistories(this.props.curSheetId, item.value,item.isNew);
                   }}
                 >
                   {item.value}
@@ -2777,13 +2850,16 @@ class WorkSheetDetail extends React.Component {
                   >
                     <li>复制新建</li>
                   </Popconfirm>
-                  <li
-                    onClick={() => {
-                      this.handleSave();
-                    }}
-                  >
-                    保存修改
-                  </li>
+                  {
+                   this.state.sheetData.C3_680644403785=='Y'?<li
+                   onClick={() => {
+                     this.handleSave();
+                   }}
+                 >
+                   保存修改
+                 </li>:null
+                  }
+                  
                   <li
                     onClick={() => {
                       this.handlePrint();
@@ -2794,7 +2870,7 @@ class WorkSheetDetail extends React.Component {
                 </>
               ) : null}
 
-              {!this.props.new &&
+              {!this.props.new &&this.state.sheetData.C3_680644403785=='Y'&&
               this.props.editRight.part1 &&
               this.state.sheetData.sheetStatus != '已取消' &&
               this.state.sheetData.sheetStatus != '已作废' ? (
@@ -2936,7 +3012,7 @@ class WorkSheetDetail extends React.Component {
               }
             >
               <div>
-              {this.state.canEdit > 0 ? (
+              {this.state.canEdit && this.state.sheetData.C3_680644403785=='Y' > 0 ? (
                 <Button
                   disabled={this.state.loading}
                   type="danger"
