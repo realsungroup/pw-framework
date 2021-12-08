@@ -449,6 +449,9 @@ class WorkSheetDetail extends React.Component {
     }
   };
   componentWillReceiveProps = async nextProps => {
+    if(nextProps.curSheetId==this.state.sheetData.C3_682281119677){
+      return false;
+    }
     let _this = this;
     let objEmpty = {};
     if (_this.props.colData) {
@@ -1801,82 +1804,100 @@ class WorkSheetDetail extends React.Component {
       m=material
     }
     if(m=='all'&&v){
-      message.info('无法在“全部材料”筛选条件下进行分组');
-      return false;
-    }
-    let k = 'C3_678797141752';
-    let str = 'plastic'
-    if(material){
-      str=material
-    }
-    if(str=='plastic'){
-      k='C3_678797207647'
-    }
-   
-    let l=this.state.curSheetList;
-    if(list){
-      l=list
-    }
-    if(v){
-      let arr =[];
-      let n =0;
-      while(n<l.length){
-        // '木板厚度：' + item.C3_678797141752
-        //  '塑料板厚度：' + item.C3_678797207647
-        let c =0;
-        let bol=false;
-        while(c<arr.length){
-          if(l[n][k]==arr[c][k]){
-            bol=true;
-          }
-          c++;
-        }
-        if(!bol){
-          arr.push(
-            {
-              [k]:l[n][k],
-              children:[]
-            }
-            )
-        }
-        n++;
-      }
-      n=0;
-      while(n<arr.length){
-        let c=0;
-        while(c<l.length){
-          if(arr[n][k]==l[c][k]){
-            let a = arr[n].children;
-            let object=l[c];
-            l[c].checked=false;
-            a.push(l[c]);
-            arr[n].children=a;
-          }
-          c++;
-        }
-        n++;
-      }
-      this.setState({groupedData:arr})
-
-    }else{
-      let arr=this.state.curSheetList;
+      let l=this.state.curSheetList;
       if(list){
-        arr=list;
+        l=list
       }
-      if(arr){
+      let n=0;
+      let arrWood=[];
+      let arrPlastic=[];
+      let arrNull=[]
+      while(n<l.length){
+        if(l[n].C3_678797141752){
+          arrWood.push(l[n]);
+        }else if(l[n].C3_678797207647){
+          arrPlastic.push(l[n]);
+        }else{
+          arrNull.push(l[n]);
+        }
+        n++;
+      }
+    }else{
+      let k = 'C3_678797141752';
+      let str = 'plastic'
+      if(material){
+        str=material
+      }
+      if(str=='plastic'){
+        k='C3_678797207647'
+      }
+     
+      let l=this.state.curSheetList;
+      if(list){
+        l=list
+      }
+      if(v){
+        let arr =[];
         let n =0;
-        while(n<arr.length){
-          arr[n].checked=false;
+        while(n<l.length){
+          // '木板厚度：' + item.C3_678797141752
+          //  '塑料板厚度：' + item.C3_678797207647
+          let c =0;
+          let bol=false;
+          while(c<arr.length){
+            if(l[n][k]==arr[c][k]){
+              bol=true;
+            }
+            c++;
+          }
+          if(!bol){
+            arr.push(
+              {
+                [k]:l[n][k],
+                children:[]
+              }
+              )
+          }
           n++;
         }
-        this.setState({curSheetList:arr});
+        n=0;
+        while(n<arr.length){
+          let c=0;
+          while(c<l.length){
+            if(arr[n][k]==l[c][k]){
+              let a = arr[n].children;
+              let object=l[c];
+              l[c].checked=false;
+              a.push(l[c]);
+              arr[n].children=a;
+            }
+            c++;
+          }
+          n++;
+        }
+        this.setState({groupedData:arr})
+  
+      }else{
+        let arr=this.state.curSheetList;
+        if(list){
+          arr=list;
+        }
+        if(arr){
+          let n =0;
+          while(n<arr.length){
+            arr[n].checked=false;
+            n++;
+          }
+          this.setState({curSheetList:arr});
+        }
+        
       }
-      
+      this.setState({
+        grouped: v,
+        checkedAll:false
+      });
     }
-    this.setState({
-      grouped: v,
-      checkedAll:false
-    });
+    
   };
   judgeChecked =(arr)=>{
     let n=0;
@@ -2330,7 +2351,7 @@ class WorkSheetDetail extends React.Component {
                           size={'small'}
                           style={{ mariginTop: '-5px' }}
                           onChange={() => {
-                            this.handleGroup(!this.state.grouped);
+                            this.handleGroup(!this.state.grouped,null,this.state.filterMaterial);
                           }}
                         />
                       </div>
@@ -2430,6 +2451,16 @@ class WorkSheetDetail extends React.Component {
                                         }}></Checkbox>
                                         <div className={'dot'} style={item2.isNew?{background:'#f5222d'}:{background:'#fff'}}></div>
                                       </div>
+                                      <Icon type="copy" className='copyBtn' onClick={()=>{
+                                            var tag = document.createElement('input');
+                                            tag.setAttribute('id', 'toCopy');
+                                            tag.value = item2.C3_684517500134;
+                                            document.getElementsByTagName('body')[0].appendChild(tag);
+                                            document.getElementById('toCopy').select();
+                                            document.execCommand('copy');
+                                            document.getElementById('toCopy').remove();
+                                            message.success('已复制单号')
+                                          }}/>
                                       <div onClick={()=>{this.props.changeId(item2.C3_682281119677,true)}}>
                                         <p style={this.state.sheetData.C3_684517500134==item2.C3_684517500134?{color:'#1890ff'}:{}}>工程单号：{item2.C3_684517500134}</p>
                                       </div>
@@ -2459,13 +2490,24 @@ class WorkSheetDetail extends React.Component {
                                         }}></Checkbox>
                               <div className={'dot'} style={item.isNew?{background:'#f5222d'}:{background:'#fff'}}></div>
                             </div>
+                            <Icon type="copy" className='copyBtn' onClick={()=>{
+                                            var tag = document.createElement('input');
+                                            tag.setAttribute('id', 'toCopy');
+                                            tag.value = item.C3_684517500134;
+                                            document.getElementsByTagName('body')[0].appendChild(tag);
+                                            document.getElementById('toCopy').select();
+                                            document.execCommand('copy');
+                                            document.getElementById('toCopy').remove();
+                                            message.success('已复制单号')
+                                          }}/>
                             <div onClick={()=>{this.props.changeId(item.C3_682281119677,true)}}>
                               <p style={this.state.sheetData.C3_684517500134==item.C3_684517500134?{color:'#1890ff'}:{}}>工程单号：{item.C3_684517500134}</p>
-                              <p>
-                                {this.state.filterMaterial == 'wood'
-                                  ? '木板厚度：' + item.C3_678797141752
-                                  : '塑料板厚度：' + item.C3_678797207647}
-                              </p>
+                              {item.C3_678797141752
+                                  ?<p>木板厚度：{item.C3_678797141752}</p>
+                                  :null}
+                              {
+                                item.C3_678797207647?<p> 塑料板厚度：{item.C3_678797207647}</p>:null
+                              }
                             </div>
                           </li>
                         );
@@ -2971,7 +3013,7 @@ class WorkSheetDetail extends React.Component {
                   </div>
                   <h4>无锡美银精工磨具有限公司产品制作工程单</h4>
                   <p>
-                    No. <b>{this.state.sheetData.C3_684517500134}</b>
+                    No. <b >{this.state.sheetData.C3_684517500134}</b>
                   </p>
                 </div>
                 <div className="timer">

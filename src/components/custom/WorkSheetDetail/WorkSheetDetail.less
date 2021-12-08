@@ -50,6 +50,12 @@
     }
     .sheetlist {
       margin-top: 40px;
+      ul{
+        position: relative;
+        li{
+          position: relative;
+        }
+      }
       & > div {
         position: fixed;
         z-index: 2;
@@ -118,6 +124,14 @@
           
           &:hover{
             background-color: #f5f5f5;
+          }
+          .copyBtn{
+            right:1rem;
+            top:.7rem;
+            position: absolute;
+            &:hover{
+              color:#1890ff;
+            }
           }
           div {
             float: left;
@@ -306,7 +320,7 @@
           li{
             float:left;
             cursor: pointer;
-            margin-left:.5rem;
+            margin-left:2px;
             background-color:#fff;
             border:1px solid #e8e8e8;
             border-radius: 4px;
