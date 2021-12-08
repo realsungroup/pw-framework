@@ -557,7 +557,6 @@ class AccessControl extends React.Component {
               </div>
               <div className="r">
                 <TableData
-                  key="members"
                   downloadBaseURL={this.downloadURL}
                   baseURL={this.baseURL}
                   resid="691171872439"
@@ -695,13 +694,13 @@ class AccessControl extends React.Component {
               </div>
               <div className="outer">
                 <TableData
-                  key="sync"
                   downloadBaseURL={this.downloadURL}
                   baseURL={this.baseURL}
                   style={this.state.subStatus == '0' ? {} : { display: 'none' }}
                   resid="666812500033"
                   cmswhere={this.state.importCms}
-                  afterSaveRefresh={true}
+                  wrappedComponentRef={element => (this.tableDataRef = element)}
+                  refTargetComponentName="TableData"
                   subtractH={180}
                   hasAdd={true}
                   hasRowView={false}
