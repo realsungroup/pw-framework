@@ -1,6 +1,16 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, Input, Modal, Spin, Tabs, Select, message, DatePicker, Checkbox } from 'antd';
+import {
+  Button,
+  Input,
+  Modal,
+  Spin,
+  Tabs,
+  Select,
+  message,
+  DatePicker,
+  Checkbox
+} from 'antd';
 import './AccessControl.less';
 import moment from 'moment';
 import http from '../../../util20/api';
@@ -17,10 +27,14 @@ class AccessControl extends React.Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   componentDidMount() {
-    let edDate = moment().format('YYYY-MM-DD');
-    let stDate = moment().subtract('days',6).format('YYYY-MM-DD');
-    this.setState({edDate,stDate});
-    
+    let edDate = moment()
+      .subtract('days', -1)
+      .format('YYYY-MM-DD');
+    let stDate = moment()
+      .subtract('days', 6)
+      .format('YYYY-MM-DD');
+    this.setState({ edDate, stDate });
+
     this.getAllDoors();
   }
   state = {
@@ -41,33 +55,33 @@ class AccessControl extends React.Component {
     detailData: []
   };
   //全选
-  checkeAll=(v)=>{
-    let arr =this.state.detailData;
-    let n =0;
-    while(n<arr.length){
-      arr[n].checked=v
+  checkeAll = v => {
+    let arr = this.state.detailData;
+    let n = 0;
+    while (n < arr.length) {
+      arr[n].checked = v;
       n++;
     }
-    this.setState({detailData:arr,checkedAll:v});
-  }
+    this.setState({ detailData: arr, checkedAll: v });
+  };
   //单选
-  handleChecked=(v,key)=>{
-    let arr =this.state.detailData;
-    arr[key].checked=v;
-    let bol=true;
+  handleChecked = (v, key) => {
+    let arr = this.state.detailData;
+    arr[key].checked = v;
+    let bol = true;
     let n = 0;
-    while(n<arr.length){
-      if(!arr[n].checked){
-        bol=false;
+    while (n < arr.length) {
+      if (!arr[n].checked) {
+        bol = false;
       }
       n++;
     }
-    this.setState({detailData:arr,checkedAll:bol});
-  }
+    this.setState({ detailData: arr, checkedAll: bol });
+  };
   //获取列定义
   getCol = async () => {
     this.setState({ loading: true });
-    let arr = [{title:'',labeldataIndex:'none',labelkey:'none'}];
+    let arr = [{ title: '', labeldataIndex: 'none', labelkey: 'none' }];
     // let arr = [];
     try {
       let res = await http({ baseURL: this.baseURL }).getTableColumnDefine({
@@ -156,13 +170,17 @@ class AccessControl extends React.Component {
     let n = 0;
     let arr = [];
     let org = this.state.originList;
+    console.log('org', org);
     while (n < org.length) {
       let bol = false;
       let c = 0;
       while (c < org[n].door.length) {
-        if (org[n].door[c].name.indexOf(k) != -1) {
-          bol = true;
+        if (org[n].door[c].name) {
+          if (org[n].door[c].name.indexOf(k) != -1) {
+            bol = true;
+          }
         }
+
         c++;
       }
       if (org[n].group.indexOf(k) != -1) {
@@ -176,6 +194,7 @@ class AccessControl extends React.Component {
       }
       n++;
     }
+    this.checkeAll(false);
     this.setState({
       rightList: arr,
       cms: ``,
@@ -227,42 +246,43 @@ class AccessControl extends React.Component {
     });
   };
   //点击同步按钮
-  handleSync=async(v)=>{
+  handleSync = async v => {
     this.setState({
-      loading:true
+      loading: true
     });
     let a = this.state.detailData;
-    let arr=[];
-    let n =0 ;
-    let c=[]
-    if(v=='all'){
-        arr.push({
-          C3_691260319398:'人工',
-          authorityId:'',
-          offSet:'5'
-        })
-    }else{
-      while(n<a.length){
-        if(a[n].checked){
-          let bol=false;
+    let arr = [];
+    let n = 0;
+    let c = [];
+    let org = [];
+    if (v == 'all') {
+      arr.push({
+        C3_691260319398: '人工',
+        authorityId: '',
+        offSet: '5'
+      });
+    } else {
+      while (n < a.length) {
+        if (a[n].checked) {
+          org.push(a[n]);
+          let bol = false;
           let p = 0;
-          while(p<c.length){
-            if(c[p]==a[n].C3_497800103273){
-              bol=true;
+          while (p < c.length) {
+            if (c[p] == a[n].C3_497800103273) {
+              bol = true;
             }
             p++;
           }
-          if(!bol){
+          if (!bol) {
             arr.push({
-              C3_691260319398:'人工',
-              authorityId:a[n].C3_497800103273,
-              offSet:'5'
+              C3_691260319398: '人工',
+              authorityId: a[n].C3_497800103273,
+              offSet: '5'
             });
             c.push(a[n].C3_497800103273);
           }
         }
         n++;
-        
       }
     }
     try {
@@ -270,6 +290,26 @@ class AccessControl extends React.Component {
         resid: 691260187514,
         data: arr
       });
+      n = 0;
+      let res2Data = [];
+      while (n < res.data.length) {
+        let aa = 0;
+        while (aa < org.length) {
+          if (res.data[n].authorityId == org[aa].C3_497800103273) {
+            let object = org[aa];
+            object.C3_691167014001 = res.data[n].logId;
+            res2Data.push(object);
+          }
+          aa++;
+        }
+        n++;
+      }
+
+      let res2 = await http({ baseURL: this.baseURL }).modifyRecords({
+        resid: 666812500033,
+        data: res2Data
+      });
+      this.checkeAll(false);
       message.success('已提交同步请求');
       this.setState({ loading: false });
     } catch (e) {
@@ -277,7 +317,7 @@ class AccessControl extends React.Component {
       this.setState({ loading: false });
       message.error(e.message);
     }
-  }
+  };
   //点击提交按钮
   handleSub = async d => {
     this.setState({ loading: true });
@@ -302,53 +342,71 @@ class AccessControl extends React.Component {
     }
   };
   //获取所有明细并筛选同步状态
-  getDetails = async (st,ed) => {
-    this.setState({loading:true});
-    let stDate=this.state.stDate;
-    let edDate=this.state.edDate;
-    if(st){
-      stDate=st;
+  getDetails = async (st, ed) => {
+    this.setState({ loading: true });
+    let stDate = this.state.stDate;
+    let edDate = this.state.edDate;
+    if (st) {
+      stDate = st;
     }
-    if(ed){
-      edDate=ed;
+    if (ed) {
+      edDate = ed;
     }
     //明细
-    let res = await http({ baseURL: this.baseURL }).getTable({
-      resid: 691681288938,
-      cmswhere:`TheDatetime >= '${stDate}' and TheDatetime <= '${edDate}'`
-    });
-    let n = 0;
-    let arr = [];
-    while (n < res.data.length) {
-      let c = 0;
-      let bol = false;
-      while (c < arr.length) {
-        if (res.data[n].ID == arr[c]) {
-          bol = true;
-        }
-        c++;
-      }
-      if (!bol) {
-        arr.push(res.data[c].ID);
-      }
-      n++;
-    }
+    // let res = await http({ baseURL: this.baseURL }).getTable({
+    //   resid: 691681288938,
+    //   cmswhere: `TheDatetime >= '${stDate}' and TheDatetime <= '${edDate}' and `
+    // });
+    // let n = 0;
+    // let arr = [];
+    // while (n < res.data.length) {
+    //   let c = 0;
+    //   let bol = false;
+    //   while (c < arr.length) {
+    //     if (res.data[n].ID == arr[c]) {
+    //       bol = true;
+    //     }
+    //     c++;
+    //   }
+    //   if (!bol) {
+    //     arr.push(res.data[c].ID);
+    //   }
+    //   n++;
+    // }
     //操作记录
     let res2 = await http({ baseURL: this.baseURL }).getTable({
       resid: 666812500033,
-      cmswhere: `C3_498047440296 = 'Y'`
+      cmswhere: `C3_498047440296 = 'Y' and C3_498756365442 >= '${stDate}' and C3_498756365442 <= '${edDate}' `
     });
+    let cms = `ID = `;
     let all = [];
     let un = [];
     let done = [];
+    let n = 0;
+    while (n < res2.data.length) {
+      if (res2.data[n].C3_691167014001) {
+        if (cms == `ID = `) {
+          cms = `ID = '${res2.data[n].C3_691167014001}' `;
+        } else {
+          cms = cms + `or ID = '${res2.data[n].C3_691167014001}'`;
+        }
+      }
+
+      n++;
+    }
+    console.log(cms);
+    let res = await http({ baseURL: this.baseURL }).getTable({
+      resid: 691681288938,
+      cmswhere: cms
+    });
     n = 0;
-    while (n < arr.length) {
+    while (n < res2.data.length) {
       let c = 0;
       let bol = false;
       all.push(res2.data[n]);
 
-      while (c < res2.data.length) {
-        if (res2.data[c].C3_691167014001 == arr[n]) {
+      while (c < res.data.length) {
+        if (res2.data[n].C3_691167014001 == res.data[c].ID) {
           bol = true;
         }
         c++;
@@ -365,7 +423,13 @@ class AccessControl extends React.Component {
       all,
       un
     };
-    this.setState({ orgDetails: obj, detailData: obj[this.state.filterSync] ,loading:false});
+    console.log('obj', all, un, done);
+
+    this.setState({
+      orgDetails: obj,
+      detailData: obj[this.state.filterSync],
+      loading: false
+    });
   };
   //筛选同步状态
   handleChangeFilter = async v => {
@@ -406,7 +470,10 @@ class AccessControl extends React.Component {
               <div className="l">
                 <div className="search">
                   <Input
-                    style={{ width: 'calc(100% - 1rem - 144px)' ,textIndent:'.5rem'}}
+                    style={{
+                      width: 'calc(100% - 1rem - 144px)',
+                      textIndent: '.5rem'
+                    }}
                     value={this.state.kw}
                     onChange={v => {
                       this.setState({ kw: v.target.value });
@@ -490,9 +557,9 @@ class AccessControl extends React.Component {
               </div>
               <div className="r">
                 <TableData
+                  key="members"
                   downloadBaseURL={this.downloadURL}
                   baseURL={this.baseURL}
-                  down
                   resid="691171872439"
                   cmswhere={this.state.cms}
                   wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -518,8 +585,8 @@ class AccessControl extends React.Component {
                     onClick={() => {
                       this.setState({
                         subStatus: 0,
-                        checkedAll:false,
-                        detailData:[]
+                        checkedAll: false,
+                        detailData: []
                       });
                     }}
                   >
@@ -558,16 +625,20 @@ class AccessControl extends React.Component {
                     <RangePicker
                       style={{ marginLeft: 24 }}
                       size="small"
-                      value={this.state.stDate && this.state.edDate ? [
-                        moment(this.state.stDate, dateFormat),
-                        moment(this.state.edDate, dateFormat)
-                      ] : [null, null]}
+                      value={
+                        this.state.stDate && this.state.edDate
+                          ? [
+                              moment(this.state.stDate, dateFormat),
+                              moment(this.state.edDate, dateFormat)
+                            ]
+                          : [null, null]
+                      }
                       onChange={(dates, dateString) => {
                         this.setState({
-                          stDate:dateString[0],
-                          edDate:dateString[1]
+                          stDate: dateString[0],
+                          edDate: dateString[1]
                         });
-                        this.getDetails(dateString[0],dateString[1])
+                        this.getDetails(dateString[0], dateString[1]);
                       }}
                     ></RangePicker>
                     <Input
@@ -624,21 +695,21 @@ class AccessControl extends React.Component {
               </div>
               <div className="outer">
                 <TableData
+                  key="sync"
                   downloadBaseURL={this.downloadURL}
                   baseURL={this.baseURL}
                   style={this.state.subStatus == '0' ? {} : { display: 'none' }}
                   resid="666812500033"
                   cmswhere={this.state.importCms}
-                  wrappedComponentRef={element => (this.tableDataRef = element)}
-                  refTargetComponentName="TableData"
+                  afterSaveRefresh={true}
                   subtractH={180}
-                  hasAdd={false}
+                  hasAdd={true}
                   hasRowView={false}
                   hasRowDelete={false}
                   hasRowEdit={false}
-                  hasDelete={false}
+                  hasDelete={true}
                   hasModify={false}
-                  hasRowModify={false}
+                  hasRowModify={true}
                   hasRowSelection={true}
                   hasAdvSearch={false}
                   actionBarExtra={({
@@ -651,8 +722,7 @@ class AccessControl extends React.Component {
                     const selectedRecords = selectedRowKeys.map(key => {
                       return dataSource.find(item => item.REC_ID === key);
                     });
-                    return this.state.importCms ==
-                      `isnull(C3_498047440296,'') = ''` ? null : (
+                    return (
                       <Button
                         type="primary"
                         size={size}
@@ -673,21 +743,36 @@ class AccessControl extends React.Component {
                   <div className={'csmTable'}>
                     <table>
                       <tr>
-                        {this.state.columns.map((item,k) => {
-                          return <th>{k==0?<Checkbox checked={this.state.checkedAll} onChange={
-                            (v)=>{
-                              this.checkeAll(v.target.checked)
-                            }
-                          }></Checkbox>:item.title}</th>;
+                        {this.state.columns.map((item, k) => {
+                          return (
+                            <th>
+                              {k == 0 ? (
+                                <Checkbox
+                                  checked={this.state.checkedAll}
+                                  onChange={v => {
+                                    this.checkeAll(v.target.checked);
+                                  }}
+                                ></Checkbox>
+                              ) : (
+                                item.title
+                              )}
+                            </th>
+                          );
                         })}
                       </tr>
                       {this.state.detailData.map((item, key) => {
                         return (
                           <tr>
-                            <td><Checkbox checked={item.checked} onChange={(v)=>{this.handleChecked(v.target.checked,key)}}></Checkbox></td>
-                            {this.state.columns.map((item2,key2) => {
-                              return (
-                                key2==0?null:
+                            <td>
+                              <Checkbox
+                                checked={item.checked}
+                                onChange={v => {
+                                  this.handleChecked(v.target.checked, key);
+                                }}
+                              ></Checkbox>
+                            </td>
+                            {this.state.columns.map((item2, key2) => {
+                              return key2 == 0 ? null : (
                                 <td>
                                   {
                                     this.state.detailData[key][
