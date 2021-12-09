@@ -1107,6 +1107,8 @@ class WorkSheetDetail extends React.Component {
       this.setState({ process: '正在生成历史记录' });
       let obj =this.state.sheetData;
       obj.C3_680644403785=''
+      obj.C3_684517500134=res.data[0].C3_684517500134;
+      obj.C3_682281119677=res.data[0].C3_682281119677;
       let resHis = await http().addRecords({
         resid: '678790254231',
         data: [obj]
@@ -1247,6 +1249,8 @@ class WorkSheetDetail extends React.Component {
       });
       this.setState({ process: '正在生成历史记录' });
       obj.C3_680644403785='';
+      obj.C3_684517500134=res.data[0].C3_684517500134;
+      obj.C3_682281119677=res.data[0].C3_682281119677;
       let resHis = await http().addRecords({
         resid: '678790254231',
         data: [obj]
@@ -1640,6 +1644,8 @@ class WorkSheetDetail extends React.Component {
       });
       this.setState({ process: '正在生成历史记录' });
       obj.C3_680644403785='';
+      obj.C3_684517500134=res.data[0].C3_684517500134;
+      obj.C3_682281119677=res.data[0].C3_682281119677;
       let resHis = await http().addRecords({
         resid: '678790254231',
         data: [obj]

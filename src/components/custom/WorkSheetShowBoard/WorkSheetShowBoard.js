@@ -470,7 +470,7 @@ class WorkSheetShowBoard extends React.Component {
                     (item.C3_682507133563 == 'Y' ? '加急' : '不加急')
                     }
                   </label>
-                  <h3>{item.C3_678796779827}</h3>
+                  <h3>{item.C3_684517500134}</h3>
                 </div>
                 <div>
                   {item.finished?'':(item.sheetStatus=='已作废'||item.sheetStatus=='已取消'?
