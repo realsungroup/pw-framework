@@ -410,7 +410,7 @@ class WorkSheetDetail extends React.Component {
     if (!a) {
       arr = this.state.sheetList[l];
     } else {
-      arr = a.all;
+      arr = a;
     }
     let n = 0;
     let fin = [];
@@ -448,7 +448,8 @@ class WorkSheetDetail extends React.Component {
     }
   };
   componentWillReceiveProps = async nextProps => {
-    if(nextProps.curSheetId==this.state.sheetData.C3_682281119677){
+    //needRe是更新工作单列表的参数，reSheet是左右切换时控制工作单列表不刷新的参数
+    if(nextProps.curSheetId==this.state.sheetData.C3_682281119677 && !nextProps.needRe){
       return false;
     }
     let _this = this;
@@ -461,8 +462,8 @@ class WorkSheetDetail extends React.Component {
         n++;
       }
     }
-    console.log('sheetData', nextProps.sheetData);
     if (nextProps.sheetData && !nextProps.reSheet) {
+      console.log('jinjin2')
       let objSheets = {
         ing: [],
         un: [],
@@ -478,10 +479,15 @@ class WorkSheetDetail extends React.Component {
         objSheets.all.push(nextProps.sheetData[co]);
         co++;
       }
-      this.changeListFilter('all', 'all', objSheets);
+      if(nextProps.needRe){
+        console.log('jinjinjin',this.state.filterList,this.state.filterMaterial,objSheets)
+        this.changeListFilter(this.state.filterList,this.state.filterMaterial, objSheets[this.state.filterList]);
+        this.setState({ sheetList: objSheets });
+      }else{
+      this.changeListFilter('all', 'all', objSheets.all);
       this.setState({filterList:'all',filterMaterial:'all'});
       this.setState({ sheetList: objSheets });
-      console.log('objSheets',objSheets)
+      }
     }
 
     //初始化
@@ -1256,6 +1262,97 @@ class WorkSheetDetail extends React.Component {
       console.log(e.message);
     }
   };
+  //获取选中项
+  getChecked =()=>{
+    let n =0;
+    let arr=[]
+    let a = this.state.curSheetList;
+    if(this.state.grouped){
+      a=this.state.groupedData;
+      let c=0;
+      while(n<a.length){
+        while(c<a[n].children.length){
+          if(a[n].children[c].checked){
+          arr.push(a[n].children[c]);
+          }
+          c++;
+        }
+        n++;
+      }
+      return arr
+    }else{
+      while(n<a.length){
+        if(a[n].checked){
+          arr.push(a[n]);
+        }
+        n++;
+      }
+      return arr
+    }
+  }
+  //多选开始当前流程
+  startFlowGrouped=async()=>{
+    this.setState({loading:true,process:'正在开始'});
+    let checked=this.getChecked();
+    let checkOrder =0;
+    let toModi=[];
+    while(checkOrder<checked.length){
+      let nxtChara = this.calNext(checked[checkOrder].C3_682444277336);
+      let myTime = new Date();
+      let data = checked[checkOrder];
+      let ins = checked[checkOrder].C3_682444277336;
+      let n = 0;
+      while (n < mapping.length) {
+        if (mapping[n].id == ins && mapping[n].process == 'start') {
+          let counter = 0;
+          while (counter < mapping[n].mapping.length) {
+            let ress = checked[checkOrder][mapping[n].mapping[counter].from];
+            if (mapping[n].mapping[counter].from == 'CUR_TIME') {
+              ress = moment(myTime).format('MM-DD HH:MM:SS');
+            }
+            data[mapping[n].mapping[counter].to] = ress;
+            counter++;
+          }
+        }
+        n++;
+      }
+      data.curChara = this.state.sheetData.C3_682444277336;
+      data.C3_682444277336 = nxtChara.productflowjobroleid;
+      data.C3_682379482255 = myTime;
+      data.C3_682379496968 = '';
+      data.C3_682377833865 = '进行中';
+      console.log('data', data);
+      //检验的开始时间
+      if (data.curChara == '682635881582') {
+        let mT = new Date();
+        let mm = mT.getMonth() + 1;
+        let dd = mT.getDate();
+        let hh = mT.getHours();
+        let m = mT.getMinutes();
+        data.C3_678797501456 = mm + '/' + dd + ' ' + hh + ':' + m;
+      }
+      toModi.push(data)
+      checkOrder++;
+    }
+    try {
+      let res = await http().modifyRecords({
+        resid: '678790254230',
+        data: toModi
+      });
+      message.success('已经开始');
+      this.props.freshData();
+    } catch (e) {
+      this.setState({ loading: false, process: '' });
+      message.error(e.message);
+      console.log(e.message);
+    }
+  }
+  
+  //多选结束当前流程
+  endFlowGrouped=()=>{
+
+  }
+
   //开始当前流程
   startFlow = async () => {
     this.setState({ loading: true, process: '正在开始' });
@@ -1315,7 +1412,7 @@ class WorkSheetDetail extends React.Component {
         resid: '678790254230',
         cmswhere: `REC_ID = '${this.state.sheetData.REC_ID}'`
       });
-      if (res.data[0].C3_680644403785 == 'Y') {
+      if (res.data[0].C3_680644411481 == this.state.sheetData.C3_680644411481) {
         if (v == 'ed') {
           this.endFlow();
         } else if (v == 'st') {
@@ -1816,6 +1913,44 @@ class WorkSheetDetail extends React.Component {
       this.setState({ loading: false, process: '' });
     }
   };
+  //已读单条记录
+  hanleReadSingle=(recid,edtime)=>{
+    let n =0;
+    let arr=[]
+    let a = this.state.curSheetList;
+    if(this.state.grouped){
+      a=this.state.groupedData;
+      let c=0;
+      while(n<a.length){
+        while(c<a[n].children.length){
+          if(a[n].children[c].REC_ID==recid){
+          a[n].children[c].isNew='';
+          }
+          c++;
+        }
+        n++;
+      }
+      this.setState({groupedData:a});
+    }else{
+      while(n<a.length){
+        if(a[n].REC_ID==recid){
+          a[n].isNew='';
+        }
+        n++;
+      }
+      this.setState({curSheetList:a});
+    }
+    arr=[{REC_ID:recid,REC_EDTTIME:edtime,read:'Y'}];
+    let array=localStorage.getItem('readStatus');
+    if(array){
+      array=JSON.parse(array);
+    }else{
+      array=[];
+    }
+    array.push(arr);
+    let str = JSON.stringify(array);
+    localStorage.setItem('readStatus',str);
+  }
   //标记已读
   handleRead=()=>{
     let n =0;
@@ -1854,6 +1989,7 @@ class WorkSheetDetail extends React.Component {
     array.push(arr);
     let str = JSON.stringify(array);
     localStorage.setItem('readStatus',str);
+    this.handleChecked(false);
   }
 //分组
   handleGroup = (v,list,material) => {
@@ -2459,7 +2595,7 @@ class WorkSheetDetail extends React.Component {
                           </Button>
                         </Popconfirm>
                         
-                        {this.state.filterList == 'ing' ? (
+                        {this.state.filterList == 'ing' ? 
                           <Button
                             size={'small'}
                             type="danger"
@@ -2471,7 +2607,8 @@ class WorkSheetDetail extends React.Component {
                           >
                             结束
                           </Button>
-                        ) : (
+                        :null}
+                        { this.state.filterList == 'un'?
                           <Button
                             size={'small'}
                             type="primary"
@@ -2480,10 +2617,11 @@ class WorkSheetDetail extends React.Component {
                               lineHeight: '18px',
                               padding: '0 4px'
                             }}
+                            onClick={()=>{this.startFlowGrouped()}}
                           >
                             开始
                           </Button>
-                        )}
+                        :null}
                       </div>
                     </div>
                   </div>
@@ -2534,7 +2672,9 @@ class WorkSheetDetail extends React.Component {
                                             document.getElementById('toCopy').remove();
                                             message.success('已复制单号')
                                           }}/>
-                                      <div onClick={()=>{this.props.changeId(item2.C3_682281119677,true)}}>
+                                      <div onClick={()=>{
+                                       this.hanleReadSingle(item2.REC_ID,item2.REC_EDTTIME)
+                                        this.props.changeId(item2.C3_682281119677,true)}}>
                                         <p style={this.state.sheetData.C3_684517500134==item2.C3_684517500134?{color:'#1890ff'}:{}}>工程单号：{item2.C3_684517500134}</p>
                                       </div>
                                     </li>
@@ -2573,7 +2713,9 @@ class WorkSheetDetail extends React.Component {
                                             document.getElementById('toCopy').remove();
                                             message.success('已复制单号')
                                           }}/>
-                            <div onClick={()=>{this.props.changeId(item.C3_682281119677,true)}}>
+                            <div onClick={()=>{
+                              this.hanleReadSingle(item.REC_ID,item.REC_EDTTIME);
+                              this.props.changeId(item.C3_682281119677,true)}}>
                               <p style={this.state.sheetData.C3_684517500134==item.C3_684517500134?{color:'#1890ff'}:{}}>工程单号：{item.C3_684517500134}</p>
                               {item.C3_678797141752
                                   ?<p>木板厚度：{item.C3_678797141752}</p>
@@ -3012,7 +3154,7 @@ class WorkSheetDetail extends React.Component {
               }
             >
               <div>
-              {this.state.canEdit && this.state.sheetData.C3_680644403785=='Y' > 0 ? (
+              {this.state.canEdit  > 0 && this.state.sheetData.C3_680644403785=='Y' ? (
                 <Button
                   disabled={this.state.loading}
                   type="danger"

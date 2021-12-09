@@ -88,7 +88,7 @@ class WorkSheetShowBoard extends React.Component {
   };
 
   //获取新建订单权限
-  getRight = async () => {
+  getRight = async (v) => {
     //获取localstorage的部门代码
     // this.setState({loading2:true});
     // let res;
@@ -133,7 +133,7 @@ class WorkSheetShowBoard extends React.Component {
       //   n++;
       // }
       this.setState({ editRight: obj, mesId: mesId });
-      this.getSheets(mesId);
+      this.getSheets(mesId,v);
     // } catch (error) {
     //   message.error(error.message);
     //   console.log(error);
@@ -196,7 +196,7 @@ class WorkSheetShowBoard extends React.Component {
     });
   };
   //获取当前进行中和未开始的订单
-  getSheets = async mesId => {
+  getSheets = async (mesId,needRe) => {
     this.setState({ loading2: true });
     let stDate = new Date();
       stDate = moment(stDate).format('YYYY-MM-DD');
@@ -331,8 +331,12 @@ class WorkSheetShowBoard extends React.Component {
         }
         sc++;
       }
-      this.setState({ sheets: newArr, loading2: false, sheetsAll: newArr });
-
+      this.setState({ sheets: newArr, loading2: false, sheetsAll: newArr ,needRe});
+      if(needRe){
+        let t = setTimeout(()=>{
+          this.setState({needRe:false});
+        },1000);
+      }
       console.log('newArr',newArr);
     } catch (error) {
       message.error(error.message);
@@ -499,7 +503,8 @@ class WorkSheetShowBoard extends React.Component {
                 sheetData={this.state.sheetsAll}
                 changeId={(v,v2)=>{this.showDetails(true,v,v2)}}
                 reSheet={this.state.reSheet}
-
+                needRe={this.state.needRe}
+                freshData={()=>{this.getRight(true);}}
              >
               </WorkSheetDetail>   
         </div>
