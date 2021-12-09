@@ -1347,12 +1347,6 @@ class WorkSheetDetail extends React.Component {
       console.log(e.message);
     }
   }
-  
-  //多选结束当前流程
-  endFlowGrouped=()=>{
-
-  }
-
   //开始当前流程
   startFlow = async () => {
     this.setState({ loading: true, process: '正在开始' });
@@ -2584,30 +2578,21 @@ class WorkSheetDetail extends React.Component {
                         >
                           <Button
                             size={'small'}
-                            style={{
+                            style={this.state.filterList=='un'?{
                               height: 18,
                               lineHeight: '18px',
                               marginRight: 4,
                               padding: '0 4px'
+                            }:{
+                                height: 18,
+                                lineHeight: '18px',
+                                width:'100%'
                             }}
                           >
                             已读
                           </Button>
                         </Popconfirm>
                         
-                        {this.state.filterList == 'ing' ? 
-                          <Button
-                            size={'small'}
-                            type="danger"
-                            style={{
-                              height: 18,
-                              lineHeight: '18px',
-                              padding: '0 4px'
-                            }}
-                          >
-                            结束
-                          </Button>
-                        :null}
                         { this.state.filterList == 'un'?
                           <Button
                             size={'small'}
