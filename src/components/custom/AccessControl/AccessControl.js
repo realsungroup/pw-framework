@@ -85,7 +85,7 @@ class AccessControl extends React.Component {
     // let arr = [];
     try {
       let res = await http({ baseURL: this.baseURL }).getTableColumnDefine({
-        resid: 666812500033
+        resid: 692357214309
       });
       let n = 0;
       while (n < res.data.length) {
@@ -306,7 +306,7 @@ class AccessControl extends React.Component {
       }
 
       let res2 = await http({ baseURL: this.baseURL }).modifyRecords({
-        resid: 666812500033,
+        resid: 692357214309,
         data: res2Data
       });
       this.checkeAll(false);
@@ -329,7 +329,7 @@ class AccessControl extends React.Component {
     }
     try {
       let res = await http({ baseURL: this.baseURL }).modifyRecords({
-        resid: 666812500033,
+        resid: 692357214309,
         data: arr
       });
       message.success('已提交');
@@ -375,17 +375,17 @@ class AccessControl extends React.Component {
     // }
     //操作记录
     let res2 = await http({ baseURL: this.baseURL }).getTable({
-      resid: 666812500033,
+      resid: 692357214309,
       cmswhere: `C3_498047440296 = 'Y' and C3_498756365442 >= '${stDate}' and C3_498756365442 <= '${edDate}' `
     });
-    let cms = `ID = `;
+    let cms = `ID = ''`;
     let all = [];
     let un = [];
     let done = [];
     let n = 0;
     while (n < res2.data.length) {
       if (res2.data[n].C3_691167014001) {
-        if (cms == `ID = `) {
+        if (cms == `ID = ''`) {
           cms = `ID = '${res2.data[n].C3_691167014001}' `;
         } else {
           cms = cms + `or ID = '${res2.data[n].C3_691167014001}'`;
@@ -697,7 +697,7 @@ class AccessControl extends React.Component {
                   downloadBaseURL={this.downloadURL}
                   baseURL={this.baseURL}
                   style={this.state.subStatus == '0' ? {} : { display: 'none' }}
-                  resid="666812500033"
+                  resid="692357214309"
                   cmswhere={this.state.importCms}
                   wrappedComponentRef={element => (this.tableDataRef = element)}
                   refTargetComponentName="TableData"
