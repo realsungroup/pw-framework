@@ -449,7 +449,7 @@ class WorkSheetDetail extends React.Component {
   };
   componentWillReceiveProps = async nextProps => {
     //needRe是更新工作单列表的参数，reSheet是左右切换时控制工作单列表不刷新的参数
-    if(nextProps.curSheetId==this.state.sheetData.C3_682281119677 && !nextProps.needRe){
+    if(nextProps.curSheetId==this.state.sheetData.C3_682281119677 && !nextProps.needRe && !nextProps.new){
       return false;
     }
     let _this = this;
