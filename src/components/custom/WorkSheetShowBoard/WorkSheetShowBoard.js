@@ -14,6 +14,7 @@ class WorkSheetShowBoard extends React.Component {
     this.state = {
       filter: '全部',
       sheets: [{}],
+      sec:60,
       showDetails:false,
       editRight:{
         part1:false
@@ -23,6 +24,7 @@ class WorkSheetShowBoard extends React.Component {
 
   async componentDidMount() {
     this.getRight();
+    this.refreshData();
   }
 
   //实例化echarts
@@ -331,7 +333,10 @@ class WorkSheetShowBoard extends React.Component {
         }
         sc++;
       }
-      this.setState({ sheets: newArr, loading2: false, sheetsAll: newArr ,needRe});
+      this.setState({ sheets: newArr,sheetsAll: newArr ,needRe});
+      let t = setTimeout(()=>{
+        this.setState({loading2:false});
+      },1000);
       if(needRe){
         let t = setTimeout(()=>{
           this.setState({needRe:false});
@@ -344,6 +349,26 @@ class WorkSheetShowBoard extends React.Component {
       console.log(error);
     }
   };
+  //定时刷新数据
+  refreshData=()=>{
+    let _this=this;
+    let  t = setInterval(()=>{
+      let s =_this.state.sec;
+      s--;
+      if(s<0){
+        if(!this.state.loading2){
+          clearInterval(t);
+          this.setState({sec:60});
+          this.getRight(true);
+          this.refreshData();
+        }
+        
+      }else{
+        this.setState({sec:s})
+      }
+    },1000)
+    
+  }
 
   //改变筛选器
   changeFilter = v => {
@@ -371,6 +396,8 @@ class WorkSheetShowBoard extends React.Component {
   render() {
     return (
       <div style={{width:'100vw'}}>
+          <div className='toast'>距离下次刷新数据还剩{this.state.sec}秒</div>
+
         <Spin spinning={this.state.loading2}>
       <div className="cardWrap">
         <Modal

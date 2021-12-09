@@ -13,6 +13,7 @@ class WorkSheetViews extends React.Component {
     super(props);
     this.state = {
       total:0,
+      sec:60,
       done:[],
       junk:[],
       loading:false,
@@ -33,6 +34,8 @@ class WorkSheetViews extends React.Component {
 
   async componentDidMount() {
     this.getData();
+    this.refreshData();
+
     window.parent.pwCallback &&
       window.parent.pwCallback.modifyTitle('车间看板');
     // 监听父窗口发送的 message 事件
@@ -53,6 +56,25 @@ class WorkSheetViews extends React.Component {
       },
       false
     );
+  }
+  refreshData=()=>{
+    let _this=this;
+    let  t = setInterval(()=>{
+      let s =_this.state.sec;
+      s--;
+      if(s<0){
+        if(!this.state.loading2){
+          clearInterval(t);
+          this.setState({sec:60});
+          this.getData(true);
+          this.refreshData();
+        }
+        
+      }else{
+        this.setState({sec:s})
+      }
+    },1000)
+    
   }
   getData=async()=>{
     let myDate = new Date();
@@ -124,6 +146,7 @@ class WorkSheetViews extends React.Component {
   render() {
     return (
      <div className="viewer">
+          <div className='toast'>距离下次刷新数据还剩{this.state.sec}秒</div>
         <Spin spinning={this.state.loading}>
         <Modal
           visible={this.state.showImg}
