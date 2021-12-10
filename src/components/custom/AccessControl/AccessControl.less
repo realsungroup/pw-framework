@@ -26,9 +26,9 @@
       margin: 0;
       padding: 0;
       list-style: none;
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
-    width: 20vw;
+    width: 50vw;
     height: calc(100vh - 77px);
     border-right: 1px solid #dcdcdc;
     box-sizing: border-box;
@@ -41,7 +41,7 @@
       height: calc(100vh - 132px);
       overflow: auto;
       li {
-        padding: 0.25rem 1rem;
+        padding: 0 1rem;
         border-bottom: 1px solid #eee;
         &:hover {
           background-color: rgb(216, 236, 250);
@@ -53,7 +53,21 @@
           display: inline-block;
           width: calc(100% - 0.5rem - 80px);
           cursor: pointer;
+          font-size: 0.8rem;
           vertical-align: middle;
+          span {
+            display: inline-block;
+            font-size: 0.8rem;
+            &:first-child {
+              width: 80px;
+            }
+            &:nth-child(2) {
+              width: calc(70% - 80px);
+            }
+            &:nth-child(3) {
+              width: calc(30% - 80px);
+            }
+          }
         }
         button {
           width: 80px;
@@ -70,7 +84,7 @@
     }
   }
   .r {
-    width: 80vw;
+    width: 50vw;
     height: calc(100vh - 77px);
     float: right;
     .table-data__row--clicked {

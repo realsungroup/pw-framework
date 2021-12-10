@@ -127,7 +127,8 @@ class AccessControl extends React.Component {
           group: arr[n].组名称,
           door: [{ name: arr[n].门名称, recid: arr[n].REC_ID }],
           time: arr[n].时间段名称,
-          timeId: arr[n].时间段编号
+          timeId: arr[n].时间段编号,
+          count: arr[n].人员数 + '人'
         });
       } else {
         let c = 0;
@@ -150,7 +151,8 @@ class AccessControl extends React.Component {
             door: [{ name: arr[n].门名称, recid: arr[n].REC_ID }],
             group: arr[n].组名称,
             time: arr[n].时间段名称,
-            timeId: arr[n].时间段编号
+            timeId: arr[n].时间段编号,
+            count: arr[n].人员数 + '人'
           });
         }
       }
@@ -531,15 +533,12 @@ class AccessControl extends React.Component {
                             }
                           }}
                         >
-                          {item.group} {item.time}
+                          <span>{item.count}</span>
+                          <span>{item.group}</span>
+                          <span>{item.time}</span>
                         </span>
-                        <Button
-                          size={'small'}
-                          type={
-                            this.state.currentRight.id == item.id
-                              ? 'primary'
-                              : 'normal'
-                          }
+                        <span
+                          style={{ color: '#1890ff', width: '80px' }}
                           onClick={() => {
                             this.setState({
                               currentRight: item,
@@ -549,7 +548,7 @@ class AccessControl extends React.Component {
                           }}
                         >
                           查看详情
-                        </Button>
+                        </span>
                       </li>
                     );
                   })}
