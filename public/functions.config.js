@@ -10530,10 +10530,23 @@ window[690562274466] = {
     ]
   ]
 };
-window[691346156968] = {
-  name: 'AccessControl',
-  title: '门禁管控',
+window[693048340608] = {
+  name: 'TableData', // 组件名称，
+  title: '门禁日志查询', // 功能模块名称
   props: {
-    
+    resid: 692978465792,
+    downloadBaseURL: 'http://ehrweb.realsun.me/',
+    baseURL: 'http://ehrwebapi.realsun.me/',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasBackBtn: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasDownload:false,
+    isUseFormDefine: false,
+    subtractH: 200
   }
 };
