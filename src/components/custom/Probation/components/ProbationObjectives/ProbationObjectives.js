@@ -17,8 +17,33 @@ const resid1 = '619808533610';
  * @description 工作目标
  * @author 邓铭
  */
+ let showHints=(arr,name)=>{
+  let n =0;
+  let bol=false
+  if(arr.length===0){
+    bol=true;
+  }else{
+    while(n<arr.length){
+      if(arr[n].target&&arr[n].quota){
+  
+      }else{
+        bol=true;
+      }
+      n++;
+    }
+  }
+  if(bol){
+    return   <span style={{ color: '#f5222d' }}>
+    直接主管{name ? name : ''}
+    尚未填写完成工作目标评估与评分，填写完成后，新员工方可提交转正申请。
+  </span>
+  }else{
+    return null;
+  }
+}
 const ProbationObjectives = props => {
   let { probationObjectives, modifyObjective, editable } = props;
+ 
   const hasOperation = props.auth.hasDelete && props.auth.hasModify && editable;
   return (
     <div id="probation-objectives" className="probation-form">
@@ -30,7 +55,7 @@ const ProbationObjectives = props => {
           </React.Fragment>
         }
       >
-        <div>
+        <div style={{paddingBottom:8}}>
           <p>
             ※绩效评分标准Standard for Evaluation：
             <br />
@@ -45,6 +70,7 @@ const ProbationObjectives = props => {
             <br />
             &nbsp;&nbsp;&nbsp;对于3个月时尚未开展的目标，可在3个月“评估”栏说明情况，不填写3个月评分。
           </p>
+          {showHints(probationObjectives,props.majorName)}
         </div>
         <div className="probation-objectives_fill-stage">
           {props.auth.hasAdd && editable && (
@@ -71,12 +97,6 @@ const ProbationObjectives = props => {
           )}
         </div>
         <div className="probation-objectives_audit-stage">
-          {probationObjectives.length == 0 ? (
-            <span style={{ color: '#f5222d' }}>
-              直接主管{props.majorName ? props.majorName : ''}
-              尚未填写完成工作目标评估与评分，填写完成后，新员工方可提交转正申请。
-            </span>
-          ) : null}
           {probationObjectives.map((item, index) => (
             <div className="probation-objectives_audit-stage_objective-card">
               {props.auth.hasDelete && editable && (
