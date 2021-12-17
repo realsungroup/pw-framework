@@ -56,121 +56,24 @@ const labels = [
     }
   ],
   [
-    { labelName: '申请人分机号：', labelId: 'C3_687636958159' },
-    { labelName: '申请人手机号：', labelId: 'C3_687636947347' }
+    {
+      labelName: '申请人分机号：',
+      labelId: 'C3_687636958159',
+      necessary: true
+    },
+    { labelName: '申请人手机号：', labelId: 'C3_687636947347', necessary: true }
   ]
-];
-const labels2 = [
-  {
-    name: '饮用水',
-    id: 'C3_687636521478',
-    children: [
-      {
-        labelName: '数量：',
-        labelId: 'C3_687636534071'
-      }
-    ]
-  },
-  {
-    name: '会议室',
-    id: 'C3_687636541790',
-    children: [
-      {
-        labelName: '会议室地点：',
-        labelId: 'C3_687636560586'
-      },
-      {
-        labelName: '备注：',
-        labelId: 'C3_687636574492'
-      }
-    ]
-  },
-  {
-    name: '茶歇',
-    id: 'C3_687636586414',
-    children: [
-      {
-        labelName: '数量：',
-        labelId: 'C3_687636598414'
-      },
-      {
-        labelName: '备注：',
-        labelId: 'C3_687636609601'
-      }
-    ]
-  },
-  {
-    name: '午餐',
-    id: 'C3_687636621304',
-    class: 'normal',
-    children: [
-      {
-        labelName: '数量：',
-        labelId: 'C3_687636630725'
-      },
-      {
-        labelName: '餐标：',
-        labelId: 'C3_690976041942'
-      },
-      {
-        labelName: '送餐时间：',
-        labelId: 'C3_687636678443',
-        type: 'time'
-      },
-      {
-        labelName: '地点：',
-        labelId: 'C3_687636657084'
-      },
-      {
-        labelName: '备注：',
-        labelId: 'C3_687636691771'
-      }
-    ]
-  },
-  {
-    name: 'VIP午餐',
-    id: 'C3_687637011565',
-    class: 'vip',
-    children: [
-      {
-        labelName: '数量：',
-        labelId: 'C3_687637038205'
-      },
-      {
-        labelName: '餐标：',
-        labelId: 'C3_690976041942'
-      },
-      {
-        labelName: '送餐时间：',
-        labelId: 'C3_687637059549',
-        type: 'time'
-      },
-      {
-        labelName: '地点：',
-        labelId: 'C3_687637071111'
-      },
-      {
-        labelName: '备注：',
-        labelId: 'C3_687637089345'
-      }
-    ]
-  },
-  {
-    name: '车辆',
-    id: 'C3_687636975315',
-    class: 'vip',
-    children: [
-      {
-        labelName: '行程说明：',
-        labelId: 'C3_687636986299'
-      }
-    ]
-  }
 ];
 /**
  * 上海访客
  */
 export default class ShVisit extends Component {
+  constructor(props) {
+    super(props);
+    this.baseURL = window.pwConfig[process.env.NODE_ENV].customURLs.shVisitURL;
+    this.downloadBaseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.shVisitDownLoadURL;
+  }
   state = {
     loading: false,
     visible: false,
@@ -178,6 +81,117 @@ export default class ShVisit extends Component {
     C3_687636501807: null,
     C3_687636446496: '管控区',
     hotelCounter: 0,
+    labels2: [
+      {
+        name: '饮用水',
+        id: 'C3_687636521478',
+        children: [
+          {
+            labelName: '数量：',
+            labelId: 'C3_687636534071'
+          }
+        ]
+      },
+      {
+        name: '会议室',
+        id: 'C3_687636541790',
+        class: 'vip',
+        children: [
+          {
+            labelName: '会议室地点：',
+            labelId: 'C3_687636560586'
+          },
+          {
+            labelName: '备注：',
+            labelId: 'C3_687636574492'
+          }
+        ]
+      },
+      {
+        name: '茶歇',
+        class: 'vip',
+        id: 'C3_687636586414',
+        children: [
+          {
+            labelName: '数量：',
+            labelId: 'C3_687636598414'
+          },
+          {
+            labelName: '备注：',
+            labelId: 'C3_687636609601'
+          }
+        ]
+      },
+      {
+        name: '午餐',
+        id: 'C3_687636621304',
+        class: 'normal',
+        children: [
+          {
+            labelName: '数量：',
+            labelId: 'C3_687636630725'
+          },
+          {
+            labelName: '餐标：',
+            labelId: 'C3_690976041942',
+            selection: []
+          },
+          {
+            labelName: '送餐时间：',
+            labelId: 'C3_687636678443',
+            type: 'time'
+          },
+          {
+            labelName: '地点：',
+            labelId: 'C3_687636657084'
+          },
+          {
+            labelName: '备注：',
+            labelId: 'C3_687636691771'
+          }
+        ]
+      },
+      {
+        name: 'VIP午餐',
+        id: 'C3_687637011565',
+        class: 'vip',
+        children: [
+          {
+            labelName: '数量：',
+            labelId: 'C3_687637038205'
+          },
+          {
+            labelName: '餐标：',
+            labelId: 'C3_690976041942',
+            selection: []
+          },
+          {
+            labelName: '送餐时间：',
+            labelId: 'C3_687637059549',
+            type: 'time'
+          },
+          {
+            labelName: '地点：',
+            labelId: 'C3_687637071111'
+          },
+          {
+            labelName: '备注：',
+            labelId: 'C3_687637089345'
+          }
+        ]
+      },
+      {
+        name: '车辆',
+        id: 'C3_687636975315',
+        class: 'vip',
+        children: [
+          {
+            labelName: '行程说明：',
+            labelId: 'C3_687636986299'
+          }
+        ]
+      }
+    ],
     hotelInfo: [
       {
         show: false,
@@ -322,7 +336,8 @@ export default class ShVisit extends Component {
         keys[n] != 'hotelCounter' &&
         keys[n] != 'hotelInfo' &&
         keys[n] != 'memberCounter' &&
-        keys[n] != 'memberInfo'
+        keys[n] != 'memberInfo' &&
+        keys[n] != 'labels2'
       ) {
         this.setState({ [keys[n]]: null });
       }
@@ -438,6 +453,43 @@ export default class ShVisit extends Component {
       ]
     });
   };
+  //获取下拉项
+  getColumnDefine = async () => {
+    this.setState({ loading: true });
+    let res;
+    try {
+      res = await http({ baseURL: this.baseURL }).getTableColumnDefine({
+        resid: '692293357380'
+      });
+      let a = this.state.labels2;
+      let n = 0;
+      while (n < a.length) {
+        let k = 0;
+        if (a[n].children) {
+          while (k < a[n].children.length) {
+            if (a[n].children[k].selection) {
+              let c = 0;
+              while (c < res.data.length) {
+                if (res.data[c].ColName == a[n].children[k].labelId) {
+                  a[n].children[k].selection = res.data[c].DisplayOptions;
+                }
+                c++;
+              }
+            }
+            k++;
+          }
+        }
+        n++;
+      }
+      this.setState({ loading: false, labels2: a });
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+  componentDidMount() {
+    this.getColumnDefine();
+  }
+
   //添加人员信息
   addHotelInfo = brid => {
     let c = this.state.hotelCounter;
@@ -533,6 +585,31 @@ export default class ShVisit extends Component {
       message.error('请填写来访人员手机号');
       return false;
     }
+    if (this.state.C3_687636947347) {
+      if (this.state.C3_687636947347.length < 11) {
+        message.error('申请人手机号位数未满11');
+        return false;
+      }
+    }
+    n = 0;
+    let arr = [
+      'C3_687637162392',
+      'C3_687637188798',
+      'C3_687637190704',
+      'C3_687637205376',
+      'C3_687637207563',
+      'C3_687637210345'
+    ];
+    while (n < arr.length) {
+      if (this.state[arr[n]]) {
+        if (this.state[arr[n]].length < 11) {
+          let nn = n + 1;
+          message.error('来访人员' + nn + '手机号位数未满11');
+          return false;
+        }
+      }
+      n++;
+    }
     this.handleSubmit();
   };
   //提交数据
@@ -541,7 +618,7 @@ export default class ShVisit extends Component {
     let res;
     let obj = this.state;
     try {
-      let res = await http().addRecords({
+      let res = await http({ baseURL: this.baseURL }).addRecords({
         resid: 687801941061,
         data: [obj]
       });
@@ -620,6 +697,8 @@ export default class ShVisit extends Component {
       <div className="table-data-wrap" style={{ height: '100vh' }}>
         <TableData
           resid={this.state.mainId ? this.state.mainId : '687801941061'}
+          baseURL={this.baseURL}
+          downloadBaseURL={this.downloadBaseURL}
           hasRowView={false}
           hasAdd={false}
           refTargetComponentName="TableData"
@@ -691,6 +770,8 @@ export default class ShVisit extends Component {
           <div style={{ height: '70vh' }}>
             <TableData
               resid={this.state.modalId}
+              baseURL={this.baseURL}
+              downloadBaseURL={this.downloadBaseURL}
               hasRowView={false}
               hasAdd={false}
               refTargetComponentName="TableData"
@@ -807,7 +888,7 @@ export default class ShVisit extends Component {
                 </Radio.Group>
                 {this.state.C3_687636501807 == 'Y' ? (
                   <>
-                    {labels2.map(item => {
+                    {this.state.labels2.map(item => {
                       return !item.class || item.class == this.state.type ? (
                         <div className="label2">
                           <Checkbox
@@ -824,7 +905,23 @@ export default class ShVisit extends Component {
                                 return (
                                   <li>
                                     <label>{item2.labelName}</label>
-                                    {item2.type == 'time' ? (
+                                    {item2.selection ? (
+                                      <Select
+                                        defaultValue={item2.selection[0]}
+                                        style={{ width: 160 }}
+                                        onChange={v => {
+                                          this.setState({ [item2.labelId]: v });
+                                        }}
+                                      >
+                                        {item2.selection.map(item3 => {
+                                          return (
+                                            <Option value={item3}>
+                                              {item3}
+                                            </Option>
+                                          );
+                                        })}
+                                      </Select>
+                                    ) : item2.type == 'time' ? (
                                       <DatePicker
                                         format="YYYY-MM-DD HH:mm:ss"
                                         value={this.state[item2.labelId]}
