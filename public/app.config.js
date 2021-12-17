@@ -14,7 +14,7 @@ window.pwConfig = {
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     //  baseURL:'http://hr.realsun.me:8081/',
-    fileDownloadUrl: 'http://10.108.2.66:6000/', // 导出 Excel 文件下载基地址
+    fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
     // 切换考勤月份的基地址
     attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
     fileDownloadConfig: {
@@ -32,7 +32,7 @@ window.pwConfig = {
     customURLs: {
       personInfoDownloadURL: 'http://10.108.2.66:80/', //人事信息下载地址
       attendanceBaseURL: 'http://10.108.2.66:9091/', //考勤审批
-      attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
+      attendanceDownloadURL: 'http://ehrweb.realsun.me/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.21.41:2001/',

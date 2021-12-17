@@ -194,5 +194,6 @@ export {
   HRLeaveApp,
   MonthlySettlementLock,
   OfficeSupply,
-  ShVisit
+  ShVisit,
+  AccessControl
 } from '../components/custom/loadableCustom';

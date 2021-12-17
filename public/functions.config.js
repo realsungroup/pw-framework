@@ -10530,3 +10530,10 @@ window[690562274466] = {
     ]
   ]
 };
+window[691346156968] = {
+  name: 'AccessControl',
+  title: '门禁管控',
+  props: {
+    
+  }
+};
