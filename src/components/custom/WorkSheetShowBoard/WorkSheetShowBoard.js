@@ -187,7 +187,6 @@ class WorkSheetShowBoard extends React.Component {
       }
       sc++;
     }
-    console.log('G',newArr)
     this.setState({sheetsAll:newArr});
     }
     this.setState({
@@ -225,7 +224,13 @@ class WorkSheetShowBoard extends React.Component {
         if (res.data[n].C3_682507133563 == 'Y') {
           emergy.push(res.data[n]);
         } else {
-          arr.push(res.data[n]);
+          if (
+            (res.data[n].C3_682377833865 == '已完成')&&( res.data[n].curDepaId == mesId) && (res.data[n].C3_682540168336 != 'Y')
+          ) {
+
+          }else{
+            arr.push(res.data[n]);
+          }
         }
         if (
           res.data[n].C3_682377833865 == '已完成'
@@ -252,7 +257,6 @@ class WorkSheetShowBoard extends React.Component {
       });
 
       done=res2.data;
-      console.log(res2,done)
       let newArr = emergy.concat(arr);
       n =0;
       let cms=``;
@@ -289,7 +293,9 @@ class WorkSheetShowBoard extends React.Component {
             v++;
           }
           if(!bol){
-            res3N.push(res3Arr[n])
+            let dob=res3Arr[n];
+            dob.isDone=true;
+            res3N.push(dob);
           }
           n++;
         }
@@ -342,7 +348,6 @@ class WorkSheetShowBoard extends React.Component {
           this.setState({needRe:false});
         },1000);
       }
-      console.log('newArr',newArr);
     } catch (error) {
       message.error(error.message);
       this.setState({ loading2: false });
@@ -380,7 +385,9 @@ class WorkSheetShowBoard extends React.Component {
       if (arr[n].C3_682377833865 == '进行中') {
         arrAl.push(arr[n]);
       } else {
-        arrUn.push(arr[n]);
+        if(!arr[n].isDone){
+          arrUn.push(arr[n]);
+        }
       }
       n++;
     }

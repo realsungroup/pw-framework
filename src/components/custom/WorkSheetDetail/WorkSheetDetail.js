@@ -333,6 +333,7 @@ class WorkSheetDetail extends React.Component {
     filterList: 'un'
   };
   async componentDidMount() {
+    this.getProductLines();
     this.getUserinfo();
     window.addEventListener('resize', this.handleResize.bind(this));
   }
@@ -474,7 +475,9 @@ class WorkSheetDetail extends React.Component {
         if (nextProps.sheetData[co].C3_682377833865 == '进行中') {
           objSheets.ing.push(nextProps.sheetData[co]);
         } else {
-          objSheets.un.push(nextProps.sheetData[co]);
+          if(!nextProps.sheetData[co].isDone){
+            objSheets.un.push(nextProps.sheetData[co]);
+          }
         }
         objSheets.all.push(nextProps.sheetData[co]);
         co++;
@@ -492,11 +495,11 @@ class WorkSheetDetail extends React.Component {
 
     //初始化
     if (nextProps.new) {
-      _this.setState({ loading: true });
       if (nextProps.sheetData) {
       } else {
         _this.getProductLines();
       }
+      _this.setState({ loading: true });
       _this.setState({ bitianxiang: [] });
       _this.setState({
         bitianxiang: Bitianxiang[0].biTian,
@@ -532,9 +535,10 @@ class WorkSheetDetail extends React.Component {
         }
       }, 100);
     } else {
-      _this.setState({ sheetData: objEmpty });
-      await _this.getHistories(nextProps.curSheetId);
-    }
+          _this.setState({ sheetData: objEmpty });
+          await _this.getHistories(nextProps.curSheetId);
+      }
+     
   };
   getNewVersion = async () => {
     let objEmpty = {};
@@ -992,6 +996,7 @@ class WorkSheetDetail extends React.Component {
   //计算下一步骤
   calNext = v => {
     let org = this.state.productLineTree;
+    console.log('org',org)
     let n = 0;
     let arr = [];
     let target = {};
@@ -1298,6 +1303,9 @@ class WorkSheetDetail extends React.Component {
   startFlowGrouped=async()=>{
     this.setState({loading:true,process:'正在开始'});
     let checked=this.getChecked();
+    if(checked.length==0){
+      message.info('未选择记录')
+    }
     let checkOrder =0;
     let toModi=[];
     while(checkOrder<checked.length){
@@ -1356,6 +1364,7 @@ class WorkSheetDetail extends React.Component {
     this.setState({ loading: true, process: '正在开始' });
     let res;
     let nxtChara = this.calNext(this.state.sheetData.C3_682444277336);
+    console.log('nxtChara',this.state.sheetData,this.state.sheetData.C3_682444277336,nxtChara)
     let myTime = new Date();
     let data = this.state.sheetData;
     let ins = this.state.sheetData.C3_682444277336;
@@ -1395,7 +1404,9 @@ class WorkSheetDetail extends React.Component {
         data: [data]
       });
       message.success('已经开始');
-      this.getHistories(this.props.curSheetId);
+      this.props.freshData();
+
+      // this.getHistories(this.props.curSheetId);
     } catch (e) {
       this.setState({ loading: false, process: '' });
       message.error(e.message);
@@ -1482,7 +1493,8 @@ class WorkSheetDetail extends React.Component {
           data: [data]
         });
         message.success('已经结束');
-        this.getHistories(this.props.curSheetId);
+         this.props.freshData();
+        // this.getHistories(this.props.curSheetId);
       } catch (e) {
         this.setState({ loading: false, process: '' });
 
@@ -1958,6 +1970,7 @@ class WorkSheetDetail extends React.Component {
     let a = this.state.curSheetList;
     if(this.state.grouped){
       a=this.state.groupedData;
+      
       let c=0;
       while(n<a.length){
         while(c<a[n].children.length){
@@ -1969,14 +1982,23 @@ class WorkSheetDetail extends React.Component {
         }
         n++;
       }
+      if(arr.length==0){
+        message.info('未选择记录')
+        return false;
+      }
       this.setState({groupedData:a});
     }else{
+     
       while(n<a.length){
         if(a[n].checked){
           arr.push({REC_ID:a[n].REC_ID,REC_EDTTIME:a[n].REC_EDTTIME,read:'Y'});
           a[n].isNew='';
         }
         n++;
+      }
+      if(arr.length==0){
+        message.info('未选择记录');
+        return false;
       }
       this.setState({curSheetList:a});
     }
@@ -2779,16 +2801,21 @@ class WorkSheetDetail extends React.Component {
                 <li
                   className={item.status == 'current' ? 'current' : ''}
                   onClick={() => {
-                    let arr = this.state.histories;
-                    let n = 0;
-                    while (n < arr.length) {
-                      arr[n].status = '';
-                      if (n == key) {
-                        arr[n].status = 'current';
+                    if(item.value==='新的工作单'){
+
+                    }else{
+                      let arr = this.state.histories;
+                      let n = 0;
+                      while (n < arr.length) {
+                        arr[n].status = '';
+                        if (n == key) {
+                          arr[n].status = 'current';
+                        }
+                        n++;
                       }
-                      n++;
+                      this.getHistories(this.props.curSheetId, item.value,item.isNew);
                     }
-                    this.getHistories(this.props.curSheetId, item.value,item.isNew);
+                   
                   }}
                 >
                   {item.value}
@@ -3139,14 +3166,15 @@ class WorkSheetDetail extends React.Component {
               style={
                 this.props.new ||
                 this.state.canEdit > 3 ||
-                !this.state.isCurrent
+                !this.state.isCurrent||this.state.sheetData.C3_680644403785!='Y' 
                   ? { display: 'none' }
                   : {}
               }
             >
+             
               <div>
-              {this.state.canEdit  > 0 && this.state.sheetData.C3_680644403785=='Y' ? (
-                <Button
+              {this.state.canEdit  > 0? (
+                  <Button
                   disabled={this.state.loading}
                   type="danger"
                   onClick={() => {
@@ -3165,7 +3193,9 @@ class WorkSheetDetail extends React.Component {
                 >
                   开始当前流程
                 </Button>
-              )}
+              )
+                }
+                
               </div>
               <div>
                 <ul>
