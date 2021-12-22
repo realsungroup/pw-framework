@@ -189,13 +189,13 @@ class WorkSheetViews extends React.Component {
               item=>(
                   <div>
                     <h3>
-                    No.{item.uniqueNo}
+                    No.{item.C3_684517500134}
                     </h3>
                     <div>
                     <p>
                       {item.sjqk=='未开始'?
                       item.C3_682444267100:
-                      item.C3_682888156896+'：('+item.C3_682371274376+')'
+                      item.C3_682888156896+(item.C3_682371274376?'：('+item.C3_682371274376+')':'')
                     }
                     </p>
                     <p>
