@@ -19,15 +19,22 @@ const resid1 = '619808533610';
  */
  let showHints=(arr,name)=>{
   let n =0;
-  let bol=false
+  let bol=false;
   if(arr.length===0){
     bol=true;
   }else{
     while(n<arr.length){
-      if(arr[n].target&&arr[n].quota){
-  
+      if(arr[n][619808533610]){
+        if(arr[n][619808533610].length===0){
+          bol=true;
+        }else{
+          let c=0;
+          while(c<arr[n][619808533610].length){
+            if(arr[n][619808533610][c].assessment && (arr[n][619808533610][c].score||arr[n][619808533610][c].score===0)){}else{bol=true;}
+            c++;
+          }
+        }
       }else{
-        bol=true;
       }
       n++;
     }
