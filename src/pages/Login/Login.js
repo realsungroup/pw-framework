@@ -27,7 +27,7 @@ const {
   themeColor
 } = window.pwConfig[process.env.NODE_ENV];
 const baseURL =
-  window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+  window.pwConfig[process.env.NODE_ENV].customURLs.resetKeyWordURL;
 class Login extends React.Component {
   constructor(props) {
     super(props);
