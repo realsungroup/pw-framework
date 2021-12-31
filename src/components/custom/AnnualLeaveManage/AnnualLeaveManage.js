@@ -372,6 +372,19 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
+      title: '上年结余年假数据导入',
+      tip: '老员工社保信息查询提示',
+      render: () => {
+        const { baseURL, baseURLFromAppConfig } = this.props;
+        return (
+          <ShangNianJieYu
+            baseURL={baseURL}
+            baseURLFromAppConfig={baseURLFromAppConfig}
+          />
+        );
+      }
+    },
+    {
       title: '老员工社保信息查询',
       tip: '老员工社保信息查询提示',
       render: () => {
@@ -450,7 +463,7 @@ class AnnualLeaveManage extends React.Component {
     numList: [],
     selectQuarterModal: false,
     jiesuanQuarter: curQuarter,
-    refreshCallback: () => { }
+    refreshCallback: () => {}
   };
   handleOpenSelectPerson = callback => {
     this.setState({ selectPersonVisible: true, refreshCallback: callback });
@@ -1771,7 +1784,55 @@ class LaoYuanGongSheBao extends React.PureComponent {
     );
   }
 }
-
+class ShangNianJieYu extends React.PureComponent {
+  actionBarExtra = ({
+    dataSource = [],
+    selectedRowKeys = [],
+    data = [],
+    recordFormData,
+    size
+  }) => {
+    return (
+      <div style={{ display: 'flex' }}>
+        {/* <Button
+          onClick={() => {
+            this.props.onOpenSelectPerson(this.handleRefresh);
+          }}
+          type="primary"
+          size="small"
+        >
+          添加人员
+        </Button> */}
+      </div>
+    );
+  };
+  handleRefresh = () => {
+    this.tableDataRef.handleRefresh();
+  };
+  render() {
+    const { baseURL, baseURLFromAppConfig } = this.props;
+    return (
+      <TableData
+        key="LaoYuanGongSheBao"
+        wrappedComponentRef={element => (this.tableDataRef = element)}
+        refTargetComponentName="TableData"
+        resid={662169383744}
+        baseURL={baseURL}
+        subtractH={190}
+        hasAdd={false}
+        hasModify={false}
+        hasDelete={false}
+        hasRowEdit={false}
+        hasRowModify={false}
+        hasRowView={true}
+        hasRowDelete={false}
+        actionBarWidth={100}
+        actionBarExtra={this.actionBarExtra}
+        downloadBaseURL={baseURLFromAppConfig}
+      />
+    );
+  }
+}
 class XinYuanGongSheBao extends React.PureComponent {
   actionBarExtra = ({
     dataSource = [],
@@ -1909,8 +1970,18 @@ class NianJiaGaiLan extends React.PureComponent {
     });
   };
   actionBarExtra = () => {
-    return <Button onClick={() => { this.setState({ isShowModal: true }, this.handleNotice) }} size="small" type="primary">同步全部人员</Button>
-  }
+    return (
+      <Button
+        onClick={() => {
+          this.setState({ isShowModal: true }, this.handleNotice);
+        }}
+        size="small"
+        type="primary"
+      >
+        同步全部人员
+      </Button>
+    );
+  };
   /**
    * 进度条
    */
@@ -1923,7 +1994,14 @@ class NianJiaGaiLan extends React.PureComponent {
       percent = Math.floor((curIndex / totalIndex) * 100);
     }
     return (
-      <div style={{ display: "flex", justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}
+      >
         <Progress width={240} type="circle" percent={percent} />
         <div style={{ marginTop: 20 }}>
           {curIndex} / {totalIndex}
@@ -1937,7 +2015,7 @@ class NianJiaGaiLan extends React.PureComponent {
   handleNotice = async () => {
     if (this._taskid) {
       this.setState({ isShowModal: true });
-      return
+      return;
     }
     let res;
     try {
@@ -1947,7 +2025,7 @@ class NianJiaGaiLan extends React.PureComponent {
           yearnumber: moment().year()
         }
       });
-      this._taskid = res.data
+      this._taskid = res.data;
     } catch (err) {
       console.error(err);
     }
@@ -1960,7 +2038,9 @@ class NianJiaGaiLan extends React.PureComponent {
   getTaskInfo = async () => {
     let res;
     try {
-      res = await http({ baseURL: this.props.baseURL }).getAutoImportStatusByTaskId({
+      res = await http({
+        baseURL: this.props.baseURL
+      }).getAutoImportStatusByTaskId({
         taskid: this._taskid
       });
     } catch (err) {
