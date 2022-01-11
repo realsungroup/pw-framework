@@ -982,4 +982,10 @@ export const AccessControl = Loadable({
     return minLoading;
   }
 });
+export const EnterpriseInfo = Loadable({
+  loader: () => import('./EnterpriseInfo'),
+  loading() {
+    return minLoading;
+  }
+});
 

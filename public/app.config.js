@@ -6,7 +6,8 @@ window.pwConfig = {
   development: {
     // 地址
     // baseURL: 'http://10.108.11.36:6001/', // 请求的基地址
-    baseURL: 'http://pwkwebapi.realsun.me/',
+    // baseURL: 'http://pwkwebapi.realsun.me/',
+    baseURL: 'http://kingofdinner.realsun.me:1201/',
     // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     basename: '/',
@@ -14,7 +15,7 @@ window.pwConfig = {
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     //  baseURL:'http://hr.realsun.me:8081/',
-    fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
+    fileDownloadUrl: 'http://kingofdinner.realsun.me:1200', // 导出 Excel 文件下载基地址
     // 切换考勤月份的基地址
     attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
     fileDownloadConfig: {

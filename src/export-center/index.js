@@ -195,5 +195,6 @@ export {
   MonthlySettlementLock,
   OfficeSupply,
   ShVisit,
-  AccessControl
+  AccessControl,
+  EnterpriseInfo
 } from '../components/custom/loadableCustom';

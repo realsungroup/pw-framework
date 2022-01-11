@@ -10550,10 +10550,3 @@ window[693048340608] = {
     subtractH: 200
   }
 };
-window[695140831918] = {
-  name: 'EnterpriseInfo', // 组件名称，
-  title: '企业信息维护', // 功能模块名称
-  props: {
-  }
-};
-
