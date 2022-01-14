@@ -123,6 +123,7 @@ class Login extends React.Component {
       let res;
       // 普通方式登录
       if (loginMode === 'normal') {
+        console.log('jinle')
         try {
           res = await http().defaultLogin({
             Code: userName,
@@ -426,12 +427,12 @@ class Login extends React.Component {
             </Form.Item>
            
             <Form.Item style= {
-              loginMode==='normal'?{}:{display:'none'}
+              loginMode==='normal'?{}:{display:"none"}
             }>
               {getFieldDecorator('password', {
                 rules: [
                   {
-                    required: true,
+                    required: this.state.loginMode==='OTP'?false:true,
                     message: (
                       <FM id="Login.passwordTip" defaultMessage="请输入密码" />
                     )
@@ -447,12 +448,12 @@ class Login extends React.Component {
               )}
             </Form.Item>
             <Form.Item style= {
-              loginMode==='OTP'?{}:{display:'none'}
+              loginMode==='OTP'?{}:{display:"none"}
             }>
               {getFieldDecorator('OTP', {
                 rules: [
                   {
-                    required: true,
+                    required: this.state.loginMode==='OTP'?true:false,
                     message: (
                       <FM id="Login.OTPTip" defaultMessage="请输入验证码" />
                     )
