@@ -10556,4 +10556,41 @@ window[695140831918] = {
   props: {
   }
 };
-
+window[695140861581] = {
+  name: 'TableData', // 组件名称，
+  title: '企业录用管理', // 功能模块名称
+  props: {
+    resid: 692383848272,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasRowSelection:true,
+    hasBackBtn: true,
+    hasDelete: false,
+    hasRowModify: true,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasDownload:true,
+    isUseFormDefine: true,
+    subtractH: 200
+  }
+};
+window[695140888800] = {
+  name: 'TableData', // 组件名称，
+  title: '企业其他渠道录用信息填报', // 功能模块名称
+  props: {
+    resid: 695298017582,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: false,
+    hasRowSelection:true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasDownload:true,
+    isUseFormDefine: true,
+    subtractH: 200
+  }
+};

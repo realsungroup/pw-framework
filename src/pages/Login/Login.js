@@ -11,6 +11,7 @@ import {
   Checkbox,
   Popconfirm
 } from 'antd';
+import Countdown from '../Login/Countdown';
 import { getItem, setItem } from 'Util20/util';
 import logoImg from '../../assets/logo-26.png';
 import { resetPassByEmail } from 'Util/api';
@@ -48,6 +49,7 @@ class Login extends React.Component {
       resetPassModalVisible: false, // 重置密码模态框是否显示
       registerEmail: '', // 注册邮箱
       language,
+      hasGetVerCodeBtn:true,
       loading: false
     };
   }
@@ -72,6 +74,15 @@ class Login extends React.Component {
   handleUserNameChange = e => {
     this.setState({ userName: e.target.value });
   };
+ //查询用户是否存在
+ isUserExist = async (userid) => {
+  try {
+    let res = await http().isUserExist({ userid });
+    return res;
+  } catch (error) {
+    throw error;
+  }
+};
 
   handlePasswordChange = e => {
     this.setState({ password: e.target.value });
@@ -108,7 +119,7 @@ class Login extends React.Component {
       }
       this.setState({ loading: true });
       const { loginMode } = this.state;
-      const { userName, password } = values;
+      const { userName, password,OTP } = values;
       let res;
       // 普通方式登录
       if (loginMode === 'normal') {
@@ -122,7 +133,30 @@ class Login extends React.Component {
           message.error(err.message);
           return console.error(err.message);
         }
-      } else {
+      }else if (loginMode === 'OTP'){
+      try {
+        let loginData = {
+          mobileno:userName, // 手机号
+          validCode: OTP, // 验证码
+          loginMethod: "mobile",
+          useCookie: false,
+        };
+        let isUserExistResponse = await this.isUserExist(userName);
+        if (isUserExistResponse.onedata) {
+          res = await http().login(loginData);
+          if(res.ErrorMsg==='短信验证失败'){
+            message.error("登陆失败，验证码错误");
+          }
+        }else{
+          this.setState({ loading: false });
+          message.error("登陆失败");
+        }
+      } catch (error) {
+        this.setState({ loading: false });
+          message.error(error.message);
+          return console.error(error.message);
+      }
+     }else {
         // 域登录
         const domain = domainLoginConfig.domain;
         const usernameSuffix = domainLoginConfig.usernameSuffix;
@@ -187,6 +221,28 @@ class Login extends React.Component {
   // 		console.error(error);
   // 	}
   // }
+  handleGetVerifyCode = async () => {
+    const { getFieldValue, getFieldError } = this.props.form;
+    const phoneNumber = getFieldValue("userName");
+   if(phoneNumber.length<11){
+      message.error('输入的手机号有误');
+   }
+    let res;
+    try {
+      res = await http().getVerCode({
+        telephone: phoneNumber
+      });
+    } catch (err) {
+      message.error(err.message);
+    }
+    // 获取验证码成功
+    if (res.error === 0) {
+      message.success("已发送验证码");
+      this.setState({ hasGetVerCodeBtn: false });
+    } else {
+      message.error(res.data.message);
+    }
+  };
   getTablesConfigure = async () => {
     try {
       const configure = window.pwConfig[process.env.NODE_ENV].tablesConfig;
@@ -198,7 +254,7 @@ class Login extends React.Component {
   };
 
   loginModeChange = () => {
-    const loginMode = this.state.loginMode === 'normal' ? 'domain' : 'normal';
+    const loginMode = this.state.loginMode === 'normal' ? 'OTP' : 'normal';
     this.setState({
       loginMode,
       loading: false
@@ -318,7 +374,8 @@ class Login extends React.Component {
                 {loginMode === 'normal' ? (
                   <FM id="Login.NormalLogin" defaultMessage="普通登录" />
                 ) : (
-                  <FM id="Login.DomainLogin" defaultMessage="域登录" />
+                  // <FM id="Login.DomainLogin" defaultMessage="域登录" />
+                  <FM id="Login.OTPLogin" defaultMessage="验证码登录" />
                 )}
               </a>
             </div>
@@ -344,10 +401,10 @@ class Login extends React.Component {
                         id={
                           loginMode === 'normal'
                             ? 'Login.DomainUserNameTip'
-                            : 'Login.userNameTip'
+                            : 'Login.OTPNameTip'
                         }
                         defaultMessage={
-                          loginMode === 'normal' ? '请输入工号' : '请输入用户名'
+                         '请输入账号'
                         }
                       />
                     )
@@ -361,13 +418,16 @@ class Login extends React.Component {
                   placeholder={
                     loginMode === 'normal'
                       ? intl.messages['Login.DomainUsernamePlaceholder']
-                      : intl.messages['Login.UsernamePlaceholder']
+                      : intl.messages['Login.OTPNamePlaceholder']
                   }
                   addonAfter={this.renderAddonAfterNode()}
                 />
               )}
             </Form.Item>
-            <Form.Item>
+           
+            <Form.Item style= {
+              loginMode==='normal'?{}:{display:'none'}
+            }>
               {getFieldDecorator('password', {
                 rules: [
                   {
@@ -386,7 +446,40 @@ class Login extends React.Component {
                 />
               )}
             </Form.Item>
-            <div style={{ overflow: 'hidden' }}>
+            <Form.Item style= {
+              loginMode==='OTP'?{}:{display:'none'}
+            }>
+              {getFieldDecorator('OTP', {
+                rules: [
+                  {
+                    required: true,
+                    message: (
+                      <FM id="Login.OTPTip" defaultMessage="请输入验证码" />
+                    )
+                  }
+                ]
+              })(
+                  <Input
+                    style={{width:'calc(100% - 120px)'}}
+                    placeholder={intl.messages['Login.OTPPlaceholder']}
+                  />
+              )}
+               {
+                    this.state.hasGetVerCodeBtn?<Button style={{width:104,marginLeft:16}} onClick={()=>{this.handleGetVerifyCode()}}>
+                    获取验证码
+                  </Button>:
+                  <Button disabled style={{width:104,marginLeft:16,textAlign:'center'}}>
+                        剩余
+                        <Countdown
+                        onDownEnd={() =>
+                          this.setState({ hasGetVerCodeBtn: true })
+                        }
+                      />秒
+                  </Button>
+                    
+                  }
+            </Form.Item>
+            {/* <div style={{ overflow: 'hidden' }}>
               <a
                 style={{
                   marginBottom: '8px',
@@ -413,7 +506,7 @@ class Login extends React.Component {
               >
                 重置密码
               </a>
-            </div>
+            </div> */}
             <Form.Item>
               <Button
                 block

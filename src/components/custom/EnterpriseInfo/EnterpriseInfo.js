@@ -1,7 +1,8 @@
 import React from 'react';
 import { TableData } from '../../common/loadableCommon';
-import { Button, message,Popconfirm, Modal ,Icon,Table,Spin,Tabs,Input} from 'antd';
+import { Button, message,Popconfirm, Modal,Icon ,Spin,Tabs,Input,Select} from 'antd';
 import './EnterpriseInfo.less';
+import moment from 'moment';
 import http from '../../../util20/api';
 import TextArea from 'antd/lib/input/TextArea';
 const TabPane = Tabs.TabPane;
@@ -23,15 +24,22 @@ const formData=[
     id:'introduction',
     name:'简介',
     type:'textarea'
-  },{
+  }
+  ,{
+    id:'laowu',
+    name:'劳务公司名',
+  }
+  ,{
     id:'logo',
     name:'logo',
     type:'img'
   }
 ]
-const enterpriseInfoId=692379457919;
+const { Option } = Select;
+const enterpriseInfoId=695213315996;
 const jobListId=695212874956;
 const imgListId=695211797012;
+const periodId=695485129013;
 
 class EnterpriseInfo extends React.Component {
   constructor(props) {
@@ -39,10 +47,22 @@ class EnterpriseInfo extends React.Component {
   }
   
   state={
+    showJobDetail:false,
     imgList:[],
     currentImage:{recid:''},
     enterpriseInfo:{
       activatedRules:''
+    },
+    canEditTime:[],
+    expand:false,
+    currentJob:{
+      job:'',
+      enterpriseRecid:'',
+      activated:'',
+      number:'',
+      salary:'',
+      dormitory:'',
+      jobAddress:''
     }
   }
   handleChange=(v,id)=>{
@@ -50,9 +70,45 @@ class EnterpriseInfo extends React.Component {
     o[id]=v;
     this.setState({enterpriseInfo:o});
   }
-  componentDidMount=()=>{
-    this.getEnterpriseInfo();
-    this.getImgList();
+  componentDidMount=async()=>{
+    let bol = await this.getEditDate();
+    if(bol){
+      this.getEnterpriseInfo();
+      this.getImgList();
+    }
+  }
+  getEditDate=async()=>{
+    try{
+      let res = await http().getTable({
+        resid:periodId
+      });
+      let myTime=new Date();
+      myTime=moment(myTime).format();
+      let n=0;
+      let bol=false;
+      let arr=[]
+      while(n<res.data.length){
+            let stTime=moment(res.data[n].stTime).format();
+            let edTime=moment(res.data[n].edTime).format();
+            if(myTime>=stTime&&myTime<=edTime){
+              bol=true;
+            }
+            arr.push({stTime:moment(stTime).format('YYYY-MM-DD HH:SS:MM'),edTime:moment(edTime).format('YYYY-MM-DD HH:SS:MM')})
+        n++;
+      };
+      this.setState({loading:false,canEditTime:arr});
+      if(bol){
+        this.setState({canEdit:true});
+        return true
+      }else{
+      this.setState({loading:false,expand:true});
+        return false
+      }
+      
+    }catch(e){
+      console.log(e.message);
+      return false
+    }
   }
   uploadFile = (file, url, mode) => {
     return new Promise((resolve, reject) => {
@@ -202,12 +258,64 @@ class EnterpriseInfo extends React.Component {
       console.log(e.message);
     }
   }
+  modiJob=(v)=>{
+    if(!v){
+      let o={};
+      o.enterpriseRecid=this.state.enterpriseId;
+      o.jobAddress=this.state.enterpriseInfo.enterpriseAddress;
+      this.setState({showJobDetail:true,currentJob:o,isNewJob:true});
+    }else{
+      this.setState({showJobDetail:true,currentJob:v,isNewJob:false});
+    }
+  }
+  subJob=async()=>{
+    this.setState({loading:true});
+    let res;
+    try{
+      if(this.state.isNewJob){
+        res=await http().addRecords({
+          resid:jobListId,
+          data:[this.state.currentJob]
+        });
+        this.setState({loading:false,showJobDetail:false});
+        this.tableDataRef.handleRefresh();
+      }else{
+        res=await http().modifyRecords({
+          resid:jobListId,
+          data:[this.state.currentJob]
+        });
+        this.setState({loading:false,showJobDetail:false});
+        this.tableDataRef.handleRefresh();
+      }
+    }catch(e){
+      console.log(e.message);
+      message.error(e.message);
+    }
+    
+  }
   render() {
     return (
       <div
         className="enterpriseInfo"
       >
-       <Tabs defaultActiveKey="1" className="tabs_container">
+          <div className={this.state.canEdit?'canEditTime':'canEditTime_alter'}>
+            <dl>
+              <dt style={this.state.expand?{}:{marginBottom:0,borderBottom:'0px solid #fff'}} 
+              onClick={()=>{if(this.state.canEdit){this.setState({expand:!this.state.expand})}}}>可修改信息的时间 <Icon style={this.state.canEdit?{float:'right',marginTop:'.25rem'}:{display:'none'}} type={this.state.expand?'up':'down'}/></dt>
+              {
+                this.state.canEditTime.map(
+                  (item,key)=>{return(
+                    <dd key={key} style={this.state.expand?{boxSizing:'content-box',height:'2.4rem',lineHeight:'1.2rem',paddingBottom:'.5rem'}:{height:0,marginBottom:0,borderBottom:'0px solid #fff'}}>
+                      {item.stTime}-{item.edTime}
+                    </dd>
+                  )
+                  }
+                )
+              }
+            </dl>
+          </div>
+       <Tabs defaultActiveKey="1" className="tabs_container" style={this.state.canEdit?{}:{display:'none'}}>
+         
           <TabPane tab="企业基本信息" key="1">
             <Spin spinning={this.state.loading}>
             <div className='form'>
@@ -266,17 +374,134 @@ class EnterpriseInfo extends React.Component {
           </TabPane>
           <TabPane tab="职位" key="2">
           <div className='outer'>
+          <Modal
+              visible={this.state.showJobDetail}
+              title={this.state.isNewJob?"添加职位":"修改职位"}
+              width={800}
+              footer={null}
+              onCancel={()=>{this.setState({showJobDetail:false})}}
+              destroyOnClose
+            >
+              <div className='jobInfo'>
+                <div>
+                  <span>岗位名称：</span><Input value={this.state.currentJob.job} 
+                  onChange={(v)=>{this.setState({
+                    currentJob: {
+                      ...this.state.currentJob,
+                      job: v.target.value
+                    }
+                  });}}/>
+                </div>
+                <div>
+                  <span>是否生效：</span>
+                  <Select
+                style={{ width: 120, marginRight: 16 }}
+                size="small"
+                onChange={(v)=>{this.setState({
+                  currentJob: {
+                    ...this.state.currentJob,
+                    activated: v
+                  }
+                });}}
+                value={this.state.currentJob.activated}
+              >
+                <Select.Option value="">否</Select.Option>
+                <Select.Option value="是">是</Select.Option>
+              </Select>
+                </div>
+                <div>
+                  <span>招聘人数：</span><Input value={this.state.currentJob.number} type='number'
+                  onChange={(v)=>{this.setState({
+                    currentJob: {
+                      ...this.state.currentJob,
+                      number: v.target.value
+                    }
+                  });}}/>
+                </div>
+                <div>
+                  <span>工资待遇（一般平均每月税后收入范围）（单位：元/月）：</span><Input value={this.state.currentJob.salary} 
+                  onChange={(v)=>{this.setState({
+                    currentJob: {
+                      ...this.state.currentJob,
+                      salary: v.target.value
+                    }
+                  });}}/>
+                </div>
+                <div>
+                  <span>是否提供（或安排）住宿：</span>
+                  <Select
+                style={{ width: 120, marginRight: 16 }}
+                size="small"
+                onChange={(v)=>{this.setState({
+                  currentJob: {
+                    ...this.state.currentJob,
+                    dormitory: v
+                  }
+                });}}
+                value={this.state.currentJob.dormitory}
+              >
+                <Select.Option value="">否</Select.Option>
+                <Select.Option value="是">是</Select.Option>
+              </Select>
+                </div>
+                <div>
+                  <span>工作地址：</span><Input value={this.state.currentJob.jobAddress} 
+                  onChange={(v)=>{this.setState({
+                    currentJob: {
+                      ...this.state.currentJob,
+                      jobAddress: v.target.value
+                    }
+                  });}}/>
+                </div>
+                <Button
+                  type='primary'
+                  size='small'
+                  onClick={()=>{this.subJob();}}
+                >
+                  提交
+                </Button>
+              </div>
+              
+            </Modal>
               <TableData
+                key={'_01'}
                 resid={jobListId}
+                wrappedComponentRef={element => (this.tableDataRef = element)}
+                refTargetComponentName="TableData"
                 subtractH={190}
-                hasAdd={true}
+                hasAdd={false}
+                hasRowSelection={false}
                 hasModify={false}
                 hasDelete={false}
                 hasRowEdit={false}
-                hasRowModify={true}
-                hasRowView={true}
+                hasRowModify={false}
+                hasRowView={false}
                 hasRowDelete={true}
-                actionBarWidth={100}
+                actionBarWidth={140}
+                actionBarExtra={() => {
+                  return (
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        this.modiJob();
+                      }}
+                    >
+                      添加
+                    </Button>
+                  );
+                }}
+                customRowBtns={[
+                  (record) => {
+                    return (
+                      <Button
+                        type="primary"
+                        onClick={() => {this.modiJob(record)}}
+                      >
+                        修改
+                      </Button>
+                    );
+                  }
+                ]}
               />
             </div>
           </TabPane>

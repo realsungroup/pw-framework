@@ -1,8 +1,45 @@
+.jobInfo{
+  &>div{
+    margin:.5rem 0;
+  }
+}
 .enterpriseInfo{
   width:100vw;
   height: 100vh;
   background-color: #fff;
   box-sizing: border-box;
+  .canEditTime_alter{
+    padding:.5rem 1rem;
+      dd,dt{
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+  }
+  .canEditTime{
+    padding:.5rem 1rem;
+    background-color: rgba(0,0,0,.6);
+    position:fixed;
+    right:0;
+    top:0;
+    z-index:9;
+    color:#fff;
+    width:200px;
+    cursor:pointer;
+    transition:.3s;
+    dl{
+      margin-bottom: 0;
+    }
+    dt{
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom:1px solid #fff;
+    }
+    dd{
+      overflow: hidden;
+      border-bottom:1px dashed #fff;
+      box-sizing: border-box;
+    }
+  }
   .outer{
       width:100%;
       height:calc(100vh - 60px);

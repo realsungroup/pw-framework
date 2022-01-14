@@ -177,8 +177,8 @@ export default class PageContainer extends React.Component {
     try {
       desktopStyle = userInfo.UserInfo.EMP_MAINPAGE;
       if (['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1) {
-        // 默认 'WORKBENCH'
-        desktopStyle = 'WORKBENCH';
+        // 默认 ''DESKTOP''
+        desktopStyle = 'DESKTOP';
       }
 
       const _desktopStyle = localStorage.getItem('desktopStyle');
@@ -1639,11 +1639,11 @@ export default class PageContainer extends React.Component {
           <Route path="/reminder" component={Reminder} />
         </PageBody>
         {this.renderWindowView()}
-        {window.location.pathname === '/' && (
-          <SwitchHome
-            homeMode={desktopStyle}
-            onSwitch={this.handleSwitchHome}
-          ></SwitchHome>
+        {window.location.pathname === '/' && (<></>
+          // <SwitchHome
+          //   homeMode={desktopStyle}
+          //   onSwitch={this.handleSwitchHome}
+          // ></SwitchHome>
         )}
         <DesktopLockScreen
           userInfo={userInfo}

@@ -24,7 +24,7 @@ export default class SwitchHome extends React.Component {
   };
 
   static defaultProps = {
-    homeMode: 'WORKBENCH'
+    homeMode: 'DESKTOP'
   };
 
   state = {
@@ -70,7 +70,7 @@ export default class SwitchHome extends React.Component {
           })}
         ></div>
 
-        <Tooltip placement="right" title={this.getTooltipTitle()}>
+        <Tooltip placement="right" style={{display:'none'}}title={this.getTooltipTitle()}>
           <div
             className={classNames('switch-home__btn', {
               [`switch-home__btn--desktop`]: homeMode === 'DESKTOP',

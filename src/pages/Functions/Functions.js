@@ -52,11 +52,11 @@ class Functions extends React.Component {
       desktopStyle = userInfo.UserInfo.EMP_MAINPAGE;
       if (['DESKTOP', 'WORKBENCH'].indexOf(desktopStyle) === -1) {
         // 默认 'WORKBENCH'
-        desktopStyle = 'WORKBENCH';
+        desktopStyle = 'DESKTOP';
       }
     } catch (err) {}
     this.state = {
-      desktopStyle
+      desktopStyle:'DESKTOP'
     };
   }
 

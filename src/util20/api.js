@@ -49,7 +49,7 @@ http.setResponseInterceptors(
       ) {
         window.location.href = '/login';
       } else {
-        throw new Error(res.ErrMsg || res.message || res.ErrorMsg);
+        // throw new Error(res.ErrMsg || res.message || res.ErrorMsg);
       }
     }
   },
@@ -98,7 +98,19 @@ http.createApi('dealButton', {
   method: 'get',
   url: 'api/menu/DealButton'
 });
+/**
+ *获取验证码
+ */
+http.createApi("getVerCode", {
+  method: "get",
+  // baseURL: 'https://finisar.realsun.me/',
+  url: "api/SMS/SMS_SendValidCode",
+});
 
+http.createApi("isUserExist", {
+  method: "get",
+  url: "api/Account/IsUserExist",
+});
 /**
  * 获取窗体数据
  * 参数：{ resid, formname }
