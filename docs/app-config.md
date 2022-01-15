@@ -21,7 +21,7 @@ window.pwConfig = {
     ],
 
     // 登录页配置
-    defaultLoginMode: 'normal', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
+    defaultLoginMode: 'OTP', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置
       baseUrl: 'http://172.21.2.27:801/', // 域登录基地址
@@ -82,7 +82,7 @@ window.pwConfig = {
     ],
 
     // 登录页配置
-    defaultLoginMode: 'normal', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
+    defaultLoginMode: 'OTP', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置
       baseUrl: 'http://172.21.2.27:801/', // 域登录基地址
