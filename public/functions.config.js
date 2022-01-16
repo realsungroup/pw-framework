@@ -10594,3 +10594,82 @@ window[695140888800] = {
     subtractH: 200
   }
 };
+
+window[695654215050] = {
+  name: 'TableData', // 组件名称，
+  title: '招聘会管理', // 功能模块名称
+  props: {
+    resid: 692804360497,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: false,
+    hasRowSelection:true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasDownload:true,
+    isUseFormDefine: true,
+    subtractH: 200
+  }
+};
+window[695654122672] = {
+  name: 'TableData', // 组件名称，
+  title: '招聘会管理', // 功能模块名称
+  props: {
+    resid: 695484844437,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: false,
+    hasRowSelection:true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasDownload:true,
+    isUseFormDefine: true,
+    subtractH: 200
+  }
+};
+window[695654063947] = {
+  name: 'TabsTableData',
+  title: '已提交的录用信息',
+  props: [
+    [
+      {
+        resid: 695668784727,
+        TabsTitle: '招聘会人员',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: false,
+        subtractH: 220,
+      },
+      {
+        resid: 695653264539,
+        TabsTitle: '企业自主填报人员',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: false,
+        hasRowView: true,
+        subtractH: 220
+      }
+    ]
+  ]
+};
+window[695654033697] = {
+  name: 'EmpMember', // 组件名称，
+  title: '录用管理', // 功能模块名称
+  props: {
+  }
+};

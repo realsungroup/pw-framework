@@ -196,5 +196,6 @@ export {
   OfficeSupply,
   ShVisit,
   AccessControl,
-  EnterpriseInfo
+  EnterpriseInfo,
+  EmpMember
 } from '../components/custom/loadableCustom';

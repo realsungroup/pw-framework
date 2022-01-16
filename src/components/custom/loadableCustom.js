@@ -989,3 +989,9 @@ export const EnterpriseInfo = Loadable({
   }
 });
 
+export const EmpMember = Loadable({
+  loader: () => import('./EmpMember'),
+  loading() {
+    return minLoading;
+  }
+});

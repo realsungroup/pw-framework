@@ -373,7 +373,9 @@ class Desktop extends React.Component {
     try {
       const configure = window.pwConfig[process.env.NODE_ENV].tablesConfig;
       const res = await http().getResourcesData(configure);
-      setItem('tablesConfigure', JSON.stringify(res.data));
+      if(res.data){
+        setItem('tablesConfigure', JSON.stringify(res.data));
+      }
     } catch (error) {
       console.error(error);
     }
