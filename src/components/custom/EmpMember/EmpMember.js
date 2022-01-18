@@ -1,6 +1,6 @@
 import React from 'react';
-import { TableData } from '../../common/loadableCommon';
-import { Button, message,Popconfirm, Modal,Icon ,Spin,Tabs,Input,Select,DatePicker} from 'antd';
+import { TableData,MainTableSubTables} from '../../common/loadableCommon';
+import { Button, message,Popconfirm, Modal,Icon ,Spin,Tabs,Input,Select,DatePicker,Table} from 'antd';
 import './EmpMember.less';
 import moment from 'moment';
 import http from '../../../util20/api';
@@ -9,19 +9,20 @@ const TabPane = Tabs.TabPane;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 const dateFormat = 'YYYY-MM-DD';
-
 class EmpMember extends React.Component {
   constructor(props) {
     super(props);
   }
-  
   state={
     stDate:undefined,
     edDate:undefined,
-    loading:false
+    loading:false,
+    tData:null,
+    columns:[],
+    activeKey:"1"
   }
   componentDidMount=async()=>{
-    this.getBaseData()
+    this.getBaseData();
   }
   handleChangeDate=(stDate,edDate)=>{
     this.setState({stDate,edDate});
@@ -35,6 +36,11 @@ class EmpMember extends React.Component {
       let resXian = await http().getTableColumnDefine({
         resid: '695668784727',
       });
+      let resSub =  await http().getTableColumnDefine({
+        resid: '695655104050',
+      });
+      console.log('resSub',resSub);
+      let col=[];
       let xian=[];
       let n=0;
       while(n<resXian.data.length){
@@ -43,8 +49,21 @@ class EmpMember extends React.Component {
         }
         n++;
       }
+      n=0;
+      while(n<resSub.data.length){
+        if(resSub.data[n].ColName==='memo'){
+        }else{
+          col.push({
+            title: resSub.data[n].ColDispName,
+            dataIndex: resSub.data[n].ColName,
+            key: resSub.data[n].ColName,
+          })
+        }
+        
+        n++;
+      }
       console.log(resEnter,xian)
-      this.setState({loading:false,enterprise:resEnter.data,xian});
+      this.setState({loading:false,columns:col,enterprise:resEnter.data,xian});
     }catch(e){
       console.log(e.error);
       this.setState({loading:false});
@@ -69,13 +88,16 @@ class EmpMember extends React.Component {
           let obj={};
           if(xian.length>0){
             let c=0;
+            obj.key=enter[n].recid;
             obj.enterpriseRecid=enter[n].recid;
+            obj.enterpriseName=enter[n].enterpriseName;
             obj.signUp=0;
             obj.empAll=0;
             obj.memo='';
             obj.stDate=stDate;
             obj.edDate=edDate;
             obj.recid=enter[n].recid;
+            obj.enterpriseNo=Number(enter[n].orderNum);
             while(c<xian.length){
               obj['emp'+(c+1)]=0;
               c++;
@@ -118,21 +140,72 @@ class EmpMember extends React.Component {
         }
         k++;
       }
-      console.log('e',e)
+      e=e.sort(this.compare('enterpriseNo'));
       this.setState({loading:false,tData:e})
     }catch(e){
       console.log(e.message)
       this.setState({loading:false})
-
     }
+  }
+  compare=(property)=>{
+    return function(a,b){
+         var value1 = a[property];
+        var value2 = b[property];
+        return (value1 >value2 ? 1 : -1);
+    };
+  }
+  submit=async()=>{
+    this.setState({loading:true});
+      let res2;
+      let arr=this.state.tData;
+      let n=0;
+      let subData=[];
+      while(n<arr.length){
+        let obj =arr[n];
+        obj._state='added';
+        obj._id=(n+2);
+        subData.push({
+          resid: '695655104050',
+          maindata:obj
+        })
+        n++;
+      }
+      console.log('data',[
+        {
+          resid: '695655732656',
+          maindata: {
+            _state: 'added',
+            _id: 1
+          },
+          subdata:subData
+        }
+      ])
+      try {
+        res2 = await http().saveRecordAndSubTables({
+          data: [
+            {
+              resid: '695655732656',
+              maindata: {
+                _state: 'added',
+                _id: 1
+              },
+              subdata:subData
+            }
+          ]
+        });
+      this.setState({loading:false,activeKey:"2"});
+      this.tableDataRef.handleRefresh();
+      } catch (err) {
+      this.setState({loading:false});
+        console.log(err.message);
+      }
   }
   render() {
     return (
       <div
         className="empMember"
       >
-           <Tabs defaultActiveKey="1" className="tabs_container">
-         
+           <Tabs className="tabs_container" activeKey={this.state.activeKey} onChange={(v)=>{this.setState({activeKey:v})}}>
          <TabPane tab="报表生成" key="1">
            <Spin spinning={this.state.loading}>
           <div>
@@ -152,12 +225,71 @@ class EmpMember extends React.Component {
                       onChange={(dates, dateString) => {
                         this.handleChangeDate(dateString[0], dateString[1]);
                       }}
-                    ></RangePicker>
-            <Button type='praimary' size='small' disabled={!this.state.stDate||!this.state.edDate} onClick={()=>{this.handleGenerate(this.state.stDate,this.state.edDate)}}>确定</Button>
+            ></RangePicker>
+            <Button style={{marginLeft:8}} size='small' disabled={!this.state.stDate||!this.state.edDate} onClick={()=>{this.handleGenerate(this.state.stDate,this.state.edDate)}}>确定</Button>
+            {
+              !this.state.tData?null:<Popconfirm
+              title="您确定要生成报表吗？"
+              onConfirm={() => this.submit()}
+             >
+             <Button type={'primary'} style={{marginLeft:8}} size='small'>生成报表</Button>
+             </Popconfirm>
+            }
+          </div>
+          <div className='tableWrap'>
+            {
+              this.state.tData?
+              <Table
+                columns={this.state.columns}
+                dataSource={this.state.tData}
+                bordered
+                pagination={{pageSize:100, position: ['none', 'none'] }}
+                size="middle"
+              />
+              :<b>请先选择起止时间，然后点击“确认”按钮</b>
+            }
           </div>
           </Spin>
         </TabPane>
         <TabPane tab="历史报表" key="2">
+          <div>
+          <MainTableSubTables
+                resid={695655732656}
+                style={{
+                  overflow: 'auto',
+                  margin: '0 auto'
+                }}
+                mainTableProps={{
+                  hasAdd: false,
+                  isWrap:true,
+                  hasModify:false,
+                  hasRowSelection:false,
+                  hasDelete: true,
+                  hasRowModify:false,
+                  hasRowView:false,
+                  hasRowDelete:false,
+                  refTargetComponentName:"TableData",
+                  wrappedComponentRef:element => (this.tableDataRef = element),
+                  advSearch:{
+                  isRequestFormData:false,
+                  },
+      
+                }}
+               
+                subTablesProps={{
+                  695655104050: {
+                    hasAdd: true,
+                    hasDelete: true,
+                    hasRowModify:true,
+                    hasRowView:true,
+                  hasModify:false,
+                  advSearch:{
+                    isRequestFormData:false,
+                  },
+                  }
+                }}
+            ></MainTableSubTables>
+          </div>
         </TabPane>
         </Tabs>
       </div>

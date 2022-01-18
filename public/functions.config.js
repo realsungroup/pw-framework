@@ -10648,7 +10648,7 @@ window[695654063947] = {
         hasAdd: false,
         hasRowDelete: false,
         hasRowModify: false,
-        hasRowView: false,
+        hasRowView: true,
         subtractH: 220,
       },
       {
