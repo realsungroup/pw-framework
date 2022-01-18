@@ -73,7 +73,7 @@ class EmpMember extends React.Component {
     this.setState({loading:true});
     try{
       let resMem=await http().getTable({
-        resid:'695668784727',
+        resid:'692379348888',
         cmswhere:`(createDate >= '${stDate}' and createDate <= '${edDate}') or (enterDate >= '${stDate}' and enterDate <= '${edDate}')`
       });
       console.log('人员',resMem);
@@ -110,12 +110,14 @@ class EmpMember extends React.Component {
       let k=0;
       //遍历人员
       if(resMem.data.length>0){
+        while(k<resMem.data.length){
         let k1=0;
         //遍历企业
         while(k1<e.length){
           if(e[k1].recid===resMem.data[k].enterpriseId){
               //填报数量
-              if(moment(resMem.data[k].creatDate).format() >= moment(stDate).format() && moment(resMem.data[k].creatDate).format() <= moment(edDate).format()){
+              console.log(resMem.data[k],resMem.data[k].creatDate,stDate,edDate)
+              if(moment(resMem.data[k].createDate).format() >= moment(stDate).format() && moment(resMem.data[k].createDate).format() <= moment(edDate).format()){
                 e[k1].signUp=e[k1].signUp+1;
               }
               //录用数量
@@ -139,6 +141,7 @@ class EmpMember extends React.Component {
           k1++;
         }
         k++;
+        }
       }
       e=e.sort(this.compare('enterpriseNo'));
       this.setState({loading:false,tData:e})
