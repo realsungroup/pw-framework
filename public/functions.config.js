@@ -10635,7 +10635,7 @@ window[695654122672] = {
 };
 window[695654063947] = {
   name: 'TabsTableData',
-  title: '已提交的录用信息',
+  title: '企业录用信息',
   props: [
     [
       {
@@ -10672,4 +10672,98 @@ window[695654033697] = {
   title: '录用管理', // 功能模块名称
   props: {
   }
+};
+window[696008619372] = {
+  name: 'TabsTableData',
+  title: '县汇总',
+  props: [
+    [
+      {
+        resid: 696014763450,
+        TabsTitle: '盐津县',
+        downloadBaseURL: 'http://kingofdinner.realsun.me:1200/',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowSelection:true,
+        hasRowDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        subtractH: 220,
+      },
+      {
+        resid: 696005145783,
+        TabsTitle: '大关县',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasRowSelection:true,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        subtractH: 220,
+      },
+      {
+        resid: 696005323423,
+        TabsTitle: '永善县',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasRowSelection:true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        subtractH: 220,
+      },
+      {
+        resid: 696005546523,
+        TabsTitle: '绥江县',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowSelection:true,
+        hasRowDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        subtractH: 220,
+      },
+      {
+        resid: 696005950393,
+        TabsTitle: '其他县',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasRowSelection:true,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        subtractH: 220,
+      },
+      {
+        resid: 696006469571,
+        TabsTitle: '全部',
+        recordFormFormWidth: '90%',
+        hasBeBtns: true,
+        hasModify: false,
+        hasRowSelection:true,
+        hasDelete: false,
+        hasAdd: false,
+        hasRowDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        subtractH: 220,
+      }
+    ]
+  ]
+
 };

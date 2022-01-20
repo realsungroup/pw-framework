@@ -1,6 +1,6 @@
 import React from 'react';
 import { TableData,MainTableSubTables} from '../../common/loadableCommon';
-import { Button, message,Popconfirm, Modal,Icon ,Spin,Tabs,Input,Select,DatePicker,Table} from 'antd';
+import { Button,Checkbox, message,Popconfirm, Modal,Icon ,Spin,Tabs,Input,Select,DatePicker,Table,Radio} from 'antd';
 import './EmpMember.less';
 import moment from 'moment';
 import http from '../../../util20/api';
@@ -19,7 +19,9 @@ class EmpMember extends React.Component {
     loading:false,
     tData:null,
     columns:[],
-    activeKey:"1"
+    activeKey:"1",
+    widthAll:0,
+    radioVal:'全部'
   }
   componentDidMount=async()=>{
     this.getBaseData();
@@ -38,6 +40,9 @@ class EmpMember extends React.Component {
       });
       let resSub =  await http().getTableColumnDefine({
         resid: '695655104050',
+      });
+      let resMem =  await http().getTableColumnDefine({
+        resid: '695668784727',
       });
       console.log('resSub',resSub);
       let col=[];
@@ -62,12 +67,53 @@ class EmpMember extends React.Component {
         
         n++;
       }
-      console.log(resEnter,xian)
-      this.setState({loading:false,columns:col,enterprise:resEnter.data,xian});
+      n=0;
+      let colMem=[]
+      let widthAll=0;
+      while(n<resMem.data.length){
+        let w = resMem.data[n].ColDispName.length*16+32;
+        widthAll=widthAll+w;
+        w=w+'px'
+        colMem.push({
+            title: resMem.data[n].ColDispName,
+            dataIndex: resMem.data[n].ColName,
+            key: resMem.data[n].ColName,
+            width:w
+          })
+        n++;
+      }
+      col.push({
+        title: '操作',
+        dataIndex: 'operation',
+        render: (_, record) => {
+          return(
+            <a
+             onClick={()=>{
+               this.openModal(record.enterpriseRecid);
+             }}
+            >
+              查看详情
+            </a>
+          )
+        }
+      })
+      this.setState({loading:false,columns:col,enterprise:resEnter.data,xian,colMem,widthAll:widthAll+'px'});
     }catch(e){
       console.log(e.error);
       this.setState({loading:false});
     }
+  }
+  openModal=(id)=>{
+    let n =0;
+    let arr=this.state.memData;
+    let fin=[];
+    while(n<arr.length){
+      if(arr[n].enterpriseId===id){
+        fin.push(arr[n])
+      }
+      n++;
+    }
+    this.setState({showModal:true,memGroup:fin,memOrg:fin});
   }
   handleGenerate=async(stDate,edDate)=>{
     this.setState({loading:true});
@@ -77,6 +123,7 @@ class EmpMember extends React.Component {
         cmswhere:`(createDate >= '${stDate}' and createDate <= '${edDate}') or (enterDate >= '${stDate}' and enterDate <= '${edDate}')`
       });
       console.log('人员',resMem);
+      this.setState({memData:resMem.data});
       let enter=this.state.enterprise;
       let xian=this.state.xian;
       let e=[];
@@ -203,6 +250,18 @@ class EmpMember extends React.Component {
         console.log(err.message);
       }
   }
+  changeRadio=(v)=>{
+    let arr =[];
+    let n=0;
+    console.log('v',v)
+    while(n<this.state.memOrg.length){
+      if((this.state.memOrg[n].subSucess==='是'&&v.target.value==='是')||(this.state.memOrg[n].subSucess!='是'&&!v.target.value==='否')||(v.target.value==='全部')){
+        arr.push(this.state.memOrg[n])
+      }
+      n++;
+    }
+    this.setState({radioVal:v.target.value,memGroup:arr});
+  }
   render() {
     return (
       <div
@@ -210,6 +269,29 @@ class EmpMember extends React.Component {
       >
            <Tabs className="tabs_container" activeKey={this.state.activeKey} onChange={(v)=>{this.setState({activeKey:v})}}>
          <TabPane tab="报表生成" key="1">
+          <Modal
+            visible={this.state.showModal}
+            title="人员详情"
+            width={'90vw'}
+            footer={null}
+            onCancel={()=>{this.setState({memGroup:[],showModal:false})}}
+            destroyOnClose
+          >
+            <span>提交状态：</span>
+            <Radio.Group onChange={(v)=>{this.changeRadio(v);}} value={this.state.radioVal} style={{marginBottom:8}}>
+              <Radio value={'全部'}>全部</Radio>
+              <Radio value={'是'}>已提交</Radio>
+              <Radio value={'否'}>未提交</Radio>
+            </Radio.Group>
+              <Table
+                  columns={this.state.colMem}
+                  dataSource={this.state.memGroup}
+                  scroll={{ x: this.state.widthAll}}
+                  bordered
+                  sticky
+                  size="middle"
+                />
+          </Modal>
            <Spin spinning={this.state.loading}>
           <div>
             <span>请选择起止日期：</span>
