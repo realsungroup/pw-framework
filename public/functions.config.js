@@ -10767,3 +10767,41 @@ window[696008619372] = {
   ]
 
 };
+window[695925488179] = {
+  name: 'TableData', // 组件名称，
+  title: '在沪务工汇总表', // 功能模块名称
+  props: {
+    resid: 696074195836,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: false,
+    hasRowSelection:true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasDownload:true,
+    isUseFormDefine: true,
+    subtractH: 200
+  }
+};
+window[696080464823] = {
+  name: 'TableData', // 组件名称，
+  title: '县自主填报', // 功能模块名称
+  props: {
+    resid: 695298347055,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: false,
+    hasRowSelection:true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasDownload:true,
+    isUseFormDefine: true,
+    subtractH: 200
+  }
+};
