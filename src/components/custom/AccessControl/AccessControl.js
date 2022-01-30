@@ -14,6 +14,8 @@ import {
 import './AccessControl.less';
 import moment from 'moment';
 import http from '../../../util20/api';
+import exportJsonExcel from 'js-export-excel';
+
 const { Option } = Select;
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
@@ -116,6 +118,74 @@ class AccessControl extends React.Component {
       this.setState({ loading: false });
     }
   };
+  //导出excel的预处理
+  beforeExport=async(resid,cmswhere)=>{
+    this.setState({loading:true});
+    let str='门禁权限';
+    if(resid===691171742184){
+      str='门禁权限组'
+    }
+    try{
+      let res =  await http({ baseURL: this.baseURL }).getTable({
+        resid,
+        cmswhere
+      });
+      let res2 = await http({ baseURL: this.baseURL }).getTableColumnDefine({
+        resid
+      });
+      if(res.data.length>0&&res2.data.length>0){
+        if(resid===691171742184){
+          this.exportExcel(res.data,res2.data,str);
+        }else{
+          this.exportExcel(res.data,res2.data,this.state.currentRight.group?this.state.currentRight.group:str);
+        }
+      }
+    }catch(e){
+      console.log(e.message);
+      message.error(e.message);
+     this.setState({loading:false});
+
+    }
+  }
+
+  //导出excel
+  exportExcel = async(data,cols,title)=>{
+    let sheetData=[]
+    let n=0;
+    let obj={};
+    let arr=[]
+    while(n<cols.length){
+      obj['_a'+n]=cols[n].ColDispName;
+      arr.push(cols[n].ColDispName);
+      n++;
+    }
+    sheetData.push(obj);
+    n=0;
+    while(n<data.length){
+      let obj={};
+      let c=0;
+      while(c<arr.length){
+        obj['_a'+n+c]=data[n][arr[c]];
+        c++;
+      }
+      sheetData.push(obj);
+      n++;
+    } 
+    var fileName = title;
+    const option = {
+      fileName : fileName,
+      columnWidths: [20, ''],
+      datas: [
+        {
+          sheetName: 'sheet',
+          sheetData:sheetData
+        }
+      ]
+    };
+    const toExcel = new exportJsonExcel(option);
+    toExcel.saveExcel();
+    this.setState({loading:false});
+  }
   //整理数据
   dataPro = arr => {
     let n = 0;
@@ -473,7 +543,7 @@ class AccessControl extends React.Component {
                 <div className="search">
                   <Input
                     style={{
-                      width: 'calc(100% - 1rem - 144px)',
+                      width: 'calc(100% - 1rem - 224px)',
                       textIndent: '.5rem'
                     }}
                     value={this.state.kw}
@@ -502,6 +572,14 @@ class AccessControl extends React.Component {
                     }}
                   >
                     重置
+                  </Button>
+                  <Button
+                    style={{ width: '72px', marginLeft: '.5rem' }}
+                    onClick={()=>{
+                      this.beforeExport(691171742184)
+                    }}
+                  >
+                    导出
                   </Button>
                 </div>
                 <ul>
@@ -556,7 +634,6 @@ class AccessControl extends React.Component {
               </div>
               <div className="r">
                 <TableData
-                  downloadBaseURL={this.downloadURL}
                   baseURL={this.baseURL}
                   resid="691171872439"
                   cmswhere={this.state.cms}
@@ -566,12 +643,27 @@ class AccessControl extends React.Component {
                   hasAdd={false}
                   hasRowView={false}
                   hasRowDelete={false}
+                  hasDownload={false}
                   hasRowEdit={false}
                   hasDelete={false}
                   hasModify={false}
                   hasRowModify={false}
                   hasRowSelection={false}
                   hasAdvSearch={false}
+                  actionBarExtra={({
+                    dataSource,
+                    selectedRowKeys
+                  }) => {
+                    return (
+                      <Button
+                      onClick={()=>{
+                        this.beforeExport(691171872439,this.state.cms)
+                      }}
+                      >
+                        导出
+                      </Button>
+                    );
+                  }}
                 />
               </div>
             </TabPane>
