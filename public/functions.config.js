@@ -10550,3 +10550,9 @@ window[693048340608] = {
     subtractH: 200
   }
 };
+window[691346156968] = {
+    name: 'AccessControl',
+    title: '门禁管控',
+    props: {
+    }
+};
