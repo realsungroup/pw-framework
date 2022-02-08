@@ -508,6 +508,13 @@ class AccessControl extends React.Component {
     this.setState({ filterSync: v, detailData: this.state.orgDetails[v] });
     console.log(this.state.orgDetails[v]);
   };
+  defaultPagination = {
+    pageSize: 10,
+    current: 1,
+    showSizeChanger: true,
+    showQuickJumper: true,
+    pageSizeOptions: ['10', '20', '30', '40', '100','500']
+  };
   render() {
     const { showModal, showModalInput } = this.state;
     return (
@@ -639,6 +646,7 @@ class AccessControl extends React.Component {
                   cmswhere={this.state.cms}
                   wrappedComponentRef={element => (this.tableDataRef = element)}
                   refTargetComponentName="TableData"
+                  defaultPagination={this.defaultPagination}
                   subtractH={180}
                   hasAdd={false}
                   hasRowView={false}
@@ -794,6 +802,7 @@ class AccessControl extends React.Component {
                   refTargetComponentName="TableData"
                   subtractH={180}
                   hasAdd={true}
+                  defaultPagination={this.defaultPagination}
                   hasRowView={false}
                   hasRowDelete={false}
                   hasRowEdit={false}
