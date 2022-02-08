@@ -9,7 +9,8 @@ import {
   Select,
   message,
   DatePicker,
-  Checkbox
+  Checkbox,
+  Pagination
 } from 'antd';
 import './AccessControl.less';
 import moment from 'moment';
@@ -54,7 +55,10 @@ class AccessControl extends React.Component {
     importCms: `isnull(C3_498047440296,'') = ''`,
     filterSync: 'all',
     columns: [],
-    detailData: []
+    detailData: [],
+    pageIndex: 1,
+    pageTotal: 0,
+    pageSize: 100
   };
   //全选
   checkeAll = v => {
@@ -119,73 +123,76 @@ class AccessControl extends React.Component {
     }
   };
   //导出excel的预处理
-  beforeExport=async(resid,cmswhere)=>{
-    this.setState({loading:true});
-    let str='门禁权限';
-    if(resid===691171742184){
-      str='门禁权限组'
+  beforeExport = async (resid, cmswhere) => {
+    this.setState({ loading: true });
+    let str = '门禁权限';
+    if (resid === 691171742184) {
+      str = '门禁权限组';
     }
-    try{
-      let res =  await http({ baseURL: this.baseURL }).getTable({
+    try {
+      let res = await http({ baseURL: this.baseURL }).getTable({
         resid,
         cmswhere
       });
       let res2 = await http({ baseURL: this.baseURL }).getTableColumnDefine({
         resid
       });
-      if(res.data.length>0&&res2.data.length>0){
-        if(resid===691171742184){
-          this.exportExcel(res.data,res2.data,str);
-        }else{
-          this.exportExcel(res.data,res2.data,this.state.currentRight.group?this.state.currentRight.group:str);
+      if (res.data.length > 0 && res2.data.length > 0) {
+        if (resid === 691171742184) {
+          this.exportExcel(res.data, res2.data, str);
+        } else {
+          this.exportExcel(
+            res.data,
+            res2.data,
+            this.state.currentRight.group ? this.state.currentRight.group : str
+          );
         }
       }
-    }catch(e){
+    } catch (e) {
       console.log(e.message);
       message.error(e.message);
-     this.setState({loading:false});
-
+      this.setState({ loading: false });
     }
-  }
+  };
 
   //导出excel
-  exportExcel = async(data,cols,title)=>{
-    let sheetData=[]
-    let n=0;
-    let obj={};
-    let arr=[]
-    while(n<cols.length){
-      obj['_a'+n]=cols[n].ColDispName;
+  exportExcel = async (data, cols, title) => {
+    let sheetData = [];
+    let n = 0;
+    let obj = {};
+    let arr = [];
+    while (n < cols.length) {
+      obj['_a' + n] = cols[n].ColDispName;
       arr.push(cols[n].ColDispName);
       n++;
     }
     sheetData.push(obj);
-    n=0;
-    while(n<data.length){
-      let obj={};
-      let c=0;
-      while(c<arr.length){
-        obj['_a'+n+c]=data[n][arr[c]];
+    n = 0;
+    while (n < data.length) {
+      let obj = {};
+      let c = 0;
+      while (c < arr.length) {
+        obj['_a' + n + c] = data[n][arr[c]];
         c++;
       }
       sheetData.push(obj);
       n++;
-    } 
+    }
     var fileName = title;
     const option = {
-      fileName : fileName,
+      fileName: fileName,
       columnWidths: [20, ''],
       datas: [
         {
           sheetName: 'sheet',
-          sheetData:sheetData
+          sheetData: sheetData
         }
       ]
     };
     const toExcel = new exportJsonExcel(option);
     toExcel.saveExcel();
-    this.setState({loading:false});
-  }
+    this.setState({ loading: false });
+  };
   //整理数据
   dataPro = arr => {
     let n = 0;
@@ -414,7 +421,7 @@ class AccessControl extends React.Component {
     }
   };
   //获取所有明细并筛选同步状态
-  getDetails = async (st, ed) => {
+  getDetails = async (st, ed, page, size, k) => {
     this.setState({ loading: true });
     let stDate = this.state.stDate;
     let edDate = this.state.edDate;
@@ -446,21 +453,52 @@ class AccessControl extends React.Component {
     //   n++;
     // }
     //操作记录
+    let pageIndex = this.state.pageIndex - 1;
+    if (page) {
+      pageIndex = page - 1;
+      this.setState({ pageIndex: page });
+    }
+    let pageSize = this.state.pageSize;
+    if (size) {
+      pageSize = size;
+      this.setState({ pageIndex: 1, pageSize: size });
+    }
+    let key = '';
+    if (k) {
+      key = k;
+    }
     let res2 = await http({ baseURL: this.baseURL }).getTable({
       resid: 692357214309,
-      cmswhere: `C3_498047440296 = 'Y' and C3_498756365442 >= '${stDate}' and C3_498756365442 <= '${edDate}' `
+      cmswhere: `C3_498047440296 = 'Y' and C3_498756365442 >= '${stDate}' and C3_498756365442 <= '${edDate}' `,
+      pageSize,
+      pageIndex,
+      key
     });
+    this.setState({ pageTotal: res2.total });
     let cms = `ID = ''`;
     let all = [];
     let un = [];
     let done = [];
     let n = 0;
+    let arrC = [];
     while (n < res2.data.length) {
       if (res2.data[n].C3_691167014001) {
-        if (cms == `ID = ''`) {
+        if (arrC.length === 0) {
+          arrC.push(res2.data[n].C3_691167014001);
           cms = `ID = '${res2.data[n].C3_691167014001}' `;
         } else {
-          cms = cms + `or ID = '${res2.data[n].C3_691167014001}'`;
+          let cc = 0;
+          let bool = false;
+          while (cc < arrC.length) {
+            if (arrC[cc] === res2.data[n].C3_691167014001) {
+              bool = true;
+            }
+            cc++;
+          }
+          arrC.push(res2.data[n].C3_691167014001);
+          if (bool != true) {
+            cms = cms + `or ID = '${res2.data[n].C3_691167014001}'`;
+          }
         }
       }
 
@@ -513,7 +551,7 @@ class AccessControl extends React.Component {
     current: 1,
     showSizeChanger: true,
     showQuickJumper: true,
-    pageSizeOptions: ['10', '20', '30', '40', '100','500']
+    pageSizeOptions: ['10', '20', '30', '40', '100', '500']
   };
   render() {
     const { showModal, showModalInput } = this.state;
@@ -582,8 +620,8 @@ class AccessControl extends React.Component {
                   </Button>
                   <Button
                     style={{ width: '72px', marginLeft: '.5rem' }}
-                    onClick={()=>{
-                      this.beforeExport(691171742184)
+                    onClick={() => {
+                      this.beforeExport(691171742184);
                     }}
                   >
                     导出
@@ -658,15 +696,12 @@ class AccessControl extends React.Component {
                   hasRowModify={false}
                   hasRowSelection={false}
                   hasAdvSearch={false}
-                  actionBarExtra={({
-                    dataSource,
-                    selectedRowKeys
-                  }) => {
+                  actionBarExtra={({ dataSource, selectedRowKeys }) => {
                     return (
                       <Button
-                      onClick={()=>{
-                        this.beforeExport(691171872439,this.state.cms)
-                      }}
+                        onClick={() => {
+                          this.beforeExport(691171872439, this.state.cms);
+                        }}
                       >
                         导出
                       </Button>
@@ -677,7 +712,7 @@ class AccessControl extends React.Component {
             </TabPane>
             <TabPane tab={'权限导入'} key={1}>
               <div className="rightFilters">
-                <ul>
+                <ul className="substatus">
                   <li
                     className={this.state.subStatus == 0 ? 'current' : ''}
                     onClick={() => {
@@ -705,21 +740,6 @@ class AccessControl extends React.Component {
                 </ul>
                 {this.state.subStatus == 0 ? null : (
                   <>
-                    <Select
-                      style={{ width: 120, left: 16 }}
-                      size="small"
-                      onChange={v => {
-                        this.handleChangeFilter(v);
-                      }}
-                      value={this.state.filterSync}
-                    >
-                      <Select.Option value={'all'}>全部</Select.Option>
-                      <Select.Option value={'un'}>未同步</Select.Option>
-                      <Select.Option value={'done'}>已同步</Select.Option>
-                      {/* <Select.Option value={3}>
-                    同步失败
-                  </Select.Option> */}
-                    </Select>
                     <RangePicker
                       style={{ marginLeft: 24 }}
                       size="small"
@@ -747,7 +767,13 @@ class AccessControl extends React.Component {
                       }}
                       onKeyUp={e => {
                         if (e.keyCode == 13) {
-                          this.handleSearchSync();
+                          this.getDetails(
+                            null,
+                            null,
+                            null,
+                            null,
+                            this.state.kw2
+                          );
                         }
                       }}
                     />
@@ -756,7 +782,8 @@ class AccessControl extends React.Component {
                       type={'primary'}
                       size={'small'}
                       onClick={() => {
-                        this.handleSearchSync();
+                        // this.handleSearchSync();
+                        this.getDetails(null, null, null, null, this.state.kw2);
                       }}
                     >
                       搜索
@@ -777,7 +804,7 @@ class AccessControl extends React.Component {
                         this.handleSync('all');
                       }}
                     >
-                      全部同步记录
+                      同步当页记录
                     </Button>
                     <Button
                       style={{ width: '120px', marginLeft: '.5rem' }}
@@ -788,9 +815,50 @@ class AccessControl extends React.Component {
                     >
                       同步选中的记录
                     </Button>
+                    <div className="pagi">
+                      <Pagination
+                        size="small"
+                        showQuickJumper
+                        showSizeChanger
+                        showTotal={total => {
+                          return `合计 ${total} 条`;
+                        }}
+                        pageSizeOptions={[
+                          '100',
+                          '200',
+                          '300',
+                          '400',
+                          '500',
+                          '600',
+                          '700'
+                        ]}
+                        pageSize={this.state.pageSize}
+                        defaultCurrent={this.state.pageIndex}
+                        total={this.state.pageTotal}
+                        onChange={(page, pageSize) => {
+                          this.getDetails(null, null, page, null);
+                        }}
+                        onShowSizeChange={(current, size) => {
+                          this.getDetails(null, null, null, size);
+                        }}
+                      />
+                      <Select
+                        style={{ width: 120, left: 16 }}
+                        size="small"
+                        onChange={v => {
+                          this.handleChangeFilter(v);
+                        }}
+                        value={this.state.filterSync}
+                      >
+                        <Select.Option value={'all'}>全部</Select.Option>
+                        <Select.Option value={'un'}>未同步</Select.Option>
+                        <Select.Option value={'done'}>已同步</Select.Option>
+                      </Select>
+                    </div>
                   </>
                 )}
               </div>
+
               <div className="outer">
                 <TableData
                   downloadBaseURL={this.downloadURL}
