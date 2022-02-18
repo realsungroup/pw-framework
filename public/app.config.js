@@ -6,7 +6,8 @@ window.pwConfig = {
   // 开发环境
   development: {
     // 地址
-    baseURL: 'http://kingofdinner.realsun.me:8102/', // 请求的基地址
+    baseURL: 'http://kingofdinner.realsun.me:8099/', // 请求的基地址
+    // baseURL: 'http://pwkwebapi.realsun.me/',
     fileDownloadUrl: 'http://172.21.2.27:802/', // 导出 Excel 文件下载基地址
 
     // 个人中心配置
