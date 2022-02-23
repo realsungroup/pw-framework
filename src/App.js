@@ -29,6 +29,7 @@ import qs from 'qs';
 // redux
 import { Provider } from 'react-redux';
 import store from './store';
+import http from 'Util20/api';
 
 import {
   GetConfig,
@@ -113,7 +114,9 @@ class App extends Component {
     this.state = {
       warningBarVisible: true,
       resId,
-      desktopStyle: null
+      desktopStyle: null,
+      canRender: false,
+      loading: false,
     };
   }
 
@@ -122,7 +125,7 @@ class App extends Component {
     return qs.parse(querystring);
   };
 
-  componentDidMount = () => {
+  componentDidMount = async () => {
     const clipboard = new ClipboardJS('.app__warning-bar-copy');
     clipboard.on('success', function(e) {
       message.success('复制成功');
@@ -145,10 +148,28 @@ class App extends Component {
       }
     } catch (err) {}
 
-    this.setState({
-      userInfo,
-      language
-    });
+    const { accessToken: accessTokenCheckValue } = this.resolveQueryString();
+    if (accessTokenCheckValue) {
+      let res;
+      this.setState({loading: true});
+      try {
+        res = await http().getUserByAccessToken({
+          accessTokenCheckValue
+        });
+      } catch (err) {
+        console.error(err);
+        this.setState({loading: false});
+        return message.error(err.message);
+      }
+      setItem('userInfo', JSON.stringify(res));
+      this.setState({loading: false, canRender: true});
+    } else {
+      this.setState({
+        userInfo,
+        language,
+        canRender: true
+      });
+    }
   };
 
   handleCloseWarningBar = () => {
@@ -162,7 +183,10 @@ class App extends Component {
   };
 
   render() {
-    const { language } = this.state;
+    const { language, canRender } = this.state;
+    if (!canRender) {
+      return null;
+    }
 
     let localeAntd = zh_CN_antd;
     let locale = 'zh',

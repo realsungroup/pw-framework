@@ -728,4 +728,9 @@ http.createApi('getdailyrpt', {
   url: '/api/200/attendance/getdailyrpt'
 });
 
+http.createApi('getUserByAccessToken', {
+  method: 'post',
+  url: '/api/Account/GetUserByAccessToken'
+});
+
 export default http;
