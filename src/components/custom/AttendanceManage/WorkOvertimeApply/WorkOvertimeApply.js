@@ -204,6 +204,97 @@ class WorkOvertimeApply extends React.Component {
         }
       }
     ];
+    this.columnsEn = [
+      {
+        title: 'Start Time',
+        dataIndex: 'startTime',
+        type: InputType.DataTime,
+        editable: true,
+        width: 200
+      },
+      {
+        title: 'End Time',
+        dataIndex: 'endTime',
+        type: InputType.DataTime,
+        editable: true,
+        width: 200
+      },
+      {
+        title: 'Hours',
+        dataIndex: 'hours',
+        type: InputType.InputNumber,
+        editable: true,
+        width: 100
+      },
+      {
+        title: 'Reason',
+        dataIndex: 'reason',
+        type: InputType.TextArea,
+        editable: true,
+        width: 300
+      },
+      {
+        title: 'Tips',
+        dataIndex: 'tips',
+        width: 300
+      },
+      {
+        title: 'Eror',
+        dataIndex: 'error'
+        // width: 300
+      },
+      {
+        title: 'Operation',
+        dataIndex: 'operation',
+        fixed: 'right',
+        width: 100,
+        render: (text, record) => {
+          const { editingKey } = this.state;
+          const editable = this.isEditing(record);
+          return editable ? (
+            <span>
+              <EditableContext.Consumer>
+                {form => (
+                  <a
+                    onClick={() => this.save(form, record.key)}
+                    style={{ marginRight: 8 }}
+                  >
+                    Done
+                  </a>
+                )}
+              </EditableContext.Consumer>
+              <Popconfirm
+                title="Are you sure?"
+                onConfirm={() => this.cancel(record.key)}
+              >
+                <a>Cancel</a>
+              </Popconfirm>
+            </span>
+          ) : (
+            <>
+              <a
+                disabled={editingKey !== ''}
+                style={{ marginRight: 8 }}
+                onClick={() => this.edit(record.key)}
+              >
+                Edit
+              </a>
+              <Popconfirm
+                title="Are you sure?"
+                onConfirm={() => this.handleDelete(record.key)}
+              >
+                <a
+                  disabled={editingKey !== ''}
+                  style={{ color: editingKey === '' ? 'red' : '#ccc' }}
+                >
+                  Delete
+                </a>
+              </Popconfirm>
+            </>
+          );
+        }
+      }
+    ];
   }
   state = {
     dataSource: [],
@@ -212,6 +303,8 @@ class WorkOvertimeApply extends React.Component {
     editingKey: ''
   };
   componentDidMount() {
+    let lan = localStorage.getItem('language');
+    this.setState({lan});
     this.getRecords();
   }
 
@@ -367,7 +460,7 @@ class WorkOvertimeApply extends React.Component {
         data: [{ REC_ID: record.REC_ID }],
         dblinkname: 'ehr'
       });
-      message.success('删除成功');
+      message.success(this.state.lan==='中文'?'删除成功':'Success');
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -382,7 +475,7 @@ class WorkOvertimeApply extends React.Component {
   handleAdd = () => {
     const { count, dataSource, editingKey } = this.state;
     if (editingKey !== '') {
-      return message.info('有记录正在编辑，请先完成编辑');
+      return message.info(this.state.lan==='中文'?'有记录正在编辑，请先完成编辑':"Some records haven't been saved.");
     }
     const newData = {
       key: count,
@@ -425,7 +518,7 @@ class WorkOvertimeApply extends React.Component {
         data,
         dblinkname: 'ehr'
       });
-      message.success('提交成功');
+      message.success(this.state.lan==='中文'?'提交成功':'Success');
       this.getRecords();
     } catch (error) {
       message.error(error.message);
@@ -458,6 +551,21 @@ class WorkOvertimeApply extends React.Component {
         })
       };
     });
+    const columnsEn = this.columnsEn.map(col => {
+      if (!col.editable) {
+        return col;
+      }
+      return {
+        ...col,
+        onCell: record => ({
+          record,
+          dataIndex: col.dataIndex,
+          title: col.title,
+          type: col.type,
+          editing: this.isEditing(record)
+        })
+      };
+    });
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
@@ -473,15 +581,15 @@ class WorkOvertimeApply extends React.Component {
               style={{ marginBottom: 16, marginRight: 8 }}
               icon="edit"
             >
-              新建
+              {this.state.lan==='中文'?'新建':'Add'}
             </Button>
 
             <Popconfirm
-              title="确认提交吗？"
+              title={this.state.lan==='中文'?"确认提交吗？":'Aru you sure?'}
               onConfirm={() => {
                 if (selectedRowKeys.length) {
                   if (editingKey) {
-                    return message.info('有记录正在编辑，请先完成编辑');
+                    return message.info(this.state.lan==='中文'?'有记录正在编辑，请先完成编辑':"Some records havn't been saved");
                   }
                   let selectedRecords = selectedRowKeys.map(key => {
                     return {
@@ -493,7 +601,7 @@ class WorkOvertimeApply extends React.Component {
                   });
                   this.submit(selectedRecords);
                 } else {
-                  return message.info('至少选择一条记录');
+                  return message.info(this.state.lan==='中文'?'至少选择一条记录':'Undefined Record');
                 }
               }}
             >
@@ -501,7 +609,7 @@ class WorkOvertimeApply extends React.Component {
                 type="primary"
                 style={{ marginBottom: 16, marginRight: 8 }}
               >
-                提交申请
+                {this.state.lan==='中文'?'提交申请':'Apply'}
               </Button>
             </Popconfirm>
             <Button
@@ -509,7 +617,7 @@ class WorkOvertimeApply extends React.Component {
               icon="rollback"
               style={{ marginBottom: 16, marginRight: 8 }}
             >
-              返回
+              {this.state.lan==='中文'?'返回':'Back'}
             </Button>
             <Table
               components={components}
@@ -517,7 +625,7 @@ class WorkOvertimeApply extends React.Component {
               rowClassName="editable-row"
               bordered
               dataSource={dataSource}
-              columns={columns}
+              columns={this.state.lan==='中文'?columns:columnsEn}
               rowSelection={rowSelection}
               // onRow={record => ({
               //   onClick: () => {

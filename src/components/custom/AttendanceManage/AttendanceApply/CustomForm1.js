@@ -18,7 +18,6 @@ import http from 'Util20/api';
 import { getItem } from 'Util/util';
 import moment from 'moment';
 import { uploadFile } from '../../../../util/api';
-
 const formItemLayout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 16 }
@@ -111,6 +110,8 @@ class CustomForm1 extends React.Component {
     this.setState({
       isShangHai: isShangHai
     });
+    let lan=localStorage.getItem('language');
+    this.setState({lan});
     this.minute =
       showAllminute || isShangHai
         ? new Array(60).fill('1').map((item, index) => {
@@ -605,7 +606,8 @@ class CustomForm1 extends React.Component {
 
       availableTime,
       showAvailableTime,
-      availableTimeText
+      availableTimeText,
+      lan
 
     } = this.state;
     const {
@@ -633,23 +635,26 @@ class CustomForm1 extends React.Component {
     return (
       <div className="attendace-aplly_form__wrapper">
         <Form className="attendace-aplly_form">
-          <h2>{showWorkOvertimeOptions ? '请假/加班申请单' : '考勤申请单'}</h2>
+          <h2>{showWorkOvertimeOptions ? 
+          (lan==='中文'?'请假/加班申请单':'Leave/Overtime Applications')
+          :
+          (lan==='中文'?'考勤申请单':'Attendance Applications')}</h2>
           <Row style={{ fontWeight: 600, marginBottom: 32 }}>
-            <Col span={8}>填单人：{currentUser}</Col>
+            <Col span={8}>{lan==='中文'?'填单人':'Applicant'}：{currentUser}</Col>
             <Col span={16}>
-              填单时间：{moment().format('YYYY-MM-DD HH:mm:ss')}
+            {lan==='中文'?'填单时间':'Application Time'}：{moment().format('YYYY-MM-DD HH:mm:ss')}
             </Col>
           </Row>
           <Form.Item
             {...formItemLayout}
-            label="类别："
+            label={lan==='中文'?'类别：':'type：'}
             required
             validateStatus={errors.type && 'error'}
-            help={errors.type && '请选择类别'}
+            help={errors.type && (lan==='中文'?'请选择类别':'Select One Type')}
           >
             <Cascader
               options={types}
-              placeholder="请选择类别"
+              placeholder={lan==='中文'?'请选择类别':'Select One Type'}
               onChange={this.handleTypeChange}
             />
           </Form.Item>
@@ -658,7 +663,7 @@ class CustomForm1 extends React.Component {
           </Row>}
           {(showChooseAllDay || (isShangHai && levelSort <= 8)) && (
 
-            <Form.Item {...formItemLayout} label="选择全天：">
+            <Form.Item {...formItemLayout} label={lan==='中文'?'选择全天：':'Select Whole Day'}>
               <Checkbox
                 onChange={e => {
                   this.setState({
@@ -678,10 +683,10 @@ class CustomForm1 extends React.Component {
           )}
           <Form.Item
             {...formItemLayout}
-            label="开始时间："
+            label={lan==='中文'?'开始时间':'Start time'}
             required
             validateStatus={errors.startTime && 'error'}
-            help={errors.startTime && '请输入完整的开始时间'}
+            help={errors.startTime && (lan==='中文'?'请输入完整的时间':'Input Complete Time')}
           >
             <DatePicker
               disabled={chooseAllDay}
@@ -691,10 +696,10 @@ class CustomForm1 extends React.Component {
             <Select
               disabled={chooseAllDay}
               value={filledData.startHour}
-              placeholder="时"
+              placeholder={lan==='中文'?'时':'Hour'}
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('startHour')}
-              notFoundContent="未选择类别"
+              notFoundContent={lan==='中文'?'未选择类别':'Undefined Type'}
             >
               {startHours.map(hour => (
                 <Option value={hour}>{hour}</Option>
@@ -703,7 +708,7 @@ class CustomForm1 extends React.Component {
             <Select
               disabled={chooseAllDay}
               value={filledData.startMinute}
-              placeholder="分"
+              placeholder={lan==='中文'?'份':'Minutes'}
               onChange={this.handleStringChange('startMinute')}
               style={{ width: 100, marginLeft: 8 }}
             >
@@ -717,10 +722,10 @@ class CustomForm1 extends React.Component {
 
           <Form.Item
             {...formItemLayout}
-            label="结束时间："
+            label={lan==='中文'?'结束时间':'End time'}
             required
             validateStatus={errors.endTime && 'error'}
-            help={errors.endTime && '请输入完整的结束时间'}
+            help={errors.endTime && (lan==='中文'?'请输入完整的结束时间':'Input Complete End Time')}
           >
             <DatePicker
               disabled={chooseAllDay}
@@ -730,10 +735,10 @@ class CustomForm1 extends React.Component {
             <Select
               disabled={chooseAllDay}
               value={filledData.endHour}
-              placeholder="时"
+              placeholder={lan==='中文'?'时':'Hour'}
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('endHour')}
-              notFoundContent="未选择类别"
+              notFoundContent={lan==='中文'?'未选择类别':'Undefined Type'}
             >
               {endHours.map(hour => (
                 <Option value={hour}>{hour}</Option>
@@ -742,7 +747,7 @@ class CustomForm1 extends React.Component {
             <Select
               disabled={chooseAllDay}
               value={filledData.endMinute}
-              placeholder="分"
+              placeholder={lan==='中文'?'分':'Minutes'}
               style={{ width: 100, marginLeft: 8 }}
               onChange={this.handleStringChange('endMinute')}
             >
@@ -756,28 +761,28 @@ class CustomForm1 extends React.Component {
 
           <Form.Item
             {...formItemLayout}
-            label="事由："
+            label={lan==='中文'?'事由：':'Reason'}
             required={reasonRequired}
             validateStatus={errors.reason && 'error'}
-            help={errors.reason && '请输入事由'}
+            help={errors.reason && (lan==='中文'?'请输入事由':'Input Reason')}
           >
             <TextArea
-              placeholder="请输入事由"
+              placeholder={lan==='中文'?'请输入事由':'Input Reason'}
               onChange={this.handleEventChange('reason')}
             />
           </Form.Item>
 
           <Form.Item
             {...formItemLayout}
-            label="时间长度："
+            label={lan==='中文'?'时间长度：':'Duration'}
             required
             validateStatus={errors.timeLength && 'error'}
-            help={errors.timeLength && '输入时间有误'}
+            help={errors.timeLength && (lan==='中文'?'时间有误':'Error Time')}
           >
             <InputNumber disabled={disabled} value={filledData.timeLength} />
           </Form.Item>
           {isNeedAttachment && (
-            <Form.Item {...formItemLayout} label="附件：" required>
+            <Form.Item {...formItemLayout} label={lan==='中文'?'附件：':'Attachment'} required>
               <Upload
                 onChange={this.handleFileChange}
                 fileList={this.state.fileList}
@@ -799,7 +804,7 @@ class CustomForm1 extends React.Component {
                 }}
               >
                 <Button>
-                  <Icon type="upload" /> 上传附件
+                  <Icon type="upload" /> {lan==='中文'?'上传附件':'Upload Attachment'}
                 </Button>
               </Upload>
             </Form.Item>
@@ -815,9 +820,9 @@ class CustomForm1 extends React.Component {
               }}
               loading={submitting}
             >
-              提交
+              {lan==='中文'?'提交':'Submit'}
             </Button>
-            <Button onClick={this.props.goBack}>返回</Button>
+            <Button onClick={this.props.goBack}>{lan==='中文'?'返回':'Back'}</Button>
           </Row>
         </Form>
       </div>

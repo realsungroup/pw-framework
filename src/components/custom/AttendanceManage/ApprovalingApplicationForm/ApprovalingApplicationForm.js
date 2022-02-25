@@ -3,6 +3,8 @@ import './ApprovalingApplicationForm.less';
 import TableData from '../../../common/data/TableData';
 import { Button, Popconfirm, message } from 'antd';
 import http from 'Util20/api';
+import { injectIntl } from 'react-intl';
+import { getIntlVal } from 'Util20/util';
 
 /*
  * 审批中
@@ -19,10 +21,10 @@ class ApprovalingApplicationForm extends React.Component {
     return (
       <div className="hr-probation_table-action-bar-extra">
         <Popconfirm
-          title="确认发送邮件吗？"
+          title={getIntlVal(this.props.intl.locale,'Are You Sure？','确认发送邮件吗？')}
           onConfirm={() => {
             if (!record.selectedRowKeys.length) {
-              return message.error('请选择一条记录');
+              return message.error(getIntlVal(this.props.intl.locale,'Select One Record','请选择一条记录'));
             }
             let selectedRecords = record.selectedRowKeys.map(key => {
               return {
@@ -35,14 +37,14 @@ class ApprovalingApplicationForm extends React.Component {
             this.emailNotice(selectedRecords);
           }}
         >
-          <Button>发邮件提醒</Button>
+          <Button>{getIntlVal(this.props.intl.locale,'Mail','发邮件提醒')}</Button>
         </Popconfirm>
 
         <Popconfirm
-          title="确认撤销吗？"
+          title={getIntlVal(this.props.intl.locale,'Are you sure?','确认撤销？')}
           onConfirm={() => {
             if (!record.selectedRowKeys.length) {
-              return message.error('请选择一条记录');
+              return message.error(getIntlVal(this.props.intl.locale,'Select One Record','请选择一条记录'));
             }
             let selectedRecords = record.selectedRowKeys.map(key => {
               return {
@@ -55,7 +57,7 @@ class ApprovalingApplicationForm extends React.Component {
             this.revocat(selectedRecords);
           }}
         >
-          <Button>撤销</Button>
+          <Button>{getIntlVal(this.props.intl.locale,'Canceled','撤销')}</Button>
         </Popconfirm>
       </div>
     );
@@ -70,7 +72,7 @@ class ApprovalingApplicationForm extends React.Component {
         dblinkname: 'ehr'
       });
       this.tableDataRef.handleRefresh();
-      message.success('邮件已发送');
+      message.success(getIntlVal(this.props.intl.locale,'Mailed','邮件已发送'));
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -129,4 +131,4 @@ class ApprovalingApplicationForm extends React.Component {
   }
 }
 
-export default ApprovalingApplicationForm;
+export default injectIntl(ApprovalingApplicationForm);

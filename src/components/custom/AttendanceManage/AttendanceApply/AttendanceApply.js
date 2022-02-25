@@ -6,7 +6,8 @@ import img2Large from './img/2-large.png';
 import CustomForm1 from './CustomForm1';
 import CustomForm2 from './CustomForm2';
 import WorkOverTimeApply from '../WorkOvertimeApply';
-
+import { injectIntl } from 'react-intl';
+import { getIntlVal } from 'Util20/util';
 const { Meta } = Card;
 
 /**
@@ -102,7 +103,7 @@ class AttendanceApply extends React.Component {
               cover={<img alt="example" src={img1Large} />}
               onClick={this.onCardClick(1)}
             >
-              <Meta title="填写申请" description="我要请假/加班" />
+              <Meta title={getIntlVal(this.props.intl.locale,'Apply','填写申请')} description={getIntlVal(this.props.intl.locale,'Asking for Leave / Overtime',"我要请假/加班")} />
             </Card>
             {showBatchApply && (
               <Card
@@ -110,7 +111,7 @@ class AttendanceApply extends React.Component {
                 cover={<img alt="example" src={img1Large} />}
                 onClick={this.onCardClick(3)}
               >
-                <Meta title="加班批量申请" description="加班批量申请点这里" />
+                <Meta title={getIntlVal(this.props.intl.locale,'Mutl-apply',"加班批量申请")}description={getIntlVal(this.props.intl.locale,'Asking for Overtime',"加班批量申请点这里")} />
               </Card>
             )}
             <Card
@@ -118,7 +119,7 @@ class AttendanceApply extends React.Component {
               cover={<img alt="example" src={img2Large} />}
               onClick={this.onCardClick(2)}
             >
-              <Meta title="补刷卡申请" description="忘记刷卡点这里" />
+              <Meta title={getIntlVal(this.props.intl.locale,'Mend Leaks',"补刷卡申请")} description={getIntlVal(this.props.intl.locale,'Punch Miss',"忘记刷卡点这里")} />
             </Card>
           </div>
         ) : (
@@ -129,4 +130,4 @@ class AttendanceApply extends React.Component {
   }
 }
 
-export default AttendanceApply;
+export default injectIntl(AttendanceApply);
