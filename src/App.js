@@ -126,6 +126,9 @@ class App extends Component {
   };
 
   componentDidMount = async () => {
+    let userInfo,
+    language = '中文';
+
     const clipboard = new ClipboardJS('.app__warning-bar-copy');
     clipboard.on('success', function(e) {
       message.success('复制成功');
@@ -135,21 +138,10 @@ class App extends Component {
       message.error('复制失败');
     });
 
-    // 国际化
-    let userInfo,
-      language = '中文';
-    try {
-      userInfo = JSON.parse(getItem('userInfo'));
-      if (!userInfo) {
-        language = getItem('language') || '中文';
-        setItem('language', language);
-      } else {
-        language = userInfo.UserInfo.EMP_LANGUAGE;
-      }
-    } catch (err) {}
+    
 
     const { accessToken: accessTokenCheckValue } = this.resolveQueryString();
-    let lan=this.resolveQueryString().language;
+    let lan=this.resolveQueryString().language||'中文';
     if(lan==='en'){
       lan='English';
     }
@@ -175,6 +167,16 @@ class App extends Component {
         canRender: true
       });
     }
+    // 国际化
+    try {
+      userInfo = JSON.parse(getItem('userInfo'));
+      if (!userInfo) {
+        language = getItem('language') || '中文';
+        setItem('language', language);
+      } else {
+        language = userInfo.UserInfo.EMP_LANGUAGE;
+      }
+    } catch (err) {}
   };
 
   handleCloseWarningBar = () => {
