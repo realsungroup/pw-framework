@@ -2,7 +2,8 @@ import React from 'react';
 import { List, message, Progress, Popconfirm, Button } from 'antd';
 import http, { makeCancelable } from 'Util20/api';
 import './ProcessData.less';
-
+import { injectIntl } from 'react-intl';
+import { getIntlVal } from 'Util20/util';
 /**
  * 结算
  */
@@ -193,7 +194,7 @@ class ProcessData extends React.Component {
         percentList,
         loadings: { ...loadings, [REC_ID]: false }
       });
-      message.success('已停止');
+      message.success(getIntlVal(this.props.intl.locale,"Stopped","已停止"));
     } catch (error) {
       message.error(error.message);
       console.error(error);
@@ -227,19 +228,19 @@ class ProcessData extends React.Component {
           ) {
             actions.push(
               <Popconfirm
-                title="确认进行结算吗？"
+                title={getIntlVal(this.props.intl.locale,"Are you sure?","确认进行结算吗？")}
                 onConfirm={this.settle(item, index)}
               >
-                <Button loading={loadings[item.REC_ID]}>结算</Button>
+                <Button loading={loadings[item.REC_ID]}>{getIntlVal(this.props.intl.locale,"Settlement","结算")}</Button>
               </Popconfirm>
             );
           } else {
             actions.push(
               <Popconfirm
-                title="确认进行停止吗？"
+                title={getIntlVal(this.props.intl.locale,"Are you sure?","确认进行停止吗？")}
                 onConfirm={this.stopTask(item[taskidField], item.REC_ID)}
               >
-                <Button loading={loadings[item.REC_ID]}>停止</Button>
+                <Button loading={loadings[item.REC_ID]}>{getIntlVal(this.props.intl.locale,"Stop","停止")}</Button>
               </Popconfirm>
             );
           }
@@ -272,4 +273,4 @@ class ProcessData extends React.Component {
   }
 }
 
-export default ProcessData;
+export default  injectIntl(ProcessData);

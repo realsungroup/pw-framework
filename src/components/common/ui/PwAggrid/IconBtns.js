@@ -76,7 +76,7 @@ const IconBtns = React.memo(
         {hasAdvSearch && (
           <IconWithTooltip
             className="pw-table__header-icon"
-            tip="高级搜索"
+            tip={localStorage.getItem('language'==='中文')?"高级搜索":'Advanced Search'}
             iconClass="icon-adv-search"
             onClick={onAdvSearch}
             style={{ fontSize: iconSizeMap[size] }}
