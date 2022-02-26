@@ -149,12 +149,17 @@ class App extends Component {
     } catch (err) {}
 
     const { accessToken: accessTokenCheckValue } = this.resolveQueryString();
+    let lan=this.resolveQueryString().language;
+    if(lan==='en'){
+      lan='English';
+    }
     if (accessTokenCheckValue) {
       let res;
       this.setState({loading: true});
       try {
         res = await http().getUserByAccessToken({
-          accessTokenCheckValue
+          accessTokenCheckValue,
+          language:lan
         });
       } catch (err) {
         console.error(err);
