@@ -128,7 +128,16 @@ class App extends Component {
   componentDidMount = async () => {
     let userInfo,
     language = '中文';
-
+    // 国际化
+    try {
+      userInfo = JSON.parse(getItem('userInfo'));
+      if (!userInfo) {
+        language = getItem('language') || '中文';
+        setItem('language', language);
+      } else {
+        language = userInfo.UserInfo.EMP_LANGUAGE;
+      }
+    } catch (err) {}
     const clipboard = new ClipboardJS('.app__warning-bar-copy');
     clipboard.on('success', function(e) {
       message.success('复制成功');
@@ -159,6 +168,7 @@ class App extends Component {
         return message.error(err.message);
       }
       setItem('userInfo', JSON.stringify(res));
+      setItem('language', lan);
       this.setState({loading: false, canRender: true});
     } else {
       this.setState({
@@ -167,16 +177,7 @@ class App extends Component {
         canRender: true
       });
     }
-    // 国际化
-    try {
-      userInfo = JSON.parse(getItem('userInfo'));
-      if (!userInfo) {
-        language = getItem('language') || '中文';
-        setItem('language', language);
-      } else {
-        language = userInfo.UserInfo.EMP_LANGUAGE;
-      }
-    } catch (err) {}
+    
   };
 
   handleCloseWarningBar = () => {
