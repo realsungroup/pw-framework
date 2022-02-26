@@ -169,7 +169,15 @@ class App extends Component {
       }
       setItem('userInfo', JSON.stringify(res));
       setItem('language', lan);
-      this.setState({loading: false, canRender: true});
+      let localeAntd = zh_CN_antd;
+      let locale = 'zh',
+        messages = zh_CN;
+      if (lan === 'English') {
+        localeAntd = en_US_antd;
+        locale = 'en';
+        messages = en_US;
+      }
+      this.setState({language:lan,loading: false, canRender: true});
     } else {
       this.setState({
         userInfo,
@@ -204,7 +212,6 @@ class App extends Component {
       locale = 'en';
       messages = en_US;
     }
-
     return (
       <ErrorBoundary>
         <Provider store={store}>
