@@ -292,12 +292,17 @@ class PwTable extends React.Component {
                       <Menu>
                         <div className="pw-table__fixed-columns-wrapper">
                           <Input
-                            placeholder="输入关键字搜索表格列名"
+                            placeholder={getIntlVal(
+                              locale,"Input Keywords","输入关键字搜索表格列名")}
                             value={columnValue}
                             onChange={this.handleColumnValueChange}
                           ></Input>
                           <div className="pw-table__columns-title">
-                            请勾选锁定项
+                            {getIntlVal(
+                          locale,
+                          'Check Items to be Locked',
+                          '请勾选锁定项'
+                        )}
                           </div>
 
                           <div className="pw-table__columns">

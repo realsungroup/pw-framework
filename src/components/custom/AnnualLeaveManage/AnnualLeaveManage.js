@@ -21,6 +21,8 @@ import debounce from 'lodash/debounce';
 import http from 'Util20/api';
 import SelectPersonSecond from '../SelectPersonSecond';
 import moment from 'moment';
+import { injectIntl } from 'react-intl';
+import { getIntlVal } from 'Util20/util';
 import { reject } from 'lodash';
 import { TabStop } from 'docx';
 import { constants } from 'os';
@@ -31,95 +33,114 @@ const { SubMenu } = Menu;
 const NJGLColums = [
   {
     title: '工号',
+    titleEn:'Job No.',
     dataIndex: 'number',
     key: 'number'
   },
   {
+    titleEn:'Name',
     title: '姓名',
     dataIndex: 'name',
     key: 'name'
   },
   {
     title: '上年剩余',
+    titleEn:'Balance Last Year',
     dataIndex: 'snsy',
     key: 'snsy'
   },
   {
+    titleEn:'Gain This Year',
     title: '当年新增',
     dataIndex: 'dnxz',
     key: 'dnxz'
   },
   {
     title: '第1季度分配',
+    titleEn:'Gain Season I',
     dataIndex: 'q1fenpei',
     key: 'q1fenpei'
   },
   {
     title: '第2季度分配',
+    titleEn:'Gain Season II',
     dataIndex: 'q2fenpei',
     key: 'q2fenpei'
   },
   {
+    titleEn:'Gain Season III',
     title: '第3季度分配',
     dataIndex: 'q3fenpei',
     key: 'q3fenpei'
   },
   {
+    titleEn:'Gain Season IV',
     title: '第4季度分配',
     dataIndex: 'q4fenpei',
     key: 'q4fenpei'
   },
   {
+    titleEn:'Used in Jan.',
     title: '1月使用',
     dataIndex: 'january',
     key: 'january'
   },
   {
+    titleEn:'Used in Feb.',
     title: '2月使用',
     dataIndex: 'february',
     key: 'february'
   },
   {
+    titleEn:'Used in Mar.',
     title: '3月使用',
     dataIndex: 'march',
     key: 'march'
   },
   {
+    titleEn:'Used in Apr.',
     title: '4月使用',
     dataIndex: 'april',
     key: 'april'
   },
   {
+    titleEn:'Used in May',
     title: '5月使用',
     dataIndex: 'may',
     key: 'may'
   },
   {
+    titleEn:'Used in June',
     title: '6月使用',
     dataIndex: 'june',
     key: 'june'
   },
   {
+    titleEn:'Used in July',
     title: '7月使用',
     dataIndex: 'july',
     key: 'july'
   },
   {
+    titleEn:'Used in Aug.',
     title: '8月使用',
     dataIndex: 'august',
     key: 'august'
   },
   {
+    titleEn:'Used in Sep.',
     title: '9月使用',
     dataIndex: 'september',
     key: 'september'
   },
   {
+    titleEn:'Used in Oct.',
     title: '10月使用',
     dataIndex: 'october',
     key: 'october'
   },
   {
+    titleEn:'Used in Nov.',
     title: '11月使用',
     dataIndex: 'november',
     key: 'november'
@@ -127,40 +148,48 @@ const NJGLColums = [
   ,
   {
     title: '12月使用',
+    titleEn:'Used in Dec.',
     dataIndex: 'december',
     key: 'december'
   },
   {
     title: '第1季度剩余',
+    titleEn:'Balance of Quarter I',
     dataIndex: 'q1sy',
     key: 'q1sy'
   },
   {
+    titleEn:'Balance of Quarter II',
     title: '第2季度剩余',
     dataIndex: 'q2sy',
     key: 'q2sy'
   },
   {
+    titleEn:'Balance of Quarter III',
     title: '第3季度剩余',
     dataIndex: 'q3sy',
     key: 'q3sy'
   },
   {
+    titleEn:'Balance of Quarter IV',
     title: '第4季度剩余',
     dataIndex: 'q4sy',
     key: 'q4sy'
   },
   {
+    titleEn:'Balance Last Year(Before Using)',
     title: '上年结余',
     dataIndex: 'snjy',
     key: 'snjy'
   },
   {
+    titleEn:'Balance This Year',
     title: '当年结余',
     dataIndex: 'dnjy',
     key: 'dnjy'
   },
   {
+    titleEn:'Balance All',
     title: '总结余',
     dataIndex: 'zjy',
     key: 'zjy'
@@ -181,10 +210,10 @@ const months = [
   { label: 12, value: '12' }
 ];
 const quarters = [
-  { title: '第1季度', value: 1 },
-  { title: '第2季度', value: 2 },
-  { title: '第3季度', value: 3 },
-  { title: '第4季度', value: 4 }
+  { title: '第1季度',title:'Quarter I', value: 1 },
+  { title: '第2季度',title:'Quarter II', value: 2 },
+  { title: '第3季度',title:'Quarter III', value: 3 },
+  { title: '第4季度',title:'Quarter IV', value: 4 }
 ];
 const years = [
   { title: '2021', value: 2021 },
@@ -215,6 +244,8 @@ class AnnualLeaveManage extends React.Component {
   menus = [
     {
       title: '年初创建',
+      titleEn:'Gain This Year',
+      tipEn:"At the beginning of each year, the system will evenly allocate this year's annual leave to four quarters. The first three quarters will increase by 0.5 according to the average allocation value (for example, 1.3 becomes 1.5; 1.6 becomes 2). The amount of annual leave allocated in the fourth quarter is equal to the total amount of annual leave minus the sum of 0.5 in the first three quarters.",
       tip:
         '每年年初，系统会将今年的年假平均分配给四个季度。前三个季度会根据平均分配值向上进0.5（例：1.3变成1.5;1.6变成2），第四季度分配到的年假数量等同于总年假数量扣除前三个季度进0.5的年假数量之和后的数值。',
       render: () => {
@@ -229,7 +260,9 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
+      titleEn:'Balance of Year',
       title: '系统上年结转',
+      tipEN:'At the end of each year, the remaining annual leave of the current year will be transferred out and transferred into the next year. Every year, the system will transfer the remaining annual leave of the previous year to the current year',
       tip:
         '每年年末将当年剩余年假转出，移入下一年。每年系统将会把上年剩余的年假转入当年',
       render: () => {
@@ -244,7 +277,9 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
+      titleEn:'Gain of Entry',
       title: '入职分配',
+      tipEN:'The value of the annual leave allocated to employees when they are employed is equal to the remaining service days of employees in the current year divided by 365 times the annual leave due to their corresponding social service years',
       tip:
         '员工入职时分配的年假，其数值等同于当年员工剩余服务天数除以365乘以对应社会工龄应得年假后取整的值。',
       render: () => {
@@ -259,7 +294,9 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
+      titleEn:'Balance of Quarter',
       title: '季度结转',
+      tipEN:'Quarterly transfer in is the available annual leave transferred in from the previous quarter. Quarterly transfer out is to transfer all available annual leave of a quarter to the next quarter.',
       tip:
         '季度转入是由上季度转入的可用年假。季度转出是将季度的可用年假全部转到下个季度。',
       render: () => {
@@ -275,6 +312,8 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '上年年假结转清零',
+      titleEn:'Clear',
+      tipEN:'On July 1 of each year, the system will clear the unused annual leave of the previous year',
       tip: '每年7月1日，系统将会清空上年未使用的年假。',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
@@ -289,6 +328,8 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '社保新增月份',
+      titleEn:'Modify Social Security',
+      tipEn:'When the length of social service of the employees after 2021 changes, resulting in an increase in the number of available annual leave, the system will evenly allocate these annual leave to the remaining quarters of the current year. Except for the last quarter, the number of annual leave actually allocated in all quarters is 0.5 (for example, 1.3 becomes 1.5 and 1.6 becomes 2). The number of annual leave allocated in the last quarter is equal to the sum of the number of newly added annual leave minus the number of annual leave actually allocated in the quarter in which the remaining annual leave should be allocated.',
       tip:
         '当2021年后入职的员工的社会工龄发生了变化导致可用年假数量增加的场合，系统会将这些年假平均分配给当年剩余季度。除最后一个季度外，所有季度实际分配到的年假数量是平均数进0.5（例：1.3变成1.5，1.6变成2）。最后一个季度分配到的年假数量等同于新增年假数量扣除自己以外应当分配剩余年假的季度所实际分配到的年假数量之和后的数值。',
       render: () => {
@@ -317,7 +358,9 @@ class AnnualLeaveManage extends React.Component {
     //   }
     // },
     {
+      titleEn:'Justify Used',
       title: '年假使用调整',
+      tipEn:'The administrator added or deducted the use information of annual leave according to the actual situation.',
       tip: '管理员根据实际情况增加或扣除了年假使用信息。',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
@@ -331,7 +374,9 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
+      titleEn:'Justify Balance of Quarter',
       title: '调整季度剩余',
+      tipEn:'The administrator increased or deducted the remaining annual leave of the previous year according to the actual situation.',
       tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
@@ -345,7 +390,9 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
+      titleEn:'Justify Balance of Year',
       title: '调整上年剩余',
+      tipEn:'The administrator increased or deducted the remaining annual leave of the previous year according to the actual situation.',
       tip: '管理员根据实际情况增加或扣除了上年剩余年假。',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
@@ -360,6 +407,8 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '年假查询',
+      titleEn:'Query',
+      tipEn:'Query annual leave details',
       tip: '查询年假具体信息',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
@@ -372,7 +421,9 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
+      titleEn:'Social Security(before 2021)',
       title: '老员工社保信息查询',
+      tipEn:'Tips for social security information query of old employees',
       tip: '老员工社保信息查询提示',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
@@ -386,8 +437,10 @@ class AnnualLeaveManage extends React.Component {
       }
     },
     {
+      titleEn:'Social Security(after 2021)',
       title: '新员工社保信息维护',
       tip: '新员工社保信息维护提示',
+      tipEn:'Tips for maintaining social security information of new employees',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
         return (
@@ -401,7 +454,9 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '年假每月使用明细',
+      titleEn:'Details of Used Annual Leave',
       tip: '考勤月度结算提示',
+      tipEn:'Details of Used Annual Leave',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
         return (
@@ -414,7 +469,9 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '季度结算报错信息',
+      titleEn:'Errors',
       tip: '季度结算报错信息提示',
+      tipEn:'Errors',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
         return (
@@ -427,7 +484,9 @@ class AnnualLeaveManage extends React.Component {
     },
     {
       title: '年假台账管理',
+      titleEn:'Annual Leave Account',
       tip: '年假台账管理',
+      tipEn:'Annual Leave Account',
       render: () => {
         const { baseURL, baseURLFromAppConfig } = this.props;
         return (
@@ -599,22 +658,22 @@ class AnnualLeaveManage extends React.Component {
             }}
           >
             <Menu.Item key="年假台账管理">
-              <div className="menu-item__body">年假台账管理</div>
+              <div className="menu-item__body">{getIntlVal(this.props.intl.locale,'Annual Leave Account','年假台账管理')}</div>
             </Menu.Item>
-            <SubMenu key="submenu1" title="交易明细">
-              <SubMenu key="submenu2" title="系统行为">
+            <SubMenu key="submenu1" title={getIntlVal(this.props.intl.locale,'Transaction Details','交易明细')}>
+              <SubMenu key="submenu2" title={getIntlVal(this.props.intl.locale,'System Behavior',"系统行为")}>
                 {this.menus.map((menu, index) => {
                   if (index < 6) {
                     return (
                       <Menu.Item key={menu.title}>
                         <div className="menu-item__body">
-                          {menu.title}
+                          {getIntlVal(this.props.intl.locale,menu.titleEn,menu.title)}
                           {selectedKeys[0] === menu.title && (
                             <span
                               onClick={() => {
                                 Modal.info({
-                                  title: '提示',
-                                  content: menu.tip
+                                  title: getIntlVal(this.props.intl.locale,'Tips','提示'),
+                                  content: getIntlVal(this.props.intl.locale,menu.tipEn,menu.tip)
                                 });
                               }}
                               className="menu-item-tip-container"
@@ -632,19 +691,19 @@ class AnnualLeaveManage extends React.Component {
                   }
                 })}
               </SubMenu>
-              <SubMenu key="submenu3" title="日常维护">
+              <SubMenu key="submenu3" title={getIntlVal(this.props.intl.locale,"Maintenance","日常维护")}>
                 {this.menus.map((menu, index) => {
                   if (index >= 6 && index < 9) {
                     return (
                       <Menu.Item key={menu.title}>
                         <div className="menu-item__body">
-                          {menu.title}
+                        {getIntlVal(this.props.intl.locale,menu.titleEn,menu.title)}
                           {selectedKeys[0] === menu.title && (
                             <span
                               onClick={() => {
                                 Modal.info({
-                                  title: '提示',
-                                  content: menu.tip
+                                  title: getIntlVal(this.props.intl.locale,'Tips','提示'),
+                                  content: getIntlVal(this.props.intl.locale,menu.tipEn,menu.tip)
                                 });
                               }}
                               className="menu-item-tip-container"
@@ -668,13 +727,13 @@ class AnnualLeaveManage extends React.Component {
                 return menu.title === '年假台账管理' ? null : (
                   <Menu.Item key={menu.title}>
                     <div className="menu-item__body">
-                      {menu.title}
+                    {getIntlVal(this.props.intl.locale,menu.titleEn,menu.title)}
                       {/* {selectedKeys[0] === menu.title && (
                       <span
                         onClick={() => {
                           Modal.info({
-                            title: '提示',
-                            content: menu.tip
+                            title: getIntlVal(this.props.intl.locale,'Tips','提示'),
+                            content: getIntlVal(this.props.intl.locale,menu.tipEn,menu.tip)
                           });
                         }}
                         className="menu-item-tip-container"
@@ -690,7 +749,7 @@ class AnnualLeaveManage extends React.Component {
             {selectedMenu.render()}
           </div>
           <Modal
-            title="选择季度"
+            title= {getIntlVal(this.props.intl.locale,'Choose Quarter','选择季度')}
             visible={this.state.selectQuarterModal}
             onCancel={() => {
               this.setState({
@@ -718,7 +777,7 @@ class AnnualLeaveManage extends React.Component {
               {quarters.map(quarter => {
                 return (
                   <Select.Option value={quarter.value}>
-                    {quarter.title}
+                    {getIntlVal(this.props.intl.locale,quarter.titleEn,quarter.title)}
                   </Select.Option>
                 );
               })}
@@ -816,10 +875,10 @@ class NianChuChuangJian extends React.PureComponent {
           type="primary"
           size="small"
         >
-          添加人员
+          {localStorage.getItem('language')==='中文'?'添加人员':'Add'}
         </Button>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>财年：</span>
+          <span>{localStorage.getItem('language')==='中文'?'财年：':'Financial Year：'}</span>
           <Select
             size="small"
             style={{ width: 120 }}
@@ -847,7 +906,7 @@ class NianChuChuangJian extends React.PureComponent {
           </Select>
         </div>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>年假计算规则：</span>
+        <span>{localStorage.getItem('language')==='中文'?'年假计算规则：':'Rule：'}</span>
           <Select
             value={selectedCalculationRule}
             onChange={v => {
@@ -865,8 +924,8 @@ class NianChuChuangJian extends React.PureComponent {
             size="small"
             style={{ width: 120 }}
           >
-            <Select.Option value="old">老员工</Select.Option>
-            <Select.Option value="new">新员工</Select.Option>
+            <Select.Option value="old">{localStorage.getItem('language')==='中文'?'老员工':'Before 2021'}</Select.Option>
+            <Select.Option value="new">{localStorage.getItem('language')==='中文'?'新员工':'After 2021'}</Select.Option>
           </Select>
         </div>
       </div>
@@ -918,7 +977,7 @@ class ShangNianJieZhuan extends React.PureComponent {
     return (
       <div style={{ display: 'flex' }}>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>财年：</span>
+        <span>{localStorage.getItem('language')==='中文'?'财年：':'Financial Year：'}</span>
           <Select
             size="small"
             style={{ width: 120 }}
@@ -999,7 +1058,7 @@ class YueDuXinZeng extends React.PureComponent {
     return (
       <div style={{ display: 'flex' }}>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>财年：</span>
+        <span>{localStorage.getItem('language')==='中文'?'财年：':'Financial Year：'}</span>
           <Select
             size="small"
             style={{ width: 120 }}
@@ -1019,7 +1078,7 @@ class YueDuXinZeng extends React.PureComponent {
           </Select>
         </div>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>季度：</span>
+          <span>{localStorage.getItem('language')==='中文'?'季度：':'Quarter：'}</span>
           <Select
             onChange={v => {
               this.setState({
@@ -1100,7 +1159,7 @@ class YueDuShiYong extends React.PureComponent {
     return (
       <div style={{ display: 'flex' }}>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>财年：</span>
+        <span>{localStorage.getItem('language')==='中文'?'财年：':'Financial Year：'}</span>
           <Select
             size="small"
             style={{ width: 120 }}
@@ -1120,7 +1179,8 @@ class YueDuShiYong extends React.PureComponent {
           </Select>
         </div>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>季度：</span>
+          <span>{localStorage.getItem('language')==='中文'?'季度：':'Quarter：'}</span>
+
           <Select
             onChange={v => {
               this.setState({
@@ -1204,10 +1264,10 @@ class JiDuJieSuan extends React.PureComponent {
           type="primary"
           size="small"
         >
-          添加人员
+          {localStorage.getItem('language')==='中文'?'添加人员':'Add'}
         </Button>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>财年：</span>
+        <span>{localStorage.getItem('language')==='中文'?'财年：':'Financial Year：'}</span>
           <Select
             size="small"
             style={{ width: 120 }}
@@ -1227,7 +1287,8 @@ class JiDuJieSuan extends React.PureComponent {
           </Select>
         </div>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>季度：</span>
+          <span>{localStorage.getItem('language')==='中文'?'季度：':'Quarter：'}</span>
+
           <Select
             value={selectedQuarter}
             onChange={v => {
@@ -1297,7 +1358,7 @@ class RuZhiFenPei extends React.PureComponent {
           type="primary"
           size="small"
         >
-          添加人员
+          {localStorage.getItem('language')==='中文'?'添加人员':'Add'}
         </Button>
       </div>
     );
@@ -1350,7 +1411,7 @@ class NianJiaShiYong extends React.PureComponent {
     return (
       <div style={{ display: 'flex' }}>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>财年：</span>
+        <span>{localStorage.getItem('language')==='中文'?'财年：':'Financial Year：'}</span>
           <Select
             size="small"
             style={{ width: 120 }}
@@ -1370,7 +1431,8 @@ class NianJiaShiYong extends React.PureComponent {
           </Select>
         </div>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>季度：</span>
+          <span>{localStorage.getItem('language')==='中文'?'季度：':'Quarter：'}</span>
+
           <Select
             value={selectedQuarter}
             onChange={v => {
@@ -1448,7 +1510,7 @@ class JiDuFenPei extends React.PureComponent {
     return (
       <div style={{ display: 'flex' }}>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>财年：</span>
+        <span>{localStorage.getItem('language')==='中文'?'财年：':'Financial Year：'}</span>
           <Select
             size="small"
             style={{ width: 120 }}
@@ -1468,7 +1530,8 @@ class JiDuFenPei extends React.PureComponent {
           </Select>
         </div>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>季度：</span>
+          <span>{localStorage.getItem('language')==='中文'?'季度：':'Quarter：'}</span>
+
           <Select
             value={selectedQuarter}
             onChange={v => {
@@ -1565,7 +1628,8 @@ class ShengYuQingLing extends React.PureComponent {
           </Select>
         </div>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>季度：</span>
+          <span>{localStorage.getItem('language')==='中文'?'季度：':'Quarter：'}</span>
+
           <Select
             value={selectedQuarter}
             onChange={v => {
@@ -1589,7 +1653,7 @@ class ShengYuQingLing extends React.PureComponent {
           type="primary"
           size="small"
         >
-          剩余清零
+                    <span>{localStorage.getItem('language')==='中文'?'剩余清零':'Clear'}</span>
         </Button>
       </div>
     );
@@ -1642,7 +1706,7 @@ class ShangNianShengYu extends React.PureComponent {
     return (
       <div style={{ display: 'flex' }}>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>财年：</span>
+        <span>{localStorage.getItem('language')==='中文'?'财年：':'Financial Year：'}</span>
           <Select
             size="small"
             style={{ width: 120 }}
@@ -1662,7 +1726,8 @@ class ShangNianShengYu extends React.PureComponent {
           </Select>
         </div>
         <div style={{ marginRight: 12, marginLeft: 35 }}>
-          <span>季度：</span>
+          <span>{localStorage.getItem('language')==='中文'?'季度：':'Quarter：'}</span>
+
           <Select
             value={selectedQuarter}
             onChange={v => {
@@ -1909,7 +1974,9 @@ class NianJiaGaiLan extends React.PureComponent {
     });
   };
   actionBarExtra = () => {
-    return <Button onClick={() => { this.setState({ isShowModal: true }, this.handleNotice) }} size="small" type="primary">同步全部人员</Button>
+    return <Button onClick={() => { this.setState({ isShowModal: true }, this.handleNotice) }} size="small" type="primary">
+      {localStorage.getItem('language')==='中文'?'同步全部人员':'Sync All'}
+    </Button>
   }
   /**
    * 进度条
@@ -2093,7 +2160,7 @@ class NianJiaGaiLan extends React.PureComponent {
 
         <div className="subdata">
           <Tabs defaultActiveKey="1" tabPosition="left">
-            <TabPane tab="上年剩余调整" key="1">
+            <TabPane tab={localStorage.getItem('language')==='中文'?"上年剩余调整":'Justify Balance Last Year'} key="1">
               <div className="outer">
                 <TableData
                   key="ShangNianShengYu"
@@ -2122,7 +2189,7 @@ class NianJiaGaiLan extends React.PureComponent {
                 />
               </div>
             </TabPane>
-            <TabPane tab="每月使用调整" key="2">
+            <TabPane tab={localStorage.getItem('language')==='中文'?"每月使用调整":'Justify Using Every Month'} key="2">
               <div className="outer">
                 <TableData
                   key="NianJiaShiYong"
@@ -2151,7 +2218,7 @@ class NianJiaGaiLan extends React.PureComponent {
                 />
               </div>
             </TabPane>
-            <TabPane tab="季度分配调整" key="3">
+            <TabPane tab={localStorage.getItem('language')==='中文'?"季度分配调整":'Justify Gain of Quarters'} key="3">
               <div className="outer">
                 <TableData
                   key="JiDuFenPei"
@@ -2641,17 +2708,17 @@ class NianJiaChaXun extends React.PureComponent {
       <div style={styles.nianJiaChaXun}>
         <div style={styles.header}>
           <div style={{ marginRight: 12 }}>
-            姓名：{selectedEmpolyee ? selectedEmpolyee.label : '未选择员工'}
+            {(localStorage.getItem('language')==='中文'?'姓名':'Name')}：{selectedEmpolyee ? selectedEmpolyee.label : (localStorage.getItem('language')==='中文'?'未选择员工':'N/A')}
           </div>
           <div style={{ marginRight: 12 }}>
-            工号：{selectedEmpolyee ? selectedEmpolyee.key : '未选择员工'}
+            {(localStorage.getItem('language')==='中文'?'工号':'Job No.')}：{selectedEmpolyee ? selectedEmpolyee.key :(localStorage.getItem('language')==='中文'?'未选择员工':'N/A')}
           </div>
           <Select
             size="small"
             labelInValue
             showSearch
             value={selectedEmpolyee}
-            placeholder="搜索员工"
+            placeholder={(localStorage.getItem('language')==='中文'?'搜索员工':'Input Name/Job No.')}
             notFoundContent={fetching ? <Spin size="small" /> : null}
             filterOption={false}
             onSearch={this.fetchUser}
@@ -2833,7 +2900,7 @@ class NianJiaChaXun extends React.PureComponent {
     );
   }
 }
-export default AnnualLeaveManage;
+export default injectIntl(AnnualLeaveManage);
 
 //拼接表的数据来源（80后台）： 424537954415
 // 表 662169346288 里面的员工姓名、工号、四个季度的当季分配余额、四个季度的剩余可用年假。

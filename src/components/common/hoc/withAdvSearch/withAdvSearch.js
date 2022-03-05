@@ -42,11 +42,11 @@ class Search extends React.Component {
     } else {
       tabsArr = [
         {
-          title: '自定义搜索',
+          title: localStorage.getItem('language'==='中文')?'自定义搜索':'Custom Search',
           name: 'PwForm'
         },
         {
-          title: '高级搜索',
+          title: localStorage.getItem('language'==='中文')?'高级搜索':'Advanced Search',
           name: 'AdvSearch'
         }
       ];
@@ -103,7 +103,7 @@ class Search extends React.Component {
         />
       );
     } else {
-      return <div>searchComponent 配置有误</div>;
+      return <div>searchComponent {localStorage.getItem('language'==='中文')?'配置有误':'error'}</div>;
     }
   }
 }
@@ -273,7 +273,7 @@ const withAdvSearch = (options = {}) => {
       handleGetPwFormCmsWhere = form => {
         form.validateFields((err, values) => {
           if (err) {
-            return message.error('表单数据有误');
+            return message.error(localStorage.getItem('language'==='中文'?'表单数据有误':'error'));
           }
           const formData = dealFormData(values);
           const cmsWhere = getCmsWhere(formData);

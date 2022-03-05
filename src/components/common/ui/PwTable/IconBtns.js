@@ -12,7 +12,8 @@ import {
 import IconWithTooltip from '../IconWithTooltip';
 import memoizeOne from 'memoize-one';
 import { debounce } from 'lodash';
-
+import { injectIntl } from 'react-intl';
+import { getIntlVal } from 'Util20/util';
 const iconSizeMap = {
   large: 20,
   middle: 18,
@@ -22,7 +23,7 @@ const iconSizeMap = {
 /**
  * 字体图标按钮
  */
-export default class IconBtns extends React.PureComponent {
+class IconBtns extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -131,7 +132,7 @@ export default class IconBtns extends React.PureComponent {
     });
 
     if (!downloadColumns.length) {
-      return message.error('您还未选择列');
+      return message.error(getIntlVal(this.props.intl.locale,'Please select a column.','您还未选择列'));
     }
 
     onDownload && onDownload(downloadColumns);
@@ -172,7 +173,9 @@ export default class IconBtns extends React.PureComponent {
           <Tooltip
             className="pw-table__header-icon"
             placement="top"
-            title={isShowGrid ? '表格数据' : '统计分析'}
+            title={isShowGrid ? 
+              getIntlVal(this.props.intl.locale,'Data','表格数据') : 
+              getIntlVal(this.props.intl.locale,'Analysis','统计分析')}
             onClick={onStatisticalAnalysis}
           >
             <Icon
@@ -196,16 +199,16 @@ export default class IconBtns extends React.PureComponent {
             overlay={
               <Menu>
                 <Menu.Item onClick={this.handleDownloadAll}>
-                  导出全部列
+                  {getIntlVal(this.props.intl.locale,'Export All Columns','导出全部列')}
                 </Menu.Item>
-                <Menu.SubMenu title="导出指定列">
+                <Menu.SubMenu title={getIntlVal(this.props.intl.locale,'Export Designated Columns','导出指定列')}>
                   <div className="pw-table__columns-wrapper">
                     <Input
-                      placeholder="输入关键字搜索表格列名"
+                      placeholder={getIntlVal(this.props.intl.locale,"Input Keywords","输入关键字搜索表格列名")}
                       value={columnValue}
                       onChange={this.handleColumnValueChange}
                     ></Input>
-                    <div className="pw-table__columns-title">请勾选导出项</div>
+                    <div className="pw-table__columns-title">{getIntlVal(this.props.intl.locale,'Please checkout items to be exported','请勾选导出项')}</div>
 
                     <div className="pw-table__columns">
                       {showColumns.length === columns.length && (
@@ -216,7 +219,7 @@ export default class IconBtns extends React.PureComponent {
                             onChange={this.handleCheckAllChange}
                           ></Checkbox>
                           <div className="pw-table__columns-item-title">
-                            全选
+                          {getIntlVal(this.props.intl.locale,'Select All','全选')}
                           </div>
                         </label>
                       )}
@@ -245,7 +248,7 @@ export default class IconBtns extends React.PureComponent {
 
                         {!showColumns.length && (
                           <div className="pw-table__columns-no-data">
-                            无数据
+                           {getIntlVal(this.props.intl.locale,'No Data','无数据')}
                           </div>
                         )}
                       </div>
@@ -257,7 +260,7 @@ export default class IconBtns extends React.PureComponent {
                         type="primary"
                         onClick={this.handleDownloadPart}
                       >
-                        确认
+                        {getIntlVal(this.props.intl.locale,'OK','确认')}
                       </Button>
                     </div>
                   </div>
@@ -275,7 +278,7 @@ export default class IconBtns extends React.PureComponent {
         {hasRefresh && (
           <IconWithTooltip
             className="pw-table__header-icon"
-            tip="刷新"
+            tip={getIntlVal(this.props.intl.locale,'Refresh',"刷新")}
             iconClass="icon-refresh"
             onClick={onRefresh}
             style={{ fontSize: iconSizeMap[size] }}
@@ -284,7 +287,7 @@ export default class IconBtns extends React.PureComponent {
         {hasAdvSearch && (
           <IconWithTooltip
             className="pw-table__header-icon"
-            tip="高级搜索"
+            tip={getIntlVal(this.props.intl.locale,'Advanced Search',"高级搜索")}
             iconClass="icon-adv-search"
             onClick={onAdvSearch}
             style={{ fontSize: iconSizeMap[size] }}
@@ -293,7 +296,7 @@ export default class IconBtns extends React.PureComponent {
         {hasZoomInOut && zoomStatus === 0 && (
           <IconWithTooltip
             className="pw-table__header-icon"
-            tip="放大"
+            tip={getIntlVal(this.props.intl.locale,'Enlarge',"放大")}
             iconClass="icon-scale-max"
             onClick={onZoomIn}
             style={{ fontSize: iconSizeMap[size] }}
@@ -302,7 +305,7 @@ export default class IconBtns extends React.PureComponent {
         {hasZoomInOut && zoomStatus === 1 && (
           <IconWithTooltip
             className="pw-table__header-icon"
-            tip="缩小"
+            tip={getIntlVal(this.props.intl.locale,'Shrink',"缩小")}
             iconClass="icon-scale-normal"
             onClick={onZoomOut}
             style={{ fontSize: iconSizeMap[size] }}
@@ -312,3 +315,4 @@ export default class IconBtns extends React.PureComponent {
     );
   }
 }
+export default injectIntl(IconBtns);

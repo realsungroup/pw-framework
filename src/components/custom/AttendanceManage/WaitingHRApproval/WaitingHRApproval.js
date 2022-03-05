@@ -3,7 +3,8 @@ import './WaitingHRApproval.less';
 import TableData from '../../../common/data/TableData';
 import { Button, message, Popconfirm } from 'antd';
 import http from 'Util20/api';
-
+import { injectIntl } from 'react-intl';
+import { getIntlVal } from 'Util20/util';
 /*
  *待HR审批
  */
@@ -21,10 +22,10 @@ class WaitingHRApproval extends React.Component {
   actionBarExtra = record => {
     return (
       <Popconfirm
-        title="确认撤销吗？"
-        onConfirm={() => {
+      title={getIntlVal(this.props.intl.locale,'Are you sure?','确认撤销？')}
+      onConfirm={() => {
           if (!record.selectedRowKeys.length) {
-            return message.error('请选择一条记录');
+            return message.error(getIntlVal(this.props.intl.locale,'Select One Record','请选择一条记录'));
           }
           let selectedRecords = record.selectedRowKeys.map(key => {
             return {
@@ -37,7 +38,7 @@ class WaitingHRApproval extends React.Component {
           this.revocat(selectedRecords);
         }}
       >
-        <Button loading={this.state.revocatting}>撤销</Button>
+          <Button loading={this.state.revocatting}>{getIntlVal(this.props.intl.locale,'Canceled','撤销')}</Button>
       </Popconfirm>
     );
   };
@@ -89,4 +90,4 @@ class WaitingHRApproval extends React.Component {
   }
 }
 
-export default WaitingHRApproval;
+export default injectIntl(WaitingHRApproval);

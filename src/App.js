@@ -126,18 +126,9 @@ class App extends Component {
   };
 
   componentDidMount = async () => {
-    const clipboard = new ClipboardJS('.app__warning-bar-copy');
-    clipboard.on('success', function(e) {
-      message.success('复制成功');
-    });
-
-    clipboard.on('error', function(e) {
-      message.error('复制失败');
-    });
-
-    // 国际化
     let userInfo,
-      language = '中文';
+    language = '中文';
+    // 国际化
     try {
       userInfo = JSON.parse(getItem('userInfo'));
       if (!userInfo) {
@@ -147,14 +138,29 @@ class App extends Component {
         language = userInfo.UserInfo.EMP_LANGUAGE;
       }
     } catch (err) {}
+    const clipboard = new ClipboardJS('.app__warning-bar-copy');
+    clipboard.on('success', function(e) {
+      message.success('复制成功');
+    });
+
+    clipboard.on('error', function(e) {
+      message.error('复制失败');
+    });
+
+    
 
     const { accessToken: accessTokenCheckValue } = this.resolveQueryString();
+    let lan=this.resolveQueryString().language||'中文';
+    if(lan==='en'){
+      lan='English';
+    }
     if (accessTokenCheckValue) {
       let res;
       this.setState({loading: true});
       try {
         res = await http().getUserByAccessToken({
-          accessTokenCheckValue
+          accessTokenCheckValue,
+          language:lan
         });
       } catch (err) {
         console.error(err);
@@ -162,7 +168,16 @@ class App extends Component {
         return message.error(err.message);
       }
       setItem('userInfo', JSON.stringify(res));
-      this.setState({loading: false, canRender: true});
+      setItem('language', lan);
+      let localeAntd = zh_CN_antd;
+      let locale = 'zh',
+        messages = zh_CN;
+      if (lan === 'English') {
+        localeAntd = en_US_antd;
+        locale = 'en';
+        messages = en_US;
+      }
+      this.setState({language:lan,loading: false, canRender: true});
     } else {
       this.setState({
         userInfo,
@@ -170,6 +185,7 @@ class App extends Component {
         canRender: true
       });
     }
+    
   };
 
   handleCloseWarningBar = () => {
@@ -196,7 +212,6 @@ class App extends Component {
       locale = 'en';
       messages = en_US;
     }
-
     return (
       <ErrorBoundary>
         <Provider store={store}>

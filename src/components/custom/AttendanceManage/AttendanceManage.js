@@ -18,6 +18,8 @@ import TableData from '../../common/data/TableData';
 import http from 'Util20/api';
 import qs from 'qs';
 import { injectIntl } from 'react-intl';
+import { getIntlVal } from 'Util20/util';
+
 
 const { SubMenu } = Menu;
 
@@ -29,6 +31,9 @@ const managerApproval = 449442699960;
  * @author 邓铭
  */
 class AttendanceManage extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   state = {
     mode: 'inline',
     theme: 'light',
@@ -295,25 +300,35 @@ class AttendanceManage extends React.Component {
                   title={
                     <span>
                       <span className="attendance-manage_menu__level1">
-                        我的考勤申请单
+                        {getIntlVal(this.props.intl.locale,'My Application','我的考勤申请单')}
+                        
                       </span>
                     </span>
                   }
                 >
-                  <Menu.Item key="sub1-7">考勤申请</Menu.Item>
-                  <Menu.Item key="sub1-1">待HR审核</Menu.Item>
+                  <Menu.Item key="sub1-7"> {getIntlVal(this.props.intl.locale,'Attendance Application','考勤申请')}</Menu.Item>
+                  <Menu.Item key="sub1-1">{getIntlVal(this.props.intl.locale,'Pending-HR','待HR审核')}</Menu.Item>
 
                   <Menu.Item key="sub1-2">
-                    待审批
+                  {getIntlVal(this.props.intl.locale,'Pending','待审批')}
                     <Badge count={notices[waitingApproval]} />
                   </Menu.Item>
                   <Menu.Item key="sub1-3">
-                    审批中
+                  {getIntlVal(this.props.intl.locale,'In Process','审批中')}
                     <Badge count={notices[approvaling]} />
                   </Menu.Item>
-                  <Menu.Item key="sub1-4">已审批</Menu.Item>
-                  <Menu.Item key="sub1-5">已作废</Menu.Item>
-                  <Menu.Item key="sub1-6">已撤销</Menu.Item>
+                  <Menu.Item key="sub1-4">
+                  {getIntlVal(this.props.intl.locale,'Approved','已审批')}
+                    
+                  </Menu.Item>
+                  <Menu.Item key="sub1-5">
+                  {getIntlVal(this.props.intl.locale,'Voided','已作废')}
+                    
+                    </Menu.Item>
+                  <Menu.Item key="sub1-6">
+                  {getIntlVal(this.props.intl.locale,'Canceled','已撤销')}
+
+                    </Menu.Item>
                 </SubMenu>
               )}
               <SubMenu
