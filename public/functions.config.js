@@ -10805,3 +10805,22 @@ window[696080464823] = {
     subtractH: 200
   }
 };
+window[699801732702] = {
+  name: 'TableData', // 组件名称，
+  title: '管理员查看个人自主填报', // 功能模块名称
+  props: {
+    resid: 699801773774,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: false,
+    hasRowSelection:false,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    hasDownload:true,
+    isUseFormDefine: true,
+    subtractH: 200
+  }
+};
