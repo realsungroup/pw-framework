@@ -983,3 +983,9 @@ export const AccessControl = Loadable({
   }
 });
 
+export const NewSignPrint = Loadable({
+  loader: () => import('./NewSignPrint'),
+  loading() {
+    return minLoading;
+  }
+});

@@ -1,0 +1,43 @@
+.SignPrint{
+  height: 100vh;
+  width:100vw;
+  background-color: #ffffff;
+  overflow: hidden;
+  .top{
+    box-sizing: border-box;
+    padding: 0.5rem;
+    border-bottom: 1px solid #e8e8e8;
+    overflow: hidden;
+    .mainSelect{
+      margin-right: 8px;
+      border-right: 1px solid #e8e8e8;
+      padding-right: 8px;
+      float: left;
+    }
+  }
+  .bottom{
+    width: 100vw;
+    overflow: hidden;
+    .right,.left{
+      width:50%;
+      float: left;
+      height: calc(100vh - 38px);
+      h3{
+        display:inline-block;
+        text-align: center;
+        width: 100%;
+        line-height: 2rem;
+      }
+    }
+  }
+  
+  .inner{
+    width:100vw;
+    height:calc(100vh - 60px);
+    padding: 16px;
+    background: #ffffff;
+  }
+  .beforePrint{
+    width:100vw;
+  }
+}
