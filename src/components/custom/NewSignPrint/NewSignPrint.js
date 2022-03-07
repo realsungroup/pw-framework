@@ -152,7 +152,11 @@ class NewSignPrint extends React.Component {
       cmsV:``,
       version:[],
       radioV:'按版本查看',
-      memberID:''
+      memberID:'',
+      isDone:'Y',
+      leave:'All',
+      cmsMember:`isDone = 'Y'`
+      
     };
     this.baseURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.staffComBaseURL;
@@ -180,6 +184,23 @@ class NewSignPrint extends React.Component {
     }catch(e){
       console.log(e.mesage)
     }
+  }
+  setCms=(leave,sign)=>{
+    let cms=``;
+      if(leave==='All'){
+        if(sign){
+         cms=`isDone = '${sign}'`
+        }else{
+          cms=`isnull(isDone,'') = ''`
+        }
+      }else{
+        if(sign){
+          cms=`leaveJob = '${leave}' and isDone = '${sign}'`
+        }else{
+          cms=`leaveJob = '${leave}' and isnull(isDone,'') = ''`
+        }
+      }
+      this.setState({cmsMember:cms});
   }
   componentDidMount(){
     this.getVersion();
@@ -224,7 +245,36 @@ class NewSignPrint extends React.Component {
                  })
                }
               </Select></>
-            :null
+            : <>
+            <label>在职状态：</label>
+            <Select
+                style={{ width: 120}}
+                size="small"
+                value={this.state.leave}
+                onChange={(v)=>{
+                  this.setCms(v,this.state.isDone);
+                  this.setState({leave:v});
+                }}
+              >
+                <Select.Option value={'All'}>全部</Select.Option>
+                 <Select.Option value={'N'}>在职</Select.Option>
+                 <Select.Option value={'Y'}>离职</Select.Option>
+                 
+              </Select>
+              <label style={{marginLeft:8}}>是否签名：</label>
+            <Select
+                style={{ width: 120}}
+                size="small"
+                value={this.state.isDone}
+                onChange={(v)=>{
+                  this.setCms(this.state.leave,v);
+                  this.setState({isDone:v});
+                }}
+              >
+                 <Select.Option value={'Y'}>是</Select.Option>
+                 <Select.Option value={''}>否</Select.Option>
+              </Select>
+              </>
           }
             
             </div>
@@ -272,9 +322,12 @@ class NewSignPrint extends React.Component {
                 <div>
                   <div className='left'>
                       <TableData
-                        resid={609599795438}
+                        resid={699982599557}
                         subtractH={190}
+                        cmswhere={this.state.cmsMember}
                         hasAdd={false}
+                        baseURL={this.baseURL}
+                      downloadBaseURL={this.dlEmployDownloadURL}
                         hasRowView={false}
                         hasRowDelete={false}
                         hasRowEdit={false}
@@ -286,7 +339,7 @@ class NewSignPrint extends React.Component {
                         hasDownload={false}
                         onRowClick={
                           (v)=>{
-                            this.setState({memberID:v.C3_227192472953})
+                            this.setState({memberID:v.jobId})
                           }
                         }
                       />
