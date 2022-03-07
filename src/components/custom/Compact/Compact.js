@@ -203,6 +203,13 @@ const filterType = [
       }]
   }
 ]
+const filterDenied=[{
+    value:'被上级拒绝续签',
+    resid:'699959739037'
+},{
+    value:'员工拒绝续签',
+    resid:'527867772111'
+}]
 class Compact extends Component {
   constructor(props) {
     super(props);
@@ -214,9 +221,11 @@ class Compact extends Component {
       ke2: '_0B',
       key3: '_03A',
       key4: '_03B',
+      keyD:'_0D',
       residTab3: '668709373267',
       residTab1: '440237518278',
       residTab2: '640264082868',
+      residD:'699959739037',
       cms: `C3_532015901062 != 'N' and C3_532015901062 != 'Y' and C3_532015785778 = '${jobId}'`,
       cms2: `C3_640119278050= 'DL'`,
       selectedPerson: {},
@@ -451,7 +460,9 @@ class Compact extends Component {
       signingVisible,
       selectedPersons,
       key1,
-      signingLoading
+      keyD,
+      signingLoading,
+      residD
     } = this.state;
     return (
       <div className="Compact">
@@ -1109,7 +1120,52 @@ class Compact extends Component {
               ) : null}
             </div>
           </TabPane>
-
+          <TabPane
+            tab="已拒绝续签合同"
+            key="4"
+            style={{ width: '100%', height: 'calc(100vh - 64px)' }}
+          >
+             <div className="filterLine">
+              {filterDenied.map((item, key) => {
+                return (
+                  <span
+                    className={
+                      keyD == '_' + key + 'D' ? 'filter current' : 'filter'
+                    }
+                    key={'_' + key + 'D'}
+                    onClick={() => {
+                      this.setState({
+                        keyD: '_' + key + 'D',
+                        residD: item.resid,
+                      });
+                    }}
+                  >
+                    {item.value}
+                  </span>
+                );
+              })}
+            </div>
+            <div style={{ height: '80vh' }}>
+            <TableData
+              resid={residD}
+              subtractH={220}
+              isUseBESize={true}
+              // tableComponent="ag-grid"
+              // sideBarAg={true}
+              hasAdvSearch={false}
+              hasAdd={false}
+              hasRowView={true}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasRowModify={false}
+              hasDelete={false}
+              hasModify={false}
+              recordFormUseAbsolute={true}
+              hasBeBtns={false}
+              hasRowSelection={false}
+            />
+          </div>
+          </TabPane>
           {/* <TabPane
           // forceRender={true}
 
