@@ -10556,3 +10556,9 @@ window[691346156968] = {
     props: {
     }
 };
+window[699972467748] = {
+    name: 'NewSignPrint',
+    title: '新版隐私协定管理',
+    props: {
+    }
+};

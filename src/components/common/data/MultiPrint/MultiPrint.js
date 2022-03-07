@@ -56,6 +56,7 @@ class MultiPrint extends React.Component {
         <TableData
           resid={this.props.resid}
           baseURL={this.props.baseURL}
+          cmswhere={this.props.cmswhere||``}
           downloadBaseURL={this.props.downloadBaseURL}
           subtractH={240}
           hasBeBtns={true}
