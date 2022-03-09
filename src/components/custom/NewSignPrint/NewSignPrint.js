@@ -228,7 +228,7 @@ class NewSignPrint extends React.Component {
             <>
             <label>版本号：</label>
             <Select
-                style={{ width: 120}}
+                style={{ width: 200}}
                 size="small"
                 value={this.state.cmsV}
                 onChange={(v)=>{
@@ -240,7 +240,7 @@ class NewSignPrint extends React.Component {
                {
                  this.state.version.map(item=>{
                    return(
-                    <Select.Option value={item.verName}>{item.verName}</Select.Option>
+                    <Select.Option value={item.verName}>{item.verName} / {item.actiDate}</Select.Option>
                    )
                  })
                }
@@ -313,6 +313,7 @@ class NewSignPrint extends React.Component {
                         hasRowModify={false}
                         hasRowSelection={false}
                         hasAdvSearch={false}
+                        hasBeBtns={true}
                       />
                     </div>
                   </TabPane>
@@ -327,11 +328,12 @@ class NewSignPrint extends React.Component {
                         cmswhere={this.state.cmsMember}
                         hasAdd={false}
                         baseURL={this.baseURL}
-                      downloadBaseURL={this.dlEmployDownloadURL}
+                        downloadBaseURL={this.dlEmployDownloadURL}
                         hasRowView={false}
                         hasRowDelete={false}
                         hasRowEdit={false}
                         hasDelete={false}
+                        hasBeBtns={true}
                         hasModify={false}
                         hasRowModify={false}
                         hasRowSelection={false}
@@ -360,6 +362,7 @@ class NewSignPrint extends React.Component {
                       hasModify={false}
                       hasRowModify={false}
                       hasRowSelection={false}
+                      hasBeBtns={true}
                       hasAdvSearch={false}
                       hasImport={false}
                     />:<h3>为了查看某个员工所有的隐私协议签字情况，请先点击左边表格内需要查看的人员的记录。</h3>
