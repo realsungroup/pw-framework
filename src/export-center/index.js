@@ -196,5 +196,8 @@ export {
   OfficeSupply,
   ShVisit,
   AccessControl,
-  NewSignPrint
+  NewSignPrint,
+  ShVisitApprove,
+  ShVisitManager
+
 } from '../components/custom/loadableCustom';

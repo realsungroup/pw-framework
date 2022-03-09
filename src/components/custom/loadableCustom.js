@@ -989,3 +989,15 @@ export const NewSignPrint = Loadable({
     return minLoading;
   }
 });
+export const ShVisitApprove = Loadable({
+  loader: () => import('./ShVisitApprove'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ShVisitManager = Loadable({
+  loader: () => import('./ShVisitManager'),
+  loading() {
+    return minLoading;
+  }
+});

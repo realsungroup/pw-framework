@@ -10408,92 +10408,103 @@ window[687629239980] = {
     choosePeopleResid: 678368669087
   }
 };
+// window[687976347225] = {
+//   name: 'TabsTableData',
+//   title: '上海访客审批',
+//   props: [
+//     [
+//       {
+//         resid: 687801974358,
+//         TabsTitle: '未审批',
+//         recordFormUseAbsolute: true,
+//         recordFormFormWidth: '90%',
+//         hasBeBtns: true,
+//         hasModify: false,
+//         hasDelete: false,
+//         hasAdd: false,
+//         hasRowDelete: false,
+//         hasRowModify: false,
+//         hasRowView: true,
+//         subtractH: 220
+//       },
+//       {
+//         resid: 687823032125,
+//         recordFormUseAbsolute: true,
+//         TabsTitle: '已审批',
+//         recordFormFormWidth: '90%',
+//         hasBeBtns: true,
+//         hasModify: false,
+//         hasDelete: false,
+//         hasAdd: false,
+//         hasRowDelete: false,
+//         hasRowModify: false,
+//         hasRowView: false,
+//         subtractH: 220
+//       }
+//     ]
+//   ]
+// };
 window[687976347225] = {
-  name: 'TabsTableData',
-  title: '上海访客审批',
-  props: [
-    [
-      {
-        resid: 687801974358,
-        TabsTitle: '未审批',
-        recordFormUseAbsolute: true,
-        recordFormFormWidth: '90%',
-        hasBeBtns: true,
-        hasModify: false,
-        hasDelete: false,
-        hasAdd: false,
-        hasRowDelete: false,
-        hasRowModify: false,
-        hasRowView: true,
-        subtractH: 220
-      },
-      {
-        resid: 687823032125,
-        recordFormUseAbsolute: true,
-        TabsTitle: '已审批',
-        recordFormFormWidth: '90%',
-        hasBeBtns: true,
-        hasModify: false,
-        hasDelete: false,
-        hasAdd: false,
-        hasRowDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        subtractH: 220
-      }
+    name: 'ShVisitApprove',
+    title: '上海访客审批',
+    props: [
+      
     ]
-  ]
-};
+  };
 window[687976386945] = {
-  name: 'TabsTableData',
+  name: 'ShVisitManager',
   title: '上海访客前台登记',
-  props: [
-    [
-      {
-        resid: 687801999108,
-        recordFormUseAbsolute: true,
-        TabsTitle: '全部',
-        recordFormFormWidth: '90%',
-        hasBeBtns: true,
-        hasModify: false,
-        hasDelete: false,
-        hasAdd: false,
-        hasRowDelete: false,
-        hasRowModify: false,
-        hasRowView: true,
-        subtractH: 220
-      },
-      {
-        resid: 687823076582,
-        recordFormUseAbsolute: true,
-        TabsTitle: '访问中',
-        recordFormFormWidth: '90%',
-        hasBeBtns: true,
-        hasModify: false,
-        hasDelete: false,
-        hasAdd: false,
-        hasRowDelete: false,
-        hasRowModify: false,
-        hasRowView: true,
-        subtractH: 220
-      },
-      {
-        resid: 687823090661,
-        recordFormUseAbsolute: true,
-        TabsTitle: '访问结束',
-        recordFormFormWidth: '90%',
-        hasBeBtns: true,
-        hasModify: false,
-        hasDelete: false,
-        hasAdd: false,
-        hasRowDelete: false,
-        hasRowModify: false,
-        hasRowView: false,
-        subtractH: 220
-      }
-    ]
-  ]
-};
+  props: []}
+// window[687976386945] = {
+//   name: 'TabsTableData',
+//   title: '上海访客前台登记',
+//   props: [
+//     [
+//       {
+//         resid: 687801999108,
+//         recordFormUseAbsolute: true,
+//         TabsTitle: '全部',
+//         recordFormFormWidth: '90%',
+//         hasBeBtns: true,
+//         hasModify: false,
+//         hasDelete: false,
+//         hasAdd: false,
+//         hasRowDelete: false,
+//         hasRowModify: false,
+//         hasRowView: true,
+//         subtractH: 220
+//       },
+//       {
+//         resid: 687823076582,
+//         recordFormUseAbsolute: true,
+//         TabsTitle: '访问中',
+//         recordFormFormWidth: '90%',
+//         hasBeBtns: true,
+//         hasModify: false,
+//         hasDelete: false,
+//         hasAdd: false,
+//         hasRowDelete: false,
+//         hasRowModify: false,
+//         hasRowView: true,
+//         subtractH: 220
+//       },
+//       {
+//         resid: 687823090661,
+//         recordFormUseAbsolute: true,
+//         TabsTitle: '访问结束',
+//         recordFormFormWidth: '90%',
+//         hasBeBtns: true,
+//         hasModify: false,
+//         hasDelete: false,
+//         hasAdd: false,
+//         hasRowDelete: false,
+//         hasRowModify: false,
+//         hasRowView: false,
+//         subtractH: 220
+//       }
+//     ]
+//   ]
+// };
 window[690562274466] = {
   name: 'TabsTableData',
   title: '行政审批',
