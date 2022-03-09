@@ -31,6 +31,7 @@ export default class ShVisitApprove extends Component {
           hasRowModify={false}
           hasModify={false}
           hasDelete={false}
+          hasBeBtns={true}
           subtractH={175}
           hasRowView={true}
           customRowBtns={[
@@ -73,6 +74,7 @@ export default class ShVisitApprove extends Component {
           hasAdd={false}
           hasRowDelete={false}
           hasRowModify={false}
+          hasBeBtns={true}
           hasModify={false}
           hasDelete={false}
           subtractH={175}

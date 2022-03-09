@@ -869,6 +869,42 @@ export default class ShVisit extends Component {
           </div>
         </Modal>
         <Modal
+          visible={this.state.showModalModule}
+          width={'80vw'}
+          title={'模板下载'}
+          onCancel={() => {
+            this.setState({ showModalModule: false });
+          }}
+          footer={null}
+        >
+          <div style={{ height: '70vh' }}>
+            <TableData
+              resid={700158571490}
+              hasRowView={false}
+              hasAdd={false}
+              hasRowDelete={false}
+              hasRowModify={false}
+              hasModify={false}
+              hasDelete={false}
+              hasRowView={false}
+              subtractH={175}
+              customRowBtns={[
+                record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        window.open(record.fileUrl)
+                      }}
+                    >
+                      下载
+                    </Button>
+                  );
+                }
+              ]}
+            />
+          </div>
+        </Modal>
+        <Modal
           visible={this.state.visible}
           width={'80vw'}
           title={this.state.type == 'normal' ? '申请一般访客' : '申请VIP访客'}
@@ -895,11 +931,14 @@ export default class ShVisit extends Component {
           <div className="formfield">
             <Spin spinning={this.state.loading}>
               <div className='moduleLine'>
-                <Button onClick={()=>{}} type={'normal'}>查看申请文件模板</Button>
-                <b style={{color:'#f5222d'}}>*</b>上传来访人员信息表（仅疫情期间）：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,1) }}/>
-                <b style={{color:'#f5222d'}}>*</b>上传访客绿码：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,2) }}/>
-                <b style={{color:'#f5222d'}}>*</b>上传行动轨迹：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,3) }}/>
-              </div>
+                <Button onClick={()=>{this.setState({showModalModule:true})}} type={'normal'}>查看申请文件模板</Button>
+                {
+                  this.state.type==='normal'?<> <b style={{color:'#f5222d'}}>*</b>上传来访人员信息表（仅疫情期间）：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,1) }}/>
+                  <b style={{color:'#f5222d'}}>*</b>上传访客绿码：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,2) }}/>
+                  <b style={{color:'#f5222d'}}>*</b>上传行动轨迹：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,3) }}/>
+                </>:null
+                }
+               </div>
               {labels.map(item => {
                 return (
                   <Row style={{ marginBottom: 16 }}>
