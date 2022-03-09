@@ -176,6 +176,7 @@ class SignPrint extends React.Component {
                 downloadBaseURL={this.dlEmployDownloadURL}
                 resid={658838729515}
                 subtractH={180}
+                hasBeBtns={true}
                 hasAdd={false}
                 hasRowView={false}
                 hasRowDelete={false}
