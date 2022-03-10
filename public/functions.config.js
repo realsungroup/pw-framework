@@ -10573,3 +10573,21 @@ window[699972467748] = {
     props: {
     }
 };
+window[700237240785] = {
+  name: 'TableData', // 组件名称，
+  title: '门禁日志查询', // 功能模块名称
+  props: {
+    resid: 700236853423,
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasBackBtn: true,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    hasDownload:false,
+    isUseFormDefine: false,
+    subtractH: 200
+  }
+};

@@ -84,6 +84,7 @@ export default class ShVisit extends Component {
     fileUrl:null,
     fileUrl2:null,
     fileUrl3:null,
+    moduleList:[],
     labels2: [
       {
         name: '饮用水',
@@ -340,7 +341,7 @@ export default class ShVisit extends Component {
         keys[n] != 'hotelInfo' &&
         keys[n] != 'memberCounter' &&
         keys[n] != 'memberInfo' &&
-        keys[n] != 'labels2'
+        keys[n] != 'labels2'&& keys[n] != 'moduleList'
       ) {
         this.setState({ [keys[n]]: null });
       }
@@ -462,6 +463,7 @@ export default class ShVisit extends Component {
   //获取下拉项
   getColumnDefine = async () => {
     this.setState({ loading: true });
+    this.getModule();
     let res;
     try {
       res = await http({ baseURL: this.baseURL }).getTableColumnDefine({
@@ -714,6 +716,18 @@ export default class ShVisit extends Component {
       this.showModal('vip', 'view');
     }
   };
+  getModule=async()=>{
+    let res;
+    try{
+      res=await http().getTable({
+        resid:700158571490
+      })
+      this.setState({moduleList:res.data});
+    }catch(e){
+      console.log(e.message);
+      this.setState({loading:false});
+    }
+  }
   handleUpload=(e,num)=>{
     let files = e.target.files || e.dataTransfer.files;
 
@@ -868,7 +882,7 @@ export default class ShVisit extends Component {
             />
           </div>
         </Modal>
-        <Modal
+        {/* <Modal
           visible={this.state.showModalModule}
           width={'80vw'}
           title={'模板下载'}
@@ -903,7 +917,7 @@ export default class ShVisit extends Component {
               ]}
             />
           </div>
-        </Modal>
+        </Modal> */}
         <Modal
           visible={this.state.visible}
           width={'80vw'}
@@ -931,11 +945,31 @@ export default class ShVisit extends Component {
           <div className="formfield">
             <Spin spinning={this.state.loading}>
               <div className='moduleLine'>
-                <Button onClick={()=>{this.setState({showModalModule:true})}} type={'normal'}>查看申请文件模板</Button>
                 {
-                  this.state.type==='normal'?<> <b style={{color:'#f5222d'}}>*</b>上传来访人员信息表（仅疫情期间）：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,1) }}/>
-                  <b style={{color:'#f5222d'}}>*</b>上传访客绿码：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,2) }}/>
-                  <b style={{color:'#f5222d'}}>*</b>上传行动轨迹：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,3) }}/>
+                  this.state.type==='normal'?<>
+                  <h3>模板列表：</h3>
+                  {
+                    !this.state.moduleList||this.state.moduleList.length===0?'无': <ul className='moduleList'>
+                    {
+                      this.state.moduleList.map(
+                        (file,key)=>{
+                          return(
+                            <li key={key}>
+                              <span>{file.fileName}</span>
+                              <Button size={'small'} onClick={()=>{
+                                window.open(file.fileUrl)
+                              }}>下载</Button>
+                            </li>
+                          )
+                        }
+                      )
+                    }
+                    </ul>
+                  }
+                 
+                  <div><b style={{color:'#f5222d'}}>*</b>上传来访人员信息表（仅疫情期间）：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,1) }}/></div>
+                  <div> <b style={{color:'#f5222d'}}>*</b>上传访客绿码：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,2) }}/></div>
+                  <div><b style={{color:'#f5222d'}}>*</b>上传行动轨迹：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,3) }}/></div>
                 </>:null
                 }
                </div>
