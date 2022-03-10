@@ -944,35 +944,7 @@ export default class ShVisit extends Component {
         >
           <div className="formfield">
             <Spin spinning={this.state.loading}>
-              <div className='moduleLine'>
-                {
-                  this.state.type==='normal'?<>
-                  <h3>模板列表：</h3>
-                  {
-                    !this.state.moduleList||this.state.moduleList.length===0?'无': <ul className='moduleList'>
-                    {
-                      this.state.moduleList.map(
-                        (file,key)=>{
-                          return(
-                            <li key={key}>
-                              <span>{file.fileName}</span>
-                              <Button size={'small'} onClick={()=>{
-                                window.open(file.fileUrl)
-                              }}>下载</Button>
-                            </li>
-                          )
-                        }
-                      )
-                    }
-                    </ul>
-                  }
-                 
-                  <div><b style={{color:'#f5222d'}}>*</b>上传来访人员信息表（仅疫情期间）：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,1) }}/></div>
-                  <div> <b style={{color:'#f5222d'}}>*</b>上传访客绿码：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,2) }}/></div>
-                  <div><b style={{color:'#f5222d'}}>*</b>上传行动轨迹：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,3) }}/></div>
-                </>:null
-                }
-               </div>
+              
               {labels.map(item => {
                 return (
                   <Row style={{ marginBottom: 16 }}>
@@ -1284,6 +1256,35 @@ export default class ShVisit extends Component {
                   </dl>
                 </div>
               </div>
+              <div className='moduleLine'>
+                {
+                  this.state.type==='normal'?<>
+                  <h3>模板列表：</h3>
+                  {
+                    !this.state.moduleList||this.state.moduleList.length===0?'无': <ul className='moduleList'>
+                    {
+                      this.state.moduleList.map(
+                        (file,key)=>{
+                          return(
+                            <li key={key}>
+                              <span>{file.fileName}</span>
+                              <Button size={'small'} onClick={()=>{
+                                window.open(file.fileUrl)
+                              }}>下载</Button>
+                            </li>
+                          )
+                        }
+                      )
+                    }
+                    </ul>
+                  }
+                 
+                  <div><b style={{color:'#f5222d'}}>*</b>上传来访人员信息表（仅疫情期间）：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,1) }}/></div>
+                  <div> <b style={{color:'#f5222d'}}>*</b>上传访客绿码：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,2) }}/></div>
+                  <div><b style={{color:'#f5222d'}}>*</b>上传行动轨迹：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,3) }}/></div>
+                </>:null
+                }
+               </div>
             </Spin>
           </div>
         </Modal>
