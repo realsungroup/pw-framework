@@ -81,6 +81,10 @@ export default class ShVisit extends Component {
     C3_687636501807: null,
     C3_687636446496: '管控区',
     hotelCounter: 0,
+    fileUrl:null,
+    fileUrl2:null,
+    fileUrl3:null,
+    moduleList:[],
     labels2: [
       {
         name: '饮用水',
@@ -337,7 +341,7 @@ export default class ShVisit extends Component {
         keys[n] != 'hotelInfo' &&
         keys[n] != 'memberCounter' &&
         keys[n] != 'memberInfo' &&
-        keys[n] != 'labels2'
+        keys[n] != 'labels2'&& keys[n] != 'moduleList'
       ) {
         this.setState({ [keys[n]]: null });
       }
@@ -350,6 +354,9 @@ export default class ShVisit extends Component {
       C3_687636501807: null,
       C3_687636446496: '管控区',
       hotelCounter: 0,
+      fileUrl:null,
+      fileUrl2:null,
+      fileUrl3:null,
       hotelInfo: [
         {
           show: false,
@@ -456,6 +463,7 @@ export default class ShVisit extends Component {
   //获取下拉项
   getColumnDefine = async () => {
     this.setState({ loading: true });
+    this.getModule();
     let res;
     try {
       res = await http({ baseURL: this.baseURL }).getTableColumnDefine({
@@ -547,6 +555,21 @@ export default class ShVisit extends Component {
   };
   //提交前验证
   vertify = () => {
+    if(this.state.type == 'normal'){
+      if(!this.state.fileUrl){
+        message.error('请上传来访人员信息表');
+        return false;
+      }
+      if(!this.state.fileUrl2){
+        message.error('请上传访客绿码');
+        return false;
+      }
+      if(!this.state.fileUrl3){
+        message.error('请上传行动轨迹');
+        return false;
+      }
+    }
+   
     let n = 0;
     while (n < labels.length) {
       let c = 0;
@@ -585,6 +608,7 @@ export default class ShVisit extends Component {
       message.error('请填写来访人员手机号');
       return false;
     }
+    
     if (this.state.C3_687636947347) {
       if (this.state.C3_687636947347.length < 11) {
         message.error('申请人手机号位数未满11');
@@ -691,6 +715,64 @@ export default class ShVisit extends Component {
     } else {
       this.showModal('vip', 'view');
     }
+  };
+  getModule=async()=>{
+    let res;
+    try{
+      res=await http().getTable({
+        resid:700158571490
+      })
+      this.setState({moduleList:res.data});
+    }catch(e){
+      console.log(e.message);
+      this.setState({loading:false});
+    }
+  }
+  handleUpload=(e,num)=>{
+    let files = e.target.files || e.dataTransfer.files;
+
+    if (!files.length) return;
+    let type = files[0].name.split('.');
+    let size = files[0].size; 
+    if (size > 5242880) {
+      alert("请选择5M以内的文件！");
+      return false;
+    }
+    this.uploadFile(files[0], `http://kingofdinner.realsun.me:1201/api/AliyunOss/PutOneImageObject?bucketname=nutritiontower&srctype=${type[type.length-1]}`, "cloud").then((result) => {
+    if(num===1){
+      this.setState({ loading: false, fileUrl: result })
+    }else if(num===2){
+      this.setState({ loading: false, fileUrl2: result })
+    }else{
+      this.setState({ loading: false, fileUrl3: result })
+    }
+
+    }, (err) => {
+      this.setState({ loading: false })
+    })
+  }
+  uploadFile = (file, url, mode) => {
+    return new Promise((resolve, reject) => {
+      let fd = new FormData();
+      fd.append('file', file, file.name);
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', url);
+      xhr.onload = () => {
+        const data = JSON.parse(xhr.response);
+        if (xhr.status === 200 && (data.error === 0 || data.error === '0')) {
+          let fileUrl;
+          if (mode === 'local') {
+            fileUrl = data.httpfilename;
+          } else if (mode === 'cloud') {
+            fileUrl = data.data;
+          }
+          resolve(fileUrl);
+        } else {
+          reject(data);
+        }
+      };
+      xhr.send(fd);
+    });
   };
   render() {
     return (
@@ -800,6 +882,42 @@ export default class ShVisit extends Component {
             />
           </div>
         </Modal>
+        {/* <Modal
+          visible={this.state.showModalModule}
+          width={'80vw'}
+          title={'模板下载'}
+          onCancel={() => {
+            this.setState({ showModalModule: false });
+          }}
+          footer={null}
+        >
+          <div style={{ height: '70vh' }}>
+            <TableData
+              resid={700158571490}
+              hasRowView={false}
+              hasAdd={false}
+              hasRowDelete={false}
+              hasRowModify={false}
+              hasModify={false}
+              hasDelete={false}
+              hasRowView={false}
+              subtractH={175}
+              customRowBtns={[
+                record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        window.open(record.fileUrl)
+                      }}
+                    >
+                      下载
+                    </Button>
+                  );
+                }
+              ]}
+            />
+          </div>
+        </Modal> */}
         <Modal
           visible={this.state.visible}
           width={'80vw'}
@@ -807,6 +925,7 @@ export default class ShVisit extends Component {
           onCancel={() => {
             this.resetState();
           }}
+          destroyOnClose
           footer={
             this.state.viewMode == 'Y' ? null : (
               <Button
@@ -825,6 +944,7 @@ export default class ShVisit extends Component {
         >
           <div className="formfield">
             <Spin spinning={this.state.loading}>
+              
               {labels.map(item => {
                 return (
                   <Row style={{ marginBottom: 16 }}>
@@ -1136,6 +1256,35 @@ export default class ShVisit extends Component {
                   </dl>
                 </div>
               </div>
+              <div className='moduleLine'>
+                {
+                  this.state.type==='normal'?<>
+                  <h3>模板列表：</h3>
+                  {
+                    !this.state.moduleList||this.state.moduleList.length===0?'无': <ul className='moduleList'>
+                    {
+                      this.state.moduleList.map(
+                        (file,key)=>{
+                          return(
+                            <li key={key}>
+                              <span>{file.fileName}</span>
+                              <Button size={'small'} onClick={()=>{
+                                window.open(file.fileUrl)
+                              }}>下载</Button>
+                            </li>
+                          )
+                        }
+                      )
+                    }
+                    </ul>
+                  }
+                 
+                  <div><b style={{color:'#f5222d'}}>*</b>上传来访人员信息表（仅疫情期间）：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,1) }}/></div>
+                  <div> <b style={{color:'#f5222d'}}>*</b>上传访客绿码：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,2) }}/></div>
+                  <div><b style={{color:'#f5222d'}}>*</b>上传行动轨迹：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,3) }}/></div>
+                </>:null
+                }
+               </div>
             </Spin>
           </div>
         </Modal>
