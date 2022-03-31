@@ -93,6 +93,10 @@ const OrgChartData = {
   'OrgChartData.sureSaveSturcture': 'Are you sure to save structure?'
 };
 
+const BIButton = {
+  'BIButton.biSystem': 'Reports',
+}
+
 export default {
   ...common,
   ...HomeBody,
@@ -102,6 +106,7 @@ export default {
   ...Setting,
   ...TableData,
   ...OrgChartData,
+  ...BIButton,
   add: 'add',
   edit: 'edit',
   cancel: 'cancel',

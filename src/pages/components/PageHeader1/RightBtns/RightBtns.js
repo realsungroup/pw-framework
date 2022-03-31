@@ -18,7 +18,6 @@ import {
 } from 'antd';
 import './RightBtns.less';
 import ColorPicker from '../../ColorPicker';
-import classNames from 'classnames';
 import {
   setThemeColor,
   setLanguage,
@@ -33,6 +32,7 @@ import ReminderList from './ReminderList';
 import PersonCenter from '../../../PersonCenter';
 import AttendanceMonth from '../../AttendanceMonth';
 import { getGBEMClassName } from 'Util20/util';
+import { biLogout } from 'Util20/bi';
 
 const hasAttendanceMonth =
   window.pwConfig[process.env.NODE_ENV].hasAttendanceMonth;
@@ -155,7 +155,12 @@ class RightBtns extends React.Component {
     });
   };
 
-  handleLogoutBtnClick = () => {
+  handleLogoutBtnClick = async () => {
+    try {
+      await biLogout();
+    } catch (err) {
+      console.error(err)
+    }
     logout();
     this.props.history.push('/');
   };

@@ -96,6 +96,10 @@ const OrgChartData = {
   'OrgChartData.sureSaveSturcture': '您确定要保存该结构吗？'
 };
 
+const BIButton = {
+  'BIButton.biSystem': '报表中心',
+}
+
 export default {
   ...common,
   ...HomeBody,
@@ -105,6 +109,7 @@ export default {
   ...Setting,
   ...TableData,
   ...OrgChartData,
+  ...BIButton,
   add: '添加',
   edit: '编辑',
   save: '保存',
