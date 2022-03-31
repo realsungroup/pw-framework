@@ -11,6 +11,10 @@ import { Drawer, Menu } from 'antd';
 import qs from 'qs';
 import { connect } from 'react-redux';
 import { getNavlistApps } from '../../../redux/actions/PageHeaderActions';
+import { getAppConfig } from 'Util20/appConfig';
+import BIButton from '../../components/BIButton';
+
+const biConfig = getAppConfig('biConfig');
 
 const SubMenu = Menu.SubMenu;
 const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
@@ -119,6 +123,11 @@ class PageHeader extends React.Component {
         <div className="page-header__user">
           <UserInfo userName={userData.userName} />
         </div>
+        {biConfig.open && (
+          <div className='page-header__bi' style={{ marginTop: 8 }}>
+            <BIButton />
+          </div>
+        )}
         <Drawer
           className="workbench-body-drawer"
           placement="right"

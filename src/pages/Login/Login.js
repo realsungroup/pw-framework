@@ -18,6 +18,7 @@ import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import http from 'Util20/api';
 import './Login.less';
 import './Login.css';
+import { biLogin } from 'Util20/bi';
 
 const {
   loginLogoSize,
@@ -162,8 +163,17 @@ class Login extends React.Component {
             setItem('userInfo', JSON.stringify(userInfo));
           }
         }
+        try {
+          await biLogin({
+            userName,
+            password,
+            isGetUserNameAndPassword: false,
+          });
+        } catch (err) {
+          message.error(`bi 系统登录失败:${err.message}`);
+        }
         this.setState({
-          redirectToReferrer: true
+          redirectToReferrer: true,
         });
       } else if (result === 'N') {
         this.setState({ loading: false });

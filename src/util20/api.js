@@ -728,4 +728,9 @@ http.createApi('getdailyrpt', {
   url: '/api/200/attendance/getdailyrpt'
 });
 
+http.createApi('getUserPass', {
+  method: 'get',
+  url: '/api/Account/GetUserPass',
+});
+
 export default http;
