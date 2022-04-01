@@ -8399,56 +8399,9 @@ window[642865148916] = {
 };
 
 window[642865159694] = {
-  name: 'TabsTableData', // 组件名称，
+  name: 'DoorManagement', // 组件名称，
   title: '当月门禁清单', // 功能模块名称
-  props: [[
-    {
-    TabsTitle: '当月门禁清单',
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
-    resid: 629221162564,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    isUseFormDefine: false,
-    formProps: {
-      // height: 500
-    },
-    advSearch: {
-      isRequestFormData: false
-    },
-    subtractH: 200
-  },
-  {
-    TabsTitle: '当月门禁变化清单',
-    baseURL: 'http://ehrwebapi.realsun.me/',
-    downloadBaseURL: 'http://ehrweb.realsun.me/',
-    resid: 629221162564,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    isUseFormDefine: false,
-    formProps: {
-      // height: 500
-    },
-    advSearch: {
-      isRequestFormData: false
-    },
-    subtractH: 200
-  }
-]]
+  props:{}
 };
 window[642865168807] = {
   name: 'TableData', // 组件名称，

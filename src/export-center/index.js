@@ -198,6 +198,7 @@ export {
   AccessControl,
   NewSignPrint,
   ShVisitApprove,
-  ShVisitManager
+  ShVisitManager,
+  DoorManagement
 
 } from '../components/custom/loadableCustom';

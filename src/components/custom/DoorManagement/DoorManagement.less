@@ -1,0 +1,36 @@
+.DoorManagement{
+  width:100vw;
+  height: 100vh;
+  overflow: auto;
+  box-sizing: border-box;
+  background-color: #fff;
+  .tableWrap{
+    width: 100vw;
+    height:calc(100vh - 62px);
+    button{
+      margin-left: 0.5rem;
+    }
+    &>ul{
+      overflow: hidden;
+      padding: 0.25rem;
+      
+      &>li{
+        list-style:none;
+        padding:.25rem;
+        width: 33%;
+        float: left;
+        .add,.minus,.same{
+          border-left:4px solid #999;
+          text-indent: .5rem;
+        }
+        .add{
+          border-color: #1890ff;
+        }
+        .minus{
+          border-color: #f5222d;
+        }
+      }
+    }
+    
+  }
+}
