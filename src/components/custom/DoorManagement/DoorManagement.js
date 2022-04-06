@@ -60,13 +60,31 @@ class DoorManagement extends React.Component {
         dataMinus:'minus'
       }
   }
-  
+  getYearMonths = async () => {
+    try {
+      const res = await http().getTable({
+        resid: '447426327525',
+        dblinkname: 'ehr'
+      });
+      if (res.data.length) {
+        return res.data[0].C3_424358155202;
+      }
+    } catch (error) {
+      message.error(error.message);
+      console.log(error);
+    }
+  };
+
   getData=async()=>{
     this.setState({
       loading:true,
       process:'获取当月记录',
       step:1
     });
+    //获取考勤月
+    // let yymm=await this.getYearMonths();
+    // let yy=yymm.substring(0,4);
+    // let yy=yymm.substring(4,6);
     let yy = new Date().getFullYear()+'';
     let mm = new Date().getMonth()+1;
     let ly = yy;
@@ -91,6 +109,8 @@ class DoorManagement extends React.Component {
     let jobID=localStorage.getItem('userInfo');
     jobID=JSON.parse(jobID);
     jobID=jobID.UserInfo.EMP_ID;
+    ym='201902'
+    lym='201901'
     let cms =`(C3_595166992528 = '${ym}' or C3_595166992528 = '${lym}') and C3_595166775274 = '${jobID}'`
     let res=await http({baseURL:this.baseURL}).getTable({
       resid:702153120852,
