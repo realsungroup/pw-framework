@@ -10591,3 +10591,9 @@ window[700237240785] = {
     subtractH: 200
   }
 };
+window[706620216948] = {
+    name: 'ConstructionList',
+    title: '施工清单报表',
+    props: {
+    }
+};
