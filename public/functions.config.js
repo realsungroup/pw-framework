@@ -10591,9 +10591,33 @@ window[700237240785] = {
     subtractH: 200
   }
 };
+//施工清单报表
 window[706620216948] = {
     name: 'ConstructionList',
     title: '施工清单报表',
     props: {
     }
+};
+//前台访客登记
+window[706640155334] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '外包人员月度确认', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormUseAbsolute: true,
+    resid: 706639905266,
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
 };
