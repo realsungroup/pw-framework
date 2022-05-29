@@ -371,6 +371,9 @@ class ConstructionList extends React.Component {
                   hasRowModify={false}
                   hasRowSelection={false}
                   hasAdvSearch={true}
+                  noColumn={{
+                    show: true,
+                  }}
                   customRowBtns={[
                     record => {
                       return (

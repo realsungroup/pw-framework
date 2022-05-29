@@ -88,7 +88,13 @@ export const defaultProps = {
   isWrap: false,
   backendButtonPopConfirmProps: {},
   defaultAddRecord: {},
-  saveRecordAndSubTablesApiExtraParams: {}
+  saveRecordAndSubTablesApiExtraParams: {},
+  noColumn: {
+    show: false,
+    width: 50,
+    cnText: '序号',
+    enText: 'No.',
+  },
 };
 
 export const propTypes = {
@@ -929,4 +935,34 @@ export const propTypes = {
   //   secondSaveColumn: PropTypes.string,
   //   secondSaveValue: PropTypes.string,
   // }),
+
+  /**
+   * 第一列显示序号的配置
+   */
+  noColumn: PropTypes.shape({
+    /**
+     * 是否显示
+     * 
+     * @default false
+     */
+    show: PropTypes.bool,
+    /**
+     * 列宽度
+     * 
+     * @default 50
+     */
+    width: PropTypes.number,
+    /**
+     * 中文文案
+     * 
+     * @default '序号'
+     */
+    cnText: PropTypes.string,
+    /**
+     * 英文文案
+     * 
+     * @default 'No.'
+     */
+     enText: PropTypes.string,
+  }),
 };
