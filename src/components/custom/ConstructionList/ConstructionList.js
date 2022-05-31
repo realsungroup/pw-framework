@@ -371,6 +371,7 @@ class ConstructionList extends React.Component {
                   hasRowModify={false}
                   hasRowSelection={false}
                   hasAdvSearch={true}
+                  isUseBESize={true}
                   noColumn={{
                     show: true,
                   }}
