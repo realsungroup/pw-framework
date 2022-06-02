@@ -127,17 +127,22 @@ class ConstructionList extends React.Component {
   };
   getData=()=>{
     let cms;
+    let ed = this.state.edDate;
+    if(ed){
+      ed=moment(ed).add(1,'days');
+      ed=moment(ed).format('YYYY-MM-DD');
+    }
     if (this.state.stDate){
       cms = `REC_CRTTIME >= '${this.state.stDate}'`
     }
-    if(this.state.stDate&&this.state.edDate){
-      cms+=` and REC_CRTTIME <= '${this.state.edDate}'`
-    }else if(!this.stDate&&this.edDate){
-      cms=`REC_CRTTIME <= '${this.state.edDate}'`
+    if(this.state.stDate&&ed){
+      cms+=` and REC_CRTTIME <= '${ed}'`
+    }else if(!this.state.stDate&&ed){
+      cms=`REC_CRTTIME <= '${ed}'`
     }
-    if((this.state.stDate||this.state.edDate)&&this.state.type){
+    if((this.state.stDate||ed)&&this.state.type){
       cms+=` and workerType = '${this.state.type}'`
-    }else if(!this.state.stDate&&!this.state.edDate&&this.state.type){
+    }else if(!this.state.stDate&&!ed&&this.state.type){
       cms=`workerType = '${this.state.type}'`
     }
     this.setState({cms});
