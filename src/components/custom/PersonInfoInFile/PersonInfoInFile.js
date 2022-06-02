@@ -1016,7 +1016,7 @@ class PersonInfoInFile extends React.Component {
             <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464277267009} onChange={(v) => { this.onChange('C3_464277267009', v.target.value) }} style={{ resize: 'none', height: '72px' }} />
             <div style={{ marginTop: '4px', marginBottom: '4px' }}>4.本人最近两年是否有违法犯罪记录或者失信行为记录？</div>
             <Input.TextArea disabled={!this.state.edit}
-              value={this.state.isOuter ? this.state.data.C3_551806597769 == 'N' ? '否' : this.state.data.C3_551806597769 : (this.state.data.C3_550784878452 == 'N' ? '否' : this.state.data.C3_550784878452)}
+              value={this.state.isOuter ? (this.state.data.C3_551806597769 == 'N' ? '否' : this.state.data.C3_551806597769) : (this.state.data.C3_550784878452 == 'N' ? '否' : this.state.data.C3_550784878452)}
               onChange={(v) => {
                 if (this.state.isOuter) {
                   this.onChange('C3_551806597769', v.target.value)
