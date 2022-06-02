@@ -128,12 +128,12 @@ class ConstructionList extends React.Component {
   getData=()=>{
     let cms;
     if (this.state.stDate){
-      cms = `C3_605703980025 >= '${this.state.stDate}'`
+      cms = `REC_CRTTIME >= '${this.state.stDate}'`
     }
     if(this.state.stDate&&this.state.edDate){
-      cms+=` and C3_605703992046 <= '${this.state.edDate}'`
+      cms+=` and REC_CRTTIME <= '${this.state.edDate}'`
     }else if(!this.stDate&&this.edDate){
-      cms=`C3_605703992046 <= '${this.state.edDate}'`
+      cms=`REC_CRTTIME <= '${this.state.edDate}'`
     }
     if((this.state.stDate||this.state.edDate)&&this.state.type){
       cms+=` and workerType = '${this.state.type}'`
@@ -300,7 +300,7 @@ class ConstructionList extends React.Component {
         <Spin spinning={this.state.loading}>
           <div className='filter'>
             <div className='fitem'>
-              <span>请选择起止日期：</span>
+              <span>请选择申请日期范围：</span>
               <RangePicker
                       style={{ marginLeft: 24 }}
                       value={
@@ -352,6 +352,13 @@ class ConstructionList extends React.Component {
             >
               搜索
             </Button>
+            <Button
+                        onClick={() => {
+                          this.jump();
+                        }}
+                      >
+                        新增
+            </Button>
           </div>
           <div className='tableWrap'>
           <TableData
@@ -393,17 +400,6 @@ class ConstructionList extends React.Component {
                       );
                     }
                   ]}
-                  actionBarExtra={({ dataSource, selectedRowKeys }) => {
-                    return (
-                      <Button
-                        onClick={() => {
-                          this.jump();
-                        }}
-                      >
-                        新增
-                      </Button>
-                    );
-                  }}
                 />
           </div>
         </Spin>
