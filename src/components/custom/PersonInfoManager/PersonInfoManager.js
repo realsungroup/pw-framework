@@ -105,6 +105,7 @@ class PersonInfoManager extends React.Component {
                               showDetail: true,
                               selectedRecord: record[t],
                               idNum: record[num],
+                              isOuter:true,
                               gonghao: record[gonghao]
                             });
                           }}
@@ -218,7 +219,8 @@ class PersonInfoManager extends React.Component {
                                   showDetail: true,
                                   selectedRecord: record[t],
                                   idNum: record[num],
-                                  gonghao: record[gonghao]
+                                  gonghao: record[gonghao],
+                                  isOuter:false
                                 });
                               }}
                             >

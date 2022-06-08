@@ -168,6 +168,10 @@ const accurate2fuzzy = cmsWhere => {
   return a1.join(' and ');
 };
 
+const NO_COLUMN_EN_TEXT = 'No.';
+const NO_COLUMN_CN_TEXT = '序号';
+const NO_COLUMN_WIDTH = 50;
+
 /**
  * TableData
  */
@@ -433,7 +437,8 @@ class TableData extends React.Component {
       actionBarWidth,
       width,
       height,
-      subtractH
+      subtractH,
+      noColumn,
     } = this.props;
     const { rowSelection } = this.state;
     let columnsWidthKeys = [];
@@ -465,6 +470,10 @@ class TableData extends React.Component {
     // rowSelection
     if (rowSelection) {
       x += 50;
+    }
+
+    if (noColumn.show) {
+      x += noColumn.width || NO_COLUMN_WIDTH;
     }
 
     // 计算：this.boxW 和 this.boxH
@@ -1904,9 +1913,28 @@ class TableData extends React.Component {
     return ret;
   };
 
+  getNoColumn = () => {
+    const { current, pageSize } = this.state.pagination;
+    const { noColumn, intl } = this.props;
+    const { enText = NO_COLUMN_EN_TEXT, cnText = NO_COLUMN_CN_TEXT, width = NO_COLUMN_WIDTH } = noColumn;
+    return {
+      title: getIntlVal(intl.locale, enText, cnText),
+      dataIndex: '序号',
+      align: 'center',
+      width: width,
+      render: (value, record, index) => {
+        const no = (current - 1) * pageSize + (index + 1);
+        return <span>{no}</span>
+      }
+    }
+  }
+
   getNewColumns = columns => {
-    const { hasRowEdit, isUseBESize, rowColorConfig, baseURL } = this.props;
+    const { hasRowEdit, isUseBESize, rowColorConfig, baseURL, noColumn } = this.props;
     let newColumns = [...columns];
+    if (noColumn && noColumn.show) {
+      newColumns.unshift(this.getNoColumn());
+    }
 
     // 行内编辑
     if (hasRowEdit) {
