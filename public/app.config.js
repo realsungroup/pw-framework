@@ -17,7 +17,7 @@ window.pwConfig = {
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
 
     biConfig: {
-      open: true,
+      open: false,
       loginURL:
         'http://pw-bi.realsun.me:37799/webroot/decision/login/cross/domain',
       logoutURL:
@@ -250,7 +250,7 @@ window.pwConfig = {
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
 
     biConfig: {
-      open: true,
+      open: false,
       loginURL:
         'http://pw-bi.realsun.me:37799/webroot/decision/login/cross/domain',
       logoutURL:

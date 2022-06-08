@@ -163,15 +163,15 @@ class Login extends React.Component {
             setItem('userInfo', JSON.stringify(userInfo));
           }
         }
-        try {
-          await biLogin({
-            userName,
-            password,
-            isGetUserNameAndPassword: false,
-          });
-        } catch (err) {
-          message.error(`bi 系统登录失败:${err.message}`);
-        }
+        // try {
+        //   await biLogin({
+        //     userName,
+        //     password,
+        //     isGetUserNameAndPassword: false,
+        //   });
+        // } catch (err) {
+        //   message.error(`bi 系统登录失败:${err.message}`);
+        // }
         this.setState({
           redirectToReferrer: true,
         });
