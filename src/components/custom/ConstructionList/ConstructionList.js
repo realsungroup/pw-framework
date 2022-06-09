@@ -303,68 +303,6 @@ class ConstructionList extends React.Component {
               </div>
             </Modal>
         <Spin spinning={this.state.loading}>
-          <div className='filter'>
-            <div className='fitem'>
-              <span>请选择申请日期范围：</span>
-              <RangePicker
-                      style={{ marginLeft: 24 }}
-                      value={
-                        this.state.stDate && this.state.edDate
-                          ? [
-                              moment(this.state.stDate, dateFormat),
-                              moment(this.state.edDate, dateFormat)
-                            ]
-                          : [null, null]
-                      }
-                      onChange={(dates, dateString) => {
-                        this.setState({
-                          stDate: dateString[0],
-                          edDate: dateString[1]
-                        });
-                      }}
-              ></RangePicker>
-            </div>
-            <div className='fitem'>
-              <span>请选择施工类别：</span>
-              <Select
-                        style={{ width: 120, left: 16 }}
-                        onChange={v => {
-                          this.setState({type:v});
-                        }}
-                        value={this.state.type}
-                      >
-                        <Select.Option value={'一般施工'}>一般施工</Select.Option>
-                        <Select.Option value={'特种作业'}>特种作业</Select.Option>
-              </Select>
-            </div>
-            <Button
-              onClick={()=>{
-                this.setState({
-                  loading:false,
-                  stDate:null,
-                  edDate:null,
-                  type:null,
-                  cms:``
-                })
-              }}
-            >
-              重置
-            </Button>
-            <Button type={'primary'}
-              onClick={()=>{
-                this.getData();
-              }}
-            >
-              搜索
-            </Button>
-            <Button
-                        onClick={() => {
-                          this.jump();
-                        }}
-                      >
-                        新增
-            </Button>
-          </div>
           <div className='tableWrap'>
           <TableData
                   resid="706620130417"
@@ -386,6 +324,72 @@ class ConstructionList extends React.Component {
                   isUseBESize={true}
                   noColumn={{
                     show: true,
+                  }}
+                  actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                    return (
+                      <div className='filter'>
+                          <div className='fitem'>
+                            <span>请选择申请日期范围：</span>
+                            <RangePicker
+                                    style={{ marginLeft: 24 }}
+                                    value={
+                                      this.state.stDate && this.state.edDate
+                                        ? [
+                                            moment(this.state.stDate, dateFormat),
+                                            moment(this.state.edDate, dateFormat)
+                                          ]
+                                        : [null, null]
+                                    }
+                                    onChange={(dates, dateString) => {
+                                      this.setState({
+                                        stDate: dateString[0],
+                                        edDate: dateString[1]
+                                      });
+                                    }}
+                            ></RangePicker>
+                          </div>
+                          <div className='fitem'>
+                            <span>请选择施工类别：</span>
+                            <Select
+                                      style={{ width: 120, left: 16 }}
+                                      onChange={v => {
+                                        this.setState({type:v});
+                                      }}
+                                      value={this.state.type}
+                                    >
+                                      <Select.Option value={'一般施工'}>一般施工</Select.Option>
+                                      <Select.Option value={'特种作业'}>特种作业</Select.Option>
+                            </Select>
+                          </div>
+                          <Button
+                            onClick={()=>{
+                              this.setState({
+                                loading:false,
+                                stDate:null,
+                                edDate:null,
+                                type:null,
+                                cms:``
+                              })
+                            }}
+                          >
+                            重置
+                          </Button>
+                          <Button type={'primary'}
+                            onClick={()=>{
+                              this.getData();
+                            }}
+                          >
+                            搜索
+                          </Button>
+                          <Button
+                                      onClick={() => {
+                                        this.jump();
+                                      }}
+                                    >
+                                      新增
+                          </Button>
+                        </div>
+                    );
                   }}
                   customRowBtns={[
                     record => {
