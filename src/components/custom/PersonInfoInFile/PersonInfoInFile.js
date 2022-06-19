@@ -25,7 +25,8 @@ class PersonInfoInFile extends React.Component {
     if (props.isOuter == true) {
       baseURL = laowuURL
     }
-    var memberId = this.props.memberId;
+    // var memberId = this.props.memberId;
+    let memberId = this.props.REC_ID;
     console.log(memberId)
 
     this.state = {
@@ -286,21 +287,21 @@ class PersonInfoInFile extends React.Component {
   getData = async (memberId) => {
     this.setState({ loading: true });
     let res;
-    let cms = `C3_464172117706 = '${memberId}'`;
-    if (!this.props.private) {
-      cms = `C3_464702128504 = '${this.props.gonghao}' and C3_464172300168 = '${this.props.idNum}'`
-    }
-    let objurl = { baseURL: this.state.baseURL }
-    if (this.props.baseURL) {
-      objurl = { baseURL: this.props.baseURL }
-    }
+    // let cms = `C3_464172117706 = '${memberId}'`;
+    // if (!this.props.private) {
+    //   cms = `C3_464702128504 = '${this.props.gonghao}' and C3_464172300168 = '${this.props.idNum}'`
+    // }
+    // let objurl = { baseURL: this.state.baseURL }
+    // if (this.props.baseURL) {
+    //   objurl = { baseURL: this.props.baseURL }
+    // }
     try {
-      res = await http(objurl).getTable({
+      res = await http().getTable({
         resid: 464705942338,
-        cmswhere: cms
+        cmswhere: `REC_ID = '${memberId}'`
         // cmswhere: `C3_464172117706 = '${memberId}'`
       });
-      var obj = res.data[0];
+      let obj = res.data[0];
       console.log('org', obj)
       console.log(isString(obj.C3_464173535280))
       // 格式化时间
@@ -392,8 +393,24 @@ class PersonInfoInFile extends React.Component {
       }
       if (isString(obj.C3_464174917676)) {
         obj.C3_464174917676 = moment(obj.C3_464174917676);
-
       }
+      //以下是新加的字段
+      if (isString(obj.C3_708981819762)) {
+        obj.C3_708981819762 = moment(obj.C3_708981819762);
+      }
+      if (isString(obj.C3_708981956780)) {
+        obj.C3_708981956780 = moment(obj.C3_708981956780);
+      }
+      if (isString(obj.C3_708981969243)) {
+        obj.C3_708981969243 = moment(obj.C3_708981969243);
+      }
+      if (isString(obj.C3_708981982713)) {
+        obj.C3_708981982713 = moment(obj.C3_708981982713);
+      }
+      if (isString(obj.C3_708982001125)) {
+        obj.C3_708982001125 = moment(obj.C3_708982001125);
+      }
+
       // 是否有亲属
       if (obj.C3_464175890357 == 0) {
         this.setState({ hasRelated: false });
@@ -423,8 +440,8 @@ class PersonInfoInFile extends React.Component {
     }
   }
   onSubmit = async (value) => {
-    var j = this.judge();
-    // var j=true;
+    // var j = this.judge();
+    let j=true;
     if (j == false) {
       return false;
     } else {
@@ -442,7 +459,7 @@ class PersonInfoInFile extends React.Component {
       let res;
       this.setState({ loading: true });
       try {
-        res = await http({ baseURL: this.state.baseURL }).modifyRecords({
+        res = await http().modifyRecords({
           resid: 464705942338,
           data: [obj]
         });
@@ -496,7 +513,7 @@ class PersonInfoInFile extends React.Component {
             <div style={{width:'100%',overflow:'hidden',marginTop: '20px',marginBottom:'20px'}}>
                 <div style={{width:'70%',float:'left'}}>
                   <span>员工编号</span>
-                  <Input disabled={!this.state.edit} value={this.state.data.C3_464172127930} onChange={(v) => { this.onChange('C3_464172127930', v.target.value) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                  <Input disabled={!this.state.edit} value={this.state.data.C3_708983479529} onChange={(v) => { this.onChange('C3_708983479529', v.target.value) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
 
                 </div>
                 <div style={{width:'30%',float:'left'}}>
@@ -638,54 +655,56 @@ class PersonInfoInFile extends React.Component {
 
               <div style={{ width: '100%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>个人邮箱：</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} value={this.state.data.C3_466197758167} onChange={(v) => { this.onChange('C3_466197758167', v.target.value) }}/>
               </div>
               <div style={{ clear: 'both', height: '1px' }}></div>
               {/* 新加的内容 */}
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
-              <div style={{ width: '25%', float: 'left' }}>
+              <div style={{ width: '100%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>到职日期:</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <DatePicker disabled={!this.state.edit} value={this.state.data.C3_708981819762} onChange={(v) => { this.onChange('C3_708981819762', v) }} size='small' className='date' placeholder={null} style={{ width: '240px' }} />
               </div>
-              <div style={{ width: '25%', float: 'left' }}>
+              <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
+            
+              <div style={{ width: '33%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>部门:</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} value={this.state.data.C3_708981826864} onChange={(v) => { this.onChange('C3_708981826864', v.target.value) }}/>
               </div>
-              <div style={{ width: '25%', float: 'left' }}>
+              <div style={{ width: '33%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>职称:</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} value={this.state.data.C3_708981831791} onChange={(v) => { this.onChange('C3_708981831791', v.target.value) }}/>
               </div>
-              <div style={{ width: '25%', float: 'left' }}>
+              <div style={{ width: '33%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>国籍2:</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} value={this.state.data.C3_708981845729} onChange={(v) => { this.onChange('C3_708981845729', v.target.value) }}/>
               </div>
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
               <div style={{ width: '100%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>出生地:</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} value={this.state.data.C3_708981866674} onChange={(v) => { this.onChange('C3_708981866674', v.target.value) }}/>
               </div>
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
-              <div style={{ width: '33%', float: 'left' }}>
+              <div style={{ width: '50%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>身高:</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} value={this.state.data.C3_708981879795} onChange={(v) => { this.onChange('C3_708981879795', v.target.value) }}/>
               </div>
-              <div style={{ width: '33%', float: 'left' }}>
+              <div style={{ width: '50%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>体重:</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} value={this.state.data.C3_708981895070} onChange={(v) => { this.onChange('C3_708981895070', v.target.value) }}/>
               </div>
-              <div style={{ width: '33%', float: 'left' }}>
+              {/* <div style={{ width: '33%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>血型:</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
-              </div>
+                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} value={this.state.data.C3_708981908528} onChange={(v) => { this.onChange('C3_708981908528', v.target.value) }}/>
+              </div> */}
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
               <div style={{ width: '100%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>户籍地址:</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} value={this.state.data.C3_708981934045} onChange={(v) => { this.onChange('C3_708981934045', v.target.value) }}/>
               </div>
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
               <div style={{ width: '100%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>现居地电话:</b>
-                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <Input disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} value={this.state.data.C3_708981920997} onChange={(v) => { this.onChange('C3_708981920997', v.target.value) }}/>
               </div>
               <div style={{ clear: 'both', height: '1px', borderBottom: '0px solid #333', boxSizing: 'border-box' }}></div>
 
@@ -849,15 +868,15 @@ class PersonInfoInFile extends React.Component {
             </table>
 
             <h4
-              className={
-                (this.state.data.C3_464174535762 && this.state.data.C3_464174605218 && this.state.data.C3_464174974466 && this.state.data.C3_464175049944 && this.state.data.C3_464458881276)
-                  ||
-                  (this.state.data.C3_464174545465 && this.state.data.C3_464174895167 && this.state.data.C3_464174984491 && this.state.data.C3_464175060992 && this.state.data.C3_464458911775)
-                  ||
-                  (this.state.data.C3_464174554658 && this.state.data.C3_464174904208 && this.state.data.C3_464174996449 && this.state.data.C3_464175072014 && this.state.data.C3_464458921788)
-                  ||
-                  (this.state.data.C3_464174563152 && this.state.data.C3_464174917676 && this.state.data.C3_464175006600 && this.state.data.C3_464175085490 && this.state.data.C3_464458930539)
-                  ? '' : 'alert'}
+              // className={
+              //   (this.state.data.C3_464174535762 && this.state.data.C3_464174605218 && this.state.data.C3_464174974466 && this.state.data.C3_464175049944 && this.state.data.C3_464458881276)
+              //     ||
+              //     (this.state.data.C3_464174545465 && this.state.data.C3_464174895167 && this.state.data.C3_464174984491 && this.state.data.C3_464175060992 && this.state.data.C3_464458911775)
+              //     ||
+              //     (this.state.data.C3_464174554658 && this.state.data.C3_464174904208 && this.state.data.C3_464174996449 && this.state.data.C3_464175072014 && this.state.data.C3_464458921788)
+              //     ||
+              //     (this.state.data.C3_464174563152 && this.state.data.C3_464174917676 && this.state.data.C3_464175006600 && this.state.data.C3_464175085490 && this.state.data.C3_464458930539)
+              //     ? '' : 'alert'}
               style={{ marginTop: '4px', marginBottom: '4px' }}>三、工作经验（请务必填写完整工作经历）</h4>
             <table border="1" style={{ width: '100%', border: '1px solid #333' }}>
               <tr>
@@ -879,13 +898,13 @@ class PersonInfoInFile extends React.Component {
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <Input value={this.state.data.C3_464175049944} onChange={(v) => { this.onChange('C3_464175049944', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464458881276} onChange={(v) => { this.onChange('C3_464458881276', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  <Input value={this.state.data.C3_708982186451} onChange={(v) => { this.onChange('C3_708982186451', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
                 </td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464458881276} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  <Input value={this.state.data.C3_708982175989} onChange={(v) => { this.onChange('C3_708982175989', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
                 </td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464458881276} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  <Input value={this.state.data.C3_708982164407} onChange={(v) => { this.onChange('C3_708982164407', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
                 </td>
 
               </tr>
@@ -899,13 +918,13 @@ class PersonInfoInFile extends React.Component {
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <Input value={this.state.data.C3_464175060992} onChange={(v) => { this.onChange('C3_464175060992', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464458911775} onChange={(v) => { this.onChange('C3_464458911775', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                <Input value={this.state.data.C3_708982212154} onChange={(v) => { this.onChange('C3_708982212154', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
                 </td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464458881276} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  <Input value={this.state.data.C3_708982206339} onChange={(v) => { this.onChange('C3_708982206339', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
                 </td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464458881276} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  <Input value={this.state.data.C3_708982200037} onChange={(v) => { this.onChange('C3_708982200037', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
                 </td>
               </tr>
               {/* <tr>
@@ -964,10 +983,9 @@ class PersonInfoInFile extends React.Component {
                   <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464175464598} onChange={(v) => { this.onChange('C3_464175464598', v) }} size='small' style={{ width: '100%' }} /></td>
                   <td style={{ height: '4px', lineHeight: '24px' }}>
                   <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('C3_464175628311', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
-                  <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
-                  <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <td><DatePicker disabled={!this.state.edit} value={this.state.data.C3_708981956780} onChange={(v) => { this.onChange('C3_708981956780', v) }} size='small' className='date' placeholder={null} style={{ width: '100%' }} /></td>
+                   <td style={{ height: '4px', lineHeight: '24px' }}>
+                  <Input value={this.state.data.C3_708982013705} onChange={(v) => { this.onChange('C3_708982013705', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
               </tr>
               <tr>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
@@ -978,10 +996,9 @@ class PersonInfoInFile extends React.Component {
                   <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464175479476} onChange={(v) => { this.onChange('C3_464175479476', v) }} size='small' style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <Input value={this.state.data.C3_464175642417} onChange={(v) => { this.onChange('C3_464175642417', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
-                  <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
-                  <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <td><DatePicker disabled={!this.state.edit} value={this.state.data.C3_708981969243} onChange={(v) => { this.onChange('C3_708981969243', v) }} size='small' className='date' placeholder={null} style={{ width: '100%' }} /></td>
+                   <td style={{ height: '4px', lineHeight: '24px' }}>
+                  <Input value={this.state.data.C3_708982025090} onChange={(v) => { this.onChange('C3_708982025090', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
               </tr>
               <tr>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
@@ -992,10 +1009,10 @@ class PersonInfoInFile extends React.Component {
                   <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464175490285} onChange={(v) => { this.onChange('C3_464175490285', v) }} size='small' style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <Input value={this.state.data.C3_464175653685} onChange={(v) => { this.onChange('C3_464175653685', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <td><DatePicker disabled={!this.state.edit} value={this.state.data.C3_708981982713} onChange={(v) => { this.onChange('C3_708981982713', v) }} size='small' className='date' placeholder={null} style={{ width: '100%' }} /></td>
+
                   <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
-                  <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input value={this.state.data.C3_708982034214} onChange={(v) => { this.onChange('C3_708982034214', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
               </tr>
               <tr>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
@@ -1006,10 +1023,9 @@ class PersonInfoInFile extends React.Component {
                   <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464175539610} onChange={(v) => { this.onChange('C3_464175539610', v) }} size='small' style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <Input value={this.state.data.C3_464175665668} onChange={(v) => { this.onChange('C3_464175665668', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <td><DatePicker disabled={!this.state.edit} value={this.state.data.C3_708982001125} onChange={(v) => { this.onChange('C3_708982001125', v) }} size='small' className='date' placeholder={null} style={{ width: '100%' }} /></td>
                   <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
-                  <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input value={this.state.data.C3_708982044736} onChange={(v) => { this.onChange('C3_708982044736', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
               </tr>
             </table>
             
@@ -1103,7 +1119,7 @@ class PersonInfoInFile extends React.Component {
             <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
               <div style={{width:'25%',float:'left'}}>
                 <span>英语：</span>
-                <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: 'calc(100% - 120px)' }}>
+                <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982068244} onChange={(v) => { this.onChange('C3_708982068244', v) }} style={{ width: 'calc(100% - 120px)' }}>
                     <Option value="母语">母语</Option>
                     <Option value="流利">流利</Option>
                     <Option value="良好">良好</Option>
@@ -1112,7 +1128,7 @@ class PersonInfoInFile extends React.Component {
               </div>
               <div style={{width:'25%',float:'left'}}>
                 <span>法语：</span>
-                <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: 'calc(100% - 120px)' }}>
+                <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982095532} onChange={(v) => { this.onChange('C3_708982095532', v) }} style={{ width: 'calc(100% - 120px)' }}>
                     <Option value="母语">母语</Option>
                     <Option value="流利">流利</Option>
                     <Option value="良好">良好</Option>
@@ -1121,7 +1137,7 @@ class PersonInfoInFile extends React.Component {
               </div>
               <div style={{width:'25%',float:'left'}}>
                 <span>中文：</span>
-                <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: 'calc(100% - 120px)' }}>
+                <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982102039} onChange={(v) => { this.onChange('C3_708982102039', v) }} style={{ width: 'calc(100% - 120px)' }}>
                     <Option value="母语">母语</Option>
                     <Option value="流利">流利</Option>
                     <Option value="良好">良好</Option>
@@ -1130,7 +1146,7 @@ class PersonInfoInFile extends React.Component {
               </div>
               <div style={{width:'25%',float:'left'}}>
                 <span>其他：</span>
-                <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: 'calc(100% - 120px)' }}>
+                <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982114745} onChange={(v) => { this.onChange('C3_708982114745', v) }} style={{ width: 'calc(100% - 120px)' }}>
                     <Option value="母语">母语</Option>
                     <Option value="流利">流利</Option>
                     <Option value="良好">良好</Option>
@@ -1141,23 +1157,23 @@ class PersonInfoInFile extends React.Component {
               <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
                 <div style={{width:'50%',float:'left'}}>
                   <span>管理经验(年)：</span>
-                  <Input value={this.state.data.C3_464277179556} onChange={(v) => { this.onChange('C3_464277179556', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
+                  <Input value={this.state.data.C3_708982124841} onChange={(v) => { this.onChange('C3_708982124841', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '120px' }} />
                 </div>
                 <div style={{width:'50%',float:'left'}}>
                   <span>专案管理经验(年)：</span>
-                  <Input value={this.state.data.C3_464277179556} onChange={(v) => { this.onChange('C3_464277179556', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
+                  <Input value={this.state.data.C3_708982133088} onChange={(v) => { this.onChange('C3_708982133088', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '120px' }} />
                 </div>
               </div>
               <div>
                   <span>其他职能 (如IT…)：</span>
-                  <Input value={this.state.data.C3_464277179556} onChange={(v) => { this.onChange('C3_464277179556', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  <Input value={this.state.data.C3_708982146497} onChange={(v) => { this.onChange('C3_708982146497', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
               </div>
             </div>
             <h4 style={{ marginBottom: '4px' }}>六、一般信息</h4>
 
               <div>
                 <span>你曾经来过本公司应征？</span>
-                <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: '120px' }}>
+                <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982727557} onChange={(v) => { this.onChange('C3_708982727557', v) }} style={{ width: '120px' }}>
                     <Option value="否">否</Option>
                     
                     <Option value="是">是</Option>
@@ -1166,7 +1182,7 @@ class PersonInfoInFile extends React.Component {
               <div style={{width:'100%',overflow:'hidden',marginTop: '8px'}}>
                 <div style={{width:'50%',float:'left'}}>
                   <span>你曾经在本公司工作？</span>
-                  <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: '120px' }}>
+                  <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982735754} onChange={(v) => { this.onChange('C3_708982735754', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
 
                       <Option value="是">是</Option>
@@ -1174,13 +1190,13 @@ class PersonInfoInFile extends React.Component {
                 </div>
                 <div style={{width:'50%',float:'left'}}>
                  <span>期限：</span>
-                 <Input value={this.state.data.C3_464277179556} onChange={(v) => { this.onChange('C3_464277179556', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
+                 <Input value={this.state.data.C3_708984189270} onChange={(v) => { this.onChange('C3_708984189270', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
                 </div>
                
               </div>
               <div style={{width:'100%',overflow:'hidden',marginTop: '8px'}}>
               <span>通过何种渠道得知此工作</span>
-                  <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: '120px' }}>
+                  <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982742450} onChange={(v) => { this.onChange('C3_708982742450', v) }} style={{ width: '120px' }}>
                       <Option value="人力中介">人力中介</Option>
                       <Option value="报纸">报纸</Option>
                       <Option value="员工介绍">员工介绍</Option>
@@ -1189,12 +1205,12 @@ class PersonInfoInFile extends React.Component {
               </div>
               <div>
                   <span>爱好或其他兴趣活动</span>
-                 <Input value={this.state.data.C3_464277179556} onChange={(v) => { this.onChange('C3_464277179556', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                 <Input value={this.state.data.C3_708982757720} onChange={(v) => { this.onChange('C3_708982757720', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
               </div>
               <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
                 <div style={{width:'100%',float:'left'}}>
                   <span>你曾经服过兵役吗？</span>
-                  <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: '120px' }}>
+                  <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982765815} onChange={(v) => { this.onChange('C3_708982765815', v) }} style={{ width: '120px' }}>
                       <Option value="是">否</Option>
                       <Option value="否">是</Option>
                   </Select>
@@ -1203,21 +1219,21 @@ class PersonInfoInFile extends React.Component {
               <div style={{width:'100%',overflow:'hidden'}}>
               <div style={{width:'33%',float:'left'}}>
                  <span>服务单位：</span>
-                 <Input value={this.state.data.C3_464277179556} onChange={(v) => { this.onChange('C3_464277179556', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
+                 <Input value={this.state.data.C3_708982782466} onChange={(v) => { this.onChange('C3_708982782466', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
                 </div>
                 <div style={{width:'33%',float:'left'}}>
                  <span>军衔：</span>
-                 <Input value={this.state.data.C3_464277179556} onChange={(v) => { this.onChange('C3_464277179556', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
+                 <Input value={this.state.data.C3_708982794349} onChange={(v) => { this.onChange('C3_708982794349', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
                 </div>
                 <div style={{width:'33%',float:'left'}}>
                  <span>军种：</span>
-                 <Input value={this.state.data.C3_464277179556} onChange={(v) => { this.onChange('C3_464277179556', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
+                 <Input value={this.state.data.C3_708982806002} onChange={(v) => { this.onChange('C3_708982806002', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
                 </div>
                 </div>
               <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
                 <div style={{width:'50%',float:'left'}}>
                   <span>您的健康状況是否会影响您的工作表现？</span>
-                  <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: '120px' }}>
+                  <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982816887} onChange={(v) => { this.onChange('C3_708982816887', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
 
                       <Option value="是">是</Option>
@@ -1225,14 +1241,14 @@ class PersonInfoInFile extends React.Component {
                 </div>
                 <div style={{width:'50%',float:'left'}}>
                  <span>如果有，请说明：</span>
-                 <Input value={this.state.data.C3_464277179556} onChange={(v) => { this.onChange('C3_464277179556', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '260px' }} />
+                 <Input value={this.state.data.C3_708982829992} onChange={(v) => { this.onChange('C3_708982829992', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '260px' }} />
                 </div>
                
               </div>
               <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
                 <div style={{width:'50%',float:'left'}}>
                   <span>是否申领残疾手册？(如果是，请附复印件)</span>
-                  <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: '120px' }}>
+                  <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982841815} onChange={(v) => { this.onChange('C3_708982841815', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
 
                       <Option value="是">是</Option>
@@ -1244,7 +1260,7 @@ class PersonInfoInFile extends React.Component {
               <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
                 <div style={{width:'100%',float:'left'}}>
                   <span>您是否有参与其他商业或组织活动，而对本公司之职务构成直接或间接的利益冲突？</span>
-                  <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: '120px' }}>
+                  <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982860408} onChange={(v) => { this.onChange('C3_708982860408', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
 
                       <Option value="是">是</Option>
@@ -1255,7 +1271,7 @@ class PersonInfoInFile extends React.Component {
               <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
                 <div style={{width:'50%',float:'left'}}>
                   <span>您曾否因刑事案件而被法庭定罪？</span>
-                  <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: '120px' }}>
+                  <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708984660351} onChange={(v) => { this.onChange('C3_708984660351', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
 
                       <Option value="是">是</Option>
@@ -1263,14 +1279,14 @@ class PersonInfoInFile extends React.Component {
                 </div>
                 <div style={{width:'50%',float:'left'}}>
                  <span>如果有，请说明：</span>
-                 <Input value={this.state.data.C3_464277179556} onChange={(v) => { this.onChange('C3_464277179556', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '260px' }} />
+                 <Input value={this.state.data.C3_708984670508} onChange={(v) => { this.onChange('C3_708984670508', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '260px' }} />
                 </div>
                
               </div>
               <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
                 <div style={{width:'50%',float:'left'}}>
                   <span>您是否有不良信用记录？</span>
-                  <Select disabled={!this.state.edit} size='small' value={''} onChange={(v) => { this.onChange('', v) }} style={{ width: '120px' }}>
+                  <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982883680} onChange={(v) => { this.onChange('C3_708982883680', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
 
                       <Option value="是">是</Option>
@@ -1307,7 +1323,7 @@ class PersonInfoInFile extends React.Component {
         &nbsp;&nbsp;&nbsp;&nbsp;5）薪资计算补充说明：如员工出勤不满一整月，该月工资按照以下方式计算：劳动合同中约定的月工资-劳工合同中约定的月工资/21.75*当月缺勤天数。我已经阅读并认可上述计算方法。<br />
             </p> */}
 
-            <div style={{ marginTop: '4px' }}>
+            <div style={{ marginTop: '40px' }}>
               <span>申请人签名：</span>
               <div style={{ display: 'inline-block', width: '144px', borderBottom: '1px solid #333' }}>
                 <Input disabled size='small' style={{ width: '100%', border: 'none', background: '#fff' }} />

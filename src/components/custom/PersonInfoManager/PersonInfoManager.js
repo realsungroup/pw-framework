@@ -107,6 +107,7 @@ class PersonInfoManager extends React.Component {
                               selectedRecord: record[t],
                               idNum: record[num],
                               isOuter:true,
+                              REC_ID:record.REC_ID,
                               gonghao: record[gonghao]
                             });
                           }}
@@ -140,6 +141,7 @@ class PersonInfoManager extends React.Component {
                 <PersonInfoInFile
                   edit={true}
                   isOuter={this.state.isOuter}
+                  REC_ID={this.state.REC_ID}
                   memberId={this.state.selectedRecord}
                   baseURL={laowuURL}
                   idNum={this.state.idNum}
