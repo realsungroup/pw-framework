@@ -68,16 +68,16 @@ class PersonInfoManager extends React.Component {
     return (
       <div className="PersonInfoManager">
         <Tabs defaultActiveKey="1" style={{ width: '100vw', height: '100vh' }}>
-          <TabPane key='1' tab='微信后台数据'>
+          <TabPane key='1' tab='员工信息'>
 
             <div className="table-data-wrapper">
               <TableDataSavePage
                 // 464171754083
                 resid={464705942338}
-                hasRowView={false}
-                baseURL={laowuURL}
-                downloadBaseURL={laowuDownURL}
-                hasAdd={false}
+                // hasRowView={false}
+                // baseURL={laowuURL}
+                // downloadBaseURL={laowuDownURL}
+                hasAdd={true}
                 refTargetComponentName="TableData"
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 hasRowSelection={false}
@@ -88,6 +88,7 @@ class PersonInfoManager extends React.Component {
                 style={{ height: '100%' }}
                 hasBeBtns={true}
                 subtractH={180}
+                
                 customRowBtns={[
                   (record, btnSize) => {
                     return (
@@ -147,7 +148,7 @@ class PersonInfoManager extends React.Component {
               </div>
             ) : null}
           </TabPane>
-          {this.state.laowu ? null :
+          {/* {this.state.laowu ? null :
 
             <TabPane key='2' tab='内网人员数据'>
               <div className="table-data-wrapper">
@@ -263,7 +264,7 @@ class PersonInfoManager extends React.Component {
 
             </TabPane>
 
-          }
+          } */}
 
         </Tabs>
       </div>
