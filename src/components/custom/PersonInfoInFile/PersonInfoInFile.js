@@ -493,7 +493,7 @@ class PersonInfoInFile extends React.Component {
             <h3 style={{ textAlign: 'center', fontWeight: 'bold', cursor: 'default', fontSize: '14px', paddingBottom: '4px', borderBottom: '1px solid #e8e8e8' }}>个人详细信息表</h3>
             <h4 style={{ width: '100%', marginBottom: '4px' }}>一、个人基本信息</h4>
 
-            <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
+            <div style={{width:'100%',overflow:'hidden',marginTop: '20px',marginBottom:'20px'}}>
                 <div style={{width:'70%',float:'left'}}>
                   <span>员工编号</span>
                   <Input disabled={!this.state.edit} value={this.state.data.C3_464172127930} onChange={(v) => { this.onChange('C3_464172127930', v.target.value) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
@@ -1012,6 +1012,17 @@ class PersonInfoInFile extends React.Component {
                   <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
               </tr>
             </table>
+            
+          </div>
+
+
+
+          <div className='page' style={{
+
+            padding: '16px',
+            boxSizing: 'border-box',
+          }}>
+            
             <div style={{ marginBottom: '4px' }}>2.紧急联系人（直系亲属）</div>
             <table border="1" style={{ width: '100%', border: '1px solid #333' }}>
               <tr>
@@ -1043,17 +1054,6 @@ class PersonInfoInFile extends React.Component {
               <b className={this.state.data.C3_464175768379 ? '' : 'alert'} style={{ display: 'inline-block', width: '144px', textAlign: 'left', marginLeft: '4px' }}>紧急联系人现住地址：</b>
               <Input disabled={!this.state.edit} value={this.state.data.C3_464175768379} onChange={(v) => { this.onChange('C3_464175768379', v.target.value) }} size='small' style={{ width: 'calc(100% - 148px)' }} />
             </div>
-          </div>
-
-
-
-          <div className='page' style={{
-
-            padding: '16px',
-            boxSizing: 'border-box',
-          }}>
-            
-            
 
             <div style={{ marginTop: '4px', marginBottom: '4px' }}>
               <span style={{ marginLeft: '4px' }}>3.是否有亲属在本公司任职：<input style={this.state.edit ? { marginRight: '4px' } : { display: 'none' }} className='toHide' type='checkbox' value={this.state.hasRelated} onChange={() => {
