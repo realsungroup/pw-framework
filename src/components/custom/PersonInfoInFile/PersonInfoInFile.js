@@ -511,51 +511,44 @@ class PersonInfoInFile extends React.Component {
             <h4 style={{ width: '100%', marginBottom: '4px' }}>一、个人基本信息</h4>
 
             <div style={{width:'100%',overflow:'hidden',marginTop: '20px',marginBottom:'20px'}}>
-                <div style={{width:'70%',float:'left'}}>
-                  <span>员工编号</span>
-                  <Input disabled={!this.state.edit} value={this.state.data.C3_708983479529} onChange={(v) => { this.onChange('C3_708983479529', v.target.value) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
-
-                </div>
-                <div style={{width:'30%',float:'left'}}>
-                  <span>照片</span>
-                </div>
-               
-              </div>
-            <div style={{ border: '1px solid #333' }}>
-              <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                <b className={this.state.data.C3_464172127930 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>姓名：</b>
-                <Input disabled={!this.state.edit} value={this.state.data.C3_464172127930} onChange={(v) => { this.onChange('C3_464172127930', v.target.value) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <div style={{width:'calc(100% - 160px)',float:'left',border:'1px solid #000',marginRight:'14px'}}>
+                  <span style={{display:'inline-block',width:'72px',marginLeft:'4px'}}>员工编号：</span>
+                  <Input disabled={!this.state.edit} value={this.state.data.C3_708983479529} onChange={(v) => { this.onChange('C3_708983479529', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
+                  <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div> 
+                  <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
+                <b className={this.state.data.C3_464172127930 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>姓名：</b>
+                <Input disabled={!this.state.edit} value={this.state.data.C3_464172127930} onChange={(v) => { this.onChange('C3_464172127930', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
               <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
                 {/* className={this.state.data.C3_464172148589?'':'alert'} */}
-                <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>英文名：</b>
-                <Input disabled={!this.state.edit} value={this.state.data.C3_464172148589} onChange={(v) => { this.onChange('C3_464172148589', v.target.value) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>英文名：</b>
+                <Input disabled={!this.state.edit} value={this.state.data.C3_464172148589} onChange={(v) => { this.onChange('C3_464172148589', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
               <div style={{ width: '33.33%', float: 'left' }}>
-                <b className={this.state.data.C3_464172157606 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>性别：</b>
-                <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_464172157606} onChange={(v) => { this.onChange('C3_464172157606', v) }} style={{ width: 'calc(100% - 120px)' }}>
+                <b className={this.state.data.C3_464172157606 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>性别：</b>
+                <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_464172157606} onChange={(v) => { this.onChange('C3_464172157606', v) }} style={{ width: 'calc(100% - 80px)' }}>
                   <Option value="男">男</Option>
                   <Option value="女">女</Option>
                 </Select>
               </div>
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
               <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                <b className={this.state.data.C3_464172188709 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>国籍：</b>
-                <Input disabled={!this.state.edit} value={this.state.data.C3_464172188709} onChange={(v) => { this.onChange('C3_464172188709', v.target.value) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b className={this.state.data.C3_464172188709 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>国籍：</b>
+                <Input disabled={!this.state.edit} value={this.state.data.C3_464172188709} onChange={(v) => { this.onChange('C3_464172188709', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
               <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                <b className={this.state.data.C3_464172212871 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>籍贯：</b>
-                <Input disabled={!this.state.edit} value={this.state.data.C3_464172212871} onChange={(v) => { this.onChange('C3_464172212871', v.target.value) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b className={this.state.data.C3_464172212871 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>籍贯：</b>
+                <Input disabled={!this.state.edit} value={this.state.data.C3_464172212871} onChange={(v) => { this.onChange('C3_464172212871', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
               <div style={{ width: '33.33%', float: 'left' }}>
-                <b className={this.state.data.C3_464172226868 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>民族：</b>
-                <Input disabled={!this.state.edit} value={this.state.data.C3_464172226868} onChange={(v) => { this.onChange('C3_464172226868', v.target.value) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b className={this.state.data.C3_464172226868 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>民族：</b>
+                <Input disabled={!this.state.edit} value={this.state.data.C3_464172226868} onChange={(v) => { this.onChange('C3_464172226868', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
 
               <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                <b className={this.state.data.C3_464172239173 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>血型：</b>
-                <Select size='small' value={this.state.data.C3_464172239173} onChange={(v) => { this.onChange('C3_464172239173', v) }} style={{ width: 'calc(100% - 120px)' }}>
+                <b className={this.state.data.C3_464172239173 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>血型：</b>
+                <Select size='small' value={this.state.data.C3_464172239173} onChange={(v) => { this.onChange('C3_464172239173', v) }} style={{ width: 'calc(100% - 80px)' }}>
 
                   <Option value='A'>A</Option>
                   <Option value='AB'>AB</Option>
@@ -564,12 +557,12 @@ class PersonInfoInFile extends React.Component {
                 </Select>
               </div>
               <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                <b className={this.state.data.C3_464172321287 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>出生日期：</b>
-                <DatePicker disabled={!this.state.edit} value={this.state.data.C3_464172321287} onChange={(v) => { this.onChange('C3_464172321287', v) }} size='small' placeholder={null} style={{ width: 'calc(100% - 120px)' }} />
+                <b className={this.state.data.C3_464172321287 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>出生日期：</b>
+                <DatePicker disabled={!this.state.edit} value={this.state.data.C3_464172321287} onChange={(v) => { this.onChange('C3_464172321287', v) }} size='small' placeholder={null} style={{ width: 'calc(100% - 80px)' }} />
               </div>
               <div style={{ width: '33.33%', float: 'left' }}>
-                <b className={this.state.data.C3_464172654284 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>学历：</b>
-                <Select value={this.state.data.C3_464172654284} onChange={(v) => { this.onChange('C3_464172654284', v) }} size='small' style={{ width: 'calc(100% - 120px)' }}>
+                <b className={this.state.data.C3_464172654284 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>学历：</b>
+                <Select value={this.state.data.C3_464172654284} onChange={(v) => { this.onChange('C3_464172654284', v) }} size='small' style={{ width: 'calc(100% - 80px)' }}>
                   <Option value='初中'>初中</Option>
                   <Option value='中专'>中专</Option>
                   <Option value='高中'>高中</Option>
@@ -580,78 +573,84 @@ class PersonInfoInFile extends React.Component {
                   <Option value='其他'>其他</Option>
                 </Select>
               </div>
-              <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
+              <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>  
 
               <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                <b className={this.state.data.C3_464172266942 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>证件类型：</b>
-                <Input value={this.state.data.C3_464172266942} onChange={(v) => { this.onChange('C3_464172266942', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b className={this.state.data.C3_464172266942 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>证件类型：</b>
+                <Input value={this.state.data.C3_464172266942} onChange={(v) => { this.onChange('C3_464172266942', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
               <div style={{ width: '66.66%', float: 'left' }}>
-                <b className={this.state.data.C3_464172300168 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>证件号码：</b>
+                <b className={this.state.data.C3_464172300168 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>证件号码：</b>
                 {/* <span style={{ color: '#333' }}>{this.state.data.C3_464172300168}</span> */}
-                <Input disabled={true} value={this.state.data.C3_464172300168} onChange={(v)=>{this.onChange('C3_464172300168',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 120px)'}}/>
+                <Input disabled={true} value={this.state.data.C3_464172300168} onChange={(v)=>{this.onChange('C3_464172300168',v.target.value)}} disabled={!this.state.edit}size='small' style={{width:'calc(100% - 80px)'}}/>
               </div>
               {/* <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div> */}
 
               {/* <div style={{ width: '100%', float: 'left' }}>
-                <b className={this.state.data.C3_464172350271 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>文书送达地址：</b>
-                <Input value={this.state.data.C3_464172350271} onChange={(v) => { this.onChange('C3_464172350271', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b className={this.state.data.C3_464172350271 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>文书送达地址：</b>
+                <Input value={this.state.data.C3_464172350271} onChange={(v) => { this.onChange('C3_464172350271', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div> */}
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
 
               <div style={{ width: '100%', float: 'left' }}>
-                <b className={this.state.data.C3_464172402553 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>现居住地址：</b>
-                <Input value={this.state.data.C3_464172402553} onChange={(v) => { this.onChange('C3_464172402553', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b className={this.state.data.C3_464172402553 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>现居住地址：</b>
+                <Input value={this.state.data.C3_464172402553} onChange={(v) => { this.onChange('C3_464172402553', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
 
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
               {/* <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
                 className={this.state.data.C3_464172444813?'':'alert'}
-                <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>邮编：</b>
-                <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172444813} onChange={(v) => { this.onChange('C3_464172444813', v) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>邮编：</b>
+                <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172444813} onChange={(v) => { this.onChange('C3_464172444813', v) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div> */}
-              <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                <b className={this.state.data.C3_464172486192 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>家庭号码：</b>
-                <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172486192} onChange={(v) => { this.onChange('C3_464172486192', v) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
+              <div style={{ width: '50%', float: 'left', borderRight: '1px solid #333' }}>
+                <b className={this.state.data.C3_464172486192 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>家庭号码：</b>
+                <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172486192} onChange={(v) => { this.onChange('C3_464172486192', v) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
-              <div style={{ width: '33.33%', float: 'left' }}>
-                <b className={this.state.data.C3_464172500234 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>手机号码：</b>
-                <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172500234} onChange={(v) => { this.onChange('C3_464172500234', v) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
+              <div style={{ width: '50%', float: 'left' }}>
+                <b className={this.state.data.C3_464172500234 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>手机号码：</b>
+                <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464172500234} onChange={(v) => { this.onChange('C3_464172500234', v) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
 
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
 
               {/* <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                <b className={this.state.data.C3_464172707004 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>政治面貌：</b>
-                <Input value={this.state.data.C3_464172707004} onChange={(v) => { this.onChange('C3_464172707004', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b className={this.state.data.C3_464172707004 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>政治面貌：</b>
+                <Input value={this.state.data.C3_464172707004} onChange={(v) => { this.onChange('C3_464172707004', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div> */}
 
-              <div style={{ width: '66.66%', float: 'left' }}>
-                {/* className={this.state.data.C3_464172522558?'':'alert'} */}
-                <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>公司邮箱：</b>
-                <Input value={this.state.data.C3_464172522558} onChange={(v) => { this.onChange('C3_464172522558', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
-              </div>
-
-              <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
-
+              {/* <div style={{ width: '66.66%', float: 'left' }}>
+                <b style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>公司邮箱：</b>
+                <Input value={this.state.data.C3_464172522558} onChange={(v) => { this.onChange('C3_464172522558', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 80px)' }} />
+              </div> */}
 
               <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                <b className={this.state.data.C3_464172722124 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>户籍类别：</b>
-                <Input value={this.state.data.C3_464172722124} onChange={(v) => { this.onChange('C3_464172722124', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b className={this.state.data.C3_464172722124 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>户籍类别：</b>
+                <Input value={this.state.data.C3_464172722124} onChange={(v) => { this.onChange('C3_464172722124', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
               <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                <b className={this.state.data.C3_464172819253 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>婚姻状况：</b>
-                <Select value={this.state.data.C3_464172819253} onChange={(v) => { this.onChange('C3_464172819253', v) }} size='small' style={{ width: 'calc(100% - 120px)' }}>
+                <b className={this.state.data.C3_464172819253 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>婚姻状况：</b>
+                <Select value={this.state.data.C3_464172819253} onChange={(v) => { this.onChange('C3_464172819253', v) }} size='small' style={{ width: 'calc(100% - 80px)' }}>
                   <Option value='未婚'>未婚</Option>
                   <Option value='已婚'>已婚</Option>
                 </Select>
               </div>
               <div style={{ width: '33.33%', float: 'left' }}>
-                <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>生育状况：</b>
-                <Input value={this.state.data.C3_464172852423} onChange={(v) => { this.onChange('C3_464172852423', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
+                <b style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>生育状况：</b>
+                <Input value={this.state.data.C3_464172852423} onChange={(v) => { this.onChange('C3_464172852423', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
-              <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
 
+                {/* 结束 */}
+                </div>
+                <div style={{width:'144px',lineHeight:'200px',float:'left',border:'1px solid #e8e8e8',textAlign:'center',fontSize:'1rem'}}>
+                  照片
+                </div>
+               
+              </div>
+            <div style={{ border: '1px solid #333' }}>
+             
+
+           
 
               <div style={{ width: '100%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>个人邮箱：</b>
