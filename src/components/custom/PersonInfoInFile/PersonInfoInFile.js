@@ -507,7 +507,7 @@ class PersonInfoInFile extends React.Component {
             padding: '16px',
             boxSizing: 'border-box'
           }}>
-            <h3 style={{ textAlign: 'center', fontWeight: 'bold', cursor: 'default', fontSize: '14px', paddingBottom: '4px', borderBottom: '1px solid #e8e8e8' }}>个人详细信息表</h3>
+            <h3 style={{ textAlign: 'center', fontWeight: 'bold', cursor: 'default', fontSize: '14px', paddingBottom: '4px', borderBottom: '1px solid #e8e8e8' }}>员工信息登记表</h3>
             <h4 style={{ width: '100%', marginBottom: '4px' }}>一、个人基本信息</h4>
 
             <div style={{width:'100%',overflow:'hidden',marginTop: '20px',marginBottom:'20px'}}>
@@ -955,7 +955,7 @@ class PersonInfoInFile extends React.Component {
               </tr> */}
             </table>
             <h4
-              style={{ marginBottom: '4px' }}>四、家庭信息及紧急联系人</h4>
+              style={{ marginTop: '4px',marginBottom:'4px' }}>四、家庭信息及紧急联系人</h4>
             <div className={
               (this.state.data.C3_464175119119 && this.state.data.C3_464175402821 && this.state.data.C3_464175464598 && this.state.data.C3_464175628311)
                 ||
@@ -1072,7 +1072,7 @@ class PersonInfoInFile extends React.Component {
             </div>
 
             <div style={{ marginTop: '4px', marginBottom: '4px' }}>
-              <span style={{ marginLeft: '4px' }}>3.是否有亲属在本公司任职：<input style={this.state.edit ? { marginRight: '4px' } : { display: 'none' }} className='toHide' type='checkbox' value={this.state.hasRelated} onChange={() => {
+              <span style={{ marginLeft: '4px' }}>3.是否有亲属在本公司任职：<input style={this.state.edit ? { marginRight: '4px' } : { display: 'none' }} className='toHide' type='checkbox' checked={this.state.hasRelated} value={this.state.hasRelated} onChange={() => {
                 var v = !this.state.hasRelated;
                 v = v ? 1 : 0;
                 this.setState({
@@ -1114,10 +1114,10 @@ class PersonInfoInFile extends React.Component {
               </table>
               : null}
             <div style={{ height: '4px', borderTop: '1px solid #e8e8e8' }}></div>
-            <h4 style={{ marginBottom: '4px' }}>五、其他技能</h4>
+            <h4 style={{ marginBottom: '4px',marginTop:'8px'}}>五、其他技能</h4>
             <h5>语言:</h5>
-            <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
-              <div style={{width:'25%',float:'left'}}>
+            <div style={{width:'100%',overflow:'hidden',marginTop: '4px',border:'1px solid #000'}}>
+              <div style={{width:'25%',float:'left',textIndent:'4px'}}>
                 <span>英语：</span>
                 <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982068244} onChange={(v) => { this.onChange('C3_708982068244', v) }} style={{ width: 'calc(100% - 120px)' }}>
                     <Option value="母语">母语</Option>
@@ -1126,7 +1126,7 @@ class PersonInfoInFile extends React.Component {
                     <Option value="基本">基本</Option>
                 </Select>
               </div>
-              <div style={{width:'25%',float:'left'}}>
+              <div style={{width:'25%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
                 <span>法语：</span>
                 <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982095532} onChange={(v) => { this.onChange('C3_708982095532', v) }} style={{ width: 'calc(100% - 120px)' }}>
                     <Option value="母语">母语</Option>
@@ -1135,7 +1135,7 @@ class PersonInfoInFile extends React.Component {
                     <Option value="基本">基本</Option>
                 </Select>
               </div>
-              <div style={{width:'25%',float:'left'}}>
+              <div style={{width:'25%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
                 <span>中文：</span>
                 <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982102039} onChange={(v) => { this.onChange('C3_708982102039', v) }} style={{ width: 'calc(100% - 120px)' }}>
                     <Option value="母语">母语</Option>
@@ -1144,7 +1144,7 @@ class PersonInfoInFile extends React.Component {
                     <Option value="基本">基本</Option>
                 </Select>
               </div>
-              <div style={{width:'25%',float:'left'}}>
+              <div style={{width:'25%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
                 <span>其他：</span>
                 <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982114745} onChange={(v) => { this.onChange('C3_708982114745', v) }} style={{ width: 'calc(100% - 120px)' }}>
                     <Option value="母语">母语</Option>
@@ -1153,25 +1153,27 @@ class PersonInfoInFile extends React.Component {
                     <Option value="基本">基本</Option>
                 </Select>
               </div>
-              <h5>其他技能:</h5>
-              <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
-                <div style={{width:'50%',float:'left'}}>
+            </div>
+            <h5 style={{marginTop:'8px',textIndent:'4px'}}>其他技能:</h5>
+              <div style={{width:'100%',overflow:'hidden',marginTop: '4px',border:'1px solid #000'}}>
+                <div style={{width:'50%',float:'left',textIndent:'4px'}}>
                   <span>管理经验(年)：</span>
                   <Input value={this.state.data.C3_708982124841} onChange={(v) => { this.onChange('C3_708982124841', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '120px' }} />
                 </div>
-                <div style={{width:'50%',float:'left'}}>
+                <div style={{width:'50%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
                   <span>专案管理经验(年)：</span>
                   <Input value={this.state.data.C3_708982133088} onChange={(v) => { this.onChange('C3_708982133088', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '120px' }} />
                 </div>
               </div>
-              <div>
-                  <span>其他职能 (如IT…)：</span>
-                  <Input value={this.state.data.C3_708982146497} onChange={(v) => { this.onChange('C3_708982146497', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+              <div style={{marginTop:'8px'}}>
+                  <h5>其他职能 (如IT…)：</h5>
+                  <div style={{border:'1px solid #000'}}>
+                    <Input value={this.state.data.C3_708982146497} onChange={(v) => { this.onChange('C3_708982146497', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  </div>
               </div>
-            </div>
-            <h4 style={{ marginBottom: '4px' }}>六、一般信息</h4>
+            <h4 style={{ marginBottom: '4px',marginTop: '4px' }}>六、一般信息</h4>
 
-              <div>
+              <div style={{border:'1px solid #000',textIndent:'4px'}}>
                 <span>你曾经来过本公司应征？</span>
                 <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982727557} onChange={(v) => { this.onChange('C3_708982727557', v) }} style={{ width: '120px' }}>
                     <Option value="否">否</Option>
@@ -1179,7 +1181,7 @@ class PersonInfoInFile extends React.Component {
                     <Option value="是">是</Option>
                 </Select>
               </div>
-              <div style={{width:'100%',overflow:'hidden',marginTop: '8px'}}>
+              <div style={{width:'100%',overflow:'hidden',borderBottom:'1px solid #000',borderLeft:'1px solid #000',borderRight:'1px solid #000',textIndent:'4px'}}>
                 <div style={{width:'50%',float:'left'}}>
                   <span>你曾经在本公司工作？</span>
                   <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982735754} onChange={(v) => { this.onChange('C3_708982735754', v) }} style={{ width: '120px' }}>
@@ -1188,13 +1190,13 @@ class PersonInfoInFile extends React.Component {
                       <Option value="是">是</Option>
                   </Select>
                 </div>
-                <div style={{width:'50%',float:'left'}}>
+                <div style={{width:'50%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
                  <span>期限：</span>
                  <Input value={this.state.data.C3_708984189270} onChange={(v) => { this.onChange('C3_708984189270', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
                 </div>
                
               </div>
-              <div style={{width:'100%',overflow:'hidden',marginTop: '8px'}}>
+              <div style={{width:'100%',overflow:'hidden',borderBottom:'1px solid #000',borderLeft:'1px solid #000',borderRight:'1px solid #000',textIndent:'4px'}}>
               <span>通过何种渠道得知此工作</span>
                   <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982742450} onChange={(v) => { this.onChange('C3_708982742450', v) }} style={{ width: '120px' }}>
                       <Option value="人力中介">人力中介</Option>
@@ -1203,12 +1205,12 @@ class PersonInfoInFile extends React.Component {
                       <Option value="网络招聘">网络招聘</Option>
                   </Select>
               </div>
-              <div>
+              <div style={{borderBottom:'1px solid #000',borderLeft:'1px solid #000',borderRight:'1px solid #000',textIndent:'4px'}}>
                   <span>爱好或其他兴趣活动</span>
-                 <Input value={this.state.data.C3_708982757720} onChange={(v) => { this.onChange('C3_708982757720', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                 <Input value={this.state.data.C3_708982757720} onChange={(v) => { this.onChange('C3_708982757720', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
               </div>
-              <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
-                <div style={{width:'100%',float:'left'}}>
+              <div style={{width:'100%',overflow:'hidden',borderLeft:'1px solid #000'}}>
+                <div style={{width:'100%',float:'left',borderBottom:'1px solid #000',borderRight:'1px solid #000',textIndent:'4px'}}>
                   <span>你曾经服过兵役吗？</span>
                   <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982765815} onChange={(v) => { this.onChange('C3_708982765815', v) }} style={{ width: '120px' }}>
                       <Option value="是">否</Option>
@@ -1216,22 +1218,22 @@ class PersonInfoInFile extends React.Component {
                   </Select>
                 </div>
               </div>
-              <div style={{width:'100%',overflow:'hidden'}}>
-              <div style={{width:'33%',float:'left'}}>
+              <div style={{width:'100%',overflow:'hidden',borderBottom:'1px solid #000',borderLeft:'1px solid #000',borderRight:'1px solid #000'}}>
+              <div style={{width:'50%',float:'left',textIndent:'4px',textIndent:'4px'}}>
                  <span>服务单位：</span>
                  <Input value={this.state.data.C3_708982782466} onChange={(v) => { this.onChange('C3_708982782466', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
                 </div>
-                <div style={{width:'33%',float:'left'}}>
+                <div style={{width:'25%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
                  <span>军衔：</span>
-                 <Input value={this.state.data.C3_708982794349} onChange={(v) => { this.onChange('C3_708982794349', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
+                 <Input value={this.state.data.C3_708982794349} onChange={(v) => { this.onChange('C3_708982794349', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '60%' }} />
                 </div>
-                <div style={{width:'33%',float:'left'}}>
+                <div style={{width:'25%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
                  <span>军种：</span>
-                 <Input value={this.state.data.C3_708982806002} onChange={(v) => { this.onChange('C3_708982806002', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '80%' }} />
+                 <Input value={this.state.data.C3_708982806002} onChange={(v) => { this.onChange('C3_708982806002', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '60%' }} />
                 </div>
                 </div>
-              <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
-                <div style={{width:'50%',float:'left'}}>
+              <div style={{width:'100%',overflow:'hidden',borderBottom:'1px solid #000',borderLeft:'1px solid #000',borderRight:'1px solid #000'}}>
+                <div style={{width:'50%',float:'left',textIndent:'4px'}}>
                   <span>您的健康状況是否会影响您的工作表现？</span>
                   <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982816887} onChange={(v) => { this.onChange('C3_708982816887', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
@@ -1239,14 +1241,14 @@ class PersonInfoInFile extends React.Component {
                       <Option value="是">是</Option>
                   </Select>
                 </div>
-                <div style={{width:'50%',float:'left'}}>
+                <div style={{width:'50%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
                  <span>如果有，请说明：</span>
                  <Input value={this.state.data.C3_708982829992} onChange={(v) => { this.onChange('C3_708982829992', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '260px' }} />
                 </div>
                
               </div>
-              <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
-                <div style={{width:'50%',float:'left'}}>
+              <div style={{width:'100%',overflow:'hidden',borderBottom:'1px solid #000',borderLeft:'1px solid #000',borderRight:'1px solid #000'}}>
+                <div style={{width:'50%',float:'left',textIndent:'4px'}}>
                   <span>是否申领残疾手册？(如果是，请附复印件)</span>
                   <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982841815} onChange={(v) => { this.onChange('C3_708982841815', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
@@ -1257,8 +1259,8 @@ class PersonInfoInFile extends React.Component {
                
               </div>
 
-              <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
-                <div style={{width:'100%',float:'left'}}>
+              <div style={{width:'100%',overflow:'hidden',borderBottom:'1px solid #000',borderLeft:'1px solid #000',borderRight:'1px solid #000'}}>
+                <div style={{width:'100%',float:'left',textIndent:'4px'}}>
                   <span>您是否有参与其他商业或组织活动，而对本公司之职务构成直接或间接的利益冲突？</span>
                   <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982860408} onChange={(v) => { this.onChange('C3_708982860408', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
@@ -1268,8 +1270,8 @@ class PersonInfoInFile extends React.Component {
                 </div>
                
               </div>
-              <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
-                <div style={{width:'50%',float:'left'}}>
+              <div style={{width:'100%',overflow:'hidden',borderBottom:'1px solid #000',borderLeft:'1px solid #000',borderRight:'1px solid #000'}}>
+                <div style={{width:'50%',float:'left',textIndent:'4px'}}>
                   <span>您曾否因刑事案件而被法庭定罪？</span>
                   <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708984660351} onChange={(v) => { this.onChange('C3_708984660351', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
@@ -1277,14 +1279,14 @@ class PersonInfoInFile extends React.Component {
                       <Option value="是">是</Option>
                   </Select>
                 </div>
-                <div style={{width:'50%',float:'left'}}>
+                <div style={{width:'50%',float:'left',borderLeft:'1px solid #000'}}>
                  <span>如果有，请说明：</span>
                  <Input value={this.state.data.C3_708984670508} onChange={(v) => { this.onChange('C3_708984670508', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '260px' }} />
                 </div>
                
               </div>
-              <div style={{width:'100%',overflow:'hidden',marginTop: '4px'}}>
-                <div style={{width:'50%',float:'left'}}>
+              <div style={{width:'100%',overflow:'hidden',borderBottom:'1px solid #000',borderRight:'1px solid #000'}}>
+                <div style={{width:'50%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
                   <span>您是否有不良信用记录？</span>
                   <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_708982883680} onChange={(v) => { this.onChange('C3_708982883680', v) }} style={{ width: '120px' }}>
                      <Option value="否">否</Option>
