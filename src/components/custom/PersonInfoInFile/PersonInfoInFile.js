@@ -515,21 +515,32 @@ class PersonInfoInFile extends React.Component {
                   <span style={{display:'inline-block',width:'72px',marginLeft:'4px'}}>员工编号：</span>
                   <Input disabled={!this.state.edit} value={this.state.data.C3_708983479529} onChange={(v) => { this.onChange('C3_708983479529', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
                   <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div> 
-                  <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
+              <div style={{ width: '50%', float: 'left', borderRight: '1px solid #333' }}>
                 <b className={this.state.data.C3_464172127930 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>姓名：</b>
                 <Input disabled={!this.state.edit} value={this.state.data.C3_464172127930} onChange={(v) => { this.onChange('C3_464172127930', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
               </div>
-              <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
-                {/* className={this.state.data.C3_464172148589?'':'alert'} */}
-                <b style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>英文名：</b>
-                <Input disabled={!this.state.edit} value={this.state.data.C3_464172148589} onChange={(v) => { this.onChange('C3_464172148589', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
-              </div>
-              <div style={{ width: '33.33%', float: 'left' }}>
+             
+              <div style={{ width: '50%', float: 'left' }}>
                 <b className={this.state.data.C3_464172157606 ? '' : 'alert'} style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>性别：</b>
                 <Select disabled={!this.state.edit} size='small' value={this.state.data.C3_464172157606} onChange={(v) => { this.onChange('C3_464172157606', v) }} style={{ width: 'calc(100% - 80px)' }}>
                   <Option value="男">男</Option>
                   <Option value="女">女</Option>
                 </Select>
+              </div>
+              <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
+              <div style={{ width: '20%', float: 'left', borderRight: '1px solid #333' }}>
+                {/* className={this.state.data.C3_464172148589?'':'alert'} */}
+                <span style={{ display: 'inline-block', verticalAlign: 'middle', textAlign: 'left',textIndent:'4px',lineHeight:'24px'}}>英文姓名(同护照)：</span></div>
+              <div style={{ width: '40%', float: 'left', borderRight: '1px solid #333' }}>
+                {/* className={this.state.data.C3_464172148589?'':'alert'} */}
+                <span style={{ display: 'inline-block', width: '76px', verticalAlign: 'middle', textAlign: 'left',textIndent:'4px',lineHeight:'24px'}}>First Name：</span>
+                <Input disabled={!this.state.edit} value={this.state.data.C3_709119281633} onChange={(v) => { this.onChange('C3_709119281633', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
+              </div>
+              <div style={{ width: '40%', float: 'left'}}>
+                
+                <span style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left',textIndent:'4px',lineHeight:'24px' }}>Last Name：</span>
+                <Input disabled={!this.state.edit} value={this.state.data.C3_709119294030} onChange={(v) => { this.onChange('C3_709119294030', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)'  }} />
+              
               </div>
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
               <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
@@ -642,7 +653,7 @@ class PersonInfoInFile extends React.Component {
 
                 {/* 结束 */}
                 </div>
-                <div style={{width:'144px',lineHeight:'200px',float:'left',border:'1px solid #e8e8e8',textAlign:'center',fontSize:'1rem'}}>
+                <div style={{width:'144px',lineHeight:'200px',float:'left',border:'1px solid #e8e8e8',textAlign:'center',fontSize:'1rem',marginTop:'10px'}}>
                   照片
                 </div>
                
@@ -881,10 +892,10 @@ class PersonInfoInFile extends React.Component {
               <tr>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>开始日期</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>结束日期</th>
-                <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>公司名称</th>
+                <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' ,width:'200px'}}>公司名称</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>职位</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>职责</th>
-                <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>最后薪资</th>
+                <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px',width:'64px' }}>最后薪资</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>公司电话</th>
               </tr>
               <tr>
@@ -967,9 +978,9 @@ class PersonInfoInFile extends React.Component {
             <table border="1" style={{ width: '100%', border: '1px solid #333' }}>
               <tr>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>姓名</th>
-                <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>关系</th>
+                <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px',width:'56px' }}>关系</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>联系方式</th>
-                <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>工作单位</th>
+                <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px',width:'200px' }}>工作单位</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>出生日期</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>职业/职称</th>
               </tr>
@@ -1123,6 +1134,7 @@ class PersonInfoInFile extends React.Component {
                     <Option value="流利">流利</Option>
                     <Option value="良好">良好</Option>
                     <Option value="基本">基本</Option>
+                    <Option value="">&nbsp;</Option>
                 </Select>
               </div>
               <div style={{width:'25%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
@@ -1132,6 +1144,7 @@ class PersonInfoInFile extends React.Component {
                     <Option value="流利">流利</Option>
                     <Option value="良好">良好</Option>
                     <Option value="基本">基本</Option>
+                    <Option value="">&nbsp;</Option>
                 </Select>
               </div>
               <div style={{width:'25%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
@@ -1141,6 +1154,7 @@ class PersonInfoInFile extends React.Component {
                     <Option value="流利">流利</Option>
                     <Option value="良好">良好</Option>
                     <Option value="基本">基本</Option>
+                    <Option value="">&nbsp;</Option>
                 </Select>
               </div>
               <div style={{width:'25%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
@@ -1150,6 +1164,7 @@ class PersonInfoInFile extends React.Component {
                     <Option value="流利">流利</Option>
                     <Option value="良好">良好</Option>
                     <Option value="基本">基本</Option>
+                    <Option value="">&nbsp;</Option>
                 </Select>
               </div>
             </div>
@@ -1278,7 +1293,7 @@ class PersonInfoInFile extends React.Component {
                       <Option value="是">是</Option>
                   </Select>
                 </div>
-                <div style={{width:'50%',float:'left',borderLeft:'1px solid #000'}}>
+                <div style={{width:'50%',float:'left',borderLeft:'1px solid #000',textIndent:'4px'}}>
                  <span>如果有，请说明：</span>
                  <Input value={this.state.data.C3_708984670508} onChange={(v) => { this.onChange('C3_708984670508', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '260px' }} />
                 </div>
