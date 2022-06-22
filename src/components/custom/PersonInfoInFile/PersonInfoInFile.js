@@ -533,13 +533,13 @@ class PersonInfoInFile extends React.Component {
                 <span style={{ display: 'inline-block', verticalAlign: 'middle', textAlign: 'left',textIndent:'4px',lineHeight:'24px'}}>英文姓名(同护照)：</span></div>
               <div style={{ width: '40%', float: 'left', borderRight: '1px solid #333' }}>
                 {/* className={this.state.data.C3_464172148589?'':'alert'} */}
-                <span style={{ display: 'inline-block', width: '76px', verticalAlign: 'middle', textAlign: 'left',textIndent:'4px',lineHeight:'24px'}}>First Name：</span>
-                <Input disabled={!this.state.edit} value={this.state.data.C3_709119281633} onChange={(v) => { this.onChange('C3_709119281633', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)' }} />
+                <span style={{ display: 'inline-block', width: '80px', verticalAlign: 'middle', textAlign: 'left',textIndent:'4px',lineHeight:'24px'}}>First Name：</span>
+                <Input disabled={!this.state.edit} value={this.state.data.C3_709119281633} onChange={(v) => { this.onChange('C3_709119281633', v.target.value) }} size='small' style={{ width: 'calc(100% - 84px)' }} />
               </div>
               <div style={{ width: '40%', float: 'left'}}>
                 
-                <span style={{ display: 'inline-block', width: '72px', verticalAlign: 'middle', textAlign: 'left',textIndent:'4px',lineHeight:'24px' }}>Last Name：</span>
-                <Input disabled={!this.state.edit} value={this.state.data.C3_709119294030} onChange={(v) => { this.onChange('C3_709119294030', v.target.value) }} size='small' style={{ width: 'calc(100% - 80px)'  }} />
+                <span style={{ display: 'inline-block', width: '80px', verticalAlign: 'middle', textAlign: 'left',textIndent:'4px',lineHeight:'24px' }}>Last Name：</span>
+                <Input disabled={!this.state.edit} value={this.state.data.C3_709119294030} onChange={(v) => { this.onChange('C3_709119294030', v.target.value) }} size='small' style={{ width: 'calc(100% - 84px)'  }} />
               
               </div>
               <div style={{ clear: 'both', height: '1px', borderBottom: '1px solid #333', boxSizing: 'border-box' }}></div>
