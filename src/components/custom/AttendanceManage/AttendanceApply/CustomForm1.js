@@ -778,6 +778,8 @@ class CustomForm1 extends React.Component {
           </Form.Item>
           {isNeedAttachment && (
             <Form.Item {...formItemLayout} label="附件：" required>
+              <span style={{color:'#f5222d'}}>多个附件合并为一个word文件后再上传</span>
+              <br/>
               <Upload
                 onChange={this.handleFileChange}
                 fileList={this.state.fileList}
