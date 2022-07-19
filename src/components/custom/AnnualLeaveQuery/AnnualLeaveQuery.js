@@ -691,7 +691,7 @@ class Summary extends React.PureComponent {
               </TabPane>
               <TabPane tab="育儿假" key="2">
                 <div>
-                        <span>当年剩余育儿假</span>
+                        <span>当年可用育儿假</span>
                         <b>{this.state.babyLeave?this.state.babyLeave:0}天</b>
                 </div>
               </TabPane>
