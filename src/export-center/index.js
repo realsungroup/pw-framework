@@ -199,6 +199,7 @@ export {
   NewSignPrint,
   ShVisitApprove,
   ShVisitManager,
-  DoorManagement
+  DoorManagement,
+  ConstructionList
 
 } from '../components/custom/loadableCustom';

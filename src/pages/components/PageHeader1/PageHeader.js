@@ -11,7 +11,12 @@ import qs from 'qs';
 import { connect } from 'react-redux';
 import HeaderBtn from './HeaderBtn';
 import Img from 'Common/ui/Img';
-import AttendanceMonth from '../AttendanceMonth';
+import { getAppConfig } from 'Util20/appConfig';
+import BIButton from '../../components/BIButton';
+
+const biConfig = getAppConfig('biConfig');
+
+console.log({biConfig})
 
 const SubMenu = Menu.SubMenu;
 const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
@@ -212,6 +217,12 @@ class PageHeader extends React.Component {
             </Badge>
           </Popover>
         </div>
+
+        {biConfig.open && (
+          <div className='page-header__bi' style={{ marginTop: 8 }}>
+            <BIButton />
+          </div>
+        )}
 
         <Drawer
           visible={drawerVisible}

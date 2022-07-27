@@ -15,6 +15,16 @@ window.pwConfig = {
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     //  baseURL:'http://hr.realsun.me:8081/',
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
+
+    biConfig: {
+      open: false,
+      loginURL:
+        'http://pw-bi.realsun.me:37799/webroot/decision/login/cross/domain',
+      logoutURL:
+        'http://pw-bi.realsun.me:37799/webroot/decision/logout/cross/domain',
+      homeURL: 'http://pw-bi.realsun.me:37799/webroot/decision',
+    },
+
     // 切换考勤月份的基地址
     attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
     fileDownloadConfig: {
@@ -238,6 +248,16 @@ window.pwConfig = {
     basename: '/',
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
     fileDownloadUrl: 'http://10.108.2.66:1000/', // 导出 Excel 文件下载基地址
+
+    biConfig: {
+      open: false,
+      loginURL:
+        'http://pw-bi.realsun.me:37799/webroot/decision/login/cross/domain',
+      logoutURL:
+        'http://pw-bi.realsun.me:37799/webroot/decision/logout/cross/domain',
+      homeURL: 'http://pw-bi.realsun.me:37799/webroot/decision',
+    },
+
     // 切换考勤月份的基地址
     attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
     fileDownloadConfig: {

@@ -36,7 +36,8 @@ class AnnualLeaveQuery extends React.Component {
       synj: null, //抬头上的信息
       snsy: null, //抬头上的信息
       djfp: null, //抬头上的信息
-      snjysy: null
+      snjysy: null,
+      babyLeave:0
     };
   }
 
@@ -264,6 +265,7 @@ class Summary extends React.PureComponent {
     const curQuarter = parseInt(moment().quarter());
     let res;
     try {
+      this.fetchBabyLeaves(numID)
       res = await http({ baseURL }).getTable({
         resid: '662169346288',
         cmswhere: `numberID = '${numID}' and year = ${curYear}`
@@ -378,7 +380,19 @@ class Summary extends React.PureComponent {
       message.error(error.message);
     }
   };
-
+  fetchBabyLeaves = async (numID)=>{
+    const { baseURL } = this.props;
+    try{
+      let res = await http({ baseURL }).getTable({
+        resid: '711552481439',
+        cmswhere: `C3_711551584185 = ${numID}`
+      });
+      this.setState({babyLeave:res.data[0].C3_711551815156});
+    }catch(e){
+      console.log(e.message);
+      message.error(e.message);
+    }
+  }
   fetchAnnualLeavesCopy = async value => {
     const { resid, baseURL } = this.props;
     const curYear = parseInt(moment().year());
@@ -395,6 +409,7 @@ class Summary extends React.PureComponent {
       message.info(error.message);
     }
     let res;
+    this.fetchBabyLeaves(numID);
     try {
       res = await http({ baseURL }).getTable({
         resid: '662169346288',
@@ -605,7 +620,7 @@ class Summary extends React.PureComponent {
       <div className="alq-summary">
         <Spin spinning={this.state.loading}>
           <div className="showblock">
-            <div>
+            <div className='showblock_tree'>
               <TreeSelect
                 style={{ width: '250px' }}
                 value={selectValue}
@@ -625,52 +640,63 @@ class Summary extends React.PureComponent {
                 }}
               ></TreeSelect>
             </div>
-            <div>
-              <span style={{ marginRight: '2vw' }}>
-                上年结转年假<b>{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</b>
-              </span>
-            </div>
-            <div>
-              <span style={{ marginRight: '2vw' }}>
-                当年新增年假
-                <b>
-                  {isWuxi
-                    ? curentYearIncrease + '天'
-                    : curentYearIncrease * 8 + '小时'}
-                </b>
-              </span>
-            </div>
-            <div>
-              <span style={{ marginRight: '2vw' }}>
-                上年剩余可用年假
-                <b>
-                  {isWuxi
-                    ? this.state.snjysy + '天'
-                    : this.state.snjysy * 8 + '小时'}
-                </b>
-              </span>
-            </div>
-            <div>
-              <span style={{ marginRight: '2vw' }}>
-                当年剩余可用年假
-                <b>
-                  {isWuxi
-                    ? this.state.dnjysy + '天'
-                    : this.state.dnjysy * 8 + '小时'}
-                </b>
-              </span>
-            </div>
-            <div>
-              <span style={{ color: '#f5222d' }}>
-                注意当年剩余不含上年剩余年假，也不含未释放年假
-              </span>
-              <br />
-              <span style={{ color: '#f5222d' }}>
-                温馨提示：请避开在年假结算日查询和申请年假！
-                <br />
-                [年假结算日：1月1日、4月1日、7月1日、10月1日]
-              </span>
-            </div>
+            <Tabs>
+              <TabPane tab="年假" key="1">
+                <div>
+                  <span style={{ marginRight: '2vw' }}>
+                    上年结转年假<b>{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</b>
+                  </span>
+                </div>
+                <div>
+                  <span style={{ marginRight: '2vw' }}>
+                    当年新增年假
+                    <b>
+                      {isWuxi
+                        ? curentYearIncrease + '天'
+                        : curentYearIncrease * 8 + '小时'}
+                    </b>
+                  </span>
+                </div>
+                <div>
+                  <span style={{ marginRight: '2vw' }}>
+                    上年剩余可用年假
+                    <b>
+                      {isWuxi
+                        ? this.state.snjysy + '天'
+                        : this.state.snjysy * 8 + '小时'}
+                    </b>
+                  </span>
+                </div>
+                <div>
+                  <span style={{ marginRight: '2vw' }}>
+                    当年剩余可用年假
+                    <b>
+                      {isWuxi
+                        ? this.state.dnjysy + '天'
+                        : this.state.dnjysy * 8 + '小时'}
+                    </b>
+                  </span>
+                </div>
+                <div>
+                  <span style={{ color: '#f5222d' }}>
+                    注意当年剩余不含上年剩余年假，也不含未释放年假
+                  </span>
+                  <br />
+                  <span style={{ color: '#f5222d' }}>
+                    温馨提示：请避开在年假结算日查询和申请年假！
+                    <br />
+                    [年假结算日：1月1日、4月1日、7月1日、10月1日]
+                  </span>
+                </div>
+              </TabPane>
+              <TabPane tab="育儿假" key="2">
+                <div>
+                        <span>当年可用育儿假</span>
+                        <b>{this.state.babyLeave?this.state.babyLeave:0}天</b>
+                </div>
+              </TabPane>
+            </Tabs>
+            
           </div>
           {/* 
           <div className="collapseStyle">

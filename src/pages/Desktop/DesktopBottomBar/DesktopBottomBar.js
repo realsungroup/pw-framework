@@ -7,8 +7,11 @@ import DesktopDate from './DesktopDate';
 import DesktopMenu from './DesktopMenu';
 import DesktopSearch from './DesktopSearch';
 import AttendanceMonth from '../../components/AttendanceMonth';
-
+import { getAppConfig } from 'Util20/appConfig';
 import classNames from 'classnames';
+import BIButton from '../../components/BIButton';
+
+const biConfig = getAppConfig('biConfig');
 
 const noop = () => { };
 
@@ -155,6 +158,11 @@ export default class DesktopBottomBar extends React.Component {
           </div>
         </div>
         <div className="desktop-bottom-bar__right">
+          {biConfig.open && (
+            <div className='desktop-bottom-bar__bi' style={{ marginRight: 4 }}>
+              <BIButton />
+            </div>
+          )}
           {/* 考勤月份选择 */}
           {hasAttendanceMonth && (
             <AttendanceMonth

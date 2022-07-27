@@ -982,6 +982,12 @@ export const AccessControl = Loadable({
     return minLoading;
   }
 });
+export const ConstructionList = Loadable({
+  loader: () => import('./ConstructionList'),
+  loading() {
+    return minLoading;
+  }
+});
 
 export const NewSignPrint = Loadable({
   loader: () => import('./NewSignPrint'),

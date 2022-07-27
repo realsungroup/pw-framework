@@ -28,8 +28,8 @@ class HolidayBalanceQuery extends Component {
                             hasRowModify={false}
                             hasRowView={true}
                             hasRowDelete={false}
-                            baseURL={'http://WUX-HR03.china.ads.finisar.com:801/'}
-                            downloadBaseURL={'http://WUX-HR03.china.ads.finisar.com:800/'}
+                            baseURL={'http://WUX-HR03:801/'}
+                            downloadBaseURL={'http://WUX-HR03:800/'}
                             subtractH={200}
                         />
                     </TabPane>
@@ -46,8 +46,8 @@ class HolidayBalanceQuery extends Component {
                             hasRowModify={false}
                             hasRowView={true}
                             hasRowDelete={false}
-                            baseURL={'http://WUX-HR03.china.ads.finisar.com:801/'}
-                            downloadBaseURL={'http://WUX-HR03.china.ads.finisar.com:800/'}
+                            baseURL={'http://WUX-HR03:801/'}
+                            downloadBaseURL={'http://WUX-HR03:800/'}
                             subtractH={200}
                         />
                     </TabPane>
