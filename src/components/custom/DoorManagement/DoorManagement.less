@@ -1,0 +1,48 @@
+.DoorManagement{
+  width:100vw;
+  height: 100vh;
+  overflow: auto;
+  box-sizing: border-box;
+  background-color: #fff;
+  .prog{
+    padding: 0 1rem .25rem;
+    border-bottom:1px solid #e8e8e8;
+    .chart{
+      width:calc(100% - 5rem);
+    }
+  }
+  .tableWrap{
+    width: 100vw;
+    height:calc(100vh - 90px);
+    button{
+      margin-left: 0.5rem;
+    }
+    &>ul{
+      overflow: hidden;
+      padding: 0.25rem;
+      
+      &>li{
+        list-style:none;
+        padding:.25rem;
+        width: 33%;
+        float: left;
+        height:calc(100vh - 134px);
+        overflow: auto;
+        .add,.minus,.same{
+          border-left:4px solid #999;
+          text-indent: .5rem;
+          b{
+            margin-left: 0.5rem;
+          }
+        }
+        .add{
+          border-color: #1890ff;
+        }
+        .minus{
+          border-color: #f5222d;
+        }
+      }
+    }
+    
+  }
+}

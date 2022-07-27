@@ -174,6 +174,7 @@ class ManagerAttendanceApproval extends React.Component {
           customRowBtns={[
             (record, size) => {
               return (
+                <>
                 <Button
                   size={size}
                   onClick={() => {
@@ -182,6 +183,15 @@ class ManagerAttendanceApproval extends React.Component {
                 >
                   {locale == 'en' ? 'Details' : '查看审批记录'}
                 </Button>
+                <Button
+                  size={size}
+                  onClick={() => {
+                    window.open(record.fileUrl)
+                  }}
+                >
+                  {locale == 'en' ? 'Attachments' : '查看附件'}
+                </Button>
+                </>
               );
             }
           ]}

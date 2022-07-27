@@ -8397,31 +8397,11 @@ window[642865148916] = {
     subtractH: 200
   }
 };
+
 window[642865159694] = {
-  name: 'TableData', // 组件名称，
+  name: 'DoorManagement', // 组件名称，
   title: '当月门禁清单', // 功能模块名称
-  props: {
-    baseURL: 'http://10.108.2.66:9091/',
-    downloadBaseURL: 'http://10.108.2.66:80/',
-    resid: 629221162564,
-    actionBarWidth: 200,
-    hasAdd: true,
-    hasBeBtns: true,
-    hasModify: true,
-    hasBackBtn: true,
-    hasDelete: true,
-    hasRowModify: true,
-    hasRowView: true,
-    hasRowDelete: true,
-    isUseFormDefine: false,
-    formProps: {
-      // height: 500
-    },
-    advSearch: {
-      isRequestFormData: false
-    },
-    subtractH: 200
-  }
+  props:{}
 };
 window[642865168807] = {
   name: 'TableData', // 组件名称，

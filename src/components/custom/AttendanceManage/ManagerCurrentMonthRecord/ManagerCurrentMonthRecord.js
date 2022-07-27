@@ -1,6 +1,7 @@
 import React from 'react';
 import './ManagerCurrentMonthRecord.less';
 import TableData from '../../../common/data/TableData';
+import { Button} from 'antd';
 
 /*
  * 经理当月审批记录
@@ -15,6 +16,9 @@ class ManagerCurrentMonthRecord extends React.Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   render() {
+    const {
+      intl: { locale }
+    } = this.props;
     return (
       <div className="attendance-manage_tabledata__wrapper">
         <TableData
@@ -37,6 +41,22 @@ class ManagerCurrentMonthRecord extends React.Component {
           isUseBESize={true}
           hasBeSort={false}
           isWrap={true}
+          customRowBtns={[
+            (record, size) => {
+              return (
+                <>
+                <Button
+                  size={size}
+                  onClick={() => {
+                    window.open(record.fileUrl)
+                  }}
+                >
+                  {locale == 'en' ? 'Attachments' : '查看附件'}
+                </Button>
+                </>
+              );
+            }
+          ]}
         />
       </div>
     );

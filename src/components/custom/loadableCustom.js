@@ -1007,3 +1007,9 @@ export const ShVisitManager = Loadable({
     return minLoading;
   }
 });
+export const DoorManagement = Loadable({
+  loader: () => import('./DoorManagement'),
+  loading() {
+    return minLoading;
+  }
+});
