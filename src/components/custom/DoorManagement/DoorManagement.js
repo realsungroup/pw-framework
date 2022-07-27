@@ -533,14 +533,14 @@ class DoorManagement extends React.Component {
                     <li>
                       <div className="add">
                         <span>新增权限</span>
-                        <Button
+                        {/* <Button
                           type="primary"
                           onClick={() => {
                             this.handleConfirm('add');
                           }}
                         >
                           保留
-                        </Button>
+                        </Button> */}
                         <Button
                           type="danger"
                           onClick={() => {
@@ -621,14 +621,14 @@ class DoorManagement extends React.Component {
                     <li>
                       <div className="same">
                         <span>未变权限</span>
-                        <Button
+                        {/* <Button
                           type="primary"
                           onClick={() => {
                             this.handleConfirm('same');
                           }}
                         >
                           保留
-                        </Button>
+                        </Button> */}
                         <Button
                           type="danger"
                           onClick={() => {
