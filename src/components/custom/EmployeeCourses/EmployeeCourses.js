@@ -39,7 +39,7 @@ const { Search } = Input;
 const { Step } = Steps;
 const resid = '615378031605'; //课程明细表id
 const TIPS_RESID = '614964195659'; //心得表id
-const YEAR_RESID = '420161931474'; //财年表id
+const YEAR_RESID = '611077132065'; //财年表id
 const REVIEW_RECOR_RESID = '615663201836'; // 申请单审批记录表id  C3_615657103208 课程安排明细编号
 const TABBARSTYLE = {
   display: 'flex',
@@ -177,7 +177,7 @@ class EmployeeCourses extends React.Component {
     try {
       res = await http().getRecordAndSubTables({
         resid: resid,
-        cmswhere: `C3_613941384328 = '${currentYear.C3_420161949106}'`,
+        cmswhere: `C3_613941384328 = '${currentYear.C3_611070959393}'`,
         subresid: '622466450977',
         getsubresource: 1
       });
@@ -246,11 +246,11 @@ class EmployeeCourses extends React.Component {
         resid: YEAR_RESID
       });
       let years = [...res.data];
-      let currentYear = years.find(item => item.C3_478179065325 === 'Y');
+      let currentYear = years.find(item => item.C3_611264740419 === 'Y');
       this.setState({
         years,
         currentYear,
-        selectedYear: currentYear.C3_420161949106
+        selectedYear: currentYear.C3_611070959393
       });
     } catch (error) {
       message.error(error.message);
@@ -953,8 +953,8 @@ class EmployeeCourses extends React.Component {
         }}
       >
         {this.state.years.map(item => (
-          <Option key={item.REC_ID} value={item.C3_420161949106}>
-            {item.C3_420161949106}
+          <Option key={item.REC_ID} value={item.C3_611070959393}>
+            {item.C3_611070959393}
           </Option>
         ))}
       </Select>
