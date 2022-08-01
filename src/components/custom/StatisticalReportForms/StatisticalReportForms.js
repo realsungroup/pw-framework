@@ -7,7 +7,7 @@ import ReportForm3 from './ReportForm3';
 import http from 'Util20/api';
 
 const { TabPane } = Tabs;
-const YEAR_RESID = '420161931474'; //财年表id
+const YEAR_RESID = '611077132065'; //财年表id
 
 /**
  * 学习与发展----数据统计报表
@@ -33,7 +33,7 @@ class StatisticalReportForms extends React.Component {
         resid: YEAR_RESID
       });
       let years = [...res.data];
-      let currentYear = years.find(item => item.C3_478179065325 === 'Y');
+      let currentYear = years.find(item => item.C3_611264740419 === 'Y');
       this.setState({
         currentYear
       });

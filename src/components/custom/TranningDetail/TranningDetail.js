@@ -20,7 +20,7 @@ import debounce from 'lodash/debounce';
 const resid = '625854136036';
 const approvalresid = '626179362313';
 const { Option } = Select;
-const YEAR_RESID = '420161931474'; //财年表id
+const YEAR_RESID = '611077132065'; //财年表id
 const { TextArea } = Input;
 class TranningDetail extends React.Component {
   state = {
@@ -53,13 +53,13 @@ class TranningDetail extends React.Component {
         resid: YEAR_RESID
       });
       let years = [...res.data];
-      let currentYear = years.find(item => item.C3_478179065325 === 'Y');
+      let currentYear = years.find(item => item.C3_611264740419 === 'Y');
       this.setState({
         years,
         currentYear,
-        selectedYear: currentYear.C3_420161949106
+        selectedYear: currentYear.C3_611070959393
       });
-      this.getAppoval(currentYear.C3_420161949106);
+      this.getAppoval(currentYear.C3_611070959393);
     } catch (error) {
       message.error(error.message);
       console.log(error);
@@ -229,8 +229,8 @@ class TranningDetail extends React.Component {
                 onChange={this.handleYearChange}
               >
                 {years.map(item => (
-                  <Option key={item.REC_ID} value={item.C3_420161949106}>
-                    {item.C3_420161949106}
+                  <Option key={item.REC_ID} value={item.C3_611070959393}>
+                    {item.C3_611070959393}
                   </Option>
                 ))}
               </Select>

@@ -51,7 +51,7 @@ class AdjustTarget extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     if (!state.selectedYear) {
-      return { selectedYear: props.currentYear.C3_420161949106 };
+      return { selectedYear: props.currentYear.C3_611070959393 };
     }
   }
 
@@ -64,7 +64,7 @@ class AdjustTarget extends React.Component {
       this.setState({
         mainData: res.data,
         yearMainData: res.data.filter(
-          item => item.C3_420150922019 === currentYear.C3_420161949106
+          item => item.C3_420150922019 === currentYear.C3_611070959393
         )
       });
     } catch (error) {
@@ -157,8 +157,8 @@ class AdjustTarget extends React.Component {
               >
                 {years.map(year => {
                   return (
-                    <Option value={year.C3_420161949106}>
-                      {year.C3_420161949106}
+                    <Option value={year.C3_611070959393}>
+                      {year.C3_611070959393}
                     </Option>
                   );
                 })}

@@ -10,7 +10,7 @@ class ByYear extends React.Component {
   };
   static getDerivedStateFromProps(props, state) {
     if (!state.selectedYear) {
-      return { selectedYear: props.currentYear.C3_420161949106 };
+      return { selectedYear: props.currentYear.C3_611070959393 };
     }
   }
   render() {
@@ -32,16 +32,16 @@ class ByYear extends React.Component {
           {years.map(year => {
             return (
               <div
-                key={year.C3_420161949106}
+                key={year.C3_611070959393}
                 className={classnames('year-list-item', {
                   'year-list-item--selected':
-                    selectedYear == year.C3_420161949106
+                    selectedYear == year.C3_611070959393
                 })}
                 onClick={() =>
-                  this.setState({ selectedYear: year.C3_420161949106 })
+                  this.setState({ selectedYear: year.C3_611070959393 })
                 }
               >
-                {year.C3_420161949106}
+                {year.C3_611070959393}
               </div>
             );
           })}
