@@ -6,7 +6,7 @@ import http from 'Util20/api';
 import './TranningDetailApproval.less';
 
 const resid = '625854136036';
-const YEAR_RESID = '420161931474'; //财年表id
+const YEAR_RESID = '611077132065'; //财年表id
 const approvalresid = '626179362313';
 
 const { TextArea } = Input;
@@ -38,12 +38,12 @@ class TranningDetailApproval extends React.Component {
         resid: YEAR_RESID
       });
       let years = [...res.data];
-      let currentYear = years.find(item => item.C3_478179065325 === 'Y');
+      let currentYear = years.find(item => item.C3_611264740419 === 'Y');
       this.setState({
         years,
-        currentYear: currentYear.C3_420161949106
+        currentYear: currentYear.C3_611070959393
       });
-      this.getAppoval(currentYear.C3_420161949106);
+      this.getAppoval(currentYear.C3_611070959393);
     } catch (error) {
       message.error(error.message);
       console.log(error);

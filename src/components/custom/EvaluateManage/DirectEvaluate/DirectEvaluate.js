@@ -100,7 +100,7 @@ class DirectEvaluate extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (!state.selectedYear) {
       return {
-        selectedYear: props.currentYear.C3_420161949106,
+        selectedYear: props.currentYear.C3_611070959393,
         selectedStage: props.currentYear.C3_431106800828,
         tableConfig: getTableConfig(
           state.selectedTableTab,
@@ -252,8 +252,8 @@ class DirectEvaluate extends React.Component {
               >
                 {years.map(year => {
                   return (
-                    <Option value={year.C3_420161949106}>
-                      {year.C3_420161949106}
+                    <Option value={year.C3_611070959393}>
+                      {year.C3_611070959393}
                     </Option>
                   );
                 })}
@@ -380,7 +380,7 @@ class DirectEvaluate extends React.Component {
               </div>
             </div>
             {selectedYear &&
-              (selectedYear !== currentYear.C3_420161949106 ||
+              (selectedYear !== currentYear.C3_611070959393 ||
                 selectedStage !== currentYear.C3_431106800828) && (
                 <div style={{ color: '#F5222D' }}>
                   注意：当前选择的财年是{selectedYear},当前选择的评价阶段是

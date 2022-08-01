@@ -34,7 +34,7 @@ const { Option } = Select;
 const courseArrangmentResid = '613959525708'; //课程安排表id
 const courseDetailId = '615054661547';
 const OutCourseId = '624970414826'; //外训课程表ID
-const YEAR_RESID = '420161931474'; //财年表id
+const YEAR_RESID = '611077132065'; //财年表id
 const streamId = '615663201836'; //审批流ID
 const formItemLayout = {
   labelCol: {
@@ -118,11 +118,11 @@ class ArrangingCourses extends React.Component {
         resid: YEAR_RESID
       });
       let years = [...res.data];
-      let currentYear = years.find(item => item.C3_478179065325 === 'Y');
+      let currentYear = years.find(item => item.C3_611264740419 === 'Y');
       this.setState({
         years,
         currentYear,
-        selectedYear: currentYear.C3_420161949106
+        selectedYear: currentYear.C3_611070959393
       });
     } catch (error) {
       message.error(error.message);
@@ -793,8 +793,8 @@ class ArrangingCourses extends React.Component {
                   全部财年
                 </Option>
                 {years.map(item => (
-                  <Option key={item.REC_ID} value={item.C3_420161949106}>
-                    {item.C3_420161949106}
+                  <Option key={item.REC_ID} value={item.C3_611070959393}>
+                    {item.C3_611070959393}
                   </Option>
                 ))}
               </Select>

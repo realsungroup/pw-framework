@@ -110,7 +110,7 @@ class MyAssessmentTable extends React.Component {
   fetchFYear = async () => {
     try {
       const res = await http().getTable({
-        resid: '420161931474',
+        resid: '611077132065',
         cmswhere: `C3_420162027612 = 'Y'`
       });
       this.setState({ currentYear: res.data[0] });
