@@ -205,6 +205,7 @@ getFapiao = async(id)=>{
           subtractH={300}
           // height="calc(100vh - 64px)"
           recordFormType="drawer"
+          hasBeBtns={true}
           customRowBtns={[
             record => {
               return (

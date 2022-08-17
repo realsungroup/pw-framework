@@ -51,7 +51,7 @@ class OnlineTrainingManager extends React.Component {
         className="online-training-manager"
         onChange={this.handleTabsChange}
       >
-        <TabPane tab="入职培训" key="1" style={{ height: '100%' }}>
+        <TabPane tab="DL入职培训" key="1" style={{ height: '100%' }}>
           <EntryTraining
             baseURL={baseURL}
             coursePapers={coursePapers}
@@ -63,6 +63,14 @@ class OnlineTrainingManager extends React.Component {
             baseURL={baseURL}
             coursePapers={coursePapers}
             downloadBaseURL={baseURLDownload}
+          />
+        </TabPane>
+        <TabPane tab="IDL入职培训" key="8">
+          <InternalTraining
+            baseURL={baseURL}
+            coursePapers={coursePapers}
+            downloadBaseURL={baseURLDownload}
+            isEnter={true}
           />
         </TabPane>
         <TabPane tab="考试课程" key="3">

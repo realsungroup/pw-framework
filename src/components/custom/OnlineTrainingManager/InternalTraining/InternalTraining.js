@@ -59,9 +59,13 @@ class InternalTraining extends React.Component {
     this.getModifyFormData();
   }
   fetchCourse = async () => {
-    const { baseURL } = this.props;
+    const { baseURL,isEnter } = this.props;
     try {
-      const res = await http({ baseURL }).getTable({ resid });
+      let obj={resid,cmswhere:`isnull(isIDLRenter,'') = ''`};
+      if(isEnter){
+        obj={ resid,cmswhere:`isIDLRenter = 'Y'` }
+      }
+      const res = await http({ baseURL }).getTable(obj);
       this.setState({ courses: res.data });
     } catch (error) {
       console.error(error);
