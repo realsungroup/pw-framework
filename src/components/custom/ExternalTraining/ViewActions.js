@@ -32,7 +32,8 @@ class ViewActions extends React.Component {
       rate4: null
     },
     knowledge: [''],
-    plans: ['']
+    plans: [''],
+    viewAll:false
   };
 
   //获取反馈与行动计划
@@ -84,7 +85,7 @@ class ViewActions extends React.Component {
       message.error(err.message);
       console.log(err);
     }
-    if (res.data.length > 0) {
+    if (res2.data.length > 0) {
       let knowledge = res2.data[0].knowledge1.split(';'); //知识点
       let plans = res2.data[0].action1.split(';'); //行动计划
       this.setState({
@@ -194,7 +195,6 @@ getFapiao = async(id)=>{
       <div style={{ flex: 1 ,height:'calc(100vh - 64px'}}>
         <TableData
           resid={courseDetailId}
-          // subtractH='220px'
           hasAdd={false}
           hasRowView={false}
           hasModify={false}
@@ -203,9 +203,20 @@ getFapiao = async(id)=>{
           hasRowDelete={false}
           hasRowModify={false}
           subtractH={300}
-          // height="calc(100vh - 64px)"
           recordFormType="drawer"
           hasBeBtns={true}
+          actionBarExtra={record => {
+            return (
+              <Button
+                size='small'
+                type="primary"
+                onClick={() => {
+                  this.setState({viewAll:true});
+                }}
+              >
+                查看行动计划总览
+              </Button>)
+          }}
           customRowBtns={[
             record => {
               return (
@@ -253,8 +264,33 @@ getFapiao = async(id)=>{
               );
             }
           ]}
-          // cmswhere={`C3_614184177086 = '${selectedCourseArrangment.CourseArrangeID}'`}
         />
+        <Modal
+         title="修改实际费用"
+         visible={this.state.viewAll}
+         footer={null}
+         width="80vw"
+         destroyOnClose
+          onCancel={
+           ()=>{
+             this.setState({viewAll:false})
+           }
+         }
+        >
+          <div className='viewAll'>
+          <TableData
+            resid={615571557694}
+            hasAdd={false}
+            hasRowView={true}
+            hasModify={false}
+            hasDelete={false}
+            hasRowSelection={true}
+            hasRowDelete={false}
+            hasRowModify={false}
+            subtractH={300}
+            />
+          </div>
+        </Modal>
         <Modal
          title="修改实际费用"
          visible={this.state.shijifeiyong}
