@@ -6,7 +6,7 @@ window.pwConfig = {
   development: {
     // 地址
     // baseURL: 'http://10.108.11.36:6001/', // 请求的基地址
-    // baseURL: 'http://pwkwebapi.realsun.me/',
+    //baseURL: 'http://pwkwebapi.realsun.me/',
     baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
     basename: '/',
@@ -22,7 +22,7 @@ window.pwConfig = {
         'http://pw-bi.realsun.me:37799/webroot/decision/login/cross/domain',
       logoutURL:
         'http://pw-bi.realsun.me:37799/webroot/decision/logout/cross/domain',
-      homeURL: 'http://pw-bi.realsun.me:37799/webroot/decision',
+      homeURL: 'http://pw-bi.realsun.me:37799/webroot/decision'
     },
 
     // 切换考勤月份的基地址
@@ -255,7 +255,7 @@ window.pwConfig = {
         'http://pw-bi.realsun.me:37799/webroot/decision/login/cross/domain',
       logoutURL:
         'http://pw-bi.realsun.me:37799/webroot/decision/logout/cross/domain',
-      homeURL: 'http://pw-bi.realsun.me:37799/webroot/decision',
+      homeURL: 'http://pw-bi.realsun.me:37799/webroot/decision'
     },
 
     // 切换考勤月份的基地址

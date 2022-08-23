@@ -1287,11 +1287,13 @@ class ArrangingCourses extends React.Component {
             hasAdd={false}
             hasRowDelete={false}
             hasRowSelection={true}
+            hasBeBtns={true}
             customRowBtns={[
               (record, btnSize) => {
                 return (
                   <>
                     <Button
+                      size="small"
                       onClick={() => {
                         this.setState({
                           isShowStream: true,
@@ -1310,7 +1312,9 @@ class ArrangingCourses extends React.Component {
                         this.giveUp(courseDetailId, record.REC_ID);
                       }}
                     >
-                      <Button type="danger">放弃</Button>
+                      <Button type="danger" size="small">
+                        放弃
+                      </Button>
                     </Popconfirm>
                     {record.againNoticeHrmanage != 'Y' ? (
                       <Popconfirm
@@ -1336,6 +1340,7 @@ class ArrangingCourses extends React.Component {
             actionBarExtra={records => (
               <div>
                 <Button
+                  size="small"
                   onClick={
                     this.state.showAddMem
                       ? () => {
@@ -1379,6 +1384,7 @@ class ArrangingCourses extends React.Component {
                   ) : null}
                 </Modal>
                 <Button
+                  size="small"
                   onClick={() => {
                     if (!records.selectedRowKeys.length) {
                       return message.error('请选择一条记录');

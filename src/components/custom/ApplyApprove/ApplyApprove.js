@@ -26,6 +26,7 @@ class ApplyApprove extends React.Component {
             hasBeBtns: true,
             hasModify: false,
             hasDelete: false,
+            recordFormUseAbsolute: true,
             hasAdd: false,
             hasRowDelete: false,
             hasRowModify: false,
@@ -52,6 +53,7 @@ class ApplyApprove extends React.Component {
             hasAdd: false,
             hasRowDelete: false,
             hasRowModify: false,
+            recordFormUseAbsolute: true,
             hasRowView: true,
             subtractH: 220,
             formProps: {

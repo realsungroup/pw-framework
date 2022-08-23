@@ -31,6 +31,7 @@ class SupervisorApprove extends React.Component {
         hasRowModify={false}
         hasBeBtns={true}
         subtractH={240}
+        recordFormUseAbsolute={true}
 
       />
       </div>
@@ -41,7 +42,7 @@ class SupervisorApprove extends React.Component {
     <TableData
         resid={'629316737341'}
         subtractH={240}
-
+        recordFormUseAbsolute={true}
         hasModify={false}
         hasAdd={false}
         hasDelete={false}
