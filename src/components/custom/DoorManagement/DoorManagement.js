@@ -9,12 +9,14 @@ import {
   Progress,
   Modal,
   DatePicker,
-  Select
+  Select,
+  Input
 } from 'antd';
 import './DoorManagement.less';
 import TableData from '../../common/data/TableData';
 import http, { makeCancelable } from 'Util20/api';
 import moment from 'moment';
+import { indexOf } from 'lodash';
 const { Option } = Select;
 const thead = [
   {
@@ -41,12 +43,12 @@ const thead = [
     title: '权限组名',
     dataIndex: 'C3_595166751093',
     key: 'C3_595166751093'
-  },
-  {
-    title: '确认无误',
-    dataIndex: 'C3_595192402751',
-    key: 'C3_595192402751'
   }
+  // {
+  //   title: '确认无误',
+  //   dataIndex: 'C3_595192402751',
+  //   key: 'C3_595192402751'
+  // }
 ];
 class DoorManagement extends React.Component {
   constructor(props) {
@@ -70,7 +72,10 @@ class DoorManagement extends React.Component {
       isFinished: false,
       dataSame: 'same',
       dataAdd: 'add',
-      dataMinus: 'minus'
+      dataMinus: 'minus',
+      keyAdd: '',
+      keyMinus: '',
+      keySame: ''
     };
   }
   getYearMonths = async () => {
@@ -89,6 +94,23 @@ class DoorManagement extends React.Component {
     }
   };
 
+  filtData = (all, v) => {
+    let arr = this.state[all + 'O'];
+    let res = [];
+    if (v) {
+      for (let i = 0; i < arr.length; i++) {
+        for (let c = 0; c < thead.length; c++) {
+          let str = '' + arr[i][thead[c].key];
+          if (str.indexOf(v) != -1) {
+            res.push(arr[i]);
+          }
+        }
+      }
+    } else {
+      res = arr;
+    }
+    this.setState({ [all]: res });
+  };
   getData = async () => {
     this.setState({
       loading: true,
@@ -110,15 +132,15 @@ class DoorManagement extends React.Component {
       lm = 12;
       ly = Number(yy) - 1;
     }
-    if (lm < 10) {
-      lm = '0' + lm;
+    if (Number(lm) < 10) {
+      lm = '0' + Number(lm);
     } else {
       lm = lm + '';
     }
     ly = ly + '';
     let lym = ly + lm;
-    if (mm < 10) {
-      mm = '0' + mm;
+    if (Number(mm) < 10) {
+      mm = '0' + Number(mm);
     } else {
       mm = mm + '';
     }
@@ -153,7 +175,6 @@ class DoorManagement extends React.Component {
       }
       n++;
     }
-    console.log(lyArr, cyArr);
     this.setState({
       process: '筛选减少的门禁权限',
       step: 3
@@ -190,6 +211,7 @@ class DoorManagement extends React.Component {
       }
       n++;
     }
+    console.log(minusY, minusN);
     this.setState({
       process: '筛选增加的门禁权限',
       step: 4
@@ -217,7 +239,6 @@ class DoorManagement extends React.Component {
       }
       n++;
     }
-    console.log(add, minus, same);
     this.setState({
       loading: false,
       process: '完成',
@@ -229,7 +250,10 @@ class DoorManagement extends React.Component {
       minusY,
       minusN,
       sameY,
-      sameN
+      sameN,
+      sameO: same,
+      minusO: minus,
+      addO: add
     });
   };
   handleCloz = async arr => {
@@ -241,7 +265,6 @@ class DoorManagement extends React.Component {
     }
   };
   setSel = (type, selectedRowKeys, selectedRows) => {
-    console.log(type, selectedRowKeys, selectedRows);
     if (type === 'same') {
       this.setState({
         selectedRowKeysSame: selectedRowKeys,
@@ -428,14 +451,14 @@ class DoorManagement extends React.Component {
     const { activeKey } = this.state;
     return (
       <div className="DoorManagement">
-        <div className="prog">
+        {/* <div className="prog">
           <Progress percent={this.state.percent} className="chart" />
           <span className="hint">
             {this.state.percent > 0
               ? '进度：' + this.state.percent + '%'
               : null}
           </span>
-        </div>
+        </div> */}
         <Modal
           visible={this.state.vis}
           footer={null}
@@ -533,6 +556,7 @@ class DoorManagement extends React.Component {
                     <li>
                       <div className="add">
                         <span>新增权限</span>
+
                         {/* <Button
                           type="primary"
                           onClick={() => {
@@ -552,7 +576,13 @@ class DoorManagement extends React.Component {
                         >
                           删除
                         </Button>
-                        <b>确认无误：</b>
+                        <Input.Search
+                          style={{ width: 'calc(100% - 160px)' }}
+                          onPressEnter={v => {
+                            this.filtData('add', v.target.value);
+                          }}
+                        />
+                        {/* <b>确认无误：</b>
                         <Select
                           defaultValue="add"
                           style={{ width: 120 }}
@@ -567,34 +597,42 @@ class DoorManagement extends React.Component {
                           <Option value="add">全部</Option>
                           <Option value="addY">是</Option>
                           <Option value="addN">否</Option>
-                        </Select>
+                        </Select> */}
                       </div>
-                      <Table
-                        rowSelection={{
-                          type: 'checkbox',
-                          onChange: (selectedRowKeys, selectedRows) => {
-                            this.setSel('add', selectedRowKeys, selectedRows);
-                          }
-                        }}
-                        dataSource={this.state[this.state.dataAdd]}
-                        columns={thead}
-                        pagination={{
-                          pageSizeOptions: [10, 40, 100, 500],
-                          showSizeChanger: true,
-                          showQuickJumper: true,
-                          onChange: () => {
-                            this.setState({
-                              selectedRowKeysAdd: [],
-                              selectedDataAdd: []
-                            });
-                          }
-                        }}
-                      />
+                      <div className="tableOuter">
+                        <Table
+                          rowSelection={{
+                            type: 'checkbox',
+                            onChange: (selectedRowKeys, selectedRows) => {
+                              this.setSel('add', selectedRowKeys, selectedRows);
+                            }
+                          }}
+                          dataSource={this.state[this.state.dataAdd]}
+                          columns={thead}
+                          pagination={{
+                            pageSizeOptions: [10, 40, 100, 500],
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            onChange: () => {
+                              this.setState({
+                                selectedRowKeysAdd: [],
+                                selectedDataAdd: []
+                              });
+                            }
+                          }}
+                        />
+                      </div>
                     </li>
                     <li>
                       <div className="minus">
                         减少权限
-                        <b>确认无误：</b>
+                        <Input.Search
+                          style={{ width: 'calc(100% - 160px)' }}
+                          onPressEnter={v => {
+                            this.filtData('minus', v.target.value);
+                          }}
+                        />
+                        {/* <b>确认无误：</b>
                         <Select
                           defaultValue="minus"
                           style={{ width: 120 }}
@@ -605,18 +643,19 @@ class DoorManagement extends React.Component {
                           <Option value="minus">全部</Option>
                           <Option value="minusY">是</Option>
                           <Option value="minusN">否</Option>
-                        </Select>
+                        </Select> */}
                       </div>
-
-                      <Table
-                        dataSource={this.state.minus}
-                        columns={thead}
-                        pagination={{
-                          pageSizeOptions: [10, 40, 100, 500],
-                          showSizeChanger: true,
-                          showQuickJumper: true
-                        }}
-                      />
+                      <div className="tableOuter">
+                        <Table
+                          dataSource={this.state.minus}
+                          columns={thead}
+                          pagination={{
+                            pageSizeOptions: [10, 40, 100, 500],
+                            showSizeChanger: true,
+                            showQuickJumper: true
+                          }}
+                        />
+                      </div>
                     </li>
                     <li>
                       <div className="same">
@@ -640,7 +679,13 @@ class DoorManagement extends React.Component {
                         >
                           删除
                         </Button>
-                        <b>确认无误：</b>
+                        <Input.Search
+                          style={{ width: 'calc(100% - 160px)' }}
+                          onPressEnter={v => {
+                            this.filtData('same', v.target.value);
+                          }}
+                        />
+                        {/* <b>确认无误：</b>
 
                         <Select
                           defaultValue="same"
@@ -656,30 +701,36 @@ class DoorManagement extends React.Component {
                           <Option value="same">全部</Option>
                           <Option value="sameY">是</Option>
                           <Option value="sameN">否</Option>
-                        </Select>
+                        </Select> */}
                       </div>
-                      <Table
-                        rowSelection={{
-                          selectedRowKeys: this.state.selectedRowKeysSame,
-                          type: 'checkbox',
-                          onChange: (selectedRowKeys, selectedRows) => {
-                            this.setSel('same', selectedRowKeys, selectedRows);
-                          }
-                        }}
-                        dataSource={this.state[this.state.dataSame]}
-                        columns={thead}
-                        pagination={{
-                          pageSizeOptions: [10, 40, 100, 500],
-                          showSizeChanger: true,
-                          showQuickJumper: true,
-                          onChange: () => {
-                            this.setState({
-                              selectedRowKeysSame: [],
-                              selectedDataSame: []
-                            });
-                          }
-                        }}
-                      />
+                      <div className="tableOuter">
+                        <Table
+                          rowSelection={{
+                            selectedRowKeys: this.state.selectedRowKeysSame,
+                            type: 'checkbox',
+                            onChange: (selectedRowKeys, selectedRows) => {
+                              this.setSel(
+                                'same',
+                                selectedRowKeys,
+                                selectedRows
+                              );
+                            }
+                          }}
+                          dataSource={this.state[this.state.dataSame]}
+                          columns={thead}
+                          pagination={{
+                            pageSizeOptions: [10, 40, 100, 500],
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            onChange: () => {
+                              this.setState({
+                                selectedRowKeysSame: [],
+                                selectedDataSame: []
+                              });
+                            }
+                          }}
+                        />
+                      </div>
                     </li>
                   </ul>
                 )}
