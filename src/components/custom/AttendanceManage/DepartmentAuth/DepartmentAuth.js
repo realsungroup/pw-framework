@@ -18,7 +18,10 @@ class DepartmentAuth extends React.Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   actionBarExtra = record => {
-    const { intl: { locale } } = this.props;
+    const {
+      // intl: { locale }
+      locale
+    } = this.props;
 
     return <div className="">
       <Popconfirm

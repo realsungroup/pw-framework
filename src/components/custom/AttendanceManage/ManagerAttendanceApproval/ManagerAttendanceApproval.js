@@ -142,7 +142,8 @@ class ManagerAttendanceApproval extends React.Component {
   render() {
     const { modalVisible } = this.state;
     const {
-      intl: { locale }
+      locale
+      // intl: { locale }
     } = this.props;
     return (
       <div className="attendance-manage_tabledata__wrapper">
@@ -175,22 +176,22 @@ class ManagerAttendanceApproval extends React.Component {
             (record, size) => {
               return (
                 <>
-                <Button
-                  size={size}
-                  onClick={() => {
-                    this.props.onOpenApprovalRecordModal(record);
-                  }}
-                >
-                  {locale == 'en' ? 'Details' : '查看审批记录'}
-                </Button>
-                <Button
-                  size={size}
-                  onClick={() => {
-                    window.open(record.fileUrl)
-                  }}
-                >
-                  {locale == 'en' ? 'Attachments' : '查看附件'}
-                </Button>
+                  <Button
+                    size={size}
+                    onClick={() => {
+                      this.props.onOpenApprovalRecordModal(record);
+                    }}
+                  >
+                    {locale == 'en' ? 'Details' : '查看审批记录'}
+                  </Button>
+                  <Button
+                    size={size}
+                    onClick={() => {
+                      window.open(record.fileUrl)
+                    }}
+                  >
+                    {locale == 'en' ? 'Attachments' : '查看附件'}
+                  </Button>
                 </>
               );
             }

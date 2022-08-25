@@ -1,7 +1,7 @@
 import React from 'react';
 import './ManagerApprovalRecordHistory.less';
 import TableData from '../../../common/data/TableData';
-import { Button} from 'antd';
+import { Button } from 'antd';
 /*
  * 经理审批记录历史
  */
@@ -16,7 +16,8 @@ class ManagerApprovalRecordHistory extends React.Component {
   }
   render() {
     const {
-      intl: { locale }
+      // intl: { locale }
+      locale
     } = this.props;
     return (
       <div className="attendance-manage_tabledata__wrapper">
@@ -44,14 +45,14 @@ class ManagerApprovalRecordHistory extends React.Component {
             (record, size) => {
               return (
                 <>
-                <Button
-                  size={size}
-                  onClick={() => {
-                    window.open(record.fileUrl)
-                  }}
-                >
-                  {locale == 'en' ? 'Attachments' : '查看附件'}
-                </Button>
+                  <Button
+                    size={size}
+                    onClick={() => {
+                      window.open(record.fileUrl)
+                    }}
+                  >
+                    {locale == 'en' ? 'Attachments' : '查看附件'}
+                  </Button>
                 </>
               );
             }
