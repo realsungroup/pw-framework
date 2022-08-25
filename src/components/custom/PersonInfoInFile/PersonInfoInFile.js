@@ -473,7 +473,7 @@ class PersonInfoInFile extends React.Component {
     var footstr = "</body>";
     var newstr = document.getElementById('toPrint').innerHTML;
 
-    var style = "<style media='print'>@page {size: auto; margin: 0mm;}.toHide{display:none!important}b,h4,h3{font-weight:normal}input{border:none!important;}.page{height:100vh;}footer{display:none;}.ant-select-selection{border:none!important;}.ant-select-arrow{display:none;}.date i{display:none}.fix{display:none;}.ant-input-number{border:none;}*{font-size:12px!important;color:#333333!important;border-color:#333333!important;}i{color:#fff!important;display:none!important}</style>"
+    var style = "<style media='print'>@page {size: auto; margin: 0mm;}.toHide{display:none!important}b,h4,h3{font-weight:normal}input{border:none!important;}.page{height:100vh;}footer{display:none;}.ant-select-selection{border:none!important;}.ant-select-arrow{display:none;}.date i{display:none}.fix{display:none;}.ant-input-number{border:none;}*{font-size:12px!important;color:#333333!important;border-color:#333333!important;}i{color:#fff!important;display:none!important}h3{font-size:18px!important;}</style>"
     var headstr = "<html><head><title></title>" + style + "</head><body>";
     document.body.innerHTML = headstr + newstr + footstr;
     window.print();
@@ -490,9 +490,9 @@ class PersonInfoInFile extends React.Component {
             padding: '16px',
             boxSizing: 'border-box'
           }}>
-            <h3 style={{ textAlign: 'center', fontWeight: 'bold', cursor: 'default', fontSize: '14px', paddingBottom: '4px', borderBottom: '1px solid #e8e8e8' }}>个人详细信息表</h3>
+            <h3 style={{ marginTop: '8px', textAlign: 'center', fontWeight: 'bold', cursor: 'default', fontSize: '18px', paddingBottom: '4px', borderBottom: '1px solid #e8e8e8' }}>个人详细信息表</h3>
             <h4 style={{ width: '100%', marginBottom: '4px' }}>一、个人基本信息</h4>
-            <div style={{ border: '1px solid #333' }}>
+            <div style={{ border: '1px solid #333', width: 'calc(100% - 2px)' }}>
               <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
                 <b className={this.state.data.C3_464172127930 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>姓名：</b>
                 <Input disabled={!this.state.edit} value={this.state.data.C3_464172127930} onChange={(v) => { this.onChange('C3_464172127930', v.target.value) }} size='small' style={{ width: 'calc(100% - 120px)' }} />
@@ -631,8 +631,8 @@ class PersonInfoInFile extends React.Component {
               <div style={{ clear: 'both', height: '1px' }}></div>
 
             </div>
-            <h4 style={{ width: '100%', marginTop: '4px', marginBottom: '4px' }}>二、教育和培训</h4>
-            <div style={{ marginBottom: '4px' }}
+            <h4 style={{ width: '100%', marginTop: '24px', marginBottom: '4px' }}>二、教育和培训</h4>
+            <div style={{ marginBottom: '4px', width: 'calc(100% - 2px)' }}
               className={
                 (this.state.data.C3_464173481804 && this.state.data.C3_464173629942 && this.state.data.C3_464173711606 && this.state.data.C3_464173836290 && this.state.data.C3_464173912562)
                   ||
@@ -644,7 +644,7 @@ class PersonInfoInFile extends React.Component {
                   ? '' : 'alert'}
 
             >学历/学位（请填写高中以上学历）</div>
-            <table border="1" style={{ width: '100%', border: '1px solid #333' }}>
+            <table border="1" style={{ border: '1px solid #333', width: 'calc(100% - 2px)' }}>
               <tr>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>开始日期</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>结束日期</th>
@@ -714,7 +714,7 @@ class PersonInfoInFile extends React.Component {
             <div
 
               style={{ marginTop: '4px', marginBottom: '4px' }}>专业/执业资格：</div>
-            <table border="1" style={{ width: '100%', border: '1px solid #333' }}>
+            <table border="1" style={{ width: '100%', width: 'calc(100% - 2px)' }}>
               <tr>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>名称</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px', width: '104px' }}>等级</th>
@@ -799,8 +799,8 @@ class PersonInfoInFile extends React.Component {
                   ||
                   (this.state.data.C3_464174563152 && this.state.data.C3_464174917676 && this.state.data.C3_464175006600 && this.state.data.C3_464175085490 && this.state.data.C3_464458930539)
                   ? '' : 'alert'}
-              style={{ marginTop: '4px', marginBottom: '4px' }}>三、工作经验（请务必填写完整工作经历）</h4>
-            <table border="1" style={{ width: '100%', border: '1px solid #333' }}>
+              style={{ marginTop: '24px', marginBottom: '4px' }}>三、工作经验（请务必填写完整工作经历）</h4>
+            <table border="1" style={{ width: 'calc(100% - 2px)', border: '1px solid #333' }}>
               <tr>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>开始日期</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>结束日期</th>
@@ -814,11 +814,11 @@ class PersonInfoInFile extends React.Component {
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <DatePicker disabled={!this.state.edit} value={this.state.data.C3_464174605218} onChange={(v) => { this.onChange('C3_464174605218', v) }} size='small' className='date' placeholder={null} style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464174974466} onChange={(v) => { this.onChange('C3_464174974466', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464174974466} onChange={(v) => { this.onChange('C3_464174974466', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175049944} onChange={(v) => { this.onChange('C3_464175049944', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464175049944} onChange={(v) => { this.onChange('C3_464175049944', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464458881276} onChange={(v) => { this.onChange('C3_464458881276', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  <Input.TextArea value={this.state.data.C3_464458881276} onChange={(v) => { this.onChange('C3_464458881276', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} />
                 </td>
 
               </tr>
@@ -828,11 +828,11 @@ class PersonInfoInFile extends React.Component {
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <DatePicker disabled={!this.state.edit} value={this.state.data.C3_464174895167} onChange={(v) => { this.onChange('C3_464174895167', v) }} size='small' className='date' placeholder={null} style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464174984491} onChange={(v) => { this.onChange('C3_464174984491', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464174984491} onChange={(v) => { this.onChange('C3_464174984491', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175060992} onChange={(v) => { this.onChange('C3_464175060992', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464175060992} onChange={(v) => { this.onChange('C3_464175060992', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464458911775} onChange={(v) => { this.onChange('C3_464458911775', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  <Input.TextArea value={this.state.data.C3_464458911775} onChange={(v) => { this.onChange('C3_464458911775', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} />
                 </td>
 
               </tr>
@@ -842,11 +842,11 @@ class PersonInfoInFile extends React.Component {
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <DatePicker disabled={!this.state.edit} value={this.state.data.C3_464174904208} onChange={(v) => { this.onChange('C3_464174904208', v) }} size='small' className='date' placeholder={null} style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464174996449} onChange={(v) => { this.onChange('C3_464174996449', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464174996449} onChange={(v) => { this.onChange('C3_464174996449', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175072014} onChange={(v) => { this.onChange('C3_464175072014', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464175072014} onChange={(v) => { this.onChange('C3_464175072014', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464458921788} onChange={(v) => { this.onChange('C3_464458921788', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  <Input.TextArea value={this.state.data.C3_464458921788} onChange={(v) => { this.onChange('C3_464458921788', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} />
                 </td>
               </tr>
               <tr>
@@ -855,16 +855,22 @@ class PersonInfoInFile extends React.Component {
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <DatePicker disabled={!this.state.edit} value={this.state.data.C3_464174917676} onChange={(v) => { this.onChange('C3_464174917676', v) }} size='small' className='date' placeholder={null} style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175006600} onChange={(v) => { this.onChange('C3_464175006600', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464175006600} onChange={(v) => { this.onChange('C3_464175006600', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175085490} onChange={(v) => { this.onChange('C3_464175085490', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464175085490} onChange={(v) => { this.onChange('C3_464175085490', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464458930539} onChange={(v) => { this.onChange('C3_464458930539', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} />
+                  <Input.TextArea value={this.state.data.C3_464458930539} onChange={(v) => { this.onChange('C3_464458930539', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} />
                 </td>
               </tr>
             </table>
+          </div>
+          <div className='page' style={{
+
+            padding: '16px',
+            boxSizing: 'border-box',
+          }}>
             <h4
-              style={{ marginBottom: '4px' }}>四、家庭信息及紧急联系人</h4>
+              style={{ marginBottom: '4px', marginTop: '8px' }}>四、家庭信息及紧急联系人</h4>
             <div className={
               (this.state.data.C3_464175119119 && this.state.data.C3_464175402821 && this.state.data.C3_464175464598 && this.state.data.C3_464175628311)
                 ||
@@ -873,8 +879,8 @@ class PersonInfoInFile extends React.Component {
                 (this.state.data.C3_464175301544 && this.state.data.C3_464175427954 && this.state.data.C3_464175490285 && this.state.data.C3_464175653685)
                 ||
                 (this.state.data.C3_464175313029 && this.state.data.C3_464175436022 && this.state.data.C3_464175539610 && this.state.data.C3_464175665668)
-                ? '' : 'alert'} style={{ marginBottom: '4px' }}>1.家庭成员及主要社会关系（父母、配偶、兄弟姐妹及子女）</div>
-            <table border="1" style={{ width: '100%', border: '1px solid #333' }}>
+                ? '' : 'alert'} style={{ marginBottom: '4px', width: 'calc(100% - 1px)' }}>1.家庭成员及主要社会关系（父母、配偶、兄弟姐妹及子女）</div>
+            <table border="1" style={{ border: '1px solid #333', width: 'calc(100% - 2px)' }}>
               <tr>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>姓名</th>
                 <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>关系</th>
@@ -889,7 +895,7 @@ class PersonInfoInFile extends React.Component {
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464175464598} onChange={(v) => { this.onChange('C3_464175464598', v) }} size='small' style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('C3_464175628311', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464175628311} onChange={(v) => { this.onChange('C3_464175628311', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
 
               </tr>
               <tr>
@@ -900,7 +906,7 @@ class PersonInfoInFile extends React.Component {
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464175479476} onChange={(v) => { this.onChange('C3_464175479476', v) }} size='small' style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175642417} onChange={(v) => { this.onChange('C3_464175642417', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464175642417} onChange={(v) => { this.onChange('C3_464175642417', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
               </tr>
               <tr>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
@@ -910,7 +916,7 @@ class PersonInfoInFile extends React.Component {
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464175490285} onChange={(v) => { this.onChange('C3_464175490285', v) }} size='small' style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175653685} onChange={(v) => { this.onChange('C3_464175653685', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464175653685} onChange={(v) => { this.onChange('C3_464175653685', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
               </tr>
               <tr>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
@@ -920,20 +926,11 @@ class PersonInfoInFile extends React.Component {
                 <td style={{ height: '4px', lineHeight: '24px' }}>
                   <InputNumber disabled={!this.state.edit} value={this.state.data.C3_464175539610} onChange={(v) => { this.onChange('C3_464175539610', v) }} size='small' style={{ width: '100%' }} /></td>
                 <td style={{ height: '4px', lineHeight: '24px' }}>
-                  <Input value={this.state.data.C3_464175665668} onChange={(v) => { this.onChange('C3_464175665668', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%' }} /></td>
+                  <Input.TextArea value={this.state.data.C3_464175665668} onChange={(v) => { this.onChange('C3_464175665668', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: '100%', border: 'none', height: '3rem' }} /></td>
               </tr>
             </table>
-          </div>
-
-
-
-          <div className='page' style={{
-
-            padding: '16px',
-            boxSizing: 'border-box',
-          }}>
             <div style={{ marginBottom: '4px' }}>2.紧急联系人（直系亲属）</div>
-            <table border="1" style={{ width: '100%', border: '1px solid #333' }}>
+            <table border="1" style={{ border: '1px solid #333', width: 'calc(100% - 2px)' }}>
               <tr>
                 <th className={this.state.data.C3_464175727918 ? '' : 'alert'} style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>姓名</th>
                 <th className={this.state.data.C3_464175750587 ? '' : 'alert'} style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>与员工的关系</th>
@@ -959,7 +956,7 @@ class PersonInfoInFile extends React.Component {
               </tr>
 
             </table>
-            <div style={{ border: '1px solid #333', width: '100%', borderTop: 'none' }}>
+            <div style={{ border: '1px solid #333', borderTop: 'none', width: 'calc(100% - 2px)' }}>
               <b className={this.state.data.C3_464175768379 ? '' : 'alert'} style={{ display: 'inline-block', width: '144px', textAlign: 'left', marginLeft: '4px' }}>紧急联系人现住地址：</b>
               <Input disabled={!this.state.edit} value={this.state.data.C3_464175768379} onChange={(v) => { this.onChange('C3_464175768379', v.target.value) }} size='small' style={{ width: 'calc(100% - 148px)' }} />
             </div>
@@ -980,7 +977,7 @@ class PersonInfoInFile extends React.Component {
               }} /><span style={{ color: '#fff' }}>{this.state.hasRelated ? '是' : '否'}</span> </span>
             </div>
             {this.state.hasRelated ?
-              <table border="1" style={{ width: '100%', border: '1px solid #333' }}>
+              <table border="1" style={{ border: '1px solid #333', width: 'calc(100% - 2px)' }}>
                 <tr>
                   <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>姓名</th>
                   <th style={{ height: '4px', lineHeight: '24px', fontWeight: 'normal', textIndent: '4px' }}>与员工的关系</th>
@@ -1007,14 +1004,14 @@ class PersonInfoInFile extends React.Component {
               </table>
               : null}
             <div style={{ height: '4px', borderTop: '1px solid #e8e8e8' }}></div>
-            <h4 style={{ marginBottom: '4px' }}>五、其他需要告知公司信息</h4>
+            <h4 style={{ marginBottom: '4px', marginTop: '16px' }}>五、其他需要告知公司信息</h4>
             <div className={this.state.data.C3_464184775908 ? '' : 'alert'} style={{ marginBottom: '4px' }}>1.是否得过严重的疾病？目前身体状况如何？是否有传染病，慢性病或怀孕等？如是，请详细说明。</div>
-            <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464184775908} onChange={(v) => { this.onChange('C3_464184775908', v.target.value) }} style={{ resize: 'none', height: '72px' }} />
+            <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464184775908} onChange={(v) => { this.onChange('C3_464184775908', v.target.value) }} style={{ resize: 'none', height: '48px', width: 'calc(100% - 2px)' }} />
             <div className={this.state.data.C3_464184788901 ? '' : 'alert'} style={{ marginTop: '4px', marginBottom: '4px' }}>2.是否有过4个月以上的失业经历？如有，请详细说明。</div>
-            <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464184788901} onChange={(v) => { this.onChange('C3_464184788901', v.target.value) }} style={{ resize: 'none', height: '72px' }} />
+            <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464184788901} onChange={(v) => { this.onChange('C3_464184788901', v.target.value) }} style={{ resize: 'none', height: '48px', width: 'calc(100% - 2px)' }} />
             <div className={this.state.data.C3_464277267009 ? '' : 'alert'} style={{ marginTop: '4px', marginBottom: '4px' }}>3.与前任雇主是否已经办妥离职手续，是否签有竞业限制协议，如有，请详细说明。</div>
-            <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464277267009} onChange={(v) => { this.onChange('C3_464277267009', v.target.value) }} style={{ resize: 'none', height: '72px' }} />
-            <div style={{ marginTop: '4px', marginBottom: '4px' }}>4.本人最近两年是否有违法犯罪记录或者失信行为记录？</div>
+            <Input.TextArea disabled={!this.state.edit} value={this.state.data.C3_464277267009} onChange={(v) => { this.onChange('C3_464277267009', v.target.value) }} style={{ resize: 'none', height: '48px', width: 'calc(100% - 2px)' }} />
+            <div style={{ marginTop: '4px', marginBottom: '4px' }}>4.本人是否有违法犯罪记录或者失信行为记录？</div>
             <Input.TextArea disabled={!this.state.edit}
               value={this.state.isOuter ? (this.state.data.C3_551806597769 == 'N' ? '否' : this.state.data.C3_551806597769) : (this.state.data.C3_550784878452 == 'N' ? '否' : this.state.data.C3_550784878452)}
               onChange={(v) => {
@@ -1025,15 +1022,15 @@ class PersonInfoInFile extends React.Component {
                   this.onChange('C3_550784878452', v.target.value)
                 }
               }}
-              style={{ resize: 'none', height: '72px' }} />
+              style={{ resize: 'none', height: '48px', width: 'calc(100% - 2px)' }} />
 
             <p style={{ marginTop: '4px' }}>
               本人承诺：<br />
          &nbsp;&nbsp;&nbsp;&nbsp;1 ）所有填表内容真实、准确，如有虚假愿意接受处分包括解除劳动合同。<br />
-         &nbsp;&nbsp;&nbsp;&nbsp;2）本人确认同意使用小菲员工助手微信公众号，已首次提交的微信号注册小菲员工助手公众号。本人保证该账户均有本人操作，不会交由其他人操作。对于填写内容及提交的各类申请，均是本人真实意思表示，本人愿承担所有法律责任。<br />
+         &nbsp;&nbsp;&nbsp;&nbsp;2）本人确认同意使用小菲员工助手微信公众号，以首次提交的微信号注册小菲员工助手公众号。本人保证该账户均有本人操作，不会交由其他人操作。对于填写内容及提交的各类申请，均是本人真实意思表示，本人愿承担所有法律责任。<br />
         &nbsp;&nbsp;&nbsp;&nbsp;3）本人同意公司进行背景调查。<br />
         &nbsp;&nbsp;&nbsp;&nbsp;4）本人同意公司根据生产需要安排的排班（包括加班）。公司现有的排班形式包括但不限于：上二休二、上四休三、上五休二等。<br />
-        &nbsp;&nbsp;&nbsp;&nbsp;5）薪资计算补充说明：如员工出勤不满一整月，该月工资按照以下方式计算：劳动合同中约定的月工资-劳工合同中约定的月工资/21.75*当月缺勤天数。我已经阅读并认可上述计算方法。<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;5）出勤不满一整月，该月工资计算方法：合同约定月工资-合同约定月工资/当月应出勤天数（当月周一至周五天数）*当月缺勤天数。<br />
             </p>
 
             <div style={{ marginTop: '4px' }}>
