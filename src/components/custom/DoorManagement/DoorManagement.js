@@ -496,6 +496,7 @@ class DoorManagement extends React.Component {
             <div className="tableWrap">
               <TableData
                 baseURL={this.baseURL}
+                downloadBaseURL={this.downloadURL}
                 resid={'702643427843'}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"

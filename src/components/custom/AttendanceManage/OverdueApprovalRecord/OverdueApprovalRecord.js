@@ -1,7 +1,7 @@
 import React from 'react';
 import './OverdueApprovalRecord.less';
 import TableData from '../../../common/data/TableData';
-import { Button} from 'antd';
+import { Button } from 'antd';
 
 /*
  * 过期未审批记录
@@ -17,7 +17,8 @@ class OverdueApprovalRecord extends React.Component {
   }
   render() {
     const {
-      intl: { locale }
+      // intl: { locale }
+      locale
     } = this.props;
     return (
       <div className="attendance-manage_tabledata__wrapper">
@@ -46,19 +47,19 @@ class OverdueApprovalRecord extends React.Component {
             (record, size) => {
               return (
                 <>
-                <Button
-                  size={size}
-                  onClick={() => {
-                    window.open(record.fileUrl)
-                  }}
-                >
-                  {locale == 'en' ? 'Attachments' : '查看附件'}
-                </Button>
+                  <Button
+                    size={size}
+                    onClick={() => {
+                      window.open(record.fileUrl)
+                    }}
+                  >
+                    {locale == 'en' ? 'Attachments' : '查看附件'}
+                  </Button>
                 </>
               );
             }
           ]}
-          // noWidthFields='C3_447031495725'
+        // noWidthFields='C3_447031495725'
         />
       </div>
     );
