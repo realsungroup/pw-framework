@@ -2162,67 +2162,68 @@ class IDLTransferHr extends Component {
             visible={this.state.visible}
             destroyOnClose
             footer={
-              this.state.cms ==
-                `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
-                  <Button
-                    type="primary"
-                    onClick={() => this.setState({ visibleHC: true })}
-                    disabled={
-                      this.state.right.HCPreApprove === 'Y' ? false : true
-                    }
-                  >
-                    填写HC审批信息
-                  </Button>
-                ) : this.state.cms ==
-                  `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ||
-                  this.state.cms ==
-                  `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
-                    this.state.stream.length == 0 ? (
-                      '审批流计算中，不可预审。请耐心等待...'
-                    ) : (
-                        <>
-                          <Button
-                            type="danger"
-                            loading={this.state.loading}
-                            style={{ marginLeft: '8px' }}
-                            onClick={() => {
-                              this.setState({ conUnpass: true });
-                            }}
-                          >
-                            不通过审核
+              !this.state.showOthers ? (
+                this.state.cms ==
+                  `headcount = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ? (
+                    <Button
+                      type="primary"
+                      onClick={() => this.setState({ visibleHC: true })}
+                      disabled={
+                        this.state.right.HCPreApprove === 'Y' ? false : true
+                      }
+                    >
+                      填写HC审批信息
+                    </Button>
+                  ) : this.state.cms ==
+                    `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ||
+                    this.state.cms ==
+                    `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
+                      this.state.stream.length == 0 ? (
+                        '审批流计算中，不可预审。请耐心等待...'
+                      ) : (
+                          <>
+                            <Button
+                              type="danger"
+                              loading={this.state.loading}
+                              style={{ marginLeft: '8px' }}
+                              onClick={() => {
+                                this.setState({ conUnpass: true });
+                              }}
+                            >
+                              不通过审核
                     </Button>
 
-                          {this.state.cms ==
-                            `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
-                              this.state.toCheckFront.effortDate &&
-                                this.state.iiviJobCode &&
-                                this.state.toCheckFront.C3_614084928408 &&
-                                this.state.toCheckFront.C3_614084927323 ? (
-                                  <Button
-                                    type="primary"
-                                    style={{ padding: '0 8px' }}
-                                    onClick={() => {
-                                      this.approve('Y', true);
-                                    }}
-                                    loading={this.state.loading}
-                                  >
-                                    保存并通过审核
-                                  </Button>
-                                ) : (
-                                  '生效日期、岗位代码、考情审批经理总监是必填项'
-                                )
-                            ) : (
-                              <Button
-                                type="primary"
-                                loading={this.state.loading}
-                                onClick={() => this.approve('Y')}
-                              >
-                                保存并通过审核
-                              </Button>
-                            )}
-                        </>
-                      )
-                  ) : null
+                            {this.state.cms ==
+                              `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
+                                this.state.toCheckFront.effortDate &&
+                                  this.state.iiviJobCode &&
+                                  this.state.toCheckFront.C3_614084928408 &&
+                                  this.state.toCheckFront.C3_614084927323 ? (
+                                    <Button
+                                      type="primary"
+                                      style={{ padding: '0 8px' }}
+                                      onClick={() => {
+                                        this.approve('Y', true);
+                                      }}
+                                      loading={this.state.loading}
+                                    >
+                                      保存并通过审核
+                                    </Button>
+                                  ) : (
+                                    '生效日期、岗位代码、考情审批经理总监是必填项'
+                                  )
+                              ) : (
+                                <Button
+                                  type="primary"
+                                  loading={this.state.loading}
+                                  onClick={() => this.approve('Y')}
+                                >
+                                  保存并通过审核
+                                </Button>
+                              )}
+                          </>
+                        )
+                    ) : null) : null
             }
             onCancel={() => this.setState({ visible: false, iiviJobCode: '' })}
           >
