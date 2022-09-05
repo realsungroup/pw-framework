@@ -8401,7 +8401,7 @@ window[642865148916] = {
 window[642865159694] = {
   name: 'DoorManagement', // 组件名称，
   title: '当月门禁清单', // 功能模块名称
-  props:{}
+  props: {}
 };
 window[642865168807] = {
   name: 'TableData', // 组件名称，
@@ -10425,16 +10425,17 @@ window[687629239980] = {
 //   ]
 // };
 window[687976347225] = {
-    name: 'ShVisitApprove',
-    title: '上海访客审批',
-    props: [
-      
-    ]
-  };
+  name: 'ShVisitApprove',
+  title: '上海访客审批',
+  props: [
+
+  ]
+};
 window[687976386945] = {
   name: 'ShVisitManager',
   title: '上海访客前台登记',
-  props: []}
+  props: []
+}
 // window[687976386945] = {
 //   name: 'TabsTableData',
 //   title: '上海访客前台登记',
@@ -10536,22 +10537,22 @@ window[693048340608] = {
     hasRowModify: false,
     hasRowView: false,
     hasRowDelete: false,
-    hasDownload:false,
+    hasDownload: false,
     isUseFormDefine: false,
     subtractH: 200
   }
 };
 window[691346156968] = {
-    name: 'AccessControl',
-    title: '门禁管控',
-    props: {
-    }
+  name: 'AccessControl',
+  title: '门禁管控',
+  props: {
+  }
 };
 window[699972467748] = {
-    name: 'NewSignPrint',
-    title: '新版隐私协定管理',
-    props: {
-    }
+  name: 'NewSignPrint',
+  title: '新版隐私协定管理',
+  props: {
+  }
 };
 window[700237240785] = {
   name: 'TableData', // 组件名称，
@@ -10566,17 +10567,17 @@ window[700237240785] = {
     hasRowModify: false,
     hasRowView: true,
     hasRowDelete: false,
-    hasDownload:false,
+    hasDownload: false,
     isUseFormDefine: false,
     subtractH: 200
   }
 };
 //施工清单报表
 window[706620216948] = {
-    name: 'ConstructionList',
-    title: '施工清单报表',
-    props: {
-    }
+  name: 'ConstructionList',
+  title: '施工清单报表',
+  props: {
+  }
 };
 //前台访客登记
 window[707408313668] = {
@@ -10600,4 +10601,40 @@ window[707408313668] = {
     recordFormFormWidth: '90%',
     subtractH: 180
   } // 组件所接收的 props
+};
+
+//访客EHS审核
+window[715708560340] = {
+  name: 'TabsTableData',
+  title: '访客EHS审核',
+  props: [
+    [
+      {
+        TabsTitle: '待审核',
+        resid: 715708613375,
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: false,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        subtractH: 200
+      },
+      {
+        TabsTitle: '已审核',
+        resid: 715708670973,
+        hasAdd: false,
+        hasBeBtns: true,
+        hasModify: true,
+        hasDelete: false,
+        hasRowModify: true,
+        hasRowView: false,
+        hasRowDelete: false,
+        isUseFormDefine: false,
+        subtractH: 200
+      }
+    ]
+  ]
 };
