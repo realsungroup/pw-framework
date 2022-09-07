@@ -10619,7 +10619,8 @@ window[715708560340] = {
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
-        isUseFormDefine: false,
+        isUseFormDefine: true,
+        recordFormUseAbsolute: true,
         subtractH: 200
       },
       {
@@ -10632,7 +10633,8 @@ window[715708560340] = {
         hasRowModify: true,
         hasRowView: false,
         hasRowDelete: false,
-        isUseFormDefine: false,
+        isUseFormDefine: true,
+        recordFormUseAbsolute: true,
         subtractH: 200
       }
     ]
