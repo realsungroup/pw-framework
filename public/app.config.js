@@ -24,7 +24,6 @@ window.pwConfig = {
         'http://pw-bi.realsun.me:37799/webroot/decision/logout/cross/domain',
       homeURL: 'http://pw-bi.realsun.me:37799/webroot/decision'
     },
-
     // 切换考勤月份的基地址
     attendanceMonthChangeUrl: 'http://10.108.2.66:9091/',
     fileDownloadConfig: {
@@ -120,7 +119,8 @@ window.pwConfig = {
     ],
 
     // 登录页配置
-    defaultLoginMode: 'normal', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
+    canChangeLogin: false,
+    defaultLoginMode: 'domain', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置
       baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
@@ -353,7 +353,8 @@ window.pwConfig = {
     ],
 
     // 登录页配置
-    defaultLoginMode: 'normal', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
+    canChangeLogin: false,
+    defaultLoginMode: 'domain', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置
       baseUrl: 'http://10.108.2.66:1001/', // 域登录基地址

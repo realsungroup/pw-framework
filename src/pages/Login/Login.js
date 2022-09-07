@@ -25,14 +25,18 @@ const {
   domainLoginConfig,
   defaultLoginMode,
   enterprisecode,
-  themeColor
+  themeColor,
+  canChangeLogin
 } = window.pwConfig[process.env.NODE_ENV];
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.resetKeyWordURL;
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    let loginMode = getItem('loginMode');
+    let loginMode = defaultLoginMode;
+    if (canChangeLogin) {
+      loginMode = getItem('loginMode');
+    }
     if (!loginMode) {
       loginMode = defaultLoginMode;
       setItem('loginMode', defaultLoginMode);
@@ -61,7 +65,7 @@ class Login extends React.Component {
     try {
       window.less
         .modifyVars(themeColor)
-        .then(() => {})
+        .then(() => { })
         .catch(err => {
           message.error(err.message);
         });
@@ -233,7 +237,7 @@ class Login extends React.Component {
       this.setState({ loading: true });
       let res;
       try {
-        res = http({baseURL:baseURL}).forgetPassword({
+        res = http({ baseURL: baseURL }).forgetPassword({
           badgeno: this.state.userNameLogin,
           enterprisecode: parseInt((100000 * Math.random()) ^ Math.random()),
           sendEmail: 'Y'
@@ -244,7 +248,7 @@ class Login extends React.Component {
         var _this = this;
         _this.setState({ timer: 5 });
         var t = 5;
-        var timerC = setInterval(function() {
+        var timerC = setInterval(function () {
           t = _this.state.timer - 1;
           _this.setState({ timer: t });
           if (t == 0) {
@@ -273,7 +277,7 @@ class Login extends React.Component {
       this.setState({ loading: true });
       let res;
       try {
-        res = await http({baseURL:baseURL}).getResetPassword({
+        res = await http({ baseURL: baseURL }).getResetPassword({
           userid: this.state.userNameLogin,
           newpass1: this.state.PSWNew,
           resetcode: this.state.OTP
@@ -324,12 +328,20 @@ class Login extends React.Component {
           {/* 切换为 普通登录/域登录 */}
           <div className="login__options">
             <div className="login__options-login-mode">
-              <a href="javascript:;" onClick={this.loginModeChange}>
+              <a href="javascript:;"
+                style={canChangeLogin ? {} : { cursor: 'default' }}
+                onClick={
+                  () => {
+                    if (canChangeLogin) {
+                      this.loginModeChange();
+                    }
+                  }
+                }>
                 {loginMode === 'normal' ? (
                   <FM id="Login.NormalLogin" defaultMessage="普通登录" />
                 ) : (
-                  <FM id="Login.DomainLogin" defaultMessage="域登录" />
-                )}
+                    <FM id="Login.DomainLogin" defaultMessage="域登录" />
+                  )}
               </a>
             </div>
             {/* <div>
@@ -412,11 +424,13 @@ class Login extends React.Component {
               </a>
 
               <a
-                style={{
-                  marginBottom: '8px',
-                  display: 'block',
-                  float: 'right'
-                }}
+                style={
+                  canChangeLogin ? {
+                    marginBottom: '8px',
+                    display: 'block',
+                    float: 'right'
+                  } : { display: 'none' }}
+
                 onClick={() => {
                   this.forgetPSW(true);
                 }}
