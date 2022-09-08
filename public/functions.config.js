@@ -10503,7 +10503,8 @@ window[690562274466] = {
         hasRowDelete: false,
         hasRowModify: false,
         hasRowView: true,
-        subtractH: 220
+        subtractH: 220,
+        hasRowSelection: true
       },
       {
         resid: 690560730751,
@@ -10517,7 +10518,9 @@ window[690562274466] = {
         hasRowDelete: false,
         hasRowModify: false,
         hasRowView: true,
-        subtractH: 220
+        subtractH: 220,
+        hasRowSelection: true
+
       }
     ]
   ]
@@ -10621,7 +10624,8 @@ window[715708560340] = {
         hasRowDelete: false,
         isUseFormDefine: true,
         recordFormUseAbsolute: true,
-        subtractH: 200
+        subtractH: 200,
+        hasRowSelection: true
       },
       {
         TabsTitle: '已审核',
@@ -10631,6 +10635,7 @@ window[715708560340] = {
         hasModify: true,
         hasDelete: false,
         hasRowModify: true,
+        hasRowSelection: true,
         hasRowView: false,
         hasRowDelete: false,
         isUseFormDefine: true,

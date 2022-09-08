@@ -81,10 +81,10 @@ export default class ShVisit extends Component {
     C3_687636501807: null,
     C3_687636446496: '管控区',
     hotelCounter: 0,
-    fileUrl:null,
-    fileUrl2:null,
-    fileUrl3:null,
-    moduleList:[],
+    fileUrl: null,
+    fileUrl2: null,
+    fileUrl3: null,
+    moduleList: [],
     labels2: [
       {
         name: '饮用水',
@@ -341,22 +341,23 @@ export default class ShVisit extends Component {
         keys[n] != 'hotelInfo' &&
         keys[n] != 'memberCounter' &&
         keys[n] != 'memberInfo' &&
-        keys[n] != 'labels2'&& keys[n] != 'moduleList'
+        keys[n] != 'labels2' && keys[n] != 'moduleList'
       ) {
         this.setState({ [keys[n]]: null });
       }
       n++;
     }
     this.setState({
+      REC_ID: '',
       loading: false,
       visible: false,
       visibleSelect: false,
       C3_687636501807: null,
       C3_687636446496: '管控区',
       hotelCounter: 0,
-      fileUrl:null,
-      fileUrl2:null,
-      fileUrl3:null,
+      fileUrl: null,
+      fileUrl2: null,
+      fileUrl3: null,
       hotelInfo: [
         {
           show: false,
@@ -555,21 +556,21 @@ export default class ShVisit extends Component {
   };
   //提交前验证
   vertify = () => {
-    if(this.state.type == 'normal'){
-      if(!this.state.fileUrl){
+    if (this.state.type == 'normal') {
+      if (!this.state.fileUrl) {
         message.error('请上传来访人员信息表');
         return false;
       }
-      if(!this.state.fileUrl2){
+      if (!this.state.fileUrl2) {
         message.error('请上传访客绿码');
         return false;
       }
-      if(!this.state.fileUrl3){
+      if (!this.state.fileUrl3) {
         message.error('请上传行动轨迹');
         return false;
       }
     }
-   
+
     let n = 0;
     while (n < labels.length) {
       let c = 0;
@@ -608,7 +609,7 @@ export default class ShVisit extends Component {
       message.error('请填写来访人员手机号');
       return false;
     }
-    
+
     if (this.state.C3_687636947347) {
       if (this.state.C3_687636947347.length < 11) {
         message.error('申请人手机号位数未满11');
@@ -642,10 +643,18 @@ export default class ShVisit extends Component {
     let res;
     let obj = this.state;
     try {
-      let res = await http({ baseURL: this.baseURL }).addRecords({
-        resid: 687801941061,
-        data: [obj]
-      });
+      let res
+      if (obj.REC_ID) {
+        res = await http({ baseURL: this.baseURL }).modifyRecords({
+          resid: 687801941061,
+          data: [obj],
+        });
+      } else {
+        res = await http({ baseURL: this.baseURL }).addRecords({
+          resid: 687801941061,
+          data: [obj],
+        });
+      }
       this.setState({ loading: false });
       this.resetState();
       this.tableDataRef.handleRefresh();
@@ -678,8 +687,9 @@ export default class ShVisit extends Component {
       'C3_687803816052',
       'C3_687803816333',
       'C3_687803821583',
-      'C3_687803821849'
+      'C3_687803821849',
     ];
+    this.setState({ REC_ID: o.REC_ID });
     while (n < keys.length) {
       let val = o[keys[n]];
       if (val) {
@@ -716,36 +726,36 @@ export default class ShVisit extends Component {
       this.showModal('vip', 'view');
     }
   };
-  getModule=async()=>{
+  getModule = async () => {
     let res;
-    try{
-      res=await http().getTable({
-        resid:700158571490
+    try {
+      res = await http().getTable({
+        resid: 700158571490
       })
-      this.setState({moduleList:res.data});
-    }catch(e){
+      this.setState({ moduleList: res.data });
+    } catch (e) {
       console.log(e.message);
-      this.setState({loading:false});
+      this.setState({ loading: false });
     }
   }
-  handleUpload=(e,num)=>{
+  handleUpload = (e, num) => {
     let files = e.target.files || e.dataTransfer.files;
 
     if (!files.length) return;
     let type = files[0].name.split('.');
-    let size = files[0].size; 
+    let size = files[0].size;
     if (size > 5242880) {
       alert("请选择5M以内的文件！");
       return false;
     }
-    this.uploadFile(files[0], `http://kingofdinner.realsun.me:1201/api/AliyunOss/PutOneImageObject?bucketname=nutritiontower&srctype=${type[type.length-1]}`, "cloud").then((result) => {
-    if(num===1){
-      this.setState({ loading: false, fileUrl: result })
-    }else if(num===2){
-      this.setState({ loading: false, fileUrl2: result })
-    }else{
-      this.setState({ loading: false, fileUrl3: result })
-    }
+    this.uploadFile(files[0], `http://kingofdinner.realsun.me:1201/api/AliyunOss/PutOneImageObject?bucketname=nutritiontower&srctype=${type[type.length - 1]}`, "cloud").then((result) => {
+      if (num === 1) {
+        this.setState({ loading: false, fileUrl: result })
+      } else if (num === 2) {
+        this.setState({ loading: false, fileUrl2: result })
+      } else {
+        this.setState({ loading: false, fileUrl3: result })
+      }
 
     }, (err) => {
       this.setState({ loading: false })
@@ -944,7 +954,7 @@ export default class ShVisit extends Component {
         >
           <div className="formfield">
             <Spin spinning={this.state.loading}>
-              
+
               {labels.map(item => {
                 return (
                   <Row style={{ marginBottom: 16 }}>
@@ -967,7 +977,7 @@ export default class ShVisit extends Component {
                             />
                           ) : item2.selection ? (
                             <Select
-                              defaultValue={item2.selection[0]}
+                              value={this.state[item2.labelId] ? this.state[item2.labelId] : item2.selection[0]}
                               style={{ width: 160 }}
                               onChange={v => {
                                 this.setState({ [item2.labelId]: v });
@@ -978,17 +988,17 @@ export default class ShVisit extends Component {
                               })}
                             </Select>
                           ) : (
-                            <Input
-                              type={item2.type ? item2.type : ''}
-                              onChange={v => {
-                                this.setState({
-                                  [item2.labelId]: v.target.value
-                                });
-                              }}
-                              value={this.state[item2.labelId]}
-                              style={{ width: '160px' }}
-                            />
-                          )}
+                                <Input
+                                  type={item2.type ? item2.type : ''}
+                                  onChange={v => {
+                                    this.setState({
+                                      [item2.labelId]: v.target.value
+                                    });
+                                  }}
+                                  value={this.state[item2.labelId]}
+                                  style={{ width: '160px' }}
+                                />
+                              )}
                         </Col>
                       ) : null;
                     })}
@@ -1027,7 +1037,7 @@ export default class ShVisit extends Component {
                                     <label>{item2.labelName}</label>
                                     {item2.selection ? (
                                       <Select
-                                        defaultValue={item2.selection[0]}
+                                        value={this.state[item2.labelId] ? this.state[item2.labelId] : item2.selection[0]}
                                         style={{ width: 160 }}
                                         onChange={v => {
                                           this.setState({ [item2.labelId]: v });
@@ -1056,17 +1066,17 @@ export default class ShVisit extends Component {
                                         }}
                                       />
                                     ) : (
-                                      <Input
-                                        type={item2.type ? item2.type : ''}
-                                        value={this.state[item2.labelId]}
-                                        onChange={v => {
-                                          this.setState({
-                                            [item2.labelId]: v.target.value
-                                          });
-                                        }}
-                                        style={{ width: '160px' }}
-                                      />
-                                    )}
+                                          <Input
+                                            type={item2.type ? item2.type : ''}
+                                            value={this.state[item2.labelId]}
+                                            onChange={v => {
+                                              this.setState({
+                                                [item2.labelId]: v.target.value
+                                              });
+                                            }}
+                                            style={{ width: '160px' }}
+                                          />
+                                        )}
                                   </li>
                                 );
                               })}
@@ -1123,32 +1133,32 @@ export default class ShVisit extends Component {
                           </span>
                         </>
                       ) : (
-                        <>
-                          <Button
-                            size="small"
-                            onClick={() => {
-                              this.showModalSelect(
-                                '687802185213',
-                                'C3_687802215088',
-                                'C3_687636717177'
-                              );
-                            }}
-                            style={{ marginRight: 8 }}
-                          >
-                            选择酒店
+                          <>
+                            <Button
+                              size="small"
+                              onClick={() => {
+                                this.showModalSelect(
+                                  '687802185213',
+                                  'C3_687802215088',
+                                  'C3_687636717177'
+                                );
+                              }}
+                              style={{ marginRight: 8 }}
+                            >
+                              选择酒店
                           </Button>
-                          <label>指定酒店名称：</label>
-                          <Input
-                            onChange={v => {
-                              this.setState({
-                                C3_687636717177: v.target.value
-                              });
-                            }}
-                            value={this.state.C3_687636717177}
-                            style={{ width: '320px' }}
-                          />
-                        </>
-                      )}
+                            <label>指定酒店名称：</label>
+                            <Input
+                              onChange={v => {
+                                this.setState({
+                                  C3_687636717177: v.target.value
+                                });
+                              }}
+                              value={this.state.C3_687636717177}
+                              style={{ width: '320px' }}
+                            />
+                          </>
+                        )}
                     </div>
                     <dl>
                       <dt>
@@ -1171,14 +1181,14 @@ export default class ShVisit extends Component {
                                   }}
                                 />
                               ) : (
-                                <Input
-                                  value={this.state[item2]}
-                                  onChange={v => {
-                                    this.setState({ [item2]: v.target.value });
-                                  }}
-                                  style={{ width: '160px' }}
-                                />
-                              );
+                                  <Input
+                                    value={this.state[item2]}
+                                    onChange={v => {
+                                      this.setState({ [item2]: v.target.value });
+                                    }}
+                                    style={{ width: '160px' }}
+                                  />
+                                );
                             })}
                             <Button
                               type={'danger'}
@@ -1258,37 +1268,37 @@ export default class ShVisit extends Component {
               </div>
               <div className='moduleLine'>
                 {
-                  this.state.type==='normal'?<>
-                  <h3>模板列表：</h3>
-                  {
-                    !this.state.moduleList||this.state.moduleList.length===0?'无': <ul className='moduleList'>
+                  this.state.type === 'normal' ? <>
+                    <h3>模板列表：</h3>
                     {
-                      this.state.moduleList.map(
-                        (file,key)=>{
-                          return(
-                            <li key={key}>
-                              <span>{file.fileName}</span>
-                              <Button size={'small'} onClick={()=>{
-                                window.open(file.fileUrl)
-                              }}>下载</Button>
-                            </li>
+                      !this.state.moduleList || this.state.moduleList.length === 0 ? '无' : <ul className='moduleList'>
+                        {
+                          this.state.moduleList.map(
+                            (file, key) => {
+                              return (
+                                <li key={key}>
+                                  <span>{file.fileName}</span>
+                                  <Button size={'small'} onClick={() => {
+                                    window.open(file.fileUrl)
+                                  }}>下载</Button>
+                                </li>
+                              )
+                            }
                           )
                         }
-                      )
+                      </ul>
                     }
-                    </ul>
-                  }
-                 
-                  <div><b style={{color:'#f5222d'}}>*</b>上传来访人员信息表（仅疫情期间）：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,1) }}/></div>
-                  <div> <b style={{color:'#f5222d'}}>*</b>上传访客绿码：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,2) }}/></div>
-                  <div><b style={{color:'#f5222d'}}>*</b>上传行动轨迹：<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v,3) }}/></div>
-                </>:null
+
+                    <div><b style={{ color: '#f5222d' }}>*</b>上传来访人员信息表（仅疫情期间）：{this.state.fileUrl ? <a href={this.state.fileUrl} target='_blank'>点击查看/下载</a> : null}<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v, 1) }} /></div>
+                    <div> <b style={{ color: '#f5222d' }}>*</b>上传访客绿码：{this.state.fileUrl2 ? <a href={this.state.fileUrl2} target='_blank'>点击查看/下载</a> : null}<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v, 2) }} /></div>
+                    <div><b style={{ color: '#f5222d' }}>*</b>上传行动轨迹：{this.state.fileUrl3 ? <a href={this.state.fileUrl3} target='_blank'>点击查看/下载</a> : null}<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v, 3) }} /></div>
+                  </> : null
                 }
-               </div>
+              </div>
             </Spin>
           </div>
         </Modal>
-      </div>
+      </div >
     );
   }
 }
