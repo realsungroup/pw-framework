@@ -16,101 +16,115 @@ export default class ShVisitApprove extends Component {
   componentDidMount() {
   }
 
-  
+
   render() {
     return (
       <div className="table-data-wrap">
-       <Tabs defaultActiveKey="1" size="small">
+        <Tabs defaultActiveKey="1" size="small">
           <Tabs.TabPane tab="未审批" key="1">
             <div className='wrap'>
-          <TableData
-          resid={'687801974358'}
-          hasRowView={false}
-          hasAdd={false}
-          hasRowDelete={false}
-          hasRowModify={false}
-          hasModify={false}
-          hasDelete={false}
-          hasBeBtns={true}
-          subtractH={175}
-          hasRowView={true}
-          customRowBtns={[
-            record => {
-              return (
-                <>
-                  <Button
-                    onClick={() => {
-                      window.open(record.fileUrl)
-                    }}
-                  >
-                    下载来访人员表
+              <TableData
+                resid={'687801974358'}
+                hasRowView={false}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                hasRowSelection={true}
+                hasBeBtns={true}
+                subtractH={175}
+                isUseFormDefine={true}
+                recordFormUseAbsolute={true}
+                hasRowView={true}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <>
+                        {
+                          record.fileUrl ? <Button
+                            onClick={() => {
+                              window.open(record.fileUrl)
+                            }}
+                          >
+                            下载来访人员表
+                  </Button> : null
+                        }
+                        {
+                          record.fileUrl2 ?
+                            <Button
+                              onClick={() => {
+                                window.open(record.fileUrl2)
+                              }}
+                            >
+                              下载访客绿码
                   </Button>
-                  <Button
-                    onClick={() => {
-                      window.open(record.fileUrl2)
-                    }}
-                  >
-                   下载访客绿码
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      window.open(record.fileUrl3)
-                    }}
-                  >
-                    下载行动轨迹
-                  </Button>
-                </>
-              );
-            }
-          ]}
-        /></div>
-            </Tabs.TabPane>
-          <Tabs.TabPane tab="已审批" key="2">
-          <div className='wrap'>
+                            : null
+                        }
+                        {
+                          record.fileUrl3 ? <Button
+                            onClick={() => {
+                              window.open(record.fileUrl3)
+                            }}
+                          >
+                            下载行动轨迹
+                   </Button> : null
+                        }
 
-          <TableData
-          resid={'687823032125'}
-          hasRowView={false}
-          hasAdd={false}
-          hasRowDelete={false}
-          hasRowModify={false}
-          hasBeBtns={true}
-          hasModify={false}
-          hasDelete={false}
-          subtractH={175}
-          hasRowView={true}
-          customRowBtns={[
-            record => {
-              return (
-                <>
-                  <Button
-                    onClick={() => {
-                      window.open(record.fileUrl)
-                    }}
-                  >
-                    下载来访人员表
+                      </>
+                    );
+                  }
+                ]}
+              /></div>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="已审批" key="2">
+            <div className='wrap'>
+
+              <TableData
+                resid={'687823032125'}
+                hasRowView={false}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasBeBtns={true}
+                hasModify={false}
+                hasDelete={false}
+                subtractH={175}
+                hasRowView={true}
+                isUseFormDefine={true}
+                recordFormUseAbsolute={true}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <>
+                        <Button
+                          onClick={() => {
+                            window.open(record.fileUrl)
+                          }}
+                        >
+                          下载来访人员表
                   </Button>
-                  <Button
-                    onClick={() => {
-                      window.open(record.fileUrl2)
-                    }}
-                  >
-                   下载访客绿码
+                        <Button
+                          onClick={() => {
+                            window.open(record.fileUrl2)
+                          }}
+                        >
+                          下载访客绿码
                   </Button>
-                  <Button
-                    onClick={() => {
-                      window.open(record.fileUrl3)
-                    }}
-                  >
-                    下载行动轨迹
+                        <Button
+                          onClick={() => {
+                            window.open(record.fileUrl3)
+                          }}
+                        >
+                          下载行动轨迹
                   </Button>
-                </>
-              );
-            }
-          ]}
-        />
-        </div>
-            </Tabs.TabPane>
+                      </>
+                    );
+                  }
+                ]}
+              />
+            </div>
+          </Tabs.TabPane>
         </Tabs>
       </div>
     );
