@@ -12,7 +12,7 @@ import {
   Popconfirm
 } from 'antd';
 import { getItem, setItem } from 'Util20/util';
-import logoImg from '../../assets/logo-26.png';
+import logoImg from '../../assets/Coherent Logo-Blue.png';
 import { resetPassByEmail } from 'Util/api';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import http from 'Util20/api';
@@ -61,7 +61,7 @@ class Login extends React.Component {
     try {
       window.less
         .modifyVars(themeColor)
-        .then(() => {})
+        .then(() => { })
         .catch(err => {
           message.error(err.message);
         });
@@ -233,7 +233,7 @@ class Login extends React.Component {
       this.setState({ loading: true });
       let res;
       try {
-        res = http({baseURL:baseURL}).forgetPassword({
+        res = http({ baseURL: baseURL }).forgetPassword({
           badgeno: this.state.userNameLogin,
           enterprisecode: parseInt((100000 * Math.random()) ^ Math.random()),
           sendEmail: 'Y'
@@ -244,7 +244,7 @@ class Login extends React.Component {
         var _this = this;
         _this.setState({ timer: 5 });
         var t = 5;
-        var timerC = setInterval(function() {
+        var timerC = setInterval(function () {
           t = _this.state.timer - 1;
           _this.setState({ timer: t });
           if (t == 0) {
@@ -273,7 +273,7 @@ class Login extends React.Component {
       this.setState({ loading: true });
       let res;
       try {
-        res = await http({baseURL:baseURL}).getResetPassword({
+        res = await http({ baseURL: baseURL }).getResetPassword({
           userid: this.state.userNameLogin,
           newpass1: this.state.PSWNew,
           resetcode: this.state.OTP
@@ -328,8 +328,8 @@ class Login extends React.Component {
                 {loginMode === 'normal' ? (
                   <FM id="Login.NormalLogin" defaultMessage="普通登录" />
                 ) : (
-                  <FM id="Login.DomainLogin" defaultMessage="域登录" />
-                )}
+                    <FM id="Login.DomainLogin" defaultMessage="域登录" />
+                  )}
               </a>
             </div>
             {/* <div>
