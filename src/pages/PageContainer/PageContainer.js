@@ -28,7 +28,7 @@ import memoizeone from 'memoize-one';
 import AbbreviationApp from './AbbreviationApp';
 import { OrgChartData } from '../../components/common/loadableCommon';
 import DesktopBg from './DesktopBg';
-import defaultDesktopBg from './DesktopBg/assets/05.jpg';
+import defaultDesktopBg from './DesktopBg/assets/06.jpg';
 import JobArchitectureDiagram from '../../components/custom/PostAndPersonnel/PostArchitecture/ArchitectureDiagram';
 
 import {

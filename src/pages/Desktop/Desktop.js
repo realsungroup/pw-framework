@@ -21,7 +21,7 @@ import { setLanguage } from 'Util/api';
 import { logout } from 'Util/auth';
 import desktopIconPng from './assets/desktop-icon.png';
 import logoPng from './assets/logo.png';
-import defaultDesktopBg from './DesktopBg/assets/05.jpg';
+import defaultDesktopBg from './DesktopBg/assets/06.jpg';
 import DesktopBottomBar from './DesktopBottomBar';
 import { delay } from 'lodash';
 import Img from 'Common/ui/Img';
