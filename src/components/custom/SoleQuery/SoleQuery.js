@@ -209,50 +209,48 @@ class SoleQuery extends Component {
   // 进度条关闭
   handleShowProgress = async () => {
     const { hasGift, queryID } = this.state;
-    var bol = false;
-    // 改变提交状态
-    try {
-      this.setState({ loading: true });
-      await http().modifyRecords({
-        resid: 609613163948,
-        data: [{ REC_ID: this.state.subRecid, hasSubmit: '已提交' }]
-      });
-      var courseId = window.location.search;
-      courseId = qs.parse(courseId.substring(1));
-      courseId = courseId.courseId;
-      var staffNum = localStorage.getItem('userInfo');
-      staffNum = JSON.parse(staffNum);
-      staffNum = staffNum.UserInfo.EMP_USERCODE;
-      if (staffNum.length > 0 && courseId && courseId.length > 0) {
-        bol = true;
-      }
-      if (bol == true) {
-        await http().addRecords({
-          resid: '615983369834',
-          data: [
-            {
+    let bol = false;
+    if(this.state.isAdding){
+
+    }else{
+      this.setState({isAdding:true})
+      // 改变提交状态
+      try {
+        this.setState({ loading: true });
+        await http().modifyRecords({
+          resid: 609613163948,
+          data: [{ REC_ID: this.state.subRecid, hasSubmit: '已提交' }]
+        });
+        let courseId = window.location.search;
+        courseId = qs.parse(courseId.substring(1));
+        courseId = courseId.courseId;
+        let staffNum = localStorage.getItem('userInfo');
+        staffNum = JSON.parse(staffNum);
+        staffNum = staffNum.UserInfo.EMP_USERCODE;
+        if (staffNum.length > 0 && courseId && courseId.length > 0) {
+          bol = true;
+        }
+        if (bol == true) {
+          await http().modifyRecords({
+            resid: '615983369834',
+            isEditOrAdd: true,
+            data: [{
               CourseArrangeID: courseId,
               C3_613941384832: staffNum,
               isApply: 'Y'
-            }
-          ]
-        });
-        // window[615375286006] = {
-        //   name: 'CourseResources',
-        //   title: '课程资源'
-        // };
-        window.open(
-          window.location.origin +
-          '?resid=615375286006&recid=615375314499&type=%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83&title=%E8%AF%BE%E7%A8%8B%E8%B5%84%E6%BA%90&success=true'
-        );
-        window.parent.close();
+            }]
+          });
+          window.open(
+            window.location.origin +
+            '?resid=615375286006&recid=615375314499&type=%E4%B8%AA%E4%BA%BA%E4%B8%AD%E5%BF%83&title=%E8%AF%BE%E7%A8%8B%E8%B5%84%E6%BA%90&success=true'
+          );
+          window.parent.close();
+        }
+      } catch (err) {
+        console.error(err);
+        this.setState({ loading: false });
+        return message.error(err.message);
       }
-    } catch (err) {
-      console.error(err);
-      this.setState({ loading: false });
-      return message.error(err.message);
-    }
-
     this.setState({ loading: false });
     //  判断有无礼品
     if (hasGift === '0') {
@@ -284,6 +282,8 @@ class SoleQuery extends Component {
       console.error(err);
       return message.error(err.message);
     }
+  }
+
   };
   handleCheckboxChange = (questionId, optionId, e) => {
     const { AllQuestions } = this.state;
