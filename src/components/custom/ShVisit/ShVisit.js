@@ -17,6 +17,7 @@ import http from 'Util20/api';
 import './ShVisit.less';
 import moment from 'moment';
 const { Option } = Select;
+const forbidMin = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
 const labels = [
   [
     { labelName: '来访事由：', necessary: 'true', labelId: 'C3_687636435090' },
@@ -32,13 +33,12 @@ const labels = [
       necessary: true,
       labelId: 'C3_687636446496',
       class: 'normal',
-      selection: ['管控区']
+      selection: ['1F', '2F', '3F', '4F', '5F', '6F']
     },
     {
       labelName: '接待人：',
       necessary: true,
       labelId: 'C3_687636905675',
-      class: 'vip'
     }
   ],
   [
@@ -57,11 +57,11 @@ const labels = [
   ],
   [
     {
-      labelName: '申请人分机号：',
+      labelName: '接待人分机号：',
       labelId: 'C3_687636958159',
       necessary: true
     },
-    { labelName: '申请人手机号：', labelId: 'C3_687636947347', necessary: true }
+    { labelName: '接待人手机号：', labelId: 'C3_687636947347', necessary: true }
   ]
 ];
 /**
@@ -79,7 +79,7 @@ export default class ShVisit extends Component {
     visible: false,
     visibleSelect: false,
     C3_687636501807: null,
-    C3_687636446496: '管控区',
+    C3_687636446496: '1F',
     hotelCounter: 0,
     fileUrl: null,
     fileUrl2: null,
@@ -957,10 +957,10 @@ export default class ShVisit extends Component {
 
               {labels.map(item => {
                 return (
-                  <Row style={{ marginBottom: 16 }}>
+                  <Row >
                     {item.map(item2 => {
                       return !item2.class || item2.class == this.state.type ? (
-                        <Col span={6}>
+                        <Col span={6} style={{ marginBottom: 16 }}>
                           <label>
                             {item2.necessary ? (
                               <b style={{ color: '#f5222d' }}>*</b>
@@ -1053,16 +1053,20 @@ export default class ShVisit extends Component {
                                       </Select>
                                     ) : item2.type == 'time' ? (
                                       <DatePicker
-                                        format="YYYY-MM-DD HH:mm:ss"
+                                        format="YYYY-MM-DD HH:mm"
                                         value={this.state[item2.labelId]}
                                         onChange={v => {
                                           this.setState({ [item2.labelId]: v });
                                         }}
+                                        renderExtraFooter={() => { return (<p style={{ color: '#f5222d' }}>点击“选择时间”选择就餐时间(小时/分钟)</p>) }}
                                         showTime={{
                                           defaultValue: moment(
-                                            '00:00:00',
-                                            'HH:mm:ss'
-                                          )
+                                            '00:00',
+                                            'HH:mm'
+                                          ),
+                                          format: "HH:mm",
+                                          hideDisabledOptions: true,
+                                          disabledMinutes: () => { return forbidMin },
                                         }}
                                       />
                                     ) : (
