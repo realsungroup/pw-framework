@@ -161,16 +161,16 @@ window.pwConfig = {
 
     // 主题
     themeColor: {
-      '@primary-color': '#A11D21'
+      '@primary-color': '#096dd9'
     }, // 默认主题色
 
     // 锁屏
     lockScreenWaitTime: 86400, // 用户多久未操作登录后界面时，会锁屏（单位：秒）
 
     // logo 配置
-    homeLogoSize: 42, // 首页 logo 尺寸
+    homeLogoSize: 32, // 首页 logo 尺寸
 
-    loginLogoSize: 80, // 登录页 logo 尺寸
+    loginLogoSize: 42, // 登录页 logo 尺寸
 
     // 上传文件配置
     // upload: {
@@ -395,14 +395,14 @@ window.pwConfig = {
 
     // 主题
     themeColor: {
-      '@primary-color': '#A11D21'
+      '@primary-color': '#096dd9'
     }, // 默认主题色
 
     // 锁屏
     lockScreenWaitTime: 86400, // 用户多久未操作登录后界面时，会锁屏（单位：秒）
 
     // logo 配置
-    homeLogoSize: 42, // 首页 logo 尺寸
+    homeLogoSize: 32, // 首页 logo 尺寸
 
     loginLogoSize: 42, // 登录页 logo 尺寸
 

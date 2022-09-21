@@ -3,7 +3,7 @@ import { Link, withRouter } from 'react-router-dom';
 import folderPng from '../../Desktop/assets/folder.png';
 import RightBtns from './RightBtns';
 import classNames from 'classnames';
-import logoImg from '../../../assets/logo-26.png';
+import logoImg from '../../../assets/Coherent Logo-Blue.png';
 import UserInfo from './UserInfo';
 import './PageHeader.less';
 import { Drawer, Menu, Icon, Input, Badge, Popover, Select } from 'antd';
@@ -16,7 +16,7 @@ import BIButton from '../../components/BIButton';
 
 const biConfig = getAppConfig('biConfig');
 
-console.log({biConfig})
+console.log({ biConfig })
 
 const SubMenu = Menu.SubMenu;
 const { homeLogoSize, openFuncInSelfResids } = window.pwConfig[
@@ -171,7 +171,7 @@ class PageHeader extends React.Component {
               src={logoImg}
               alt="logo"
               className="page-header__logo-img"
-              style={{ height: 52 }}
+              style={{ height: 32 }}
               defaultImg={folderPng}
             />
           </Link>
@@ -320,15 +320,15 @@ const ActiveAppList = React.memo(
                         defaultImg={folderPng}
                       />
                     ) : (
-                      <div className="overlay">
-                        <div className="overlay-inner"></div>
-                        <Img
-                          src={app.appIconUrl}
-                          className="new-home-app-icon"
-                          defaultImg={folderPng}
-                        />
-                      </div>
-                    ))}
+                        <div className="overlay">
+                          <div className="overlay-inner"></div>
+                          <Img
+                            src={app.appIconUrl}
+                            className="new-home-app-icon"
+                            defaultImg={folderPng}
+                          />
+                        </div>
+                      ))}
                   <span
                     className={
                       app.isActive
@@ -351,17 +351,17 @@ const ActiveAppList = React.memo(
             );
           })
         ) : (
-          <div
-            style={{
-              height: 100,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            未打开任何功能
-          </div>
-        )}
+            <div
+              style={{
+                height: 100,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              未打开任何功能
+            </div>
+          )}
       </div>
     );
   }

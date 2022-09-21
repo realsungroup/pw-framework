@@ -12,7 +12,7 @@ import {
   Popconfirm
 } from 'antd';
 import { getItem, setItem } from 'Util20/util';
-import logoImg from '../../assets/logo-26.png';
+import logoImg from '../../assets/Coherent Logo-Blue.png';
 import { resetPassByEmail } from 'Util/api';
 import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import http from 'Util20/api';

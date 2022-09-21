@@ -213,7 +213,7 @@ class ArrangingCourses extends React.Component {
       //设置时间段条件
       cmswhere += ` and StartDatetime > '${
         searchPeriod[0]
-      }' and StartDatetime < '${searchPeriod[1]}'`;
+        }' and StartDatetime < '${searchPeriod[1]}'`;
     }
     if (selectedYear !== 'all') {
       //财年
@@ -928,11 +928,11 @@ class ArrangingCourses extends React.Component {
                     </Card>
                   ))
                 ) : (
-                  <List
-                    dataSource={courseArrangment}
-                    style={{ width: '100%' }}
-                  ></List>
-                )}
+                    <List
+                      dataSource={courseArrangment}
+                      style={{ width: '100%' }}
+                    ></List>
+                  )}
               </div>
               <Pagination
                 className="external-training__arranging-courses__pagination"
@@ -1328,10 +1328,10 @@ class ArrangingCourses extends React.Component {
                         </Button>
                       </Popconfirm>
                     ) : (
-                      <span style={{ marginLeft: '4px', color: 'red' }}>
-                        已提醒HR经理人审批申请单
-                      </span>
-                    )}
+                        <span style={{ marginLeft: '4px', color: 'red' }}>
+                          已提醒HR经理人审批申请单
+                        </span>
+                      )}
                   </>
                 );
               }
@@ -1344,11 +1344,11 @@ class ArrangingCourses extends React.Component {
                   onClick={
                     this.state.showAddMem
                       ? () => {
-                          this.setState({ showAddMem: false });
-                        }
+                        this.setState({ showAddMem: false });
+                      }
                       : () => {
-                          this.setState({ showAddMem: true });
-                        }
+                        this.setState({ showAddMem: true });
+                      }
                   }
                 >
                   添加人员
@@ -1378,8 +1378,8 @@ class ArrangingCourses extends React.Component {
                         data: JSON.stringify(taskList)
                       }}
                       title="添加人员列表"
-                      // showFields={['C3_609622263470', 'C3_609845305680']}
-                      // width='50%'
+                    // showFields={['C3_609622263470', 'C3_609845305680']}
+                    // width='50%'
                     />
                   ) : null}
                 </Modal>

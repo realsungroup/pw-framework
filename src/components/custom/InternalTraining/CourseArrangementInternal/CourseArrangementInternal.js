@@ -360,6 +360,7 @@ class CourseArrangementInternal extends React.Component {
     let res,
       { searchPeriod, searchKeyword } = this.state;
     let isHasPeriod = searchPeriod[0] && searchPeriod[1];
+    console.log(searchPeriod[0], searchPeriod[1])
     try {
       this.props.onHandleLoading(true);
       res = await http().getTable({
