@@ -123,10 +123,13 @@ window.pwConfig = {
     defaultLoginMode: 'domain', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置
-      baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
-      usernameSuffix: '@finisar.com', // 域登录用户名的后缀
-      domain: 'china', // 域名
-      domainUserField: 'emp_email' // 域用户字段
+      baseUrl: 'http://10.108.2.66:1001/', // 域登录基地址
+      //baseUrl: 'http://CHN.ii-vi.net/', // 域登录基地址
+      // usernameSuffix: '@finisar.com', // 域登录用户名的后缀
+      usernameSuffix: '', // 域登录用户名的后缀
+      domain: 'CHN.ii-vi.net', // 域名
+      //domainUserField: 'emp_email' // 域用户字段
+      domainUserField: 'C3_579195092247' // 域用户字段
     },
     enterprisecode: '9063', // 忘记密码 api 传给后端的企业编号
 
@@ -358,9 +361,12 @@ window.pwConfig = {
     domainLoginConfig: {
       // 预登录配置
       baseUrl: 'http://10.108.2.66:1001/', // 域登录基地址
-      usernameSuffix: '@finisar.com', // 域登录用户名的后缀
-      domain: 'china', // 域名
-      domainUserField: 'emp_email' // 域用户字段
+      //baseUrl: 'http://CHN.ii-vi.net/', // 域登录基地址
+      // usernameSuffix: '@finisar.com', // 域登录用户名的后缀
+      usernameSuffix: '', // 域登录用户名的后缀
+      domain: 'CHN.ii-vi.net', // 域名
+      //domainUserField: 'emp_email' // 域用户字段
+      domainUserField: 'C3_579195092247' // 域用户字段
     },
     enterprisecode: '9063', // 忘记密码 api 传给后端的企业编号
 
