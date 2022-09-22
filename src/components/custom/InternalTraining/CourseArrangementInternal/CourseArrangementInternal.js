@@ -360,7 +360,6 @@ class CourseArrangementInternal extends React.Component {
     let res,
       { searchPeriod, searchKeyword } = this.state;
     let isHasPeriod = searchPeriod[0] && searchPeriod[1];
-    console.log(searchPeriod[0], searchPeriod[1])
     try {
       this.props.onHandleLoading(true);
       res = await http().getTable({
@@ -373,7 +372,10 @@ class CourseArrangementInternal extends React.Component {
           : ''
       });
       let courseArrangements = res.data;
-      this.setState({ courseArrangements });
+      if ((!searchKeyword) && (!isHasPeriod)) {
+        courseArrangements = courseArrangements.slice(0, 10);
+      }
+      this.setState({ pageCourseArrangements: courseArrangements });
       this.props.onHandleLoading(false);
     } catch (error) {
       this.props.onHandleLoading(false);
