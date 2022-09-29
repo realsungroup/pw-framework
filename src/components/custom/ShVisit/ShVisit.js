@@ -746,7 +746,7 @@ export default class ShVisit extends Component {
   getModule = async () => {
     let res;
     try {
-      res = await http().getTable({
+      res = await http({ baseURL: this.baseURL }).getTable({
         resid: 700158571490
       })
       this.setState({ moduleList: res.data });

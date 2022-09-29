@@ -20,6 +20,7 @@ const ReviewApplicationForm = props => {
             hasRowView: true,
             subtractH: 220,
             recordFormType: 'drawer',
+            recordFormUseAbsolute: true,
             formProps: {
               height: 550
             },
@@ -39,7 +40,8 @@ const ReviewApplicationForm = props => {
             hasAdd: false,
             hasRowDelete: false,
             hasRowModify: false,
-            hasRowView: false,
+            hasRowView: true,
+            recordFormUseAbsolute: true,
             subtractH: 220,
             formProps: {
               height: 550
