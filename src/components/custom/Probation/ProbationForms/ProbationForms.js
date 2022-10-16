@@ -1441,8 +1441,8 @@ class ProbationForms extends React.Component {
     const logo26 = Media.addImage(
       doc,
       Uint8Array.from(atob(IIVILogo), c => c.charCodeAt(0)),
-      153,
-      65
+      96,
+      40
     );
     doc.addSection({
       headers: {
