@@ -480,7 +480,7 @@ export const uploadFile = file => {
   return new Promise((resolve, reject) => {
     let upUrlStr =
       path.uploadFileUrl +
-      '?savepath=c:\\web\\web\\rispweb\\upfiles&httppath=' +
+      '?savepath=d:\\web\\rispweb\\upfiles&httppath=' +
       path.httppath;
 
     let fd = new FormData();
