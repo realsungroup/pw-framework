@@ -1547,13 +1547,13 @@ class IDLTransferHr extends Component {
                 <li
                   className={
                     this.state.cms ==
-                      `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
+                      `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = '' and isnull(C3_675973079734,'') = ''`
                       ? 'cur'
                       : ''
                   }
                   onClick={() => {
                     this.setState({
-                      cms: `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`,
+                      cms: `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = '' and isnull(C3_675973079734,'') = ''`,
                       hasApp: 'finish'
                     });
                   }}
@@ -2000,7 +2000,7 @@ class IDLTransferHr extends Component {
                   取消
                 </Button>
                 {this.state.cms ==
-                  `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
+                  `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = '' and isnull(C3_675973079734,'') = ''` ? (
                     <Button
                       type="primary"
                       onClick={() => {
@@ -2177,7 +2177,7 @@ class IDLTransferHr extends Component {
                   ) : this.state.cms ==
                     `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ||
                     this.state.cms ==
-                    `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
+                    `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = '' and isnull(C3_675973079734,'') = ''` ? (
                       this.state.stream.length == 0 ? (
                         '审批流计算中，不可预审。请耐心等待...'
                       ) : (
@@ -2194,7 +2194,7 @@ class IDLTransferHr extends Component {
                     </Button>
 
                             {this.state.cms ==
-                              `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
+                              `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = '' and isnull(C3_675973079734,'') = ''` ? (
                                 this.state.toCheckFront.effortDate &&
                                   this.state.iiviJobCode &&
                                   this.state.toCheckFront.C3_614084928408 &&
@@ -2354,7 +2354,7 @@ class IDLTransferHr extends Component {
                       </>
                     ) : null}
                   {this.state.cms ==
-                    `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''` ? (
+                    `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = '' and isnull(C3_675973079734,'') = ''` ? (
                       <>
                         <b>
                           <span style={{ color: '#f5222d' }}>*</span>
@@ -2642,7 +2642,7 @@ class IDLTransferHr extends Component {
                         HCPreApprove={this.state.right.HCPreApprove}
                         isHREnd={
                           this.state.cms ===
-                            `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
+                            `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = '' and isnull(C3_675973079734,'') = ''`
                             ? true
                             : false
                         }
@@ -2650,7 +2650,7 @@ class IDLTransferHr extends Component {
                           this.state.cms ===
                             `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ||
                             this.state.cms ===
-                            `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
+                            `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = '' and isnull(C3_675973079734,'') = ''`
                             ? true
                             : false
                         }
@@ -2893,7 +2893,7 @@ class IDLTransferHr extends Component {
                                   this.state.cms ==
                                   `hrPreAprrove = 'waiting' and C3_653481734712 = '${this.state.right.location}'` ||
                                   this.state.cms ==
-                                  `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = ''`
+                                  `C3_653481734712 = '${this.state.right.location}' and isStreamEnd = 'Y' and isnull(hrEndApprove,'') = '' and isnull(C3_675973079734,'') = ''`
                                   ? '确认信息'
                                   : '查看信息'}
                               </Button>

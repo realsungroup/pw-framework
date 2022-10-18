@@ -18,6 +18,14 @@ import './ShVisit.less';
 import moment from 'moment';
 const { Option } = Select;
 const forbidMin = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
+const fileKeys = [
+  ['fileUrl', 'fileUrl2', 'fileUrl3'],
+  ['fileUrlA', 'fileUrl2A', 'fileUrl3A'],
+  ['fileUrlB', 'fileUrl2B', 'fileUrl3B'],
+  ['fileUrlC', 'fileUrl2C', 'fileUrl3C'],
+  ['fileUrlD', 'fileUrl2D', 'fileUrl3D'],
+  ['fileUrlE', 'fileUrl2E', 'fileUrl3E'],
+]
 const labels = [
   [
     { labelName: '来访事由：', necessary: 'true', labelId: 'C3_687636435090' },
@@ -556,21 +564,30 @@ export default class ShVisit extends Component {
   };
   //提交前验证
   vertify = () => {
+    let fkbol = true;
     if (this.state.type == 'normal') {
-      if (!this.state.fileUrl) {
-        message.error('请上传来访人员信息表');
-        return false;
-      }
-      if (!this.state.fileUrl2) {
-        message.error('请上传访客绿码');
-        return false;
-      }
-      if (!this.state.fileUrl3) {
-        message.error('请上传行动轨迹');
-        return false;
+      fkbol = false;
+      for (let i = 0; i < fileKeys.length; i++) {
+        if (this.state[fileKeys[i][0]] || this.state[fileKeys[i][1]] || this.state[fileKeys[i][2]]) {
+          if (!this.state[fileKeys[i][0]]) {
+            message.error('请填写第' + (i + 1) + '人的来访人员信息表');
+            return false
+          } else if (!this.state[fileKeys[i][1]]) {
+            message.error('请填写第' + (i + 1) + '人的访客绿码');
+            return false
+          } else if (!this.state[fileKeys[i][2]]) {
+            message.error('请填写第' + (i + 1) + '人的行动轨迹');
+            return false
+          } else {
+            fkbol = true
+          }
+        }
       }
     }
-
+    if (!fkbol) {
+      message.error('请填写来访人员表/绿码/行动轨迹');
+      return false
+    }
     let n = 0;
     while (n < labels.length) {
       let c = 0;
@@ -717,7 +734,7 @@ export default class ShVisit extends Component {
       memberCounter--;
     }
     this.setState({ hotelInfo, memberInfo });
-    if (o.C3_687972656265 == 'Y') {
+    if (o.C3_690466687820 == 'Y' || o.C3_690047024832) {
       this.setState({ viewMode: 'Y' });
     }
     if (o.C3_687804308886 == '一般访客') {
@@ -729,7 +746,7 @@ export default class ShVisit extends Component {
   getModule = async () => {
     let res;
     try {
-      res = await http().getTable({
+      res = await http({ baseURL: this.baseURL }).getTable({
         resid: 700158571490
       })
       this.setState({ moduleList: res.data });
@@ -738,7 +755,7 @@ export default class ShVisit extends Component {
       this.setState({ loading: false });
     }
   }
-  handleUpload = (e, num) => {
+  handleUpload = (e, k) => {
     let files = e.target.files || e.dataTransfer.files;
 
     if (!files.length) return;
@@ -749,13 +766,7 @@ export default class ShVisit extends Component {
       return false;
     }
     this.uploadFile(files[0], `http://kingofdinner.realsun.me:1201/api/AliyunOss/PutOneImageObject?bucketname=nutritiontower&srctype=${type[type.length - 1]}`, "cloud").then((result) => {
-      if (num === 1) {
-        this.setState({ loading: false, fileUrl: result })
-      } else if (num === 2) {
-        this.setState({ loading: false, fileUrl2: result })
-      } else {
-        this.setState({ loading: false, fileUrl3: result })
-      }
+      this.setState({ loading: false, [k]: result })
 
     }, (err) => {
       this.setState({ loading: false })
@@ -806,7 +817,7 @@ export default class ShVisit extends Component {
               <>
                 <Button
                   onClick={() => {
-                    this.setState({ viewMode: null });
+                    this.setState({ viewMode: '' });
                     this.showModal('normal');
                   }}
                   type={'primary'}
@@ -816,7 +827,7 @@ export default class ShVisit extends Component {
                 <Button
                   type={'primary'}
                   onClick={() => {
-                    this.setState({ viewMode: null });
+                    this.setState({ viewMode: '' });
                     this.showModal('vip');
                   }}
                 >
@@ -829,7 +840,7 @@ export default class ShVisit extends Component {
                     this.setState({ mainId: v });
                   }}
                 >
-                  <Option value={'687801941061'}>全部</Option>
+                  <Option value={'687801941061'}>申请状态</Option>
                   <Option value={'687822980609'}>已审批</Option>
                   <Option value={'687823005766'}>已拒绝</Option>
                 </Select>
@@ -892,42 +903,6 @@ export default class ShVisit extends Component {
             />
           </div>
         </Modal>
-        {/* <Modal
-          visible={this.state.showModalModule}
-          width={'80vw'}
-          title={'模板下载'}
-          onCancel={() => {
-            this.setState({ showModalModule: false });
-          }}
-          footer={null}
-        >
-          <div style={{ height: '70vh' }}>
-            <TableData
-              resid={700158571490}
-              hasRowView={false}
-              hasAdd={false}
-              hasRowDelete={false}
-              hasRowModify={false}
-              hasModify={false}
-              hasDelete={false}
-              hasRowView={false}
-              subtractH={175}
-              customRowBtns={[
-                record => {
-                  return (
-                    <Button
-                      onClick={() => {
-                        window.open(record.fileUrl)
-                      }}
-                    >
-                      下载
-                    </Button>
-                  );
-                }
-              ]}
-            />
-          </div>
-        </Modal> */}
         <Modal
           visible={this.state.visible}
           width={'80vw'}
@@ -1292,10 +1267,32 @@ export default class ShVisit extends Component {
                         }
                       </ul>
                     }
-
-                    <div><b style={{ color: '#f5222d' }}>*</b>上传来访人员信息表（仅疫情期间）：{this.state.fileUrl ? <a href={this.state.fileUrl} target='_blank'>点击查看/下载</a> : null}<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v, 1) }} /></div>
-                    <div> <b style={{ color: '#f5222d' }}>*</b>上传访客绿码：{this.state.fileUrl2 ? <a href={this.state.fileUrl2} target='_blank'>点击查看/下载</a> : null}<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v, 2) }} /></div>
-                    <div><b style={{ color: '#f5222d' }}>*</b>上传行动轨迹：{this.state.fileUrl3 ? <a href={this.state.fileUrl3} target='_blank'>点击查看/下载</a> : null}<input id="ss" name="ss" type="file" onChange={v => { this.handleUpload(v, 3) }} /></div>
+                    <table className='files'>
+                      <tr>
+                        <td>来访人员信息表</td>
+                        <td>访客绿码</td>
+                        <td>行动轨迹</td>
+                      </tr>
+                      {
+                        fileKeys.map(
+                          (item, key) => {
+                            return (
+                              <tr key={key}>
+                                {item.map(
+                                  (item2, key2) => {
+                                    return (
+                                      <td key={key + '_' + key2}>{this.state[item2] ? <a href={this.state[item2]} target='_blank'>点击查看/下载</a> : null}
+                                        <input style={this.state.viewMode === 'Y' ? { display: 'none' } : {}} id={'ss' + key + '_' + key2} name={'ss' + key + '_' + key2} type="file" onChange={v => { this.handleUpload(v, item2) }} />
+                                      </td>
+                                    )
+                                  }
+                                )}
+                              </tr>
+                            )
+                          }
+                        )
+                      }
+                    </table>
                   </> : null
                 }
               </div>
