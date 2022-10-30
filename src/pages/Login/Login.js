@@ -25,14 +25,18 @@ const {
   domainLoginConfig,
   defaultLoginMode,
   enterprisecode,
-  themeColor
+  themeColor,
+  canChangeLogin
 } = window.pwConfig[process.env.NODE_ENV];
 const baseURL =
   window.pwConfig[process.env.NODE_ENV].customURLs.resetKeyWordURL;
 class Login extends React.Component {
   constructor(props) {
     super(props);
-    let loginMode = getItem('loginMode');
+    let loginMode = defaultLoginMode;
+    if (canChangeLogin) {
+      loginMode = getItem('loginMode');
+    }
     if (!loginMode) {
       loginMode = defaultLoginMode;
       setItem('loginMode', defaultLoginMode);
@@ -324,7 +328,15 @@ class Login extends React.Component {
           {/* 切换为 普通登录/域登录 */}
           <div className="login__options">
             <div className="login__options-login-mode">
-              <a href="javascript:;" onClick={this.loginModeChange}>
+              <a href="javascript:;"
+                style={canChangeLogin ? {} : { cursor: 'default' }}
+                onClick={
+                  () => {
+                    if (canChangeLogin) {
+                      this.loginModeChange();
+                    }
+                  }
+                }>
                 {loginMode === 'normal' ? (
                   <FM id="Login.NormalLogin" defaultMessage="普通登录" />
                 ) : (
@@ -412,11 +424,13 @@ class Login extends React.Component {
               </a>
 
               <a
-                style={{
-                  marginBottom: '8px',
-                  display: 'block',
-                  float: 'right'
-                }}
+                style={
+                  canChangeLogin ? {
+                    marginBottom: '8px',
+                    display: 'block',
+                    float: 'right'
+                  } : { display: 'none' }}
+
                 onClick={() => {
                   this.forgetPSW(true);
                 }}
