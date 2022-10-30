@@ -677,6 +677,7 @@ export default class ShVisit extends Component {
       this.tableDataRef.handleRefresh();
     } catch (e) {
       console.log(e);
+      message.error(e.message);
       this.setState({ loading: false });
     }
   };
@@ -752,6 +753,7 @@ export default class ShVisit extends Component {
       this.setState({ moduleList: res.data });
     } catch (e) {
       console.log(e.message);
+      message.error(e.message);
       this.setState({ loading: false });
     }
   }
@@ -1260,6 +1262,7 @@ export default class ShVisit extends Component {
                                   <Button size={'small'} onClick={() => {
                                     window.open(file.fileUrl)
                                   }}>下载</Button>
+                                  <span style={{ color: '#777' }}>点击后请耐心等待下载完成</span>
                                 </li>
                               )
                             }

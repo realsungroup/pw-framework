@@ -456,31 +456,31 @@ class ProbationForms extends React.Component {
             ...employeeInformation,
             instructor:
               this.state.employeeInformation.instructor &&
-              this.state.employeeInformation.instructor.indexOf('-') > -1
+                this.state.employeeInformation.instructor.indexOf('-') > -1
                 ? this.state.employeeInformation.instructor.split('-')[0]
                 : this.state.employeeInformation.instructor,
             instructorDirectorName:
               this.state.employeeInformation.instructorDirectorName &&
-              this.state.employeeInformation.instructorDirectorName.indexOf(
-                '-'
-              ) > -1
+                this.state.employeeInformation.instructorDirectorName.indexOf(
+                  '-'
+                ) > -1
                 ? this.state.employeeInformation.instructorDirectorName.split(
-                    '-'
-                  )[0]
+                  '-'
+                )[0]
                 : this.state.employeeInformation.instructorDirectorName,
             C3_637084539039:
               this.state.employeeInformation.C3_637084539039 &&
-              this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
+                this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
                 ? this.state.employeeInformation.C3_637084539039.split('-')[0]
                 : this.state.employeeInformation.C3_637084539039,
             instructorDirectorName2:
               this.state.employeeInformation.instructorDirectorName2 &&
-              this.state.employeeInformation.instructorDirectorName2.indexOf(
-                '-'
-              ) > -1
+                this.state.employeeInformation.instructorDirectorName2.indexOf(
+                  '-'
+                ) > -1
                 ? this.state.employeeInformation.instructorDirectorName2.split(
-                    '-'
-                  )[0]
+                  '-'
+                )[0]
                 : this.state.employeeInformation.instructorDirectorName2,
             _state: 'modified',
             _id: 1
@@ -497,37 +497,37 @@ class ProbationForms extends React.Component {
               ...employeeInformation,
               instructor:
                 this.state.employeeInformation.instructor &&
-                this.state.employeeInformation.instructor.indexOf('-') > -1
+                  this.state.employeeInformation.instructor.indexOf('-') > -1
                   ? this.state.employeeInformation.instructor.split('-')[0]
                   : this.state.employeeInformation.instructor,
               instructorDirectorName:
                 this.state.employeeInformation.instructorDirectorName &&
-                this.state.employeeInformation.instructorDirectorName.indexOf(
-                  '-'
-                ) > -1
+                  this.state.employeeInformation.instructorDirectorName.indexOf(
+                    '-'
+                  ) > -1
                   ? this.state.employeeInformation.instructorDirectorName.split(
-                      '-'
-                    )[0]
+                    '-'
+                  )[0]
                   : this.state.employeeInformation.instructorDirectorName,
               C3_637084539039:
                 this.state.employeeInformation.C3_637084539039 &&
-                this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
+                  this.state.employeeInformation.C3_637084539039.indexOf('-') > -1
                   ? this.state.employeeInformation.C3_637084539039.split('-')[0]
                   : this.state.employeeInformation.C3_637084539039,
               instructorDirectorName2:
                 this.state.employeeInformation.instructorDirectorName2 &&
-                this.state.employeeInformation.instructorDirectorName2.indexOf(
-                  '-'
-                ) > -1
+                  this.state.employeeInformation.instructorDirectorName2.indexOf(
+                    '-'
+                  ) > -1
                   ? this.state.employeeInformation.instructorDirectorName2.split(
-                      '-'
-                    )[0]
+                    '-'
+                  )[0]
                   : this.state.employeeInformation.instructorDirectorName2,
               insRej2:
                 chara == '主管' ? '' : this.state.employeeInformation.insRej2,
               instructorIsPass:
                 chara == '主管' &&
-                this.state.employeeInformation.instructorIsPass == 'N'
+                  this.state.employeeInformation.instructorIsPass == 'N'
                   ? ''
                   : this.state.employeeInformation.instructorIsPass,
               InstructorBackEmail:
@@ -536,12 +536,12 @@ class ProbationForms extends React.Component {
                   : this.state.employeeInformation.InstructorBackEmail,
               C3_625225123202:
                 chara == '主管' &&
-                this.state.employeeInformation.instructorIsPass == 'N'
+                  this.state.employeeInformation.instructorIsPass == 'N'
                   ? ''
                   : this.state.C3_625225123202,
               insCheck2:
                 chara == '主管' &&
-                this.state.employeeInformation.instructorIsPass == 'N'
+                  this.state.employeeInformation.instructorIsPass == 'N'
                   ? ''
                   : this.state.insCheck2,
               _state: 'modified',
@@ -680,7 +680,7 @@ class ProbationForms extends React.Component {
           return Modal.info({
             title: '提示',
             content: '没有试用期信息。',
-            onOk: () => {}
+            onOk: () => { }
           });
         }
         let probationObjectives = data[viewableTable.objectiveResid].filter(
@@ -1366,7 +1366,7 @@ class ProbationForms extends React.Component {
           console.log(error);
         }
       },
-      onCancel() {}
+      onCancel() { }
     });
   };
 
@@ -1441,8 +1441,8 @@ class ProbationForms extends React.Component {
     const logo26 = Media.addImage(
       doc,
       Uint8Array.from(atob(IIVILogo), c => c.charCodeAt(0)),
-      114,
-      33
+      96,
+      40
     );
     doc.addSection({
       headers: {
@@ -2266,7 +2266,7 @@ class ProbationForms extends React.Component {
                   width: {
                     size:
                       employeeInformation.smmary &&
-                      employeeInformation.smmary.length > 61
+                        employeeInformation.smmary.length > 61
                         ? 9070
                         : 9070,
                     type: WidthType.DXA
@@ -2308,7 +2308,7 @@ class ProbationForms extends React.Component {
                   width: {
                     size:
                       employeeInformation.directorEvaluate &&
-                      employeeInformation.directorEvaluate.length > 61
+                        employeeInformation.directorEvaluate.length > 61
                         ? 9070
                         : 9070,
                     type: WidthType.DXA
@@ -2351,7 +2351,7 @@ class ProbationForms extends React.Component {
                   width: {
                     size:
                       employeeInformation.ManagerEvaluate &&
-                      employeeInformation.ManagerEvaluate.length > 61
+                        employeeInformation.ManagerEvaluate.length > 61
                         ? 9070
                         : 9070,
                     type: WidthType.DXA
@@ -2393,7 +2393,7 @@ class ProbationForms extends React.Component {
                   width: {
                     size:
                       employeeInformation.hrManagerEvaluate &&
-                      employeeInformation.hrManagerEvaluate.length > 61
+                        employeeInformation.hrManagerEvaluate.length > 61
                         ? 9070
                         : 9070,
                     type: WidthType.DXA
@@ -2556,11 +2556,11 @@ class ProbationForms extends React.Component {
                         this.state.mentorshipRecord.length === 0
                           ? false
                           : this.state.mentorshipRecord.find(item => {
-                              return (
-                                item.instructionRecord === undefined ||
-                                item.editDate === undefined
-                              );
-                            });
+                            return (
+                              item.instructionRecord === undefined ||
+                              item.editDate === undefined
+                            );
+                          });
                       if (isFilled) {
                         message.info('请将辅导记录和日期填写完整');
                         return;
@@ -2572,22 +2572,22 @@ class ProbationForms extends React.Component {
                     保存
                   </Button>
                   {roleName === 'HR' &&
-                  this.state.flagHitBack == true &&
-                  this.state.flagAlreadyHit == 0 ? (
-                    <span>
-                      <Button
-                        style={{ marginRight: '8px' }}
-                        onClick={this.agreeApply}
-                      >
-                        同意自定义辅导员
+                    this.state.flagHitBack == true &&
+                    this.state.flagAlreadyHit == 0 ? (
+                      <span>
+                        <Button
+                          style={{ marginRight: '8px' }}
+                          onClick={this.agreeApply}
+                        >
+                          同意自定义辅导员
                       </Button>
-                      <Button onClick={this.disagreeApply} type="danger">
-                        驳回自定义辅导员
+                        <Button onClick={this.disagreeApply} type="danger">
+                          驳回自定义辅导员
                       </Button>
-                    </span>
-                  ) : (
-                    ''
-                  )}
+                      </span>
+                    ) : (
+                      ''
+                    )}
                   {
                     <span style={{ color: 'red' }}>
                       {this.state.flagAlreadyHit == 2
@@ -2728,7 +2728,7 @@ class ProbationForms extends React.Component {
                 style={{ width: 300 }}
                 placeholder="请选择课程"
                 optionFilterProp="children"
-                onSearch={val => {}}
+                onSearch={val => { }}
                 filterOption={(input, option) =>
                   option.props.children
                     .toLowerCase()
@@ -2783,7 +2783,7 @@ class ProbationForms extends React.Component {
                 style={{ width: 300 }}
                 placeholder="请选择课程"
                 optionFilterProp="children"
-                onSearch={val => {}}
+                onSearch={val => { }}
                 value={this.state.modifyInternalCourseData.course}
                 filterOption={(input, option) =>
                   option.props.children

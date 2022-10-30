@@ -13,6 +13,9 @@ import './ShVisitApprove.less';
 export default class ShVisitApprove extends Component {
   constructor(props) {
     super(props);
+    this.baseURL = window.pwConfig[process.env.NODE_ENV].customURLs.shVisitURL;
+    this.downloadBaseURL =
+      window.pwConfig[process.env.NODE_ENV].customURLs.shVisitDownLoadURL;
     this.state = {
       modalVis: false,
       fileArr: []
@@ -113,7 +116,9 @@ export default class ShVisitApprove extends Component {
           <Tabs.TabPane tab="未审批" key="1">
             <div className='wrap'>
               <TableData
-                resid={'687801974358'}
+                resid={this.props.pendingResid}
+                baseURL={this.baseURL}
+                downloadBaseURL={this.downloadBaseURL}
                 hasRowView={false}
                 hasAdd={false}
                 hasRowDelete={false}
@@ -140,12 +145,48 @@ export default class ShVisitApprove extends Component {
                 ]}
               /></div>
           </Tabs.TabPane>
-          <Tabs.TabPane tab="已审批" key="2">
+          <Tabs.TabPane tab="已审批通过" key="2">
             <div className='wrap'>
 
               <TableData
-                resid={'687823032125'}
+                resid={this.props.approvedResid}
                 hasRowView={false}
+                baseURL={this.baseURL}
+                downloadBaseURL={this.downloadBaseURL}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasBeBtns={true}
+                hasModify={false}
+                hasDelete={false}
+                subtractH={175}
+                hasRowView={true}
+                isUseFormDefine={true}
+                recordFormUseAbsolute={true}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <Button
+                        onClick={() => {
+                          this.setFiles(record)
+                        }}
+                      >
+                        查阅附件
+                      </Button>
+                    );
+                  }
+                ]}
+              />
+            </div>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab="已审批拒绝" key="3">
+            <div className='wrap'>
+
+              <TableData
+                resid={this.props.refusedResid}
+                hasRowView={false}
+                baseURL={this.baseURL}
+                downloadBaseURL={this.downloadBaseURL}
                 hasAdd={false}
                 hasRowDelete={false}
                 hasRowModify={false}

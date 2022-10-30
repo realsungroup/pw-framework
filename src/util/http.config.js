@@ -20,8 +20,11 @@ const appConfig = {
     login: 'api/Account/Login',
     getFormDefine: 'api/100/table/RetrieveFormDefine',
     uploadFileUrl:
-      'https://finisar.realsun.me:8082/rispweb/rispservice/SvcUploadFile2.aspx', //上传图片地址
-    httppath: 'https://finisar.realsun.me:8082/upfiles', //上传图片路径
+      'http://wux-hr03/rispweb/rispservice/SvcUploadFile2.aspx',
+    // 'https://finisar.realsun.me:8082/rispweb/rispservice/SvcUploadFile2.aspx', //上传图片地址
+    httppath:
+      'http://wux-hr03/rispweb/upfiles',
+    // 'https://finisar.realsun.me:8082/upfiles', //上传图片路径
     getColumnsDefine: 'api/100/table/RetrieveColumnsDefine',
     getColumnsDefineArr: 'api/100/table/RetrieveColumnsDefineByArray',
     clearCache: 'api/100/table/ClearCache',
@@ -66,7 +69,7 @@ export const dataType = {
   DeleteMultiDataEM: 'DeleteMultiDataEM', // 删除多条数据
   AddMoreAndFixMore: 'AddMoreAndFixMore', //添加和修改多条数据
   EditOrAdd: 'EditOrAdd', //修改或添加一条数据
-  
+
   BeforeAddOneData: 'BeforeAddOneData', // 在添加数据之前
   BeforeFixOneData: 'BeforeFixOneData', // 在修改数据之前
 

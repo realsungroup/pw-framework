@@ -237,6 +237,7 @@ export default class ShVisitManager extends Component {
                 hasRowModify={false}
                 hasModify={false}
                 hasDelete={false}
+                recordFormUseAbsolute={true}
                 hasBeBtns={true}
                 subtractH={175}
                 hasRowView={true}
@@ -262,6 +263,7 @@ export default class ShVisitManager extends Component {
                 resid={'687823076582'}
                 hasRowView={false}
                 hasAdd={false}
+                recordFormUseAbsolute={true}
                 hasRowDelete={false}
                 hasRowModify={false}
                 hasModify={false}
@@ -293,6 +295,7 @@ export default class ShVisitManager extends Component {
                 hasAdd={false}
                 hasRowDelete={false}
                 hasRowModify={false}
+                recordFormUseAbsolute={true}
                 hasModify={false}
                 hasDelete={false}
                 subtractH={175}
@@ -377,6 +380,7 @@ export default class ShVisitManager extends Component {
                 hasModify={false}
                 hasDelete={true}
                 subtractH={175}
+                recordFormUseAbsolute={true}
                 hasBeBtns={true}
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
