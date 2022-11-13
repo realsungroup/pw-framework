@@ -40,10 +40,10 @@ window.pwConfig = {
     //各定制组件需用到的基地址
     customURLs: {
       mediaFieldBaseURL: 'http://wux-hr03',//生成文件到后台
-      personInfoDownloadURL: 'http://10.108.2.66:80/', //人事信息下载地址
+      personInfoDownloadURL: 'http://demo.ehr.web.realsun.me/', //人事信息下载地址
       resetKeyWordURL: 'http://demo.ehr.web.api.realsun.me/', //重置密码URL
       attendanceBaseURL: 'http://demo.ehr.web.api.realsun.me/', //考勤审批
-      attendanceDownloadURL: 'http://10.108.2.66:80', //考勤审批表格下载url
+      attendanceDownloadURL: 'http://demo.ehr.web.realsun.me', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.21.41:2001/',
@@ -63,17 +63,17 @@ window.pwConfig = {
       RBASchedulingBaseURL: 'http://10.108.21.41:2001', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.21.41:2000', //RBA排班下载基地址
       WuxiHr03BaseURL: 'http://demo.ehr.web.api.realsun.me/', //80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
+      WuxiHr03DownloadBaseURL: 'http://demo.ehr.web.realsun.me/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //在线培训数据查询
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //在线培训数据下载
       importTemplateDownloadURL:
-        'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
+        'http://demo.ehr.web.realsun.me/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
       importJobTemplateDownloadURL:
-        'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
+        'http://demo.ehr.web.realsun.me/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
       energyTable:
-        'http://10.108.2.66/rispweb/upfiles/施工能源需求表-临时.xlsx',
+        'http://demo.ehr.web.realsun.me/rispweb/upfiles/施工能源需求表-临时.xlsx',
       energyTableForever:
-        'http://10.108.2.66/rispweb/upfiles/施工能源需求表-永久.xlsx'
+        'http://demo.ehr.web.realsun.me/rispweb/upfiles/施工能源需求表-永久.xlsx'
     },
 
     // 绩效-我的评估表功能用到的子表
@@ -94,7 +94,7 @@ window.pwConfig = {
       mode: 'local',
       bucketname: 'realsun',
       url:
-        'http://demo.pwk.web.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles'
+        'http://demo.pwk.web.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://demo.ehr.web.realsun.me/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [
@@ -186,7 +186,7 @@ window.pwConfig = {
       mode: 'local', // 模式：'cloud' 云对象存储；'local' 本地存储
       bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
       url:
-        'http://demo.pwk.web.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+        'http://demo.pwk.web.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://demo.ehr.web.realsun.me/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
     },
 
     // 工作台配置
@@ -282,7 +282,7 @@ window.pwConfig = {
       mediaFieldBaseURL: 'http://wux-hr03',//生成文件到后台
       resetKeyWordURL: 'http://demo.ehr.web.api.realsun.me/',
       attendanceBaseURL: 'http://demo.ehr.web.api.realsun.me/', //考勤审批
-      attendanceDownloadURL: 'http://10.108.2.66:80/', //考勤审批表格下载url
+      attendanceDownloadURL: 'http://demo.ehr.web.realsun.me/', //考勤审批表格下载url
       DataProcessBaseURL: 'http://10.108.2.48:9091/',
       laowuURL: 'http://kingofdinner.realsun.me:9091/', //劳务公司打印
 
@@ -300,19 +300,19 @@ window.pwConfig = {
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
       AchievementsBaseURL: 'http://demo.pwk.web.api.realsun.me/',
       RBASchedulingBaseURL: 'http://demo.ehr.web.api.realsun.me', //RBA排班基地址
-      RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
+      RBASchedulingDownloadBaseURL: 'http://demo.ehr.web.realsun.me', //RBA排班下载基地址
       WuxiHr03BaseURL: 'http://demo.ehr.web.api.realsun.me/', //80端口非定制组件基地址
-      WuxiHr03DownloadBaseURL: 'http://10.108.2.66:80/', //80端口非定制组件下载基地址
+      WuxiHr03DownloadBaseURL: 'http://demo.ehr.web.realsun.me/', //80端口非定制组件下载基地址
       staffComBaseURL: 'http://kingofdinner.realsun.me:9091/', //员工沟通平台数据基地址
       staffComDownloadURL: 'http://kingofdinner.realsun.me:8081/', //员工沟通平台下载基地址
       importTemplateDownloadURL:
-        'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
+        'http://demo.ehr.web.realsun.me/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
       importJobTemplateDownloadURL:
-        'http://10.108.2.66/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
+        'http://demo.ehr.web.realsun.me/rispweb/upfiles/transtem.zip', //岗位任职导入模板下载链接
       energyTable:
-        'http://10.108.2.66/rispweb/upfiles/施工能源需求表-临时.xlsx',
+        'http://demo.ehr.web.realsun.me/rispweb/upfiles/施工能源需求表-临时.xlsx',
       energyTableForever:
-        'http://10.108.2.66/rispweb/upfiles/施工能源需求表-永久.xlsx'
+        'http://demo.ehr.web.realsun.me/rispweb/upfiles/施工能源需求表-永久.xlsx'
     },
     // 绩效-我的评估表功能用到的子表
     achievementSubResid: {
@@ -332,7 +332,7 @@ window.pwConfig = {
       mode: 'local',
       bucketname: 'realsun',
       url:
-        'http://demo.pwk.web.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles'
+        'http://demo.pwk.web.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://demo.ehr.web.realsun.me/rispweb/upfiles'
     },
     // 需前端缓存配置的资源
     tablesConfig: [
@@ -419,7 +419,7 @@ window.pwConfig = {
       mode: 'local', // 模式：'cloud' 云对象存储；'local' 本地存储
       bucketname: 'realsun', // 当 mode 为 'cloud' 时，云对象存储的空间名称
       url:
-        'http://demo.pwk.web.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://10.108.2.66/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
+        'http://demo.pwk.web.realsun.me/rispweb/rispservice/SvcUploadFile2.aspx?savepath=d:\\web\\rispweb\\upfiles&httppath=http://demo.ehr.web.realsun.me/rispweb/upfiles' // 当 mode 为 'cloud' 时，表示上传文件的基地址；当 'mode' 为 'local' 时，表示上传文件的地址
     },
 
     // 工作台配置

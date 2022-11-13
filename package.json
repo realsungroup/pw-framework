@@ -159,7 +159,8 @@
     "test": "node scripts/test.js",
     "run-build": "node --max_old_space_size=4000 scripts/build.js",
     "add-suffix": "node scripts/addSuffixToPublicJsFile.js",
-    "dll": "webpack -p --progress --config ./config/webpack.config.vendor.js"
+    "dll": "webpack -p --progress --config ./config/webpack.config.vendor.js",
+    "zip-build": "pw-compress-build zip build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -228,7 +229,8 @@
     "lint-staged": "^8.1.0",
     "prettier": "^1.16.1",
     "webpack-bundle-analyzer": "^3.0.3",
-    "webpack-cli": "^3.3.3"
+    "webpack-cli": "^3.3.3",
+    "pw-compress-build": "^1.0.0"
   },
   "dll": {
     "entry": {

@@ -3,7 +3,7 @@ import TableData from '../../common/data/TableData';
 import { Tabs } from 'antd';
 
 const { TabPane } = Tabs;
-const baseURL = 'http://10.108.2.66:9091/';
+const baseURL = 'http://demo.ehr.web.api.realsun.me/';
 
 class BUCODEInfo extends Component {
   constructor(props) {
