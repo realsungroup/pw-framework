@@ -59,11 +59,11 @@ class InternalTraining extends React.Component {
     this.getModifyFormData();
   }
   fetchCourse = async () => {
-    const { baseURL,isEnter } = this.props;
+    const { baseURL, isEnter } = this.props;
     try {
-      let obj={resid,cmswhere:`isnull(isIDLRenter,'') = ''`};
-      if(isEnter){
-        obj={ resid,cmswhere:`isIDLRenter = 'Y'` }
+      let obj = { resid, cmswhere: `isnull(isIDLRenter,'') = ''` };
+      if (isEnter) {
+        obj = { resid, cmswhere: `isIDLRenter = 'Y'` }
       }
       const res = await http({ baseURL }).getTable(obj);
       this.setState({ courses: res.data });
@@ -608,6 +608,8 @@ class InternalTraining extends React.Component {
             course={selectedCourse}
             baseURL={baseURL}
             chapter={chapter}
+            downloadBaseURL={downloadBaseURL}
+            detailMode={chapter.C3_636735464189 && (selectedCourse.C3_637000701958 === 'Y')}
           />
         </Modal>
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, message, Modal, Card, Row, Col, Rate ,Input} from 'antd';
+import { Button, message, Modal, Card, Row, Col, Rate, Input } from 'antd';
 import { TableData } from '../../common/loadableCommon';
 import http from 'Util20/api';
 
@@ -9,10 +9,10 @@ class ViewActions extends React.Component {
   state = {
     viewActionsVisible: false,
     selectedCourseArrangmentDetail: {},
-    baoxiaodan:false,
-    baoxiaodanData:[],
+    baoxiaodan: false,
+    baoxiaodanData: [],
     planView: [],
-    shijifeiyongData:'',
+    shijifeiyongData: '',
     // 内训评分
     rate: {
       rate1: null,
@@ -33,7 +33,7 @@ class ViewActions extends React.Component {
     },
     knowledge: [''],
     plans: [''],
-    viewAll:false
+    viewAll: false
   };
 
   //获取反馈与行动计划
@@ -63,13 +63,21 @@ class ViewActions extends React.Component {
       } else {
         const tempRate = { ...rate };
         tempRate.rate1 = res.data[0].C3_615639978971; //讲师备课充分
-        tempRate.rate2 = res.data[0].C3_615640010121; //我认为课程主题准确，结构清晰，内容充实
-        tempRate.rate3 = res.data[0].C3_615640043869; //所学的内容对实际工作有很大帮助
-        tempRate.rate4 = res.data[0].C3_615640107592; //讲师语言表达能力好,讲解清楚生动,运用肢体语言
-        tempRate.rate5 = res.data[0].C3_615640157603; // 讲师能够引入实际案例和例证,讲解透彻,激发学员思考
-        tempRate.rate6 = res.data[0].C3_615640180269; //我能够积极参与到课堂中去
-        tempRate.rate7 = res.data[0].C3_615640206802; //我的提问能够得到讲师认真,满意的答复
+        tempRate.rate2 = res.data[0].C3_615640010121; //本次培训的主题明确，逻辑清晰，内容充实，有针对性
+        tempRate.rate2_1 = res.data[0].C3_722076452880; //有合适的课前调研，并且调研结果与课程内容联系紧密
+        tempRate.rate2_2 = res.data[0].C3_722076492665; //课程时长设置合适，课程进度不紧迫不冗长
+        tempRate.rate3_1 = res.data[0].C3_722079578079; //培训师具有足够的专业知识和经验
+        tempRate.rate3_2 = res.data[0].C3_722079636630;//培训师备课充分，对授课内容非常熟悉，课件设计美观大方
+        tempRate.rate3 = res.data[0].C3_615640043869; //我所学到的内容对实际工作或个人发展有帮助
+        tempRate.rate4 = res.data[0].C3_615640107592; //培训师语言表达能力好，音量和语速适中，讲解清晰生动，能够运用肢体语言
+        tempRate.rate5 = res.data[0].C3_615640157603; // 培训师能够引入实际案例和例证，讲解透彻，激发学员思考
+        tempRate.rate6 = res.data[0].C3_615640180269; //培训师能设置提问，小组讨论等互动环节，使学员积极参与其中
+        tempRate.rate7 = res.data[0].C3_615640206802; //培训师能够及时，认真地回答学员提出的问题
         tempRate.rate8 = res.data[0].C3_615640235456; //时间控制合理使我感到舒适
+        tempRate.rate9 = res.data[0].C3_722087822472;//我对本次课程整体满意
+        tempRate.rate10 = res.data[0].C3_722087862632;//我愿意向朋友或同事推荐这门课程
+        tempRate.rate11 = res.data[0].C3_722087899198;//在培训过程中，培训组织者基于我足够的后勤支持
+        tempRate.rate12 = res.data[0].C3_722087926763;//培训场地设备设施完整无故障
         this.setState({
           rate: tempRate
         });
@@ -102,62 +110,62 @@ class ViewActions extends React.Component {
     }
   };
   // 获取实际费用
-  getFeiyong=async(id)=>{
-    this.setState({loading:true,feiyongID:id});
-    try{
-      let res= await http().getTable({
+  getFeiyong = async (id) => {
+    this.setState({ loading: true, feiyongID: id });
+    try {
+      let res = await http().getTable({
         resid: 613940032707,
         cmswhere: `CourseArrangeDetailID = '${id}'`
       });
-      console.log('shijifeiy',res)
-      if(res.data){
-        let shiji=res.data[0].C3_614962974343||0;
-        this.setState({shijifeiyongData:shiji});
+      console.log('shijifeiy', res)
+      if (res.data) {
+        let shiji = res.data[0].C3_614962974343 || 0;
+        this.setState({ shijifeiyongData: shiji });
       }
 
-    this.setState({loading:false});
-    }catch(e){
+      this.setState({ loading: false });
+    } catch (e) {
       console.log(e.message);
-    this.setState({loading:false});
+      this.setState({ loading: false });
       message.error(e.message)
     }
-}
-// 修改实际费用
-modiShijifeiyong=async()=>{
-  this.setState({loading:true});
-  try{
-    let res= await http().modifyRecords({
-      resid: 613940032707,
-      data:[{
-        REC_ID:this.state.feiyongID,
-        C3_614962974343:this.state.shijifeiyongData
-      }]
-    });
-  this.setState({loading:false,shijifeiyong:false});
-  message.success('修改成功！')
-  }catch(e){
-    console.log(e.message);
-  this.setState({loading:false});
-    message.error(e.message)
   }
-}
-
-//获取发票
-
-getFapiao = async(id)=>{
-  let res;
-  this.setState({loading:true});
-  try{
-    res =  await http().getTable({
-      resid:656586685332,
-      cmswhere:`recordId = '${id}'`
-    })
-  this.setState({loading:false,baoxiaodanData:res.data});
-  }catch(e){
-    message.error(e.message);
-    this.setState({loading:false})
+  // 修改实际费用
+  modiShijifeiyong = async () => {
+    this.setState({ loading: true });
+    try {
+      let res = await http().modifyRecords({
+        resid: 613940032707,
+        data: [{
+          REC_ID: this.state.feiyongID,
+          C3_614962974343: this.state.shijifeiyongData
+        }]
+      });
+      this.setState({ loading: false, shijifeiyong: false });
+      message.success('修改成功！')
+    } catch (e) {
+      console.log(e.message);
+      this.setState({ loading: false });
+      message.error(e.message)
+    }
   }
-}
+
+  //获取发票
+
+  getFapiao = async (id) => {
+    let res;
+    this.setState({ loading: true });
+    try {
+      res = await http().getTable({
+        resid: 656586685332,
+        cmswhere: `recordId = '${id}'`
+      })
+      this.setState({ loading: false, baoxiaodanData: res.data });
+    } catch (e) {
+      message.error(e.message);
+      this.setState({ loading: false })
+    }
+  }
 
   /**
    * 关闭模态窗
@@ -192,7 +200,7 @@ getFapiao = async(id)=>{
 
   render() {
     return (
-      <div style={{ flex: 1 ,height:'calc(100vh - 64px'}}>
+      <div style={{ flex: 1, height: 'calc(100vh - 64px' }}>
         <TableData
           resid={courseDetailId}
           hasAdd={false}
@@ -211,7 +219,7 @@ getFapiao = async(id)=>{
                 size='small'
                 type="primary"
                 onClick={() => {
-                  this.setState({viewAll:true});
+                  this.setState({ viewAll: true });
                 }}
               >
                 查看行动计划总览
@@ -221,44 +229,44 @@ getFapiao = async(id)=>{
             record => {
               return (
                 <>
-                <Button
-                  onClick={() => {
-                    this.setState(
-                      {
-                        viewActionsVisible: true,
-                        selectedCourseArrangmentDetail: record
-                      },
-                      this.getFeebackAndRate
-                    );
-                  }}
-                >
-                  查看
+                  <Button
+                    onClick={() => {
+                      this.setState(
+                        {
+                          viewActionsVisible: true,
+                          selectedCourseArrangmentDetail: record
+                        },
+                        this.getFeebackAndRate
+                      );
+                    }}
+                  >
+                    查看
                 </Button>
-                <Button
-                      onClick={
-                        ()=>{
-                          this.setState({
-                            baoxiaodanData:[],
-                            baoxiaodan:true
-                          });
-                          this.getFapiao(record.CourseArrangeDetailID);
-                        }
+                  <Button
+                    onClick={
+                      () => {
+                        this.setState({
+                          baoxiaodanData: [],
+                          baoxiaodan: true
+                        });
+                        this.getFapiao(record.CourseArrangeDetailID);
                       }
-                    >
-                      查看报销发票
+                    }
+                  >
+                    查看报销发票
                     </Button>
-                    <Button
-                      onClick={
-                        ()=>{
-                          this.getFeiyong(record.REC_ID);
-                          this.setState({
-                            shijifeiyongData:'',
-                            shijifeiyong:true
-                          })
-                        }
+                  <Button
+                    onClick={
+                      () => {
+                        this.getFeiyong(record.REC_ID);
+                        this.setState({
+                          shijifeiyongData: '',
+                          shijifeiyong: true
+                        })
                       }
-                    >
-                      修改实际费用
+                    }
+                  >
+                    修改实际费用
                     </Button>
                 </>
               );
@@ -266,72 +274,72 @@ getFapiao = async(id)=>{
           ]}
         />
         <Modal
-         title="修改实际费用"
-         visible={this.state.viewAll}
-         footer={null}
-         width="80vw"
-         destroyOnClose
+          title="修改实际费用"
+          visible={this.state.viewAll}
+          footer={null}
+          width="80vw"
+          destroyOnClose
           onCancel={
-           ()=>{
-             this.setState({viewAll:false})
-           }
-         }
+            () => {
+              this.setState({ viewAll: false })
+            }
+          }
         >
           <div className='viewAll'>
-          <TableData
-            resid={615571557694}
-            hasAdd={false}
-            hasRowView={true}
-            hasModify={false}
-            hasDelete={false}
-            hasRowSelection={true}
-            hasRowDelete={false}
-            hasRowModify={false}
-            subtractH={300}
+            <TableData
+              resid={615571557694}
+              hasAdd={false}
+              hasRowView={true}
+              hasModify={false}
+              hasDelete={false}
+              hasRowSelection={true}
+              hasRowDelete={false}
+              hasRowModify={false}
+              subtractH={300}
             />
           </div>
         </Modal>
         <Modal
-         title="修改实际费用"
-         visible={this.state.shijifeiyong}
-         footer={
-           <>
-            <Button onClick={()=>{this.setState({shijifeiyong:false})}}>
-               取消
+          title="修改实际费用"
+          visible={this.state.shijifeiyong}
+          footer={
+            <>
+              <Button onClick={() => { this.setState({ shijifeiyong: false }) }}>
+                取消
               </Button>
-             <Button type='primary' onClick={()=>{this.modiShijifeiyong()}} loading={this.state.loading}>
-               确定
+              <Button type='primary' onClick={() => { this.modiShijifeiyong() }} loading={this.state.loading}>
+                确定
               </Button>
             </>
-         }
-         
-         width="400px"
-         destroyOnClose
+          }
+
+          width="400px"
+          destroyOnClose
           onCancel={
-           ()=>{
-             this.setState({shijifeiyong:false})
-           }
-         }
+            () => {
+              this.setState({ shijifeiyong: false })
+            }
+          }
         >
           <span>实际费用：</span>
-          <Input style={{marginTop:'.5rem'}} value={this.state.shijifeiyongData} onChange={(v)=>{this.setState({shijifeiyongData:v.target.value})}} disabled={this.state.loading}/>
-          
+          <Input style={{ marginTop: '.5rem' }} value={this.state.shijifeiyongData} onChange={(v) => { this.setState({ shijifeiyongData: v.target.value }) }} disabled={this.state.loading} />
+
         </Modal>
         <Modal
-         title="查看报销发票"
-         visible={this.state.baoxiaodan}
-         footer={null}
-         width="400px"
-         destroyOnClose
-         onCancel={
-           ()=>{
-             this.setState({baoxiaodan:false})
-           }
-         }
+          title="查看报销发票"
+          visible={this.state.baoxiaodan}
+          footer={null}
+          width="400px"
+          destroyOnClose
+          onCancel={
+            () => {
+              this.setState({ baoxiaodan: false })
+            }
+          }
         >
           <ul>
-            {this.state.baoxiaodanData.map((item,key)=>{
-              return(
+            {this.state.baoxiaodanData.map((item, key) => {
+              return (
                 <li>
                   <a target="_blank" href={item.filePath} key={key}>{item.fileName}</a>
                 </li>

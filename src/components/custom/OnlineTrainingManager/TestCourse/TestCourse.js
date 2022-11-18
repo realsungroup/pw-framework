@@ -603,7 +603,9 @@ class TestCourse extends React.Component {
           <CourseCompletion
             course={selectedCourse}
             baseURL={baseURL}
+            downloadBaseURL={downloadBaseURL}
             chapter={chapter}
+            detailMode={chapter.C3_636735464189 && (selectedCourse.C3_637000701958 != 'Y')}
           />
         </Modal>
       </div>

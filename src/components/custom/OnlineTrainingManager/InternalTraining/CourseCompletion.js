@@ -152,8 +152,8 @@ class CourseCompletion extends React.Component {
   };
   render() {
     const { dataSource, loading } = this.state;
-    const { chapter, baseURL, course, downloadBaseURL } = this.props;
-    return chapter.C3_636735464189 ? (
+    const { detailMode, baseURL, course, downloadBaseURL } = this.props;
+    return detailMode ? (
       <div>
         <Button
           size="small"
@@ -175,22 +175,22 @@ class CourseCompletion extends React.Component {
         />
       </div>
     ) : (
-      <TableData
-        resid={640021774020}
-        downloadBaseURL={downloadBaseURL}
-        baseURL={baseURL}
-        recordFormFormWidth="90%"
-        hasBeBtns={false}
-        hasModify={false}
-        hasDelete={false}
-        hasAdd={false}
-        hasRowDelete={false}
-        hasRowModify={false}
-        hasRowView={false}
-        subtractH={200}
-        cmswhere={`courseId = '${course.REC_ID}'`}
-      />
-    );
+        <TableData
+          resid={640021774020}
+          downloadBaseURL={downloadBaseURL}
+          baseURL={baseURL}
+          recordFormFormWidth="90%"
+          hasBeBtns={false}
+          hasModify={false}
+          hasDelete={false}
+          hasAdd={false}
+          hasRowDelete={false}
+          hasRowModify={false}
+          hasRowView={false}
+          subtractH={200}
+          cmswhere={`courseId = '${course.REC_ID}'`}
+        />
+      );
   }
 }
 
