@@ -335,7 +335,7 @@ class ViewFeedBack extends React.Component {
                 </div>
               </div>) : null}
           </Card>
-          }
+
           {this.state.selectedCourseArrangmentDetail.courseType ===
             '内训' ? null : (
               <>
