@@ -61,7 +61,7 @@ const CourseInfo = function (props) {
           <span className="course-info_label">课时:</span>
           {course.C3_613941385843}
         </Col>
-        <Col md={12} style={{ display: 'flex', alignItems: 'center' }}>
+        {/* <Col md={12} style={{ display: 'flex', alignItems: 'center' }}>
           <span className="course-info_label" style={{ flexShrink: 0 }}>
             附加费用:
           </span>
@@ -76,7 +76,7 @@ const CourseInfo = function (props) {
                 }}
               />
             )}
-        </Col>
+        </Col> */}
         {/* <Col md={12}>
           <span className="course-info_label">地点:</span>
           {course.C3_613941386325}
