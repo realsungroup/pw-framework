@@ -120,7 +120,7 @@ window.pwConfig = {
     ],
 
     // 登录页配置
-    canChangeLogin: false,
+    canChangeLogin: true,
     defaultLoginMode: 'domain', // 进入登录页时的默认登录方式（localStorage 里保存的登录方式会覆盖该配置）：'normal' 普通登录 | 'domain' 域登录
     domainLoginConfig: {
       // 预登录配置

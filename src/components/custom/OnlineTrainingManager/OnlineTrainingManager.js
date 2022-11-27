@@ -129,6 +129,38 @@ class OnlineTrainingManager extends React.Component {
             downloadBaseURL={baseURLDownload}
           />
         </TabPane>
+        <TabPane tab="DL入职培训统计" key="9">
+          <TableData
+            resid="637950044474"
+            subtractH={220}
+            hasRowView={false}
+            hasRowDelete={false}
+            hasModify={true}
+            hasDelete={true}
+            hasAdd={true}
+            baseURL={baseURL}
+            advSearch={{
+              formName: 'defaultSearch'
+            }}
+            downloadBaseURL={baseURLDownload}
+          />
+        </TabPane>
+        <TabPane tab="IDL入职培训统计" key="10">
+          <TableData
+            resid="722868900449"
+            subtractH={220}
+            hasRowView={false}
+            hasRowDelete={false}
+            hasModify={true}
+            hasDelete={true}
+            hasAdd={true}
+            baseURL={baseURL}
+            advSearch={{
+              formName: 'defaultSearch'
+            }}
+            downloadBaseURL={baseURLDownload}
+          />
+        </TabPane>
       </Tabs>
     );
   }
