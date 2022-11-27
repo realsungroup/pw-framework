@@ -803,7 +803,7 @@ class EmployeeCourses extends React.Component {
               C3_615640235456: rate.rate8, //时间控制合理使我感到舒适
               C3_722087822472: rate.rate9,//我对本次课程整体满意
               C3_722087862632: rate.rate10,//我愿意向朋友或同事推荐这门课程
-              C3_722087899198: rate.rate11,//在培训过程中，培训组织者基于我足够的后勤支持
+              C3_722087899198: rate.rate11,//在培训过程中，培训组织者给予我足够的后勤支持
               C3_722087926763: rate.rate12,//培训场地设备设施完整无故障
             }
           ],
@@ -854,7 +854,7 @@ class EmployeeCourses extends React.Component {
                 C3_615640235456: rate.rate8, //时间控制合理使我感到舒适
                 C3_722087822472: rate.rate9,//我对本次课程整体满意
                 C3_722087862632: rate.rate10,//我愿意向朋友或同事推荐这门课程
-                C3_722087899198: rate.rate11,//在培训过程中，培训组织者基于我足够的后勤支持
+                C3_722087899198: rate.rate11,//在培训过程中，培训组织者给予我足够的后勤支持
                 C3_722087926763: rate.rate12,//培训场地设备设施完整无故障
                 C3_622216706104: internalTrainingOtherAdvice.advantages,
                 C3_622216725340: internalTrainingOtherAdvice.shortcommings

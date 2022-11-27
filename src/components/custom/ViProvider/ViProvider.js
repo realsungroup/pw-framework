@@ -60,6 +60,8 @@ export default class ViProvider extends React.Component {
       C3_605719340781: moment().add(3, 'month'),
       C3_605718146773: '非管控区',
       C3_605718133807: '送货人员',
+      C3_605718056102: '',
+      C3_612524907635: '',
       showGoodsInfo: false,
       goodsInfo: []
     };
@@ -67,9 +69,9 @@ export default class ViProvider extends React.Component {
     this.inApplicationRef = React.createRef();
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => { };
 
   handleTabsChange = activeKey => {
     this.setState({ activeKey });
@@ -170,6 +172,8 @@ export default class ViProvider extends React.Component {
           C3_605719340594: this.state.C3_605719340594,
           C3_605719340781: this.state.C3_605719340781,
           C3_605718146773: this.state.C3_605718146773,
+          C3_612524907635: this.state.C3_612524907635,
+          C3_605718056102: this.state.C3_605718056102,
           C3_605719340947: this.state.C3_605719340947, //工号
           C3_605719341114: this.state.C3_605719341114, //姓名
           C3_612024366364: this.state.C3_612024366364, //编号
@@ -240,7 +244,7 @@ export default class ViProvider extends React.Component {
                 recordFormUseAbsolute={true}
                 {...inExaminationAndApproval}
                 addText="施工与访客长期备案"
-                actionBarExtra={({}) => {
+                actionBarExtra={({ }) => {
                   return (
                     <Button
                       onClick={() => {
@@ -421,10 +425,10 @@ export default class ViProvider extends React.Component {
                             style={
                               this.state.C3_605719341114
                                 ? {
-                                    color: '#999',
-                                    fontSize: '14px',
-                                    cursor: 'pointer'
-                                  }
+                                  color: '#999',
+                                  fontSize: '14px',
+                                  cursor: 'pointer'
+                                }
                                 : { fontSize: '14px', cursor: 'pointer' }
                             }
                             onClick={() => {
@@ -437,6 +441,35 @@ export default class ViProvider extends React.Component {
                           </div>
                         </th>
                       </tr>
+                      <tr>
+                        <th colSpan="1">
+                          <label>访客单位</label>
+                        </th>
+                        <th colSpan="5">
+                          <Input
+                            defaultValue={this.state.C3_605718056102}
+                            onChange={v => {
+                              this.setState({
+                                C3_605718056102: v.target.value
+                              });
+                            }}
+                          />
+                        </th>
+                        <th colSpan="1">
+                          <label>访客事由</label>
+                        </th>
+                        <th colSpan="5">
+                          <Input
+                            defaultValue={this.state.C3_612524907635}
+                            onChange={v => {
+                              this.setState({
+                                C3_612524907635: v.target.value
+                              });
+                            }}
+                          />
+                        </th>
+                      </tr>
+
 
                       {/* 进出口提送货人员清单 */}
                       <tr>
