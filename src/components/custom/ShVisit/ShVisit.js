@@ -25,6 +25,10 @@ const fileKeys = [
   ['fileUrlC', 'fileUrl2C', 'fileUrl3C'],
   ['fileUrlD', 'fileUrl2D', 'fileUrl3D'],
   ['fileUrlE', 'fileUrl2E', 'fileUrl3E'],
+  ['fileUrlF', 'fileUrl2F', 'fileUrl3F'],
+  ['fileUrlG', 'fileUrl2G', 'fileUrl3G'],
+  ['fileUrlH', 'fileUrl2H', 'fileUrl3H'],
+  ['fileUrlI', 'fileUrl2I', 'fileUrl3I'],
 ]
 const labels = [
   [
@@ -277,6 +281,26 @@ export default class ShVisit extends Component {
           'C3_687803821849'
         ]
       }
+      ,
+      {
+        show: false,
+        children: [
+          'C3_723491242831',
+          'C3_723491256801',
+          'C3_723491279911',
+          'C3_723491300866'
+        ]
+      }
+      ,
+      {
+        show: false,
+        children: [
+          'C3_723491316898',
+          'C3_723491330899',
+          'C3_723491345478',
+          'C3_723491357354'
+        ]
+      }
     ],
     memberCounter: 1,
     memberInfo: [
@@ -303,6 +327,22 @@ export default class ShVisit extends Component {
       {
         show: false,
         children: ['C3_687637209876', 'C3_687637210345', 'C3_687637210548']
+      },
+      {
+        show: false,
+        children: ['C3_723490407911', 'C3_723490415068', 'C3_723490434460']
+      },
+      {
+        show: false,
+        children: ['C3_723490464025', 'C3_723490477291', 'C3_723490492042']
+      },
+      {
+        show: false,
+        children: ['C3_723490501684', 'C3_723490513263', 'C3_723490523420']
+      },
+      {
+        show: false,
+        children: ['C3_723490533389', 'C3_723490543218', 'C3_723490552391']
       }
     ]
   };
@@ -439,6 +479,26 @@ export default class ShVisit extends Component {
             'C3_687803821849'
           ]
         }
+        ,
+        {
+          show: false,
+          children: [
+            'C3_723491242831',
+            'C3_723491256801',
+            'C3_723491279911',
+            'C3_723491300866'
+          ]
+        }
+        ,
+        {
+          show: false,
+          children: [
+            'C3_723491316898',
+            'C3_723491330899',
+            'C3_723491345478',
+            'C3_723491357354'
+          ]
+        }
       ],
       memberCounter: 1,
       memberInfo: [
@@ -465,6 +525,22 @@ export default class ShVisit extends Component {
         {
           show: false,
           children: ['C3_687637209876', 'C3_687637210345', 'C3_687637210548']
+        },
+        {
+          show: false,
+          children: ['C3_723490407911', 'C3_723490415068', 'C3_723490434460']
+        },
+        {
+          show: false,
+          children: ['C3_723490464025', 'C3_723490477291', 'C3_723490492042']
+        },
+        {
+          show: false,
+          children: ['C3_723490501684', 'C3_723490513263', 'C3_723490523420']
+        },
+        {
+          show: false,
+          children: ['C3_723490533389', 'C3_723490543218', 'C3_723490552391']
         }
       ]
     });
@@ -518,7 +594,7 @@ export default class ShVisit extends Component {
       arr = this.state.memberInfo;
     }
     arr[c].show = true;
-    c++;
+    c = Number(c) + 1;
     if (brid == 'member') {
       this.setState({ memberInfo: arr, memberCounter: c });
     } else {
@@ -706,6 +782,10 @@ export default class ShVisit extends Component {
       'C3_687803816333',
       'C3_687803821583',
       'C3_687803821849',
+      'C3_723491279911',
+      'C3_723491300866',
+      'C3_723491345478',
+      'C3_723491357354'
     ];
     this.setState({ REC_ID: o.REC_ID });
     while (n < keys.length) {
@@ -724,6 +804,7 @@ export default class ShVisit extends Component {
     }
     let hotelInfo = this.state.hotelInfo;
     let hotelCounter = o.hotelCounter - 1;
+    console.log('counter', hotelCounter)
     while (hotelCounter >= 0) {
       hotelInfo[hotelCounter].show = true;
       hotelCounter--;
@@ -1088,7 +1169,7 @@ export default class ShVisit extends Component {
                     <div className="buttonLine">
                       <Button
                         size="small"
-                        disabled={this.state.hotelCounter > 7}
+                        disabled={this.state.hotelCounter > 9}
                         onClick={() => {
                           this.addHotelInfo();
                         }}
@@ -1200,7 +1281,7 @@ export default class ShVisit extends Component {
                 <label>来访人员：</label>
                 <Button
                   size="small"
-                  disabled={this.state.memberCounter > 5}
+                  disabled={this.state.memberCounter > 9}
                   onClick={() => {
                     this.addHotelInfo('member');
                   }}

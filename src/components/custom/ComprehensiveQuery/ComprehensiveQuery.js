@@ -150,7 +150,7 @@ class ComprehensiveQuery extends React.Component {
             resid="609599795438"
             ColumnOfID="C3_305737857578"
             ColumnOfPID="C3_417993417686"
-            ProductIDs={this.UserCode}
+            ProductIDs={this.UserCode === '42346' ? this.UserCode : '12345'}
             autoExpandParent="true"
             nameOfID="C3_227192484125"
             locationOfID="C3_423229407315"
