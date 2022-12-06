@@ -170,7 +170,7 @@ class WorkInfo extends React.Component {
               <div style={{ height: 'calc(100% - 28px)' }}>
                 {currentNav === 'monthDetail' && (
                   <TableData
-                    resid="460481857607"
+                    resid="723568595369"
                     subtractH={180}
                     // tableComponent="ag-grid"
                     // rowSelectionAg="single"
@@ -213,34 +213,34 @@ class WorkInfo extends React.Component {
                       },
                       showTiaoXiuDetail
                         ? (record, btnSize) => {
-                            return (
-                              <Button
-                                size="small"
-                                onClick={this.openModal('tiaoxiu', record)}
-                              >
-                                调休明细
-                              </Button>
-                            );
-                          }
+                          return (
+                            <Button
+                              size="small"
+                              onClick={this.openModal('tiaoxiu', record)}
+                            >
+                              调休明细
+                            </Button>
+                          );
+                        }
                         : null,
                       showAnnualLeaveDetail
                         ? (record, btnSize) => {
-                            return (
-                              <Button
-                                size="small"
-                                onClick={this.openModal('year', record)}
-                              >
-                                年假明细
-                              </Button>
-                            );
-                          }
+                          return (
+                            <Button
+                              size="small"
+                              onClick={this.openModal('year', record)}
+                            >
+                              年假明细
+                            </Button>
+                          );
+                        }
                         : null
                     ]}
                   />
                 )}
                 {currentNav === 'dayDetail' && (
                   <TableData
-                    resid="623959817782"
+                    resid="723570278896"
                     size="small"
                     subtractH={180}
                     hasAdvSearch={false}

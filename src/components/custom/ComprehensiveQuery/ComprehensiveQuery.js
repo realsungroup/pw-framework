@@ -117,12 +117,12 @@ class ComprehensiveQuery extends React.Component {
             >
               {showRenshi && <TabPane tab="人事信息" key="personnel"></TabPane>}
               <TabPane tab="考勤查询" key="attendance"></TabPane>
-              {showJixiao && (
+              {/* {showJixiao && (
                 <TabPane tab="绩效查询" key="performance"></TabPane>
               )}
               {showPingji && (
                 <TabPane tab="评级评优查询" key="rating"></TabPane>
-              )}
+              )} */}
               {showChaoshi && (
                 <TabPane tab="下属工时统计" key="statistics"></TabPane>
               )}
@@ -150,13 +150,14 @@ class ComprehensiveQuery extends React.Component {
             resid="609599795438"
             ColumnOfID="C3_305737857578"
             ColumnOfPID="C3_417993417686"
-            ProductIDs={this.UserCode === '42346' ? this.UserCode : '12345'}
+            ProductIDs={this.props.isManager ? '12345' : this.UserCode}
             autoExpandParent="true"
             nameOfID="C3_227192484125"
             locationOfID="C3_423229407315"
             nameEnOfID="C3_227192496109"
             onSelect={this.setSelect}
             onShrinkChange={this.setShrink}
+            isManager={this.props.isManager}
           />
         </div>
       </div>

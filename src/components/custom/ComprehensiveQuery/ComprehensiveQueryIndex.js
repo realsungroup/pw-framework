@@ -35,13 +35,13 @@ class ComprehensiveQueryIndex extends React.Component {
         >
           <Meta title="考勤查询" description="查询员工的考勤情况" />
         </Card>
-        <Card
+        {/* <Card
           hoverable
           cover={<img alt="example" src={img5} />}
           onClick={this.setTab('rating')}
         >
           <Meta title="评级评优查询" description="查看员工的评级评优情况" />
-        </Card>
+        </Card> */}
         {process.env.NODE_ENV === 'development' && (
           <>
             <Card
@@ -87,8 +87,8 @@ class ComprehensiveQueryIndex extends React.Component {
         {target ? (
           <ComprehensiveQuery tabKey={target} goBack={this.goBack} />
         ) : (
-          this.renderCards()
-        )}
+            this.renderCards()
+          )}
       </div>
     );
   }

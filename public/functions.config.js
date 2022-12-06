@@ -10506,3 +10506,17 @@ window[690562274466] = {
     refusedResid: '719239611494',
   }
 };
+window[723578280726] = {
+  name: 'ComprehensiveQuery',
+  title: '管理员查询人事信息',
+  props: {
+    tabKey: 'personnel',
+    showTiaoXiuDetail: false, //是否显示调休明细
+    showRenshi: true, //是否显示人事信息
+    showJixiao: true, //是否显示绩效信息
+    showPingji: true, //是否显示评级评优信息
+    showChaoshi: false, //是否显示超时工时统计
+    showAnnualLeaveDetail: false, //是否显示年假明细
+    isManager: true
+  }
+};
