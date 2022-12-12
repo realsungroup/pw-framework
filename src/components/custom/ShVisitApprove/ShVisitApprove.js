@@ -81,9 +81,9 @@ export default class ShVisitApprove extends Component {
               <td>
                 访客绿码
                   </td>
-              <td>
+              {/* <td>
                 行动轨迹
-                  </td>
+                  </td> */}
             </tr>
             {
               this.state.fileArr.map(
@@ -101,10 +101,10 @@ export default class ShVisitApprove extends Component {
                         <a target='
                             _blank' href={item.fileUrl2}>{item.fileUrl2}</a>
                       </td>
-                      <td>
+                      {/* <td>
                         <a target='
                             _blank' href={item.fileUrl3}>{item.fileUrl3}</a>
-                      </td>
+                      </td> */}
                     </tr>
                   )
                 }
