@@ -170,7 +170,7 @@ class WorkInfo extends React.Component {
               <div style={{ height: 'calc(100% - 28px)' }}>
                 {currentNav === 'monthDetail' && (
                   <TableData
-                    resid="723568595369"
+                    resid="460481857607"
                     subtractH={180}
                     // tableComponent="ag-grid"
                     // rowSelectionAg="single"
@@ -240,7 +240,7 @@ class WorkInfo extends React.Component {
                 )}
                 {currentNav === 'dayDetail' && (
                   <TableData
-                    resid="723570278896"
+                    resid="623959817782"
                     size="small"
                     subtractH={180}
                     hasAdvSearch={false}
