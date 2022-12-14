@@ -395,11 +395,11 @@ class PersonInfoInFile extends React.Component {
 
       }
       // 是否有亲属
-      if (obj.C3_464175890357 == 0) {
-        this.setState({ hasRelated: false });
+      if ((obj.C3_464276899657) || (obj.C3_464277095370)) {
+        this.setState({ hasRelated: true });
 
       } else {
-        this.setState({ hasRelated: true });
+        this.setState({ hasRelated: false });
 
       }
       // 已提交个人不可编辑
@@ -962,7 +962,7 @@ class PersonInfoInFile extends React.Component {
             </div>
 
             <div style={{ marginTop: '4px', marginBottom: '4px' }}>
-              <span style={{ marginLeft: '4px' }}>3.是否有亲属在本公司任职：<input style={this.state.edit ? { marginRight: '4px' } : { display: 'none' }} className='toHide' type='checkbox' value={this.state.hasRelated} onChange={() => {
+              <span style={{ marginLeft: '4px' }}>3.是否有亲属在本公司任职：<input style={this.state.edit ? { marginRight: '4px' } : { display: 'none' }} className='toHide' type='checkbox' checked={this.state.hasRelated} onChange={() => {
                 var v = !this.state.hasRelated;
                 v = v ? 1 : 0;
                 this.setState({
