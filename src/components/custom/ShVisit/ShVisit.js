@@ -19,16 +19,16 @@ import moment from 'moment';
 const { Option } = Select;
 const forbidMin = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
 const fileKeys = [
-  ['fileUrl', 'fileUrl2',],
-  ['fileUrlA', 'fileUrl2A'],
-  ['fileUrlB', 'fileUrl2B'],
-  ['fileUrlC', 'fileUrl2C'],
-  ['fileUrlD', 'fileUrl2D'],
-  ['fileUrlE', 'fileUrl2E'],
-  ['fileUrlF', 'fileUrl2F'],
-  ['fileUrlG', 'fileUrl2G'],
-  ['fileUrlH', 'fileUrl2H'],
-  ['fileUrlI', 'fileUrl2I'],
+  ['fileUrl'],
+  ['fileUrlA'],
+  ['fileUrlB'],
+  ['fileUrlC'],
+  ['fileUrlD'],
+  ['fileUrlE'],
+  ['fileUrlF'],
+  ['fileUrlG'],
+  ['fileUrlH'],
+  ['fileUrlI'],
 ]
 const labels = [
   [
@@ -648,10 +648,11 @@ export default class ShVisit extends Component {
           if (!this.state[fileKeys[i][0]]) {
             message.error('请填写第' + (i + 1) + '人的来访人员信息表');
             return false
-          } else if (!this.state[fileKeys[i][1]]) {
-            message.error('请填写第' + (i + 1) + '人的访客绿码');
-            return false
           }
+          // else if (!this.state[fileKeys[i][1]]) {
+          //   message.error('请填写第' + (i + 1) + '人的访客绿码');
+          //   return false
+          // }
           // else if (!this.state[fileKeys[i][2]]) {
           //   message.error('请填写第' + (i + 1) + '人的行动轨迹');
           //   return false
@@ -1356,7 +1357,7 @@ export default class ShVisit extends Component {
                     <table className='files'>
                       <tr>
                         <td>来访人员信息表</td>
-                        <td>访客绿码</td>
+                        {/* <td>访客绿码</td> */}
                         {/* <td>行动轨迹</td> */}
                       </tr>
                       {

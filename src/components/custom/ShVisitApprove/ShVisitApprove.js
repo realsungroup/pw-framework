@@ -52,6 +52,26 @@ export default class ShVisitApprove extends Component {
         fileUrl: record.fileUrlE,
         fileUrl2: record.fileUrl2E,
         fileUrl3: record.fileUrl3E,
+      },
+      {
+        fileUrl: record.fileUrlF,
+        fileUrl2: record.fileUrl2F,
+        fileUrl3: record.fileUrl3F,
+      },
+      {
+        fileUrl: record.fileUrlG,
+        fileUrl2: record.fileUrl2G,
+        fileUrl3: record.fileUrl3G,
+      },
+      {
+        fileUrl: record.fileUrlH,
+        fileUrl2: record.fileUrl2H,
+        fileUrl3: record.fileUrl3H,
+      },
+      {
+        fileUrl: record.fileUrlI,
+        fileUrl2: record.fileUrl2I,
+        fileUrl3: record.fileUrl3I,
       }
     ]
     this.setState({
@@ -78,9 +98,9 @@ export default class ShVisitApprove extends Component {
               <td>
                 来访人员表
                   </td>
-              <td>
+              {/* <td>
                 访客绿码
-                  </td>
+                  </td> */}
               {/* <td>
                 行动轨迹
                   </td> */}
@@ -97,10 +117,10 @@ export default class ShVisitApprove extends Component {
                         <a target='
                             _blank' href={item.fileUrl}>{item.fileUrl}</a>
                       </td>
-                      <td>
+                      {/* <td>
                         <a target='
                             _blank' href={item.fileUrl2}>{item.fileUrl2}</a>
-                      </td>
+                      </td> */}
                       {/* <td>
                         <a target='
                             _blank' href={item.fileUrl3}>{item.fileUrl3}</a>

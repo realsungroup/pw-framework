@@ -37,7 +37,7 @@ class AnnualLeaveQuery extends React.Component {
       snsy: null, //抬头上的信息
       djfp: null, //抬头上的信息
       snjysy: null,
-      babyLeave:0
+      babyLeave: 0
     };
   }
 
@@ -380,15 +380,15 @@ class Summary extends React.PureComponent {
       message.error(error.message);
     }
   };
-  fetchBabyLeaves = async (numID)=>{
+  fetchBabyLeaves = async (numID) => {
     const { baseURL } = this.props;
-    try{
+    try {
       let res = await http({ baseURL }).getTable({
         resid: '711552481439',
         cmswhere: `C3_711551584185 = ${numID}`
       });
-      this.setState({babyLeave:res.data[0].C3_711551815156});
-    }catch(e){
+      this.setState({ babyLeave: res.data[0].C3_711551815156 });
+    } catch (e) {
       console.log(e.message);
       message.error(e.message);
     }
@@ -570,7 +570,7 @@ class Summary extends React.PureComponent {
     toExcel.saveExcel();
   };
 
-  getCmswhere = function(year, quarter) {
+  getCmswhere = function (year, quarter) {
     switch (quarter) {
       case 1:
         return `C3_375984964421 = '${year}01' or C3_375984964421 = '${year}02' or C3_375984964421 = '${year}03'`;
@@ -646,6 +646,7 @@ class Summary extends React.PureComponent {
                   <span style={{ marginRight: '2vw' }}>
                     上年结转年假<b>{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</b>
                   </span>
+                  <span style={{ marginLeft: 8, color: '#f5222d', textDecoration: 'underline' }}>(无锡员工的此项已经包含2023年Q1提前释放的年假)</span>
                 </div>
                 <div>
                   <span style={{ marginRight: '2vw' }}>
@@ -691,12 +692,12 @@ class Summary extends React.PureComponent {
               </TabPane>
               <TabPane tab="育儿假" key="2">
                 <div>
-                        <span>当年可用育儿假</span>
-                        <b>{this.state.babyLeave?this.state.babyLeave:0}天</b>
+                  <span>当年可用育儿假</span>
+                  <b>{this.state.babyLeave ? this.state.babyLeave : 0}天</b>
                 </div>
               </TabPane>
             </Tabs>
-            
+
           </div>
           {/* 
           <div className="collapseStyle">
@@ -851,7 +852,7 @@ class Detail extends React.PureComponent {
               if (dateString[0] && dateString[1]) {
                 cmswhere = ` and startBreak >= '${
                   dateString[0]
-                }' and startBreak <= '${dateString[1]}'`;
+                  }' and startBreak <= '${dateString[1]}'`;
               } else {
                 cmswhere = '';
               }
