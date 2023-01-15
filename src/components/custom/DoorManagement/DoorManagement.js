@@ -188,8 +188,9 @@ class DoorManagement extends React.Component {
       let bol = false;
       while (c < cyArr.length) {
         if (
-          lyArr[n].C3_595166604634 === cyArr[c].C3_595166604634 &&
-          lyArr[n].C3_595166751093 === cyArr[c].C3_595166751093
+          (lyArr[n].C3_595166604634 === cyArr[c].C3_595166604634 &&
+            lyArr[n].C3_595166751093 === cyArr[c].C3_595166751093) ||
+          cyArr[c].C3_727094761747 === 'Y'
         ) {
           bol = true;
           same.push(cyArr[c]);
@@ -203,7 +204,8 @@ class DoorManagement extends React.Component {
       }
       if (!bol) {
         minus.push(lyArr[n]);
-        if (lyArr[n].C3_595192402751 === 'Y') {
+        if (lyArr[n].C3_595192402751 === 'Y' &&
+          cyArr[c].C3_727094761747 != 'Y') {
           minusY.push(lyArr[n]);
         } else {
           minusN.push(lyArr[n]);
@@ -223,7 +225,8 @@ class DoorManagement extends React.Component {
       while (c < lyArr.length) {
         if (
           lyArr[c].C3_595166604634 === cyArr[n].C3_595166604634 &&
-          lyArr[c].C3_595166751093 === cyArr[n].C3_595166751093
+          lyArr[c].C3_595166751093 === cyArr[n].C3_595166751093 &&
+          cyArr[c].C3_727094761747 != 'Y'
         ) {
           bol = true;
         }
