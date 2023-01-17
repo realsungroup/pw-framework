@@ -1001,8 +1001,8 @@ class IDLTransfer extends Component {
                                   resid={632327119162}
                                   cmswhere={
                                     this.state.companyV == '100'
-                                      ? `C3_419339113187 != '' and C3_419448436728 = '菲尼萨光电通讯科技(无锡)有限公司'`
-                                      : `C3_419339113187 != '' and C3_419448436728 = '菲尼萨光电通讯(上海)有限公司'`
+                                      ? `C3_419448436728 = '菲尼萨光电通讯科技(无锡)有限公司'`
+                                      : `C3_419448436728 = '菲尼萨光电通讯(上海)有限公司'`
                                   }
                                   hasRowView={false}
                                   subtractH={220}
@@ -1988,7 +1988,7 @@ class IDLTransfer extends Component {
                                   hasDownload={false}
                                   resid={632327119162}
                                   actionBarWidth={80}
-                                  cmswhere={`C3_419339113187 != '' and C3_419448436728 = '${this.state.depaFilter}'`}
+                                  cmswhere={`C3_419448436728 = '${this.state.depaFilter}'`}
                                   hasRowView={false}
                                   subtractH={220}
                                   hasAdd={false}
