@@ -128,7 +128,7 @@ class DoorManagement extends React.Component {
     //let mm = new Date().getMonth() + 1;
     let ly = yy;
     let lm = mm - 1;
-    if (lm < 0) {
+    if (lm <= 0) {
       lm = 12;
       ly = Number(yy) - 1;
     }
@@ -182,28 +182,39 @@ class DoorManagement extends React.Component {
     let add = [];
     let minus = [];
     let same = [];
+    let bolSame = false;
+
     n = 0;
     while (n < lyArr.length) {
       let c = 0;
       let bol = false;
       while (c < cyArr.length) {
         if (
-          lyArr[n].C3_595166604634 === cyArr[c].C3_595166604634 &&
-          lyArr[n].C3_595166751093 === cyArr[c].C3_595166751093
+          (
+            lyArr[n].C3_595166604634 === cyArr[c].C3_595166604634 &&
+            lyArr[n].C3_595166751093 === cyArr[c].C3_595166751093) || cyArr[c].C3_727094761747 === 'Y'
         ) {
-          bol = true;
-          same.push(cyArr[c]);
-          if (cyArr[c].C3_595192402751 === 'Y') {
-            sameY.push(cyArr[c]);
-          } else {
-            sameN.push(cyArr[c]);
+          if (lyArr[n].C3_595166604634 === cyArr[c].C3_595166604634 &&
+            lyArr[n].C3_595166751093 === cyArr[c].C3_595166751093) {
+            bol = true;
+          }
+
+          if ((!bolSame && cyArr[c].C3_727094761747 === 'Y') || (!cyArr[c].C3_727094761747)) {
+            same.push(cyArr[c]);
+            if (cyArr[c].C3_595192402751 === 'Y') {
+              sameY.push(cyArr[c]);
+            } else {
+              sameN.push(cyArr[c]);
+            }
           }
         }
         c++;
       }
+      bolSame = true;
       if (!bol) {
         minus.push(lyArr[n]);
-        if (lyArr[n].C3_595192402751 === 'Y') {
+        if (lyArr[n].C3_595192402751 === 'Y' &&
+          cyArr[c].C3_727094761747 != 'Y') {
           minusY.push(lyArr[n]);
         } else {
           minusN.push(lyArr[n]);
@@ -221,15 +232,17 @@ class DoorManagement extends React.Component {
       let c = 0;
       let bol = false;
       while (c < lyArr.length) {
+
         if (
           lyArr[c].C3_595166604634 === cyArr[n].C3_595166604634 &&
           lyArr[c].C3_595166751093 === cyArr[n].C3_595166751093
         ) {
           bol = true;
         }
+
         c++;
       }
-      if (!bol) {
+      if ((!bol) && (cyArr[n].C3_727094761747 != 'Y')) {
         add.push(cyArr[n]);
         if (cyArr[n].C3_595192402751 === 'Y') {
           addY.push(cyArr[n]);
@@ -501,6 +514,15 @@ class DoorManagement extends React.Component {
                 wrappedComponentRef={element => (this.tableDataRef = element)}
                 refTargetComponentName="TableData"
                 subtractH={240}
+                defaultPagination={
+                  {
+                    pageSize: 100,
+                    current: 1,
+                    showSizeChanger: true,
+                    showQuickJumper: true,
+                    pageSizeOptions: ['10', '20', '30', '40', '100', '500', '1000']
+                  }
+                }
                 hasAdd={false}
                 hasRowView={false}
                 hasRowDelete={true}

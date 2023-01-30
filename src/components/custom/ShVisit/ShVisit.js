@@ -19,12 +19,16 @@ import moment from 'moment';
 const { Option } = Select;
 const forbidMin = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
 const fileKeys = [
-  ['fileUrl', 'fileUrl2', 'fileUrl3'],
-  ['fileUrlA', 'fileUrl2A', 'fileUrl3A'],
-  ['fileUrlB', 'fileUrl2B', 'fileUrl3B'],
-  ['fileUrlC', 'fileUrl2C', 'fileUrl3C'],
-  ['fileUrlD', 'fileUrl2D', 'fileUrl3D'],
-  ['fileUrlE', 'fileUrl2E', 'fileUrl3E'],
+  ['fileUrl'],
+  ['fileUrlA'],
+  ['fileUrlB'],
+  ['fileUrlC'],
+  ['fileUrlD'],
+  ['fileUrlE'],
+  ['fileUrlF'],
+  ['fileUrlG'],
+  ['fileUrlH'],
+  ['fileUrlI'],
 ]
 const labels = [
   [
@@ -277,6 +281,26 @@ export default class ShVisit extends Component {
           'C3_687803821849'
         ]
       }
+      ,
+      {
+        show: false,
+        children: [
+          'C3_723491242831',
+          'C3_723491256801',
+          'C3_723491279911',
+          'C3_723491300866'
+        ]
+      }
+      ,
+      {
+        show: false,
+        children: [
+          'C3_723491316898',
+          'C3_723491330899',
+          'C3_723491345478',
+          'C3_723491357354'
+        ]
+      }
     ],
     memberCounter: 1,
     memberInfo: [
@@ -303,6 +327,22 @@ export default class ShVisit extends Component {
       {
         show: false,
         children: ['C3_687637209876', 'C3_687637210345', 'C3_687637210548']
+      },
+      {
+        show: false,
+        children: ['C3_723490407911', 'C3_723490415068', 'C3_723490434460']
+      },
+      {
+        show: false,
+        children: ['C3_723490464025', 'C3_723490477291', 'C3_723490492042']
+      },
+      {
+        show: false,
+        children: ['C3_723490501684', 'C3_723490513263', 'C3_723490523420']
+      },
+      {
+        show: false,
+        children: ['C3_723490533389', 'C3_723490543218', 'C3_723490552391']
       }
     ]
   };
@@ -439,6 +479,26 @@ export default class ShVisit extends Component {
             'C3_687803821849'
           ]
         }
+        ,
+        {
+          show: false,
+          children: [
+            'C3_723491242831',
+            'C3_723491256801',
+            'C3_723491279911',
+            'C3_723491300866'
+          ]
+        }
+        ,
+        {
+          show: false,
+          children: [
+            'C3_723491316898',
+            'C3_723491330899',
+            'C3_723491345478',
+            'C3_723491357354'
+          ]
+        }
       ],
       memberCounter: 1,
       memberInfo: [
@@ -465,6 +525,22 @@ export default class ShVisit extends Component {
         {
           show: false,
           children: ['C3_687637209876', 'C3_687637210345', 'C3_687637210548']
+        },
+        {
+          show: false,
+          children: ['C3_723490407911', 'C3_723490415068', 'C3_723490434460']
+        },
+        {
+          show: false,
+          children: ['C3_723490464025', 'C3_723490477291', 'C3_723490492042']
+        },
+        {
+          show: false,
+          children: ['C3_723490501684', 'C3_723490513263', 'C3_723490523420']
+        },
+        {
+          show: false,
+          children: ['C3_723490533389', 'C3_723490543218', 'C3_723490552391']
         }
       ]
     });
@@ -518,7 +594,7 @@ export default class ShVisit extends Component {
       arr = this.state.memberInfo;
     }
     arr[c].show = true;
-    c++;
+    c = Number(c) + 1;
     if (brid == 'member') {
       this.setState({ memberInfo: arr, memberCounter: c });
     } else {
@@ -572,20 +648,23 @@ export default class ShVisit extends Component {
           if (!this.state[fileKeys[i][0]]) {
             message.error('请填写第' + (i + 1) + '人的来访人员信息表');
             return false
-          } else if (!this.state[fileKeys[i][1]]) {
-            message.error('请填写第' + (i + 1) + '人的访客绿码');
-            return false
-          } else if (!this.state[fileKeys[i][2]]) {
-            message.error('请填写第' + (i + 1) + '人的行动轨迹');
-            return false
-          } else {
+          }
+          // else if (!this.state[fileKeys[i][1]]) {
+          //   message.error('请填写第' + (i + 1) + '人的访客绿码');
+          //   return false
+          // }
+          // else if (!this.state[fileKeys[i][2]]) {
+          //   message.error('请填写第' + (i + 1) + '人的行动轨迹');
+          //   return false
+          // } 
+          else {
             fkbol = true
           }
         }
       }
     }
     if (!fkbol) {
-      message.error('请填写来访人员表/绿码/行动轨迹');
+      message.error('请填写来访人员表/绿码');
       return false
     }
     let n = 0;
@@ -706,6 +785,10 @@ export default class ShVisit extends Component {
       'C3_687803816333',
       'C3_687803821583',
       'C3_687803821849',
+      'C3_723491279911',
+      'C3_723491300866',
+      'C3_723491345478',
+      'C3_723491357354'
     ];
     this.setState({ REC_ID: o.REC_ID });
     while (n < keys.length) {
@@ -724,6 +807,7 @@ export default class ShVisit extends Component {
     }
     let hotelInfo = this.state.hotelInfo;
     let hotelCounter = o.hotelCounter - 1;
+    console.log('counter', hotelCounter)
     while (hotelCounter >= 0) {
       hotelInfo[hotelCounter].show = true;
       hotelCounter--;
@@ -1088,7 +1172,7 @@ export default class ShVisit extends Component {
                     <div className="buttonLine">
                       <Button
                         size="small"
-                        disabled={this.state.hotelCounter > 7}
+                        disabled={this.state.hotelCounter > 9}
                         onClick={() => {
                           this.addHotelInfo();
                         }}
@@ -1200,7 +1284,7 @@ export default class ShVisit extends Component {
                 <label>来访人员：</label>
                 <Button
                   size="small"
-                  disabled={this.state.memberCounter > 5}
+                  disabled={this.state.memberCounter > 9}
                   onClick={() => {
                     this.addHotelInfo('member');
                   }}
@@ -1273,8 +1357,8 @@ export default class ShVisit extends Component {
                     <table className='files'>
                       <tr>
                         <td>来访人员信息表</td>
-                        <td>访客绿码</td>
-                        <td>行动轨迹</td>
+                        {/* <td>访客绿码</td> */}
+                        {/* <td>行动轨迹</td> */}
                       </tr>
                       {
                         fileKeys.map(

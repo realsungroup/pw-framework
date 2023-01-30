@@ -94,7 +94,7 @@ class FeedBackAndPlan extends Component {
         tempRate.rate8 = data.C3_615640235456; //时间控制合理使我感到舒适\
         tempRate.rate9 = data.C3_722087822472;//我对本次课程整体满意
         tempRate.rate10 = data.C3_722087862632;//我愿意向朋友或同事推荐这门课程
-        tempRate.rate11 = data.C3_722087899198;//在培训过程中，培训组织者基于我足够的后勤支持
+        tempRate.rate11 = data.C3_722087899198;//在培训过程中，培训组织者给予我足够的后勤支持
         tempRate.rate12 = data.C3_722087926763;//培训场地设备设施完整无故障
         this.setState({
           rate: tempRate
@@ -116,7 +116,7 @@ class FeedBackAndPlan extends Component {
         tempRate.rate8 = data.C3_615640235456; //时间控制合理使我感到舒适\
         tempRate.rate9 = data.C3_722087822472;//我对本次课程整体满意
         tempRate.rate10 = data.C3_722087862632;//我愿意向朋友或同事推荐这门课程
-        tempRate.rate11 = data.C3_722087899198;//在培训过程中，培训组织者基于我足够的后勤支持
+        tempRate.rate11 = data.C3_722087899198;//在培训过程中，培训组织者给予我足够的后勤支持
         tempRate.rate12 = data.C3_722087926763;//培训场地设备设施完整无故障
         const otherAdvice = {
           shortcommings: data.C3_622216725340,
@@ -286,7 +286,7 @@ class FeedBackAndPlan extends Component {
               </Col>
             </Row>
           </Card>
-          <Card type="inner" title="讲师专业水平" className="cardinner">
+          {/* <Card type="inner" title="讲师专业水平" className="cardinner">
             <Row>
               <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
               <Col span={12}>
@@ -300,8 +300,8 @@ class FeedBackAndPlan extends Component {
                   )}
               </Col>
             </Row>
-          </Card>
-          <Card type="inner" title="课程内容安排" className="cardinner">
+          </Card> */}
+          <Card type="inner" title="课程内容满意度" className="cardinner">
             <Row>
               <Col span={12}>本次培训的主题明确，逻辑清晰，内容充实，有针对性</Col>
               <Col span={12}>
@@ -355,7 +355,7 @@ class FeedBackAndPlan extends Component {
               </Col>
             </Row>
           </Card>
-          <Card type="inner" title="授课技巧" className="cardinner">
+          <Card type="inner" title="培训师满意度" className="cardinner">
             <Row>
               <Col span={12}>培训师具有足够的专业知识和经验</Col>
               <Col span={12}>
@@ -454,7 +454,7 @@ class FeedBackAndPlan extends Component {
           </Card>
           <Card type="inner" title="培训组织与支持" className="cardinner">
             <Row>
-              <Col span={12}>在培训过程中，培训组织者基于我足够的后勤支持</Col>
+              <Col span={12}>在培训过程中，培训组织者给予我足够的后勤支持</Col>
               <Col span={12}>
                 {this.props.mode === 'view' ? (
                   <Rate value={rate.rate11} disabled />
@@ -534,7 +534,7 @@ class FeedBackAndPlan extends Component {
               <div>
                 <ul className="feedbackList">
                   <li key="tip">
-                    列出培训中学习到的3个知识点
+                    课程的收益与建议
                     {this.props.mode === 'view' ? null : (
                       <Tooltip title="添加一项">
                         <Icon
@@ -581,10 +581,7 @@ class FeedBackAndPlan extends Component {
               <div>
                 <ul className="feedbackList">
                   <li key="tip">
-                    行动计划
-                    <br />
-                    (运用学到的知识，你可以改善工作中的哪些行为或问题？请列出具体行为。
-                    )
+                    我的课后行动计划
                     {this.props.mode === 'view' ? null : (
                       <Tooltip title="添加一项">
                         <Icon

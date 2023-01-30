@@ -121,7 +121,7 @@ class IDLTransfer extends Component {
       isDirector: true //是否是主管，主管才可以提交
     };
   }
-  componentWillMount() {}
+  componentWillMount() { }
   componentDidMount() {
     this.getLv();
     this.getCompany();
@@ -167,7 +167,7 @@ class IDLTransfer extends Component {
         n++;
       }
       this.setState({ bucodeGroup: arr });
-    } catch (e) {}
+    } catch (e) { }
   };
   //  第二页提交前检查未填项
   checkUnfill = () => {
@@ -532,7 +532,7 @@ class IDLTransfer extends Component {
         }
         n++;
       }
-      obj1 = obj1.sort(function(a, b) {
+      obj1 = obj1.sort(function (a, b) {
         return a.title.localeCompare(b.title);
       });
       // 排序
@@ -543,14 +543,14 @@ class IDLTransfer extends Component {
           while (c < obj1[n].children.length) {
             if (obj1[n].children[c].children) {
               obj1[n].children[c].children = obj1[n].children[c].children.sort(
-                function(a, b) {
+                function (a, b) {
                   return a.title.localeCompare(b.title);
                 }
               );
             }
             c++;
           }
-          obj1[n].children = obj1[n].children.sort(function(a, b) {
+          obj1[n].children = obj1[n].children.sort(function (a, b) {
             return a.title.localeCompare(b.title);
           });
         }
@@ -726,7 +726,7 @@ class IDLTransfer extends Component {
       values.push(this.state.selectMem[property]);
     }
     while (n < this.state.selectMem.length) {
-      var date = values[n].activeDate;
+      let date = values[n].activeDate;
       if (date) {
         date = moment(date).format('YYYY-MM-DD');
       }
@@ -735,7 +735,7 @@ class IDLTransfer extends Component {
         num = '';
       }
       console.log(values[n]);
-      var obj = {
+      let obj = {
         effortDate: date, //生效日期
         nDepartCode: values[n].newDepa.DEP_ID, //变动后部门编号
         nProj_Code: values[n].proCode, //变动后项目代码
@@ -751,6 +751,7 @@ class IDLTransfer extends Component {
         personID: values[n].C3_305737857578, //人员编号
         changeReason: values[n].reason, //变动原因
         headcount: b,
+        nDept_code: values[n].newDepa.C3_419339113187,
         publishCode: publishCode
       };
       toSub.push(obj);
@@ -959,231 +960,231 @@ class IDLTransfer extends Component {
                     </h3>
                   </div>
                 ) : (
-                  <div className="wrap" style={{ padding: '16px' }}>
-                    <Steps
-                      current={this.state.step}
-                      style={{ width: '100%', cursor: 'default' }}
-                    >
-                      <Step title="选择调动人员" />
-                      <Step title="填写调岗申请单" />
-                      <Step title="查看结果" />
-                    </Steps>
-                    {this.state.step == 0 ? (
-                      <Spin
-                        style={{ width: '100%', height: '100%' }}
-                        spinning={this.state.loading}
+                    <div className="wrap" style={{ padding: '16px' }}>
+                      <Steps
+                        current={this.state.step}
+                        style={{ width: '100%', cursor: 'default' }}
                       >
-                        <Modal
-                          title={'选择部门'}
-                          visible={this.state.showSelDep}
-                          footer={null}
-                          destroyOnClose={true}
-                          onCancel={() => {
-                            this.setState({ showSelDep: false });
-                          }}
-                          width={'80vw'}
-                          height={'80vh'}
+                        <Step title="选择调动人员" />
+                        <Step title="填写调岗申请单" />
+                        <Step title="查看结果" />
+                      </Steps>
+                      {this.state.step == 0 ? (
+                        <Spin
+                          style={{ width: '100%', height: '100%' }}
+                          spinning={this.state.loading}
                         >
-                          <br />
-                          <br />
-                          <Spin spinning={this.state.loading}>
-                            <div
-                              style={{
-                                width: '100%',
-                                height: 'calc(80vh - 104px)',
-                                position: 'relative'
-                              }}
-                            >
-                              <TableData
-                                isUseBESize={true}
-                                hasDownload={false}
-                                resid={632327119162}
-                                cmswhere={
-                                  this.state.companyV == '100'
-                                    ? `C3_419339113187 != '' and C3_419448436728 = '菲尼萨光电通讯科技(无锡)有限公司'`
-                                    : `C3_419339113187 != '' and C3_419448436728 = '菲尼萨光电通讯(上海)有限公司'`
-                                }
-                                hasRowView={false}
-                                subtractH={220}
-                                hasAdd={false}
-                                hasRowSelection={false}
-                                hasRowDelete={false}
-                                hasRowModify={false}
-                                hasModify={false}
-                                hasDelete={false}
-                                actionBarWidth={80}
-                                style={{ height: '100%' }}
-                                hasRowView={false}
-                                customRowBtns={[
-                                  record => {
+                          <Modal
+                            title={'选择部门'}
+                            visible={this.state.showSelDep}
+                            footer={null}
+                            destroyOnClose={true}
+                            onCancel={() => {
+                              this.setState({ showSelDep: false });
+                            }}
+                            width={'80vw'}
+                            height={'80vh'}
+                          >
+                            <br />
+                            <br />
+                            <Spin spinning={this.state.loading}>
+                              <div
+                                style={{
+                                  width: '100%',
+                                  height: 'calc(80vh - 104px)',
+                                  position: 'relative'
+                                }}
+                              >
+                                <TableData
+                                  isUseBESize={true}
+                                  hasDownload={false}
+                                  resid={632327119162}
+                                  cmswhere={
+                                    this.state.companyV == '100'
+                                      ? `C3_419448436728 = '菲尼萨光电通讯科技(无锡)有限公司'`
+                                      : `C3_419448436728 = '菲尼萨光电通讯(上海)有限公司'`
+                                  }
+                                  hasRowView={false}
+                                  subtractH={220}
+                                  hasAdd={false}
+                                  hasRowSelection={false}
+                                  hasRowDelete={false}
+                                  hasRowModify={false}
+                                  hasModify={false}
+                                  hasDelete={false}
+                                  actionBarWidth={80}
+                                  style={{ height: '100%' }}
+                                  hasRowView={false}
+                                  customRowBtns={[
+                                    record => {
+                                      return (
+                                        <Button
+                                          onClick={() => {
+                                            console.log(record);
+                                            this.getDepaMem(
+                                              record.C3_461011945566
+                                            );
+
+                                            this.setState({
+                                              depaV: record.C3_461011945566,
+                                              depaName: record.DEP_NAME_EN,
+                                              showSelDep: false,
+                                              depaMemberV: null,
+                                              selMemberV: null,
+                                              selectMem: []
+                                            });
+                                          }}
+                                        >
+                                          选择
+                                        </Button>
+                                      );
+                                    }
+                                  ]}
+                                />
+                              </div>
+                            </Spin>
+                          </Modal>
+
+                          <Modal
+                            title={this.state.draftName}
+                            visible={this.state.showDraft}
+                            footer={null}
+                            destroyOnClose={true}
+                            onCancel={() => {
+                              this.setState({ showDraft: false });
+                            }}
+                            width={'80vw'}
+                            height={'80vh'}
+                          >
+                            <br />
+                            <br />
+                            <Spin spinning={this.state.loading}>
+                              <div
+                                style={{
+                                  width: '100%',
+                                  height: 'calc(80vh - 104px)',
+                                  position: 'relative'
+                                }}
+                              >
+                                <TableData
+                                  resid={637754719247}
+                                  hasDownload={false}
+                                  cmswhere={`publishCode = '${this.state.draftCode}' and headcount ='draft' and applyPersonNum = '${this.state.userId}'`}
+                                  hasRowView={false}
+                                  subtractH={220}
+                                  hasAdd={false}
+                                  hasRowSelection={true}
+                                  hasRowDelete={false}
+                                  hasRowModify={true}
+                                  hasModify={false}
+                                  hasDelete={false}
+                                  style={{ height: '100%' }}
+                                  hasRowView={false}
+                                  actionBarExtra={({
+                                    dataSource,
+                                    selectedRowKeys
+                                  }) => {
                                     return (
                                       <Button
+                                        type="primary"
+                                        disabled={!(selectedRowKeys.length > 0)}
                                         onClick={() => {
-                                          console.log(record);
-                                          this.getDepaMem(
-                                            record.C3_461011945566
+                                          this.subDraft(
+                                            dataSource,
+                                            selectedRowKeys
                                           );
-
-                                          this.setState({
-                                            depaV: record.C3_461011945566,
-                                            depaName: record.DEP_NAME_EN,
-                                            showSelDep: false,
-                                            depaMemberV: null,
-                                            selMemberV: null,
-                                            selectMem: []
-                                          });
                                         }}
                                       >
-                                        选择
+                                        提交
                                       </Button>
                                     );
-                                  }
-                                ]}
-                              />
-                            </div>
-                          </Spin>
-                        </Modal>
+                                  }}
+                                />
+                              </div>
+                            </Spin>
+                          </Modal>
 
-                        <Modal
-                          title={this.state.draftName}
-                          visible={this.state.showDraft}
-                          footer={null}
-                          destroyOnClose={true}
-                          onCancel={() => {
-                            this.setState({ showDraft: false });
-                          }}
-                          width={'80vw'}
-                          height={'80vh'}
-                        >
-                          <br />
-                          <br />
-                          <Spin spinning={this.state.loading}>
+                          <div
+                            className={
+                              this.state.showCraft
+                                ? 'craftEntery extend'
+                                : 'craftEntery'
+                            }
+                          >
                             <div
-                              style={{
-                                width: '100%',
-                                height: 'calc(80vh - 104px)',
-                                position: 'relative'
+                              className="title"
+                              onClick={() => {
+                                if (!this.state.showCraft) {
+                                  this.getDraft();
+                                }
+                                this.setState({
+                                  showCraft: !this.state.showCraft
+                                });
                               }}
                             >
-                              <TableData
-                                resid={637754719247}
-                                hasDownload={false}
-                                cmswhere={`publishCode = '${this.state.draftCode}' and headcount ='draft' and applyPersonNum = '${this.state.userId}'`}
-                                hasRowView={false}
-                                subtractH={220}
-                                hasAdd={false}
-                                hasRowSelection={true}
-                                hasRowDelete={false}
-                                hasRowModify={true}
-                                hasModify={false}
-                                hasDelete={false}
-                                style={{ height: '100%' }}
-                                hasRowView={false}
-                                actionBarExtra={({
-                                  dataSource,
-                                  selectedRowKeys
-                                }) => {
-                                  return (
-                                    <Button
-                                      type="primary"
-                                      disabled={!(selectedRowKeys.length > 0)}
-                                      onClick={() => {
-                                        this.subDraft(
-                                          dataSource,
-                                          selectedRowKeys
-                                        );
-                                      }}
-                                    >
-                                      提交
-                                    </Button>
-                                  );
-                                }}
+                              我的草稿
+                            <Icon
+                                type="right"
+                                style={{ fontSize: '16px', margin: '12px' }}
                               />
                             </div>
-                          </Spin>
-                        </Modal>
-
-                        <div
-                          className={
-                            this.state.showCraft
-                              ? 'craftEntery extend'
-                              : 'craftEntery'
-                          }
-                        >
-                          <div
-                            className="title"
-                            onClick={() => {
-                              if (!this.state.showCraft) {
-                                this.getDraft();
-                              }
-                              this.setState({
-                                showCraft: !this.state.showCraft
-                              });
-                            }}
-                          >
-                            我的草稿
-                            <Icon
-                              type="right"
-                              style={{ fontSize: '16px', margin: '12px' }}
-                            />
-                          </div>
-                          <div className="content">
-                            {this.state.draft.map((item, key) => {
-                              return (
-                                <div
-                                  className="draftCell"
-                                  key={key}
-                                  onClick={() => {
-                                    this.setState({
-                                      showDraft: true,
-                                      draftCode: item.publishCode,
-                                      draftName:
-                                        '创建时间：' + item.data[0].REC_CRTTIME
-                                    });
-                                  }}
-                                >
-                                  <h3>创建时间：{item.data[0].REC_CRTTIME}</h3>
-                                  <p>
-                                    人员：
+                            <div className="content">
+                              {this.state.draft.map((item, key) => {
+                                return (
+                                  <div
+                                    className="draftCell"
+                                    key={key}
+                                    onClick={() => {
+                                      this.setState({
+                                        showDraft: true,
+                                        draftCode: item.publishCode,
+                                        draftName:
+                                          '创建时间：' + item.data[0].REC_CRTTIME
+                                      });
+                                    }}
+                                  >
+                                    <h3>创建时间：{item.data[0].REC_CRTTIME}</h3>
+                                    <p>
+                                      人员：
                                     {item.data.map(item2 => {
                                       return <>{item2.person} </>;
                                     })}
-                                  </p>
-                                </div>
-                              );
-                            })}
+                                    </p>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
-                        </div>
-                        <div
-                          className={
-                            this.state.chooseFo
-                              ? 'sider load'
-                              : 'load sider focusWindow'
-                          }
-                          style={{
-                            width: '200px',
-                            paddingRight: '24px',
-                            marginTop: '24px',
-                            height: 'calc(100vh - 132px)'
-                          }}
-                        >
-                          请选择公司:
-                          <Select
-                            value={this.state.companyV}
-                            onChange={v => this.handleChange(v)}
-                            defaultValue="100"
+                          <div
+                            className={
+                              this.state.chooseFo
+                                ? 'sider load'
+                                : 'load sider focusWindow'
+                            }
                             style={{
-                              width: '100%',
-                              marginBottom: '8px',
-                              marginTop: '8px'
+                              width: '200px',
+                              paddingRight: '24px',
+                              marginTop: '24px',
+                              height: 'calc(100vh - 132px)'
                             }}
                           >
-                            {this.state.company.map(item => {
-                              return (
-                                <Option value={item.value}>{item.name}</Option>
-                              );
-                            })}
-                          </Select>
+                            请选择公司:
+                          <Select
+                              value={this.state.companyV}
+                              onChange={v => this.handleChange(v)}
+                              defaultValue="100"
+                              style={{
+                                width: '100%',
+                                marginBottom: '8px',
+                                marginTop: '8px'
+                              }}
+                            >
+                              {this.state.company.map(item => {
+                                return (
+                                  <Option value={item.value}>{item.name}</Option>
+                                );
+                              })}
+                            </Select>
                           请选择部门:
                           {/* <TreeSelect
                               style={{ width: '100%', marginTop: '8px' }}
@@ -1195,151 +1196,151 @@ class IDLTransfer extends Component {
                               searchPlaceholder="输入部门编号搜索"
                               onChange={this.onChange}
                             /> */}
-                          <span>
+                            <span>
+                              {this.state.depaV ? (
+                                <>
+                                  <br /> {this.state.depaName}{' '}
+                                </>
+                              ) : (
+                                  ''
+                                )}
+                            </span>
+                            <Button
+                              style={{ marginLeft: 8 }}
+                              onClick={() => {
+                                this.setState({ showSelDep: true });
+                              }}
+                            >
+                              选择部门
+                          </Button>
                             {this.state.depaV ? (
                               <>
-                                <br /> {this.state.depaName}{' '}
-                              </>
-                            ) : (
-                              ''
-                            )}
-                          </span>
-                          <Button
-                            style={{ marginLeft: 8 }}
-                            onClick={() => {
-                              this.setState({ showSelDep: true });
-                            }}
-                          >
-                            选择部门
-                          </Button>
-                          {this.state.depaV ? (
-                            <>
-                              <p
-                                style={{
-                                  textAlign: 'left',
-                                  lineHeight: '16px',
-                                  height: 'auto',
-                                  margin: '0',
-                                  marginTop: '8px'
-                                }}
-                              >
-                                请选择人员:
+                                <p
+                                  style={{
+                                    textAlign: 'left',
+                                    lineHeight: '16px',
+                                    height: 'auto',
+                                    margin: '0',
+                                    marginTop: '8px'
+                                  }}
+                                >
+                                  请选择人员:
                               </p>
 
-                              <TreeSelect
-                                style={{
-                                  width: '100%',
-                                  marginTop: '8px',
-                                  marginBottom: '10px'
-                                }}
-                                value={this.state.depaMemberV}
-                                dropdownStyle={{
-                                  maxHeight: 400,
-                                  overflow: 'auto'
-                                }}
-                                treeData={this.state.depaMember}
-                                placeholder="请先选择人员"
-                                showSearch={true}
-                                searchPlaceholder="输入人员工号搜索"
-                                onChange={this.onChangeDepaMem}
-                              />
-
-                              <Switch
-                                defaultChecked
-                                checked={this.state.chooseFo}
-                                onChange={() =>
-                                  this.setState({
-                                    chooseFo: !this.state.chooseFo
-                                  })
-                                }
-                              />
-                              <span
-                                style={{
-                                  textIndent: '8px',
-                                  display: 'inline-block'
-                                }}
-                              >
-                                选择下属
-                              </span>
-                              <br />
-                              {this.state.chooseFo ? null : (
-                                <Button
-                                  style={{ marginTop: 10 }}
-                                  onClick={() => {
-                                    this.onChangeSelMem(this.state.depaMemberV);
+                                <TreeSelect
+                                  style={{
+                                    width: '100%',
+                                    marginTop: '8px',
+                                    marginBottom: '10px'
                                   }}
+                                  value={this.state.depaMemberV}
+                                  dropdownStyle={{
+                                    maxHeight: 400,
+                                    overflow: 'auto'
+                                  }}
+                                  treeData={this.state.depaMember}
+                                  placeholder="请先选择人员"
+                                  showSearch={true}
+                                  searchPlaceholder="输入人员工号搜索"
+                                  onChange={this.onChangeDepaMem}
+                                />
+
+                                <Switch
+                                  defaultChecked
+                                  checked={this.state.chooseFo}
+                                  onChange={() =>
+                                    this.setState({
+                                      chooseFo: !this.state.chooseFo
+                                    })
+                                  }
+                                />
+                                <span
+                                  style={{
+                                    textIndent: '8px',
+                                    display: 'inline-block'
+                                  }}
+                                >
+                                  选择下属
+                              </span>
+                                <br />
+                                {this.state.chooseFo ? null : (
+                                  <Button
+                                    style={{ marginTop: 10 }}
+                                    onClick={() => {
+                                      this.onChangeSelMem(this.state.depaMemberV);
+                                    }}
+                                    type="primary"
+                                  >
+                                    下一步
+                                  </Button>
+                                )}
+                              </>
+                            ) : null}
+                          </div>
+                        </Spin>
+                      ) : null}
+                      {this.state.step == 0 && this.state.chooseFo ? (
+                        <div
+                          className="load"
+                          style={{
+                            float: 'left',
+                            width: 'calc(100% - 224px)',
+                            marginLeft: '24px',
+                            marginTop: '24px',
+                            height: 'calc(100% - 64px)'
+                          }}
+                        >
+                          <TableData
+                            resid={666203805903}
+                            hasDownload={false}
+                            isUseBESize={true}
+                            baseURL={this.baseURL}
+                            hasRowView={false}
+                            hasAdd={false}
+                            cmswhere={
+                              this.state.selMemberV
+                                ? `C3_227192472953 = '${this.state.selMemberV}'`
+                                : `C3_429966115761 = '${this.state.depaMemberV}'`
+                              // ? `C3_305737857578 = '${this.state.selMemberV}'`
+                              // : `C3_417993417686 = '${this.state.depaMemberV}'`
+                            }
+                            hasRowSelection={false}
+                            hasRowDelete={false}
+                            hasRowModify={false}
+                            hasModify={false}
+                            subtractH={190}
+                            hasDelete={false}
+                            style={{ height: '100%' }}
+                            hasRowView={false}
+                            hasRowSelection={true}
+                            actionBarExtra={({ dataSource, selectedRowKeys }) => {
+                              return (
+                                <Button
                                   type="primary"
+                                  disabled={!(selectedRowKeys.length > 0)}
+                                  onClick={() => {
+                                    this.subMemData(dataSource, selectedRowKeys);
+                                  }}
                                 >
                                   下一步
                                 </Button>
-                              )}
-                            </>
-                          ) : null}
+                              );
+                            }}
+                          />
                         </div>
-                      </Spin>
-                    ) : null}
-                    {this.state.step == 0 && this.state.chooseFo ? (
-                      <div
-                        className="load"
-                        style={{
-                          float: 'left',
-                          width: 'calc(100% - 224px)',
-                          marginLeft: '24px',
-                          marginTop: '24px',
-                          height: 'calc(100% - 64px)'
-                        }}
-                      >
-                        <TableData
-                          resid={666203805903}
-                          hasDownload={false}
-                          isUseBESize={true}
-                          baseURL={this.baseURL}
-                          hasRowView={false}
-                          hasAdd={false}
-                          cmswhere={
-                            this.state.selMemberV
-                              ? `C3_227192472953 = '${this.state.selMemberV}'`
-                              : `C3_429966115761 = '${this.state.depaMemberV}'`
-                            // ? `C3_305737857578 = '${this.state.selMemberV}'`
-                            // : `C3_417993417686 = '${this.state.depaMemberV}'`
-                          }
-                          hasRowSelection={false}
-                          hasRowDelete={false}
-                          hasRowModify={false}
-                          hasModify={false}
-                          subtractH={190}
-                          hasDelete={false}
-                          style={{ height: '100%' }}
-                          hasRowView={false}
-                          hasRowSelection={true}
-                          actionBarExtra={({ dataSource, selectedRowKeys }) => {
-                            return (
-                              <Button
-                                type="primary"
-                                disabled={!(selectedRowKeys.length > 0)}
-                                onClick={() => {
-                                  this.subMemData(dataSource, selectedRowKeys);
-                                }}
-                              >
-                                下一步
-                              </Button>
-                            );
-                          }}
-                        />
-                      </div>
-                    ) : null}
-                    {this.state.step == 1 ? (
-                      <Spin spinning={this.state.loading}>
-                        <div
-                          style={{
-                            width: '100%',
-                            height: 'calc(100vh - 156px)',
-                            position: 'relative'
-                          }}
-                          className="load"
-                        >
-                          <div className="memberList">
-                            {/* <h3>变更前部门：</h3>
+                      ) : null}
+                      {this.state.step == 1 ? (
+                        <Spin spinning={this.state.loading}>
+                          <div
+                            style={{
+                              width: '100%',
+                              height: 'calc(100vh - 156px)',
+                              position: 'relative'
+                            }}
+                            className="load"
+                          >
+                            <div className="memberList">
+                              {/* <h3>变更前部门：</h3>
                             <div>
                               <b>一级部门：</b>
                               <span>
@@ -1370,80 +1371,80 @@ class IDLTransfer extends Component {
                               </span>
                               <br />
                             </div> */}
-                            <h3>
-                              待变更人员：<b>{this.state.selectMem.length}</b>
-                            </h3>
-                            <ul>
-                              {this.state.selectMem.map((item, key) => {
-                                return (
-                                  <li
-                                    key={key}
-                                    className={
-                                      this.state.curPeopleId ==
-                                      item.C3_448032387764
-                                        ? 'current'
-                                        : ''
-                                    }
-                                    onClick={(v, k) => {
-                                      this.selectSingle(
-                                        item.C3_448032387764,
-                                        key
-                                      );
-                                    }}
-                                  >
-                                    <h4>{key + 1}</h4>
-                                    <p>
-                                      <b>工号：</b>
-                                      <span>{item.C3_448032387764}</span>
-                                    </p>
-                                    <p>
-                                      <b>姓名：</b>
-                                      <span>{item.C3_227192484125}</span>
-                                    </p>
-                                    <p>
-                                      <b>英文名：</b>
-                                      <span>{item.C3_419343735913}</span>
-                                    </p>
+                              <h3>
+                                待变更人员：<b>{this.state.selectMem.length}</b>
+                              </h3>
+                              <ul>
+                                {this.state.selectMem.map((item, key) => {
+                                  return (
+                                    <li
+                                      key={key}
+                                      className={
+                                        this.state.curPeopleId ==
+                                          item.C3_448032387764
+                                          ? 'current'
+                                          : ''
+                                      }
+                                      onClick={(v, k) => {
+                                        this.selectSingle(
+                                          item.C3_448032387764,
+                                          key
+                                        );
+                                      }}
+                                    >
+                                      <h4>{key + 1}</h4>
+                                      <p>
+                                        <b>工号：</b>
+                                        <span>{item.C3_448032387764}</span>
+                                      </p>
+                                      <p>
+                                        <b>姓名：</b>
+                                        <span>{item.C3_227192484125}</span>
+                                      </p>
+                                      <p>
+                                        <b>英文名：</b>
+                                        <span>{item.C3_419343735913}</span>
+                                      </p>
 
-                                    <p>
-                                      <b>当前主管：</b>
-                                      <span>{item.C3_417993433650}</span>
-                                    </p>
+                                      <p>
+                                        <b>当前主管：</b>
+                                        <span>{item.C3_417993433650}</span>
+                                      </p>
 
-                                    <p>
-                                      <b>当前职位：</b>
-                                      <span>{item.C3_661366417780}</span>
-                                    </p>
+                                      <p>
+                                        <b>当前职位：</b>
+                                        <span>{item.C3_661366417780}</span>
+                                      </p>
 
-                                    <p>
-                                      <b>一级部门：</b>
-                                      <span>{item.C3_422840485957}</span>
-                                    </p>
+                                      <p>
+                                        <b>一级部门：</b>
+                                        <span>{item.C3_422840485957}</span>
+                                      </p>
 
-                                    <p>
-                                      <b>二级部门：</b>
-                                      <span>{item.C3_422840495341}</span>
-                                    </p>
-                                    <p>
-                                      <b>三级部门：</b>
-                                      <span>{item.C3_422840502598}</span>
-                                    </p>
-                                    <p>
-                                      <b>四级部门：</b>
-                                      <span>{item.C3_422840508142}</span>
-                                    </p>
-                                    {/* <p>
+                                      <p>
+                                        <b>二级部门：</b>
+                                        <span>{item.C3_422840495341}</span>
+                                      </p>
+                                      <p>
+                                        <b>三级部门：</b>
+                                        <span>{item.C3_422840502598}</span>
+                                      </p>
+                                      <p>
+                                        <b>四级部门：</b>
+                                        <span>{item.C3_422840508142}</span>
+                                      </p>
+                                      {/* <p>
                                       <b>当前级别：</b>
                                       <span>{item.C3_658407610385}</span>
                                     </p> */}
-                                  </li>
-                                );
-                              })}
-                            </ul>
-                          </div>
-                          <div className="form">
-                            <h3>变更后：</h3>
-                            {/* <Checkbox
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
+                            <div className="form">
+                              <h3>变更后：</h3>
+                              {/* <Checkbox
                         checked={
                           this.state.selectMem[this.state.curPeopleKey]
                             .checkGroup.date
@@ -1470,7 +1471,7 @@ class IDLTransfer extends Component {
                           onChange={v => this.setValue(v, 'activeDate')}
                         />
                       </span> */}
-                            {/* <br/>
+                              {/* <br/>
                   <br/>
                   <b>变更类型：</b>
                   <span style={{width:'auto'}}>
@@ -1484,234 +1485,258 @@ class IDLTransfer extends Component {
 
                   </Select>
                   </span> */}
-                            <br />
-                            <br />
-                            <Checkbox
-                              style={{ marginRight: 8 }}
-                              checked={
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.newDepa
-                              }
-                              onChange={v => {
-                                this.setCheck('newDepa');
-                                if (!v.target.checked) {
-                                  var rec = this.state.selectMem;
-                                  rec[this.state.curPeopleKey].newDepa = {};
-                                  this.setState({ newDepa: rec });
+                              <br />
+                              <br />
+                              <Checkbox
+                                style={{ marginRight: 8 }}
+                                checked={
+                                  this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.newDepa
                                 }
-                              }}
-                            >
-                              变更后部门代码：
+                                onChange={v => {
+                                  this.setCheck('newDepa');
+                                  if (!v.target.checked) {
+                                    var rec = this.state.selectMem;
+                                    rec[this.state.curPeopleKey].newDepa = {};
+                                    this.setState({ newDepa: rec });
+                                  }
+                                }}
+                              >
+                                变更后部门：
                             </Checkbox>
-                            <span
-                              style={{
-                                width: '248px',
-                                marginRight: '16px',
-                                minWidth: '0'
-                              }}
-                            >
-                              {this.state.selectMem[this.state.curPeopleKey]
-                                .newDepa.C3_419339113187 ? (
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .newDepa.C3_419339113187
-                              ) : (
-                                <span
-                                  style={
-                                    this.state.selectMem[
-                                      this.state.curPeopleKey
-                                    ].newDepa.depaCode
-                                      ? this.state.selectMem[
+                              <span
+                                style={{
+                                  marginRight: '16px',
+                                  minWidth: '0'
+                                }}
+                              >
+                                {this.state.selectMem[this.state.curPeopleKey]
+                                  .newDepa.C3_461011984661 ? null
+                                  : (
+                                    <span
+                                      style={
+                                        this.state.selectMem[
                                           this.state.curPeopleKey
-                                        ].newDepa.C3_419339113187
-                                        ? {}
-                                        : { color: '#f5222d' }
-                                      : { color: '#999' }
-                                  }
-                                >
-                                  请点击右侧按钮选择部门
-                                </span>
-                              )}
-                            </span>
-                            <Button
-                              icon="search"
-                              disabled={
-                                !this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.newDepa
-                              }
-                              onClick={() =>
-                                this.setState({ searchDepaV: true })
-                              }
-                            >
-                              选择部门
-                            </Button>
-                            <div>
-                              <b>变更后部门名：</b>
-                              <span>
-                                {this.state.selectMem[this.state.curPeopleKey]
-                                  .newDepa.DEP_NAME
-                                  ? this.state.selectMem[
-                                      this.state.curPeopleKey
-                                    ].newDepa.DEP_NAME
-                                  : '- -'}
+                                        ].newDepa.depaCode
+                                          ? this.state.selectMem[
+                                            this.state.curPeopleKey
+                                          ].newDepa.C3_461011984661
+                                            ? {}
+                                            : { color: '#f5222d' }
+                                          : { color: '#999' }
+                                      }
+                                    >
+                                      请点击右侧按钮选择部门
+                                    </span>
+                                  )}
                               </span>
-                              <b>变更后部门英文名：</b>
-                              <span>
-                                {this.state.selectMem[this.state.curPeopleKey]
-                                  .newDepa.DEP_NAME_EN
-                                  ? this.state.selectMem[
-                                      this.state.curPeopleKey
-                                    ].newDepa.DEP_NAME_EN
-                                  : '- -'}
-                              </span>
-                              <b>变更后一级部门名：</b>
-                              <span>
-                                {this.state.selectMem[this.state.curPeopleKey]
-                                  .newDepa.C3_461011984661
-                                  ? this.state.selectMem[
-                                      this.state.curPeopleKey
-                                    ].newDepa.C3_461011984661
-                                  : '- -'}
-                              </span>
-
-                              <b>变更后二级部门名：</b>
-                              <span>
-                                {this.state.selectMem[this.state.curPeopleKey]
-                                  .newDepa.C3_461011984896
-                                  ? this.state.selectMem[
-                                      this.state.curPeopleKey
-                                    ].newDepa.C3_461011984896
-                                  : '- -'}
-                              </span>
-
-                              <b>变更后三级部门名：</b>
-                              <span>
-                                {this.state.selectMem[this.state.curPeopleKey]
-                                  .newDepa.C3_461011985099
-                                  ? this.state.selectMem[
-                                      this.state.curPeopleKey
-                                    ].newDepa.C3_461011985099
-                                  : '- -'}
-                              </span>
-
-                              <b>变更后四级部门名：</b>
-                              <span>
-                                {this.state.selectMem[this.state.curPeopleKey]
-                                  .newDepa.C3_461011985365
-                                  ? this.state.selectMem[
-                                      this.state.curPeopleKey
-                                    ].newDepa.C3_461011985365
-                                  : '- -'}
-                              </span>
-                            </div>
-                            <Checkbox
-                              checked={
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.proCode
-                              }
-                              onChange={v => {
-                                this.setCheck('proCode');
-                                if (!v.target.checked) {
-                                  this.setValue('', 'proCode');
+                              <Button
+                                style={{
+                                  marginRight: '16px',
+                                }}
+                                icon="search"
+                                disabled={
+                                  !this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.newDepa
                                 }
-                              }}
-                            >
-                              变更后项目代码：
-                            </Checkbox>
-                            <Input
-                              disabled={
-                                !this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.proCode
-                              }
-                              value={
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .proCode
-                              }
-                              onChange={v =>
-                                this.setValue(v.target.value, 'proCode')
-                              }
-                            />
-                            <br />
-                            <br />
-                            <Checkbox
-                              style={{ marginRight: 8 }}
-                              checked={
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.supervisor
-                              }
-                              onChange={v => {
-                                this.setCheck('supervisor');
-                                if (!v.target.checked) {
-                                  var rec = this.state.selectMem;
-                                  rec[this.state.curPeopleKey].newSuper = {};
-                                  this.setState({ newSuper: rec });
+                                onClick={() =>
+                                  this.setState({ searchDepaV: true })
                                 }
-                              }}
-                            >
-                              变更后主管：
-                            </Checkbox>
-                            <span
-                              style={{
-                                minWidth: '248px',
-                                marginRight: '16px',
-                                minWidth: '0'
-                              }}
-                            >
-                              {this.state.selectMem[this.state.curPeopleKey]
-                                .newSuper.C3_227192484125 ? (
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .newSuper.C3_227192484125 +
-                                ' - ' +
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .newSuper.C3_227192472953
-                              ) : (
-                                <span
-                                  style={
-                                    this.state.selectMem[
-                                      this.state.curPeopleKey
-                                    ].checkGroup.supervisor
-                                      ? { color: '#f5222d' }
-                                      : { color: '#999' }
-                                  }
-                                >
-                                  请点击右侧按钮选择主管
-                                </span>
-                              )}
-                            </span>
-                            <Button
-                              disabled={
-                                !this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.supervisor
-                              }
-                              icon="search"
-                              onClick={() =>
-                                this.setState({ searchSuperV: true })
-                              }
-                            >
-                              选择主管
+                              >
+                                选择部门
                             </Button>
-                            <br />
-                            <br />
-                            <Checkbox
-                              checked={
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.job
-                              }
-                              onChange={v => {
-                                this.setCheck('job');
-                                if (!v.target.checked) {
-                                  var rec = this.state.selectMem;
-                                  rec[this.state.curPeopleKey].job = {
-                                    C3_662164716971: ''
-                                  };
-                                  this.setState({ job: rec });
+                              部门代码：
+                              <Input
+
+                                disabled={
+                                  !this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.newDepa
+                                }
+                                value={
+                                  this.state.selectMem[this.state.curPeopleKey]
+                                    .newDepa.C3_419339113187
+                                }
+                                onChange={v => {
+                                  let rec = this.state.selectMem;
                                   rec[
                                     this.state.curPeopleKey
-                                  ].checkGroup.isNew = false;
-                                  this.setState({ isNew: false });
+                                  ].newDepa.C3_419339113187 = v.target.value
+
+                                  this.setState({
+                                    selectMem: rec,
+                                  });
                                 }
-                              }}
-                            >
-                              变更后岗位：
+                                }
+                              />
+
+                              <div>
+                                <b>变更后部门名：</b>
+                                <span>
+                                  {this.state.selectMem[this.state.curPeopleKey]
+                                    .newDepa.DEP_NAME
+                                    ? this.state.selectMem[
+                                      this.state.curPeopleKey
+                                    ].newDepa.DEP_NAME
+                                    : '- -'}
+                                </span>
+                                <b>变更后部门英文名：</b>
+                                <span>
+                                  {this.state.selectMem[this.state.curPeopleKey]
+                                    .newDepa.DEP_NAME_EN
+                                    ? this.state.selectMem[
+                                      this.state.curPeopleKey
+                                    ].newDepa.DEP_NAME_EN
+                                    : '- -'}
+                                </span>
+                                <b>变更后一级部门名：</b>
+                                <span>
+                                  {this.state.selectMem[this.state.curPeopleKey]
+                                    .newDepa.C3_461011984661
+                                    ? this.state.selectMem[
+                                      this.state.curPeopleKey
+                                    ].newDepa.C3_461011984661
+                                    : '- -'}
+                                </span>
+
+                                <b>变更后二级部门名：</b>
+                                <span>
+                                  {this.state.selectMem[this.state.curPeopleKey]
+                                    .newDepa.C3_461011984896
+                                    ? this.state.selectMem[
+                                      this.state.curPeopleKey
+                                    ].newDepa.C3_461011984896
+                                    : '- -'}
+                                </span>
+
+                                <b>变更后三级部门名：</b>
+                                <span>
+                                  {this.state.selectMem[this.state.curPeopleKey]
+                                    .newDepa.C3_461011985099
+                                    ? this.state.selectMem[
+                                      this.state.curPeopleKey
+                                    ].newDepa.C3_461011985099
+                                    : '- -'}
+                                </span>
+
+                                <b>变更后四级部门名：</b>
+                                <span>
+                                  {this.state.selectMem[this.state.curPeopleKey]
+                                    .newDepa.C3_461011985365
+                                    ? this.state.selectMem[
+                                      this.state.curPeopleKey
+                                    ].newDepa.C3_461011985365
+                                    : '- -'}
+                                </span>
+                              </div>
+                              <Checkbox
+                                checked={
+                                  this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.proCode
+                                }
+                                onChange={v => {
+                                  this.setCheck('proCode');
+                                  if (!v.target.checked) {
+                                    this.setValue('', 'proCode');
+                                  }
+                                }}
+                              >
+                                变更后项目代码：
+                            </Checkbox>
+                              <Input
+                                disabled={
+                                  !this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.proCode
+                                }
+                                value={
+                                  this.state.selectMem[this.state.curPeopleKey]
+                                    .proCode
+                                }
+                                onChange={v =>
+                                  this.setValue(v.target.value, 'proCode')
+                                }
+                              />
+                              <br />
+                              <br />
+                              <Checkbox
+                                style={{ marginRight: 8 }}
+                                checked={
+                                  this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.supervisor
+                                }
+                                onChange={v => {
+                                  this.setCheck('supervisor');
+                                  if (!v.target.checked) {
+                                    var rec = this.state.selectMem;
+                                    rec[this.state.curPeopleKey].newSuper = {};
+                                    this.setState({ newSuper: rec });
+                                  }
+                                }}
+                              >
+                                变更后主管：
+                            </Checkbox>
+                              <span
+                                style={{
+                                  minWidth: '248px',
+                                  marginRight: '16px',
+                                  minWidth: '0'
+                                }}
+                              >
+                                {this.state.selectMem[this.state.curPeopleKey]
+                                  .newSuper.C3_227192484125 ? (
+                                    this.state.selectMem[this.state.curPeopleKey]
+                                      .newSuper.C3_227192484125 +
+                                    ' - ' +
+                                    this.state.selectMem[this.state.curPeopleKey]
+                                      .newSuper.C3_227192472953
+                                  ) : (
+                                    <span
+                                      style={
+                                        this.state.selectMem[
+                                          this.state.curPeopleKey
+                                        ].checkGroup.supervisor
+                                          ? { color: '#f5222d' }
+                                          : { color: '#999' }
+                                      }
+                                    >
+                                      请点击右侧按钮选择主管
+                                    </span>
+                                  )}
+                              </span>
+                              <Button
+                                disabled={
+                                  !this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.supervisor
+                                }
+                                icon="search"
+                                onClick={() =>
+                                  this.setState({ searchSuperV: true })
+                                }
+                              >
+                                选择主管
+                            </Button>
+                              <br />
+                              <br />
+                              <Checkbox
+                                checked={
+                                  this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.job
+                                }
+                                onChange={v => {
+                                  this.setCheck('job');
+                                  if (!v.target.checked) {
+                                    var rec = this.state.selectMem;
+                                    rec[this.state.curPeopleKey].job = {
+                                      C3_662164716971: ''
+                                    };
+                                    this.setState({ job: rec });
+                                    rec[
+                                      this.state.curPeopleKey
+                                    ].checkGroup.isNew = false;
+                                    this.setState({ isNew: false });
+                                  }
+                                }}
+                              >
+                                变更后岗位：
                             </Checkbox>
                             &nbsp;无岗位的情况请先和HR联系创建岗位
                             {/* <Checkbox
@@ -1730,8 +1755,8 @@ class IDLTransfer extends Component {
                             >
                               需要新的headcount
                             </Checkbox> */}
-                            <br />
-                            {/* <label>岗位中文名：</label>
+                              <br />
+                              {/* <label>岗位中文名：</label>
                       <Input
                         disabled={
                           !this.state.selectMem[this.state.curPeopleKey]
@@ -1749,40 +1774,40 @@ class IDLTransfer extends Component {
                           this.setState({ job: rec });
                         }}
                       /> */}
-                            <label style={{ marginLeft: 8 }}>岗位名：</label>
-                            <Input
-                              disabled={
-                                !this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.job
-                              }
-                              value={
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .job.C3_662164716971
-                              }
-                              onChange={v => {
-                                let rec = this.state.selectMem;
-                                rec[this.state.curPeopleKey].job = {
-                                  C3_662164716971: v
-                                };
-                                this.setState({ job: rec });
-                              }}
-                            />
-                            <Button
-                              style={{ marginLeft: 8 }}
-                              disabled={
-                                !this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.job
-                              }
-                              icon="search"
-                              onClick={() =>
-                                this.setState({ searchJobV: true })
-                              }
-                            >
-                              选择职位
+                              <label style={{ marginLeft: 8 }}>岗位名：</label>
+                              <Input
+                                disabled={
+                                  !this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.job
+                                }
+                                value={
+                                  this.state.selectMem[this.state.curPeopleKey]
+                                    .job.C3_662164716971
+                                }
+                                onChange={v => {
+                                  let rec = this.state.selectMem;
+                                  rec[this.state.curPeopleKey].job = {
+                                    C3_662164716971: v
+                                  };
+                                  this.setState({ job: rec });
+                                }}
+                              />
+                              <Button
+                                style={{ marginLeft: 8 }}
+                                disabled={
+                                  !this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.job
+                                }
+                                icon="search"
+                                onClick={() =>
+                                  this.setState({ searchJobV: true })
+                                }
+                              >
+                                选择职位
                             </Button>
-                            <br />
-                            <br />
-                            {/* <Checkbox
+                              <br />
+                              <br />
+                              {/* <Checkbox
                                 checked={
                                   this.state.selectMem[this.state.curPeopleKey]
                                     .checkGroup.lv
@@ -1823,21 +1848,21 @@ class IDLTransfer extends Component {
                               </span>
                               <br />
                               <br /> */}
-                            <Checkbox
-                              checked={
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.bucode
-                              }
-                              onChange={v => {
-                                this.setCheck('bucode');
-                                if (!v.target.checked) {
-                                  this.setValue('', 'bucode');
+                              <Checkbox
+                                checked={
+                                  this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.bucode
                                 }
-                              }}
-                            >
-                              BU CODE:
+                                onChange={v => {
+                                  this.setCheck('bucode');
+                                  if (!v.target.checked) {
+                                    this.setValue('', 'bucode');
+                                  }
+                                }}
+                              >
+                                BU CODE:
                             </Checkbox>
-                            {/* <span style={{ width: 'auto' }}>
+                              {/* <span style={{ width: 'auto' }}>
                         <Select
                           disabled={
                             !this.state.selectMem[this.state.curPeopleKey]
@@ -1861,368 +1886,369 @@ class IDLTransfer extends Component {
                           })}
                         </Select>
                       </span> */}
-                            <span
-                              style={{
-                                minWidth: '248px',
-                                marginRight: '16px',
-                                minWidth: '0'
-                              }}
-                            >
-                              {this.state.selectMem[this.state.curPeopleKey]
-                                .bucode ? (
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .bucode
-                              ) : (
-                                <span
-                                  style={
-                                    this.state.selectMem[
-                                      this.state.curPeopleKey
-                                    ].checkGroup.bucode
-                                      ? { color: '#f5222d' }
-                                      : { color: '#999' }
-                                  }
-                                >
-                                  请点击右侧按钮BU CODE
-                                </span>
-                              )}
-                            </span>
-                            <Button
-                              disabled={
-                                !this.state.selectMem[this.state.curPeopleKey]
-                                  .checkGroup.bucode
-                              }
-                              icon="search"
-                              onClick={() =>
-                                this.setState({ searchBucode: true })
-                              }
-                            >
-                              选择BU CODE
+                              <span
+                                style={{
+                                  minWidth: '248px',
+                                  marginRight: '16px',
+                                  minWidth: '0'
+                                }}
+                              >
+                                {this.state.selectMem[this.state.curPeopleKey]
+                                  .bucode ? (
+                                    this.state.selectMem[this.state.curPeopleKey]
+                                      .bucode
+                                  ) : (
+                                    <span
+                                      style={
+                                        this.state.selectMem[
+                                          this.state.curPeopleKey
+                                        ].checkGroup.bucode
+                                          ? { color: '#f5222d' }
+                                          : { color: '#999' }
+                                      }
+                                    >
+                                      请点击右侧按钮BU CODE
+                                    </span>
+                                  )}
+                              </span>
+                              <Button
+                                disabled={
+                                  !this.state.selectMem[this.state.curPeopleKey]
+                                    .checkGroup.bucode
+                                }
+                                icon="search"
+                                onClick={() =>
+                                  this.setState({ searchBucode: true })
+                                }
+                              >
+                                选择BU CODE
                             </Button>
-                            <br />
-                            <br />
-                            <b>变动原因</b>
-                            <b style={{ width: 'auto' }}>
-                              (
+                              <br />
+                              <br />
+                              <b>变动原因</b>
+                              <b style={{ width: 'auto' }}>
+                                (
                               {
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .reason.length
-                              }
+                                  this.state.selectMem[this.state.curPeopleKey]
+                                    .reason.length
+                                }
                               /500字)
                             </b>
-                            <Input.TextArea
-                              maxLength={500}
-                              style={{ resize: 'none' }}
-                              value={
-                                this.state.selectMem[this.state.curPeopleKey]
-                                  .reason
-                              }
-                              onChange={v => {
-                                this.setValue(v.target.value, 'reason');
-                              }}
-                            />
-                          </div>
-
-                          <Modal
-                            title="部门列表"
-                            visible={this.state.searchDepaV}
-                            footer={null}
-                            onCancel={this.clzDepaSearch}
-                            width={'80vw'}
-                            height={'80vh'}
-                          >
-                            <Select
-                              placeholder="请选择级别"
-                              style={{ width: 240 }}
-                              value={this.state.depaFilter}
-                              onChange={v => {
-                                this.setState({ depaFilter: v });
-                              }}
-                            >
-                              {this.state.companyArr.map((item, key) => {
-                                return (
-                                  <Option
-                                    value={item.C3_419448436728}
-                                    key={key}
-                                  >
-                                    {item.C3_419448436728}
-                                  </Option>
-                                );
-                              })}
-                            </Select>
-                            <br />
-                            <br />
-                            <div
-                              style={{
-                                width: '100%',
-                                height: 'calc(80vh - 104px)',
-                                position: 'relative'
-                              }}
-                            >
-                              <TableData
-                                isUseBESize={true}
-                                hasDownload={false}
-                                resid={632327119162}
-                                actionBarWidth={80}
-                                cmswhere={`C3_419339113187 != '' and C3_419448436728 = '${this.state.depaFilter}'`}
-                                hasRowView={false}
-                                subtractH={220}
-                                hasAdd={false}
-                                hasRowSelection={false}
-                                hasRowDelete={false}
-                                hasRowModify={false}
-                                hasModify={false}
-                                hasDelete={false}
-                                style={{ height: '100%' }}
-                                hasRowView={false}
-                                customRowBtns={[
-                                  record => {
-                                    return (
-                                      <Button
-                                        onClick={() => {
-                                          var rec = this.state.selectMem;
-
-                                          rec[
-                                            this.state.curPeopleKey
-                                          ].newDepa = record;
-                                          this.setState({
-                                            selectMem: rec,
-                                            searchDepaV: false
-                                          });
-                                        }}
-                                      >
-                                        选择
-                                      </Button>
-                                    );
-                                  }
-                                ]}
-                              />
-                            </div>
-                          </Modal>
-                          <Modal
-                            title="人员列表"
-                            visible={this.state.searchSuperV}
-                            footer={null}
-                            onCancel={() => {
-                              this.setState({ searchSuperV: false });
-                            }}
-                            width={'80vw'}
-                            height={'80vh'}
-                          >
-                            <div
-                              style={{
-                                width: '100%',
-                                height: 'calc(80vh - 104px)',
-                                position: 'relative'
-                              }}
-                            >
-                              <TableData
-                                resid={609599795438}
-                                hasDownload={false}
-                                actionBarWidth={80}
-                                isUseBESize={true}
-                                hasRowView={false}
-                                subtractH={220}
-                                hasAdd={false}
-                                hasRowSelection={false}
-                                hasRowDelete={false}
-                                hasRowModify={false}
-                                hasModify={false}
-                                hasDelete={false}
-                                style={{ height: '100%' }}
-                                hasRowView={false}
-                                customRowBtns={[
-                                  record => {
-                                    return (
-                                      <Button
-                                        onClick={() => {
-                                          var rec = this.state.selectMem;
-                                          rec[
-                                            this.state.curPeopleKey
-                                          ].newSuper = record;
-                                          this.setState({
-                                            newSuper: rec,
-                                            searchSuperV: false
-                                          });
-                                        }}
-                                      >
-                                        选择
-                                      </Button>
-                                    );
-                                  }
-                                ]}
-                              />
-                            </div>
-                          </Modal>
-                          <Modal
-                            title="岗位列表"
-                            destroyOnClose={true}
-                            visible={this.state.searchJobV}
-                            footer={null}
-                            onCancel={() => {
-                              this.setState({ searchJobV: false });
-                            }}
-                            width={'80vw'}
-                            height={'80vh'}
-                          >
-                            <div
-                              style={{
-                                width: '100%',
-                                height: 'calc(80vh - 104px)',
-                                position: 'relative'
-                              }}
-                            >
-                              <TableData
-                                resid={666280127026}
-                                hasDownload={false}
-                                baseURL={this.baseURL}
-                                actionBarWidth={80}
-                                downloadURL={this.downloadURL}
-                                hasRowView={false}
-                                subtractH={220}
-                                hasAdd={false}
-                                hasRowSelection={false}
-                                hasRowDelete={false}
-                                hasRowModify={false}
-                                hasModify={false}
-                                hasDelete={false}
-                                style={{ height: '100%' }}
-                                hasRowView={false}
-                                customRowBtns={[
-                                  record => {
-                                    return (
-                                      <Button
-                                        onClick={() => {
-                                          var rec = this.state.selectMem;
-                                          rec[
-                                            this.state.curPeopleKey
-                                          ].job = record;
-                                          this.setState({
-                                            job: rec,
-                                            searchJobV: false
-                                          });
-                                        }}
-                                      >
-                                        选择
-                                      </Button>
-                                    );
-                                  }
-                                ]}
-                              />
-                            </div>
-                          </Modal>
-                          <Modal
-                            title="BU CODE列表"
-                            visible={this.state.searchBucode}
-                            footer={null}
-                            destroyOnClose={true}
-                            onCancel={() => {
-                              this.setState({ searchBucode: false });
-                            }}
-                            width={'80vw'}
-                            height={'80vh'}
-                          >
-                            <div
-                              style={{
-                                width: '100%',
-                                height: 'calc(80vh - 104px)',
-                                position: 'relative'
-                              }}
-                            >
-                              <TableData
-                                baseURL={WuxiHr03BaseURL}
-                                hasDownload={false}
-                                resid={bucodeResid}
-                                hasRowView={false}
-                                subtractH={220}
-                                hasAdd={false}
-                                hasRowSelection={false}
-                                hasRowDelete={false}
-                                hasRowModify={false}
-                                hasModify={false}
-                                hasDelete={false}
-                                style={{ height: '100%' }}
-                                hasRowView={false}
-                                customRowBtns={[
-                                  record => {
-                                    return (
-                                      <Button
-                                        onClick={() => {
-                                          var rec = this.state.selectMem;
-                                          rec[this.state.curPeopleKey].bucode =
-                                            record.C3_668189623493;
-                                          this.setState({
-                                            selectMem: rec,
-                                            searchBucode: false
-                                          });
-                                        }}
-                                      >
-                                        选择
-                                      </Button>
-                                    );
-                                  }
-                                ]}
-                              />
-                            </div>
-                          </Modal>
-                          <footer>
-                            <Button onClick={() => this.setState({ step: 0 })}>
-                              上一步
-                            </Button>
-                            <Button
-                              style={
-                                this.state.isSub ? {} : { display: 'none' }
-                              }
-                              type="primary"
-                              onClick={() => this.setState({ step: 2 })}
-                            >
-                              下一步
-                            </Button>
-                            <Button
-                              style={
-                                !this.state.isSub ? {} : { display: 'none' }
-                              }
-                              onClick={() => this.subData(true)}
-                            >
-                              保存
-                            </Button>
-                            <Button
-                              style={
-                                !this.state.isSub ? {} : { display: 'none' }
-                              }
-                              type="primary"
-                              onClick={() => {
-                                if (isDirector) {
-                                  this.subData();
-                                } else {
-                                  message.info('您无权提交申请');
-                                  return;
+                              <Input.TextArea
+                                maxLength={500}
+                                style={{ resize: 'none' }}
+                                value={
+                                  this.state.selectMem[this.state.curPeopleKey]
+                                    .reason
                                 }
-                              }}
-                            >
-                              提交
-                            </Button>
-                          </footer>
-                        </div>
-                      </Spin>
-                    ) : null}
-                    {this.state.step == 2 ? (
-                      <div className="result">
-                        {this.state.result == 'success' ? (
-                          <Icon
-                            type="check-circle"
-                            theme="filled"
-                            style={{ color: '#52c41a' }}
-                          />
-                        ) : (
-                          <Icon
-                            type="close-circle"
-                            theme="filled"
-                            style={{ color: '#f5222d' }}
-                          />
-                        )}
+                                onChange={v => {
+                                  this.setValue(v.target.value, 'reason');
+                                }}
+                              />
+                            </div>
 
-                        <h2>{this.state.hint}</h2>
-                        {/* {this.state.result=='success'?(<>
+                            <Modal
+                              title="部门列表"
+                              visible={this.state.searchDepaV}
+                              footer={null}
+                              onCancel={this.clzDepaSearch}
+                              width={'80vw'}
+                              height={'80vh'}
+                            >
+                              <Select
+                                placeholder="请选择级别"
+                                style={{ width: 240 }}
+                                value={this.state.depaFilter}
+                                onChange={v => {
+                                  this.setState({ depaFilter: v });
+                                }}
+                              >
+                                {this.state.companyArr.map((item, key) => {
+                                  return (
+                                    <Option
+                                      value={item.C3_419448436728}
+                                      key={key}
+                                    >
+                                      {item.C3_419448436728}
+                                    </Option>
+                                  );
+                                })}
+                              </Select>
+                              <br />
+                              <br />
+                              <div
+                                style={{
+                                  width: '100%',
+                                  height: 'calc(80vh - 104px)',
+                                  position: 'relative'
+                                }}
+                              >
+                                <TableData
+                                  isUseBESize={true}
+                                  hasDownload={false}
+                                  resid={632327119162}
+                                  actionBarWidth={80}
+                                  cmswhere={`C3_419448436728 = '${this.state.depaFilter}'`}
+                                  hasRowView={false}
+                                  subtractH={220}
+                                  hasAdd={false}
+                                  hasRowSelection={false}
+                                  hasRowDelete={false}
+                                  hasRowModify={false}
+                                  hasModify={false}
+                                  hasDelete={false}
+                                  style={{ height: '100%' }}
+                                  hasRowView={false}
+                                  customRowBtns={[
+                                    record => {
+                                      return (
+                                        <Button
+                                          onClick={() => {
+                                            let rec = this.state.selectMem;
+                                            let obj = record;
+                                            obj.C3_419339113187 = ''
+                                            rec[
+                                              this.state.curPeopleKey
+                                            ].newDepa = obj;
+                                            this.setState({
+                                              selectMem: rec,
+                                              searchDepaV: false
+                                            });
+                                          }}
+                                        >
+                                          选择
+                                        </Button>
+                                      );
+                                    }
+                                  ]}
+                                />
+                              </div>
+                            </Modal>
+                            <Modal
+                              title="人员列表"
+                              visible={this.state.searchSuperV}
+                              footer={null}
+                              onCancel={() => {
+                                this.setState({ searchSuperV: false });
+                              }}
+                              width={'80vw'}
+                              height={'80vh'}
+                            >
+                              <div
+                                style={{
+                                  width: '100%',
+                                  height: 'calc(80vh - 104px)',
+                                  position: 'relative'
+                                }}
+                              >
+                                <TableData
+                                  resid={609599795438}
+                                  hasDownload={false}
+                                  actionBarWidth={80}
+                                  isUseBESize={true}
+                                  hasRowView={false}
+                                  subtractH={220}
+                                  hasAdd={false}
+                                  hasRowSelection={false}
+                                  hasRowDelete={false}
+                                  hasRowModify={false}
+                                  hasModify={false}
+                                  hasDelete={false}
+                                  style={{ height: '100%' }}
+                                  hasRowView={false}
+                                  customRowBtns={[
+                                    record => {
+                                      return (
+                                        <Button
+                                          onClick={() => {
+                                            var rec = this.state.selectMem;
+                                            rec[
+                                              this.state.curPeopleKey
+                                            ].newSuper = record;
+                                            this.setState({
+                                              newSuper: rec,
+                                              searchSuperV: false
+                                            });
+                                          }}
+                                        >
+                                          选择
+                                        </Button>
+                                      );
+                                    }
+                                  ]}
+                                />
+                              </div>
+                            </Modal>
+                            <Modal
+                              title="岗位列表"
+                              destroyOnClose={true}
+                              visible={this.state.searchJobV}
+                              footer={null}
+                              onCancel={() => {
+                                this.setState({ searchJobV: false });
+                              }}
+                              width={'80vw'}
+                              height={'80vh'}
+                            >
+                              <div
+                                style={{
+                                  width: '100%',
+                                  height: 'calc(80vh - 104px)',
+                                  position: 'relative'
+                                }}
+                              >
+                                <TableData
+                                  resid={666280127026}
+                                  hasDownload={false}
+                                  baseURL={this.baseURL}
+                                  actionBarWidth={80}
+                                  downloadURL={this.downloadURL}
+                                  hasRowView={false}
+                                  subtractH={220}
+                                  hasAdd={false}
+                                  hasRowSelection={false}
+                                  hasRowDelete={false}
+                                  hasRowModify={false}
+                                  hasModify={false}
+                                  hasDelete={false}
+                                  style={{ height: '100%' }}
+                                  hasRowView={false}
+                                  customRowBtns={[
+                                    record => {
+                                      return (
+                                        <Button
+                                          onClick={() => {
+                                            var rec = this.state.selectMem;
+                                            rec[
+                                              this.state.curPeopleKey
+                                            ].job = record;
+                                            this.setState({
+                                              job: rec,
+                                              searchJobV: false
+                                            });
+                                          }}
+                                        >
+                                          选择
+                                        </Button>
+                                      );
+                                    }
+                                  ]}
+                                />
+                              </div>
+                            </Modal>
+                            <Modal
+                              title="BU CODE列表"
+                              visible={this.state.searchBucode}
+                              footer={null}
+                              destroyOnClose={true}
+                              onCancel={() => {
+                                this.setState({ searchBucode: false });
+                              }}
+                              width={'80vw'}
+                              height={'80vh'}
+                            >
+                              <div
+                                style={{
+                                  width: '100%',
+                                  height: 'calc(80vh - 104px)',
+                                  position: 'relative'
+                                }}
+                              >
+                                <TableData
+                                  baseURL={WuxiHr03BaseURL}
+                                  hasDownload={false}
+                                  resid={bucodeResid}
+                                  hasRowView={false}
+                                  subtractH={220}
+                                  hasAdd={false}
+                                  hasRowSelection={false}
+                                  hasRowDelete={false}
+                                  hasRowModify={false}
+                                  hasModify={false}
+                                  hasDelete={false}
+                                  style={{ height: '100%' }}
+                                  hasRowView={false}
+                                  customRowBtns={[
+                                    record => {
+                                      return (
+                                        <Button
+                                          onClick={() => {
+                                            var rec = this.state.selectMem;
+                                            rec[this.state.curPeopleKey].bucode =
+                                              record.C3_668189623493;
+                                            this.setState({
+                                              selectMem: rec,
+                                              searchBucode: false
+                                            });
+                                          }}
+                                        >
+                                          选择
+                                        </Button>
+                                      );
+                                    }
+                                  ]}
+                                />
+                              </div>
+                            </Modal>
+                            <footer>
+                              <Button onClick={() => this.setState({ step: 0 })}>
+                                上一步
+                            </Button>
+                              <Button
+                                style={
+                                  this.state.isSub ? {} : { display: 'none' }
+                                }
+                                type="primary"
+                                onClick={() => this.setState({ step: 2 })}
+                              >
+                                下一步
+                            </Button>
+                              <Button
+                                style={
+                                  !this.state.isSub ? {} : { display: 'none' }
+                                }
+                                onClick={() => this.subData(true)}
+                              >
+                                保存
+                            </Button>
+                              <Button
+                                style={
+                                  !this.state.isSub ? {} : { display: 'none' }
+                                }
+                                type="primary"
+                                onClick={() => {
+                                  if (isDirector) {
+                                    this.subData();
+                                  } else {
+                                    message.info('您无权提交申请');
+                                    return;
+                                  }
+                                }}
+                              >
+                                提交
+                            </Button>
+                            </footer>
+                          </div>
+                        </Spin>
+                      ) : null}
+                      {this.state.step == 2 ? (
+                        <div className="result">
+                          {this.state.result == 'success' ? (
+                            <Icon
+                              type="check-circle"
+                              theme="filled"
+                              style={{ color: '#52c41a' }}
+                            />
+                          ) : (
+                              <Icon
+                                type="close-circle"
+                                theme="filled"
+                                style={{ color: '#f5222d' }}
+                              />
+                            )}
+
+                          <h2>{this.state.hint}</h2>
+                          {/* {this.state.result=='success'?(<>
                   <p>本次申请需要以下人员审批：</p>
                   <ul>
                     {this.state.checkPoint.map(item =>{return(
@@ -2230,52 +2256,52 @@ class IDLTransfer extends Component {
                      ) })}
                   </ul>
               </>):null} */}
-                        {this.state.result == 'success' ? (
-                          <>
-                            <Button
-                              style={{ marginRight: '16px', width: '120px' }}
-                              onClick={() => {
-                                this.setState({
-                                  step: 0,
-                                  isSub: false,
-                                  depaMemberV: null,
-                                  selMemberV: null
-                                });
-                              }}
-                            >
-                              再申请一人
+                          {this.state.result == 'success' ? (
+                            <>
+                              <Button
+                                style={{ marginRight: '16px', width: '120px' }}
+                                onClick={() => {
+                                  this.setState({
+                                    step: 0,
+                                    isSub: false,
+                                    depaMemberV: null,
+                                    selMemberV: null
+                                  });
+                                }}
+                              >
+                                再申请一人
                             </Button>
-                            <Button
-                              style={{ marginRight: '16px', width: '120px' }}
-                              onClick={() => {
-                                this.setState({
-                                  step: 0,
-                                  page: '2',
-                                  isSub: false
-                                });
-                              }}
-                              type="primary"
-                            >
-                              查看审批记录
+                              <Button
+                                style={{ marginRight: '16px', width: '120px' }}
+                                onClick={() => {
+                                  this.setState({
+                                    step: 0,
+                                    page: '2',
+                                    isSub: false
+                                  });
+                                }}
+                                type="primary"
+                              >
+                                查看审批记录
                             </Button>
-                          </>
-                        ) : (
-                          <>
-                            <Button
-                              style={{ marginRight: '16px', width: '120px' }}
-                              onClick={() => {
-                                this.setState({ step: 1 });
-                              }}
-                            >
-                              返回查看
+                            </>
+                          ) : (
+                              <>
+                                <Button
+                                  style={{ marginRight: '16px', width: '120px' }}
+                                  onClick={() => {
+                                    this.setState({ step: 1 });
+                                  }}
+                                >
+                                  返回查看
                             </Button>
-                            {/* <Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:2})}} type='primary'>再试一次</Button> */}
-                          </>
-                        )}
-                      </div>
-                    ) : null}
-                  </div>
-                )}
+                                {/* <Button style={{marginRight:'16px',width:'120px'}} onClick={()=>{this.setState({step:2})}} type='primary'>再试一次</Button> */}
+                              </>
+                            )}
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
               </TabPane>
               <TabPane tab="我发起的审批记录" key="2">
                 {!isDirector ? (
@@ -2285,11 +2311,11 @@ class IDLTransfer extends Component {
                     </h3>
                   </div>
                 ) : (
-                  <div className="wrap">
-                    {/* view */}
-                    <IDLTransferVerify mode="view"></IDLTransferVerify>
-                  </div>
-                )}
+                    <div className="wrap">
+                      {/* view */}
+                      <IDLTransferVerify mode="view"></IDLTransferVerify>
+                    </div>
+                  )}
               </TabPane>
 
               <TabPane tab="我的审核" key="3">

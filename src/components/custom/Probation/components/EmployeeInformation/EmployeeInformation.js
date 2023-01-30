@@ -233,11 +233,12 @@ class EmployeeInformation extends React.Component {
                             status = 'error';
                           }
                           return (
-                            <Step
-                              title={item.name}
-                              description={item.C3_659447231160}
-                              status={status}
-                            />
+                            item.name ?
+                              <Step
+                                title={item.name}
+                                description={item.C3_659447231160}
+                                status={status}
+                              /> : null
                           );
                         })}
                       </Steps>

@@ -86,7 +86,7 @@ class SeeFeedback extends React.Component {
       tempRate.rate8 = data.C3_615640235456; //时间控制合理使我感到舒适
       tempRate.rate9 = data.C3_722087822472;//我对本次课程整体满意
       tempRate.rate10 = data.C3_722087862632;//我愿意向朋友或同事推荐这门课程
-      tempRate.rate11 = data.C3_722087899198;//在培训过程中，培训组织者基于我足够的后勤支持
+      tempRate.rate11 = data.C3_722087899198;//在培训过程中，培训组织者给予我足够的后勤支持
       tempRate.rate12 = data.C3_722087926763;//培训场地设备设施完整无故障
       const otherAdvice = {
         shortcommings: data.C3_622216725340,
@@ -326,15 +326,15 @@ class SeeFeedback extends React.Component {
                 </Col>
               </Row>
             </Card>
-            <Card type="inner" title="讲师专业水平" className="cardinner">
+            {/* <Card type="inner" title="讲师专业水平" className="cardinner">
               <Row>
                 <Col span={12}>讲师备课充分，对授课内容非常了解</Col>
                 <Col span={12}>
                   <Rate value={this.state.rate.rate1} disabled />
                 </Col>
               </Row>
-            </Card>
-            <Card type="inner" title="课程内容安排" className="cardinner">
+            </Card> */}
+            <Card type="inner" title="课程内容满意度" className="cardinner">
               <Row>
                 <Col span={12}>本次培训的主题明确，逻辑清晰，内容充实，有针对性</Col>
                 <Col span={12}>
@@ -360,7 +360,7 @@ class SeeFeedback extends React.Component {
                 </Col>
               </Row>
             </Card>
-            <Card type="inner" title="授课技巧" className="cardinner">
+            <Card type="inner" title="培训师满意度" className="cardinner">
               <Row>
                 <Col span={12}>培训师具有足够的专业知识和经验</Col>
                 <Col span={12}>
@@ -412,7 +412,7 @@ class SeeFeedback extends React.Component {
             </Card>
             <Card type="inner" title="培训组织与支持" className="cardinner">
               <Row>
-                <Col span={12}>在培训过程中，培训组织者基于我足够的后勤支持</Col>
+                <Col span={12}>在培训过程中，培训组织者给予我足够的后勤支持</Col>
                 <Col span={12}>
                   <Rate value={this.state.rate.rate11} disabled />
                 </Col>
@@ -554,15 +554,15 @@ class SeeFeedback extends React.Component {
                   </Col>
                 </Row>
               </Card>
-              <Card type="inner" title="讲师专业水平" className="cardinner">
+              {/* <Card type="inner" title="讲师专业水平" className="cardinner">
                 <Row>
                   <Col span={8}>讲师备课充分，对授课内容非常了解</Col>
                   <Col span={8}>
                     <Rate value={selectedCourse.C3_622480373149} disabled />
                   </Col>
                 </Row>
-              </Card>
-              <Card type="inner" title="课程内容安排" className="cardinner">
+              </Card> */}
+              <Card type="inner" title="课程内容满意度" className="cardinner">
                 <Row>
                   <Col span={8}>本次培训的主题明确，逻辑清晰，内容充实，有针对性</Col>
                   <Col span={8}>
@@ -588,7 +588,7 @@ class SeeFeedback extends React.Component {
                   </Col>
                 </Row>
               </Card>
-              <Card type="inner" title="授课技巧" className="cardinner">
+              <Card type="inner" title="培训师满意度" className="cardinner">
                 <Row>
                   <Col span={8}>培训师具有足够的专业知识和经验</Col>
                   <Col span={8}>
@@ -640,7 +640,7 @@ class SeeFeedback extends React.Component {
               </Card>
               <Card type="inner" title="培训组织与支持" className="cardinner">
                 <Row>
-                  <Col span={8}>在培训过程中，培训组织者基于我足够的后勤支持</Col>
+                  <Col span={8}>在培训过程中，培训组织者给予我足够的后勤支持</Col>
                   <Col span={8}>
                     <Rate value={selectedCourse.C3_722105530817} disabled />
                   </Col>

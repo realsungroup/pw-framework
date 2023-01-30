@@ -132,9 +132,9 @@ export default class LzAFFOS extends React.Component {
     this.inApplicationRef = React.createRef();
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
-  componentWillUnmount = () => {};
+  componentWillUnmount = () => { };
 
   handleTabsChange = activeKey => {
     this.setState({ activeKey });
@@ -911,12 +911,12 @@ export default class LzAFFOS extends React.Component {
                             fontSize: '14px'
                           }}
                         >
-                          您的申请已提交，所有外部人员需检查锡康码及行动轨迹
+                          您的申请已提交，所有外部人员需检查锡康码
                         </p>
                       </div>
                     )
                   }}
-                  actionBarExtra={({}) => {
+                  actionBarExtra={({ }) => {
                     return (
                       <>
                         <Button
@@ -1605,7 +1605,7 @@ export default class LzAFFOS extends React.Component {
             <div>
               <label>是否长期施工</label>
               <Switch
-                onChange={checked => {}}
+                onChange={checked => { }}
                 checkedChildren="是"
                 unCheckedChildren="否"
               />
@@ -1642,7 +1642,7 @@ class AddWorker extends React.PureComponent {
         <div>
           <label>是否长期施工</label>
           <Switch
-            onChange={checked => {}}
+            onChange={checked => { }}
             checkedChildren="是"
             unCheckedChildren="否"
           />

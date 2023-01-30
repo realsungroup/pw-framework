@@ -5,7 +5,7 @@ import http from 'Util20/api';
 import './TreeRel.less';
 
 const { TreeNode } = Tree;
-var bol = false;
+let bol = false;
 // 实例化时必须传入的数据
 
 // {
@@ -68,8 +68,8 @@ class TreeRel extends React.Component {
 
   onSetRoot = async () => {
     console.log('set root');
-    var sel = this.state.selectedId[0];
-    var prev = this.state.prevID;
+    let sel = this.state.selectedId[0];
+    let prev = this.state.prevID;
     console.log(this.state.selectedId);
     this.setState({ ProductIDs: sel });
     this.setState({ selectedKeys: [sel.toString()] });
@@ -87,8 +87,8 @@ class TreeRel extends React.Component {
         ColumnOfPID: this.state.ColumnOfPID, //要查的人的父ID的字段名
         ProductIDs: sel //要查的人的ID
       });
-      var arr = [];
-      var n = 0;
+      let arr = [];
+      let n = 0;
       while (n < res.nodes.length) {
         if (this.state.ProductIDs == res.nodes[n][this.state.ColumnOfID]) {
           arr.push({
@@ -104,7 +104,7 @@ class TreeRel extends React.Component {
       }
       console.log(this.state.prevIDAction);
       this.setState({ treeData: arr });
-      var arr2 = this.state.treeHis;
+      let arr2 = this.state.treeHis;
       arr2.push(arr);
       this.setState({ treeHis: arr2 });
     } catch (error) {
@@ -114,7 +114,7 @@ class TreeRel extends React.Component {
   };
   onSetBack = async treeNode => {
     console.log('set back');
-    var sel = this.state.prevIDAction;
+    let sel = this.state.prevIDAction;
     console.log(sel, this.state.orgID);
     if (sel == this.state.orgID || sel == 0) {
       this.setState({ showBack: false });
@@ -135,8 +135,8 @@ class TreeRel extends React.Component {
         ColumnOfPID: this.state.ColumnOfPID, //要查的人的父ID的字段名
         ProductIDs: sel //要查的人的ID
       });
-      var arr = [];
-      var n = 0;
+      let arr = [];
+      let n = 0;
       while (n < res.nodes.length) {
         if (this.state.ProductIDs == res.nodes[n][this.state.ColumnOfID]) {
           arr.push({
@@ -165,8 +165,8 @@ class TreeRel extends React.Component {
   };
 
   // onSetBack(){
-  //   var sT=this.refs.sideBg.scrollTop;
-  //   var arr=this.state.treeHis;
+  //   let sT=this.refs.sideBg.scrollTop;
+  //   let arr=this.state.treeHis;
   //   // console.log(arr)
   //   arr.pop();
   //   console.log(arr)
@@ -185,7 +185,7 @@ class TreeRel extends React.Component {
   // }
   onExpand(selectedKeys, e) {
     // console.log('66666',selectedKeys,e)
-    var sT = this.refs.sideBg.scrollTop;
+    let sT = this.refs.sideBg.scrollTop;
     // console.log(e.node.props.selected);
     if (e.node.props.selected == false) {
       this.refs.shrink.style.top = '8px';
@@ -239,9 +239,9 @@ class TreeRel extends React.Component {
         ProductIDs: treeNode.props.dataRef.key //要查的人的ID
       });
 
-      var arr = [];
-      var arrData = this.state.dataNode;
-      var n = 0;
+      let arr = [];
+      let arrData = this.state.dataNode;
+      let n = 0;
       while (n < res.nodes.length) {
         if (treeNode.props.dataRef.key != res.nodes[n][this.state.ColumnOfID]) {
           if (res.nodes[n].totalNodes == 0) {
@@ -274,7 +274,7 @@ class TreeRel extends React.Component {
       });
       this.setState({ dataNode: arrData });
 
-      // var arr2 = this.state.treeHis;
+      // let arr2 = this.state.treeHis;
       // arr2.pop();
       // arr2.push(this.state.treeData);
       // this.setState({ treeHis: arr2 });
@@ -311,18 +311,21 @@ class TreeRel extends React.Component {
         ColumnOfPID: this.state.ColumnOfPID, //要查的人的父ID的字段名
         ProductIDs: this.state.ProductIDs //要查的人的ID
       });
-      var arr = [];
-      var arrData = this.state.dataNode;
+      let arr = [];
+      let arrData = this.state.dataNode;
 
-      var n = 0;
+      let n = 0;
       while (n < res.nodes.length) {
         if (this.state.ProductIDs == res.nodes[n][this.state.ColumnOfID]) {
           arrData.push(res.nodes[n]);
+          let titleStr = (res.nodes[n][this.state.name] || '') +
+            (res.nodes[n][this.state.nameEn] || '') +
+            (res.nodes[n][this.state.location] || '');
+          if (this.props.isManager && (titleStr.indexOf('兰发华') != -1)) {
+            titleStr = '员工管理'
+          }
           arr.push({
-            title:
-              (res.nodes[n][this.state.name] || '') +
-              (res.nodes[n][this.state.nameEn] || '') +
-              (res.nodes[n][this.state.location] || ''),
+            title: titleStr,
             key: res.nodes[n][this.state.ColumnOfID],
             prevID: 'top'
           });
@@ -331,12 +334,12 @@ class TreeRel extends React.Component {
       }
 
       this.setState({ treeData: arr });
-      // var arr2 = this.state.treeHis;
+      // let arr2 = this.state.treeHis;
       // arr2.push(arr);
       this.setState({ dataNode: arrData });
 
 
-      var obj = this.state.dataNode[0];
+      let obj = this.state.dataNode[0];
       this.props.onSelect(obj);
       this.setState({ lastSelected: this.refs.sideBg.children[0].children[0].children[1] });
 
@@ -348,7 +351,7 @@ class TreeRel extends React.Component {
   };
 
   onSelect = (selectedKeys, e) => {
-    var sT = this.refs.sideBg.scrollTop;
+    let sT = this.refs.sideBg.scrollTop;
     this.setState({ selectedOffsetTop: e.node.selectHandle.offsetTop });
     this.setState({ selectedId: selectedKeys });
     // console.log(selectedKeys);
@@ -375,9 +378,9 @@ class TreeRel extends React.Component {
       // this.setState({ hover: false });
       // this.refs.setRoot.style.top = '-40px';
     }
-    var i = 0;
-    var obj;
-    var lst = this.state.lastSelected;
+    let i = 0;
+    let obj;
+    let lst = this.state.lastSelected;
     while (i < this.state.dataNode.length) {
       if (this.state.dataNode[i][this.state.ColumnOfID] == selectedKeys[0]) {
         obj = this.state.dataNode[i];
@@ -385,7 +388,7 @@ class TreeRel extends React.Component {
       }
       i++;
     }
-    var dom;
+    let dom;
 
     if (obj) {
       this.props.onSelect(obj);
