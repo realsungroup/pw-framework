@@ -2737,27 +2737,31 @@ class LzTable extends React.Component {
       console.error(err);
       return message.error(err.message);
     }
-    if (res.data.length) {
-      const value = res.data[0].C3_606500587548;
-      if (value) {
-        Modal.confirm({
-          title: '提醒',
-          content: value,
-          onOk: () => {
-            this.refreshTableData();
-            Modal.destroyAll();
-          }
-        });
-      } else {
-        message.success('操作成功');
-        this.refreshTableData();
-      }
-    } else {
-      this.setState({
-        submitLoading: false
-      })
-      message.error('操作失败');
-    }
+    this.refreshTableData();
+          Modal.destroyAll();
+           message.success('操作成功');
+    // if (res.data.length) {
+      // const value = res.data[0].C3_606500587548;
+      // const value = "确认要提交吗？"
+      // if (value) {
+      // Modal.confirm({
+      //   title: '提醒',
+      //   content: value,
+      //   onOk: () => {
+      //     this.refreshTableData();
+      //     Modal.destroyAll();
+      //   }
+      // });
+      // } else {
+      //   message.success('操作成功');
+      //   this.refreshTableData();
+      // }
+    // } else {
+    //   this.setState({
+    //     submitLoading: false
+    //   })
+    //   message.error('操作失败');
+    // }
     this.setState({
       submitLoading: false
     })

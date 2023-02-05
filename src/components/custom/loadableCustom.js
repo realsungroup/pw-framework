@@ -1013,3 +1013,9 @@ export const DoorManagement = Loadable({
     return minLoading;
   }
 });
+export const PunishmentPrint = Loadable({
+  loader: () => import('./PunishmentPrint'),
+  loading() {
+    return minLoading;
+  }
+});

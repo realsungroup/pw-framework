@@ -228,9 +228,9 @@ window[590765309983] = {
   title: '违纪管理',
   name: 'LzMenuContainer',
   props: {
-    jump:
-      'http://10.108.2.66:805/fnmodule?resid=590765309983&recid=610540465303&type=undefined&title=违纪管理',
-    baseURL: 'http://10.108.2.66:9091/',
+    // jump:
+    //   'http://10.108.2.66:805/fnmodule?resid=590765309983&recid=610540465303&type=undefined&title=违纪管理',
+    baseURL: 'http://10.108.2.66:1001/',
     noDataTip: '暂无数据，请选择员工',
     resid: 590671418888,
     searchFields: [
@@ -10518,5 +10518,11 @@ window[723578280726] = {
     showChaoshi: false, //是否显示超时工时统计
     showAnnualLeaveDetail: false, //是否显示年假明细
     isManager: true
+  }
+};
+window[728734019224] = {
+  name: 'PunishmentPrint',
+  title: '打印违纪单',
+  props: {
   }
 };
