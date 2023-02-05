@@ -10520,9 +10520,9 @@ window[723578280726] = {
     isManager: true
   }
 };
-window[728734019224] = {
-  name: 'PunishmentPrint',
-  title: '打印违纪单',
+window[728914680096] = {
+  name: 'PunishmentHistory',
+  title: '违纪升级记录',
   props: {
   }
 };

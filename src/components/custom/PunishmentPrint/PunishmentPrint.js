@@ -10,7 +10,7 @@ const recordID = '590863325025'; //违纪表
 const warnID = '617814775752'; //警告
 const moreWarnID = '617814800356'; //较重警告
 const betterWarnID = '617814826190'; //严重警告
-export default class Print extends Component {
+export default class PunishmentPrint extends Component {
   constructor(props) {
     super(props);
     this.state = {

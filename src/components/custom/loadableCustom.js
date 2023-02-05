@@ -1013,8 +1013,8 @@ export const DoorManagement = Loadable({
     return minLoading;
   }
 });
-export const PunishmentPrint = Loadable({
-  loader: () => import('./PunishmentPrint'),
+export const PunishmentHistory = Loadable({
+  loader: () => import('./PunishmentHistory'),
   loading() {
     return minLoading;
   }
