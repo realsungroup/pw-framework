@@ -10520,9 +10520,32 @@ window[723578280726] = {
     isManager: true
   }
 };
+//以下是违纪升级新加的功能
 window[728914680096] = {
   name: 'PunishmentHistory',
   title: '违纪升级记录',
   props: {
   }
 };
+window[728997522103] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '组长名单', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormUseAbsolute: true,
+    resid: 728996646072,
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
