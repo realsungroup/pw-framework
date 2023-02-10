@@ -3,9 +3,8 @@ window[606476781618] = {
   name: 'AdminConfirm',
   title: '录入',
   props: {
-    baseURL: 'http://10.108.2.66:9091/',
     resid: 605617716920,
-    hasBeBtns: false,
+    hasBeBtns: true,
     hasAdd: false,
     hasModify: false,
     hasDelete: false,
@@ -358,18 +357,18 @@ window[590765309983] = {
           innerFieldNames: ['C3_591373760332'],
           values: ['Y']
         },
-        // {
-        //   //提交后这个按钮隐藏
-        //   btnName: '撤销',
-        //   innerFieldNames: [
-        //     // 'C3_590512213622',
-        //     // 'C3_591373760332',
-        //     // 'C3_605619907534'
-        //     'C3_591373760332'
-        //   ],
-        //   values:['Y']
-        //   // values: ['Y', null, 'Y']
-        // },
+        {
+          //提交后这个按钮隐藏
+          btnName: '撤销',
+          innerFieldNames: [
+            // 'C3_590512213622',
+            // 'C3_591373760332',
+            // 'C3_605619907534'
+            'C3_591373760332'
+          ],
+          values: ['Y']
+          // values: ['Y', null, 'Y']
+        },
         {
           btnName: '修改',
           innerFieldNames: ['C3_591373760332'],
@@ -410,7 +409,6 @@ window[592305842055] = {
   // name: 'LzTable',
   name: 'StatisticAnalysisJC',
   props: {
-    baseURL: 'http://10.108.2.66:9091/',
     // 单元组件 props
     resid: 590863325025,
     isSearch: false,

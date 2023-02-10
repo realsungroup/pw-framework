@@ -75,7 +75,7 @@ let punishPreCal = (arr, type) => {
     //循环计算升级
     let res = loopCal(false, counter, _res);
     if (_res) {
-        let result = arr[0].C3_590510740042 + '(' + arr[0].C3_590510737521 + ')将生成一条' + _res + '记录,是否继续提交？';
+        let result = arr[0].C3_590510740042 + '(' + arr[0].C3_590510737521 + ')将' + _res + '记录,是否继续提交？';
         return result;
     } else {
         return false;
