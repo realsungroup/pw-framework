@@ -133,7 +133,7 @@ class PunishmentHistory extends Component {
             />
           </Modal>
           <TableData
-            resid={590863325025}
+            resid={this.state.cmsBread.length === 0 ? 729525636543 : 729526101724}
             hasRowView={false}
             cmswhere={this.state.cms}
             hasAdd={false}
