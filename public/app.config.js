@@ -242,7 +242,7 @@ window.pwConfig = {
     baseURL: 'http://192.168.6.161:1001/', // 请求的基地址
     realsunApiBaseURL: 'http://192.168.6.161:9091/',
     hikApiBaseURL: 'http://192.168.6.162:7700/', // 海康接口层基地址
-    collectApiBaseURL: 'http://192.168.6.162:7800/',
+    collectApiBaseURL: 'http://192.168.6.162:7801/',
     hikPageURL: 'https://192.168.6.162',
     basename: '/',
     // baseURL: 'https://finisarinterview.realsun.me/', // 请求的基地址
