@@ -120,21 +120,11 @@ class EmployeeCourses extends React.Component {
     searchKey: '', //搜索的关键字
     // 内训评分
     rate: {
-      rate1: 5,
-      rate2: 5,
-      rate3: 5,
-      rate4: 5,
-      rate5: 5,
-      rate6: 5,
-      rate7: 5,
-      rate8: 5
+
     },
     // 外训评分
     rateOut: {
-      rate1: 5,
-      rate2: 5,
-      rate3: 5,
-      rate4: 5
+
     },
     //员工对课程的建议（评价）
     internalTrainingOtherAdvice: {
@@ -771,6 +761,13 @@ class EmployeeCourses extends React.Component {
           return message.info(`第${index + 1}项行动计划不能为空`);
         }
       }
+      if (rate.rate2 && rate.rate3 && rate.rate2_1 && rate.rate2_2 && rate.rate3_1 && rate.rate3_2 && rate.rate4 && rate.rate5 && rate.rate6 && rate.rate7 && rate.rate8 && rate.rate9 && rate.rate10 && rate.rate11 && rate.rate12) {
+
+      } else {
+        return message.info('未填完评分项');
+
+      }
+
       this.setState({
         loadings: {
           ...this.state.loadings,
@@ -834,37 +831,42 @@ class EmployeeCourses extends React.Component {
           internalTrainingOtherAdvice.advantages.trim() &&
           internalTrainingOtherAdvice.shortcommings.trim()
         ) {
-          res = await http().addRecords({
-            resid: 478367996508,
-            data: [
-              {
-                C3_478368118696: this.state.selectedCourse
-                  .CourseArrangeDetailID, //  课程安排明细ID
-                C3_615639978971: rate.rate1, //讲师备课充分，对授课内容非常了解
-                C3_615640010121: rate.rate2, //本次培训的主题明确，逻辑清晰，内容充实，有针对性
-                C3_615640043869: rate.rate3, //我所学到的内容对实际工作或个人发展有帮助
-                C3_722076452880: rate.rate2_1,//有合适的课前调研，并且调研结果与课程内容联系紧密
-                C3_722076492665: rate.rate2_2,//课程时长设置合适，课程进度不紧迫不冗长
-                C3_722079578079: rate.rate3_1, //培训师具有足够的专业知识和经验
-                C3_722079636630: rate.rate3_2, //培训师备课充分，对授课内容非常熟悉，课件设计美观大方
-                C3_615640107592: rate.rate4, //培训师语言表达能力好，音量和语速适中，讲解清晰生动，能够运用肢体语言
-                C3_615640157603: rate.rate5, //培训师能够引入实际案例和例证，讲解透彻，激发学员思考
-                C3_615640180269: rate.rate6, //培训师能设置提问，小组讨论等互动环节，使学员积极参与其中
-                C3_615640206802: rate.rate7, //培训师能够及时，认真地回答学员提出的问题
-                C3_615640235456: rate.rate8, //时间控制合理使我感到舒适
-                C3_722087822472: rate.rate9,//我对本次课程整体满意
-                C3_722087862632: rate.rate10,//我愿意向朋友或同事推荐这门课程
-                C3_722087899198: rate.rate11,//在培训过程中，培训组织者给予我足够的后勤支持
-                C3_722087926763: rate.rate12,//培训场地设备设施完整无故障
-                C3_622216706104: internalTrainingOtherAdvice.advantages,
-                C3_622216725340: internalTrainingOtherAdvice.shortcommings
-              }
-            ],
-            isEditOrAdd: true
-          });
-          message.success(res.message);
-          this.setState({ feebackVisible: false, feedbackModalMode: 'view' });
-          this.getCourseById();
+          if (rate.rate2 && rate.rate3 && rate.rate2_1 && rate.rate2_2 && rate.rate3_1 && rate.rate3_2 && rate.rate4 && rate.rate5 && rate.rate6 && rate.rate7 && rate.rate8 && rate.rate9 && rate.rate10 && rate.rate11 && rate.rate12) {
+            res = await http().addRecords({
+              resid: 478367996508,
+              data: [
+                {
+                  C3_478368118696: this.state.selectedCourse
+                    .CourseArrangeDetailID, //  课程安排明细ID
+                  C3_615639978971: rate.rate1, //讲师备课充分，对授课内容非常了解
+                  C3_615640010121: rate.rate2, //本次培训的主题明确，逻辑清晰，内容充实，有针对性
+                  C3_615640043869: rate.rate3, //我所学到的内容对实际工作或个人发展有帮助
+                  C3_722076452880: rate.rate2_1,//有合适的课前调研，并且调研结果与课程内容联系紧密
+                  C3_722076492665: rate.rate2_2,//课程时长设置合适，课程进度不紧迫不冗长
+                  C3_722079578079: rate.rate3_1, //培训师具有足够的专业知识和经验
+                  C3_722079636630: rate.rate3_2, //培训师备课充分，对授课内容非常熟悉，课件设计美观大方
+                  C3_615640107592: rate.rate4, //培训师语言表达能力好，音量和语速适中，讲解清晰生动，能够运用肢体语言
+                  C3_615640157603: rate.rate5, //培训师能够引入实际案例和例证，讲解透彻，激发学员思考
+                  C3_615640180269: rate.rate6, //培训师能设置提问，小组讨论等互动环节，使学员积极参与其中
+                  C3_615640206802: rate.rate7, //培训师能够及时，认真地回答学员提出的问题
+                  C3_615640235456: rate.rate8, //时间控制合理使我感到舒适
+                  C3_722087822472: rate.rate9,//我对本次课程整体满意
+                  C3_722087862632: rate.rate10,//我愿意向朋友或同事推荐这门课程
+                  C3_722087899198: rate.rate11,//在培训过程中，培训组织者给予我足够的后勤支持
+                  C3_722087926763: rate.rate12,//培训场地设备设施完整无故障
+                  C3_622216706104: internalTrainingOtherAdvice.advantages,
+                  C3_622216725340: internalTrainingOtherAdvice.shortcommings
+                }
+              ],
+              isEditOrAdd: true
+            });
+            message.success(res.message);
+            this.setState({ feebackVisible: false, feedbackModalMode: 'view' });
+            this.getCourseById();
+          } else {
+            return message.info('未填完评分项');
+          }
+
         } else {
           return message.info('收益内容与改进内容为必填项');
         }

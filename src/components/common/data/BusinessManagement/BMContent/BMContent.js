@@ -80,7 +80,7 @@ class BMContent extends React.Component {
             <TableData
               resid={resid}
               dataMode="main"
-              subtractH={190}
+              subtractH={240}
               height={520}
               onRowClick={this.handleRowClick}
               hasBeBtns
@@ -100,7 +100,7 @@ class BMContent extends React.Component {
                         subresid={parseInt(subTable.resid, 10)}
                         dataMode="sub"
                         hostrecid={selectedRecord.REC_ID}
-                        subtractH={190}
+                        subtractH={240}
                         height={520}
                         hasBeBtns
                         baseURL={baseURL}
@@ -108,16 +108,16 @@ class BMContent extends React.Component {
                         dblinkname={dblinkname}
                       />
                     ) : (
-                      <div
-                        style={{
-                          height: 200,
-                          lineHeight: '200px',
-                          textAlign: 'center'
-                        }}
-                      >
-                        请选择一条记录
-                      </div>
-                    )}
+                        <div
+                          style={{
+                            height: 200,
+                            lineHeight: '200px',
+                            textAlign: 'center'
+                          }}
+                        >
+                          请选择一条记录
+                        </div>
+                      )}
                   </TabPane>
                 ))}
               </Tabs>

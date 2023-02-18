@@ -10532,7 +10532,6 @@ window[728997522103] = {
   props: {
     baseURL: 'http://10.108.2.66:9091/',
     downloadBaseURL: 'http://10.108.2.66:80/',
-    recordFormUseAbsolute: true,
     resid: 728996646072,
     recordFormFormWidth: '90%',
     hasAdd: true,
@@ -10540,6 +10539,67 @@ window[728997522103] = {
     hasModify: false,
     hasDelete: true,
     hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+window[729686616250] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '组长名单', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    resid: 729009666829,
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[729705092423] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '违纪条例管理', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 729704479929,
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[729708892763] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '违纪条例管理', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 729708742877,
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
     hasRowView: true,
     hasRowDelete: true,
     height: '100vh',
