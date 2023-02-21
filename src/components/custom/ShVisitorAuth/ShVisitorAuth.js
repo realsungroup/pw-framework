@@ -15,7 +15,7 @@ export default class ShVisitorAuth extends React.Component {
   state = {
     visible: false,
     visible2: false,
-
+    laoding: false
   };
   constructor(props) {
     super(props);
@@ -41,6 +41,7 @@ export default class ShVisitorAuth extends React.Component {
   }
   handleSubmit = async () => {
     let res;
+    this.setState({ loading: true });
     try {
       res = await http().addRecords({
         resid: 730207554421,
@@ -55,7 +56,8 @@ export default class ShVisitorAuth extends React.Component {
         C3_730206436368: '',
         C3_730206491497: '',
         C3_730206500857: '',
-        C3_730206516187: ''
+        C3_730206516187: '',
+        laoding: false
       })
       this.tableDataRef.handleRefresh();
 
@@ -116,7 +118,7 @@ export default class ShVisitorAuth extends React.Component {
                 <Select.Option value="Y">Y</Select.Option>
               </Select>
             </div>
-            <div><Button type={'primary'}>提交</Button></div>
+            <div><Button type={'primary'} loading={this.state.loading} onClick={() => { this.handleSubmit(); }}>提交</Button></div>
           </div>
         </Modal>
         <Modal
@@ -205,13 +207,10 @@ export default class ShVisitorAuth extends React.Component {
             hasAdvSearch={true}
             hasRowView={true}
             hasRowDelete={true}
-            hasRowEdit={true}
             hasDelete={true}
-            hasModify={false}
             hasAdd={false}
             hasBeBtns={true}
             hasRowModify={false}
-            hasRowSelection={true}
             actionBarExtra={() => {
               return (
                 <Button size={'small'} onClick={() => { this.setState({ visible: true }) }}>新建</Button>
