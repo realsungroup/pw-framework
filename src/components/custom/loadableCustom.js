@@ -1019,3 +1019,9 @@ export const PunishmentHistory = Loadable({
     return minLoading;
   }
 });
+export const ShVisitorAuth = Loadable({
+  loader: () => import('./ShVisitorAuth'),
+  loading() {
+    return minLoading;
+  }
+});

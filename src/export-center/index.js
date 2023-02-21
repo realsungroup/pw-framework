@@ -201,6 +201,6 @@ export {
   ShVisitManager,
   DoorManagement,
   ConstructionList,
-  PunishmentHistory
-
+  PunishmentHistory,
+  ShVisitorAuth
 } from '../components/custom/loadableCustom';

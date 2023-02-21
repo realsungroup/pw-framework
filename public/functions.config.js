@@ -10548,7 +10548,7 @@ window[728997522103] = {
 }
 window[729686616250] = {
   name: 'TableData', // 组件名称，这里为定制组件名称
-  title: '组长名单', // 功能模块名称
+  title: '组长权限操作记录', // 功能模块名称
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
     baseURL: 'http://10.108.2.66:9091/',
@@ -10590,7 +10590,7 @@ window[729705092423] = {
 
 window[729708892763] = {
   name: 'TableData', // 组件名称，这里为定制组件名称
-  title: '违纪条例管理', // 功能模块名称
+  title: '组长负责的主管', // 功能模块名称
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
     resid: 729708742877,
@@ -10606,4 +10606,69 @@ window[729708892763] = {
     recordFormFormWidth: '90%',
     subtractH: 180
   } // 组件所接收的 props
+}
+
+window[730042160003] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '非系统累进违纪记录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 729961926165,
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[730044094031] = { // 空资源ID
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '12月内有效记录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 730032828435, // 继承表id
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[730044239377] = { // 空资源ID
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '系统累进违纪记录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 730039803659, // 继承表id
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[730208115084] = { // 空资源ID
+  name: 'ShVisitorAuth', // 组件名称，这里为定制组件名称
+  title: '上海访客审批授权', // 功能模块名称
 }
