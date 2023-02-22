@@ -19,6 +19,9 @@ export default class ShVisitorAuth extends React.Component {
   };
   constructor(props) {
     super(props);
+    this.baseURL = window.pwConfig[process.env.NODE_ENV].customURLs.AchievementsBaseURL;
+    this.ShgBaseURL = window.pwConfig[process.env.NODE_ENV].customURLs.ShgBaseURL;
+
   }
 
   componentDidMount() {
@@ -43,7 +46,7 @@ export default class ShVisitorAuth extends React.Component {
     let res;
     this.setState({ loading: true });
     try {
-      res = await http().addRecords({
+      res = await http({ baseURL: this.baseURL }).addRecords({
         resid: 730207554421,
         data: [this.state]
       })
@@ -101,8 +104,12 @@ export default class ShVisitorAuth extends React.Component {
             </div>
             <div>
               <span>选择人员：{this.state.C3_730206436368}</span>
-              <Button type={'primary'} style={{ margin: '0 8px' }} onClick={() => { this.setState({ visible2: true }) }}>点击选择</Button>
-              <Button type={'primary'} onClick={() => { this.setState({ visible3: true }) }}>点击选择(原漕河泾)</Button>
+              {
+                this.ShgBaseURL ?
+                  <Button type={'primary'} style={{ margin: '0 8px' }} onClick={() => { this.setState({ visible3: true }) }}>点击选择</Button>
+                  :
+                  <Button type={'primary'} style={{ margin: '0 8px' }} onClick={() => { this.setState({ visible2: true }) }}>点击选择</Button>
+              }
             </div>
             <div>
               <span>是否生效：</span>
@@ -131,6 +138,7 @@ export default class ShVisitorAuth extends React.Component {
         >
           <div className='shVisitorAuth_modal_table'>
             <TableData
+              baseURL={this.baseURL}
               resid={730305434592}
               subtractH={240}
               hasRowView={false}
@@ -161,7 +169,7 @@ export default class ShVisitorAuth extends React.Component {
         </Modal>
         <Modal
           visible={this.state.visible3}
-          title="选择人员(原漕河泾)"
+          title="选择人员"
           width={'80vw'}
           footer={null}
           onCancel={() => { this.setState({ visible3: false }) }}
@@ -169,7 +177,7 @@ export default class ShVisitorAuth extends React.Component {
         >
           <div className='shVisitorAuth_modal_table'>
             <TableData
-              baseURL={'http://wux-hr03:801'}
+              baseURL={this.ShgBaseURL}
               resid={730307412823}
               subtractH={240}
               hasRowView={false}
@@ -200,17 +208,20 @@ export default class ShVisitorAuth extends React.Component {
         </Modal>
         <div className="shVisitorAuth_tabledata-wrapper">
           <TableData
+            baseURL={this.baseURL}
             refTargetComponentName="TableData"
             wrappedComponentRef={element => (this.tableDataRef = element)}
             resid={730207554421}
             subtractH={220}
+            hasDownload={false}
             hasAdvSearch={true}
             hasRowView={true}
             hasRowDelete={true}
             hasDelete={true}
             hasAdd={false}
             hasBeBtns={true}
-            hasRowModify={false}
+            hasRowModify={true}
+            hasModify={true}
             actionBarExtra={() => {
               return (
                 <Button size={'small'} onClick={() => { this.setState({ visible: true }) }}>新建</Button>
