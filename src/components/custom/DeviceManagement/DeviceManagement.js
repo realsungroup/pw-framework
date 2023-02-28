@@ -6,7 +6,7 @@ class DeviceManagement extends Component {
   constructor(props) {
     super(props);
     this.baseURL =
-      window.pwConfig[process.env.NODE_ENV].customURLs.attendanceBaseURL;
+      window.pwConfig[process.env.NODE_ENV].realsunApiBaseURL;
     this.baseURLAPI =
       window.pwConfig[process.env.NODE_ENV].customURLs.hikBaseURL;
     this.state = {};
