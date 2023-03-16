@@ -1025,3 +1025,9 @@ export const ShVisitorAuth = Loadable({
     return minLoading;
   }
 });
+export const DoorConfirmation = Loadable({
+  loader: () => import('./DoorConfirmation'),
+  loading() {
+    return minLoading;
+  }
+});

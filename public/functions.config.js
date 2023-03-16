@@ -2019,7 +2019,7 @@ window[621257502796] = {
 
     //无锡配置
     showAllminute: false, //是否显示所有分钟数
-    showBatchApply: true, //是否显示批量申请
+    showBatchApply: false, //是否显示批量申请
     showWorkOvertimeOptions: true, //是否显示加班选项
     showApproveAll: true, //是否显示一键审批
     reasonRequired: true, //事由是否是必填的
@@ -8321,11 +8321,7 @@ window[642865148916] = {
   }
 };
 
-window[642865159694] = {
-  name: 'DoorManagement', // 组件名称，
-  title: '当月门禁清单', // 功能模块名称
-  props: {}
-};
+
 window[642865168807] = {
   name: 'TableData', // 组件名称，
   title: '有误数据', // 功能模块名称
@@ -10597,3 +10593,91 @@ window[730208115084] = { // 空资源ID
   name: 'ShVisitorAuth', // 组件名称，这里为定制组件名称
   title: '上海访客审批授权', // 功能模块名称
 }
+window[642865159694] = { // 空资源ID
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '当月门禁清单', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 702643427843,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180,
+    defaultPagination:
+    {
+      pageSize: 100,
+      current: 1,
+      showSizeChanger: true,
+      showQuickJumper: true,
+      pageSizeOptions: ['10', '20', '30', '40', '100', '500', '1000']
+    }
+  } // 组件所接收的 props
+}
+window[732189947150] = {
+  name: 'DoorManagement', // 组件名称，
+  title: '每月门禁清单确认', // 功能模块名称
+  props: {}
+};
+window[732196387079] = {
+  name: 'DoorConfirmation', // 组件名称，
+  title: '门管理员确认情况', // 功能模块名称
+  props: {}
+};
+window[732215061679] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '门管理员申请重开门禁', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 732213999006,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
+window[732215086446] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '重开门禁申请', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 732214014179,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
+

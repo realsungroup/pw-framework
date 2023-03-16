@@ -43,12 +43,44 @@ const thead = [
     title: '权限组名',
     dataIndex: 'C3_595166751093',
     key: 'C3_595166751093'
+  },
+  {
+    title: '确认无误',
+    dataIndex: 'C3_595192402751',
+    key: 'C3_595192402751'
   }
-  // {
-  //   title: '确认无误',
-  //   dataIndex: 'C3_595192402751',
-  //   key: 'C3_595192402751'
-  // }
+];
+const theaDel = [
+  {
+    title: '月份',
+    dataIndex: 'C3_595166992528',
+    key: 'C3_595166992528'
+  },
+  {
+    title: '工号',
+    dataIndex: 'C3_595166604634',
+    key: 'C3_595166604634'
+  },
+  {
+    title: '姓名',
+    dataIndex: 'C3_595166693246',
+    key: 'C3_595166693246'
+  },
+  {
+    title: '部门',
+    dataIndex: 'C3_595166712341',
+    key: 'C3_595166712341'
+  },
+  {
+    title: '权限组名',
+    dataIndex: 'C3_595166751093',
+    key: 'C3_595166751093'
+  },
+  {
+    title: '申请重开权限',
+    dataIndex: 'C3_732287734141',
+    key: 'C3_732287734141'
+  }
 ];
 class DoorManagement extends React.Component {
   constructor(props) {
@@ -75,8 +107,14 @@ class DoorManagement extends React.Component {
       dataMinus: 'minus',
       keyAdd: '',
       keyMinus: '',
-      keySame: ''
+      keySame: '',
+      confirmedDel: false,
+      confirmedAdd: false
     };
+  }
+  componentDidMount() {
+    this.getDelConfirmRec();
+    this.getData();
   }
   getYearMonths = async () => {
     try {
@@ -199,7 +237,7 @@ class DoorManagement extends React.Component {
             bol = true;
           }
 
-          if ((!bolSame && cyArr[c].C3_727094761747 === 'Y') || (!cyArr[c].C3_727094761747)) {
+          if (((!bolSame && cyArr[c].C3_727094761747 === 'Y') || (!cyArr[c].C3_727094761747))) {
             same.push(cyArr[c]);
             if (cyArr[c].C3_595192402751 === 'Y') {
               sameY.push(cyArr[c]);
@@ -210,19 +248,22 @@ class DoorManagement extends React.Component {
         }
         c++;
       }
+
       bolSame = true;
       if (!bol) {
         minus.push(lyArr[n]);
-        if (lyArr[n].C3_595192402751 === 'Y' &&
-          cyArr[c].C3_727094761747 != 'Y') {
-          minusY.push(lyArr[n]);
-        } else {
-          minusN.push(lyArr[n]);
-        }
       }
+      // if (!bol && cyArr[c]) {
+      //   minus.push(lyArr[n]);
+      //   if (lyArr[n].C3_595192402751 === 'Y' &&
+      //     cyArr[c].C3_727094761747 != 'Y') {
+      //     minusY.push(lyArr[n]);
+      //   } else {
+      //     minusN.push(lyArr[n]);
+      //   }
+      // }
       n++;
     }
-    console.log(minusY, minusN);
     this.setState({
       process: '筛选增加的门禁权限',
       step: 4
@@ -283,11 +324,16 @@ class DoorManagement extends React.Component {
         selectedRowKeysSame: selectedRowKeys,
         selectedDataSame: selectedRows
       });
-    } else {
+    } else if (type === 'add') {
       this.setState({
         selectedRowKeysAdd: selectedRowKeys,
         selectedDataAdd: selectedRows
       });
+    } else {
+      this.setState({
+        selectedRowKeysDel: selectedRowKeys,
+        selectedDataDel: selectedRows
+      })
     }
   };
   handleConfirm = async type => {
@@ -310,7 +356,7 @@ class DoorManagement extends React.Component {
         resid: 702643693809,
         data
       });
-      message.success('开始上传数据');
+      message.success('已开始上传数据');
       const taskid = res.taskid;
       if (taskid) {
         this.getTaskInfo(taskid);
@@ -328,9 +374,9 @@ class DoorManagement extends React.Component {
       console.log(e.message);
     }
   };
-  handleDelRight = async arr => {
+  handleDelRight = async (arr, delMark) => {
     if (arr.length > 0) {
-      this.setState({ vis: true, refre: 2 });
+      this.setState({ vis: true, refre: 2, delMark });
     } else {
       message.error('请选择记录');
     }
@@ -340,6 +386,7 @@ class DoorManagement extends React.Component {
     let n = 0;
     let arr = [];
     while (n < data.length) {
+      data[n].C3_595192402751 = 'Y';
       arr.push({
         //权限组
         C3_497800103507: data[n].C3_595166751093,
@@ -352,25 +399,59 @@ class DoorManagement extends React.Component {
       });
       n++;
     }
-    data = JSON.stringify(arr);
+    let data2 = JSON.stringify(arr);
+    //遍历删除原有数组的数据
+    let afterDel = [];
+    let org = this.state[this.state.dataSame];
+    let mark = 'same'
+    if (this.state.delMark === 'add') {
+      org = this.state[this.state.dataAdd];
+      mark = 'add'
+    }
+    for (let m = 0; m < org.length; m++) {
+      let bool = false;
+      for (let nn = 0; nn < data.length; nn++) {
+        if (org[m].REC_ID === data[nn].REC_ID) {
+          bool = true;
+        }
+      }
+      if (!bool) {
+        afterDel.push(org[m]);
+      }
+    }
+    if (mark === 'same') {
+      this.setState({ toDel: [], [this.state.dataSame]: afterDel, delMark: '' })
+    } else {
+      this.setState({ toDel: [], [this.state.dataAdd]: afterDel, delMark: '' })
+    }
+    this.setState({
+      selectedRowKeysSame: [],
+      selectedDataSame: [],
+      selectedDataAdd: [],
+      selectedRowKeysAdd: []
+    });
+    try {
+      let resC = await http({ baseURL: this.baseURL }).modifyRecords({
+        resid: 702643427843,
+        data
+      });
+      message.success('已确认完毕');
+    } catch (e) {
+      message.error(e.message);
+      console.log(e.message);
+    }
     try {
       let res = await http({ baseURL: this.baseURL }).StartSaveTask({
         resid: 692357214309,
-        data
+        data2
       });
-      message.success('开始上传数据');
+      message.success('已经上传数据');
       const taskid = res.taskid;
       if (taskid) {
         this.getTaskInfo(taskid);
       } else {
         message.error('无taskid');
       }
-      this.setState({
-        selectedRowKeysSame: [],
-        selectedDataSame: [],
-        selectedDataAdd: [],
-        selectedRowKeysAdd: []
-      });
     } catch (e) {
       message.error(e.message);
       console.log(e.message);
@@ -420,6 +501,8 @@ class DoorManagement extends React.Component {
         });
         if (this.state.refre === 2) {
           this.getData();
+          this.getDelConfirmRec();
+
         } else {
           this.tableDataRef.handleRefresh();
         }
@@ -453,13 +536,79 @@ class DoorManagement extends React.Component {
     this.setState({ delTime: v });
   };
   onSub = () => {
-    if (!this.state.delTime) {
-      message.error('请选择生效时间');
-    } else {
-      this.addDelRec(this.state.delTime);
-      this.setState({ vis: false, delTime: null });
-    }
+    this.addDelRec(this.state.delTime);
+    this.setState({ vis: false, delTime: null });
   };
+  handleConfirmDel = async () => {
+    let res;
+    const baseURL = this.baseURL;
+    let httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    try {
+      res = await http(httpParams).addRecords({
+        resid: 731348464154,
+        data: [{
+          C3_731348719962: ''
+        }],
+        isEditOrAdd: 'true'
+      });
+      message.success('确认成功');
+    } catch (err) {
+      console.log(err);
+      return message.error(err.message);
+    }
+  }
+  getDelConfirmRec = async () => {
+    let res;
+    const baseURL = this.baseURL;
+    let httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    try {
+      res = await http(httpParams).getTable({
+        resid: 732207214993
+      });
+      if (res.data[0].C3_731607900611 === 'Y') {
+        this.setState({ confirmedDel: true });
+      }
+      if (res.data[0].C3_731348909587 === 'Y') {
+        this.setState({ confirmedAdd: true });
+      }
+    } catch (err) {
+      console.log(err);
+      return message.error(err.message);
+    }
+  }
+  handleReapply = async () => {
+    this.setState({ loading: true });
+    let res;
+    const baseURL = this.baseURL;
+    let httpParams = {};
+    // 使用传入的 baseURL
+    if (baseURL) {
+      httpParams.baseURL = baseURL;
+    }
+    let data = this.state.selectedDataDel;
+    for (let i = 0; i < data.length; i++) {
+      data[i].C3_732287734141 = 'Y';
+    }
+    try {
+      res = await http(httpParams).modifyRecords({
+        resid: 702643427843,
+        data
+      });
+      this.setState({ loading: false });
+      message.success('已申请')
+    } catch (err) {
+      console.log(err);
+      return message.error(err.message);
+    }
+  }
   render() {
     const { activeKey } = this.state;
     return (
@@ -475,20 +624,21 @@ class DoorManagement extends React.Component {
         <Modal
           visible={this.state.vis}
           footer={null}
-          width={800}
+          width={400}
           destroyOnClose
           onCancel={() => {
             this.setState({ vis: false });
           }}
         >
-          生效时间：
+          {/* 生效时间：
           <DatePicker
             showTime
             value={this.state.delTime}
             onChange={v => {
               this.onChangeDate(v);
             }}
-          />
+          /> */}
+          <p>是否确定要删除?</p>
           <Button
             type={'primary'}
             style={{ marginLeft: '.5rem' }}
@@ -496,16 +646,17 @@ class DoorManagement extends React.Component {
               this.onSub();
             }}
           >
-            提交
+            确定
           </Button>
         </Modal>
-        <Tabs
+
+        {/* <Tabs
           defaultActiveKey="1"
           onChange={() => {
             this.setState({ toDel: [] });
           }}
-        >
-          <Tabs.TabPane tab="现有门禁清单" key={1}>
+        > */}
+        {/* <Tabs.TabPane tab="现有门禁清单" key={1}>
             <div className="tableWrap">
               <TableData
                 baseURL={this.baseURL}
@@ -562,25 +713,28 @@ class DoorManagement extends React.Component {
                 }}
               />
             </div>
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="月度变动清单" key={2}>
-            <Spin spinning={this.state.loading}>
-              <div className="tableWrap">
-                <Button
-                  type={'primary'}
-                  onClick={() => {
-                    this.getData();
-                  }}
-                >
-                  获取数据
-                </Button>
-                {this.state.process != '完成' ? null : (
-                  <ul>
-                    <li>
-                      <div className="add">
-                        <span>新增权限</span>
+          </Tabs.TabPane> */}
+        {/* <Tabs.TabPane tab="月度变动清单" key={1}> */}
+        <Spin spinning={this.state.loading}>
+          <div className="tableWrap">
+            <Button
+              type={'primary'}
+              onClick={() => {
+                this.getData();
+                this.getDelConfirmRec();
 
-                        {/* <Button
+              }}
+            >
+              刷新数据
+                </Button>
+            <span style={{ color: '#f5222d', marginLeft: 8 }}>门权限被删除后，需要24小时才会生效</span>
+            {this.state.process != '完成' ? null : (
+              <ul>
+                <li>
+                  <div className="add">
+                    <span>新增权限  - {this.state.confirmedAdd ? '已' : '未'}确认</span>
+
+                    {/* <Button
                           type="primary"
                           onClick={() => {
                             this.handleConfirm('add');
@@ -588,24 +742,37 @@ class DoorManagement extends React.Component {
                         >
                           保留
                         </Button> */}
-                        <Button
-                          type="danger"
+                    <Button
+                      type="danger"
+                      onClick={() => {
+                        this.setState({
+                          toDel: this.state.selectedDataAdd
+                        });
+                        this.handleDelRight(this.state.selectedDataAdd, 'add');
+                      }}
+                    >
+                      删除
+                        </Button>
+                    {
+                      this.state.confirmedAdd ?
+                        null
+                        : <Button
+                          type="primary"
                           onClick={() => {
-                            this.setState({
-                              toDel: this.state.selectedDataAdd
-                            });
-                            this.handleDelRight(this.state.selectedDataAdd);
+                            this.handleConfirm('add')
                           }}
                         >
-                          删除
-                        </Button>
-                        <Input.Search
-                          style={{ width: 'calc(100% - 160px)' }}
-                          onPressEnter={v => {
-                            this.filtData('add', v.target.value);
-                          }}
-                        />
-                        {/* <b>确认无误：</b>
+                          确认无误
+                      </Button>
+                    }
+
+                    <Input.Search
+                      style={{ width: 'calc(100% - 260px)' }}
+                      onPressEnter={v => {
+                        this.filtData('add', v.target.value);
+                      }}
+                    />
+                    {/* <b>确认无误：</b>
                         <Select
                           defaultValue="add"
                           style={{ width: 120 }}
@@ -621,41 +788,54 @@ class DoorManagement extends React.Component {
                           <Option value="addY">是</Option>
                           <Option value="addN">否</Option>
                         </Select> */}
-                      </div>
-                      <div className="tableOuter">
-                        <Table
-                          rowSelection={{
-                            type: 'checkbox',
-                            onChange: (selectedRowKeys, selectedRows) => {
-                              this.setSel('add', selectedRowKeys, selectedRows);
-                            }
-                          }}
-                          dataSource={this.state[this.state.dataAdd]}
-                          columns={thead}
-                          pagination={{
-                            pageSizeOptions: [10, 40, 100, 500],
-                            showSizeChanger: true,
-                            showQuickJumper: true,
-                            onChange: () => {
-                              this.setState({
-                                selectedRowKeysAdd: [],
-                                selectedDataAdd: []
-                              });
-                            }
-                          }}
-                        />
-                      </div>
-                    </li>
-                    <li>
-                      <div className="minus">
-                        减少权限
-                        <Input.Search
-                          style={{ width: 'calc(100% - 160px)' }}
-                          onPressEnter={v => {
-                            this.filtData('minus', v.target.value);
-                          }}
-                        />
-                        {/* <b>确认无误：</b>
+                  </div>
+                  <div className="tableOuter">
+                    <Table
+                      rowSelection={{
+                        selectedRowKeys: this.state.selectedRowKeysAdd,
+                        type: 'checkbox',
+                        onChange: (selectedRowKeys, selectedRows) => {
+                          this.setSel('add', selectedRowKeys, selectedRows);
+                        }
+                      }}
+                      dataSource={this.state[this.state.dataAdd]}
+                      columns={thead}
+                      pagination={{
+                        pageSize: 40,
+                        pageSizeOptions: [10, 40, 100, 500],
+                        showSizeChanger: true,
+                        size: 'small',
+                        showQuickJumper: true,
+                        onChange: () => {
+                          this.setSel('add', [], []);
+                        }
+                      }}
+                    />
+                  </div>
+                </li>
+                <li>
+                  <div className="minus">
+                    减少权限 - {this.state.confirmedDel ? '已' : '未'}确认
+                        {
+                      this.state.confirmedDel ? null : <Button
+                        type="primary"
+                        style={{ marginLeft: 8 }}
+                        onClick={() => {
+                          this.handleConfirmDel();
+                        }}
+                      >
+                        确认无误
+                        </Button>
+                    }
+                    <Button onClick={() => { this.handleReapply() }}>申请复权</Button>
+                    <Input.Search
+                      style={{ width: 'calc(100% - 320px)' }}
+                      onPressEnter={v => {
+                        this.filtData('minus', v.target.value);
+                      }}
+                    />
+
+                    {/* <b>确认无误：</b>
                         <Select
                           defaultValue="minus"
                           style={{ width: 120 }}
@@ -667,23 +847,39 @@ class DoorManagement extends React.Component {
                           <Option value="minusY">是</Option>
                           <Option value="minusN">否</Option>
                         </Select> */}
-                      </div>
-                      <div className="tableOuter">
-                        <Table
-                          dataSource={this.state.minus}
-                          columns={thead}
-                          pagination={{
-                            pageSizeOptions: [10, 40, 100, 500],
-                            showSizeChanger: true,
-                            showQuickJumper: true
-                          }}
-                        />
-                      </div>
-                    </li>
-                    <li>
-                      <div className="same">
-                        <span>未变权限</span>
-                        {/* <Button
+                  </div>
+                  <div className="tableOuter">
+                    <Table
+                      dataSource={this.state.minus}
+                      rowSelection={{
+                        selectedRowKeys: this.state.selectedRowKeysDel,
+                        type: 'checkbox',
+                        onChange: (selectedRowKeys, selectedRows) => {
+                          this.setSel(
+                            'del',
+                            selectedRowKeys,
+                            selectedRows
+                          );
+                        }
+                      }}
+                      columns={theaDel}
+                      pagination={{
+                        pageSizeOptions: [10, 40, 100, 500],
+                        pageSize: 40,
+                        size: 'small',
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                        onChange: () => {
+                          this.setSel('del', [], []);
+                        }
+                      }}
+                    />
+                  </div>
+                </li>
+                <li>
+                  <div className="same">
+                    <span>未变权限</span>
+                    {/* <Button
                           type="primary"
                           onClick={() => {
                             this.handleConfirm('same');
@@ -691,24 +887,37 @@ class DoorManagement extends React.Component {
                         >
                           保留
                         </Button> */}
+                    <Button
+                      type="danger"
+                      onClick={() => {
+                        this.setState({
+                          toDel: this.state.selectedDataSame
+                        });
+                        this.handleDelRight(this.state.selectedDataSame, 'same');
+                      }}
+                    >
+                      删除
+                        </Button>
+                    {/* {
+                      this.state[this.state.dataSame].length > 0 ?
                         <Button
-                          type="danger"
+                          type="primary"
                           onClick={() => {
-                            this.setState({
-                              toDel: this.state.selectedDataSame
-                            });
-                            this.handleDelRight(this.state.selectedDataSame);
+                            this.handleConfirm('same')
                           }}
                         >
-                          删除
+                          确认无误
                         </Button>
-                        <Input.Search
-                          style={{ width: 'calc(100% - 160px)' }}
-                          onPressEnter={v => {
-                            this.filtData('same', v.target.value);
-                          }}
-                        />
-                        {/* <b>确认无误：</b>
+                        : null
+                    } */}
+
+                    <Input.Search
+                      style={{ width: 'calc(100% - 260px)' }}
+                      onPressEnter={v => {
+                        this.filtData('same', v.target.value);
+                      }}
+                    />
+                    {/* <b>确认无误：</b>
 
                         <Select
                           defaultValue="same"
@@ -725,42 +934,45 @@ class DoorManagement extends React.Component {
                           <Option value="sameY">是</Option>
                           <Option value="sameN">否</Option>
                         </Select> */}
-                      </div>
-                      <div className="tableOuter">
-                        <Table
-                          rowSelection={{
-                            selectedRowKeys: this.state.selectedRowKeysSame,
-                            type: 'checkbox',
-                            onChange: (selectedRowKeys, selectedRows) => {
-                              this.setSel(
-                                'same',
-                                selectedRowKeys,
-                                selectedRows
-                              );
-                            }
-                          }}
-                          dataSource={this.state[this.state.dataSame]}
-                          columns={thead}
-                          pagination={{
-                            pageSizeOptions: [10, 40, 100, 500],
-                            showSizeChanger: true,
-                            showQuickJumper: true,
-                            onChange: () => {
-                              this.setState({
-                                selectedRowKeysSame: [],
-                                selectedDataSame: []
-                              });
-                            }
-                          }}
-                        />
-                      </div>
-                    </li>
-                  </ul>
-                )}
-              </div>
-            </Spin>
-          </Tabs.TabPane>
-        </Tabs>
+                  </div>
+                  <div className="tableOuter">
+                    <Table
+                      rowSelection={{
+                        selectedRowKeys: this.state.selectedRowKeysSame,
+                        type: 'checkbox',
+                        onChange: (selectedRowKeys, selectedRows) => {
+                          this.setSel(
+                            'same',
+                            selectedRowKeys,
+                            selectedRows
+                          );
+                        }
+                      }}
+                      dataSource={this.state[this.state.dataSame]}
+                      columns={thead}
+                      pagination={{
+                        pageSizeOptions: [10, 40, 100, 500],
+                        pageSize: 40,
+                        size: 'small',
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                        onChange: () => {
+                          this.setSel(
+                            'same',
+                            [],
+                            []
+                          );
+                        }
+                      }}
+                    />
+                  </div>
+                </li>
+              </ul>
+            )}
+          </div>
+        </Spin>
+        {/* </Tabs.TabPane>
+        </Tabs> */}
       </div>
     );
   }
