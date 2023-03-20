@@ -1250,6 +1250,7 @@ class ArrangingCourses extends React.Component {
               hasModify={false}
               hasDelete={false}
               hasAdd={false}
+              hasBeBtns={true}
               hasRowDelete={false}
               hasRowSelection={false}
             />
