@@ -8,7 +8,7 @@ window.pwConfig = {
     // baseURL: 'http://10.108.11.36:6001/', // 请求的基地址
     //baseURL: 'http://pwkwebapi.realsun.me/',
     baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
-    // baseURL: 'http://10.108.2.66:1001/', // 请求的基地址
+    // baseURL: 'http://10.108.2.66:901/', // 请求的基地址
     basename: '/',
     // baseUrl: 'http://114.55.58.57:9096/', // 域登录基地址
     // baseURL: 'http://pwhrapi1.realsun.me/', // 域登录基地址
@@ -60,6 +60,7 @@ window.pwConfig = {
       WzDownloadURL: 'http://ngrok8.realsun.me:7071', //物资管理
       OnlineTrainingManagerBaseURL: 'http://kingofdinner.realsun.me:9091/',
       AchievementsBaseURL: 'http://10.108.2.66:1001/', //绩效定制页面基地址
+      // ShgBaseURL: 'http://10.108.2.66:801/',
       RBASchedulingBaseURL: 'http://10.108.21.41:2001', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.21.41:2000', //RBA排班下载基地址
       WuxiHr03BaseURL: 'http://10.108.2.66:9091/', //80端口非定制组件基地址
@@ -299,6 +300,7 @@ window.pwConfig = {
       WzDownloadURL: 'http://10.108.2.66:2001', //物资管理下载地址
       OnlineTrainingManagerBaseURL: 'https://finisar26.realsun.me:1101',
       AchievementsBaseURL: 'http://10.108.2.66:1001/',
+      ShgBaseURL: 'http://http://10.108.2.66:901/',
       RBASchedulingBaseURL: 'http://10.108.2.66:9091', //RBA排班基地址
       RBASchedulingDownloadBaseURL: 'http://10.108.2.66:80', //RBA排班下载基地址
       WuxiHr03BaseURL: 'http://10.108.2.66:9091/', //80端口非定制组件基地址

@@ -27,14 +27,6 @@ class FeedBackAndPlan extends Component {
       planView: [],
       // 内训评分
       rate: {
-        rate1: 0,
-        rate2: 0,
-        rate3: 0,
-        rate4: 0,
-        rate5: 0,
-        rate6: 0,
-        rate7: 0,
-        rate8: 0
       },
       otherAdvice: {
         advantages: '', // 益处
@@ -42,10 +34,6 @@ class FeedBackAndPlan extends Component {
       },
       //外训评分
       rateOut: {
-        rate1: 0,
-        rate2: 0,
-        rate3: 0,
-        rate4: 0
       },
       knowledge: [''], //获得的知识点
       plans: [''] //行动计划

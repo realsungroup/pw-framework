@@ -1013,3 +1013,21 @@ export const DoorManagement = Loadable({
     return minLoading;
   }
 });
+export const PunishmentHistory = Loadable({
+  loader: () => import('./PunishmentHistory'),
+  loading() {
+    return minLoading;
+  }
+});
+export const ShVisitorAuth = Loadable({
+  loader: () => import('./ShVisitorAuth'),
+  loading() {
+    return minLoading;
+  }
+});
+export const DoorConfirmation = Loadable({
+  loader: () => import('./DoorConfirmation'),
+  loading() {
+    return minLoading;
+  }
+});

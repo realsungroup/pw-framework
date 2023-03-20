@@ -640,33 +640,33 @@ export default class ShVisit extends Component {
   };
   //提交前验证
   vertify = () => {
-    let fkbol = true;
-    if (this.state.type == 'normal') {
-      fkbol = false;
-      for (let i = 0; i < fileKeys.length; i++) {
-        if (this.state[fileKeys[i][0]] || this.state[fileKeys[i][1]] || this.state[fileKeys[i][2]]) {
-          if (!this.state[fileKeys[i][0]]) {
-            message.error('请填写第' + (i + 1) + '人的来访人员信息表');
-            return false
-          }
-          // else if (!this.state[fileKeys[i][1]]) {
-          //   message.error('请填写第' + (i + 1) + '人的访客绿码');
-          //   return false
-          // }
-          // else if (!this.state[fileKeys[i][2]]) {
-          //   message.error('请填写第' + (i + 1) + '人的行动轨迹');
-          //   return false
-          // } 
-          else {
-            fkbol = true
-          }
-        }
-      }
-    }
-    if (!fkbol) {
-      message.error('请填写来访人员表/绿码');
-      return false
-    }
+    // let fkbol = true;
+    // if (this.state.type == 'normal') {
+    //     fkbol = false;
+    //     for (let i = 0; i < fileKeys.length; i++) {
+    //       if (this.state[fileKeys[i][0]] || this.state[fileKeys[i][1]] || this.state[fileKeys[i][2]]) {
+    //         if (!this.state[fileKeys[i][0]]) {
+    //           message.error('请填写第' + (i + 1) + '人的来访人员信息表');
+    //           return false
+    //         }
+    //         // else if (!this.state[fileKeys[i][1]]) {
+    //         //   message.error('请填写第' + (i + 1) + '人的访客绿码');
+    //         //   return false
+    //         // }
+    //         // else if (!this.state[fileKeys[i][2]]) {
+    //         //   message.error('请填写第' + (i + 1) + '人的行动轨迹');
+    //         //   return false
+    //         // } 
+    //         else {
+    //           fkbol = true
+    //         }
+    //       }
+    //     }
+    //   }
+    //   if (!fkbol) {
+    //     message.error('请填写来访人员表/绿码');
+    //     return false
+    //   }
     let n = 0;
     while (n < labels.length) {
       let c = 0;
@@ -1333,7 +1333,7 @@ export default class ShVisit extends Component {
               </div>
               <div className='moduleLine'>
                 {
-                  this.state.type === 'normal' ? <>
+                  this.state.type === 'banned' ? <>
                     <h3>模板列表：</h3>
                     {
                       !this.state.moduleList || this.state.moduleList.length === 0 ? '无' : <ul className='moduleList'>

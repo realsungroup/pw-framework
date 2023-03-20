@@ -90,7 +90,7 @@ const IndividualSummary = React.memo(props => {
                   <></>
                 )}
             </span>
-            <span className="card_title_name__en">Manager Evaluation</span>
+            <span className="card_title_name__en">Manager / Director Evaluation</span>
           </React.Fragment>
         }
         style={{ marginBottom: 24 }}
@@ -109,14 +109,14 @@ const IndividualSummary = React.memo(props => {
         title={
           <React.Fragment>
             <span className="card_title_name__zh">
-              试用期HR经理评价
+              试用期HR总监评价
               {roleName === 'HR经理' && C3_622649502021 === 'Y' ? (
                 <span style={{ color: 'red' }}>*</span>
               ) : (
                   <></>
                 )}
             </span>
-            <span className="card_title_name__en">HR Manager Evaluation</span>
+            <span className="card_title_name__en">HR Director Evaluation</span>
           </React.Fragment>
         }
         style={{ marginBottom: 24 }}

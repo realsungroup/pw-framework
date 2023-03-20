@@ -1,11 +1,201 @@
+// 统计分析与录入
+window[592305842055] = {
+  title: '统计分析与录入',
+  // 单元组件
+  // name: 'LzTable',
+  name: 'StatisticAnalysisJC',
+  props: {
+    // 单元组件 props
+    resid: 590863325025,
+    isSearch: false,
+    formsName: 'default3i',
+    hasDownloadExcel: true,
+    cFFillFormInnerFieldNames: ['C3_590510737521'],
+    advDicTableProps: {
+      lzTableStyle: {
+        width: 1100
+      },
+      customColumnWidth: {
+        依据: 600
+      }
+    },
+    addBtn: {
+      type: 'text',
+      text: '录入'
+    },
+    btnsVisible: {
+      check: true,
+      mod: false,
+      del: true,
+      edit: false,
+      save: false,
+      cancel: false
+    },
+    pagination: {
+      pageSize: 10,
+      current: 0
+    },
+    opIsFixed: true,
+    tableTitle: '统计分析',
+    showHeader: true,
+    displayMod: 'classify',
+    hasOpenUnitBtn: true,
+    // dataMode :"sub",
+    lzAdvSearchStyle: {
+      background: '#e5e9ed',
+      borderRadius: '4px',
+      border: '1px solid #e5e9ed'
+    },
+    advSearchConfig: {
+      defaultVisible: false,
+      containerName: 'drawer',
+      drawerWidth: 550,
+      labelWidth: '24%',
+      rowWidth: '100%',
+      dateRanges: [
+        {
+          title: '违纪日期',
+          visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
+          innerFieldName: 'C3_590511645885' // 内部字段
+        },
+        {
+          title: '管理员确认日期',
+          visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
+          innerFieldName: 'C3_606306735938' // 内部字段
+        }
+      ],
+      tag: [
+        {
+          title: '违纪类别',
+          op: 'or',
+          tags: [
+            {
+              label: '绩效处分',
+              value: '绩效处分',
+              isSelected: false,
+              innerFieldName: 'C3_590512169985'
+            },
+            {
+              label: '警告',
+              value: '警告',
+              isSelected: false,
+              innerFieldName: 'C3_590512169985'
+            },
+            {
+              label: '小过',
+              value: '小过',
+              isSelected: false,
+              innerFieldName: 'C3_590512169985'
+            },
+            {
+              label: '大过',
+              value: '大过',
+              isSelected: false,
+              innerFieldName: 'C3_590512169985'
+            },
+            {
+              label: '特别重大违纪',
+              value: '特别重大违纪',
+              isSelected: false,
+              innerFieldName: 'C3_590512169985'
+            }
+          ]
+        },
+        {
+          title: '到期',
+          op: 'or',
+          tags: [
+            {
+              label: '是',
+              value: 'Y',
+              isSelected: false,
+              innerFieldName: 'C3_730048712715'
+            },
+            {
+              label: '否',
+              value: 'N',
+              isSelected: false,
+              innerFieldName: 'C3_730048712715'
+            }
+          ]
+        },
+        {
+          title: '撤销',
+          op: 'or',
+          tags: [
+            {
+              label: '是',
+              value: 'Y',
+              isSelected: false,
+              innerFieldName: 'C3_590512213622'
+            },
+            {
+              label: '否',
+              value: 'N',
+              isSelected: false,
+              innerFieldName: 'C3_590512213622'
+            }
+          ]
+        },
+        {
+          title: '纳入下次升级计算',
+          op: 'or',
+          tags: [
+            {
+              label: '是',
+              value: 'Y',
+              isSelected: false,
+              innerFieldName: 'C3_727372048682'
+            },
+            {
+              label: '否',
+              value: 'N',
+              isSelected: false,
+              innerFieldName: 'C3_727372048682'
+            }
+          ]
+        }
+      ],
+      search: [
+        {
+          title: '工号/姓名/部门',
+          innerFieldNames: [
+            'C3_590510737521',
+            'C3_590510740042',
+            'C3_590510763625'
+          ]
+        },
+        {
+          title: '惩处依据',
+          innerFieldNames: ['C3_590511744313']
+        },
+        {
+          title: '职级',
+          innerFieldNames: ['C3_590512134594']
+        },
+        {
+          title: '一级部门',
+          innerFieldNames: ['C3_590516541218']
+        },
+        {
+          title: '二级部门',
+          innerFieldNames: ['C3_590516558243']
+        },
+        {
+          title: '三级部门',
+          innerFieldNames: ['C3_590516572216']
+        }
+      ]
+    }
+  }
+};
 // 管理员确认
 window[606476781618] = {
   name: 'AdminConfirm',
   title: '录入',
   props: {
-    baseURL: 'http://10.108.2.66:9091/',
     resid: 605617716920,
-    hasBeBtns: false,
+    hasBeBtns: true,
     hasAdd: false,
     hasModify: false,
     hasDelete: false,
@@ -34,67 +224,6 @@ window[606476781618] = {
         }
       ],
       tag: [
-        // tag
-        // {
-        //   title: '部门',
-        //   op: 'or', // 操作符：'or' | 'and'
-        //   tags: [
-        //     {
-        //       label: 'OA',
-        //       value: 'OA',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590510763625' // 内部字段名
-        //     },
-        //     {
-        //       label: 'OPS',
-        //       value: 'OPS',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590510763625'
-        //     }
-        //   ]
-        // },
-        // {
-        //   title: '状态',
-        //   op: 'or',
-        //   tags: [
-        //     {
-        //       label: '已撤销',
-        //       value: '已撤销',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590514418013'
-        //     },
-        //     {
-        //       label: '已录入',
-        //       value: '已录入',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590514418013'
-        //     },
-        //     {
-        //       label: '进行中',
-        //       value: '进行中',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590514418013'
-        //     }
-        //   ]
-        // },
-        {
-          title: '合同类别',
-          op: 'or',
-          tags: [
-            {
-              label: 'SH',
-              value: 'SH',
-              isSelected: false,
-              innerFieldName: 'C3_590686786388'
-            },
-            {
-              label: 'WX',
-              value: 'WX',
-              isSelected: false,
-              innerFieldName: 'C3_590686786388'
-            }
-          ]
-        },
         {
           title: '违纪类别',
           op: 'or',
@@ -112,52 +241,76 @@ window[606476781618] = {
               innerFieldName: 'C3_590512169985'
             },
             {
-              label: '较重警告',
-              value: '较重警告',
+              label: '小过',
+              value: '小过',
               isSelected: false,
               innerFieldName: 'C3_590512169985'
             },
             {
-              label: '严重警告',
-              value: '严重警告',
+              label: '大过',
+              value: '大过',
+              isSelected: false,
+              innerFieldName: 'C3_590512169985'
+            },
+            {
+              label: '特别重大违纪',
+              value: '特别重大违纪',
               isSelected: false,
               innerFieldName: 'C3_590512169985'
             }
           ]
         },
-        // {
-        //   title: '是否撤销',
-        //   op: 'or',
-        //   tags: [
-        //     {
-        //       label: '是',
-        //       value: 'Y',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590512213622'
-        //     },
-        //     {
-        //       label: '否',
-        //       value: 'N',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590512213622'
-        //     }
-        //   ]
-        // },
         {
-          title: '到期撤销',
+          title: '到期',
           op: 'or',
           tags: [
             {
               label: '是',
               value: 'Y',
               isSelected: false,
-              innerFieldName: 'C3_591373611399'
+              innerFieldName: 'C3_730048712715'
             },
             {
               label: '否',
               value: 'N',
               isSelected: false,
-              innerFieldName: 'C3_591373611399'
+              innerFieldName: 'C3_730048712715'
+            }
+          ]
+        },
+        {
+          title: '撤销',
+          op: 'or',
+          tags: [
+            {
+              label: '是',
+              value: 'Y',
+              isSelected: false,
+              innerFieldName: 'C3_590512213622'
+            },
+            {
+              label: '否',
+              value: 'N',
+              isSelected: false,
+              innerFieldName: 'C3_590512213622'
+            }
+          ]
+        },
+        {
+          title: '纳入下次升级计算',
+          op: 'or',
+          tags: [
+            {
+              label: '是',
+              value: 'Y',
+              isSelected: false,
+              innerFieldName: 'C3_727372048682'
+            },
+            {
+              label: '否',
+              value: 'N',
+              isSelected: false,
+              innerFieldName: 'C3_727372048682'
             }
           ]
         }
@@ -228,9 +381,9 @@ window[590765309983] = {
   title: '违纪管理',
   name: 'LzMenuContainer',
   props: {
-    jump:
-      'http://10.108.2.66:805/fnmodule?resid=590765309983&recid=610540465303&type=undefined&title=违纪管理',
-    baseURL: 'http://10.108.2.66:9091/',
+    // jump:
+    //   'http://10.108.2.66:805/fnmodule?resid=590765309983&recid=610540465303&type=undefined&title=违纪管理',
+    baseURL: 'http://10.108.2.66:1001/',
     noDataTip: '暂无数据，请选择员工',
     resid: 590671418888,
     searchFields: [
@@ -358,18 +511,18 @@ window[590765309983] = {
           innerFieldNames: ['C3_591373760332'],
           values: ['Y']
         },
-        // {
-        //   //提交后这个按钮隐藏
-        //   btnName: '撤销',
-        //   innerFieldNames: [
-        //     // 'C3_590512213622',
-        //     // 'C3_591373760332',
-        //     // 'C3_605619907534'
-        //     'C3_591373760332'
-        //   ],
-        //   values:['Y']
-        //   // values: ['Y', null, 'Y']
-        // },
+        {
+          //提交后这个按钮隐藏
+          btnName: '撤销',
+          innerFieldNames: [
+            // 'C3_590512213622',
+            // 'C3_591373760332',
+            // 'C3_605619907534'
+            'C3_591373760332'
+          ],
+          values: ['Y']
+          // values: ['Y', null, 'Y']
+        },
         {
           btnName: '修改',
           innerFieldNames: ['C3_591373760332'],
@@ -397,236 +550,6 @@ window[590765309983] = {
             border: '1px solid #004a95',
             borderRadius: 6
           }
-        }
-      ]
-    }
-  }
-};
-
-// 统计分析与录入
-window[592305842055] = {
-  title: '统计分析与录入',
-  // 单元组件
-  // name: 'LzTable',
-  name: 'StatisticAnalysisJC',
-  props: {
-    baseURL: 'http://10.108.2.66:9091/',
-    // 单元组件 props
-    resid: 590863325025,
-    isSearch: false,
-    formsName: 'default3i',
-    hasDownloadExcel: true,
-    cFFillFormInnerFieldNames: ['C3_590510737521'],
-    advDicTableProps: {
-      lzTableStyle: {
-        width: 1100
-      },
-      customColumnWidth: {
-        依据: 600
-      }
-    },
-    addBtn: {
-      type: 'text',
-      text: '录入'
-    },
-    btnsVisible: {
-      check: true,
-      mod: false,
-      del: true,
-      edit: false,
-      save: false,
-      cancel: false
-    },
-    pagination: {
-      pageSize: 10,
-      current: 0
-    },
-    opIsFixed: true,
-    tableTitle: '统计分析',
-    showHeader: true,
-    displayMod: 'classify',
-    hasOpenUnitBtn: true,
-    // dataMode :"sub",
-    lzAdvSearchStyle: {
-      background: '#e5e9ed',
-      borderRadius: '4px',
-      border: '1px solid #e5e9ed'
-    },
-    advSearchConfig: {
-      defaultVisible: false,
-      containerName: 'drawer',
-      drawerWidth: 550,
-      labelWidth: '24%',
-      rowWidth: '100%',
-      dateRanges: [
-        {
-          title: '违纪日期',
-          visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
-          innerFieldName: 'C3_590511645885' // 内部字段
-        },
-        {
-          title: '管理员确认日期',
-          visible: [false, false, false, false], // 对应 “今天”、“昨天”、“本周”、“上周” 是否显示
-          innerFieldName: 'C3_606306735938' // 内部字段
-        }
-      ],
-      tag: [
-        // tag
-        // {
-        //   title: '部门',
-        //   op: 'or', // 操作符：'or' | 'and'
-        //   tags: [
-        //     {
-        //       label: 'OA',
-        //       value: 'OA',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590510763625' // 内部字段名
-        //     },
-        //     {
-        //       label: 'OPS',
-        //       value: 'OPS',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590510763625'
-        //     }
-        //   ]
-        // },
-        // {
-        //   title: '状态',
-        //   op: 'or',
-        //   tags: [
-        //     {
-        //       label: '已撤销',
-        //       value: '已撤销',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590514418013'
-        //     },
-        //     {
-        //       label: '已录入',
-        //       value: '已录入',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590514418013'
-        //     },
-        //     {
-        //       label: '进行中',
-        //       value: '进行中',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590514418013'
-        //     }
-        //   ]
-        // },
-        {
-          title: '合同类别',
-          op: 'or',
-          tags: [
-            {
-              label: 'SH',
-              value: 'SH',
-              isSelected: false,
-              innerFieldName: 'C3_590686786388'
-            },
-            {
-              label: 'WX',
-              value: 'WX',
-              isSelected: false,
-              innerFieldName: 'C3_590686786388'
-            }
-          ]
-        },
-        {
-          title: '违纪类别',
-          op: 'or',
-          tags: [
-            {
-              label: '绩效处分',
-              value: '绩效处分',
-              isSelected: false,
-              innerFieldName: 'C3_590512169985'
-            },
-            {
-              label: '警告',
-              value: '警告',
-              isSelected: false,
-              innerFieldName: 'C3_590512169985'
-            },
-            {
-              label: '较重警告',
-              value: '较重警告',
-              isSelected: false,
-              innerFieldName: 'C3_590512169985'
-            },
-            {
-              label: '严重警告',
-              value: '严重警告',
-              isSelected: false,
-              innerFieldName: 'C3_590512169985'
-            }
-          ]
-        },
-        // {
-        //   title: '是否撤销',
-        //   op: 'or',
-        //   tags: [
-        //     {
-        //       label: '是',
-        //       value: 'Y',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590512213622'
-        //     },
-        //     {
-        //       label: '否',
-        //       value: 'N',
-        //       isSelected: false,
-        //       innerFieldName: 'C3_590512213622'
-        //     }
-        //   ]
-        // },
-        {
-          title: '到期撤销',
-          op: 'or',
-          tags: [
-            {
-              label: '是',
-              value: 'Y',
-              isSelected: false,
-              innerFieldName: 'C3_591373611399'
-            },
-            {
-              label: '否',
-              value: 'N',
-              isSelected: false,
-              innerFieldName: 'C3_591373611399'
-            }
-          ]
-        }
-      ],
-      search: [
-        {
-          title: '工号/姓名/部门',
-          innerFieldNames: [
-            'C3_590510737521',
-            'C3_590510740042',
-            'C3_590510763625'
-          ]
-        },
-        {
-          title: '惩处依据',
-          innerFieldNames: ['C3_590511744313']
-        },
-        {
-          title: '职级',
-          innerFieldNames: ['C3_590512134594']
-        },
-        {
-          title: '一级部门',
-          innerFieldNames: ['C3_590516541218']
-        },
-        {
-          title: '二级部门',
-          innerFieldNames: ['C3_590516558243']
-        },
-        {
-          title: '三级部门',
-          innerFieldNames: ['C3_590516572216']
         }
       ]
     }
@@ -2096,7 +2019,7 @@ window[621257502796] = {
 
     //无锡配置
     showAllminute: false, //是否显示所有分钟数
-    showBatchApply: true, //是否显示批量申请
+    showBatchApply: false, //是否显示批量申请
     showWorkOvertimeOptions: true, //是否显示加班选项
     showApproveAll: true, //是否显示一键审批
     reasonRequired: true, //事由是否是必填的
@@ -8398,11 +8321,7 @@ window[642865148916] = {
   }
 };
 
-window[642865159694] = {
-  name: 'DoorManagement', // 组件名称，
-  title: '当月门禁清单', // 功能模块名称
-  props: {}
-};
+
 window[642865168807] = {
   name: 'TableData', // 组件名称，
   title: '有误数据', // 功能模块名称
@@ -10520,3 +10439,245 @@ window[723578280726] = {
     isManager: true
   }
 };
+//以下是违纪升级新加的功能
+window[728914680096] = {
+  name: 'PunishmentHistory',
+  title: '违纪升级记录',
+  props: {
+  }
+};
+window[728997522103] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '组长名单', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    resid: 728996646072,
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+window[729686616250] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '组长权限操作记录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    resid: 729009666829,
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[729705092423] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '违纪条例管理', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 729704479929,
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[729708892763] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '组长负责的主管', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 729708742877,
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[730042160003] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '非系统累进违纪记录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 729961926165,
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[730044094031] = { // 空资源ID
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '12月内有效记录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 730032828435, // 继承表id
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[730044239377] = { // 空资源ID
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '系统累进违纪记录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 730039803659, // 继承表id
+    recordFormFormWidth: '90%',
+    hasAdd: true,
+    hasBeBtns: false,
+    hasModify: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180
+  } // 组件所接收的 props
+}
+
+window[730208115084] = { // 空资源ID
+  name: 'ShVisitorAuth', // 组件名称，这里为定制组件名称
+  title: '上海访客审批授权', // 功能模块名称
+}
+window[642865159694] = { // 空资源ID
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '当月门禁清单', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 702643427843,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 180,
+    defaultPagination:
+    {
+      pageSize: 100,
+      current: 1,
+      showSizeChanger: true,
+      showQuickJumper: true,
+      pageSizeOptions: ['10', '20', '30', '40', '100', '500', '1000']
+    }
+  } // 组件所接收的 props
+}
+window[732189947150] = {
+  name: 'DoorManagement', // 组件名称，
+  title: '每月门禁清单确认', // 功能模块名称
+  props: {}
+};
+window[732196387079] = {
+  name: 'DoorConfirmation', // 组件名称，
+  title: '门管理员确认情况', // 功能模块名称
+  props: {}
+};
+window[732215061679] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '门管理员申请重开门禁', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 732213999006,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
+window[732215086446] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '重开门禁申请', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 732214014179,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
+

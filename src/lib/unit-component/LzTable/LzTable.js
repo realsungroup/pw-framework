@@ -38,6 +38,7 @@ import {
   getAutoImportStatus,
   getBatchDealStatus
 } from 'Util/api';
+import punishPreCal from './punishPreCal';
 import LzFormModalContainer from '../components/LzFormModalContainer';
 import dealControlArr, { dealFormData } from 'Util/controls';
 import { EditableContext, EditableFormRow } from './LzEditableFormRow';
@@ -2718,49 +2719,95 @@ class LzTable extends React.Component {
       </div>
     );
   };
-
+  onSubPunishment = async (params, record) => {
+    let resR = await http(params).modifyRecords({
+      resid: 590863325025,
+      data: [{ C3_591373760332: 'Y', REC_ID: record.REC_ID }]
+    });
+    message.success('操作成功');
+    this.setState({
+      submitLoading: false
+    })
+    this.refreshTableData();
+    Modal.destroyAll();
+  }
   handleFESubmit = async record => {
     let res;
     this.setState({
       submitLoading: true
-    })
+    });
+
     try {
       const params = {};
       if (this.props.baseURL) {
         params.baseURL = this.props.baseURL;
       }
-      res = await http(params).modifyRecords({
-        resid: 590863325025,
-        data: [{ C3_591373760332: 'Y', REC_ID: record.REC_ID }]
+      let res0 = await http(params).getTable({
+        resid: 729252376804,
+        cmswhere: `C3_590510737521 = '${record.C3_590510737521}'`
       });
-    } catch (err) {
-      console.error(err);
-      return message.error(err.message);
-    }
-    if (res.data.length) {
-      const value = res.data[0].C3_606500587548;
-      if (value) {
-        Modal.confirm({
-          title: '提醒',
-          content: value,
-          onOk: () => {
-            this.refreshTableData();
-            Modal.destroyAll();
-          }
-        });
+      if (res0.data.length) {
+        //有历史记录的场合
+        let result = punishPreCal(res0.data, record.C3_590512169985);
+
+        if (result) {
+          Modal.confirm({
+            title: '提醒',
+            content: result,
+            onOk: () => {
+              this.onSubPunishment(params, record);
+            },
+            onCancel: () => {
+              this.setState({
+                submitLoading: false
+              });
+            }
+          });
+        } else {
+          this.onSubPunishment(params, record);
+        }
       } else {
-        message.success('操作成功');
-        this.refreshTableData();
+        //没有历史记录的场合
+        this.onSubPunishment(params, record);
       }
-    } else {
+
+    } catch (err) {
       this.setState({
         submitLoading: false
       })
-      message.error('操作失败');
+      console.error(err);
+      return message.error(err.message);
     }
-    this.setState({
-      submitLoading: false
-    })
+
+
+    // this.refreshTableData();
+    //       Modal.destroyAll();
+    //        message.success('操作成功');
+
+
+    // if (res.data.length) {
+    // const value = res.data[0].C3_606500587548;
+    // const value = "确认要提交吗？"
+    // if (value) {
+    // Modal.confirm({
+    //   title: '提醒',
+    //   content: value,
+    //   onOk: () => {
+    //     this.refreshTableData();
+    //     Modal.destroyAll();
+    //   }
+    // });
+    // } else {
+    //   message.success('操作成功');
+    //   this.refreshTableData();
+    // }
+    // } else {
+    //   this.setState({
+    //     submitLoading: false
+    //   })
+    //   message.error('操作失败');
+    // }
+
   };
 
   renderForms = () => {

@@ -12,10 +12,10 @@ import {
 } from '../../../lib/util/api';
 import { clone } from '../../../lib/util/util';
 import cloneDeep from 'lodash.clonedeep';
-const baseURL =
-  window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03BaseURL;
-const downloadURL =
-  window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03DownloadBaseURL;
+// const baseURL =
+//   window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03BaseURL;
+// const downloadURL =
+//   window.pwConfig[process.env.NODE_ENV].customURLs.WuxiHr03DownloadBaseURL;
 /**
  * 管理员确认
  */
@@ -191,18 +191,41 @@ class AdminConfirm extends React.Component {
     record.C3_591373760332 = '';
     record.C3_617212255449 = this.state.sendBackReason;
     try {
-      res = await http({ baseURL }).modifyRecords({
+      res = await http().modifyRecords({
         resid: 605617716920,
         data: [record]
       });
       if (res.Error === 0) {
         message.success(res.message);
+        this.tableDataRef.handleRefresh();
+
       }
     } catch (error) {
       message.error(error.message);
     }
     this.setState({
       sendBackReason: null
+    });
+  };
+  onCancel = async record => {
+    let res;
+    record.C3_590512213622 = 'Y';
+    record.C3_590516587909 = this.state.cancelReason;
+    try {
+      res = await http().modifyRecords({
+        resid: 605617716920,
+        data: [record]
+      });
+      if (res.Error === 0) {
+        message.success(res.message);
+        this.tableDataRef.handleRefresh();
+
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
+    this.setState({
+      cancelReason: null
     });
   };
   onChangeDeleteReason = event => {
@@ -215,10 +238,16 @@ class AdminConfirm extends React.Component {
       sendBackReason: event.target.value
     });
   };
+  onChangeCancelReason = event => {
+    this.setState({
+      cancelReason: event.target.value
+    });
+  }
   onClearReason = () => {
     this.setState({
       sendBackReason: null,
-      deleteReason: null
+      deleteReason: null,
+      cancelReason: null
     });
   };
   onDelete = async record => {
@@ -229,7 +258,7 @@ class AdminConfirm extends React.Component {
       return message.error("请填写删除原因！")
     }
     try {
-      res = await http({ baseURL }).modifyRecords({
+      res = await http().modifyRecords({
         resid: 605617716920,
         data: [record]
       });
@@ -271,7 +300,7 @@ class AdminConfirm extends React.Component {
 
     let res;
     try {
-      res = await http({ baseURL }).modifyRecords({
+      res = await http().modifyRecords({
         resid,
         data
       });
@@ -327,7 +356,7 @@ class AdminConfirm extends React.Component {
 
     let res;
     try {
-      res = await http({ baseURL }).modifyRecords({
+      res = await http().modifyRecords({
         resid,
         data
       });
@@ -592,8 +621,6 @@ class AdminConfirm extends React.Component {
           {advSearchConfig && this.renderAdvSearchBtn()}
           <TableData
             {...this.props}
-            baseURL={baseURL}
-            downloadBaseURL={downloadURL}
             actionBarExtra={this.renderActionBarExtra}
             wrappedComponentRef={element => (this.tableDataRef = element)}
             refTargetComponentName="TableData"
@@ -627,6 +654,27 @@ class AdminConfirm extends React.Component {
                     }}
                   >
                     <Button>退回</Button>
+                  </Popconfirm>
+                );
+              },
+              record => {
+                return (
+                  <Popconfirm
+                    title={
+                      <React.Fragment>
+                        <span>请输入撤销原因</span>
+                        <TextArea
+                          value={this.state.cancelReason}
+                          onChange={this.onChangeCancelReason}
+                        ></TextArea>
+                      </React.Fragment>
+                    }
+                    onConfirm={() => this.onCancel(record)}
+                    onCancel={() => {
+                      this.onClearReason();
+                    }}
+                  >
+                    <Button>撤销</Button>
                   </Popconfirm>
                 );
               },
