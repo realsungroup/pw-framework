@@ -27,15 +27,25 @@ const style = { height: '100%', width: '100%' };
 class PWRedirect extends React.Component {
   state = { url: '' };
   componentDidMount() {
-    const { resid, replaceBaseUrl, baseURL } = this.props;
-    this.fetchRedirectUrl(resid, replaceBaseUrl, baseURL);
+    const { resid, replaceBaseUrl, baseURL, SSO } = this.props;
+    this.fetchRedirectUrl(resid, replaceBaseUrl, baseURL, SSO);
   }
-  fetchRedirectUrl = async (resid, replaceBaseUrl, baseURL) => {
+  fetchRedirectUrl = async (resid, replaceBaseUrl, baseURL, SSO) => {
     try {
       const res = await http({ baseURL }).getRedirectUrl({ resid });
       let url = res.data;
       if (replaceBaseUrl) {
         url = url.replace(getDomain(url), replaceBaseUrl);
+      }
+      if (SSO) {
+        let token = localStorage.getItem('userInfo');
+        token = JSON.parse(token);
+        token = token.AccessToken;
+        if (url.indexOf('?') === -1) {
+          url = url + '?AccessToken=' + token
+        } else {
+          url = url + '&AccessToken=' + token
+        }
       }
       console.log(url);
       this.setState({ url });
@@ -58,8 +68,8 @@ class PWRedirect extends React.Component {
             className="pw-redirect-iframe"
           />
         ) : (
-          <div>请稍等...</div>
-        )}
+            <div>请稍等...</div>
+          )}
       </div>
     );
   }
