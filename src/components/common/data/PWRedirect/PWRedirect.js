@@ -7,6 +7,7 @@ import http, { makeCancelable } from 'Util20/api';
  * @param url
  * @return
  */
+// 后台设置重定向网页方法：新建定制网页，填入链接
 function getDomain(url) {
   let result = '';
   let j = 0,
