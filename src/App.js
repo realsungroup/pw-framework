@@ -25,6 +25,7 @@ import 'moment/locale/zh-cn';
 import { setItem, getItem } from 'Util/util';
 import './App.css';
 import qs from 'qs';
+import http from './util20/api'
 
 // redux
 import { Provider } from 'react-redux';
@@ -124,11 +125,11 @@ class App extends Component {
 
   componentDidMount = () => {
     const clipboard = new ClipboardJS('.app__warning-bar-copy');
-    clipboard.on('success', function(e) {
+    clipboard.on('success', function (e) {
       message.success('复制成功');
     });
 
-    clipboard.on('error', function(e) {
+    clipboard.on('error', function (e) {
       message.error('复制失败');
     });
 
@@ -143,14 +144,35 @@ class App extends Component {
       } else {
         language = userInfo.UserInfo.EMP_LANGUAGE;
       }
-    } catch (err) {}
+    } catch (err) { }
+    let accessToken = this.resolveQueryString();
+    accessToken = accessToken.AccessToken;
+    if (accessToken) {
+      this.loginByToken(accessToken, language);
+    } else {
+      this.setState({
+        userInfo,
+        language
+      });
+    }
 
-    this.setState({
-      userInfo,
-      language
-    });
   };
-
+  loginByToken = async (token, language) => {
+    try {
+      let res = await http().tokenLogin({
+        AccessToken: token,
+        language: language
+      })
+      let userInfo = JSON.stringify(res);
+      setItem('userInfo', userInfo)
+      this.setState({
+        userInfo,
+        language
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
   handleCloseWarningBar = () => {
     this.setState({ warningBarVisible: false });
   };

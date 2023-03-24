@@ -1031,3 +1031,9 @@ export const DoorConfirmation = Loadable({
     return minLoading;
   }
 });
+export const SampleApp = Loadable({
+  loader: () => import('./SampleApp'),
+  loading() {
+    return minLoading;
+  }
+});

@@ -1,19 +1,28 @@
 import http from 'lz-request/lib/http';
 
 import { getItem } from './util';
+import qs from 'qs';
 
 const baseURL = window.pwConfig[process.env.NODE_ENV].baseURL;
 const enterprisecode = window.pwConfig[process.env.NODE_ENV].enterprisecode;
 http.setDefaultBaseURL(baseURL);
-
+const quertString = window.location.search;
+const qsObj = qs.parse(quertString.substring(1));
+const tokenParameter = qsObj.AccessToken
+const userCodeParameter = qsObj.UserCode
 // 请求拦截
 http.setRequestInterceptors(
-  function(config) {
+  function (config) {
     // 请求头加上 token
     const userInfo = JSON.parse(getItem('userInfo'));
-
     let token = userInfo && userInfo.AccessToken;
+    if (tokenParameter) {
+      token = tokenParameter
+    }
     let userCode = userInfo && userInfo.UserCode;
+    if (userCodeParameter) {
+      userCode = userCodeParameter
+    }
     if (token && userCode) {
       config.headers.accessToken = token;
       config.headers.userCode = userCode;
@@ -22,14 +31,14 @@ http.setRequestInterceptors(
     }
     return config;
   },
-  function(error) {
+  function (error) {
     return error;
   }
 );
 
 // 响应拦截
 http.setResponseInterceptors(
-  function(response) {
+  function (response) {
     const res = response.data;
     if (
       (res &&
@@ -53,7 +62,7 @@ http.setResponseInterceptors(
       }
     }
   },
-  function(error) {
+  function (error) {
     return error;
   }
 );
@@ -201,6 +210,17 @@ http.createApi('domainLogin', {
   method: 'post',
   baseURL: window.pwConfig[process.env.NODE_ENV].domainLoginConfig.baseUrl,
   url: '/api/Account/Login'
+});
+
+/**
+ * 偷啃登录
+ * 参数：{ code, password, domain, domainUserField, loginMethod = 'domain' }
+ * 1. accessToken：偷啃
+ */
+http.createApi('tokenLogin', {
+  method: 'get',
+  baseURL: window.pwConfig[process.env.NODE_ENV].domainLoginConfig.baseUrl,
+  url: '/api/Account/GetUserByAccessToken'
 });
 
 /**
