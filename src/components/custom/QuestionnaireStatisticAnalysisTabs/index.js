@@ -1,2 +1,0 @@
-import QuestionnaireStatisticAnalysisTabs from './QuestionnaireStatisticAnalysisTabs';
-export default QuestionnaireStatisticAnalysisTabs;
