@@ -34,10 +34,12 @@ class WorkInfo extends React.Component {
       ].customURLs.comprehensiveQueryBaseURL;
     this.attendanceDownloadURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
+    this.empId = JSON.parse(getItem('userInfo')).EnterpriseCode;
   }
 
   componentDidMount = async () => {
     await this.getYearMonths();
+
   };
 
   getYearMonths = async () => {
@@ -168,9 +170,10 @@ class WorkInfo extends React.Component {
             </nav>
             <Skeleton loading={!person.C3_305737857578 || !selectMonth}>
               <div style={{ height: 'calc(100% - 28px)' }}>
+                {/* 723568595369上海 */}
                 {currentNav === 'monthDetail' && (
                   <TableData
-                    resid="723568595369"
+                    resid={this.empId == '100' ? "733402632513" : "723568595369"}
                     subtractH={180}
                     // tableComponent="ag-grid"
                     // rowSelectionAg="single"
@@ -239,8 +242,9 @@ class WorkInfo extends React.Component {
                   />
                 )}
                 {currentNav === 'dayDetail' && (
+                  // 723570278896 上海
                   <TableData
-                    resid="723570278896"
+                    resid={this.empId == '100' ? "733402999666" : "723570278896"}
                     size="small"
                     subtractH={180}
                     hasAdvSearch={false}
@@ -276,8 +280,9 @@ class WorkInfo extends React.Component {
             destroyOnClose
           >
             <div style={modalWrapperStyle}>
+              {/* 447426097689上海 */}
               <TableData
-                resid="447426097689"
+                resid={this.empId == '100' ? "733412548355" : "447426097689"}
                 subtractH={200}
                 hasAdvSearch={false}
                 hasAdd={false}
