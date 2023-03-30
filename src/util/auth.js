@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import appConfig, { dataType } from './http.config';
 import http from './http';
+import http20 from '../util20/api'
 import { getItem, removeItem, setItem } from './localCache';
 import qs from 'querystring';
 
@@ -13,13 +14,26 @@ export const logout = () => {
 };
 class AutoLogin extends React.PureComponent {
   componentDidMount() {
-    const { user, pass } = this.props;
-    this.login(user, pass);
+    const { user, pass, token } = this.props;
+    this.login(user, pass, token);
   }
-  login = async (user, pass) => {
+  login = async (user, pass, token) => {
     let res;
+
     try {
-      res = await defaultLogin(user, pass);
+      if (token) {
+        res = await http20().tokenLogin({
+          AccessToken: token
+        })
+        let userInfo = JSON.stringify(res);
+        setItem('userInfo', userInfo)
+        // this.setState({
+        //   userInfo,
+        //   language
+        // });
+      } else {
+        res = await defaultLogin(user, pass);
+      }
     } catch (err) {
       alert(err.message);
       return console.error(err.message);
@@ -62,6 +76,8 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
       const qsObj = qs.parse(window.location.search.slice(1));
       if (logined) {
         return <Component {...props} />
+      } else if (qsObj.AccessToken) {
+        return <AutoLogin token={qsObj.AccessToken} />
       } else if (qsObj.user && qsObj.pass) {
         return <AutoLogin user={qsObj.user} pass={qsObj.pass} />
       } else {

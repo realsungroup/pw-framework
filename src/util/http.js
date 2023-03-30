@@ -4,10 +4,10 @@ import Axios from 'axios';
 import qs from 'qs';
 
 Axios.interceptors.response.use(
-  function(res) {
+  function (res) {
     return res;
   },
-  function(error) {
+  function (error) {
     console.log(error.message);
     if (error.message.indexOf('401') !== -1) {
       return (window.location.href = '/login');
