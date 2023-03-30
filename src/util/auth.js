@@ -19,7 +19,6 @@ class AutoLogin extends React.PureComponent {
   }
   login = async (user, pass, token) => {
     let res;
-
     try {
       if (token) {
         res = await http20().tokenLogin({
@@ -27,10 +26,6 @@ class AutoLogin extends React.PureComponent {
         })
         let userInfo = JSON.stringify(res);
         setItem('userInfo', userInfo)
-        // this.setState({
-        //   userInfo,
-        //   language
-        // });
       } else {
         res = await defaultLogin(user, pass);
       }

@@ -17,11 +17,11 @@ http.setRequestInterceptors(
     const userInfo = JSON.parse(getItem('userInfo'));
     let token = userInfo && userInfo.AccessToken;
     if (tokenParameter) {
-      token = tokenParameter
+      token = tokenParameter;
     }
     let userCode = userInfo && userInfo.UserCode;
     if (userCodeParameter) {
-      userCode = userCodeParameter
+      userCode = userCodeParameter;
     }
     if (token && userCode) {
       config.headers.accessToken = token;
