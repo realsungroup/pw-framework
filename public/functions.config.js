@@ -2019,7 +2019,7 @@ window[621257502796] = {
 
     //无锡配置
     showAllminute: false, //是否显示所有分钟数
-    showBatchApply: false, //是否显示批量申请
+    showBatchApply: true, //是否显示批量申请
     showWorkOvertimeOptions: true, //是否显示加班选项
     showApproveAll: true, //是否显示一键审批
     reasonRequired: true, //事由是否是必填的

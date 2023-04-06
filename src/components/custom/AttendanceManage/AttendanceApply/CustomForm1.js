@@ -202,11 +202,14 @@ class CustomForm1 extends React.Component {
     selectedTypeId,
     currentUserCode
   ) => {
+    this.setState({ gettingTime: true });
     try {
       let res = await http().getFieldBySql({
         dblink: 'ehr',
         sql: `select dbo.[fn_get_regvocationhours](${selectedTypeId},'${startTime}','${endTime}','${currentUserCode}',0)`
       });
+      this.setState({ gettingTime: false });
+
       const timeLength = Number(res.data);
       if (isNaN(timeLength)) {
         message.info(res.data);
@@ -237,6 +240,8 @@ class CustomForm1 extends React.Component {
     } catch (error) {
       console.log(error);
       message.error(error.message);
+      this.setState({ gettingTime: false });
+
     }
   };
 
@@ -605,7 +610,9 @@ class CustomForm1 extends React.Component {
 
       availableTime,
       showAvailableTime,
-      availableTimeText
+      availableTimeText,
+
+      gettingTime
 
     } = this.state;
     const {
@@ -778,8 +785,8 @@ class CustomForm1 extends React.Component {
           </Form.Item>
           {isNeedAttachment && (
             <Form.Item {...formItemLayout} label="附件：" required>
-              <span style={{color:'#f5222d'}}>多个附件合并为一个文件后再上传</span>
-              <br/>
+              <span style={{ color: '#f5222d' }}>多个附件合并为一个文件后再上传</span>
+              <br />
               <Upload
                 onChange={this.handleFileChange}
                 fileList={this.state.fileList}
@@ -815,7 +822,7 @@ class CustomForm1 extends React.Component {
               onClick={() => {
                 this.handleSubmit();
               }}
-              loading={submitting}
+              loading={submitting || gettingTime}
             >
               提交
             </Button>
