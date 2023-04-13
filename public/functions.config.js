@@ -10695,7 +10695,7 @@ window[734182338434] = {
     hasModify: false,
     hasDelete: true,
     hasRowModify: false,
-    hasRowView: false,
+    hasRowView: true,
     hasRowDelete: false,
     hasBeBtns: true,
     hasAdvSearch: true,

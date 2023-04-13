@@ -730,7 +730,15 @@ class EmployeeCourses extends React.Component {
       rate,
       internalTrainingOtherAdvice
     } = this.state;
-
+    let memberid = localStorage.getItem('userInfo');
+    this.setState({
+      loadings: {
+        ...this.state.loadings,
+        submitPlanBtnLoading: true
+      }
+    });
+    memberid = JSON.parse(memberid).UserCode;
+    let uniqueId = this.state.selectedCourse.CourseArrangeDetailID + '' + moment().format('YYYYMMDD') + memberid;
     if (
       selectedCourse.courseType === '外训' ||
       selectedCourse.courseType === '外聘内训'
@@ -768,18 +776,14 @@ class EmployeeCourses extends React.Component {
 
       }
 
-      this.setState({
-        loadings: {
-          ...this.state.loadings,
-          submitPlanBtnLoading: true
-        }
-      });
+
       let data = {
         courseArrange: this.state.selectedCourse.CourseArrangeDetailID,
         knowledge1: str1,
         action1: str2
       };
       let res; //反馈
+
       try {
         res = await http().addRecords({
           resid: 478367996508,
@@ -802,6 +806,7 @@ class EmployeeCourses extends React.Component {
               C3_722087862632: rate.rate10,//我愿意向朋友或同事推荐这门课程
               C3_722087899198: rate.rate11,//在培训过程中，培训组织者给予我足够的后勤支持
               C3_722087926763: rate.rate12,//培训场地设备设施完整无故障
+              uniqueId//唯一值
             }
           ],
           isEditOrAdd: true
@@ -855,7 +860,8 @@ class EmployeeCourses extends React.Component {
                   C3_722087899198: rate.rate11,//在培训过程中，培训组织者给予我足够的后勤支持
                   C3_722087926763: rate.rate12,//培训场地设备设施完整无故障
                   C3_622216706104: internalTrainingOtherAdvice.advantages,
-                  C3_622216725340: internalTrainingOtherAdvice.shortcommings
+                  C3_622216725340: internalTrainingOtherAdvice.shortcommings,
+                  uniqueId
                 }
               ],
               isEditOrAdd: true
