@@ -202,14 +202,16 @@ class CustomForm1 extends React.Component {
     selectedTypeId,
     currentUserCode
   ) => {
-    this.setState({ gettingTime: true });
+    let strTime = moment().valueOf();
+    this.setState({ gettingTime: true, timeID: strTime });
     try {
       let res = await http().getFieldBySql({
         dblink: 'ehr',
         sql: `select dbo.[fn_get_regvocationhours](${selectedTypeId},'${startTime}','${endTime}','${currentUserCode}',0)`
       });
-      this.setState({ gettingTime: false });
-
+      if (this.state.timeID === strTime) {
+        this.setState({ gettingTime: false });
+      }
       const timeLength = Number(res.data);
       if (isNaN(timeLength)) {
         message.info(res.data);
@@ -304,6 +306,10 @@ class CustomForm1 extends React.Component {
       fileList,
       errors
     } = this.state;
+    if (!filledData.timeLength) {
+      message.error('时间长度需要大于0')
+      return false;
+    }
     for (let v of Object.values(errors)) {
       if (v) {
         this.setState({ submitting: false });
@@ -358,6 +364,7 @@ class CustomForm1 extends React.Component {
     } finally {
       this.setState({ submitting: false });
     }
+
   };
 
   /**
