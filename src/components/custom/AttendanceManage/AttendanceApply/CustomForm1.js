@@ -307,6 +307,7 @@ class CustomForm1 extends React.Component {
       errors
     } = this.state;
     if (!filledData.timeLength) {
+      this.setState({ submitting: false });
       message.error('时间长度需要大于0')
       return false;
     }
