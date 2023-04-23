@@ -555,6 +555,7 @@ class DoorManagement extends React.Component {
         }],
         isEditOrAdd: 'true'
       });
+      this.setState({ confirmedDel: true });
       message.success('确认成功');
     } catch (err) {
       console.log(err);
@@ -768,6 +769,11 @@ class DoorManagement extends React.Component {
 
                     <Input.Search
                       style={{ width: 'calc(100% - 260px)' }}
+                      onSearch={
+                        (v) => {
+                          this.filtData('add', v);
+                        }
+                      }
                       onPressEnter={v => {
                         this.filtData('add', v.target.value);
                       }}
@@ -830,6 +836,9 @@ class DoorManagement extends React.Component {
                     <Button onClick={() => { this.handleReapply() }}>申请复权</Button>
                     <Input.Search
                       style={{ width: 'calc(100% - 320px)' }}
+                      onSearch={(v) => {
+                        this.filtData('minus', v);
+                      }}
                       onPressEnter={v => {
                         this.filtData('minus', v.target.value);
                       }}
@@ -913,6 +922,11 @@ class DoorManagement extends React.Component {
 
                     <Input.Search
                       style={{ width: 'calc(100% - 260px)' }}
+                      onSearch={
+                        (v) => {
+                          this.filtData('same', v);
+                        }
+                      }
                       onPressEnter={v => {
                         this.filtData('same', v.target.value);
                       }}
