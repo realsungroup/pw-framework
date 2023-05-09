@@ -28,6 +28,7 @@ class WorkInfo extends React.Component {
   constructor(props) {
     super(props);
     this.UserCode = JSON.parse(getItem('userInfo')).UserInfo.EMP_USERCODE;
+    this.EntCode = JSON.parse(getItem('userInfo')).EnterpriseCode;
     this.baseURL =
       window.pwConfig[
         process.env.NODE_ENV
@@ -95,34 +96,42 @@ class WorkInfo extends React.Component {
       dailyDetailVisible: false,
       yearDetailVisible: false,
       tiaoxiuDetailVisible: false,
+      punchDetailVisible: false,
       selectRecord: {}
     });
   };
 
-  openModal = (type, selectRecord) => () => {
-    switch (type) {
-      case 'daily':
-        this.setState({
-          dailyDetailVisible: true,
-          selectRecord
-        });
-        break;
-      case 'year':
-        this.setState({
-          yearDetailVisible: true,
-          selectRecord
-        });
-        break;
-      case 'tiaoxiu':
-        this.setState({
-          tiaoxiuDetailVisible: true,
-          selectRecord
-        });
-        break;
-      default:
-        break;
-    }
-  };
+  openModal =
+    (type, selectRecord) => () => {
+      switch (type) {
+        case 'daily':
+          this.setState({
+            dailyDetailVisible: true,
+            selectRecord
+          });
+          break;
+        case 'year':
+          this.setState({
+            yearDetailVisible: true,
+            selectRecord
+          });
+          break;
+        case 'punch':
+          this.setState({
+            punchDetailVisible: true,
+            selectRecord
+          })
+          break;
+        case 'tiaoxiu':
+          this.setState({
+            tiaoxiuDetailVisible: true,
+            selectRecord
+          });
+          break;
+        default:
+          break;
+      }
+    };
 
   handleNavChange = key => {
     return () => {
@@ -139,6 +148,7 @@ class WorkInfo extends React.Component {
       yearDetailVisible,
       tiaoxiuDetailVisible,
       selectRecord,
+      punchDetailVisible,
       currentNav
     } = this.state;
     const { person, showAnnualLeaveDetail, showTiaoXiuDetail } = this.props;
@@ -262,6 +272,15 @@ class WorkInfo extends React.Component {
                     cparm2={selectMonth}
                     baseURL={this.baseURL}
                     downloadBaseURL={this.attendanceDownloadURL}
+                    customRowBtns={this.EntCode === '100' ? [(record) => {
+                      return (
+
+                        <Button
+                          size="small"
+                          onClick={this.openModal('punch', record)}
+                        >刷卡明细</Button>
+                      )
+                    }] : null}
                   />
                 )}
               </div>
@@ -349,6 +368,36 @@ class WorkInfo extends React.Component {
                 hasRowModify={false}
                 hasRowSelection={false}
                 actionBarWidth={100}
+                baseURL={this.baseURL}
+                downloadBaseURL={this.attendanceDownloadURL}
+              />
+            </div>
+          </Modal>
+          <Modal
+            title={`刷卡明细——${selectRecord.C3_375380006609 + selectRecord.DATES}`}
+            visible={punchDetailVisible}
+            onCancel={this.closeModal}
+            onOk={this.closeModal}
+            width="80%"
+            destroyOnClose
+          >
+            <div style={modalWrapperStyle}>
+              <TableData
+                resid="736943826177"
+                subtractH={200}
+                hasAdvSearch={false}
+                hasAdd={false}
+                hasRowView={false}
+                hasRowDelete={false}
+                hasRowEdit={false}
+                hasDelete={false}
+                hasModify={false}
+                hasBeBtns={false}
+                hasRowModify={false}
+                hasRowSelection={false}
+                hasImport={false}
+                actionBarWidth={100}
+                cmswhere={`C3_425166076426 = '${selectRecord.DATES}' and C3_424965724815 = '${selectRecord.C3_375380046640}' `}
                 baseURL={this.baseURL}
                 downloadBaseURL={this.attendanceDownloadURL}
               />
