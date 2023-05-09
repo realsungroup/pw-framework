@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, message, Button, Modal, Skeleton } from 'antd';
+import { Select, message, Button, Modal, Skeleton, Spin } from 'antd';
 import TableData from '../../../../common/data/TableData';
 import './WorkInfo.less';
 import http from 'Util20/api';
@@ -22,7 +22,9 @@ class WorkInfo extends React.Component {
     yearDetailVisible: false,
     tiaoxiuDetailVisible: false,
     selectRecord: {},
-    currentNav: 'monthDetail'
+    currentNav: 'monthDetail',
+    punchData: [],
+    punchLoading: false
   };
 
   constructor(props) {
@@ -97,10 +99,43 @@ class WorkInfo extends React.Component {
       yearDetailVisible: false,
       tiaoxiuDetailVisible: false,
       punchDetailVisible: false,
-      selectRecord: {}
+      selectRecord: {},
+      punchData: []
     });
   };
-
+  getPunchData = async (selectRecord) => {
+    this.setState({
+      punchDetailVisible: true,
+      selectRecord,
+      punchLoading: true
+    })
+    try {
+      let res = await http({ baseURL: this.baseURL }).getTable({
+        resid: this.props.isManager ? "736955745277" : "736943826177",
+        cmswhere: `C3_425166076426 = '${selectRecord.DATES}' and C3_424965724815 = '${selectRecord.C3_375380046640}' `
+      });
+      let punchData = []
+      for (let i = 0; i < res.data.length; i++) {
+        if (i === 0) {
+          punchData.push(res.data[i]);
+        } else {
+          let bol = false
+          for (let c = 0; c < punchData.length; c++) {
+            if (punchData[c].TIMES === res.data[i].TIMES) {
+              bol = true;
+            }
+          }
+          if (bol === false) {
+            punchData.push(res.data[i]);
+          }
+        }
+      }
+      this.setState({ punchData, punchLoading: false });
+    } catch (e) {
+      console.log(e.message);
+      this.setState({ punchLoading: false });
+    }
+  }
   openModal =
     (type, selectRecord) => () => {
       switch (type) {
@@ -117,10 +152,8 @@ class WorkInfo extends React.Component {
           });
           break;
         case 'punch':
-          this.setState({
-            punchDetailVisible: true,
-            selectRecord
-          })
+          this.getPunchData(selectRecord)
+
           break;
         case 'tiaoxiu':
           this.setState({
@@ -381,26 +414,30 @@ class WorkInfo extends React.Component {
             width="80%"
             destroyOnClose
           >
-            <div style={modalWrapperStyle}>
-              <TableData
-                resid="736943826177"
-                subtractH={200}
-                hasAdvSearch={false}
-                hasAdd={false}
-                hasRowView={false}
-                hasRowDelete={false}
-                hasRowEdit={false}
-                hasDelete={false}
-                hasModify={false}
-                hasBeBtns={false}
-                hasRowModify={false}
-                hasRowSelection={false}
-                hasImport={false}
-                actionBarWidth={100}
-                cmswhere={`C3_425166076426 = '${selectRecord.DATES}' and C3_424965724815 = '${selectRecord.C3_375380046640}' `}
-                baseURL={this.baseURL}
-                downloadBaseURL={this.attendanceDownloadURL}
-              />
+            <div style={modalWrapperStyle} className={'csmTable'}>
+              {
+                this.state.punchData.length === 0 ? '无' : null
+              }
+              {
+                this.state.punchLoading ? <Spin spinning={true}></Spin> : <ul>
+                  <li>
+                    <span>刷卡时间</span>
+                    <span>设备编号</span>
+                    <span>是否手工输入</span>
+                  </li>
+                  {
+                    this.state.punchData.map(item => {
+                      return (
+                        <li>
+                          <span>{item.TIMES}</span>
+                          <span>{item.WINNO}</span>
+                          <span>{item.FLAGS}</span>
+                        </li>
+                      )
+                    })
+                  }
+                </ul>
+              }
             </div>
           </Modal>
         </div>

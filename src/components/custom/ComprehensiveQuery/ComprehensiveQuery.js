@@ -63,6 +63,7 @@ class ComprehensiveQuery extends React.Component {
             person={this.state.node}
             showAnnualLeaveDetail={this.props.showAnnualLeaveDetail}
             showTiaoXiuDetail={this.props.showTiaoXiuDetail}
+            isManager={this.props.isManager}
           />
         );
         break;
