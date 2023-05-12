@@ -251,7 +251,9 @@ class DoorManagement extends React.Component {
 
       bolSame = true;
       if (!bol) {
-        minus.push(lyArr[n]);
+        if (lyArr[n].C3_727094761747 != 'Y') {
+          minus.push(lyArr[n]);
+        }
       }
       // if (!bol && cyArr[c]) {
       //   minus.push(lyArr[n]);
@@ -393,13 +395,12 @@ class DoorManagement extends React.Component {
         C3_498749351171: '删除',
         //工号
         C3_498046910810: data[n].C3_595166604634,
-        C3_498756365442: date,
-        _state: 'editoradd',
-        _id: n
+        C3_498047440296: 'Y'
       });
       n++;
     }
-    let data2 = JSON.stringify(arr);
+    // let data2 = JSON.stringify(arr);
+    let data2 = arr;
     //遍历删除原有数组的数据
     let afterDel = [];
     let org = this.state[this.state.dataSame];
@@ -430,32 +431,31 @@ class DoorManagement extends React.Component {
       selectedDataAdd: [],
       selectedRowKeysAdd: []
     });
-    try {
-      let resC = await http({ baseURL: this.baseURL }).modifyRecords({
-        resid: 702643427843,
-        data
-      });
-      message.success('已确认完毕');
-    } catch (e) {
-      message.error(e.message);
-      console.log(e.message);
-    }
-    try {
-      let res = await http({ baseURL: this.baseURL }).StartSaveTask({
-        resid: 692357214309,
-        data2
-      });
-      message.success('已经上传数据');
-      const taskid = res.taskid;
-      if (taskid) {
-        this.getTaskInfo(taskid);
-      } else {
-        message.error('无taskid');
+    if (mark === 'add') {
+      try {
+        let resC = await http({ baseURL: this.baseURL }).modifyRecords({
+          resid: 702643427843,
+          data
+        });
+        message.success('已确认完毕');
+      } catch (e) {
+        message.error(e.message);
+        console.log(e.message);
       }
-    } catch (e) {
-      message.error(e.message);
-      console.log(e.message);
+    } else {
+      try {
+        let res = await http({ baseURL: this.baseURL }).addRecords({
+          resid: 692357214309,
+          data: data2
+        });
+        message.success('已经上传数据');
+      } catch (e) {
+        message.error(e.message);
+        console.log(e.message);
+      }
     }
+
+
   };
   getTaskInfo = async taskid => {
     let res;
@@ -555,6 +555,7 @@ class DoorManagement extends React.Component {
         }],
         isEditOrAdd: 'true'
       });
+      this.setState({ confirmedDel: true });
       message.success('确认成功');
     } catch (err) {
       console.log(err);
@@ -768,6 +769,11 @@ class DoorManagement extends React.Component {
 
                     <Input.Search
                       style={{ width: 'calc(100% - 260px)' }}
+                      onSearch={
+                        (v) => {
+                          this.filtData('add', v);
+                        }
+                      }
                       onPressEnter={v => {
                         this.filtData('add', v.target.value);
                       }}
@@ -830,6 +836,9 @@ class DoorManagement extends React.Component {
                     <Button onClick={() => { this.handleReapply() }}>申请复权</Button>
                     <Input.Search
                       style={{ width: 'calc(100% - 320px)' }}
+                      onSearch={(v) => {
+                        this.filtData('minus', v);
+                      }}
                       onPressEnter={v => {
                         this.filtData('minus', v.target.value);
                       }}
@@ -913,6 +922,11 @@ class DoorManagement extends React.Component {
 
                     <Input.Search
                       style={{ width: 'calc(100% - 260px)' }}
+                      onSearch={
+                        (v) => {
+                          this.filtData('same', v);
+                        }
+                      }
                       onPressEnter={v => {
                         this.filtData('same', v.target.value);
                       }}

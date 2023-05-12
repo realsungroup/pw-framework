@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import TableData from '../../common/data/TableData';
-import { Button, message } from 'antd';
+import { Button, message, Modal } from 'antd';
 import http from 'Util20/api';
 
 class NoFeedbackFromInternalTraining extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      vis: false
+    };
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
 
   //向邮件表发送记录编号
   sendRECID = async (...recids) => {
@@ -31,9 +33,33 @@ class NoFeedbackFromInternalTraining extends Component {
     }
   };
   render() {
-    const {} = this.state;
+    const { vis } = this.state;
     return (
       <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>
+        <Modal
+          destroyOnClose
+          onCancel={() => {
+            this.setState({ vis: false });
+          }}
+          width="80vw"
+          visible={vis}
+          footer={null}
+        >
+          <div style={{ height: '80vh' }}>
+            <TableData
+              resid={737046742161}
+              hasBeBtns={true}
+              hasRowSelection={false}
+              hasAdd={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowDelete={false}
+              hasRowModify={false}
+              hasRowView={false}
+              subtractH={210}
+            />
+          </div>
+        </Modal>
         <TableData
           resid={674738465484}
           hasBeBtns={true}
@@ -62,14 +88,19 @@ class NoFeedbackFromInternalTraining extends Component {
           ]}
           actionBarExtra={({ selectedRowKeys }) => {
             return (
-              <Button
-                type="primary"
-                onClick={() => {
-                  this.sendRECID(selectedRowKeys);
-                }}
-              >
-                批量发送提醒邮件
+              <>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    this.sendRECID(selectedRowKeys);
+                  }}
+                >
+                  批量发送提醒邮件
               </Button>
+                <Button onClick={() => { this.setState({ vis: true }) }}>
+                  查看邮件发送记录
+              </Button>
+              </>
             );
           }}
         />

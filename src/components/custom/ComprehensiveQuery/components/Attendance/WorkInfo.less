@@ -63,11 +63,41 @@
     }
   }
 }
+
 @keyframes load {
   from {
     opacity: 0;
   }
   to {
     opacity: 1;
+  }
+}
+.csmTable{
+  ul{
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    padding: 0;
+      margin: 0;
+    li{
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      border:1px solid #ddd;
+      border-bottom: 0px solid #ddd;
+      &:first-child{
+        background-color: #f1f1fa;
+      }
+      span{
+        display: inline-block;
+        width: 33%;
+        text-align:center;
+        border-right: 1px solid #ddd;
+        line-height: 2rem;
+        &:last-child{
+        border-right: 0px solid #ddd;
+        }
+      }
+    }
   }
 }

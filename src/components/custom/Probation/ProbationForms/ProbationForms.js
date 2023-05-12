@@ -217,15 +217,16 @@ class ProbationForms extends React.Component {
       this.setState({
         employeeInformation: {
           ...this.state.employeeInformation,
-          C3_622649502021: 'Y'
+          C3_622649502021: 'Y',
+          loading: false
         }
       });
     } catch (error) {
       message.error(error.message);
       console.log(error);
-    } finally {
       this.setState({ loading: false });
     }
+
   };
 
   /**
