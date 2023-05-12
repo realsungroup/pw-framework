@@ -10681,3 +10681,16 @@ window[732215086446] = {
   } // 组件所接收的 props
 };
 
+window[733239312667] = {//后台资源id
+  name: 'PWRedirect',
+  title: '示例重定向',
+  props: {
+    resid: '733488644281',//定制网页资源id
+    replaceBaseUrl: 'http://10.108.2.66:1033',//定制网页地址
+    baseURL: 'http://10.108.2.66:1001',//请求后台地址
+    SSO: 1
+  }
+};
+
+
+
