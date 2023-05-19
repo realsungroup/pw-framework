@@ -49,11 +49,25 @@ class WorkInfo extends React.Component {
         resid: '447426327525',
         dblinkname: 'ehr'
       });
+      let arr = [];
       if (res.data.length) {
-        this.setState({
-          months: res.data,
-          selectMonth: res.data[0].C3_424358155202
-        });
+        if (this.EntCode === '100' && !this.props.isManager) {
+          if (res.data.length > 1) {
+            for (let i = 0; i < 2; i++) {
+              arr.push(res.data[i]);
+            }
+            this.setState({
+              months: arr,
+              selectMonth: res.data[0].C3_424358155202
+            })
+          }
+        } else {
+          this.setState({
+            months: res.data,
+            selectMonth: res.data[0].C3_424358155202
+          });
+        }
+
       }
     } catch (error) {
       message.error(error.message);
@@ -419,7 +433,7 @@ class WorkInfo extends React.Component {
                 this.state.punchData.length === 0 ? '无' : null
               }
               {
-                this.state.punchLoading ? <Spin spinning={true}></Spin> : <ul>
+                this.state.punchLoading ? <Spin spinning={true}></Spin> : <ul style={this.state.punchData.length > 0 ? {} : { display: 'none' }}>
                   <li>
                     <span>刷卡时间</span>
                     <span>设备编号</span>
