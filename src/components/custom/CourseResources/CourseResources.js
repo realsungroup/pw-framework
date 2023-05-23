@@ -119,7 +119,14 @@ class CourseResources extends Component {
               <Button type="danger">撤回报名申请</Button>
             </Popconfirm>
           );
-        } else if (record.lastPlaces === 0 && record.places) {
+
+        }
+        else if (record.lastPlaces === 0) {
+          return (
+            <Alert message="人数已满，无法报名" type="info" showIcon></Alert>
+          );
+        }
+        else if (record.lastPlaces === 0 && record.places) {
           return (
             <Alert message="人数已满，无法报名" type="info" showIcon></Alert>
           );
@@ -186,10 +193,10 @@ class CourseResources extends Component {
                       // 跳转问卷
                       window.open(
                         window.location.origin +
-                          '?resid=我的问卷&recid=609335337024&type=前端功能入口&title=我的问卷&id=' +
-                          record.sheetId +
-                          '&courseId=' +
-                          record.CourseArrangeID
+                        '?resid=我的问卷&recid=609335337024&type=前端功能入口&title=我的问卷&id=' +
+                        record.sheetId +
+                        '&courseId=' +
+                        record.CourseArrangeID
                       );
                       window.parent.close();
                     } catch (e) {
