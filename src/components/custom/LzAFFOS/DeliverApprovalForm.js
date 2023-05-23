@@ -405,7 +405,32 @@ class DeliverApprovalForm extends React.Component {
                     )}
                   </th>
                 </tr>
-
+                <tr>
+                  <th>
+                    <label>
+                      是否就餐<font color="red">*</font>
+                    </label>
+                  </th>
+                  <th>
+                    {getFieldDecorator('C3_737213446972', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入该信息'
+                        }
+                      ]
+                    })(
+                      <Select
+                        className="selectCss"
+                        defaultValue={'否'}
+                      >
+                        <Option value="是">是</Option>
+                        <Option value="否">否</Option>
+                      </Select>
+                    )}
+                  </th>
+                </tr>
                 {/* 提送货人员清单 */}
                 <tr>
                   <th colSpan="9">

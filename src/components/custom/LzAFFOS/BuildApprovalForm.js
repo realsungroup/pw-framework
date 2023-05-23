@@ -228,7 +228,9 @@ class BuildApprovlForm extends React.Component {
       this.props.changeControl(false);
     }
   };
-
+  meal = v => {
+    this.props.meal(v)
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const initialMoment = moment();
@@ -563,7 +565,6 @@ class BuildApprovlForm extends React.Component {
                       ]
                     })(
                       <Select
-                        onChange={this.changeIsControl}
                         className="selectCss"
                       >
                         <Option value="Y">是</Option>
@@ -596,7 +597,6 @@ class BuildApprovlForm extends React.Component {
                       ]
                     })(
                       <Select
-                        onChange={this.changeIsControl}
                         className="selectCss"
                       >
                         <Option value="Y">是</Option>
@@ -805,6 +805,32 @@ class BuildApprovlForm extends React.Component {
                     </>
                   )}
                 </tr>
+                <tr>
+                  <th>
+                    <label>
+                      是否就餐<font color="red">*</font>
+                    </label>
+                  </th>
+                  <th colSpan="2">
+                    {getFieldDecorator('C3_737213446972', {
+                      initialValue: '',
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入该信息'
+                        }
+                      ]
+                    })(
+                      <Select
+                        className="selectCss"
+                        defaultValue={'否'}
+                      >
+                        <Option value="是">是</Option>
+                        <Option value="否">否</Option>
+                      </Select>
+                    )}
+                  </th>
+                </tr>
                 {/* 长期施工 */}
                 {isLongBuilder && (
                   <>
@@ -951,66 +977,66 @@ class BuildApprovlForm extends React.Component {
                       </th>
                     </tr>
                     {this.props.form.getFieldValue('specialLicence') ===
-                    '是' ? (
-                      <>
-                        <tr>
-                          <th colSpan="2">
-                            <label>涉及特种作业许可证1</label>
-                          </th>
-                          <th>
-                            {getFieldDecorator('specialOne', {
-                              initialValue: ''
-                            })(
-                              <Select className="selectCss">
-                                <Option value="登高作业">登高作业</Option>
-                                <Option value="吊装作业">吊装作业</Option>
-                                <Option value="动火作业">动火作业</Option>
-                                <Option value="挂牌作业">挂牌作业</Option>
-                                <Option value="密封空间作业">
-                                  密封空间作业
+                      '是' ? (
+                        <>
+                          <tr>
+                            <th colSpan="2">
+                              <label>涉及特种作业许可证1</label>
+                            </th>
+                            <th>
+                              {getFieldDecorator('specialOne', {
+                                initialValue: ''
+                              })(
+                                <Select className="selectCss">
+                                  <Option value="登高作业">登高作业</Option>
+                                  <Option value="吊装作业">吊装作业</Option>
+                                  <Option value="动火作业">动火作业</Option>
+                                  <Option value="挂牌作业">挂牌作业</Option>
+                                  <Option value="密封空间作业">
+                                    密封空间作业
                                 </Option>
-                              </Select>
-                            )}
-                          </th>
-                          <th colSpan="2">
-                            <label>涉及特种作业许可证2</label>
-                          </th>
-                          <th>
-                            {getFieldDecorator('specialTwo', {
-                              initialValue: ''
-                            })(
-                              <Select className="selectCss">
-                                <Option value="登高作业">登高作业</Option>
-                                <Option value="吊装作业">吊装作业</Option>
-                                <Option value="动火作业">动火作业</Option>
-                                <Option value="挂牌作业">挂牌作业</Option>
-                                <Option value="密封空间作业">
-                                  密封空间作业
+                                </Select>
+                              )}
+                            </th>
+                            <th colSpan="2">
+                              <label>涉及特种作业许可证2</label>
+                            </th>
+                            <th>
+                              {getFieldDecorator('specialTwo', {
+                                initialValue: ''
+                              })(
+                                <Select className="selectCss">
+                                  <Option value="登高作业">登高作业</Option>
+                                  <Option value="吊装作业">吊装作业</Option>
+                                  <Option value="动火作业">动火作业</Option>
+                                  <Option value="挂牌作业">挂牌作业</Option>
+                                  <Option value="密封空间作业">
+                                    密封空间作业
                                 </Option>
-                              </Select>
-                            )}
-                          </th>
-                          <th colSpan="2">
-                            <label>涉及特种作业许可证3</label>
-                          </th>
-                          <th>
-                            {getFieldDecorator('specialThree', {
-                              initialValue: ''
-                            })(
-                              <Select className="selectCss">
-                                <Option value="登高作业">登高作业</Option>
-                                <Option value="吊装作业">吊装作业</Option>
-                                <Option value="动火作业">动火作业</Option>
-                                <Option value="挂牌作业">挂牌作业</Option>
-                                <Option value="密封空间作业">
-                                  密封空间作业
+                                </Select>
+                              )}
+                            </th>
+                            <th colSpan="2">
+                              <label>涉及特种作业许可证3</label>
+                            </th>
+                            <th>
+                              {getFieldDecorator('specialThree', {
+                                initialValue: ''
+                              })(
+                                <Select className="selectCss">
+                                  <Option value="登高作业">登高作业</Option>
+                                  <Option value="吊装作业">吊装作业</Option>
+                                  <Option value="动火作业">动火作业</Option>
+                                  <Option value="挂牌作业">挂牌作业</Option>
+                                  <Option value="密封空间作业">
+                                    密封空间作业
                                 </Option>
-                              </Select>
-                            )}
-                          </th>
-                        </tr>
-                      </>
-                    ) : null}
+                                </Select>
+                              )}
+                            </th>
+                          </tr>
+                        </>
+                      ) : null}
 
                     <tr>
                       <th colSpan="3">

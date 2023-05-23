@@ -582,6 +582,7 @@ export default class LzAFFOS extends React.Component {
     extra.C3_605703930741 = this.state.value.C3_605703930741; //访问区域
     extra.C3_605703980025 = this.state.value.C3_605703980025; //有效开始日期
     extra.C3_605703992046 = this.state.value.C3_605703980025; //有效结束日期
+    extra.C3_737213446972 = this.state.value.C3_737213446972;//是否就餐
     extra.C3_673029042748 = peopleStr;
     const list = newAppList.map((item, index) => {
       if (index === 0) {
@@ -900,22 +901,22 @@ export default class LzAFFOS extends React.Component {
                     saveNeedConfirm: true,
                     saveConfirmTip: '请确认已在右侧添加完访客信息'
                   }}
-                  successMessageComponent={{
-                    name: 'Modal',
-                    title: (
-                      <div>
-                        <p
-                          style={{
-                            thor: 'black',
-                            fontWeight: 'bold',
-                            fontSize: '14px'
-                          }}
-                        >
-                          您的申请已提交，所有外部人员需检查锡康码
-                        </p>
-                      </div>
-                    )
-                  }}
+                  // successMessageComponent={{
+                  //   name: 'Modal',
+                  //   title: (
+                  //     <div>
+                  //       <p
+                  //         style={{
+                  //           thor: 'black',
+                  //           fontWeight: 'bold',
+                  //           fontSize: '14px'
+                  //         }}
+                  //       >
+                  //         您的申请已提交，所有外部人员需检查锡康码
+                  //       </p>
+                  //     </div>
+                  //   )
+                  // }}
                   actionBarExtra={({ }) => {
                     return (
                       <>
@@ -1111,6 +1112,7 @@ export default class LzAFFOS extends React.Component {
                 changeManagerSpecial={this.changeManagerSpecial}
                 changeControl={this.changeControl}
                 openDeptModal={this.openDeptModal}
+                meal={this.meal}
               />
 
               {/* 填写送货人员信息表单组件 */}

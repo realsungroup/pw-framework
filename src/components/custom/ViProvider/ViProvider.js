@@ -62,6 +62,7 @@ export default class ViProvider extends React.Component {
       C3_605718133807: '送货人员',
       C3_605718056102: '',
       C3_612524907635: '',
+      C3_737989663414: '否',
       showGoodsInfo: false,
       goodsInfo: []
     };
@@ -177,6 +178,7 @@ export default class ViProvider extends React.Component {
           C3_605719340947: this.state.C3_605719340947, //工号
           C3_605719341114: this.state.C3_605719341114, //姓名
           C3_612024366364: this.state.C3_612024366364, //编号
+          C3_737989663414: this.state.C3_737989663414,//是否就餐
           C3_605718133807: '送货人员',
           _state: 'added',
           _id: 1
@@ -467,6 +469,26 @@ export default class ViProvider extends React.Component {
                               });
                             }}
                           />
+                        </th>
+                      </tr>
+                      <tr>
+                        <th colSpan="1">
+                          <label>是否就餐</label>
+                        </th>
+                        <th colSpan="5">
+                          <Select
+                            onChange={value => {
+                              this.setState({
+                                C3_737989663414: value
+                              });
+                            }}
+                            className="selectCss"
+                            defaultValue="否"
+                          >
+                            <Option value="否">否</Option>
+                            <Option value="是">是</Option>
+                          </Select>
+
                         </th>
                       </tr>
 
