@@ -901,22 +901,22 @@ export default class LzAFFOS extends React.Component {
                     saveNeedConfirm: true,
                     saveConfirmTip: '请确认已在右侧添加完访客信息'
                   }}
-                  successMessageComponent={{
-                    name: 'Modal',
-                    title: (
-                      <div>
-                        <p
-                          style={{
-                            thor: 'black',
-                            fontWeight: 'bold',
-                            fontSize: '14px'
-                          }}
-                        >
-                          您的申请已提交，所有外部人员需检查锡康码
-                        </p>
-                      </div>
-                    )
-                  }}
+                  // successMessageComponent={{
+                  //   name: 'Modal',
+                  //   title: (
+                  //     <div>
+                  //       <p
+                  //         style={{
+                  //           thor: 'black',
+                  //           fontWeight: 'bold',
+                  //           fontSize: '14px'
+                  //         }}
+                  //       >
+                  //         您的申请已提交，所有外部人员需检查锡康码
+                  //       </p>
+                  //     </div>
+                  //   )
+                  // }}
                   actionBarExtra={({ }) => {
                     return (
                       <>
