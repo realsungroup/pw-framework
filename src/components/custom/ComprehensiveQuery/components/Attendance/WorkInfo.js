@@ -4,6 +4,7 @@ import TableData from '../../../../common/data/TableData';
 import './WorkInfo.less';
 import http from 'Util20/api';
 import { getItem } from 'Util20/util';
+import moment from 'moment';
 
 const { Option } = Select;
 const modalWrapperStyle = { height: '80vh' };
@@ -144,11 +145,48 @@ class WorkInfo extends React.Component {
           }
         }
       }
+      punchData = this.delMulti(punchData);
       this.setState({ punchData, punchLoading: false });
     } catch (e) {
       console.log(e.message);
       this.setState({ punchLoading: false });
     }
+  }
+  //处理5分钟内多次打卡逻辑
+  delMulti = (arr) => {
+    let a = arr;
+    let com = [];
+    let c = 0;
+    for (let i = 0; i < a.length; i++) {
+      console.log(a[i].TIMES)
+      if (i === 0) {
+        com.push(a[i]);
+      } else {
+        let time1 = com[c].TIMES;
+        let time2 = a[i].TIMES;
+        let timeDiff = moment(time2).diff(time1, "minute");
+        console.log(time1, time2, timeDiff);
+        if (!(timeDiff < 5)) {
+          com.push(a[i]);
+          c++;
+        }
+      }
+    }
+    let o = com.length;
+    if (o > 2) {
+      o = o % 2;
+      if (o === 1) {
+        let ca = [];
+        for (let i = 0; i < com.length; i++) {
+          if (i != (com.length - 2)) {
+            ca.push(com[i]);
+          }
+        }
+        com = ca;
+      }
+    }
+
+    return com;
   }
   openModal =
     (type, selectRecord) => () => {
