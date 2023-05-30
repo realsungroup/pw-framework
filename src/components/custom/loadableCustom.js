@@ -1031,3 +1031,9 @@ export const DoorConfirmation = Loadable({
     return minLoading;
   }
 });
+export const VisitorMeal = Loadable({
+  loader: () => import('./VisitorMeal'),
+  loading() {
+    return minLoading;
+  }
+});
