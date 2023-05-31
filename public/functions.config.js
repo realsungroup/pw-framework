@@ -10769,10 +10769,10 @@ window[738674876927] = {
   title: '访客就餐统计', // 功能模块名称
   hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
   props: {
-    resid: 738674661878,
-    residSheetLong: 738774986750,
-    residSheetShort: 738768279458,
-    residRegistration: 738776885839
+    resid: 738674637268,
+    residSheetLong: 738774961187,
+    residSheetShort: 738769011420,
+    residRegistration: 738776426833
   }
 };
 window[738674897552] = {
@@ -10784,5 +10784,30 @@ window[738674897552] = {
     residSheetLong: 738774986750,
     residSheetShort: 738768279458,
     residRegistration: 738776885839
+
+  }
+};
+window[738669662033] = {
+  name: 'VisitorMeal', // 组件名称，这里为定制组件名称
+  title: '逾期未返厂物资', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 738674661878,
+    residSheetLong: 738774986750,
+    residSheetShort: 738768279458,
+    residRegistration: 738776885839
+
+  }
+};
+window[738669935633] = {
+  name: 'VisitorMeal', // 组件名称，这里为定制组件名称
+  title: '逾期未返厂物资-管理员', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 738674661878,
+    residSheetLong: 738774986750,
+    residSheetShort: 738768279458,
+    residRegistration: 738776885839
+
   }
 };
