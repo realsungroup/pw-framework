@@ -1037,3 +1037,9 @@ export const VisitorMeal = Loadable({
     return minLoading;
   }
 });
+export const OutdateMaterial = Loadable({
+  loader: () => import('./OutdateMaterial'),
+  loading() {
+    return minLoading;
+  }
+});

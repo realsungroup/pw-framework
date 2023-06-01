@@ -204,5 +204,6 @@ export {
   PunishmentHistory,
   ShVisitorAuth,
   DoorConfirmation,
-  VisitorMeal
+  VisitorMeal,
+  OutdateMaterial
 } from '../components/custom/loadableCustom';
