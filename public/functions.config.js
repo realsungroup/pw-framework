@@ -10794,6 +10794,7 @@ window[738669662033] = {
   props: {
     resid: 738866960092,
     resiDetail: 738079641519,
+    residItem: 562179340123,
     baseURL: 'http://10.108.2.66:9091/'
   }
 };
@@ -10804,6 +10805,17 @@ window[738669935633] = {
   props: {
     resid: 738867032733,
     resiDetail: 738673023656,
+    residItem: 562179340123,
     baseURL: 'http://10.108.2.66:9091/'
   }
+};
+window[738940474009] = {
+  name: 'VisitorPunch', // 组件名称，这里为定制组件名称
+  title: '当月访客卡刷卡次数统计', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 738940799170,
+    resiDetail: 738941729906,
+    baseURL: 'http://10.108.2.66:9091/',
+  } // 组件所接收的 props
 };

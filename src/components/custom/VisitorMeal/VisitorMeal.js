@@ -161,7 +161,7 @@ class VisitorMeal extends Component {
             resid={this.props.resid}
             subtractH={180}
             hasAdd={false}
-            hasRowView={false}
+            hasRowView={true}
             hasRowDelete={false}
             hasRowEdit={false}
             hasDelete={false}
@@ -176,7 +176,7 @@ class VisitorMeal extends Component {
                     onClick={() => {
                       this.showModal(record)
                     }}
-                  >查看详情</Button>
+                  >访客详情</Button>
                 )
               }
             ]}

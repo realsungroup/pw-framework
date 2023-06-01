@@ -16,12 +16,19 @@ class OutdateMaterial extends Component {
     super(props);
     this.state = {
       modalVis: false,
+      modalVis2: false,
       cms: ``,
+      cms2: ``
     }
   }
   showModal = (record) => {
     let cms = `C3_738081610040 = '${record.C3_733667272073}'`;
     this.setState({ cms, modalVis: true })
+  }
+  showModal2 = (record) => {
+    let cms2 = `C3_561660071657 = '${record.C3_561663372838}'`
+    this.setState({ cms2, modalVis2: true })
+
   }
   componentDidMount() {
 
@@ -40,6 +47,44 @@ class OutdateMaterial extends Component {
           <div className="ODMeal_modal">
             <TableData
               resid={this.props.resiDetail}
+              cmswhere={this.state.cms}
+              baseURL={this.props.baseURL}
+              subtractH={180}
+              hasAdd={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasAdvSearch={false}
+              hasRowView={true}
+              importConfig={null}
+              customRowBtns={[
+                record => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        this.showModal2(record)
+                      }}
+                    >物品详情</Button>
+                  )
+                }
+              ]}
+            />
+          </div>
+        </Modal>
+        <Modal
+          visible={this.state.modalVis2}
+          title={'物品详情'}
+          width={'80vw'}
+          footer={null}
+          onCancel={() => { this.setState({ modalVis2: false, cms2: `` }); }}
+          destroyOnClose
+        >
+          <div className="ODMeal_modal">
+            <TableData
+              resid={this.props.residItem}
+              cmswhere={this.state.cms2}
               baseURL={this.props.baseURL}
               subtractH={180}
               hasAdd={false}
@@ -75,7 +120,7 @@ class OutdateMaterial extends Component {
                     onClick={() => {
                       this.showModal(record)
                     }}
-                  >查看详情</Button>
+                  >物资详情</Button>
                 )
               }
             ]}

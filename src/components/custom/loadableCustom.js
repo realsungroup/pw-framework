@@ -1043,3 +1043,9 @@ export const OutdateMaterial = Loadable({
     return minLoading;
   }
 });
+export const VisitorPunch = Loadable({
+  loader: () => import('./VisitorPunch'),
+  loading() {
+    return minLoading;
+  }
+});

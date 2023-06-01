@@ -205,5 +205,6 @@ export {
   ShVisitorAuth,
   DoorConfirmation,
   VisitorMeal,
-  OutdateMaterial
+  OutdateMaterial,
+  VisitorPunch
 } from '../components/custom/loadableCustom';
