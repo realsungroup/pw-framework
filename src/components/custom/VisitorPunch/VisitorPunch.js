@@ -58,7 +58,7 @@ class VisitorPunch extends Component {
           </div>
         </Modal>
         <Tabs>
-          <Tabs.TabPane tab="就餐卡刷卡次数统计" key="1">
+          <Tabs.TabPane tab="访客就餐卡刷卡次数统计" key="1">
             <div className="vizPunch_main">
               <TableData
                 resid={this.props.resid}
@@ -87,7 +87,7 @@ class VisitorPunch extends Component {
               />
             </div>
           </Tabs.TabPane>
-          <Tabs.TabPane tab="就餐卡刷卡详情" key="2">
+          <Tabs.TabPane tab="访客就餐卡刷卡详情" key="2">
             <div className="vizPunch_main">
               <TableData
                 resid={this.props.resiDetail}
