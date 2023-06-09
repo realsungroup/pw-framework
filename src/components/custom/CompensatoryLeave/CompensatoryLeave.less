@@ -1,0 +1,81 @@
+.CompensatoryLeave{
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  padding: 0;
+  margin: 0;
+  &_modal{
+    margin-bottom: 0.5rem;
+    .cal{
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      overflow: hidden;
+      &_title{
+        background-color: #fff;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        span{
+          margin-left: 0.5rem;
+        }
+      }
+      &_fob{
+        background-color: #eee;
+      }
+      &_act{
+        cursor: pointer;
+      }
+      &_bre{
+        display: inline-block;
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        text-indent: 0;
+        padding: 0;
+        text-align: center;
+        color:#fff;
+        background-color: #f5222d;
+      }
+      &_wo{
+        display: inline-block;
+        border-radius: 50%;
+        width: 1.5rem;
+        height: 1.5rem;
+        text-indent: 0;
+        text-align: center;
+        padding: 0;
+        color:#fff;
+        background-color: #1890ff;
+  
+      }
+      &_header{
+        background-color: #f1f1fa;
+        border-top: 1px solid #ddd;
+        border-bottom:1px solid #ddd;
+      }
+      li{
+        float: left;
+        width: 14%;
+        margin: 0;
+        padding: .25rem 0;
+        border-bottom: 1px solid #ddd;
+        text-indent: 1rem;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        border-bottom: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        &:nth-child(7n){
+          border-right: 1px solid #ddd;
+        }
+        i{
+          text-indent: 0;
+        }
+        span{
+          margin-left: 0.5rem;
+        }
+      }
+    }
+  }
+ 
+}

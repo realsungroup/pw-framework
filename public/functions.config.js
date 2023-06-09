@@ -2775,7 +2775,7 @@ window[642854041376] = {
   }
 };
 window[642854056479] = {
-  name: 'TableData', // 组件名称，
+  name: 'CompensatoryLeave', // 组件名称，
   title: '节日调休', // 功能模块名称
   props: {
     baseURL: 'http://10.108.2.66:9091/',

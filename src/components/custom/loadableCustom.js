@@ -1031,3 +1031,9 @@ export const DoorConfirmation = Loadable({
     return minLoading;
   }
 });
+export const CompensatoryLeave = Loadable({
+  loader: () => import('./CompensatoryLeave'),
+  loading() {
+    return minLoading;
+  }
+});
