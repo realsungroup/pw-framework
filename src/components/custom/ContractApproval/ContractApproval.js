@@ -29,7 +29,7 @@ class ContractApproval extends React.Component {
     (record, btnSize) => {
       return (
         <Popconfirm
-          title="确认同意吗？"
+          title="确认同意？"
           onConfirm={() => {
             this.approval({
               ...record,

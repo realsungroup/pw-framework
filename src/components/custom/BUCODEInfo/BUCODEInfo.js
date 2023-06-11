@@ -3,7 +3,7 @@ import TableData from '../../common/data/TableData';
 import { Tabs } from 'antd';
 
 const { TabPane } = Tabs;
-const baseURL = 'http://10.108.2.66:9091/';
+const baseURL = 'http://test.ehr.web.api.realsun.biz/';
 
 class BUCODEInfo extends Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class BUCODEInfo extends Component {
     this.state = {};
   }
 
-  componentDidMount = () => {};
+  componentDidMount = () => { };
   render() {
     return (
       <div style={{ width: '100vw', height: '100vh', background: '#fff' }}>

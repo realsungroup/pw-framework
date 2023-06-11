@@ -7,7 +7,7 @@ import MainTableSubTables from '../components/common/data/MainTableSubTables';
 
 const props = {
   baseURL: 'http://10.108.2.66:6060',
-  downloadBaseURL: 'http://10.108.2.66:80/',
+  downloadBaseURL: 'http://test.ehr.web.realsun.biz/',
   resid: 483136878846,
   mainTableProps: {
     actionBarWidth: 200,

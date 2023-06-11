@@ -35,7 +35,7 @@ class HRLeaveApp extends Component {
                 hasRowView: true,
                 hasRowDelete: true,
                 isUseFormDefine: false,
-                mediaFieldBaseURL: 'http://wux-hr03/',
+                mediaFieldBaseURL: 'http://test.ehr.web.realsun.biz/rispweb',
                 backendButtonPopConfirmProps: { placement: 'bottom' },
                 advSearch: {
                   isRequestFormData: false
@@ -77,7 +77,7 @@ class HRLeaveApp extends Component {
                 hasRowView: true,
                 hasRowDelete: true,
                 isUseFormDefine: false,
-                mediaFieldBaseURL: 'http://wux-hr03/',
+                mediaFieldBaseURL: 'http://test.ehr.web.realsun.biz/rispweb',
                 advSearch: {
                   isRequestFormData: false
                 },
@@ -111,7 +111,7 @@ class HRLeaveApp extends Component {
               resid="521636906178"
               baseURL={baseURL}
               downloadBaseURL={downloadBaseURL}
-              mediaFieldBaseURL="http://wux-hr03/"
+              mediaFieldBaseURL="http://test.ehr.web.realsun.biz/rispweb"
               actionBarWidth={300}
               actionBarFixed={true}
               hasAdd={false}

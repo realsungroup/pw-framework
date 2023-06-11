@@ -232,10 +232,10 @@ class Department extends React.Component {
     const newParentNode = this.chart.get(newNode.pid);
     const zhTip = `您确定要将 ${newNode[displayFileds.firstField]} 拖拽到 ${
       newParentNode[displayFileds.firstField]
-    } 下面吗？`;
+      } 下面吗？`;
     const enTip = `Are you sure you want to drag ${
       newNode[displayFileds.firstField]
-    } under ${newParentNode[displayFileds.firstField]}`;
+      } under ${newParentNode[displayFileds.firstField]}`;
     Modal.confirm({
       title: getIntlVal(intl.locale, 'Prompt', '提示'),
       content: (
@@ -400,7 +400,7 @@ class Department extends React.Component {
           message.success('审核成功');
           this.setState({ loading: false });
           let _this = this;
-          let timer = setImmediate(function() {
+          let timer = setImmediate(function () {
             _this.handleRefresh();
           }, 1000);
         } catch (error) {
@@ -443,7 +443,7 @@ class Department extends React.Component {
           message.success('作废成功');
           this.setState({ loading: false });
           let _this = this;
-          let timer = setImmediate(function() {
+          let timer = setImmediate(function () {
             _this.handleRefresh();
           }, 1000);
         } catch (error) {
@@ -729,7 +729,7 @@ class Department extends React.Component {
         tags
       };
       let _this = this;
-      let timer = setImmediate(function() {
+      let timer = setImmediate(function () {
         _this.setState({ selectedNode: node }, () => {
           _this.getData();
           _this.handleRefresh();
@@ -747,7 +747,7 @@ class Department extends React.Component {
       };
 
       let _this = this;
-      let timer = setImmediate(function() {
+      let timer = setImmediate(function () {
         _this.setState({ selectedNode: node }, () => {
           _this.getData();
           _this.handleRefresh();
@@ -984,7 +984,7 @@ class Department extends React.Component {
             >
               {`${item[firstField]}(${
                 item[secondaryField] ? item[secondaryField] : 'N/A'
-              })`}
+                })`}
             </Breadcrumb.Item>
           );
         })}
@@ -1235,14 +1235,14 @@ class Department extends React.Component {
                         })}
                       </div>
                     ) : (
-                      <div className="department-chart_unselect-tip">
-                        <Alert
-                          message="尚未选中任何卡片！"
-                          type="info"
-                          showIcon
-                        />
-                      </div>
-                    )}
+                        <div className="department-chart_unselect-tip">
+                          <Alert
+                            message="尚未选中任何卡片！"
+                            type="info"
+                            showIcon
+                          />
+                        </div>
+                      )}
                   </div>
                 )}
               </div>
@@ -1263,7 +1263,7 @@ class Department extends React.Component {
             operation={operation}
             data={this._dataProp}
             record={record}
-            // useAbsolute={true}
+            useAbsolute={true}
             // formProps={{ width: 500 }}
             onCancel={this.closeBroModal}
             onSuccess={this.afterSave}

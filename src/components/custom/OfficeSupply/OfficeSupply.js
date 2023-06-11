@@ -18,8 +18,8 @@ const formItemLayout = {
     },
 };
 
-const baseURL = 'http://10.108.2.66:1001/';
-const downloadBaseURL = 'http://10.108.2.66:1000/';
+const baseURL = 'http://test.pwk.web.api.realsun.biz/';
+const downloadBaseURL = 'http://test.ehr.web.realsun.biz/';
 
 const { Search } = Input;
 
