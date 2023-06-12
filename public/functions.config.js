@@ -488,7 +488,7 @@ window[590765309983] = {
       addBtn: true,
       isSearch: false,
       colCount: 2,
-      formsName: 'default4',
+      formsName: '信息',
       isBackEndBtnsVisible: true,
       cFFillFormInnerFieldNames: ['C3_590512169985'],
       associatedFields: [
@@ -7669,8 +7669,6 @@ window[642858661984] = {
   name: 'TableData', // 组件名称，
   title: '绩效评估财年定义', // 功能模块名称
   props: {
-    baseURL: 'http://test.ehr.web.api.realsun.biz/',
-    downloadBaseURL: 'http://test.ehr.web.realsun.biz/',
     isUseFormDefine: false,
     resid: 420161931474,
     actionBarWidth: 200,
