@@ -52,7 +52,7 @@ class PunishmentHistory extends Component {
       this.setState({ loading: true });
       res = await http().getFormData({
         resid: 590863325025,
-        formName: 'default4'
+        formName: '信息'
       });
       console.log('res', res)
       this._formData = dealControlArr(res.data.columns);
