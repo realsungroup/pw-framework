@@ -20,11 +20,11 @@ const appConfig = {
     login: 'api/Account/Login',
     getFormDefine: 'api/100/table/RetrieveFormDefine',
     uploadFileUrl:
-      // 'http://test.ehr.web.realsun.biz/rispweb/rispservice/SvcUploadFile2.aspx',
-      'https://finisar.realsun.me:8082/rispweb/rispservice/SvcUploadFile2.aspx', //上传图片地址
+      'http://wux-hr03/rispweb/rispservice/SvcUploadFile2.aspx',
+    // 'https://finisar.realsun.me:8082/rispweb/rispservice/SvcUploadFile2.aspx', //上传图片地址
     httppath:
-      // 'http://test.ehr.web.realsun.biz/rispweb/upfiles',
-      'https://finisar.realsun.me:8082/upfiles', //上传图片路径
+      'http://wux-hr03/rispweb/upfiles',
+    // 'https://finisar.realsun.me:8082/upfiles', //上传图片路径
     getColumnsDefine: 'api/100/table/RetrieveColumnsDefine',
     getColumnsDefineArr: 'api/100/table/RetrieveColumnsDefineByArray',
     clearCache: 'api/100/table/ClearCache',
