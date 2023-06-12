@@ -13,7 +13,7 @@ class TableDataVisitor extends React.Component {
     record: null,
     readOnly: true
   };
-  btnStartRead = params => {};
+  btnStartRead = params => { };
   componentDidMount = () => {
     socket.emit('startRead');
     let card;
@@ -37,7 +37,7 @@ class TableDataVisitor extends React.Component {
           } else {
             message.error('查无此人！');
           }
-        } catch (error) {}
+        } catch (error) { }
       }
     });
     //   'card message', function(msg){//接收读卡信息
@@ -107,6 +107,12 @@ class TableDataVisitor extends React.Component {
             break;
           case '访客预约审批流编号':
             item.initialValue = record[0].C3_606070812241;
+            break;
+          case '一般访客是否就餐':
+            item.initialValue = record[0].C3_737990520909;
+            break;
+          case '长期访客是否就餐':
+            item.initialValue = record[0].C3_738341768407;
             break;
         }
         // if (item.label === "登记证件号码" && record) {
