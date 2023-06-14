@@ -45,7 +45,7 @@ window.pwConfig = {
       resetKeyWordURL: 'http://test.ehr.web.api.realsun.biz/', //重置密码URL
       attendanceBaseURL: 'http://test.ehr.web.api.realsun.biz/', //考勤审批
       attendanceDownloadURL: 'http://test.ehr.web.realsun.biz', //考勤审批表格下载url
-      DataProcessBaseURL: 'http://10.108.2.48:9091/',
+      DataProcessBaseURL: 'http://test.ehr.web.api.realsun.biz/',
       laowuURL: 'http://kingofdinner.realsun.me:19091/', //劳务公司打印
       HeadCountBaseURL: 'http://10.108.21.41:2001/',
       PostArchitectureBaseURL: 'http://test.ehr.web.api.realsun.biz/',
@@ -285,7 +285,7 @@ window.pwConfig = {
       resetKeyWordURL: 'http://test.ehr.web.api.realsun.biz/',
       attendanceBaseURL: 'http://test.ehr.web.api.realsun.biz/', //考勤审批
       attendanceDownloadURL: 'http://test.ehr.web.realsun.biz/', //考勤审批表格下载url
-      DataProcessBaseURL: 'http://10.108.2.48:9091/',
+      DataProcessBaseURL: 'http://test.ehr.web.api.realsun.biz/',
       laowuURL: 'http://kingofdinner.realsun.me:19091/', //劳务公司打印
 
       HeadCountBaseURL: 'http://test.ehr.web.api.realsun.biz/',
