@@ -10772,7 +10772,8 @@ window[738674876927] = {
     resid: 738674637268,
     residSheetLong: 738774961187,
     residSheetShort: 738769011420,
-    residRegistration: 738776426833
+    residRegistration: 738776426833,
+    columnsWidth: { 考勤月: 80 },
   }
 };
 window[738674897552] = {
@@ -10783,8 +10784,8 @@ window[738674897552] = {
     resid: 738674661878,
     residSheetLong: 738774986750,
     residSheetShort: 738768279458,
-    residRegistration: 738776885839
-
+    residRegistration: 738776885839,
+    columnsWidth: { 考勤月: 80 },
   }
 };
 window[738669662033] = {

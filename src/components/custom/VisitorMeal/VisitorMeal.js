@@ -56,7 +56,9 @@ class VisitorMeal extends Component {
             <TableData
               resid={this.props.residRegistration}
               cmswhere={this.state.cmsRel}
-              subtractH={180}
+              subtractH={200}
+              defaultColumnWidth={104}
+
               hasAdd={false}
               hasRowDelete={false}
               hasRowEdit={false}
@@ -83,7 +85,9 @@ class VisitorMeal extends Component {
                 <TableData
                   resid={this.props.residSheetShort}
                   cmswhere={this.state.cms}
-                  subtractH={180}
+                  subtractH={200}
+                  defaultColumnWidth={200}
+
                   hasAdd={false}
                   hasRowDelete={false}
                   hasRowEdit={false}
@@ -112,7 +116,9 @@ class VisitorMeal extends Component {
                 <TableData
                   resid={this.props.residSheetLong}
                   cmswhere={this.state.cms2}
-                  subtractH={180}
+                  subtractH={200}
+                  defaultColumnWidth={104}
+
                   hasAdd={false}
                   hasRowDelete={false}
                   hasRowEdit={false}
@@ -141,7 +147,9 @@ class VisitorMeal extends Component {
                 <TableData
                   resid={this.props.residRegistration}
                   cmswhere={this.state.cms3}
-                  subtractH={180}
+                  subtractH={220}
+                  defaultColumnWidth={104}
+
                   hasAdd={false}
                   hasRowDelete={false}
                   hasRowEdit={false}
@@ -159,7 +167,7 @@ class VisitorMeal extends Component {
         <div className="vizMeal_main">
           <TableData
             resid={this.props.resid}
-            subtractH={180}
+            subtractH={200}
             hasAdd={false}
             hasRowView={true}
             hasRowDelete={false}
@@ -169,6 +177,7 @@ class VisitorMeal extends Component {
             hasRowModify={false}
             hasAdvSearch={false}
             importConfig={null}
+            defaultColumnWidth={104}
             customRowBtns={[
               record => {
                 return (

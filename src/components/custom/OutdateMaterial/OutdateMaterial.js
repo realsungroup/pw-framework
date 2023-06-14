@@ -50,6 +50,7 @@ class OutdateMaterial extends Component {
               cmswhere={this.state.cms}
               baseURL={this.props.baseURL}
               subtractH={180}
+              defaultColumnWidth={104}
               hasAdd={false}
               hasRowDelete={false}
               hasRowEdit={false}

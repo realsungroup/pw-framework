@@ -45,6 +45,7 @@ class VisitorPunch extends Component {
               baseURL={this.props.baseURL}
               cmswhere={this.state.cms}
               subtractH={180}
+              defaultColumnWidth={112}
               hasAdd={false}
               hasRowDelete={false}
               hasRowEdit={false}
@@ -62,7 +63,8 @@ class VisitorPunch extends Component {
             <div className="vizPunch_main">
               <TableData
                 resid={this.props.resid}
-                subtractH={180}
+                subtractH={200}
+                defaultColumnWidth={112}
                 hasAdd={false}
                 baseURL={this.props.baseURL}
                 hasRowView={true}
@@ -92,6 +94,7 @@ class VisitorPunch extends Component {
               <TableData
                 resid={this.props.resiDetail}
                 subtractH={180}
+                defaultColumnWidth={104}
                 hasAdd={false}
                 baseURL={this.props.baseURL}
                 hasRowView={true}
