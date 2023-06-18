@@ -10717,5 +10717,106 @@ window[733239312667] = {//后台资源id
   }
 };
 
+window[738669662033] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '逾期未返厂物资', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 738079641519,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
 
-
+window[738669935633] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '逾期未返厂物资', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 738673023656,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
+window[738674876927] = {
+  name: 'VisitorMeal', // 组件名称，这里为定制组件名称
+  title: '访客就餐统计', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 738674637268,
+    residSheetLong: 738774961187,
+    residSheetShort: 738769011420,
+    residRegistration: 738776426833,
+    columnsWidth: { 考勤月: 80 },
+  }
+};
+window[738674897552] = {
+  name: 'VisitorMeal', // 组件名称，这里为定制组件名称
+  title: '访客就餐统计-管理员', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 738674661878,
+    residSheetLong: 738774986750,
+    residSheetShort: 738768279458,
+    residRegistration: 738776885839,
+    columnsWidth: { 考勤月: 80 },
+  }
+};
+window[738669662033] = {
+  name: 'OutdateMaterial', // 组件名称，这里为定制组件名称
+  title: '逾期未返厂物资', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 738866960092,
+    resiDetail: 738079641519,
+    residItem: 562179340123,
+    baseURL: 'http://10.108.2.66:9091/'
+  }
+};
+window[738669935633] = {
+  name: 'OutdateMaterial', // 组件名称，这里为定制组件名称
+  title: '逾期未返厂物资-管理员', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 738867032733,
+    resiDetail: 738673023656,
+    residItem: 562179340123,
+    baseURL: 'http://10.108.2.66:9091/'
+  }
+};
+window[738940474009] = {
+  name: 'VisitorPunch', // 组件名称，这里为定制组件名称
+  title: '当月访客卡刷卡次数统计', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 738940799170,
+    resiDetail: 738941729906,
+    baseURL: 'http://10.108.2.66:9091/',
+  } // 组件所接收的 props
+};

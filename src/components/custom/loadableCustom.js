@@ -1031,3 +1031,21 @@ export const DoorConfirmation = Loadable({
     return minLoading;
   }
 });
+export const VisitorMeal = Loadable({
+  loader: () => import('./VisitorMeal'),
+  loading() {
+    return minLoading;
+  }
+});
+export const OutdateMaterial = Loadable({
+  loader: () => import('./OutdateMaterial'),
+  loading() {
+    return minLoading;
+  }
+});
+export const VisitorPunch = Loadable({
+  loader: () => import('./VisitorPunch'),
+  loading() {
+    return minLoading;
+  }
+});

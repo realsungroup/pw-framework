@@ -646,7 +646,7 @@ class Summary extends React.PureComponent {
                   <span style={{ marginRight: '2vw' }}>
                     上年结转年假<b>{isWuxi ? snsy + '天' : snsy * 8 + '小时'}</b>
                   </span>
-                  <span style={{ marginLeft: 8, color: '#f5222d', textDecoration: 'underline' }}>(无锡员工的此项已经包含2023年Q1提前释放的年假)</span>
+                  {/* <span style={{ marginLeft: 8, color: '#f5222d', textDecoration: 'underline' }}>(无锡员工的此项已经包含2023年Q1提前释放的年假)</span> */}
                 </div>
                 <div>
                   <span style={{ marginRight: '2vw' }}>

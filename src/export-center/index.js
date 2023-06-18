@@ -203,5 +203,8 @@ export {
   ConstructionList,
   PunishmentHistory,
   ShVisitorAuth,
-  DoorConfirmation
+  DoorConfirmation,
+  VisitorMeal,
+  OutdateMaterial,
+  VisitorPunch
 } from '../components/custom/loadableCustom';
