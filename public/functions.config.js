@@ -10818,5 +10818,6 @@ window[738940474009] = {
     resid: 738940799170,
     resiDetail: 738941729906,
     baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:8081/'
   } // 组件所接收的 props
 };

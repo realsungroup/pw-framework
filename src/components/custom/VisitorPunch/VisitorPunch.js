@@ -46,6 +46,7 @@ class VisitorPunch extends Component {
               cmswhere={this.state.cms}
               subtractH={180}
               defaultColumnWidth={112}
+              downloadBaseURL={this.props.downloadBaseURL}
               hasAdd={false}
               hasRowDelete={false}
               hasRowEdit={false}
@@ -67,6 +68,7 @@ class VisitorPunch extends Component {
                 defaultColumnWidth={112}
                 hasAdd={false}
                 baseURL={this.props.baseURL}
+                downloadBaseURL={this.props.downloadBaseURL}
                 hasRowView={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
@@ -97,6 +99,7 @@ class VisitorPunch extends Component {
                 defaultColumnWidth={104}
                 hasAdd={false}
                 baseURL={this.props.baseURL}
+                downloadBaseURL={this.props.downloadBaseURL}
                 hasRowView={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
