@@ -53,7 +53,7 @@ class VisitorPunch extends Component {
               hasDelete={false}
               hasModify={false}
               hasRowModify={false}
-              hasAdvSearch={false}
+              hasAdvSearch={true}
               hasRowView={true}
               importConfig={null}
             />
@@ -75,7 +75,7 @@ class VisitorPunch extends Component {
                 hasDelete={false}
                 hasModify={false}
                 hasRowModify={false}
-                hasAdvSearch={false}
+                hasAdvSearch={true}
                 importConfig={null}
                 customRowBtns={[
                   record => {
@@ -106,7 +106,7 @@ class VisitorPunch extends Component {
                 hasDelete={false}
                 hasModify={false}
                 hasRowModify={false}
-                hasAdvSearch={false}
+                hasAdvSearch={true}
                 importConfig={null}
               />
             </div>

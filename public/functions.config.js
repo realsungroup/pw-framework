@@ -10796,7 +10796,8 @@ window[738669662033] = {
     resid: 738866960092,
     resiDetail: 738079641519,
     residItem: 562179340123,
-    baseURL: 'http://10.108.2.66:9091/'
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/'
   }
 };
 window[738669935633] = {
@@ -10807,7 +10808,8 @@ window[738669935633] = {
     resid: 738867032733,
     resiDetail: 738673023656,
     residItem: 562179340123,
-    baseURL: 'http://10.108.2.66:9091/'
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/'
   }
 };
 window[738940474009] = {
@@ -10818,6 +10820,6 @@ window[738940474009] = {
     resid: 738940799170,
     resiDetail: 738941729906,
     baseURL: 'http://10.108.2.66:9091/',
-    downloadBaseURL: 'http://10.108.2.66:8081/'
+    downloadBaseURL: 'http://10.108.2.66:80/'
   } // 组件所接收的 props
 };
