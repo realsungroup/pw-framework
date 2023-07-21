@@ -2495,12 +2495,12 @@ class IDLTransferHr extends Component {
                           </li>
                           <li>
                             <b>BU CODE: </b>
-                            {(this.state.toCheckFront.bucode || '') ===
+                            {(this.state.toCheckFront.BUCode || '') ===
                             this.state.toCheck[5] ? (
-                              this.state.toCheckFront.bucode
+                              this.state.toCheckFront.BUCode
                             ) : (
                               <b style={{ color: '#f5222d' }}>
-                                {(this.state.toCheckFront.bucode || '') +
+                                {(this.state.toCheckFront.BUCode || '') +
                                   ' => ' +
                                   this.state.toCheck[5]}
                               </b>
