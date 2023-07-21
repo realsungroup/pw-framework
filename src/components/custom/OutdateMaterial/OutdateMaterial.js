@@ -22,7 +22,7 @@ class OutdateMaterial extends Component {
     }
   }
   showModal = (record) => {
-    let cms = `C3_738081610040 = '${record.C3_733667272073}'`;
+    let cms = `C3_738081610040 = '${record.C3_733667272073}' and C3_586878789237 = '${record.C3_733680888387}'`;
     this.setState({ cms, modalVis: true })
   }
   showModal2 = (record) => {
