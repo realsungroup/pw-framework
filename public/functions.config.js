@@ -9861,7 +9861,7 @@ window[659456403721] = {
   name: 'ADPExport', // 组件名称，
   title: '导出ADP数据', // 功能模块名称
   props: {
-    resid: '742401155410',
+    resid: '311025002785',
     baseURL: 'http://10.108.2.66:9091/',
     company: '100'
   }

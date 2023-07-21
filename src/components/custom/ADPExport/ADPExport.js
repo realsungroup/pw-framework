@@ -147,7 +147,6 @@ class ADPExport extends React.Component {
           records.forEach(record => {
             const isDownload = record.personnuumber && (record.C3_424653346778 != "实习协议");
             if (isDownload) {
-              console.log('col', columns)
               columns.forEach(column => {
                 //去掉值为null或0的数据
                 if (record[column.filed]) {
