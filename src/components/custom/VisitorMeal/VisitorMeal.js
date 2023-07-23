@@ -84,7 +84,7 @@ class VisitorMeal extends Component {
               <div className="vizMeal_modal">
                 <TableData
                   resid={this.props.residSheetShort}
-                  cmswhere={this.state.cms}
+                  // cmswhere={this.state.cms}
                   subtractH={200}
                   defaultColumnWidth={200}
 
@@ -115,7 +115,7 @@ class VisitorMeal extends Component {
               <div className="vizMeal_modal">
                 <TableData
                   resid={this.props.residSheetLong}
-                  cmswhere={this.state.cms2}
+                  // cmswhere={this.state.cms2}
                   subtractH={200}
                   defaultColumnWidth={104}
 
@@ -146,10 +146,9 @@ class VisitorMeal extends Component {
               <div className="vizMeal_modal">
                 <TableData
                   resid={this.props.residRegistration}
-                  cmswhere={this.state.cms3}
+                  // cmswhere={this.state.cms3}
                   subtractH={220}
                   defaultColumnWidth={104}
-
                   hasAdd={false}
                   hasRowDelete={false}
                   hasRowEdit={false}

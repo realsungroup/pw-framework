@@ -22,7 +22,7 @@ class OutdateMaterial extends Component {
     }
   }
   showModal = (record) => {
-    let cms = `C3_738081610040 = '${record.C3_733667272073}'`;
+    let cms = `C3_738081610040 = '${record.C3_733667272073}' and C3_586878789237 = '${record.C3_733680888387}'`;
     this.setState({ cms, modalVis: true })
   }
   showModal2 = (record) => {
@@ -47,6 +47,7 @@ class OutdateMaterial extends Component {
           <div className="ODMeal_modal">
             <TableData
               resid={this.props.resiDetail}
+              downloadBaseURL={this.props.downloadBaseURL}
               cmswhere={this.state.cms}
               baseURL={this.props.baseURL}
               subtractH={180}
@@ -86,6 +87,7 @@ class OutdateMaterial extends Component {
             <TableData
               resid={this.props.residItem}
               cmswhere={this.state.cms2}
+              downloadBaseURL={this.props.downloadBaseURL}
               baseURL={this.props.baseURL}
               subtractH={180}
               hasAdd={false}
@@ -104,6 +106,7 @@ class OutdateMaterial extends Component {
           <TableData
             resid={this.props.resid}
             baseURL={this.props.baseURL}
+            downloadBaseURL={this.props.downloadBaseURL}
             subtractH={180}
             hasAdd={false}
             hasRowView={false}

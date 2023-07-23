@@ -46,13 +46,14 @@ class VisitorPunch extends Component {
               cmswhere={this.state.cms}
               subtractH={180}
               defaultColumnWidth={112}
+              downloadBaseURL={this.props.downloadBaseURL}
               hasAdd={false}
               hasRowDelete={false}
               hasRowEdit={false}
               hasDelete={false}
               hasModify={false}
               hasRowModify={false}
-              hasAdvSearch={false}
+              hasAdvSearch={true}
               hasRowView={true}
               importConfig={null}
             />
@@ -67,13 +68,14 @@ class VisitorPunch extends Component {
                 defaultColumnWidth={112}
                 hasAdd={false}
                 baseURL={this.props.baseURL}
+                downloadBaseURL={this.props.downloadBaseURL}
                 hasRowView={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
                 hasDelete={false}
                 hasModify={false}
                 hasRowModify={false}
-                hasAdvSearch={false}
+                hasAdvSearch={true}
                 importConfig={null}
                 customRowBtns={[
                   record => {
@@ -97,13 +99,14 @@ class VisitorPunch extends Component {
                 defaultColumnWidth={104}
                 hasAdd={false}
                 baseURL={this.props.baseURL}
+                downloadBaseURL={this.props.downloadBaseURL}
                 hasRowView={true}
                 hasRowDelete={false}
                 hasRowEdit={false}
                 hasDelete={false}
                 hasModify={false}
                 hasRowModify={false}
-                hasAdvSearch={false}
+                hasAdvSearch={true}
                 importConfig={null}
               />
             </div>
