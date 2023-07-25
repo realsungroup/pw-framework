@@ -545,7 +545,7 @@ class ChangedInfoForm extends React.Component {
         >
           {
             (getFieldDecorator('bucode', {
-              initialValue: toCheckFront.bucode
+              initialValue: toCheckFront.BUCode
             }),
               getFieldDecorator('nBuCode', {
                 initialValue: toCheck[5]
