@@ -544,7 +544,7 @@ class ChangedInfoForm extends React.Component {
           style={{ display: 'flex', marginBottom: '5px', height: '40px' }}
         >
           {
-            (getFieldDecorator('bucode', {
+            (getFieldDecorator('BUCode', {
               initialValue: toCheckFront.BUCode
             }),
               getFieldDecorator('nBuCode', {
@@ -558,7 +558,7 @@ class ChangedInfoForm extends React.Component {
                       textAlign: 'center',
                       borderRight: 0
                     }}
-                    value={getFieldValue('bucode')}
+                    value={getFieldValue('BUCode')}
                   />
                   <Input
                     style={{

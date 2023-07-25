@@ -10823,3 +10823,51 @@ window[738940474009] = {
     downloadBaseURL: 'http://10.108.2.66:80/'
   } // 组件所接收的 props
 };
+window[743615871120] = {
+  name: 'TableData', // 组件名称，
+  title: '考勤汇总表2', // 功能模块名称
+  props: {
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    resid: 743438730485,
+    actionBarWidth: 200,
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: true,
+    hasBackBtn: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    // recordFormUseAbsolute:true,
+    backendButtonPopConfirmProps: { placement: 'bottom' },
+    recordFormContainerProps: {
+      width: '95vw'
+    },
+    subTableArrProps: [
+      {
+        subTableName: '考勤日报',
+        subResid: 375296167687,
+        tableProps: {
+          height: 560,
+          baseURL: 'http://10.108.2.66:9091/',
+          actionBarWidth: 200,
+          isUseFormDefine: false,
+          subtractH: 180,
+          formProps: {
+            width: 1000
+          }
+        }
+      }
+    ],
+    formProps: {
+      // height: 500
+    },
+    advSearch: {
+      isRequestFormData: false
+    },
+    isUseBESize: true,
+    hasBeSort: false,
+    subtractH: 220
+  }
+};
