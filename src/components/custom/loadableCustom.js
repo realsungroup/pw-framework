@@ -1049,3 +1049,9 @@ export const VisitorPunch = Loadable({
     return minLoading;
   }
 });
+export const AttendanceRepo2 = Loadable({
+  loader: () => import('./AttendanceRepo2'),
+  loading() {
+    return minLoading;
+  }
+});
