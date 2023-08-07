@@ -1423,9 +1423,12 @@ class IDLTransferHr extends Component {
         resid: 660756647720,
         cmswhere: `C3_660756674254 = '${record.C3_227192472953}'`
       });
-      this.setState({
-        iiviJobCode: jobcode.data[0].C3_660756702537
-      });
+      if (jobcode.data.length > 0) {
+        this.setState({
+          iiviJobCode: jobcode.data[0].C3_660756702537
+        });
+      }
+
     } catch (error) {
       console.log(error.message);
       message.info(error.message);
@@ -1604,54 +1607,9 @@ class IDLTransferHr extends Component {
           </ul>
         </sider>
         <content>
+
           <Modal
-            title={
-              '其他未通过'
-            }
-            width={'90vw'}
-            visible={this.state.showOthers}
-            footer={null}
-            onCancel={() => this.setState({ showOthers: false })}
-          >
-            <div
-              style={{
-                width: '100%',
-                height: 'calc(80vh - 104px)',
-                position: 'relative'
-              }}
-            >
-              <TableData
-                resid={715709245207}
-                hasRowView={false}
-                subtractH={220}
-                hasAdd={false}
-                hasRowSelection={false}
-                hasRowDelete={false}
-                hasRowModify={false}
-                hasModify={false}
-                hasDelete={false}
-                recordFormUseAbsolute={true}
-                style={{ height: '100%' }}
-                hasRowView={false}
-                recordFormUseAbsolute={true}
-                customRowBtns={[
-                  record => {
-                    return (
-                      <Button
-                        style={{ width: '104px' }}
-                        onClick={() => {
-                          this.showOverlay(record);
-                        }}
-                      >
-                        查看信息
-                      </Button>
-                    );
-                  }
-                ]}
-              />
-            </div>
-          </Modal>
-          <Modal
+
             title={'变更审批人'}
             width={'90vw'}
             visible={this.state.changeApprove}
@@ -1695,7 +1653,10 @@ class IDLTransferHr extends Component {
               />
             </div>
           </Modal>
+
+
           <Modal
+
             title={'人员列表'}
             width={'90vw'}
             visible={this.state.memberD}
@@ -1744,6 +1705,7 @@ class IDLTransferHr extends Component {
           </Modal>
 
           <Modal
+
             width={'90vw'}
             visible={this.state.commandVisible}
             title={'审批流变更'}
@@ -1826,6 +1788,7 @@ class IDLTransferHr extends Component {
           <Modal
             width={'90vw'}
             visible={this.state.visibleHC}
+
             footer={
               this.state.C3_637425449725 === '否' ? (
                 <>
@@ -1987,6 +1950,7 @@ class IDLTransferHr extends Component {
             />
           </Modal>
           <Modal
+
             width={'60vw'}
             visible={this.state.conUnpass}
             onCancel={() => this.setState({ conUnpass: false })}
@@ -2040,6 +2004,7 @@ class IDLTransferHr extends Component {
             />
           </Modal>
           <Modal
+
             width={'90vw'}
             visible={this.state.showJob}
             footer={null}
@@ -2087,6 +2052,7 @@ class IDLTransferHr extends Component {
             </div>
           </Modal>
           <Modal
+
             width={'90vw'}
             visible={this.state.showMemo}
             destroyOnClose={true}
@@ -2113,6 +2079,7 @@ class IDLTransferHr extends Component {
             </div>
           </Modal>
           <Modal
+
             title={'提醒邮件发送记录'}
             width={'90vw'}
             visible={this.state.showAlert}
@@ -2136,8 +2103,7 @@ class IDLTransferHr extends Component {
             <div
               style={{
                 width: '100%',
-                height: 'calc(80vh - 104px)',
-                position: 'relative'
+                height: 'calc(80vh - 104px)'
               }}
             >
               <TableData
@@ -2158,8 +2124,57 @@ class IDLTransferHr extends Component {
             </div>
           </Modal>
           <Modal
+
+            title={
+              '其他未通过'
+            }
+            width={'90vw'}
+            visible={this.state.showOthers}
+            footer={null}
+            onCancel={() => this.setState({ showOthers: false })}
+          >
+            <div
+              style={{
+                width: '100%',
+                height: 'calc(80vh - 104px)',
+                position: 'relative'
+              }}
+            >
+              <TableData
+                resid={715709245207}
+                hasRowView={false}
+                subtractH={220}
+                hasAdd={false}
+                hasRowSelection={false}
+                hasRowDelete={false}
+                hasRowModify={false}
+                hasModify={false}
+                hasDelete={false}
+                recordFormUseAbsolute={true}
+                style={{ height: '100%' }}
+                hasRowView={false}
+                recordFormUseAbsolute={true}
+                customRowBtns={[
+                  record => {
+                    return (
+                      <Button
+                        style={{ width: '104px' }}
+                        onClick={() => {
+                          this.showOverlay(record);
+                        }}
+                      >
+                        查看信息
+                      </Button>
+                    );
+                  }
+                ]}
+              />
+            </div>
+          </Modal>
+          <Modal
             width={'90vw'}
             visible={this.state.visible}
+
             destroyOnClose
             footer={
               !this.state.showOthers ? (
@@ -2663,6 +2678,7 @@ class IDLTransferHr extends Component {
             </div>
           </Modal>
           <Modal
+
             title={'选择人员'}
             width={'90vw'}
             visible={this.state.showAllMen}
@@ -2713,6 +2729,7 @@ class IDLTransferHr extends Component {
             </div>
           </Modal>
           <Modal
+
             title={'选择Job Code'}
             width={'90vw'}
             visible={this.state.selectJobcodeModal}
@@ -2761,6 +2778,7 @@ class IDLTransferHr extends Component {
           </Modal>
           <Modal
             title={'修改Job Code'}
+
             width={'90vw'}
             visible={this.state.modiJobCode}
             footer={null}

@@ -3749,8 +3749,8 @@ window[642854660698] = {
     resid: 424363791882,
     mainTableProps: {
       actionBarWidth: 200,
-      // baseURL: 'http://10.108.2.66:9091/',
-
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      baseURL: 'http://10.108.2.66:9091/',
       hasAdd: false,
       hasBeBtns: true,
       hasModify: false,

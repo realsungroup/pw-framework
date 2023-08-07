@@ -75,7 +75,7 @@ class AttendanceRepo2 extends React.Component {
             hasRowEdit={false}
             hasDelete={false}
             hasModify={false}
-            hasRowModify={true}
+            hasRowModify={false}
             hasRowSelection={false}
             hasAdvSearch={false}
             importConfig={null}
