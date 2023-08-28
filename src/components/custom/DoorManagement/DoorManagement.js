@@ -131,7 +131,12 @@ class DoorManagement extends React.Component {
       console.log(error);
     }
   };
-
+  setDoorDetails = (v) => {
+    this.setState({
+      curGroupName: v.C3_595166751093,
+      showGroupModal: true
+    });
+  };
   filtData = (all, v) => {
     let arr = this.state[all + 'O'];
     let res = [];
@@ -614,14 +619,43 @@ class DoorManagement extends React.Component {
     const { activeKey } = this.state;
     return (
       <div className="DoorManagement">
-        {/* <div className="prog">
-          <Progress percent={this.state.percent} className="chart" />
-          <span className="hint">
-            {this.state.percent > 0
-              ? '进度：' + this.state.percent + '%'
-              : null}
-          </span>
-        </div> */}
+        <Modal
+          visible={this.state.showGroupModal}
+          footer={null}
+          width={'80vw'}
+          destroyOnClose
+          onCancel={() => {
+            this.setState({ showGroupModal: false, curGroupName: '' });
+          }}
+        >
+          <div className='DoorManagement_tablewrap'>
+            <TableData
+              baseURL={this.baseURL}
+              downloadBaseURL={this.downloadURL}
+              columnsWidth={
+                { 门名称: 800 }
+              }
+              resid="691171742184"
+              wrappedComponentRef={element =>
+                (this.importModalTableDataRef = element)
+              }
+              refTargetComponentName="TableData"
+              subtractH={180}
+              hasAdd={false}
+              hasRowView={false}
+              hasRowDelete={false}
+              hasRowEdit={false}
+              hasDelete={false}
+              hasModify={false}
+              hasRowModify={false}
+              hasRowSelection={false}
+              cmswhere={`组名称 = '${this.state.curGroupName}'`}
+              afterSaveRefresh={true}
+              hasAdvSearch={false}
+              importConfig={null}
+            />
+          </div>
+        </Modal>
         <Modal
           visible={this.state.vis}
           footer={null}
@@ -806,6 +840,13 @@ class DoorManagement extends React.Component {
                       }}
                       dataSource={this.state[this.state.dataAdd]}
                       columns={thead}
+                      onRow={(record) => {
+                        return {
+                          onClick: (event) => {
+                            this.setDoorDetails(record);
+                          }, // 点击行
+                        };
+                      }}
                       pagination={{
                         pageSize: 40,
                         pageSizeOptions: [10, 40, 100, 500],
@@ -860,6 +901,13 @@ class DoorManagement extends React.Component {
                   <div className="tableOuter">
                     <Table
                       dataSource={this.state.minus}
+                      onRow={(record) => {
+                        return {
+                          onClick: (event) => {
+                            this.setDoorDetails(record);
+                          }, // 点击行
+                        };
+                      }}
                       rowSelection={{
                         selectedRowKeys: this.state.selectedRowKeysDel,
                         type: 'checkbox',
@@ -951,6 +999,13 @@ class DoorManagement extends React.Component {
                   </div>
                   <div className="tableOuter">
                     <Table
+                      onRow={(record) => {
+                        return {
+                          onClick: (event) => {
+                            this.setDoorDetails(record);
+                          }, // 点击行
+                        };
+                      }}
                       rowSelection={{
                         selectedRowKeys: this.state.selectedRowKeysSame,
                         type: 'checkbox',
