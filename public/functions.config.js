@@ -10852,3 +10852,29 @@ window[744206238564] = {
     subtractH: 240
   } // 组件所接收的 props
 };
+
+//新黑名单
+window[746291438990] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: 'DL招聘黑名单', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 681234360083,
+    recordFormFormWidth: '90%',
+    baseURL: 'http://kingofdinner.realsun.me:1201/',
+    downloadBaseURL: 'http://kingofdinner.realsun.me:1200/',
+    hasAdd: true,
+    hasBeBtns: true,
+    hasModify: false,
+    hasAdd: true,
+    hasDelete: true,
+    hasRowModify: true,
+    hasRowView: true,
+    hasRowDelete: true,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};

@@ -2225,7 +2225,7 @@ class IDLTransferHr extends Component {
                                       保存并通过审核
                                     </Button>
                                   ) : (
-                                    '生效日期、岗位代码、考情审批经理总监是必填项'
+                                    '生效日期、岗位代码、考勤审批经理总监是必填项'
                                   )
                               ) : (
                                 <Button
