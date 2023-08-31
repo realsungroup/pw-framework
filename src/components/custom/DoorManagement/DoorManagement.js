@@ -628,33 +628,68 @@ class DoorManagement extends React.Component {
             this.setState({ showGroupModal: false, curGroupName: '' });
           }}
         >
-          <div className='DoorManagement_tablewrap'>
-            <TableData
-              baseURL={this.baseURL}
-              downloadBaseURL={this.downloadURL}
-              columnsWidth={
-                { 门名称: 800 }
-              }
-              resid="691171742184"
-              wrappedComponentRef={element =>
-                (this.importModalTableDataRef = element)
-              }
-              refTargetComponentName="TableData"
-              subtractH={180}
-              hasAdd={false}
-              hasRowView={false}
-              hasRowDelete={false}
-              hasRowEdit={false}
-              hasDelete={false}
-              hasModify={false}
-              hasRowModify={false}
-              hasRowSelection={false}
-              cmswhere={`组名称 = '${this.state.curGroupName}'`}
-              afterSaveRefresh={true}
-              hasAdvSearch={false}
-              importConfig={null}
-            />
-          </div>
+          <Tabs defaultActiveKey="1" size="small">
+            <Tabs.TabPane tab="权限组对应的门数据" key="1">
+
+              <div className='DoorManagement_tablewrap'>
+                <TableData
+                  baseURL={this.baseURL}
+                  downloadBaseURL={this.downloadURL}
+                  columnsWidth={
+                    { 门名称: 800 }
+                  }
+                  resid="691171742184"
+                  wrappedComponentRef={element =>
+                    (this.importModalTableDataRef = element)
+                  }
+                  refTargetComponentName="TableData"
+                  subtractH={180}
+                  hasAdd={false}
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasRowModify={false}
+                  hasRowSelection={false}
+                  cmswhere={`组名称 = '${this.state.curGroupName}'`}
+                  afterSaveRefresh={true}
+                  hasAdvSearch={false}
+                  importConfig={null}
+                />
+              </div>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="权限组对应的人员数据" key="2">
+
+              <div className='DoorManagement_tablewrap'>
+                <TableData
+                  baseURL={this.baseURL}
+                  downloadBaseURL={this.downloadURL}
+                  columnsWidth={
+                    { 所属门权限组名称: 800 }
+                  }
+                  resid="746806026067"
+                  wrappedComponentRef={element =>
+                    (this.importModalTableDataRef = element)
+                  }
+                  refTargetComponentName="TableData"
+                  subtractH={180}
+                  hasAdd={false}
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasRowModify={false}
+                  hasRowSelection={false}
+                  cmswhere={`C3_595166751093 = '${this.state.curGroupName}'`}
+                  afterSaveRefresh={true}
+                  hasAdvSearch={false}
+                  importConfig={null}
+                />
+              </div>
+            </Tabs.TabPane>
+          </Tabs>
         </Modal>
         <Modal
           visible={this.state.vis}

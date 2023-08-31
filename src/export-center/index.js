@@ -196,6 +196,7 @@ export {
   OfficeSupply,
   ShVisit,
   AccessControl,
+  AccessControlOutersource,
   NewSignPrint,
   ShVisitApprove,
   ShVisitManager,
