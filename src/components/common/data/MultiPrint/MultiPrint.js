@@ -42,12 +42,12 @@ class MultiPrint extends React.Component {
       });
       this.setState({ pages: Reldata, showPage: true });
       let _this = this;
-      let t = setInterval(function() {
+      let t = setInterval(function () {
         if (_this.refs.toPrint.innerHTML.length > 0) {
           clearInterval(t);
           _this.handlePrint();
         }
-      }, 500);
+      }, 2000);
     }
   };
   render() {
@@ -56,7 +56,7 @@ class MultiPrint extends React.Component {
         <TableData
           resid={this.props.resid}
           baseURL={this.props.baseURL}
-          cmswhere={this.props.cmswhere||``}
+          cmswhere={this.props.cmswhere || ``}
           downloadBaseURL={this.props.downloadBaseURL}
           subtractH={240}
           hasBeBtns={true}
@@ -71,6 +71,7 @@ class MultiPrint extends React.Component {
           actionBarExtra={({ dataSource, selectedRowKeys }) => {
             return (
               <Button
+                loading={this.state.showPage}
                 onClick={() => {
                   this.renderPages(dataSource, selectedRowKeys);
                 }}
