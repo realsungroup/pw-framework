@@ -982,12 +982,6 @@ export const AccessControl = Loadable({
     return minLoading;
   }
 });
-export const AccessControlOutersource = Loadable({
-  loader: () => import('./AccessControlOutersource'),
-  loading() {
-    return minLoading;
-  }
-});
 export const ConstructionList = Loadable({
   loader: () => import('./ConstructionList'),
   loading() {

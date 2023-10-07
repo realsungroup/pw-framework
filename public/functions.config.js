@@ -10823,9 +10823,3 @@ window[738940474009] = {
     downloadBaseURL: 'http://10.108.2.66:80/'
   } // 组件所接收的 props
 };
-window[746808822765] = {
-  name: 'AccessControlOutersource',
-  title: '外包人员门禁管控',
-  props: {
-  }
-};

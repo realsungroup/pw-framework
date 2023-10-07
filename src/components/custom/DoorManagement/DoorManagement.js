@@ -659,7 +659,7 @@ class DoorManagement extends React.Component {
                 />
               </div>
             </Tabs.TabPane>
-            <Tabs.TabPane tab="权限组对应的人员数据" key="2">
+            {/* <Tabs.TabPane tab="权限组对应的人员数据" key="2">
 
               <div className='DoorManagement_tablewrap'>
                 <TableData
@@ -688,7 +688,7 @@ class DoorManagement extends React.Component {
                   importConfig={null}
                 />
               </div>
-            </Tabs.TabPane>
+            </Tabs.TabPane> */}
           </Tabs>
         </Modal>
         <Modal
