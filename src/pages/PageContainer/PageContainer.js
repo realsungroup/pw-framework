@@ -30,7 +30,7 @@ import { OrgChartData } from '../../components/common/loadableCommon';
 import DesktopBg from './DesktopBg';
 import defaultDesktopBg from './DesktopBg/assets/06.jpg';
 import JobArchitectureDiagram from '../../components/custom/PostAndPersonnel/PostArchitecture/ArchitectureDiagram';
-
+import { version } from "../../../package.json";
 import {
   DesktopColorPicker,
   DesktopDashboard,
@@ -170,6 +170,21 @@ export default class PageContainer extends React.Component {
 
   componentDidMount = () => {
     const { userInfo, color } = this.state;
+    let oldVersion = localStorage.getItem('currentVersion');
+    let needRefre = false;
+    if (oldVersion != version) {
+      needRefre = true
+    }
+    if (!oldVersion) {
+      needRefre = true;
+    }
+    if (needRefre) {
+      localStorage.setItem('currentVersion', version);
+      message.info('检测到新版本，即将强制刷新页面', 2000);
+      let t = setTimeout(() => {
+        window.location.reload();
+      }, 2000)
+    }
     // 设置主题色
     this.setThemeColor(this.state.color);
     // 'DESKTOP' or 'WORKBENCH'
