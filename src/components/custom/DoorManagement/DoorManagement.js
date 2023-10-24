@@ -350,6 +350,20 @@ class DoorManagement extends React.Component {
     } else {
       data = this.state.selectedDataSame;
     }
+    //重新计算新增的权限是否已经全部确认过，前端更新一次确认状态。
+    let confirmedArr = [];
+    for (let i = 0; i < this.state[this.state.dataAdd].length; i++) {
+      //遍历add数组里的所有数据，已经确认过的数据直接推到数组confirmedArr里，没有确认过的数组和勾选的数组里的选项进行比对，存在的场合推到数组confirmedArr里
+      if (this.state[this.state.dataAdd][i].C3_595192402751 === 'Y') {
+        confirmedArr.push(this.state[this.state.dataAdd][i]);
+      } else {
+        for (let c = 0; c < data.length; c++) {
+          if (data[c].REC_ID === this.state[this.state.dataAdd][i].REC_ID) {
+            confirmedArr.push(this.state[this.state.dataAdd][i]);
+          }
+        }
+      }
+    }
     let n = 0;
     while (n < data.length) {
       data[n].C3_595192402751 = 'Y';
@@ -369,6 +383,11 @@ class DoorManagement extends React.Component {
         this.getTaskInfo(taskid);
       } else {
         message.error('无taskid');
+      }
+      if (confirmedArr.length === this.state[this.state.dataAdd].length) {
+        this.setState({ confirmedAdd: true });
+      } else {
+        this.setState({ confirmedAdd: false });
       }
       this.setState({
         selectedRowKeysSame: [],
@@ -835,7 +854,6 @@ class DoorManagement extends React.Component {
                           确认无误
                       </Button>
                     }
-
                     <Input.Search
                       style={{ width: 'calc(100% - 260px)' }}
                       onSearch={
