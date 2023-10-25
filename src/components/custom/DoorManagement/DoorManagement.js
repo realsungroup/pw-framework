@@ -455,28 +455,22 @@ class DoorManagement extends React.Component {
       selectedDataAdd: [],
       selectedRowKeysAdd: []
     });
-    if (mark === 'add') {
-      try {
+    console.log('mark', mark, data2)
+    try {
+      if (mark === 'add') {
         let resC = await http({ baseURL: this.baseURL }).modifyRecords({
           resid: 702643427843,
           data
         });
-        message.success('已确认完毕');
-      } catch (e) {
-        message.error(e.message);
-        console.log(e.message);
       }
-    } else {
-      try {
-        let res = await http({ baseURL: this.baseURL }).addRecords({
-          resid: 692357214309,
-          data: data2
-        });
-        message.success('已经上传数据');
-      } catch (e) {
-        message.error(e.message);
-        console.log(e.message);
-      }
+      let res = await http({ baseURL: this.baseURL }).addRecords({
+        resid: 692357214309,
+        data: data2
+      });
+      message.success('已经上传数据');
+    } catch (e) {
+      message.error(e.message);
+      console.log(e.message);
     }
 
 
