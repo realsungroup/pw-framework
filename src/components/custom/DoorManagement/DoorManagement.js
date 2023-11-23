@@ -411,16 +411,21 @@ class DoorManagement extends React.Component {
     let data = this.state.toDel;
     let n = 0;
     let arr = [];
+    let appDel = [];
     while (n < data.length) {
-      data[n].C3_595192402751 = 'Y';
-      arr.push({
-        //权限组
-        C3_497800103507: data[n].C3_595166751093,
-        C3_498749351171: '删除',
-        //工号
-        C3_498046910810: data[n].C3_595166604634,
-        C3_498047440296: 'Y'
-      });
+      if (data[n].C3_754062864221 == 0) {
+        appDel.push(data[n])
+      } else {
+        data[n].C3_595192402751 = 'Y';
+        arr.push({
+          //权限组
+          C3_497800103507: data[n].C3_595166751093,
+          C3_498749351171: '删除',
+          //工号
+          C3_498046910810: data[n].C3_595166604634,
+          C3_498047440296: 'Y'
+        });
+      }
       n++;
     }
     // let data2 = JSON.stringify(arr);
@@ -456,6 +461,8 @@ class DoorManagement extends React.Component {
       selectedRowKeysAdd: []
     });
     console.log('mark', mark, data2)
+    //检查删除数据里的人员编号字段C3_754062864221值是否是0，如果是0的话则不添加到前端导入用而是添加到门管理员删除权限表754061214113
+    this.setState({ loading: true });
     try {
       if (mark === 'add') {
         let resC = await http({ baseURL: this.baseURL }).modifyRecords({
@@ -467,9 +474,16 @@ class DoorManagement extends React.Component {
         resid: 692357214309,
         data: data2
       });
+      let res2 = await http({ baseURL: this.baseURL }).addRecords({
+        resid: 754061214113,
+        data: appDel
+      });
+      this.setState({ loading: false });
       message.success('已经上传数据');
+
     } catch (e) {
       message.error(e.message);
+      this.setState({ loading: false });
       console.log(e.message);
     }
 
@@ -827,6 +841,7 @@ class DoorManagement extends React.Component {
                         </Button> */}
                     <Button
                       type="danger"
+                      loading={this.state.loading}
                       onClick={() => {
                         this.setState({
                           toDel: this.state.selectedDataAdd
@@ -993,6 +1008,7 @@ class DoorManagement extends React.Component {
                         </Button> */}
                     <Button
                       type="danger"
+                      loading={this.state.loading}
                       onClick={() => {
                         this.setState({
                           toDel: this.state.selectedDataSame
@@ -1089,7 +1105,7 @@ class DoorManagement extends React.Component {
         </Spin>
         {/* </Tabs.TabPane>
         </Tabs> */}
-      </div>
+      </div >
     );
   }
 }
