@@ -18,6 +18,7 @@ import { FormattedMessage as FM, injectIntl } from 'react-intl';
 import http from 'Util20/api';
 import './Login.less';
 import './Login.css';
+import { version } from "../../../package.json";
 import { biLogin } from 'Util20/bi';
 
 const {
@@ -58,6 +59,22 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
+    let oldVersion = localStorage.getItem('currentVersion');
+    let needRefre = false;
+    if (oldVersion != version) {
+      needRefre = true
+    }
+    if (!oldVersion) {
+      needRefre = true;
+    }
+    console.log(oldVersion, version)
+    if (needRefre) {
+      localStorage.setItem('currentVersion', version);
+      message.info('检测到新版本，即将强制刷新页面', 2000);
+      let t = setTimeout(() => {
+        window.location.reload();
+      }, 2000)
+    }
     this.setThemeColor(themeColor);
   }
 

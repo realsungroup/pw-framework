@@ -131,7 +131,12 @@ class DoorManagement extends React.Component {
       console.log(error);
     }
   };
-
+  setDoorDetails = (v) => {
+    this.setState({
+      curGroupName: v.C3_595166751093,
+      showGroupModal: true
+    });
+  };
   filtData = (all, v) => {
     let arr = this.state[all + 'O'];
     let res = [];
@@ -345,6 +350,20 @@ class DoorManagement extends React.Component {
     } else {
       data = this.state.selectedDataSame;
     }
+    //重新计算新增的权限是否已经全部确认过，前端更新一次确认状态。
+    let confirmedArr = [];
+    for (let i = 0; i < this.state[this.state.dataAdd].length; i++) {
+      //遍历add数组里的所有数据，已经确认过的数据直接推到数组confirmedArr里，没有确认过的数组和勾选的数组里的选项进行比对，存在的场合推到数组confirmedArr里
+      if (this.state[this.state.dataAdd][i].C3_595192402751 === 'Y') {
+        confirmedArr.push(this.state[this.state.dataAdd][i]);
+      } else {
+        for (let c = 0; c < data.length; c++) {
+          if (data[c].REC_ID === this.state[this.state.dataAdd][i].REC_ID) {
+            confirmedArr.push(this.state[this.state.dataAdd][i]);
+          }
+        }
+      }
+    }
     let n = 0;
     while (n < data.length) {
       data[n].C3_595192402751 = 'Y';
@@ -364,6 +383,11 @@ class DoorManagement extends React.Component {
         this.getTaskInfo(taskid);
       } else {
         message.error('无taskid');
+      }
+      if (confirmedArr.length === this.state[this.state.dataAdd].length) {
+        this.setState({ confirmedAdd: true });
+      } else {
+        this.setState({ confirmedAdd: false });
       }
       this.setState({
         selectedRowKeysSame: [],
@@ -387,16 +411,21 @@ class DoorManagement extends React.Component {
     let data = this.state.toDel;
     let n = 0;
     let arr = [];
+    let appDel = [];
     while (n < data.length) {
-      data[n].C3_595192402751 = 'Y';
-      arr.push({
-        //权限组
-        C3_497800103507: data[n].C3_595166751093,
-        C3_498749351171: '删除',
-        //工号
-        C3_498046910810: data[n].C3_595166604634,
-        C3_498047440296: 'Y'
-      });
+      if (data[n].C3_754062864221 == 0) {
+        appDel.push(data[n])
+      } else {
+        data[n].C3_595192402751 = 'Y';
+        arr.push({
+          //权限组
+          C3_497800103507: data[n].C3_595166751093,
+          C3_498749351171: '删除',
+          //工号
+          C3_498046910810: data[n].C3_595166604634,
+          C3_498047440296: 'Y'
+        });
+      }
       n++;
     }
     // let data2 = JSON.stringify(arr);
@@ -431,28 +460,31 @@ class DoorManagement extends React.Component {
       selectedDataAdd: [],
       selectedRowKeysAdd: []
     });
-    if (mark === 'add') {
-      try {
+    console.log('mark', mark, data2)
+    //检查删除数据里的人员编号字段C3_754062864221值是否是0，如果是0的话则不添加到前端导入用而是添加到门管理员删除权限表754061214113
+    this.setState({ loading: true });
+    try {
+      if (mark === 'add') {
         let resC = await http({ baseURL: this.baseURL }).modifyRecords({
           resid: 702643427843,
           data
         });
-        message.success('已确认完毕');
-      } catch (e) {
-        message.error(e.message);
-        console.log(e.message);
       }
-    } else {
-      try {
-        let res = await http({ baseURL: this.baseURL }).addRecords({
-          resid: 692357214309,
-          data: data2
-        });
-        message.success('已经上传数据');
-      } catch (e) {
-        message.error(e.message);
-        console.log(e.message);
-      }
+      let res = await http({ baseURL: this.baseURL }).addRecords({
+        resid: 692357214309,
+        data: data2
+      });
+      let res2 = await http({ baseURL: this.baseURL }).addRecords({
+        resid: 754061214113,
+        data: appDel
+      });
+      this.setState({ loading: false });
+      message.success('已经上传数据');
+
+    } catch (e) {
+      message.error(e.message);
+      this.setState({ loading: false });
+      console.log(e.message);
     }
 
 
@@ -614,14 +646,78 @@ class DoorManagement extends React.Component {
     const { activeKey } = this.state;
     return (
       <div className="DoorManagement">
-        {/* <div className="prog">
-          <Progress percent={this.state.percent} className="chart" />
-          <span className="hint">
-            {this.state.percent > 0
-              ? '进度：' + this.state.percent + '%'
-              : null}
-          </span>
-        </div> */}
+        <Modal
+          visible={this.state.showGroupModal}
+          footer={null}
+          width={'80vw'}
+          destroyOnClose
+          onCancel={() => {
+            this.setState({ showGroupModal: false, curGroupName: '' });
+          }}
+        >
+          <Tabs defaultActiveKey="1" size="small">
+            <Tabs.TabPane tab="权限组对应的门数据" key="1">
+
+              <div className='DoorManagement_tablewrap'>
+                <TableData
+                  baseURL={this.baseURL}
+                  downloadBaseURL={this.downloadURL}
+                  columnsWidth={
+                    { 门名称: 800 }
+                  }
+                  resid="691171742184"
+                  wrappedComponentRef={element =>
+                    (this.importModalTableDataRef = element)
+                  }
+                  refTargetComponentName="TableData"
+                  subtractH={180}
+                  hasAdd={false}
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasRowModify={false}
+                  hasRowSelection={false}
+                  cmswhere={`组名称 = '${this.state.curGroupName}'`}
+                  afterSaveRefresh={true}
+                  hasAdvSearch={false}
+                  importConfig={null}
+                />
+              </div>
+            </Tabs.TabPane>
+            {/* <Tabs.TabPane tab="权限组对应的人员数据" key="2">
+
+              <div className='DoorManagement_tablewrap'>
+                <TableData
+                  baseURL={this.baseURL}
+                  downloadBaseURL={this.downloadURL}
+                  columnsWidth={
+                    { 所属门权限组名称: 800 }
+                  }
+                  resid="746806026067"
+                  wrappedComponentRef={element =>
+                    (this.importModalTableDataRef = element)
+                  }
+                  refTargetComponentName="TableData"
+                  subtractH={180}
+                  hasAdd={false}
+                  hasRowView={false}
+                  hasRowDelete={false}
+                  hasRowEdit={false}
+                  hasDelete={false}
+                  hasModify={false}
+                  hasRowModify={false}
+                  hasRowSelection={false}
+                  cmswhere={`C3_595166751093 = '${this.state.curGroupName}'`}
+                  afterSaveRefresh={true}
+                  hasAdvSearch={false}
+                  importConfig={null}
+                />
+              </div>
+            </Tabs.TabPane> */}
+          </Tabs>
+        </Modal>
         <Modal
           visible={this.state.vis}
           footer={null}
@@ -745,6 +841,7 @@ class DoorManagement extends React.Component {
                         </Button> */}
                     <Button
                       type="danger"
+                      loading={this.state.loading}
                       onClick={() => {
                         this.setState({
                           toDel: this.state.selectedDataAdd
@@ -766,7 +863,6 @@ class DoorManagement extends React.Component {
                           确认无误
                       </Button>
                     }
-
                     <Input.Search
                       style={{ width: 'calc(100% - 260px)' }}
                       onSearch={
@@ -806,6 +902,13 @@ class DoorManagement extends React.Component {
                       }}
                       dataSource={this.state[this.state.dataAdd]}
                       columns={thead}
+                      onRow={(record) => {
+                        return {
+                          onClick: (event) => {
+                            this.setDoorDetails(record);
+                          }, // 点击行
+                        };
+                      }}
                       pagination={{
                         pageSize: 40,
                         pageSizeOptions: [10, 40, 100, 500],
@@ -860,6 +963,13 @@ class DoorManagement extends React.Component {
                   <div className="tableOuter">
                     <Table
                       dataSource={this.state.minus}
+                      onRow={(record) => {
+                        return {
+                          onClick: (event) => {
+                            this.setDoorDetails(record);
+                          }, // 点击行
+                        };
+                      }}
                       rowSelection={{
                         selectedRowKeys: this.state.selectedRowKeysDel,
                         type: 'checkbox',
@@ -898,6 +1008,7 @@ class DoorManagement extends React.Component {
                         </Button> */}
                     <Button
                       type="danger"
+                      loading={this.state.loading}
                       onClick={() => {
                         this.setState({
                           toDel: this.state.selectedDataSame
@@ -951,6 +1062,13 @@ class DoorManagement extends React.Component {
                   </div>
                   <div className="tableOuter">
                     <Table
+                      onRow={(record) => {
+                        return {
+                          onClick: (event) => {
+                            this.setDoorDetails(record);
+                          }, // 点击行
+                        };
+                      }}
                       rowSelection={{
                         selectedRowKeys: this.state.selectedRowKeysSame,
                         type: 'checkbox',
@@ -987,7 +1105,7 @@ class DoorManagement extends React.Component {
         </Spin>
         {/* </Tabs.TabPane>
         </Tabs> */}
-      </div>
+      </div >
     );
   }
 }

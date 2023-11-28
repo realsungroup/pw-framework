@@ -10823,3 +10823,51 @@ window[738940474009] = {
     downloadBaseURL: 'http://10.108.2.66:80/'
   } // 组件所接收的 props
 };
+
+window[752860413343] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: 'OracleID导入', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 750438507151,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
+
+window[746808822765] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '外包人员门禁权限删除申请', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 754061526463,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: true,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
