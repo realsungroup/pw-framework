@@ -1055,3 +1055,9 @@ export const MyMealAccount = Loadable({
     return minLoading;
   }
 });
+export const DrawRec = Loadable({
+  loader: () => import('./DrawRec'),
+  loading() {
+    return minLoading;
+  }
+});
