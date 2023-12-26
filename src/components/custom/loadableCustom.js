@@ -1049,3 +1049,9 @@ export const VisitorPunch = Loadable({
     return minLoading;
   }
 });
+export const MyMealAccount = Loadable({
+  loader: () => import('./MyMealAccount'),
+  loading() {
+    return minLoading;
+  }
+});

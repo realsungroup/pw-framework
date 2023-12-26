@@ -10871,3 +10871,29 @@ window[746808822765] = {
     subtractH: 240
   } // 组件所接收的 props
 };
+
+window[756811554979] = {
+  name: 'MyMealAccount', // 组件名称，这里为定制组件名称
+  title: '我的就餐账户', // 功能模块名称
+  props: {
+    accountId: 756313412456,
+    drawId: 756315770296,
+    accountChangeId: 756315137096,
+    rechargeId: 756315960330,
+    dealId: 756578086985
+  } // 组件所接收的 props
+};
+
+window[756811573152] = {
+  name: 'MyMealAccount', // 组件名称，这里为定制组件名称
+  title: '就餐账户管理', // 功能模块名称
+  props: {
+    accountId: 756313347112,
+    drawId: 756315340787,
+    accountChangeId: 756315079798,
+    rechargeId: 756315947049,
+    dealId: 756578142064,
+    showModi: true
+  } // 组件所接收的 props
+};
+
