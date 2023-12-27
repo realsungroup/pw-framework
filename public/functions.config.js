@@ -10901,12 +10901,8 @@ window[756906075767] = {
   name: 'DrawRec', // 组件名称，这里为定制组件名称
   title: '查看部门电子餐券领取情况', // 功能模块名称
   props: {
-    accountId: 756313347112,
-    drawId: 756315340787,
-    accountChangeId: 756315079798,
-    rechargeId: 756315947049,
-    dealId: 756578142064,
-    showModi: true
+    depTableId: 756314790339,
+    drawId: 756315806328
   } // 组件所接收的 props
 };
 
@@ -10914,12 +10910,18 @@ window[756923933332] = {
   name: 'DrawRec', // 组件名称，这里为定制组件名称
   title: '查看电子餐券领取情况', // 功能模块名称
   props: {
-    accountId: 756313347112,
-    drawId: 756315340787,
-    accountChangeId: 756315079798,
-    rechargeId: 756315947049,
-    dealId: 756578142064,
-    showModi: true
+    depTableId: 756316408198,
+    drawId: 756315340787
   } // 组件所接收的 props
 };
+
+window[757009833361] = {
+  name: 'DrawRec', // 组件名称，这里为定制组件名称
+  title: '系统月结补贴详情', // 功能模块名称
+  props: {
+    depTableId: 756901988242,
+    drawId: 756901920288
+  } // 组件所接收的 props
+};
+
 

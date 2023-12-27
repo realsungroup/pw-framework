@@ -30,16 +30,102 @@ export default class DrawRec extends Component {
   }
   state = {
     loading: false,
-    visible: 0,
-    depId: ''
+    visible: false,
+    curMember: {},
+    month: '',
+    cms: null
   };
   componentDidMount() {
   }
+  viewDepDetail = (record) => {
+    this.setState({ curMember: record, visible: true })
+  }
   render() {
+    const { curMember, visible, month, cms } = this.state
     return (
-      <div className='myMealAccount'>
-
-
+      <div className='drawRec'>
+        <div>
+          <span>考勤月份：</span>
+          <Input
+            type={'text'}
+            onChange={(v) => {
+              this.setState({
+                month: v.target.value
+              });
+            }}
+            onPressEnter={() => { this.setState({ cms: month ? `month = '${month}'` : null }) }}
+            value={month}
+            style={{ width: '160px' }}
+            placeholder={'YYYYMM'}
+          />
+          <Button type='primary' onClick={() => { this.setState({ cms: month ? `month = '${month}'` : null }) }}>确认</Button>
+        </div>
+        <div>
+          <TableData
+            resid={this.props.depTableId}
+            cmswhere={cms ? cms : null}
+            baseURL={this.baseURL}
+            downloadBaseURL={this.downloadBaseURL}
+            hasRowView={true}
+            hasAdd={false}
+            wrappedComponentRef={element => (this.tableDataRef = element)}
+            hasRowDelete={false}
+            hasRowModify={false}
+            hasModify={false}
+            hasDelete={false}
+            hasImport={true}
+            subtractH={175}
+            hasBeBtns={true}
+            hasRowSelection={true}
+            customRowBtns={[
+              record => {
+                return (
+                  <>
+                    <Button
+                      onClick={() => {
+                        this.viewDepDetail(record);
+                      }}
+                    >
+                      查看详情
+                      </Button>
+                  </>
+                );
+              }
+            ]}
+          />
+        </div>
+        <Modal
+          visible={visible}
+          width={'80vw'}
+          title={'餐券领取详情'}
+          onCancel={() => {
+            this.setState({
+              visible: false,
+              curMember: {}
+            });
+          }}
+          footer={null}
+        >
+          <div className={'drawRec_modal'} style={{ height: '70vh' }}>
+            <TableData
+              resid={this.props.drawId}
+              cmswhere={`numberId = '${curMember.numberId}' and creMonth = '${curMember.month}'`}
+              baseURL={this.baseURL}
+              downloadBaseURL={this.downloadBaseURL}
+              hasRowView={true}
+              hasAdd={false}
+              wrappedComponentRef={element => (this.tableDataRef2 = element)}
+              hasRowDelete={false}
+              hasRowModify={false}
+              hasModify={false}
+              hasDelete={false}
+              hasBeBtns={true}
+              hasImport={true}
+              subtractH={175}
+              hasRowSelection={true}
+            />
+          </div>
+        </Modal>
       </div>
 
     );
