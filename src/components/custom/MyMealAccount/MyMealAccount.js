@@ -130,6 +130,7 @@ export default class MyMealAccount extends Component {
                 hasModify={false}
                 hasDelete={false}
                 subtractH={175}
+                hasBeBtns={true}
               />
             </div >
           </Tabs.TabPane>

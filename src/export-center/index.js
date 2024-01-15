@@ -208,5 +208,6 @@ export {
   OutdateMaterial,
   VisitorPunch,
   MyMealAccount,
+  MealSettlement,
   DrawRec
 } from '../components/custom/loadableCustom';
