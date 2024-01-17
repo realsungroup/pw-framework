@@ -21,6 +21,7 @@ import loading from 'react-fullscreen-loading';
 const { Option } = Select;
 const tableId = {
   memberId: 758726389557,//需要结算的账户表
+  attendaceId: 758738248141,//计算每日考勤餐标
 };
 /**
  * 我的就餐账户
@@ -163,6 +164,9 @@ export default class MealSettlement extends Component {
         if ((obj.task.id === 0) || (obj.task.status === 2)) {
           let arr = obj.memDataOrigin;
           this.modiAccount(arr, obj.process[0].count);
+        } else if (obj.task.id === 1) {
+          let arr = obj.memDataAtt;
+          this.addAttData(arr, obj.process[1].count);
         }
       } else {
         await this.getMember();
@@ -219,7 +223,6 @@ export default class MealSettlement extends Component {
       mealD.process[0].status = 2;
       mealD.process[0].hint = '已完成';
       mealD.process[1].status = 1;
-      mealD.process[1].total = mealD.memData.length;
       mealD.process[1].hint = '进行中';
       //生成要导入考勤补贴表的数据
       let memDataAtt = [];
@@ -227,22 +230,27 @@ export default class MealSettlement extends Component {
       let stDate = now.subtract(1, 'months').startOf('month');
       const daysInLastMonth = now.subtract(1, 'months').daysInMonth();
       let stD = stDate;
+      //只有外包人员才需要计算日报
       for (let i = 0; i < mealD.memData.length; i++) {
-        stD = stDate;
-        for (let c = 0; c < daysInLastMonth; c++) {
-          memDataAtt.push({
-            numberId: mealD.memData[i].numberId,
-            name: mealD.memData[i].name,
-            dateStr: moment(stD).format('YYYYMMDD')
-          });
-          stD = moment(stD).add(1, 'days')
+        if (mealD.memData[i].isWB != 'Y') {
+          stD = stDate;
+          for (let c = 0; c < daysInLastMonth; c++) {
+            memDataAtt.push({
+              numberId: mealD.memData[i].numberId,
+              name: mealD.memData[i].name,
+              dateStr: moment(stD).format('YYYYMMDD')
+            });
+            stD = moment(stD).add(1, 'days')
+          }
         }
       }
       mealD.memDataAtt = memDataAtt;
+      mealD.process[1].total = memDataAtt.length;
+      mealD.task.id = 1;
       console.log('memDataAtt', memDataAtt)
       this.setStorage(mealD);
       this.setState({ process: mealD.process, memDataAtt });
-      return true;
+      await this.addAttData(memDataAtt, 0);
     };
     try {
       let res = await http({ baseURL: this.baseURL }).modifyRecords({
@@ -252,7 +260,7 @@ export default class MealSettlement extends Component {
       let arr = this.state.memData;
 
       if (res.data[0].onJob) {
-        arr.push({ numberId: res.data[0].numberId, name: res.data[0].name });
+        arr.push({ numberId: res.data[0].numberId, name: res.data[0].name, isWB: res.data[0].isWB });
       };
       let process = this.state.process;
       process[0].count = process[0].count + 1;
@@ -268,6 +276,46 @@ export default class MealSettlement extends Component {
       return false;
     }
   }
+
+  addAttData = async (arr, count) => {
+    let record = {}
+    let mealD = await this.getStorage();
+    console.log('tstus', mealD.task.status)
+    if (mealD.task.status === 3) {
+      return false;
+    }
+    if (count < arr.length) {
+      record = arr[count];
+    } else {
+      mealD.process[1].status = 2;
+      mealD.process[1].hint = '已完成';
+      mealD.process[2].status = 1;
+      mealD.process[2].total = mealD.memData.length;
+      mealD.process[2].hint = '进行中';
+      mealD.task.id = 2;
+      this.setStorage(mealD);
+      this.setState({ process: mealD.process });
+      return true;
+    }
+    try {
+      let res = await http({ baseURL: this.baseURL }).addRecords({
+        resid: 758738248141,
+        data: [record],
+        isEditOrAdd: true
+      });
+      let process = mealD.process;
+      process[1].count = process[1].count + 1;
+      let mealData = this.getStorage();
+      mealData.process = process;
+      let c = count + 1;
+      this.setStorage(mealData);
+      this.setState({ process: mealData.process });
+      await this.addAttData(arr, c);
+    } catch (e) {
+      this.repoError(e);
+      return false;
+    }
+  }
   handlePause = () => {
     let obj = this.getStorage();
     let tas = obj.task;
@@ -278,7 +326,7 @@ export default class MealSettlement extends Component {
     this.setState({ task: tas });
   }
   render() {
-    const { process, task, memData, loading } = this.state
+    const { process, task, memData, loading, memDataAtt } = this.state
     return (
       <div className='mealSettlement'>
         <div className='mealSettlement_controlPad'>
@@ -308,9 +356,13 @@ export default class MealSettlement extends Component {
                       <div style={item.total != 0 ? { width: item.count / item.total * 100 + '%' } : { width: 0 }}></div>
                     </div>
                     <span>{item.count + '/' + item.total}</span>
-                    <span style={item.status != 1 ? { display: 'none' } : {}}>
+                    <span style={((item.status != 1) || (task.id === 1)) ? { display: 'none' } : {}}>
                       当前人员：
                       {memData[item.count] ? (memData[item.count].numberId + ' - ' + memData[item.count].name) : ''}
+                    </span>
+                    <span style={((item.status != 1) || (task.id != 1)) ? { display: 'none' } : {}}>
+                      当前人员：
+                      {memDataAtt[item.count] ? (memDataAtt[item.count].numberId + ' - ' + memDataAtt[item.count].name + ' - ' + memDataAtt[item.count].dateStr) : ''}
                     </span>
                   </div>
                 </li>
