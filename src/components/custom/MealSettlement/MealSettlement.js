@@ -107,13 +107,14 @@ export default class MealSettlement extends Component {
     process: initProcess,
     task: {
       //各项status值：0——未开始 1——进行中 2——已完成 3-暂停
-      stTime: '',
+      stTime: 'N/A',
       status: 0,
-      hint: '',
+      hint: '未开始',
       id: 0
     },
     memDataOrigin: [],
-    memDataAtt: []
+    memDataAtt: [],
+    settled: false//当月是否已经结算
   };
   componentDidMount() {
     this.init();
@@ -145,9 +146,17 @@ export default class MealSettlement extends Component {
     let obj = this.getStorage();
     if (obj) {
       let tas = obj.task;
-      tas.status = 3;
-      tas.hint = '暂停';
-      obj.task = tas;
+      if (tas.status != 2) {
+        tas.status = 3;
+        tas.hint = '暂停';
+        obj.task = tas;
+      } else {
+        let ym = moment(tas.stTime).format('YYYYMM');
+        let cym = moment().format('YYYYMM');
+        if (ym === cym) {
+          this.setState({ settled: true });
+        }
+      }
       this.setState({
         memData: obj.memData,
         process: obj.process,
@@ -162,7 +171,7 @@ export default class MealSettlement extends Component {
     //获取ls判断是否有前端未执行完的任务
     let obj = this.getStorage();
     if (obj) {
-      if (obj.task.status != 0) {
+      if ((obj.task.status != 0) && (obj.task.status != 2)) {
         this.setState({ memData: obj.memData, task: obj.task, memDataOrigin: obj.memDataOrigin, process: obj.process, memDataAtt: obj.memDataAtt });
         //修改任务状态
         let tas = obj.task;
@@ -206,7 +215,7 @@ export default class MealSettlement extends Component {
       for (let i = 0; i < res.data.length; i++) {
         arr.push({ numberId: res.data[i].numberId, name: res.data[i].name, recid: res.data[i].recid });//精简数据，缩小保存到ls的数据大小
       }
-      let ts = { stTime: moment().format('YYYY-MM-DD hh:.mm:ss'), status: 1, hint: '进行中', id: 0 }
+      let ts = { stTime: moment().format('YYYY-MM-DD hh:mm:ss'), status: 1, hint: '进行中', id: 0 }
       let process = initProcess;
       process[0].hint = '进行中';
       process[0].total = arr.length;
@@ -219,7 +228,6 @@ export default class MealSettlement extends Component {
         memDataAtt: []
       };
       this.setStorage(mealData);
-      console.log('mealData', mealData)
       //修改“更新员工在职状态流程”的状态
       this.setState({ process, memDataOrigin: arr, loading: false, task: ts });
       await this.modiAccount(arr, 0);
@@ -266,6 +274,7 @@ export default class MealSettlement extends Component {
       this.setStorage(mealD);
       this.setState({ process: mealD.process, memDataAtt });
       await this.refreSettl(mealD.memData, 0);
+      return true;
     };
     try {
       let res = await http({ baseURL: this.baseURL }).modifyRecords({
@@ -295,7 +304,6 @@ export default class MealSettlement extends Component {
   addAttData = async (arr, count) => {
     let record = {}
     let mealD = await this.getStorage();
-    console.log('tstus', mealD.task.status)
     if (mealD.task.status === 3) {
       return false;
     }
@@ -304,13 +312,14 @@ export default class MealSettlement extends Component {
     } else {
       mealD.process[2].status = 2;
       mealD.process[2].hint = '已完成';
-      mealD.process[2].status = 1;
+      mealD.process[3].status = 1;
       mealD.process[3].total = mealD.memData.length;
       mealD.process[3].hint = '进行中';
-      mealD.task.id = 2;
+      mealD.task.id = 3;
       this.setStorage(mealD);
-      this.setState({ process: mealD.process });
+      this.setState({ process: mealD.process, task: mealD.task });
       await this.refreSettl(mealD.memData, 0);
+      return true;
     }
     try {
       let res = await http({ baseURL: this.baseURL }).addRecords({
@@ -322,6 +331,7 @@ export default class MealSettlement extends Component {
       process[2].count = process[2].count + 1;
       let mealData = this.getStorage();
       mealData.process = process;
+      mealData.task.id = 2;
       let c = count + 1;
       this.setStorage(mealData);
       this.setState({ process: mealData.process });
@@ -337,7 +347,6 @@ export default class MealSettlement extends Component {
     let mealD = await this.getStorage();
     const _id = mealD.task.id;
     const new_id = mealD.task.id + 1;
-    console.log('tstus', mealD.task.status)
     if (mealD.task.status === 3) {
       return false;
     }
@@ -354,14 +363,14 @@ export default class MealSettlement extends Component {
         record.dealed = 'Y';
       }
     } else {
-      if (mealD.process[_id] === 7) {
+      if (mealD.task.id === 7) {
         mealD.process[_id].status = 2;
         mealD.process[_id].hint = '已完成';
         mealD.process[_id].status = 1;
         mealD.task.status = 2;
         mealD.task.hint = '已完成';
         this.setStorage(mealD);
-        this.setState({ process: mealD.process, task: mealD.task });
+        this.setState({ process: mealD.process, task: mealD.task, settled: true });
         message.success('结算完成');
         return true;
       } else {
@@ -374,12 +383,14 @@ export default class MealSettlement extends Component {
         if (_id === 1) {
           mealD.process[2].total = mealD.memDataAtt.length;
           this.setStorage(mealD);
-          this.setState({ process: mealD.process });
+          this.setState({ process: mealD.process, task: mealD.task });
           await this.addAttData(mealD.memDataAtt, 0);
+          return true;
         } else {
           this.setStorage(mealD);
           this.setState({ process: mealD.process });
           await this.refreSettl(arr, 0);
+          return true;
         }
       }
     }
@@ -412,21 +423,22 @@ export default class MealSettlement extends Component {
     this.setState({ task: tas });
   }
   render() {
-    const { process, task, memData, loading, memDataAtt, memDataOrigin } = this.state
+    const { process, settled, task, memData, loading, memDataAtt, memDataOrigin } = this.state
     return (
       <div className='mealSettlement'>
         <div className='mealSettlement_controlPad'>
           <div>
             <Button type={'primary'} loading={loading} onClick={() => {
               this.handleRun();
-            }} disabled={task.status === 1}>开始</Button>
-            <Button disabled={task.status === 3} onClick={() => { this.handlePause() }}>暂停</Button>
+            }} disabled={(task.status === 1) || settled}>开始</Button>
+            <Button disabled={(task.status === 3) || ((task.status === 2)) || settled} onClick={() => { this.handlePause() }}>暂停</Button>
+            {settled ? <span>当前月份已结算</span> : <span style={{ color: '#f5222d' }}>结算前请询问同事「当前月份是否已经结算过」,同一个月只能结算一次！</span>}
           </div>
           <div>
-            当前任务开始时间：{task.stTime}
+            最近一次任务开始时间：{task.stTime}
           </div>
           <div>
-            当前任务状态：<span style={task.status === 1 ? { color: '#1890ff' } : {}}>{task.hint}</span>
+            最近一次任务状态：<span style={task.status === 1 ? { color: '#1890ff' } : {}}>{task.hint}</span>
           </div>
         </div>
 
@@ -442,15 +454,15 @@ export default class MealSettlement extends Component {
                       <div style={item.total != 0 ? { width: item.count / item.total * 100 + '%' } : { width: 0 }}></div>
                     </div>
                     <span>{item.count + '/' + item.total}</span>
-                    <span style={((item.status != 1) || (task.id === 2) || (task.id === 0)) ? { display: 'none' } : {}}>
+                    <span style={((item.status != 1) || (item.id === 0) || (item.id === 2) || (task.id === 2) || (task.id === 0) || (task.status === 3)) ? { display: 'none' } : {}}>
                       当前人员：
                       {memData[item.count] ? (memData[item.count].numberId + ' - ' + memData[item.count].name) : ''}
                     </span>
-                    <span style={((item.status != 1) || (task.id != 0)) ? { display: 'none' } : {}}>
+                    <span style={((item.status != 1) || (task.id != 0) || (task.status === 3)) ? { display: 'none' } : {}}>
                       当前人员：
                       {memDataOrigin[item.count] ? (memDataOrigin[item.count].numberId + ' - ' + memDataOrigin[item.count].name) : ''}
                     </span>
-                    <span style={((item.status != 1) || (task.id != 2)) ? { display: 'none' } : {}}>
+                    <span style={((item.status != 1) || (task.id != 2) || (task.status === 3)) ? { display: 'none' } : {}}>
                       当前人员：
                       {memDataAtt[item.count] ? (memDataAtt[item.count].numberId + ' - ' + memDataAtt[item.count].name + ' - ' + memDataAtt[item.count].dateStr) : ''}
                     </span>
