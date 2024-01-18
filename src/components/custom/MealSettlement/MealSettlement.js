@@ -22,7 +22,75 @@ const { Option } = Select;
 const tableId = {
   memberId: 758726389557,//需要结算的账户表
   attendaceId: 758738248141,//计算每日考勤餐标
+  settleId: 756560986054//结算表
 };
+const initProcess = [
+  //各项status值：0——未开始 1——进行中 2——已完成
+  {
+    id: 0,
+    name: '更新员工在职状态',
+    count: 0,
+    total: 0,
+    status: 0,
+    hint: '未开始'
+  },
+  {
+    id: 1,
+    name: '清空上上月账户余额',
+    count: 0,
+    total: 0,
+    status: 0,
+    hint: '未开始'
+  },
+  {
+    id: 2,
+    name: '根据考勤日报计算餐标',
+    count: 0,
+    total: 0,
+    status: 0,
+    hint: '未开始'
+  },
+  {
+    id: 3,
+    name: '补扣上上月未审批通过餐券',
+    count: 0,
+    total: 0,
+    status: 0,
+    hint: '未开始'
+  },
+  {
+    id: 4,
+    name: '补扣上月多消费的餐标',
+    count: 0,
+    total: 0,
+    status: 0,
+    hint: '未开始'
+  },
+  {
+    id: 5,
+    name: '各个账户余额转出',
+    count: 0,
+    total: 0,
+    status: 0,
+    hint: '未开始'
+  },
+  {
+    id: 6,
+    name: '各个账户余额转入',
+    count: 0,
+    total: 0,
+    status: 0,
+    hint: '未开始'
+  },
+  {
+    id: 7,
+    name: '添加当月补贴账户余额',
+    count: 0,
+    total: 0,
+    status: 0,
+    hint: '未开始'
+  }
+];
 /**
  * 我的就餐账户
  */
@@ -36,65 +104,7 @@ export default class MealSettlement extends Component {
   state = {
     loading: false,
     memData: [],//存到localstorage的员工数据，防止结算中途卡住，保证中断以后可以继续执行。
-    process: [
-      //各项status值：0——未开始 1——进行中 2——已完成
-      {
-        id: 0,
-        name: '更新员工在职状态',
-        count: 0,
-        total: 0,
-        status: 0,
-        hint: '未开始'
-      },
-      {
-        id: 1,
-        name: '根据考勤日报计算餐标',
-        count: 0,
-        total: 0,
-        status: 0,
-        hint: '未开始'
-      },
-      {
-        id: 2,
-        name: '补扣上上月未审批通过餐券',
-        count: 0,
-        total: 0,
-        status: 0,
-        hint: '未开始'
-      },
-      {
-        id: 3,
-        name: '补扣上月多消费的餐标',
-        count: 0,
-        total: 0,
-        status: 0,
-        hint: '未开始'
-      },
-      {
-        id: 4,
-        name: '各个账户余额转出',
-        count: 0,
-        total: 0,
-        status: 0,
-        hint: '未开始'
-      },
-      {
-        id: 5,
-        name: '各个账户余额转入',
-        count: 0,
-        total: 0,
-        status: 0,
-        hint: '未开始'
-      },
-      {
-        id: 6,
-        name: '添加当月补贴账户余额',
-        count: 0,
-        total: 0,
-        status: 0,
-        hint: '未开始'
-      }
-    ],
+    process: initProcess,
     task: {
       //各项status值：0——未开始 1——进行中 2——已完成 3-暂停
       stTime: '',
@@ -161,12 +171,16 @@ export default class MealSettlement extends Component {
         obj.task = tas;
         this.setStorage(obj);
         this.setState({ task: tas });
-        if ((obj.task.id === 0) || (obj.task.status === 2)) {
+        let _id = obj.task.id;
+        if ((_id === 0) || (obj.task.status === 2)) {
           let arr = obj.memDataOrigin;
-          this.modiAccount(arr, obj.process[0].count);
-        } else if (obj.task.id === 1) {
+          this.modiAccount(arr, obj.process[_id].count);
+        } else if (_id === 2) {
           let arr = obj.memDataAtt;
-          this.addAttData(arr, obj.process[1].count);
+          this.addAttData(arr, obj.process[_id].count);
+        } else {
+          let arr = obj.memData;
+          this.refreSettl(arr, obj.process[_id].count);
         }
       } else {
         await this.getMember();
@@ -182,7 +196,7 @@ export default class MealSettlement extends Component {
       this.setState({
         loading: true,
         memData: [],
-        process: [{ id: 0, name: '更新员工在职状态', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 1, name: '根据考勤日报计算餐标', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 2, name: '补扣上上月未审批通过餐券', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 3, name: '补扣上月多消费的餐标', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 4, name: '各个账户余额转出', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 5, name: '各个账户余额转入', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 6, name: '添加当月补贴账户余额', count: 0, total: 0, status: 0, hint: '未开始' }],
+        process: initProcess,
         task: { stTime: '', status: 0, hint: '初始化中...', id: 0 }, memDataOrigin: [], memDataAtt: []
       });//初始化结算数据
       let res = await http({ baseURL: this.baseURL }).getTable({
@@ -193,7 +207,10 @@ export default class MealSettlement extends Component {
         arr.push({ numberId: res.data[i].numberId, name: res.data[i].name, recid: res.data[i].recid });//精简数据，缩小保存到ls的数据大小
       }
       let ts = { stTime: moment().format('YYYY-MM-DD hh:.mm:ss'), status: 1, hint: '进行中', id: 0 }
-      let process = [{ id: 0, name: '更新员工在职状态', count: 0, total: res.data.length, status: 1, hint: '进行中' }, { id: 1, name: '根据考勤日报计算餐标', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 2, name: '补扣上上月未审批通过餐券', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 3, name: '补扣上月多消费的餐标', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 4, name: '各个账户余额转出', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 5, name: '各个账户余额转入', count: 0, total: 0, status: 0, hint: '未开始' }, { id: 6, name: '添加当月补贴账户余额', count: 0, total: 0, status: 0, hint: '未开始' }]
+      let process = initProcess;
+      process[0].hint = '进行中';
+      process[0].total = arr.length;
+      process[0].status = 1;
       let mealData = {
         memData: [],
         memDataOrigin: arr,
@@ -204,7 +221,6 @@ export default class MealSettlement extends Component {
       this.setStorage(mealData);
       console.log('mealData', mealData)
       //修改“更新员工在职状态流程”的状态
-
       this.setState({ process, memDataOrigin: arr, loading: false, task: ts });
       await this.modiAccount(arr, 0);
     } catch (e) {
@@ -245,12 +261,11 @@ export default class MealSettlement extends Component {
         }
       }
       mealD.memDataAtt = memDataAtt;
-      mealD.process[1].total = memDataAtt.length;
+      mealD.process[1].total = mealD.memData.length;
       mealD.task.id = 1;
-      console.log('memDataAtt', memDataAtt)
       this.setStorage(mealD);
       this.setState({ process: mealD.process, memDataAtt });
-      await this.addAttData(memDataAtt, 0);
+      await this.refreSettl(mealD.memData, 0);
     };
     try {
       let res = await http({ baseURL: this.baseURL }).modifyRecords({
@@ -287,30 +302,101 @@ export default class MealSettlement extends Component {
     if (count < arr.length) {
       record = arr[count];
     } else {
-      mealD.process[1].status = 2;
-      mealD.process[1].hint = '已完成';
+      mealD.process[2].status = 2;
+      mealD.process[2].hint = '已完成';
       mealD.process[2].status = 1;
-      mealD.process[2].total = mealD.memData.length;
-      mealD.process[2].hint = '进行中';
+      mealD.process[3].total = mealD.memData.length;
+      mealD.process[3].hint = '进行中';
       mealD.task.id = 2;
       this.setStorage(mealD);
       this.setState({ process: mealD.process });
-      return true;
+      await this.refreSettl(mealD.memData, 0);
     }
     try {
       let res = await http({ baseURL: this.baseURL }).addRecords({
-        resid: 758738248141,
+        resid: tableId.attendaceId,
         data: [record],
         isEditOrAdd: true
       });
       let process = mealD.process;
-      process[1].count = process[1].count + 1;
+      process[2].count = process[2].count + 1;
       let mealData = this.getStorage();
       mealData.process = process;
       let c = count + 1;
       this.setStorage(mealData);
       this.setState({ process: mealData.process });
       await this.addAttData(arr, c);
+    } catch (e) {
+      this.repoError(e);
+      return false;
+    }
+  }
+  refreSettl = async (arr, count) => {
+    //后台已经配置了数据同步，只需要保存数据就可以执行结算。
+    let record = {}
+    let mealD = await this.getStorage();
+    const _id = mealD.task.id;
+    const new_id = mealD.task.id + 1;
+    console.log('tstus', mealD.task.status)
+    if (mealD.task.status === 3) {
+      return false;
+    }
+    if (count < arr.length) {
+      record = arr[count];
+      const month = moment().subtract(1, 'months').format('YYYYMM');
+      record = {
+        month,
+        numberId: arr[count].numberId
+      };
+      if (mealD.task.id === 1) {
+        record.killed = 'Y';
+      } else if (mealD.task.id === 3) {
+        record.dealed = 'Y';
+      }
+    } else {
+      if (mealD.process[_id] === 7) {
+        mealD.process[_id].status = 2;
+        mealD.process[_id].hint = '已完成';
+        mealD.process[_id].status = 1;
+        mealD.task.status = 2;
+        mealD.task.hint = '已完成';
+        this.setStorage(mealD);
+        this.setState({ process: mealD.process, task: mealD.task });
+        message.success('结算完成');
+        return true;
+      } else {
+        mealD.process[_id].status = 2;
+        mealD.process[_id].hint = '已完成';
+        mealD.process[new_id].status = 1;
+        mealD.process[new_id].total = mealD.memData.length;
+        mealD.process[new_id].hint = '进行中';
+        mealD.task.id = new_id;
+        if (_id === 1) {
+          mealD.process[2].total = mealD.memDataAtt.length;
+          this.setStorage(mealD);
+          this.setState({ process: mealD.process });
+          await this.addAttData(mealD.memDataAtt, 0);
+        } else {
+          this.setStorage(mealD);
+          this.setState({ process: mealD.process });
+          await this.refreSettl(arr, 0);
+        }
+      }
+    }
+    try {
+      let res = await http({ baseURL: this.baseURL }).addRecords({
+        resid: tableId.settleId,
+        data: [record],
+        isEditOrAdd: true
+      });
+      let process = mealD.process;
+      process[_id].count = process[_id].count + 1;
+      let mealData = this.getStorage();
+      mealData.process = process;
+      let c = count + 1;
+      this.setStorage(mealData);
+      this.setState({ process: mealData.process });
+      await this.refreSettl(arr, c);
     } catch (e) {
       this.repoError(e);
       return false;
@@ -326,7 +412,7 @@ export default class MealSettlement extends Component {
     this.setState({ task: tas });
   }
   render() {
-    const { process, task, memData, loading, memDataAtt } = this.state
+    const { process, task, memData, loading, memDataAtt, memDataOrigin } = this.state
     return (
       <div className='mealSettlement'>
         <div className='mealSettlement_controlPad'>
@@ -356,11 +442,15 @@ export default class MealSettlement extends Component {
                       <div style={item.total != 0 ? { width: item.count / item.total * 100 + '%' } : { width: 0 }}></div>
                     </div>
                     <span>{item.count + '/' + item.total}</span>
-                    <span style={((item.status != 1) || (task.id === 1)) ? { display: 'none' } : {}}>
+                    <span style={((item.status != 1) || (task.id === 2) || (task.id === 0)) ? { display: 'none' } : {}}>
                       当前人员：
                       {memData[item.count] ? (memData[item.count].numberId + ' - ' + memData[item.count].name) : ''}
                     </span>
-                    <span style={((item.status != 1) || (task.id != 1)) ? { display: 'none' } : {}}>
+                    <span style={((item.status != 1) || (task.id != 0)) ? { display: 'none' } : {}}>
+                      当前人员：
+                      {memDataOrigin[item.count] ? (memDataOrigin[item.count].numberId + ' - ' + memDataOrigin[item.count].name) : ''}
+                    </span>
+                    <span style={((item.status != 1) || (task.id != 2)) ? { display: 'none' } : {}}>
                       当前人员：
                       {memDataAtt[item.count] ? (memDataAtt[item.count].numberId + ' - ' + memDataAtt[item.count].name + ' - ' + memDataAtt[item.count].dateStr) : ''}
                     </span>
