@@ -250,9 +250,8 @@ export default class MealSettlement extends Component {
       mealD.process[1].hint = '进行中';
       //生成要导入考勤补贴表的数据
       let memDataAtt = [];
-      const now = moment();
-      let stDate = now.subtract(1, 'months').startOf('month');
-      const daysInLastMonth = now.subtract(1, 'months').daysInMonth();
+      let stDate = moment().subtract(1, 'months').startOf('month');
+      const daysInLastMonth = moment().subtract(1, 'months').daysInMonth();
       let stD = stDate;
       //只有外包人员才需要计算日报
       for (let i = 0; i < mealD.memData.length; i++) {
