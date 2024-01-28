@@ -119,25 +119,22 @@ export default class MealSettlement extends Component {
   componentDidMount() {
     this.init();
   }
-  // 实验异步开始
-  sendAllSubarrays = async (arr) => {
-    for (let i = 0; i < arr.length; i++) {
-      const subarr = arr[i];
-      await Promise.all(subarr.map((obj) => this.sendMsg(obj))); // 等待所有请求返回成功  
-      let process = this.state.process;
-      process[0].count = process[0].count + 1;
-      this.setState({ process });
-      console.log(i)
-    }
-  }
 
-  sendMsg = async (data) => {
-    let res = await http({ baseURL: this.baseURL }).modifyRecords({
-      resid: tableId.memberId,
+
+  modiRec = async (resid, data) => {
+    await http({ baseURL: this.baseURL }).modifyRecords({
+      resid: resid,
       data: [data]
     });
   }
-  //实验异步结束
+
+  addRec = async (resid, data) => {
+    await http({ baseURL: this.baseURL }).addRecords({
+      resid: resid,
+      data: [data],
+      isEditOrAdd: true
+    });
+  }
 
 
 
@@ -244,6 +241,7 @@ export default class MealSettlement extends Component {
       for (let i = 0; i < res.data.length; i++) {
         arr.push({ numberId: res.data[i].numberId, name: res.data[i].name, recid: res.data[i].recid, REC_ID: res.data[i].recid });//精简数据，缩小保存到ls的数据大小
       }
+
       arr = this.chunkArray(arr, 20);
       let ts = { stTime: moment().format('YYYY-MM-DD hh:mm:ss'), status: 1, hint: '进行中', id: 0 }
       let process = initProcess;
@@ -260,10 +258,10 @@ export default class MealSettlement extends Component {
       this.setStorage(mealData);
       //修改“更新员工在职状态流程”的状态
       this.setState({ process, memDataOrigin: arr, loading: false, task: ts });
-      // await this.modiAccount(arr, 0);
-      await this.sendAllSubarrays(arr).catch((error) => {
-        console.log('error', error)
-      })
+      await this.modiAccount(arr, 0);
+      // await this.sendAllSubarrays(arr).catch((error) => {
+      //   console.log('error', error)
+      // })
     } catch (e) {
       this.repoError(e);
     }
@@ -278,6 +276,8 @@ export default class MealSettlement extends Component {
     if (count < org.length) {
       data = org[count];
     } else {
+      console.log('进来了', count)
+
       mealD.process[0].status = 2;
       mealD.process[0].hint = '已完成';
       mealD.process[1].status = 1;
@@ -321,14 +321,15 @@ export default class MealSettlement extends Component {
       return true;
     };
     try {
+      // await Promise.all(data.map((obj) => this.addRec(tableId.memberId, obj)));
       let res = await http({ baseURL: this.baseURL }).modifyRecords({
         resid: tableId.memberId,
         data: data
       });
       let arr = this.state.memData;
       let array = []
-      for (let d = 0; d < res.data.length; d++) {
-        array.push({ numberId: res.data[d].numberId, name: res.data[d].name, isWB: res.data[d].isWB });
+      for (let d = 0; d < data.length; d++) {
+        array.push({ numberId: data[d].numberId, name: data[d].name });
       }
       arr.push(array);
       let process = this.state.process;
@@ -367,6 +368,9 @@ export default class MealSettlement extends Component {
       return true;
     }
     try {
+      console.log('record', record)
+      // await Promise.all(record.map((obj) => this.addRec(tableId.attendaceId, obj)));
+
       let res = await http({ baseURL: this.baseURL }).addRecords({
         resid: tableId.attendaceId,
         data: record,
@@ -446,6 +450,8 @@ export default class MealSettlement extends Component {
       }
     }
     try {
+      console.log('records', records)
+      // await Promise.all(records.map((obj) => this.addRec(tableId.settleId, obj)));
       let res = await http({ baseURL: this.baseURL }).addRecords({
         resid: tableId.settleId,
         data: records,
