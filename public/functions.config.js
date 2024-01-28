@@ -10947,3 +10947,32 @@ window[757180847926] = {
   } // 组件所接收的 props
 };
 
+window[759420928982] = {
+  name: 'DrawRec', // 组件名称，这里为定制组件名称
+  title: '系统月结补贴详情', // 功能模块名称
+  props: {
+    depTableId: 759420249235,
+    drawId: 759418228281
+  } // 组件所接收的 props
+};
+
+window[759425429918] = {
+  name: 'DrawRec', // 组件名称，这里为定制组件名称
+  title: '系统月结补贴详情', // 功能模块名称
+  props: {
+    depTableId: 759425296619,
+    drawId: 759425781094,
+    noRelaMem: true
+  } // 组件所接收的 props
+};
+
+
+window[759430574095] = {
+  name: 'DrawRec', // 组件名称，这里为定制组件名称
+  title: '窗口每月消费情况', // 功能模块名称
+  props: {
+    depTableId: 759430697159,
+    drawId: 756556133138,
+    MOC_No: true
+  } // 组件所接收的 props
+};

@@ -21,7 +21,7 @@ import loading from 'react-fullscreen-loading';
 const { Option } = Select;
 const tableId = {
   memberId: 758726389557,//需要结算的账户表
-  attendaceId: 758738248141,//计算每日考勤餐标
+  attendaceId: 756901988242,//月结餐标触发存储过程
   settleId: 756560986054//结算表
 };
 const initProcess = [
@@ -44,7 +44,7 @@ const initProcess = [
   },
   {
     id: 2,
-    name: '根据考勤日报计算餐标',
+    name: '计算考勤月餐标',
     count: 0,
     total: 0,
     status: 0,
@@ -119,6 +119,28 @@ export default class MealSettlement extends Component {
   componentDidMount() {
     this.init();
   }
+  // 实验异步开始
+  sendAllSubarrays = async (arr) => {
+    for (let i = 0; i < arr.length; i++) {
+      const subarr = arr[i];
+      await Promise.all(subarr.map((obj) => this.sendMsg(obj))); // 等待所有请求返回成功  
+      let process = this.state.process;
+      process[0].count = process[0].count + 1;
+      this.setState({ process });
+      console.log(i)
+    }
+  }
+
+  sendMsg = async (data) => {
+    let res = await http({ baseURL: this.baseURL }).modifyRecords({
+      resid: tableId.memberId,
+      data: [data]
+    });
+  }
+  //实验异步结束
+
+
+
   repoError = (e) => {
     console.log(e.message);
     message.error(e.message);
@@ -200,6 +222,13 @@ export default class MealSettlement extends Component {
       await this.getMember();
     }
   };
+  chunkArray = (arr, chunkSize) => {
+    const result = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      result.push(arr.slice(i, i + chunkSize));
+    }
+    return result;
+  };
   getMember = async () => {
     try {
       this.setState({
@@ -213,8 +242,9 @@ export default class MealSettlement extends Component {
       });
       let arr = [];
       for (let i = 0; i < res.data.length; i++) {
-        arr.push({ numberId: res.data[i].numberId, name: res.data[i].name, recid: res.data[i].recid });//精简数据，缩小保存到ls的数据大小
+        arr.push({ numberId: res.data[i].numberId, name: res.data[i].name, recid: res.data[i].recid, REC_ID: res.data[i].recid });//精简数据，缩小保存到ls的数据大小
       }
+      arr = this.chunkArray(arr, 20);
       let ts = { stTime: moment().format('YYYY-MM-DD hh:mm:ss'), status: 1, hint: '进行中', id: 0 }
       let process = initProcess;
       process[0].hint = '进行中';
@@ -230,7 +260,10 @@ export default class MealSettlement extends Component {
       this.setStorage(mealData);
       //修改“更新员工在职状态流程”的状态
       this.setState({ process, memDataOrigin: arr, loading: false, task: ts });
-      await this.modiAccount(arr, 0);
+      // await this.modiAccount(arr, 0);
+      await this.sendAllSubarrays(arr).catch((error) => {
+        console.log('error', error)
+      })
     } catch (e) {
       this.repoError(e);
     }
@@ -238,11 +271,12 @@ export default class MealSettlement extends Component {
   modiAccount = async (org, count) => {
     let recid = '';
     let mealD = this.getStorage();
+    let data = [];
     if (mealD.task.status === 3) {
       return false;
     }
     if (count < org.length) {
-      recid = org[count].recid;
+      data = org[count];
     } else {
       mealD.process[0].status = 2;
       mealD.process[0].hint = '已完成';
@@ -253,20 +287,31 @@ export default class MealSettlement extends Component {
       let stDate = moment().subtract(1, 'months').startOf('month');
       const daysInLastMonth = moment().subtract(1, 'months').daysInMonth();
       let stD = stDate;
-      //只有外包人员才需要计算日报
-      for (let i = 0; i < mealD.memData.length; i++) {
-        if (mealD.memData[i].isWB != 'Y') {
-          stD = stDate;
-          for (let c = 0; c < daysInLastMonth; c++) {
-            memDataAtt.push({
-              numberId: mealD.memData[i].numberId,
-              name: mealD.memData[i].name,
-              dateStr: moment(stD).format('YYYYMMDD')
-            });
-            stD = moment(stD).add(1, 'days')
-          }
+      //只有非外包人员才需要计算日报
+      // for (let i = 0; i < mealD.memData.length; i++) {
+      //   if (mealD.memData[i].isWB != 'Y') {
+      //     stD = stDate;
+      //     for (let c = 0; c < daysInLastMonth; c++) {
+      //       memDataAtt.push({
+      //         numberId: mealD.memData[i].numberId,
+      //         name: mealD.memData[i].name,
+      //         dateStr: moment(stD).format('YYYYMMDD')
+      //       });
+      //       stD = moment(stD).add(1, 'days')
+      //     }
+      //   }
+      // }
+      //改为月报触发存储过程
+      for (let i = 0; i < mealD.memDataOrigin.length; i++) {
+        for (let c = 0; c < mealD.memDataOrigin[i].length; c++) {
+          memDataAtt.push({
+            numberId: mealD.memDataOrigin[i][c].numberId,
+            name: mealD.memDataOrigin[i][c].name,
+            month: moment(stD).format('YYYYMM')
+          })
         }
       }
+      memDataAtt = this.chunkArray(memDataAtt, 20);
       mealD.memDataAtt = memDataAtt;
       mealD.process[1].total = mealD.memData.length;
       mealD.task.id = 1;
@@ -278,13 +323,14 @@ export default class MealSettlement extends Component {
     try {
       let res = await http({ baseURL: this.baseURL }).modifyRecords({
         resid: tableId.memberId,
-        data: [{ REC_ID: recid }]
+        data: data
       });
       let arr = this.state.memData;
-
-      if (res.data[0].onJob) {
-        arr.push({ numberId: res.data[0].numberId, name: res.data[0].name, isWB: res.data[0].isWB });
-      };
+      let array = []
+      for (let d = 0; d < res.data.length; d++) {
+        array.push({ numberId: res.data[d].numberId, name: res.data[d].name, isWB: res.data[d].isWB });
+      }
+      arr.push(array);
       let process = this.state.process;
       process[0].count = process[0].count + 1;
       let mealData = this.getStorage();
@@ -323,7 +369,7 @@ export default class MealSettlement extends Component {
     try {
       let res = await http({ baseURL: this.baseURL }).addRecords({
         resid: tableId.attendaceId,
-        data: [record],
+        data: record,
         isEditOrAdd: true
       });
       let process = mealD.process;
@@ -342,7 +388,7 @@ export default class MealSettlement extends Component {
   }
   refreSettl = async (arr, count) => {
     //后台已经配置了数据同步，只需要保存数据就可以执行结算。
-    let record = {}
+    let records = [];
     let mealD = await this.getStorage();
     const _id = mealD.task.id;
     const new_id = mealD.task.id + 1;
@@ -350,17 +396,23 @@ export default class MealSettlement extends Component {
       return false;
     }
     if (count < arr.length) {
-      record = arr[count];
       const month = moment().subtract(1, 'months').format('YYYYMM');
-      record = {
-        month,
-        numberId: arr[count].numberId
-      };
-      if (mealD.task.id === 1) {
-        record.killed = 'Y';
-      } else if (mealD.task.id === 3) {
-        record.dealed = 'Y';
+
+      for (let c = 0; c < arr[count].length; c++) {
+        let record = {
+          month,
+          numberId: arr[count][c].numberId
+        };
+        if (mealD.task.id === 1) {
+          record.killed = 'Y';
+        } else if (mealD.task.id === 3) {
+          record.dealed = 'Y';
+        }
+        records.push(record);
       }
+
+
+
     } else {
       if (mealD.task.id === 7) {
         mealD.process[_id].status = 2;
@@ -396,7 +448,7 @@ export default class MealSettlement extends Component {
     try {
       let res = await http({ baseURL: this.baseURL }).addRecords({
         resid: tableId.settleId,
-        data: [record],
+        data: records,
         isEditOrAdd: true
       });
       let process = mealD.process;
@@ -453,7 +505,7 @@ export default class MealSettlement extends Component {
                       <div style={item.total != 0 ? { width: item.count / item.total * 100 + '%' } : { width: 0 }}></div>
                     </div>
                     <span>{item.count + '/' + item.total}</span>
-                    <span style={((item.status != 1) || (item.id === 0) || (item.id === 2) || (task.id === 2) || (task.id === 0) || (task.status === 3)) ? { display: 'none' } : {}}>
+                    {/* <span style={((item.status != 1) || (item.id === 0) || (item.id === 2) || (task.id === 2) || (task.id === 0) || (task.status === 3)) ? { display: 'none' } : {}}>
                       当前人员：
                       {memData[item.count] ? (memData[item.count].numberId + ' - ' + memData[item.count].name) : ''}
                     </span>
@@ -463,8 +515,8 @@ export default class MealSettlement extends Component {
                     </span>
                     <span style={((item.status != 1) || (task.id != 2) || (task.status === 3)) ? { display: 'none' } : {}}>
                       当前人员：
-                      {memDataAtt[item.count] ? (memDataAtt[item.count].numberId + ' - ' + memDataAtt[item.count].name + ' - ' + memDataAtt[item.count].dateStr) : ''}
-                    </span>
+                      {memDataAtt[item.count] ? (memDataAtt[item.count].numberId + ' - ' + memDataAtt[item.count].name) : ''}
+                    </span> */}
                   </div>
                 </li>
               )

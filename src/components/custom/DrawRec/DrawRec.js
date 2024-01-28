@@ -97,7 +97,7 @@ export default class DrawRec extends Component {
         <Modal
           visible={visible}
           width={'80vw'}
-          title={'餐券领取详情'}
+          title={'详情'}
           onCancel={() => {
             this.setState({
               visible: false,
@@ -109,7 +109,7 @@ export default class DrawRec extends Component {
           <div className={'drawRec_modal'} style={{ height: '70vh' }}>
             <TableData
               resid={this.props.drawId}
-              cmswhere={`numberId = '${curMember.numberId}' and creMonth = '${curMember.month}'`}
+              cmswhere={this.props.noRelaMem ? `creMonth = '${curMember.month}'` : (this.props.MOC_No ? `MOC_No = '${curMember.mId}' and creMonth = '${curMember.month}'` : `numberId = '${curMember.numberId}' and creMonth = '${curMember.month}'`)}
               baseURL={this.baseURL}
               downloadBaseURL={this.downloadBaseURL}
               hasRowView={true}
