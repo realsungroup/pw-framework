@@ -10976,3 +10976,27 @@ window[759430574095] = {
     MOC_No: true
   } // 组件所接收的 props
 };
+
+window[761926861918] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '考勤餐标超17记录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 761670625389,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};

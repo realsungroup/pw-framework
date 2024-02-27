@@ -36,7 +36,7 @@ const initProcess = [
   },
   {
     id: 1,
-    name: '清空上上月账户余额',
+    name: '清空上上月账户余额(改为每月底线下导入，跳过)',
     count: 0,
     total: 0,
     status: 0,
@@ -44,7 +44,7 @@ const initProcess = [
   },
   {
     id: 2,
-    name: '计算考勤月餐标',
+    name: '计算考勤月餐标(改为考勤结算后线下导入，等导入完毕以后再继续执行后续步骤)',
     count: 0,
     total: 0,
     status: 0,
@@ -237,19 +237,26 @@ export default class MealSettlement extends Component {
       let res = await http({ baseURL: this.baseURL }).getTable({
         resid: tableId.memberId
       });
+      let resMem = await http({ baseURL: this.baseURL }).getTable({
+        resid: tableId.settleId
+      });
       let arr = [];
       for (let i = 0; i < res.data.length; i++) {
         arr.push({ numberId: res.data[i].numberId, name: res.data[i].name, recid: res.data[i].recid, REC_ID: res.data[i].recid });//精简数据，缩小保存到ls的数据大小
       }
-
+      let arrMem = [];
+      for (let i = 0; i < resMem.data.length; i++) {
+        arrMem.push({ numberId: resMem.data[i].numberId, name: resMem.data[i].name, recid: resMem.data[i].REC_ID, REC_ID: resMem.data[i].REC_ID });//精简数据，缩小保存到ls的数据大小
+      }
       arr = this.chunkArray(arr, 20);
+      arrMem = this.chunkArray(arrMem, 20);
       let ts = { stTime: moment().format('YYYY-MM-DD hh:mm:ss'), status: 1, hint: '进行中', id: 0 }
       let process = initProcess;
       process[0].hint = '进行中';
       process[0].total = arr.length;
       process[0].status = 1;
       let mealData = {
-        memData: [],
+        memData: arrMem,
         memDataOrigin: arr,
         process,
         task: ts,
@@ -257,7 +264,7 @@ export default class MealSettlement extends Component {
       };
       this.setStorage(mealData);
       //修改“更新员工在职状态流程”的状态
-      this.setState({ process, memDataOrigin: arr, loading: false, task: ts });
+      this.setState({ process, memDataOrigin: arr, loading: false, task: ts, memData: arrMem });
       await this.modiAccount(arr, 0);
       // await this.sendAllSubarrays(arr).catch((error) => {
       //   console.log('error', error)
@@ -326,18 +333,20 @@ export default class MealSettlement extends Component {
         resid: tableId.memberId,
         data: data
       });
-      let arr = this.state.memData;
-      let array = []
-      for (let d = 0; d < data.length; d++) {
-        array.push({ numberId: data[d].numberId, name: data[d].name });
-      }
-      arr.push(array);
+
+      //修改逻辑，直接从后台获取已经导入的memdata，之后直接修改数据而不是用editoradd方法
+      // let arr = this.state.memData;
+      // let array = []
+      // for (let d = 0; d < data.length; d++) {
+      // array.push({ numberId: data[d].numberId, name: data[d].name });
+      // }
+      // arr.push(array);
       let process = this.state.process;
       process[0].count = process[0].count + 1;
       let mealData = this.getStorage();
-      mealData.memData = arr;
+      // mealData.memData = arr;
       mealData.process = process;
-      this.setState({ memData: arr, process });
+      this.setState({ process });
       this.setStorage(mealData);
       let c = count + 1;
       await this.modiAccount(org, c);
@@ -353,10 +362,13 @@ export default class MealSettlement extends Component {
     if (mealD.task.status === 3) {
       return false;
     }
-    if (count < arr.length) {
+    //为防止前端卡死，该步骤改为导入数据到后台，运行到这一步的时候自动暂停，等导入完毕以后再继续执行后续步骤
+    // if (count < arr.length) {
+    if (count < 0) {
       record = arr[count];
     } else {
       mealD.process[2].status = 2;
+      mealD.process[2].count = arr.length;
       mealD.process[2].hint = '已完成';
       mealD.process[3].status = 1;
       mealD.process[3].total = mealD.memData.length;
@@ -405,7 +417,8 @@ export default class MealSettlement extends Component {
       for (let c = 0; c < arr[count].length; c++) {
         let record = {
           month,
-          numberId: arr[count][c].numberId
+          numberId: arr[count][c].numberId,
+          REC_ID: arr[count][c].REC_ID
         };
         if (mealD.task.id === 1) {
           record.killed = 'Y';
@@ -439,6 +452,7 @@ export default class MealSettlement extends Component {
           mealD.process[2].total = mealD.memDataAtt.length;
           this.setStorage(mealD);
           this.setState({ process: mealD.process, task: mealD.task });
+          this.handlePause()
           await this.addAttData(mealD.memDataAtt, 0);
           return true;
         } else {
@@ -451,12 +465,14 @@ export default class MealSettlement extends Component {
     }
     try {
       console.log('records', records)
-      // await Promise.all(records.map((obj) => this.addRec(tableId.settleId, obj)));
-      let res = await http({ baseURL: this.baseURL }).addRecords({
-        resid: tableId.settleId,
-        data: records,
-        isEditOrAdd: true
-      });
+      if (mealD.task.id != 1) {
+        await Promise.all(records.map((obj) => this.modiRec(tableId.settleId, obj)));
+      }
+      // let res = await http({ baseURL: this.baseURL }).addRecords({
+      //   resid: tableId.settleId,
+      //   data: records,
+      //   isEditOrAdd: true
+      // });
       let process = mealD.process;
       process[_id].count = process[_id].count + 1;
       let mealData = this.getStorage();
