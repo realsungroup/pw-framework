@@ -114,6 +114,7 @@ export default class MyMealAccount extends Component {
     }
   }
   render() {
+    const { numberId, isQuery } = this.props;
     return (
       <div className='myMealAccount'>
         <Tabs defaultActiveKey="1" size="small">
@@ -130,7 +131,10 @@ export default class MyMealAccount extends Component {
                 hasModify={false}
                 hasDelete={false}
                 subtractH={175}
-                hasBeBtns={true}
+                hasDownload={isQuery ? false : true}
+                hasImport={isQuery ? false : true}
+                hasBeBtns={isQuery ? false : true}
+                cmswhere={numberId ? `numberId = '${numberId}'` : ``}
               />
             </div >
           </Tabs.TabPane>
@@ -147,7 +151,10 @@ export default class MyMealAccount extends Component {
                 hasRowModify={false}
                 hasModify={false}
                 hasDelete={false}
+                hasDownload={isQuery ? false : true}
+                hasImport={isQuery ? false : true}
                 subtractH={175}
+                cmswhere={numberId ? `numberId = '${numberId}'` : ``}
               />
             </div >
           </Tabs.TabPane>
@@ -155,6 +162,7 @@ export default class MyMealAccount extends Component {
             <div className="myMealAccount_table-data-wrap">
               <TableData
                 resid={this.props.accountChangeId}
+                cmswhere={numberId ? `numberId = '${numberId}'` : ``}
                 baseURL={this.baseURL}
                 downloadBaseURL={this.downloadBaseURL}
                 hasRowView={true}
@@ -164,7 +172,8 @@ export default class MyMealAccount extends Component {
                 hasRowModify={false}
                 hasModify={false}
                 hasDelete={false}
-                hasImport={true}
+                hasDownload={isQuery ? false : true}
+                hasImport={isQuery ? false : true}
                 subtractH={175}
                 refTargetComponentName="TableData"
                 wrappedComponentRef={element => (this.tableDataRef = element)}
@@ -331,6 +340,7 @@ export default class MyMealAccount extends Component {
             <div className="myMealAccount_table-data-wrap">
               <TableData
                 resid={this.props.rechargeId}
+                cmswhere={numberId ? `numberId = '${numberId}'` : ``}
                 baseURL={this.baseURL}
                 downloadBaseURL={this.downloadBaseURL}
                 hasRowView={true}
@@ -340,6 +350,8 @@ export default class MyMealAccount extends Component {
                 hasRowModify={false}
                 hasModify={false}
                 hasDelete={false}
+                hasDownload={isQuery ? false : true}
+                hasImport={isQuery ? false : true}
                 subtractH={175}
               />
             </div >
@@ -348,6 +360,7 @@ export default class MyMealAccount extends Component {
             <div className="myMealAccount_table-data-wrap">
               <TableData
                 resid={this.props.dealId}
+                cmswhere={numberId ? `numberId = '${numberId}'` : ``}
                 baseURL={this.baseURL}
                 downloadBaseURL={this.downloadBaseURL}
                 hasRowView={true}
@@ -356,6 +369,8 @@ export default class MyMealAccount extends Component {
                 hasRowModify={false}
                 hasModify={false}
                 hasDelete={false}
+                hasDownload={isQuery ? false : true}
+                hasImport={isQuery ? false : true}
                 subtractH={175}
               />
             </div >

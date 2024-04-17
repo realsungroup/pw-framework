@@ -209,5 +209,6 @@ export {
   VisitorPunch,
   MyMealAccount,
   MealSettlement,
-  DrawRec
+  DrawRec,
+  MealAccountQuery
 } from '../components/custom/loadableCustom';

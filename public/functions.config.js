@@ -11000,3 +11000,10 @@ window[761926861918] = {
     subtractH: 240
   } // 组件所接收的 props
 };
+
+window[764850664930] = {
+  name: 'MealAccountQuery', // 组件名称，这里为定制组件名称
+  title: '就餐账户查询', // 功能模块名称
+  props: {
+  }
+};
