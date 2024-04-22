@@ -10902,7 +10902,8 @@ window[756906075767] = {
   title: '查看部门电子餐券领取情况', // 功能模块名称
   props: {
     depTableId: 756314790339,
-    drawId: 756315806328
+    drawId: 756315806328,
+    monthName:'creMonth'
   } // 组件所接收的 props
 };
 
@@ -10911,7 +10912,8 @@ window[756923933332] = {
   title: '查看电子餐券领取情况', // 功能模块名称
   props: {
     depTableId: 756316408198,
-    drawId: 756315340787
+    drawId: 756315340787,
+    monthName:'creMonth'
   } // 组件所接收的 props
 };
 
@@ -10920,7 +10922,8 @@ window[757009833361] = {
   title: '系统月结补贴详情', // 功能模块名称
   props: {
     depTableId: 756901988242,
-    drawId: 756901920288
+    drawId: 756901920288,
+    monthName:'monthStr'
   } // 组件所接收的 props
 };
 
@@ -10949,19 +10952,21 @@ window[757180847926] = {
 
 window[759420928982] = {
   name: 'DrawRec', // 组件名称，这里为定制组件名称
-  title: '系统月结补贴详情', // 功能模块名称
+  title: '外包人员就餐详情', // 功能模块名称
   props: {
     depTableId: 759420249235,
-    drawId: 759418228281
+    drawId: 759418228281,
+    monthName:'month'
   } // 组件所接收的 props
 };
 
 window[759425429918] = {
   name: 'DrawRec', // 组件名称，这里为定制组件名称
-  title: '系统月结补贴详情', // 功能模块名称
+  title: '管理员查看每月人员考勤消费差额', // 功能模块名称
   props: {
     depTableId: 759425296619,
     drawId: 759425781094,
+    monthName:'month',
     noRelaMem: true
   } // 组件所接收的 props
 };

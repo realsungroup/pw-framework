@@ -36,7 +36,7 @@ const initProcess = [
   },
   {
     id: 1,
-    name: '清空上上月账户余额(改为每月底线下导入，跳过)',
+    name: '清空上上月账户余额(改为线下导入，跳过)',
     count: 0,
     total: 0,
     status: 0,
@@ -74,16 +74,16 @@ const initProcess = [
   //   status: 0,
   //   hint: '未开始'
   // },
-  // {
-  //   id: 6,
-  //   name: '各个账户余额转入',
-  //   count: 0,
-  //   total: 0,
-  //   status: 0,
-  //   hint: '未开始'
-  // },
   {
     id: 5,
+    name: '各个账户余额转入',
+    count: 0,
+    total: 0,
+    status: 0,
+    hint: '未开始'
+  },
+  {
+    id: 6,
     name: '添加当月补贴账户余额',
     count: 0,
     total: 0,
@@ -431,7 +431,7 @@ export default class MealSettlement extends Component {
 
 
     } else {
-      if (mealD.task.id === 5) {
+      if (mealD.task.id === 6) {
         mealD.process[_id].status = 2;
         mealD.process[_id].hint = '已完成';
         mealD.process[_id].status = 1;

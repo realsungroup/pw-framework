@@ -109,7 +109,7 @@ export default class DrawRec extends Component {
           <div className={'drawRec_modal'} style={{ height: '70vh' }}>
             <TableData
               resid={this.props.drawId}
-              cmswhere={this.props.noRelaMem ? `creMonth = '${curMember.month}'` : (this.props.MOC_No ? `MOC_No = '${curMember.mId}' and (creMonth = '${curMember.month}' or monthStr = '${curMember.month}')` : `numberId = '${curMember.numberId}' and (creMonth = '${curMember.month}' or monthStr = '${curMember.month}')`)}
+              cmswhere={this.props.noRelaMem ? `creMonth = '${curMember.month}'` : (this.props.MOC_No ? `MOC_No = '${curMember.mId}' and ${this.props.monthName} = '${curMember.month}' ` : `numberId = '${curMember.numberId}' and ${this.props.monthName} = '${curMember.month}' `)}
               baseURL={this.baseURL}
               downloadBaseURL={this.downloadBaseURL}
               hasRowView={true}
