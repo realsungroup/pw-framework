@@ -234,7 +234,7 @@ export default class MyMealAccount extends Component {
                       style={{ width: '160px' }}
                     />
                   </div>
-                  <div>
+                  {/* <div>
                     <span>预充值账户余额交易额：</span>
                     <Input
                       type={'number'}
@@ -248,7 +248,7 @@ export default class MyMealAccount extends Component {
                       value={this.state.data.accountPrechargeDelta}
                       style={{ width: '160px' }}
                     />
-                  </div>
+                  </div> */}
                   <div>
                     <span>补贴账户余额交易额：</span>
                     <Input
@@ -264,7 +264,7 @@ export default class MyMealAccount extends Component {
                       style={{ width: '160px' }}
                     />
                   </div>
-                  <div>
+                  {/* <div>
                     <span>上月余额交易额：</span>
                     <Input
                       type={'number'}
@@ -293,7 +293,7 @@ export default class MyMealAccount extends Component {
                       value={this.state.data.accountTMADelta}
                       style={{ width: '160px' }}
                     />
-                  </div>
+                  </div> */}
                   <Button type='primary' loading={this.state.loading} onClick={() => { this.onHandleSub(); }}>提交</Button>
                 </div>
               </Modal>
