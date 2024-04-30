@@ -10871,3 +10871,144 @@ window[746808822765] = {
     subtractH: 240
   } // 组件所接收的 props
 };
+
+window[756811554979] = {
+  name: 'MyMealAccount', // 组件名称，这里为定制组件名称
+  title: '我的就餐账户', // 功能模块名称
+  props: {
+    accountId: 756313412456,
+    drawId: 756315770296,
+    accountChangeId: 756315137096,
+    rechargeId: 756315960330,
+    dealId: 756578086985
+  } // 组件所接收的 props
+};
+
+window[756811573152] = {
+  name: 'MyMealAccount', // 组件名称，这里为定制组件名称
+  title: '就餐账户管理', // 功能模块名称
+  props: {
+    accountId: 756313347112,
+    drawId: 756315340787,
+    accountChangeId: 756315079798,
+    rechargeId: 756315947049,
+    dealId: 756578142064,
+    showModi: true
+  } // 组件所接收的 props
+};
+
+window[756906075767] = {
+  name: 'DrawRec', // 组件名称，这里为定制组件名称
+  title: '查看部门电子餐券领取情况', // 功能模块名称
+  props: {
+    depTableId: 756314790339,
+    drawId: 756315806328,
+    monthName:'creMonth'
+  } // 组件所接收的 props
+};
+
+window[756923933332] = {
+  name: 'DrawRec', // 组件名称，这里为定制组件名称
+  title: '查看电子餐券领取情况', // 功能模块名称
+  props: {
+    depTableId: 756316408198,
+    drawId: 756315340787,
+    monthName:'creMonth'
+  } // 组件所接收的 props
+};
+
+window[757009833361] = {
+  name: 'DrawRec', // 组件名称，这里为定制组件名称
+  title: '系统月结补贴详情', // 功能模块名称
+  props: {
+    depTableId: 756901988242,
+    drawId: 756901920288,
+    monthName:'monthStr'
+  } // 组件所接收的 props
+};
+
+window[757180847926] = {
+  name: 'MealSettlement', // 组件名称，这里为定制组件名称
+  title: '就餐账户月结', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 756560986054,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: true,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: true,
+    hasRowDelete: false,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
+
+window[759420928982] = {
+  name: 'DrawRec', // 组件名称，这里为定制组件名称
+  title: '外包人员就餐详情', // 功能模块名称
+  props: {
+    depTableId: 759420249235,
+    drawId: 759418228281,
+    monthName:'month'
+  } // 组件所接收的 props
+};
+
+window[759425429918] = {
+  name: 'DrawRec', // 组件名称，这里为定制组件名称
+  title: '管理员查看每月人员考勤消费差额', // 功能模块名称
+  props: {
+    depTableId: 759425296619,
+    drawId: 759425781094,
+    monthName:'month',
+    noRelaMem: true
+  } // 组件所接收的 props
+};
+
+
+window[759430574095] = {
+  name: 'DrawRec', // 组件名称，这里为定制组件名称
+  title: '窗口每月消费情况', // 功能模块名称
+  props: {
+    depTableId: 759430697159,
+    drawId: 756556133138,
+    MOC_No: true
+  } // 组件所接收的 props
+};
+
+window[761926861918] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '考勤餐补超17记录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 761670625389,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
+
+window[764850664930] = {
+  name: 'MealAccountQuery', // 组件名称，这里为定制组件名称
+  title: '就餐账户查询', // 功能模块名称
+  props: {
+  }
+};

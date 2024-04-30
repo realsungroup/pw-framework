@@ -206,5 +206,9 @@ export {
   DoorConfirmation,
   VisitorMeal,
   OutdateMaterial,
-  VisitorPunch
+  VisitorPunch,
+  MyMealAccount,
+  MealSettlement,
+  DrawRec,
+  MealAccountQuery
 } from '../components/custom/loadableCustom';

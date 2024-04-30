@@ -1049,3 +1049,27 @@ export const VisitorPunch = Loadable({
     return minLoading;
   }
 });
+export const MyMealAccount = Loadable({
+  loader: () => import('./MyMealAccount'),
+  loading() {
+    return minLoading;
+  }
+});
+export const MealSettlement = Loadable({
+  loader: () => import('./MealSettlement'),
+  loading() {
+    return minLoading;
+  }
+});
+export const DrawRec = Loadable({
+  loader: () => import('./DrawRec'),
+  loading() {
+    return minLoading;
+  }
+});
+export const MealAccountQuery = Loadable({
+  loader: () => import('./MealAccountQuery'),
+  loading() {
+    return minLoading;
+  }
+});

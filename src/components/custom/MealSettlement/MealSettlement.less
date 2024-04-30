@@ -1,0 +1,62 @@
+.mealSettlement{
+  background-color: #fff;
+  height: 100vh;
+  overflow: auto;
+  &_controlPad{
+    padding:.5rem 0 0 2.5rem;
+    display: flex;
+    gap:.5rem;
+    flex-direction: column;
+    &>div button{
+      margin-right: 0.5rem;
+    }
+  }
+  &_status0{
+    background-color: #f5f5f5;
+    color:#999;
+    *{
+        color:#999;
+    }
+  }
+  &_status1{
+    .mealSettlement{
+      &_title{
+        color:#1890ff;
+      }
+    }
+  }
+  &_status2{
+    .mealSettlement{
+      &_title{
+        color:#333;
+      }
+    }
+  }
+  li{
+    width:calc(100vw - 6rem);
+    padding:.5rem 1rem;
+    margin:.5rem 0;
+    border:1px solid #eeeeee;
+    list-style: none;
+    cursor: default;
+    &>div{
+      &>span{
+        margin-right: 0.5rem;
+      }
+    }
+  }
+  &_processBar{
+      width:15rem;
+      height:.5rem;
+      border-radius:1rem;
+      border:1px solid #eeeeee;
+      display: inline-block;
+      margin-right: 0.5rem;
+    &>div{
+      background-color: #1890ff;
+      height:.5rem;
+      border-radius:1rem;
+      transition: .3s;
+    }
+  }
+}
