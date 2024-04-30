@@ -1,6 +1,6 @@
 {
   "name": "pw-components",
-  "version": "21.4.2",
+  "version": "21.4.4",
   "private": true,
   "dependencies": {
     "@ant-design/colors": "^4.0.5",

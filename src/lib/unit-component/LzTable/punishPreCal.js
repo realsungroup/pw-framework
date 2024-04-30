@@ -28,7 +28,7 @@ let loopCal = (bol, counter, result) => {
     } else if (counter.d === 2) {
         res = '生成一条特别重大违纪';
         b = true;
-    } else if (counter.d === 1 && ((counter.j != 0) || (counter.x != 0))) {
+    } else if (counter.d === 1 && counter.x != 0) {
         res = '生成一条特别重大违纪';
         b = true;
     } else {
@@ -71,7 +71,6 @@ let punishPreCal = (arr, type) => {
         }
     }
     console.log(a, counter)
-    debugger
     //循环计算升级
     let res = loopCal(false, counter, _res);
     if (_res) {

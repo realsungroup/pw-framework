@@ -610,14 +610,14 @@ class PersonInfoInFile extends React.Component {
                 <b className={this.state.data.C3_464172722124 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>户籍类别：</b>
                 <Input value={this.state.data.C3_464172722124} onChange={(v) => { this.onChange('C3_464172722124', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
               </div>
-              <div style={{ width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
+              <div style={{ display: 'none', width: '33.33%', float: 'left', borderRight: '1px solid #333' }}>
                 <b className={this.state.data.C3_464172819253 ? '' : 'alert'} style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>婚姻状况：</b>
                 <Select value={this.state.data.C3_464172819253} onChange={(v) => { this.onChange('C3_464172819253', v) }} size='small' style={{ width: 'calc(100% - 120px)' }}>
                   <Option value='未婚'>未婚</Option>
                   <Option value='已婚'>已婚</Option>
                 </Select>
               </div>
-              <div style={{ width: '33.33%', float: 'left' }}>
+              <div style={{ display: 'none', width: '33.33%', float: 'left' }}>
                 <b style={{ display: 'inline-block', width: '104px', verticalAlign: 'middle', textAlign: 'left', marginLeft: '4px' }}>生育状况：</b>
                 <Input value={this.state.data.C3_464172852423} onChange={(v) => { this.onChange('C3_464172852423', v.target.value) }} disabled={!this.state.edit} size='small' style={{ width: 'calc(100% - 120px)' }} />
               </div>
