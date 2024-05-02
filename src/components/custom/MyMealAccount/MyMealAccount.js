@@ -158,7 +158,7 @@ export default class MyMealAccount extends Component {
               />
             </div >
           </Tabs.TabPane>
-          <Tabs.TabPane tab="账户余额变动记录" key="3">
+          <Tabs.TabPane tab="补贴账户变动详情" key="3">
             <div className="myMealAccount_table-data-wrap">
               <TableData
                 resid={this.props.accountChangeId}
@@ -336,7 +336,7 @@ export default class MyMealAccount extends Component {
               </Modal>
             </div >
           </Tabs.TabPane>
-          <Tabs.TabPane tab="就餐预充值记录" key="4">
+          <Tabs.TabPane tab="信用账户消费记录" key="4">
             <div className="myMealAccount_table-data-wrap">
               <TableData
                 resid={this.props.rechargeId}
