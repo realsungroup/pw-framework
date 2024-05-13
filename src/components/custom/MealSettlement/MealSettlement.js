@@ -19,10 +19,6 @@ import moment from 'moment';
 import { resolve } from 'url';
 import loading from 'react-fullscreen-loading';
 const { Option } = Select;
-const tableId = {
-  memberId: 758726389557,//需要结算的账户表
-  calId: 756560986054,//结算表
-};
 /**
  * 就餐结算
  */
@@ -34,23 +30,24 @@ export default class MealSettlement extends Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
   }
   state = {
+    excelData:[],
+    caled:false,
+    loading:false
   };
   componentDidMount() {
   }
- 
   handleRun = async (resid, data) => {
     const ym=moment().format('YYYYMM');
+    this.setState({loading:true});
     try{
       let calData = await http({ baseURL: this.baseURL }).getTable({
-        resid: calId,
+        resid: 756560986054,
       });
       let memberData = await http({ baseURL: this.baseURL }).getTable({
-        resid: memberId,
+        resid: 758726389557,
       });
       calData=calData.data;
       memberData=memberData.data;
-      console.log('calData',calData);
-      console.log('memberData',memberData);
       const creaTime = moment().format('YYYY-MM-DD hh:mm:ss');
       const recidHead = moment().format('YYYYMMDD')
       let excelData=[];
@@ -135,26 +132,67 @@ export default class MealSettlement extends Component {
           }
         }
       }
-      console.log('excelData',excelData)
+      this.setState({excelData,caled:true,loading:false});
     }catch(e){
       console.log(e.message);
+      this.setState({loading:false});
       message.error(e.message);
     }
     
   }
   handleExport=async()=>{
-
+      // 原始数据数组  
+      const dataArray = this.state.excelData;  
+        
+      // CSV表头  
+      const headers = ['creaTime', 'creator', 'name','numberId','cardType','transactionType','dealSymbol','creatMonth','lastConsumptionNumber','ConsumptionNumber','recid','isDealed','accountPerkBefore','accountPerkDelta','accountPerkAfter','dealNumber','sychroned','api_wx','calRecid','cardNo'];  
+        
+      // 转换为CSV字符串  
+      function arrayToCsv(data, headers) {  
+        let csv = headers.join(',') + '\r\n'; // 添加表头并换行  
+        data.forEach(row => {  
+          let fields = headers.map(header => {  
+            // 如果数据对象中没有该属性，则默认为空字符串  
+            return row.hasOwnProperty(header) ? row[header] : '';  
+          });  
+          csv += fields.join(',') + '\r\n'; // 添加数据行并换行  
+        });  
+        return csv;  
+      }  
+        
+      // 调用函数并获取CSV字符串  
+      const csvString = arrayToCsv(dataArray, headers);  
+        
+      // 创建一个Blob对象  
+      const blob = new Blob([csvString], { type: 'text/csv' });  
+        
+      // 创建一个指向该Blob对象的URL  
+      const csvUrl = URL.createObjectURL(blob);  
+        
+      // 创建一个链接元素  
+      const link = document.createElement('a');  
+      link.href = csvUrl;  
+        
+      // 设置文件名  
+      link.setAttribute('download', 'data.csv');  
+        
+      // 触发点击以开始下载  
+      document.body.appendChild(link);  
+      link.click();  
+        
+      // 清理  
+      document.body.removeChild(link);
   }
   render() {
-    const { process, settled, task, memData, loading, memDataAtt, memDataOrigin } = this.state
+    const { caled,loading} = this.state
     return (
       <div className='mealSettlement'>
         <div className='mealSettlement_controlPad'>
           <div>
-            <Button type={'primary'} loading={loading} onClick={() => {
+            <Button type={'primary'} loading={loading} disabled={caled} onClick={() => {
               this.handleRun();
             }}>开始</Button>
-            <Button onClick={() => { this.handleExport() }}>导出</Button>
+            <Button disabled={!caled} onClick={() => {this.handleExport() }}>导出</Button>
           </div>
         </div>
 
