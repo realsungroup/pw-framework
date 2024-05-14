@@ -18,6 +18,7 @@ import './MealSettlement.less';
 import moment from 'moment';
 import { resolve } from 'url';
 import loading from 'react-fullscreen-loading';
+import XLSX from 'xlsx';
 const { Option } = Select;
 /**
  * 就餐结算
@@ -142,46 +143,46 @@ export default class MealSettlement extends Component {
   }
   handleExport=async()=>{
       // 原始数据数组  
-      const dataArray = this.state.excelData;  
-        
-      // CSV表头  
-      const headers = ['creaTime', 'creator', 'name','numberId','cardType','transactionType','dealSymbol','creatMonth','lastConsumptionNumber','ConsumptionNumber','recid','isDealed','accountPerkBefore','accountPerkDelta','accountPerkAfter','dealNumber','sychroned','api_wx','calRecid','cardNo'];  
-        
-      // 转换为CSV字符串  
-      function arrayToCsv(data, headers) {  
-        let csv = headers.join(',') + '\r\n'; // 添加表头并换行  
-        data.forEach(row => {  
-          let fields = headers.map(header => {  
-            // 如果数据对象中没有该属性，则默认为空字符串  
-            return row.hasOwnProperty(header) ? row[header] : '';  
-          });  
-          csv += fields.join(',') + '\r\n'; // 添加数据行并换行  
-        });  
-        return csv;  
-      }  
-        
-      // 调用函数并获取CSV字符串  
-      const csvString = arrayToCsv(dataArray, headers);  
-        
-      // 创建一个Blob对象  
-      const blob = new Blob([csvString], { type: 'text/csv' });  
-        
-      // 创建一个指向该Blob对象的URL  
-      const csvUrl = URL.createObjectURL(blob);  
-        
-      // 创建一个链接元素  
-      const link = document.createElement('a');  
-      link.href = csvUrl;  
-        
-      // 设置文件名  
-      link.setAttribute('download', 'data.csv');  
-        
-      // 触发点击以开始下载  
-      document.body.appendChild(link);  
-      link.click();  
-        
-      // 清理  
-      document.body.removeChild(link);
+      const dataArray = this.state.excelData;
+      // 表头  
+        function transformKey(key) {  
+          const headerMap = {  
+            creaTime: '变动时间',  
+            creator: '创建人',  
+            name: '员工姓名',
+            numberId: '员工工号',
+            cardType: '卡类别',
+            transactionType: '交易类型',
+            dealSymbol: '交易符号',
+            creatMonth: '创建月份',
+            lastConsumptionNumber: '上期消费序号',
+            ConsumptionNumber: '消费序号',
+            recid: '交易编号',
+            isDealed: '是否已结算',
+            accountPerkBefore: '交易前补贴账户余额',
+            accountPerkDelta: '补贴账户余额交易额',
+            accountPerkAfter: '交易后预充值账户余额',
+            dealNumber: '交易类型编号',
+            sychroned: '是否已经同步',
+            api_wx: '微信api',
+            calRecid: '消费计算记录编号',
+            cardNo: '全球唯一卡号',
+          };  
+          return headerMap[key] || key; // 如果找不到映射，就返回原键  
+        }
+        // 获取所有不同的键并转换为表头  
+        const keys = Array.from(new Set(dataArray.flatMap(Object.keys)));  
+        const headers = keys.map(transformKey);  
+        // 创建工作簿和工作表  
+        const wb = XLSX.utils.book_new();  
+        const ws = XLSX.utils.json_to_sheet(dataArray.map(row => {  
+          // 转换键名  
+          return Object.fromEntries(Object.entries(row).map(([key, value]) => [transformKey(key), value]));  
+        }), { header: headers }); // 使用表头  
+        // 将工作表添加到工作簿  
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');  
+        // 写入文件（Node.js环境）  
+        XLSX.writeFile(wb, '导入员工账户变动记录'+moment().format('YYYYMM')+'.xlsx'); 
   }
   render() {
     const { caled,loading} = this.state
