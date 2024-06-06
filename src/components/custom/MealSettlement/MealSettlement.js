@@ -161,7 +161,7 @@ export default class MealSettlement extends Component {
             isDealed: '是否已结算',
             accountPerkBefore: '交易前补贴账户余额',
             accountPerkDelta: '补贴账户余额交易额',
-            accountPerkAfter: '交易后预充值账户余额',
+            accountPerkAfter: '交易后补贴值账户余额',
             dealNumber: '交易类型编号',
             sychroned: '是否已经同步',
             api_wx: '微信api',
