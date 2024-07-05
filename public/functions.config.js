@@ -11058,3 +11058,10 @@ window[773418662077] = {
     subtractH: 240
   } // 组件所接收的 props
 };
+window[773494608206] = {
+  name: 'UltimateQuery', // 组件名称，这里为定制组件名称
+  title: '回忆录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+  } // 组件所接收的 props
+};

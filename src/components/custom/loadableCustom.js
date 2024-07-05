@@ -1073,3 +1073,9 @@ export const MealAccountQuery = Loadable({
     return minLoading;
   }
 });
+export const UltimateQuery = Loadable({
+  loader: () => import('./UltimateQuery'),
+  loading() {
+    return minLoading;
+  }
+});

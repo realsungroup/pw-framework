@@ -210,5 +210,6 @@ export {
   MyMealAccount,
   MealSettlement,
   DrawRec,
-  MealAccountQuery
+  MealAccountQuery,
+  UltimateQuery
 } from '../components/custom/loadableCustom';
