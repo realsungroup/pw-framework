@@ -11012,3 +11012,49 @@ window[764850664930] = {
   props: {
   }
 };
+window[773418137225] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '保安查询就餐账户', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 764854197590,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
+window[773418662077] = {
+  name: 'TableData', // 组件名称，这里为定制组件名称
+  title: '保安查询就餐记录', // 功能模块名称
+  hasBackBtn: true, // 是否有返回上一页的按钮，默认为 true
+  props: {
+    resid: 764854332358,
+    baseURL: 'http://10.108.2.66:9091/',
+    downloadBaseURL: 'http://10.108.2.66:80/',
+    recordFormFormWidth: '90%',
+    hasAdd: false,
+    hasBeBtns: false,
+    hasModify: false,
+    hasDelete: false,
+    hasRowModify: false,
+    hasRowView: false,
+    hasRowDelete: false,
+    hasBeBtns: true,
+    hasAdvSearch: true,
+    height: '100vh',
+    recordFormFormWidth: '90%',
+    subtractH: 240
+  } // 组件所接收的 props
+};
