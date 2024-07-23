@@ -8,11 +8,13 @@ import Selected from '../Selected/Selected';
 const config = {
   classes1:[
       {id:1,title:"人员信息",superior:null},
-      {id:2,title:"考勤管理",superior:null},
+      {id:2,title:"考勤信息",superior:null},
+      {id:5,title:"合同信息",superior:null}
   ],
   classes2:[
     {id:3,title:"人员信息",superior:1},
     {id:4,title:"考勤日报",superior:2},
+    {id:6,title:"合同信息",superior:5}
 ],
   founcs:[
   {
@@ -108,7 +110,21 @@ const config = {
         }
       }
     }
-  }
+  },
+  {
+    name: 'custom', 
+    title: '合同管理',
+    class:6,
+    id:3,
+    src:"/fnmodule?resid=640189772997&recid=640189232960&type=合同管理&title=合同管理"
+  },
+  {
+    name: 'custom', 
+    title: '合同审批',
+    class:6,
+    id:4,
+    src:"/fnmodule?resid=640189820723&recid=640189689436&type=合同管理&title=合同审批"
+  },
 ]}
 const TabPane = Tabs.TabPane;
 class UltimateQuery extends Component {
@@ -117,13 +133,11 @@ class UltimateQuery extends Component {
     curfilter1:null,
     curfilter2:null,
     filtRes: [],
-    classes1Show:[
-      {id:1,title:"人员信息",superior:null},
-      {id:2,title:"考勤管理",superior:null},
-    ],
+    classes1Show:[],
     classes2Show:[]
   };
   componentDidMount(){
+    this.setState({classes1Show:config.classes1})
   }
   setCurSelected=(id)=>{
     console.log('id',id)
@@ -176,32 +190,37 @@ class UltimateQuery extends Component {
     }
     this.setState({filtRes});
   }
-  handleSearch(v){
-    //分别展示所有的classes和filres,并取消所有选中状态
-    console.log(v)
-    let classes1Show=[]
-    for(let i=0;i<config.classes1.length;i++){
-      let str = config.classes1[i].title;
-      if(str.indexOf(v)!=-1){
-        classes1Show.push(config.classes1[i]);
+  handleSearch(value){
+      let v=value;
+      if(v){
+        if(v==='all'){v=''};
+        //分别展示所有的classes和filres,并取消所有选中状态
+        let classes1Show=[]
+        for(let i=0;i<config.classes1.length;i++){
+          let str = config.classes1[i].title;
+          if(str.indexOf(v)!=-1){
+            classes1Show.push(config.classes1[i]);
+          }
+        }
+        let classes2Show=[]
+        for(let i=0;i<config.classes2.length;i++){
+          let str = config.classes2[i].title;
+          if(str.indexOf(v)!=-1){
+            classes2Show.push(config.classes2[i]);
+          }
+        }
+        let filtRes=[]
+        for(let i=0;i<config.founcs.length;i++){
+          let str = config.founcs[i].title;
+          if(str.indexOf(v)!=-1){
+            filtRes.push(config.founcs[i]);
+          }
+        }
+        this.setState({classes1Show,classes2Show,filtRes,curSelectedFonc:{name:''},curfilter1:null,curfilter2:null})
+      }else{
+        this.setState({classes1Show:config.classes1,classes2Show:[],filtRes:[],curSelectedFonc:{name:''},curfilter1:null,curfilter2:null})
       }
     }
-    let classes2Show=[]
-    for(let i=0;i<config.classes2.length;i++){
-      let str = config.classes2[i].title;
-      if(str.indexOf(v)!=-1){
-        classes2Show.push(config.classes2[i]);
-      }
-    }
-    let filtRes=[]
-    for(let i=0;i<config.founcs.length;i++){
-      let str = config.founcs[i].title;
-      if(str.indexOf(v)!=-1){
-        filtRes.push(config.founcs[i]);
-      }
-    }
-    this.setState({classes1Show,classes2Show,filtRes,curSelectedFonc:{name:''},curfilter1:null,curfilter2:null})
-  }
   render() {
     const{curSelectedFonc,curfilter1,curfilter2,classes1Show,classes2Show,filtRes}=this.state;
     return (
@@ -209,7 +228,7 @@ class UltimateQuery extends Component {
         <div className='side-bar'>
           <div className='searchBar'>
               <Input.Search
-                      placeholder='输入关键字进行搜索'
+                      placeholder='输入all可以查看所有功能'
                       onSearch={(v) => {
                         this.handleSearch(v);
                       }}
@@ -242,7 +261,7 @@ class UltimateQuery extends Component {
             }
           </div>
         </div>
-        <div className='main-frame'>
+        <div className='ulti-main-frame'>
           {curSelectedFonc.name==='TableData'?
           <TableData 
             resid={curSelectedFonc.props.resid} 
@@ -261,6 +280,9 @@ class UltimateQuery extends Component {
           />:null}
           {
            curSelectedFonc.name==='MainTableSubTables'?<MainTableSubTables {...curSelectedFonc.props}></MainTableSubTables>:null
+          }
+          {
+            curSelectedFonc.name==='custom'?<iframe src={window.location.origin+curSelectedFonc.src}/>:null
           }
         </div>
       </div>
