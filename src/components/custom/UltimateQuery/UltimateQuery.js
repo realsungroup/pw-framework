@@ -18,6 +18,9 @@ const config = {
     {id:7,title:"人事信息变动",superior:1},
     {id:8,title:"年假台账",superior:2},
     {id:9,title:"哺乳假台账",superior:2},
+    {id:10,title:"调休假台账",superior:2},
+    {id:11,title:"其他假期台账",superior:2},
+    {id:12,title:"考勤数据查询",superior:2},
 
 
 ],
@@ -192,6 +195,231 @@ const config = {
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
   },
+  {
+    name: 'TableData', 
+    title: '哺乳假台账',
+    class:9,
+    id:12,
+    props: {
+      resid: 435412554124,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '哺乳假使用明细',
+    class:9,
+    id:13,
+    props: {
+      resid: 435419664427,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '调休假台账',
+    class:10,
+    id:14,
+    props: {
+      resid: 435431842051,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '调休假使用明细',
+    class:10,
+    id:15,
+    props: {
+      resid: 442578987574,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '事假台账',
+    class:11,
+    id:16,
+    props: {
+      resid: 518262920381,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '三期名单',
+    class:11,
+    id:17,
+    props: {
+      resid: 608738442390,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '育儿假台账',
+    class:11,
+    id:18,
+    props: {
+      resid: 775135706998,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '父母陪护假台账',
+    class:11,
+    id:19,
+    props: {
+      resid: 712075069963,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '班组调整记录查询',
+    class:12,
+    id:20,
+    props: {
+      resid: 423660730564,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '班次调整记录查询',
+    class:12,
+    id:21,
+    props: {
+      resid: 423666035454,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '刷卡明细记录查询',
+    class:12,
+    id:22,
+    props: {
+      resid: 423660885541,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '请假登记记录查询',
+    class:12,
+    id:23,
+    props: {
+      resid: 425274222825,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '加班登记记录查询',
+    class:12,
+    id:24,
+    props: {
+      resid: 425274253986,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  }, {
+    name: 'TableData', 
+    title: '请假导入错误记录',
+    class:12,
+    id:25,
+    props: {
+      resid: 432648732840,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  }, {
+    name: 'TableData', 
+    title: '加班记录导入错误',
+    class:12,
+    id:26,
+    props: {
+      resid: 432648481019,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  }, {
+    name: 'TableData', 
+    title: '刷卡导入错误查询',
+    class:12,
+    id:27,
+    props: {
+      resid: 429706598519,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  }, {
+    name: 'TableData', 
+    title: '请假登记异常明细',
+    class:12,
+    id:28,
+    props: {
+      resid: 431960259688,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  }, {
+    name: 'TableData', 
+    title: '考勤异常日报明细',
+    class:12,
+    id:29,
+    props: {
+      resid: 431956725893,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '活动中心刷卡记录',
+    class:12,
+    id:30,
+    props: {
+      resid: 439383544231,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '加班请假登记记录',
+    class:12,
+    id:30,
+    props: {
+      resid: 509634460766,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  }, {
+    name: 'TableData', 
+    title: '刷卡记录',
+    class:12,
+    id:31,
+    props: {
+      resid: 375296681546,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  
+  
 ]}
 const TabPane = Tabs.TabPane;
 class UltimateQuery extends Component {
