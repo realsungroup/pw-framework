@@ -14,12 +14,17 @@ const config = {
   classes2:[
     {id:3,title:"人员信息",superior:1},
     {id:4,title:"考勤日报",superior:2},
-    {id:6,title:"合同信息",superior:5}
+    {id:6,title:"合同信息",superior:5},
+    {id:7,title:"人事信息变动",superior:1},
+    {id:8,title:"年假台账",superior:2},
+    {id:9,title:"哺乳假台账",superior:2},
+
+
 ],
   founcs:[
   {
       name: 'TableData', 
-      title: '人员信息查询',
+      title: '全部人员信息',
       class:3,
       id:1,
       props: {
@@ -120,10 +125,72 @@ const config = {
   },
   {
     name: 'custom', 
-    title: '合同审批',
-    class:6,
+    title: '人事调动审批',
+    class:7,
     id:4,
-    src:"/fnmodule?resid=640189820723&recid=640189689436&type=合同管理&title=合同审批"
+    src:"/fnmodule?resid=635350002067&recid=635350084447&type=人事信息管理&title=人事调动审批"
+  },
+  {
+    name: 'TableData', 
+    title: '在职人员信息',
+    class:3,
+    id:5,
+    props: {
+      resid: 424537954415,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '离职人员信息',
+    class:3,
+    id:6,
+    props: {
+      resid: 659550084796,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'custom', 
+    title: '年假管理（2020年后）',
+    class:8,
+    id:8,
+    src:"/fnmodule?resid=663690700084&recid=663690929711&type=假期管理&title=年假管理"
+  },
+  {
+    name: 'TableData', 
+    title: '年假管理（2020年前）',
+    class:8,
+    id:9,
+    props: {
+      resid: 775130963822,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '年假年度剩余调整（2020年前）',
+    class:8,
+    id:10,
+    props: {
+      resid: 441994427244,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '年假当年新增调整（2020年以前）',
+    class:8,
+    id:11,
+    props: {
+      resid: 630169827334,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
   },
 ]}
 const TabPane = Tabs.TabPane;
@@ -139,8 +206,9 @@ class UltimateQuery extends Component {
   componentDidMount(){
     this.setState({classes1Show:config.classes1})
   }
-  setCurSelected=(id)=>{
+  setCurSelected=async(id)=>{
     console.log('id',id)
+    await this.setState({curSelectedFonc:{name:''}});
     for(let i=0;i<config.founcs.length;i++){
       if(config.founcs[i].id===id){
         console.log(config.founcs[i])
@@ -181,13 +249,11 @@ class UltimateQuery extends Component {
       }
     }
     let filtRes=[];
-    for(let i=0;i<classes2Show.length;i++){
       for(let c=0;c<config.founcs.length;c++){
-        if(config.founcs[c].class===classes2Show[i].id){
+        if(config.founcs[c].class===id){
           filtRes.push(config.founcs[c]);
         }
       }
-    }
     this.setState({filtRes});
   }
   handleSearch(value){
@@ -276,7 +342,7 @@ class UltimateQuery extends Component {
             hasBeBtns={false}
             hasDelete={false}
             hasModify={false}
-            hasAdvSearch={false}
+            hasAdvSearch={true}
           />:null}
           {
            curSelectedFonc.name==='MainTableSubTables'?<MainTableSubTables {...curSelectedFonc.props}></MainTableSubTables>:null
