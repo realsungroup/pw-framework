@@ -9,19 +9,30 @@ const config = {
   classes1:[
       {id:1,title:"人员信息",superior:null},
       {id:2,title:"考勤信息",superior:null},
-      {id:5,title:"合同信息",superior:null}
+      {id:13,title:"假期台账",superior:null},
+      {id:5,title:"合同信息",superior:null},
+      {id:15,title:"学习与发展",superior:null},
+      {id:19,title:"招聘管理",superior:null},
+      {id:20,title:"纪律管理",superior:null},
   ],
   classes2:[
     {id:3,title:"人员信息",superior:1},
-    {id:4,title:"考勤日报",superior:2},
+    {id:4,title:"考勤报表",superior:2},
     {id:6,title:"合同信息",superior:5},
     {id:7,title:"人事信息变动",superior:1},
-    {id:8,title:"年假台账",superior:2},
-    {id:9,title:"哺乳假台账",superior:2},
-    {id:10,title:"调休假台账",superior:2},
-    {id:11,title:"其他假期台账",superior:2},
+    {id:8,title:"年假台账",superior:13},
+    {id:9,title:"哺乳假台账",superior:13},
+    {id:10,title:"调休假台账",superior:13},
+    {id:11,title:"其他假期台账",superior:13},
     {id:12,title:"考勤数据查询",superior:2},
-
+    {id:13,title:"卡务管理",superior:2},
+    {id:14,title:"考勤审批",superior:2},
+    {id:16,title:"培训管理",superior:15},
+    {id:17,title:"个人发展管理",superior:15},
+    {id:18,title:"考试管理",superior:15},
+    {id:21,title:"Headcount管理",superior:19},
+    {id:22,title:"Offer管理",superior:19},
+    {id:23,title:"DL招聘管理",superior:19},
 
 ],
   founcs:[
@@ -38,7 +49,7 @@ const config = {
   },
   {
     name: 'MainTableSubTables',
-    title: '考勤日报处理1',
+    title: '考勤日报处理',
     id:2,
     class:4,
     props: {
@@ -401,7 +412,7 @@ const config = {
     name: 'TableData', 
     title: '加班请假登记记录',
     class:12,
-    id:30,
+    id:31,
     props: {
       resid: 509634460766,
       baseURL: 'http://10.108.2.66:9091/',
@@ -410,16 +421,477 @@ const config = {
   }, {
     name: 'TableData', 
     title: '刷卡记录',
-    class:12,
-    id:31,
+    class:13,
+    id:32,
     props: {
       resid: 375296681546,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
+  },{
+    name: 'TableData', 
+    title: '已导入办卡信息',
+    class:13,
+    id:33,
+    props: {
+      resid: 424794795683,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '离职已退卡',
+    class:13,
+    id:34,
+    props: {
+      resid: 426189216297,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '注销卡',
+    class:13,
+    id:35,
+    props: {
+      resid: 446635742605,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '黑名单信息',
+    class:13,
+    id:36,
+    props: {
+      resid: 309560332600,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '正常卡',
+    class:13,
+    id:37,
+    props: {
+      resid: 588780106830,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '考勤日报',
+    class:4,
+    id:38,
+    props: {
+      resid: 375296167687,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '考勤月报',
+    class:4,
+    id:38,
+    props: {
+      resid: 311025002785,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
   },
+  {
+    name: 'TableData', 
+    title: '考勤汇总表',
+    class:4,
+    id:38,
+    props: {
+      resid: 426597421978,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '移动请假加班记录',
+    class:14,
+    id:39,
+    props: {
+      resid: 546778189544,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '请假加班审批记录',
+    class:14,
+    id:40,
+    props: {
+      resid: 549048498204,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '微信考勤申请记录',
+    class:14,
+    id:41,
+    props: {
+      resid: 552993482400,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '微信考勤申请记录',
+    class:14,
+    id:42,
+    props: {
+      resid: 552993482400,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'MainTableSubTables',
+    title: '考勤审批流程信息',
+    id:43,
+    class:14,
+    props: {
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      resid: 449439660450,
+      mainTableProps: {
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasBackBtn: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
   
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      subTablesProps: {
+        449439564546: {
+          hasBeBtns: false,
+          isUseFormDefine: false,
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/'
+        },
+        449441441589: {
+          hasBeBtns: true,
+          hasRowView: false,
+          hasRowModify: false,
+          hasRowDelete: false,
+          noWidthFields: 'C3_446938797056',
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/',
+          advSearch: {
+            isRequestFormData: false
+          }
+        }
+      }
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '获取IT排班',
+    class:14,
+    id:44,
+    props: {
+      resid: 775145745197,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '合同审批记录（上海+无锡老合同）',
+    class:6,
+    id:45,
+    props: {
+      resid: 532015753283,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '合同审批记录（无锡新合同）',
+    class:6,
+    id:46,
+    props: {
+      resid: 532015753283,
+      baseURL: 'http://10.108.2.66:1001/',
+      downloadBaseURL: 'http://10.108.2.66:1000/',
+    }
+  },
+  {
+    name: 'custom', 
+    title: '内训签到记录',
+    class:16,
+    id:47,
+    src:"/fnmodule?resid=675343454130&recid=675343519760&type=学习与发展&title=培训资源管理"
+  },
+  {
+    name: 'custom', 
+    title: '在线培训管理',
+    class:16,
+    id:48,
+    src:"/fnmodule?resid=643895586124&recid=643895693789&type=学习与发展&title=在线培训管理"
+  },
+  {
+    name: 'custom', 
+    title: '签到记录导出',
+    class:16,
+    id:49,
+    src:"/fnmodule?resid=631618595197&recid=775150111960&type=学习与发展&title=签到记录导出"
+  },{
+    name: 'custom', 
+    title: '内训管理',
+    class:16,
+    id:50,
+    src:"/fnmodule?resid=615898415042&recid=615898443242&type=学习与发展&title=内训管理"
+  },{
+    name: 'custom', 
+    title: '外训管理',
+    class:16,
+    id:51,
+    src:"/fnmodule?resid=614187065713&recid=614187146539&type=学习与发展&title=外训管理"
+  },{
+    name: 'custom', 
+    title: '课程维护',
+    class:16,
+    id:52,
+    src:"/fnmodule?resid=611085896611&recid=775151144329&type=学习与发展&title=课程维护"
+  },
+  {
+    name: 'custom', 
+    title: '试用期管理',
+    class:17,
+    id:53,
+    src:"/fnmodule?resid=619175063394&recid=619175176571&type=学习与发展&title=试用期管理"
+  },
+  {
+    name: 'custom', 
+    title: '考试培训',
+    class:18,
+    id:54,
+    src:"/fnmodule?resid=611243928651&recid=630582052417&type=考试系统&title=考试培训"
+  },
+  {
+    name: 'custom', 
+    title: '考试安排',
+    class:18,
+    id:55,
+    src:"/fnmodule?resid=607170185691&recid=775151287566&type=考试系统&title=考试安排"
+  },{
+    name: 'custom', 
+    title: '题库管理',
+    class:18,
+    id:56,
+    src:"/fnmodule?resid=607170415939&recid=775151341941&type=考试系统&title=题库管理"
+  },{
+    name: 'custom', 
+    title: '试卷管理',
+    class:18,
+    id:57,
+    src:"/fnmodule?resid=607170235566&recid=747236298295&type=考试系统&title=试卷管理"
+  },{
+    name: 'custom', 
+    title: '统计分析',
+    class:18,
+    id:58,
+    src:"/fnmodule?resid=607168405062&recid=775151403754&type=考试系统&title=统计分析"
+  },{
+    name: 'MainTableSubTables',
+    title: 'S1S2生产人员招聘',
+    id:59,
+    class:21,
+    props: {
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      resid: 516897542458,
+      mainTableProps: {
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasBackBtn: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
   
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      subTablesProps: {
+        518986543520: {
+          hasBeBtns: false,
+          isUseFormDefine: false,
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/'
+        },
+        527715777875: {
+          hasBeBtns: true,
+          hasRowView: false,
+          hasRowModify: false,
+          hasRowDelete: false,
+          noWidthFields: 'C3_446938797056',
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/',
+          advSearch: {
+            isRequestFormData: false
+          }
+        }
+      }
+    }
+  },{
+    name: 'MainTableSubTables',
+    title: 'M5E1生产人员招聘（2021年5月前）',
+    id:60,
+    class:21,
+    props: {
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      resid: 516897339260,
+      mainTableProps: {
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasBackBtn: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+  
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      subTablesProps: {
+        518387822292: {
+          hasBeBtns: false,
+          isUseFormDefine: false,
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/'
+        },
+        522691427138: {
+          hasBeBtns: true,
+          hasRowView: false,
+          hasRowModify: false,
+          hasRowDelete: false,
+          noWidthFields: 'C3_446938797056',
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/',
+          advSearch: {
+            isRequestFormData: false
+          }
+        }
+      }
+    }
+  },{
+    name: 'MainTableSubTables',
+    title: 'M5E1生产人员招聘（2021年5月后）',
+    id:61,
+    class:21,
+    props: {
+      baseURL: 'http://10.108.2.66:1001/',
+      downloadBaseURL: 'http://10.108.2.66:1000/',
+      resid: 516897339260,
+      mainTableProps: {
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasBackBtn: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+  
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      subTablesProps: {
+        518387822292: {
+          hasBeBtns: false,
+          isUseFormDefine: false,
+          baseURL: 'http://10.108.2.66:1001/',
+          downloadBaseURL: 'http://10.108.2.66:1000/'
+        },
+        522691427138: {
+          hasBeBtns: true,
+          hasRowView: false,
+          hasRowModify: false,
+          hasRowDelete: false,
+          noWidthFields: 'C3_446938797056',
+          baseURL: 'http://10.108.2.66:1001/',
+          downloadBaseURL: 'http://10.108.2.66:1000/',
+          advSearch: {
+            isRequestFormData: false
+          }
+        }
+      }
+    }
+  },{
+    name: 'custom', 
+    title: 'Offer Proposal管理',
+    class:22,
+    id:62,
+    src:"/fnmodule?resid=641992029202&recid=641992771703&type=招聘&title=Offer Proposal管理"
+  },
+  {
+    name: 'custom', 
+    title: 'Offer Proposal审批',
+    class:22,
+    id:63,
+    src:"/fnmodule?resid=641992076936&recid=641992742979&type=招聘&title=Offer Proposal审批"
+  },
+  {
+    name: 'custom', 
+    title: 'Offer Comfirmation管理',
+    class:22,
+    id:64,
+    src:"/fnmodule?resid=641992112255&recid=641992682009&type=招聘&title=Offer Comfirmation管理"
+  },
+  {
+    name: 'custom', 
+    title: 'Offer Comfirmation核对',
+    class:22,
+    id:65,
+    src:"/fnmodule?resid=641992135890&recid=641992656969&type=招聘&title=Offer Comfirmation核对"
+  },{
+    name: 'custom', 
+    title: 'DL招聘管理',
+    class:23,
+    id:66,
+    src:"/fnmodule?resid=642855799959&recid=618665474863&type=招聘&title=DL招聘管理"
+  },
 ]}
 const TabPane = Tabs.TabPane;
 class UltimateQuery extends Component {
@@ -467,7 +939,7 @@ class UltimateQuery extends Component {
       }
     }
     console.log(classes2Show,filtRes)
-    this.setState({classes2Show,filtRes});
+    this.setState({classes2Show,filtRes,curfilter2:null});
   }
   selectFilter2=(id)=>{
     const classes2Show=this.state.classes2Show;
