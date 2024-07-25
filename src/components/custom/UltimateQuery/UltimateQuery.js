@@ -33,7 +33,8 @@ const config = {
     {id:21,title:"Headcount管理",superior:19},
     {id:22,title:"Offer管理",superior:19},
     {id:23,title:"DL招聘管理",superior:19},
-
+    {id:24,title:"违纪查询",superior:20},
+    {id:25,title:"信息查询",superior:20},
 ],
   founcs:[
   {
@@ -640,13 +641,6 @@ const config = {
   },
   {
     name: 'custom', 
-    title: '在线培训管理',
-    class:16,
-    id:48,
-    src:"/fnmodule?resid=643895586124&recid=643895693789&type=学习与发展&title=在线培训管理"
-  },
-  {
-    name: 'custom', 
     title: '签到记录导出',
     class:16,
     id:49,
@@ -858,39 +852,235 @@ const config = {
         }
       }
     }
-  },{
-    name: 'custom', 
-    title: 'Offer Proposal管理',
-    class:22,
+  },
+  {
+    name: 'MainTableSubTables',
+    title: 'Offer Proposal',
     id:62,
-    src:"/fnmodule?resid=641992029202&recid=641992771703&type=招聘&title=Offer Proposal管理"
+    class:22,
+    props: {
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      resid: 534181420932,
+      mainTableProps: {
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasBackBtn: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+  
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      subTablesProps: {
+        534183662854: {
+          hasBeBtns: false,
+          isUseFormDefine: false,
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/'
+        },
+      }
+    }
   },
   {
-    name: 'custom', 
-    title: 'Offer Proposal审批',
-    class:22,
+    name: 'MainTableSubTables',
+    title: 'Offer Comfirmation',
     id:63,
-    src:"/fnmodule?resid=641992076936&recid=641992742979&type=招聘&title=Offer Proposal审批"
-  },
-  {
-    name: 'custom', 
-    title: 'Offer Comfirmation管理',
     class:22,
-    id:64,
-    src:"/fnmodule?resid=641992112255&recid=641992682009&type=招聘&title=Offer Comfirmation管理"
-  },
-  {
-    name: 'custom', 
-    title: 'Offer Comfirmation核对',
-    class:22,
-    id:65,
-    src:"/fnmodule?resid=641992135890&recid=641992656969&type=招聘&title=Offer Comfirmation核对"
+    props: {
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      resid: 534187008752,
+      mainTableProps: {
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasBackBtn: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+  
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      subTablesProps: {
+        534187873941: {
+          hasBeBtns: false,
+          isUseFormDefine: false,
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/'
+        },
+      }
+    }
   },{
-    name: 'custom', 
-    title: 'DL招聘管理',
+    name: 'TableData', 
+    title: 'DL员工求职记录',
     class:23,
     id:66,
-    src:"/fnmodule?resid=642855799959&recid=618665474863&type=招聘&title=DL招聘管理"
+    props: {
+      resid: 617190472818,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
+    title: '非系统累进违纪记录',
+    class:24,
+    id:67,
+    props: {
+      resid: 729961926165,
+      baseURL: 'http://10.108.2.66:1001/',
+      downloadBaseURL: 'http://10.108.2.66:1000/',
+    }
+  },{
+    name: 'TableData', 
+    title: '系统累进违纪记录',
+    class:24,
+    id:68,
+    props: {
+      resid: 730039803659,
+      baseURL: 'http://10.108.2.66:1001/',
+      downloadBaseURL: 'http://10.108.2.66:1000/',
+    }
+  },{
+    name: 'TableData', 
+    title: '组长负责的主管',
+    class:25,
+    id:69,
+    props: {
+      resid: 729708742877,
+      baseURL: 'http://10.108.2.66:1001/',
+      downloadBaseURL: 'http://10.108.2.66:1000/',
+    }
+  },{
+    name: 'TableData', 
+    title: '违纪条例管理',
+    class:25,
+    id:70,
+    props: {
+      resid: 729704479929,
+      baseURL: 'http://10.108.2.66:1001/',
+      downloadBaseURL: 'http://10.108.2.66:1000/',
+    }
+  },{
+    name: 'TableData', 
+    title: '组长名单',
+    class:25,
+    id:71,
+    props: {
+      resid: 728996646072,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'custom', 
+    title: '违纪升级记录',
+    class:24,
+    id:72,
+    src:"/fnmodule?resid=728914680096&recid=728914791323&type=纪律管理系统&title=违纪升级记录"
+  },
+  {
+    name: 'custom', 
+    title: '符合解除人员',
+    class:25,
+    id:73,
+    src:"/fnmodule?resid=614706766207&recid=644154393653&type=纪律管理系统&title=符合解除人员"
+  },
+  {
+    name: 'TableData', 
+    title: '开单权限变更记录',
+    class:25,
+    id:74,
+    props: {
+      resid: 729009666829,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'custom', 
+    title: '奖惩-统计分析',
+    class:25,
+    id:75,
+    src:"/fnmodule?resid=592305842055&recid=619608412213&type=纪律管理系统&title=奖惩-统计分析"
+  },
+  {
+    name: 'custom', 
+    title: '违纪管理',
+    class:25,
+    id:76,
+    src:"/fnmodule?resid=590765309983&recid=619608230380&type=纪律管理系统&title=违纪管理"
+  },
+  {
+    name: 'TableData', 
+    title: 'DL入职培训统计',
+    class:16,
+    id:48,
+    props: {
+      resid: 775237361754,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: 'IDL入职培训统计',
+    class:16,
+    id:77,
+    props: {
+      resid: 775238562633,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '在线内训授权',
+    class:16,
+    id:78,
+    props: {
+      resid: 775236235343,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '内训在线培训记录',
+    class:16,
+    id:79,
+    props: {
+      resid: 775237739631,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },{
+    name: 'TableData', 
+    title: '黑名单',
+    class:23,
+    id:80,
+    props: {
+      resid: 681234360083,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
   },
 ]}
 const TabPane = Tabs.TabPane;
@@ -929,6 +1119,7 @@ class UltimateQuery extends Component {
         classes2Show.push(config.classes2[i]);
       }
     }
+    
     //遍历arr，将所有下级都放到filtres
     let filtRes=[];
     for(let i=0;i<classes2Show.length;i++){
