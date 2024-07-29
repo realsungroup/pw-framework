@@ -25,7 +25,9 @@ class PersonInfo extends React.Component {
       personalInfoVisible: false,
       personInfo: {},
       dataProp: [],
-      loadingPersonInfo: false
+      loadingPersonInfo: false,
+      modalVis:'',
+      numberId:''
     };
   }
 
@@ -71,7 +73,8 @@ class PersonInfo extends React.Component {
       personalInfoVisible,
       personInfo,
       dataProp,
-      loadingPersonInfo
+      loadingPersonInfo,
+      modalVis
     } = this.state;
     let id;
     if (person) {
@@ -85,17 +88,18 @@ class PersonInfo extends React.Component {
               <TableData
                 key="1"
                 size="small"
-                resid="723564615206"
+                resid={this.props.resid||723564615206}
+                cmswhere={this.props.cms||``}
                 isFrontEndPagination={true}
                 subtractH={200}
-                hasAdvSearch={false}
+                hasAdvSearch={true}
                 hasAdd={false}
                 hasRowView={false}
                 hasRowDelete={false}
                 hasRowEdit={false}
                 hasDelete={false}
                 hasModify={false}
-                hasBeBtns={true}
+                hasBeBtns={false}
                 hasRowModify={false}
                 hasRowSelection={false}
                 actionBarWidth={400}
@@ -108,7 +112,7 @@ class PersonInfo extends React.Component {
                 refTargetComponentName="TableData"
                 customRowBtns={[
                   record => {
-                    return (
+                    return (<>
                       <Button
                         size="small"
                         onClick={async () => {
@@ -120,6 +124,29 @@ class PersonInfo extends React.Component {
                       >
                         个人信息详情
                       </Button>
+                      <Button
+                      size="small"
+                      onClick={() => {
+                        this.setState({
+                          modalVis: '合同',
+                          numberId:record.C3_227192472953
+                        });
+                      }}
+                    >
+                      合同历史
+                    </Button>
+                    <Button
+                      size="small"
+                      onClick={() => {
+                        this.setState({
+                          modalVis: '变动',
+                          numberId:record.C3_227192472953
+                        });
+                      }}
+                    >
+                      变动历史
+                    </Button>
+                    </>
                     );
                   }
                 ]}
@@ -163,6 +190,52 @@ class PersonInfo extends React.Component {
                   useAbsolute={true}
                 />
               </Spin>
+            </div>
+          </Modal>
+          <Modal
+            title={modalVis+"历史"}
+            visible={modalVis!=''}
+            onOk={() => this.setState({ modalVis: '' })}
+            onCancel={() => this.setState({ modalVis: '' })}
+            destroyOnClose
+            width="70%"
+          >
+            <div style={{height:'80vh'}}>
+                {
+                  modalVis==='合同'?
+                  <TableData 
+                resid={436624421847} 
+                cmswhere={`C3_436624448098 = '${this.state.numberId}'`}
+                baseURL={'http://10.108.2.66:1001/'} 
+                downloadBaseURL={'http://10.108.2.66:1000/'}
+                hasRowModify={false}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowView={true}
+                subtractH={240}
+                hasBeBtns={false}
+                hasDelete={false}
+                hasModify={false}
+                hasAdvSearch={true}
+              />
+                  :
+                  <TableData 
+                resid={638466404110} 
+                cmswhere={`C3_227192472953 = '${this.state.numberId}'`}
+                baseURL={'http://10.108.2.66:9091/'} 
+                downloadBaseURL={'http://10.108.2.66:80/'}
+                hasRowModify={false}
+                hasAdd={false}
+                hasRowDelete={false}
+                hasRowView={true}
+                subtractH={240}
+                hasBeBtns={false}
+                hasDelete={false}
+                hasModify={false}
+                hasAdvSearch={true}
+              />
+                }
+              
             </div>
           </Modal>
         </div>

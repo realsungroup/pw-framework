@@ -55,8 +55,14 @@ class ComprehensiveQuery extends React.Component {
     let page = null;
     switch (currentTab) {
       case 'personnel':
-        page = <PersonInfo person={this.state.node} />;
+        page = <PersonInfo person={this.state.node} resid='227186227531'/>;
         break;
+        case 'personnel_onJob':
+          page = <PersonInfo person={this.state.node} resid='227186227531' cms={`C3_294355760203 = 'Y'`}/>;
+          break;
+          case 'personnel_Leave':
+            page = <PersonInfo person={this.state.node} resid='227186227531' cms={`isnull(C3_294355760203,'') = ''`}/>;
+            break;
       case 'attendance':
         page = (
           <WorkInfo
@@ -116,8 +122,10 @@ class ComprehensiveQuery extends React.Component {
               style={{ backgroundColor: '#fff' }}
               activeKey={currentTab}
             >
-              {showRenshi && <TabPane tab="人事信息" key="personnel"></TabPane>}
-              <TabPane tab="考勤查询" key="attendance"></TabPane>
+              {showRenshi && <TabPane tab="全部人员" key="personnel"></TabPane>}
+              {showRenshi && <TabPane tab="在职人员" key="personnel_onJob"></TabPane>}
+              {showRenshi && <TabPane tab="离职人员" key="personnel_Leave"></TabPane>}
+              {/* <TabPane tab="考勤查询" key="attendance"></TabPane> */}
               {/* {showJixiao && (
                 <TabPane tab="绩效查询" key="performance"></TabPane>
               )}

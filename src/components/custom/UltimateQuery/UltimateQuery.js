@@ -38,21 +38,17 @@ const config = {
 ],
   founcs:[
   {
-      name: 'TableData', 
-      title: '全部人员信息',
+      name: 'custom', 
+      title: '人员信息查询',
       class:3,
       id:1,
-      props: {
-        resid: 722083677725,
-        baseURL: 'http://10.108.2.66:9091/',
-        downloadBaseURL: 'http://10.108.2.66:80/',
-      }
+      src:'/fnmodule?resid=723578280726&recid=723578390658&type=信息查询&title=管理员查询人事信息'
   },
   {
     name: 'MainTableSubTables',
     title: '考勤日报处理',
     id:2,
-    class:4,
+    class:12,
     props: {
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
@@ -144,28 +140,6 @@ const config = {
     class:7,
     id:4,
     src:"/fnmodule?resid=635350002067&recid=635350084447&type=人事信息管理&title=人事调动审批"
-  },
-  {
-    name: 'TableData', 
-    title: '在职人员信息',
-    class:3,
-    id:5,
-    props: {
-      resid: 424537954415,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  },
-  {
-    name: 'TableData', 
-    title: '离职人员信息',
-    class:3,
-    id:6,
-    props: {
-      resid: 659550084796,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
   },
   {
     name: 'custom', 
@@ -401,7 +375,7 @@ const config = {
   {
     name: 'TableData', 
     title: '活动中心刷卡记录',
-    class:12,
+    class:13,
     id:30,
     props: {
       resid: 439383544231,
@@ -493,7 +467,7 @@ const config = {
     name: 'TableData', 
     title: '考勤月报',
     class:4,
-    id:38,
+    id:81,
     props: {
       resid: 311025002785,
       baseURL: 'http://10.108.2.66:9091/',
@@ -503,8 +477,8 @@ const config = {
   {
     name: 'TableData', 
     title: '考勤汇总表',
-    class:4,
-    id:38,
+    class:12,
+    id:82,
     props: {
       resid: 426597421978,
       baseURL: 'http://10.108.2.66:9091/',
@@ -535,16 +509,6 @@ const config = {
     title: '微信考勤申请记录',
     class:14,
     id:41,
-    props: {
-      resid: 552993482400,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  },{
-    name: 'TableData', 
-    title: '微信考勤申请记录',
-    class:14,
-    id:42,
     props: {
       resid: 552993482400,
       baseURL: 'http://10.108.2.66:9091/',
