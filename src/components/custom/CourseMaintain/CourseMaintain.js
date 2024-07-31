@@ -142,42 +142,42 @@ class CourseMaintain extends React.Component {
               height: 700
             }
           },
-          {
-            resid: 640027948998,
-            TabsTitle: '内训在线培训记录',
-            OutHeight: '80vh',
-            downloadBaseURL:this.state.baseURLDownload,
-            baseURL:this.state.baseURL,
-            recordFormFormWidth: '90%',
-            hasBeBtns: true,
-            hasModify: false,
-            hasDelete: false,
-            hasAdd: false,
-            hasRowDelete: true,
-            hasRowModify: false,
-            hasRowView: false,
-            subtractH: 180,
-            formProps: {
-              height: 550
-            }},
-            {
-              resid: 640021774020,
-              TabsTitle: '在线内训权限',
-              OutHeight: '80vh',
-            downloadBaseURL:this.state.baseURLDownload,
-              baseURL:this.state.baseURL,
-              recordFormFormWidth: '90%',
-              hasBeBtns: true,
-              hasModify: false,
-              hasDelete: false,
-              hasAdd: false,
-              hasRowDelete: true,
-              hasRowModify: false,
-              hasRowView: false,
-              subtractH: 180,
-              formProps: {
-                height: 550
-              }}
+          // {
+          //   resid: 640027948998,
+          //   TabsTitle: '内训在线培训记录',
+          //   OutHeight: '80vh',
+          //   downloadBaseURL:this.state.baseURLDownload,
+          //   baseURL:this.state.baseURL,
+          //   recordFormFormWidth: '90%',
+          //   hasBeBtns: true,
+          //   hasModify: false,
+          //   hasDelete: false,
+          //   hasAdd: false,
+          //   hasRowDelete: true,
+          //   hasRowModify: false,
+          //   hasRowView: false,
+          //   subtractH: 180,
+          //   formProps: {
+          //     height: 550
+          //   }},
+          //   {
+          //     resid: 640021774020,
+          //     TabsTitle: '在线内训权限',
+          //     OutHeight: '80vh',
+          //   downloadBaseURL:this.state.baseURLDownload,
+          //     baseURL:this.state.baseURL,
+          //     recordFormFormWidth: '90%',
+          //     hasBeBtns: true,
+          //     hasModify: false,
+          //     hasDelete: false,
+          //     hasAdd: false,
+          //     hasRowDelete: true,
+          //     hasRowModify: false,
+          //     hasRowView: false,
+          //     subtractH: 180,
+          //     formProps: {
+          //       height: 550
+          //     }}
 
         ]}
       />
