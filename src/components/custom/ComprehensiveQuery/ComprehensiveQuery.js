@@ -55,13 +55,13 @@ class ComprehensiveQuery extends React.Component {
     let page = null;
     switch (currentTab) {
       case 'personnel':
-        page = <PersonInfo person={this.state.node} resid='227186227531'/>;
+        page = <PersonInfo person={this.state.node} resid='776784364734'/>;
         break;
         case 'personnel_onJob':
-          page = <PersonInfo person={this.state.node} resid='227186227531' cms={`C3_294355760203 = 'Y'`}/>;
+          page = <PersonInfo person={this.state.node} resid='776784364734' cms={`C3_294355760203 = 'Y'`}/>;
           break;
           case 'personnel_Leave':
-            page = <PersonInfo person={this.state.node} resid='227186227531' cms={`isnull(C3_294355760203,'') = ''`}/>;
+            page = <PersonInfo person={this.state.node} resid='776784364734' cms={`isnull(C3_294355760203,'') = ''`}/>;
             break;
       case 'attendance':
         page = (
@@ -109,7 +109,8 @@ class ComprehensiveQuery extends React.Component {
     const { showPingji, showJixiao, showRenshi, showChaoshi } = this.props;
     return (
       <div id="comprehensive-query">
-        <main style={{ left: isExpand ? 260 : 24 }} className="main-content">
+        {/* <main style={{ left: isExpand ? 260 : 24 }} className="main-content"> */}
+        <main style={{ left: 0 }} className="main-content">
           <div
             className="comprehensive-query_goback-btn"
             onClick={this.props.goBack}
@@ -153,7 +154,7 @@ class ComprehensiveQuery extends React.Component {
             {this.renderTabPane(currentTab)}
           </div>
         </main>
-        <div style={this.state.hideTree ? { display: 'none' } : {}}>
+        <div style={{display: 'none'}}>
           <TreeRel
             url="api/OrgChart/GetNodesData"
             resid="609599795438"

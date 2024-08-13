@@ -11,12 +11,13 @@ const config = {
       {id:2,title:"考勤信息",superior:null},
       {id:13,title:"假期台账",superior:null},
       {id:5,title:"合同信息",superior:null},
-      {id:15,title:"学习与发展",superior:null},
+      {id:15,title:"学习与发展",superior:null,hideShg:true},
       {id:19,title:"招聘管理",superior:null},
-      {id:20,title:"纪律管理",superior:null},
+      {id:20,title:"纪律管理",superior:null,hideShg:true},
   ],
   classes2:[
     {id:3,title:"人员信息",superior:1},
+    {id:14,title:"考勤审批",superior:2},
     {id:4,title:"考勤报表",superior:2},
     {id:6,title:"合同信息",superior:5},
     {id:7,title:"人事信息变动",superior:1},
@@ -26,15 +27,14 @@ const config = {
     {id:11,title:"其他假期台账",superior:13},
     {id:12,title:"考勤数据查询",superior:2},
     {id:13,title:"卡务管理",superior:2},
-    {id:14,title:"考勤审批",superior:2},
-    {id:16,title:"培训管理",superior:15},
-    {id:17,title:"个人发展管理",superior:15},
-    {id:18,title:"考试管理",superior:15},
+    {id:16,title:"培训管理",superior:15,hideShg:true},
+    {id:17,title:"个人发展管理",superior:15,hideShg:true},
+    {id:18,title:"考试管理",superior:15,hideShg:true},
     {id:21,title:"Headcount管理",superior:19},
     {id:22,title:"Offer管理",superior:19},
-    {id:23,title:"DL招聘管理",superior:19},
-    {id:24,title:"违纪查询",superior:20},
-    {id:25,title:"信息查询",superior:20},
+    {id:23,title:"DL招聘管理",superior:19,hideShg:true},
+    {id:24,title:"违纪查询",superior:20,hideShg:true},
+    {id:25,title:"信息查询",superior:20,hideShg:true},
 ],
   founcs:[
   {
@@ -129,10 +129,22 @@ const config = {
   },
   {
     name: 'custom', 
-    title: '合同管理',
+    title: '合同管理（无锡）',
+    hideShg:true,
     class:6,
     id:3,
     src:"/fnmodule?resid=640189772997&recid=640189232960&type=合同管理&title=合同管理"
+  },
+  {
+    name: 'TableData', 
+    title: '合同管理（上海/无锡老合同）',
+    class:6,
+    id:10,
+    props: {
+      resid: 436624135588,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
   },
   {
     name: 'custom', 
@@ -148,39 +160,88 @@ const config = {
     id:8,
     src:"/fnmodule?resid=663690700084&recid=663690929711&type=假期管理&title=年假管理"
   },
+  // {
+  //   name: 'TableData', 
+  //   title: '年假管理（2020年以前）',
+  //   class:8,
+  //   id:9,
+  //   props: {
+  //     resid: 775130963822,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // },
   {
-    name: 'TableData', 
-    title: '年假管理（2020年前）',
-    class:8,
+    name: 'MainTableSubTables',
+    title: '年假管理（2020年以前）',
     id:9,
+    class:8,
     props: {
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
       resid: 775130963822,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
+      mainTableProps: {
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasBackBtn: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      subTablesProps: {
+        441994427244: {
+          hasBeBtns: false,
+          isUseFormDefine: false,
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/'
+        },
+        630169827334: {
+          hasBeBtns: true,
+          hasRowView: false,
+          hasRowModify: false,
+          hasRowDelete: false,
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/',
+          advSearch: {
+            isRequestFormData: false
+          }
+        }
+      }
     }
   },
-  {
-    name: 'TableData', 
-    title: '年假年度剩余调整（2020年前）',
-    class:8,
-    id:10,
-    props: {
-      resid: 441994427244,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  },
-  {
-    name: 'TableData', 
-    title: '年假当年新增调整（2020年以前）',
-    class:8,
-    id:11,
-    props: {
-      resid: 630169827334,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  },
+  // {
+  //   name: 'TableData', 
+  //   title: '年假年度剩余调整（2020年前）',
+  //   class:8,
+  //   id:10,
+  //   props: {
+  //     resid: 441994427244,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // },
+  // {
+  //   name: 'TableData', 
+  //   title: '年假当年新增调整（2020年以前）',
+  //   class:8,
+  //   id:11,
+  //   props: {
+  //     resid: 630169827334,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // },
   {
     name: 'TableData', 
     title: '哺乳假台账',
@@ -377,6 +438,7 @@ const config = {
     title: '活动中心刷卡记录',
     class:13,
     id:30,
+    hideShg:true,
     props: {
       resid: 439383544231,
       baseURL: 'http://10.108.2.66:9091/',
@@ -403,29 +465,32 @@ const config = {
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
-  },{
-    name: 'TableData', 
-    title: '已导入办卡信息',
-    class:13,
-    id:33,
-    props: {
-      resid: 424794795683,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  },{
+  },
+  // {
+  //   name: 'TableData', 
+  //   title: '已导入办卡信息',
+  //   class:13,
+  //   id:33,
+  //   props: {
+  //     resid: 776791157491,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // },
+  {
     name: 'TableData', 
     title: '离职已退卡',
     class:13,
     id:34,
     props: {
-      resid: 426189216297,
+      resid: 776790493623,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
   },{
     name: 'TableData', 
     title: '注销卡',
+    hideShg:true,
     class:13,
     id:35,
     props: {
@@ -433,23 +498,25 @@ const config = {
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
-  },{
-    name: 'TableData', 
-    title: '黑名单信息',
-    class:13,
-    id:36,
-    props: {
-      resid: 309560332600,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  },{
+  },
+  // {
+  //   name: 'TableData', 
+  //   title: '黑名单信息',
+  //   class:13,
+  //   id:36,
+  //   props: {
+  //     resid: 309560332600,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // },
+  {
     name: 'TableData', 
     title: '正常卡',
     class:13,
     id:37,
     props: {
-      resid: 588780106830,
+      resid: 776791988236,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
@@ -459,7 +526,7 @@ const config = {
     class:4,
     id:38,
     props: {
-      resid: 375296167687,
+      resid: 776788604724,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
@@ -469,7 +536,7 @@ const config = {
     class:4,
     id:81,
     props: {
-      resid: 311025002785,
+      resid: 776789297480,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
@@ -484,37 +551,21 @@ const config = {
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
-  },{
-    name: 'TableData', 
-    title: '移动请假加班记录',
-    class:14,
-    id:39,
-    props: {
-      resid: 546778189544,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  },{
-    name: 'TableData', 
-    title: '请假加班审批记录',
-    class:14,
-    id:40,
-    props: {
-      resid: 549048498204,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  },{
-    name: 'TableData', 
-    title: '微信考勤申请记录',
-    class:14,
-    id:41,
-    props: {
-      resid: 552993482400,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  },{
+  },
+  // {
+  //   name: 'TableData', 
+  //   title: '移动请假加班记录',
+  //   class:14,
+  //   id:39,
+  //   props: {
+  //     resid: 546778189544,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // },
+  
+  
+  {
     name: 'MainTableSubTables',
     title: '考勤审批流程信息',
     id:43,
@@ -567,15 +618,67 @@ const config = {
   },
   {
     name: 'TableData', 
+    title: '请假加班审批记录',
+    class:14,
+    id:40,
+    props: {
+      resid: 549048498204,
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+    }
+  },
+  {
+    name: 'TableData', 
     title: '获取IT排班',
     class:14,
     id:44,
+    hideShg:true,
     props: {
       resid: 775145745197,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
-  },{
+  },
+  {
+    name: 'MainTableSubTables',
+    title: '微信考勤申请记录',
+    id:41,
+    class:14,
+    props: {
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      resid: 552993482400,
+      mainTableProps: {
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasBackBtn: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+  
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      subTablesProps: {
+        554315806876: {
+          hasBeBtns: false,
+          isUseFormDefine: false,
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/'
+        }
+        }
+      }
+  },
+  {
     name: 'TableData', 
     title: '合同审批记录（上海+无锡老合同）',
     class:6,
@@ -600,6 +703,7 @@ const config = {
     name: 'custom', 
     title: '内训签到记录',
     class:16,
+    hideShg:true,
     id:47,
     src:"/fnmodule?resid=675343454130&recid=675343519760&type=学习与发展&title=培训资源管理"
   },
@@ -607,24 +711,28 @@ const config = {
     name: 'custom', 
     title: '签到记录导出',
     class:16,
+    hideShg:true,
     id:49,
     src:"/fnmodule?resid=631618595197&recid=775150111960&type=学习与发展&title=签到记录导出"
   },{
     name: 'custom', 
     title: '内训管理',
     class:16,
+    hideShg:true,
     id:50,
     src:"/fnmodule?resid=615898415042&recid=615898443242&type=学习与发展&title=内训管理"
   },{
     name: 'custom', 
     title: '外训管理',
     class:16,
+    hideShg:true,
     id:51,
     src:"/fnmodule?resid=614187065713&recid=614187146539&type=学习与发展&title=外训管理"
   },{
     name: 'custom', 
     title: '课程维护',
     class:16,
+    hideShg:true,
     id:52,
     src:"/fnmodule?resid=611085896611&recid=775151144329&type=学习与发展&title=课程维护"
   },
@@ -632,6 +740,7 @@ const config = {
     name: 'custom', 
     title: '试用期管理',
     class:17,
+    hideShg:true,
     id:53,
     src:"/fnmodule?resid=619175063394&recid=619175176571&type=学习与发展&title=试用期管理"
   },
@@ -639,6 +748,7 @@ const config = {
     name: 'custom', 
     title: '考试培训',
     class:18,
+    hideShg:true,
     id:54,
     src:"/fnmodule?resid=611243928651&recid=630582052417&type=考试系统&title=考试培训"
   },
@@ -646,30 +756,35 @@ const config = {
     name: 'custom', 
     title: '考试安排',
     class:18,
+    hideShg:true,
     id:55,
     src:"/fnmodule?resid=607170185691&recid=775151287566&type=考试系统&title=考试安排"
   },{
     name: 'custom', 
     title: '题库管理',
     class:18,
+    hideShg:true,
     id:56,
     src:"/fnmodule?resid=607170415939&recid=775151341941&type=考试系统&title=题库管理"
   },{
     name: 'custom', 
     title: '试卷管理',
     class:18,
+    hideShg:true,
     id:57,
     src:"/fnmodule?resid=607170235566&recid=747236298295&type=考试系统&title=试卷管理"
   },{
     name: 'custom', 
-    title: '统计分析',
+    title: '试卷统计分析',
     class:18,
+    hideShg:true,
     id:58,
     src:"/fnmodule?resid=607168405062&recid=775151403754&type=考试系统&title=统计分析"
   },{
     name: 'MainTableSubTables',
     title: 'S1S2生产人员招聘',
     id:59,
+    hideShg:true,
     class:21,
     props: {
       baseURL: 'http://10.108.2.66:9091/',
@@ -821,11 +936,52 @@ const config = {
     name: 'MainTableSubTables',
     title: 'Offer Proposal',
     id:62,
+    hideShg:true,
     class:22,
     props: {
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
-      resid: 534181420932,
+      resid: 776860127522,
+      mainTableProps: {
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasBackBtn: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+  
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      subTablesProps: {
+        534183662854: {
+          hasBeBtns: false,
+          isUseFormDefine: false,
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/'
+        },
+      }
+    }
+  },
+  {
+    name: 'MainTableSubTables',
+    title: 'Offer Proposal',
+    id:83,
+    hideWX:true,
+    class:22,
+    props: {
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      resid: 776860148866,
       mainTableProps: {
         actionBarWidth: 200,
         hasAdd: true,
@@ -861,10 +1017,11 @@ const config = {
     title: 'Offer Comfirmation',
     id:63,
     class:22,
+    hideShg:true,
     props: {
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
-      resid: 534187008752,
+      resid: 776861020684,
       mainTableProps: {
         actionBarWidth: 200,
         hasAdd: true,
@@ -894,10 +1051,52 @@ const config = {
         },
       }
     }
-  },{
+  },
+  {
+    name: 'MainTableSubTables',
+    title: 'Offer Comfirmation',
+    hideWX:true,
+    id:84,
+    class:22,
+    props: {
+      baseURL: 'http://10.108.2.66:9091/',
+      downloadBaseURL: 'http://10.108.2.66:80/',
+      resid: 776861057106,
+      mainTableProps: {
+        actionBarWidth: 200,
+        hasAdd: true,
+        hasBeBtns: true,
+        hasModify: true,
+        hasBackBtn: true,
+        hasDelete: true,
+        hasRowModify: true,
+        hasRowView: true,
+        hasRowDelete: true,
+        backendButtonPopConfirmProps: { placement: 'bottom' },
+  
+        formProps: {
+          // height: 500
+        },
+        advSearch: {
+          isRequestFormData: false
+        },
+        subtractH: 200
+      },
+      subTablesProps: {
+        534187873941: {
+          hasBeBtns: false,
+          isUseFormDefine: false,
+          baseURL: 'http://10.108.2.66:9091/',
+          downloadBaseURL: 'http://10.108.2.66:80/'
+        },
+      }
+    }
+  },
+  {
     name: 'TableData', 
     title: 'DL员工求职记录',
     class:23,
+    hideShg:true,
     id:66,
     props: {
       resid: 617190472818,
@@ -908,6 +1107,7 @@ const config = {
   {
     name: 'TableData', 
     title: '非系统累进违纪记录',
+    hideShg:true,
     class:24,
     id:67,
     props: {
@@ -918,6 +1118,7 @@ const config = {
   },{
     name: 'TableData', 
     title: '系统累进违纪记录',
+    hideShg:true,
     class:24,
     id:68,
     props: {
@@ -928,6 +1129,7 @@ const config = {
   },{
     name: 'TableData', 
     title: '组长负责的主管',
+    hideShg:true,
     class:25,
     id:69,
     props: {
@@ -938,6 +1140,7 @@ const config = {
   },{
     name: 'TableData', 
     title: '违纪条例管理',
+    hideShg:true,
     class:25,
     id:70,
     props: {
@@ -948,6 +1151,7 @@ const config = {
   },{
     name: 'TableData', 
     title: '组长名单',
+    hideShg:true,
     class:25,
     id:71,
     props: {
@@ -959,6 +1163,7 @@ const config = {
   {
     name: 'custom', 
     title: '违纪升级记录',
+    hideShg:true,
     class:24,
     id:72,
     src:"/fnmodule?resid=728914680096&recid=728914791323&type=纪律管理系统&title=违纪升级记录"
@@ -966,6 +1171,7 @@ const config = {
   {
     name: 'custom', 
     title: '符合解除人员',
+    hideShg:true,
     class:25,
     id:73,
     src:"/fnmodule?resid=614706766207&recid=644154393653&type=纪律管理系统&title=符合解除人员"
@@ -973,6 +1179,7 @@ const config = {
   {
     name: 'TableData', 
     title: '开单权限变更记录',
+    hideShg:true,
     class:25,
     id:74,
     props: {
@@ -984,6 +1191,7 @@ const config = {
   {
     name: 'custom', 
     title: '奖惩-统计分析',
+    hideShg:true,
     class:25,
     id:75,
     src:"/fnmodule?resid=592305842055&recid=619608412213&type=纪律管理系统&title=奖惩-统计分析"
@@ -991,6 +1199,7 @@ const config = {
   {
     name: 'custom', 
     title: '违纪管理',
+    hideShg:true,
     class:25,
     id:76,
     src:"/fnmodule?resid=590765309983&recid=619608230380&type=纪律管理系统&title=违纪管理"
@@ -998,6 +1207,7 @@ const config = {
   {
     name: 'TableData', 
     title: 'DL入职培训统计',
+    hideShg:true,
     class:16,
     id:48,
     props: {
@@ -1008,6 +1218,7 @@ const config = {
   },{
     name: 'TableData', 
     title: 'IDL入职培训统计',
+    hideShg:true,
     class:16,
     id:77,
     props: {
@@ -1018,6 +1229,7 @@ const config = {
   },{
     name: 'TableData', 
     title: '在线内训授权',
+    hideShg:true,
     class:16,
     id:78,
     props: {
@@ -1028,6 +1240,7 @@ const config = {
   },{
     name: 'TableData', 
     title: '内训在线培训记录',
+    hideShg:true,
     class:16,
     id:79,
     props: {
@@ -1039,6 +1252,7 @@ const config = {
     name: 'TableData', 
     title: '黑名单',
     class:23,
+    hideShg:true,
     id:80,
     props: {
       resid: 681234360083,
@@ -1058,6 +1272,13 @@ class UltimateQuery extends Component {
     classes2Show:[]
   };
   componentDidMount(){
+      let companyId = localStorage.getItem('userInfo');
+    companyId=JSON.parse(companyId);
+    companyId=companyId.EnterpriseCode;
+    this.setState({
+      companyId
+    });
+    console.log(companyId)
     this.setState({classes1Show:config.classes1})
   }
   setCurSelected=async(id)=>{
@@ -1143,7 +1364,7 @@ class UltimateQuery extends Component {
       }
     }
   render() {
-    const{curSelectedFonc,curfilter1,curfilter2,classes1Show,classes2Show,filtRes}=this.state;
+    const{curSelectedFonc,curfilter1,curfilter2,classes1Show,classes2Show,filtRes,companyId}=this.state;
     return (
       <div className='ultimate-query'>
         <div className='side-bar'>
@@ -1161,14 +1382,14 @@ class UltimateQuery extends Component {
           <div className='filters filters1'>
             {classes1Show.map((item)=>{
               return(
-                <div class={curfilter1===item.id?'cur':''} onClick={()=>{this.selectFilter1(item.id)}}>{item.title}</div>
+                <div style={(item.hideShg&&companyId==='2000')||(item.hideWX&&companyId!='2000')?{display:'none'}:{}} class={curfilter1===item.id?'cur':''} onClick={()=>{this.selectFilter1(item.id)}}>{item.title}</div>
               )
             })}
           </div>
           <div className="filters filters2">
             {classes2Show.map((item)=>{
               return(
-                <div class={curfilter2===item.id?'cur':''} onClick={()=>{this.selectFilter2(item.id)}}>{item.title}</div>
+                <div style={(item.hideShg&&companyId==='2000')||(item.hideWX&&companyId!='2000')?{display:'none'}:{}} class={curfilter2===item.id?'cur':''} onClick={()=>{this.selectFilter2(item.id)}}>{item.title}</div>
               )
             })}
           </div>
@@ -1176,7 +1397,9 @@ class UltimateQuery extends Component {
             {
               filtRes.map((item)=>{
                 return(
-                <div class={curSelectedFonc.id===item.id?'cur':''} onClick={()=>{this.setCurSelected(item.id)}}>{item.title}</div>
+                  <div class={curSelectedFonc.id===item.id?'cur':''}
+                   style={(item.hideShg&&companyId==='2000')||(item.hideWX&&companyId!='2000')?{display:'none'}:{}}
+                  onClick={()=>{this.setCurSelected(item.id)}}>{item.title}</div>
                 )
               })
             }

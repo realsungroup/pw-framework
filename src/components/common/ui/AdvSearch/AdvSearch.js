@@ -242,11 +242,11 @@ class AdvSearch extends React.Component {
         ))}
 
         <div className="adv-search__add-btn" onClick={this.handleAddSearchItem}>
-          <Icon type="plus" />
+          <Icon type="plus" />123123
         </div>
         <div className="adv-search__confirm-btn">
           <Button type="primary" block onClick={this.handleConfirm}>
-            {this.props.confirmText}
+            {this.props.confirmText}666
           </Button>
         </div>
       </div>

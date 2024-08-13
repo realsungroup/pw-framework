@@ -43,7 +43,7 @@ class HRProbation extends React.Component {
       window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainning;
     var baseURLDownload =
       window.pwConfig[process.env.NODE_ENV].customURLs.onlineTrainningDownload;
-
+    
     this.setState({
       desktop,
       baseURL,
@@ -536,10 +536,10 @@ class HRProbation extends React.Component {
               <Icon type="calendar" />
               <span> 入职培训管理</span>
             </Menu.Item>
-            <Menu.Item key="5">
+            {/* <Menu.Item key="5">
               <Icon type="calendar" />
               <span> 在线培训数据</span>
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu>
         </div>
         <div
