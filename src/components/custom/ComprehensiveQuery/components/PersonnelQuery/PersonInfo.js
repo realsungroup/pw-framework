@@ -21,13 +21,17 @@ class PersonInfo extends React.Component {
       ].customURLs.comprehensiveQueryBaseURL;
     this.attendanceDownloadURL =
       window.pwConfig[process.env.NODE_ENV].customURLs.attendanceDownloadURL;
-    this.state = {
+    let comID=localStorage.getItem('userInfo');
+    comID=JSON.parse(comID);
+    comID=comID.EnterpriseCode;
+      this.state = {
       personalInfoVisible: false,
       personInfo: {},
       dataProp: [],
       loadingPersonInfo: false,
       modalVis:'',
-      numberId:''
+      numberId:'',
+      comID
     };
   }
 
@@ -74,7 +78,8 @@ class PersonInfo extends React.Component {
       personInfo,
       dataProp,
       loadingPersonInfo,
-      modalVis
+      modalVis,
+      comID
     } = this.state;
     let id;
     if (person) {
@@ -206,8 +211,8 @@ class PersonInfo extends React.Component {
                   <TableData 
                 resid={436624421847} 
                 cmswhere={`C3_436624448098 = '${this.state.numberId}'`}
-                baseURL={'http://10.108.2.66:1001/'} 
-                downloadBaseURL={'http://10.108.2.66:1000/'}
+                baseURL={comID==='2000'?'http://10.108.2.66:9091/':'http://10.108.2.66:1001/'} 
+                downloadBaseURL={comID==='2000'?'http://10.108.2.66:80/':'http://10.108.2.66:1000/'}
                 hasRowModify={false}
                 hasAdd={false}
                 hasRowDelete={false}

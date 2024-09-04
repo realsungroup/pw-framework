@@ -278,6 +278,7 @@ const config = {
   {
     name: 'TableData', 
     title: '调休假使用明细',
+    hideShg:true,
     class:10,
     id:15,
     props: {
@@ -312,6 +313,7 @@ const config = {
     name: 'TableData', 
     title: '育儿假台账',
     class:11,
+    hideShg:true,
     id:18,
     props: {
       resid: 775135706998,
@@ -323,6 +325,7 @@ const config = {
     name: 'TableData', 
     title: '父母陪护假台账',
     class:11,
+    hideShg:true,
     id:19,
     props: {
       resid: 712075069963,
@@ -382,37 +385,40 @@ const config = {
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
-  }, {
-    name: 'TableData', 
-    title: '请假导入错误记录',
-    class:12,
-    id:25,
-    props: {
-      resid: 432648732840,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  }, {
-    name: 'TableData', 
-    title: '加班记录导入错误',
-    class:12,
-    id:26,
-    props: {
-      resid: 432648481019,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  }, {
-    name: 'TableData', 
-    title: '刷卡导入错误查询',
-    class:12,
-    id:27,
-    props: {
-      resid: 429706598519,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  }, {
+  },
+  // {
+  //   name: 'TableData', 
+  //   title: '请假导入错误记录',
+  //   class:12,
+  //   id:25,
+  //   props: {
+  //     resid: 432648732840,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // }, {
+  //   name: 'TableData', 
+  //   title: '加班记录导入错误',
+  //   class:12,
+  //   id:26,
+  //   props: {
+  //     resid: 432648481019,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // },
+  // {
+  //   name: 'TableData', 
+  //   title: '刷卡导入错误查询',
+  //   class:12,
+  //   id:27,
+  //   props: {
+  //     resid: 429706598519,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // },
+  {
     name: 'TableData', 
     title: '请假登记异常明细',
     class:12,
@@ -445,23 +451,24 @@ const config = {
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
   },
-  {
-    name: 'TableData', 
-    title: '加班请假登记记录',
-    class:12,
-    id:31,
-    props: {
-      resid: 509634460766,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
-    }
-  }, {
+  // {
+  //   name: 'TableData', 
+  //   title: '加班请假登记记录',
+  //   class:12,
+  //   id:31,
+  //   props: {
+  //     resid: 509634460766,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // },
+   {
     name: 'TableData', 
     title: '刷卡记录',
     class:13,
     id:32,
     props: {
-      resid: 375296681546,
+      resid: 736955745277,
       baseURL: 'http://10.108.2.66:9091/',
       downloadBaseURL: 'http://10.108.2.66:80/',
     }
@@ -584,8 +591,11 @@ const config = {
         hasRowModify: true,
         hasRowView: true,
         hasRowDelete: true,
+        isWrap:true,
         backendButtonPopConfirmProps: { placement: 'bottom' },
-  
+        advDicTableProps: {customColumnWidth: {
+          事由: 600
+        }},
         formProps: {
           // height: 500
         },
@@ -606,7 +616,7 @@ const config = {
           hasRowView: false,
           hasRowModify: false,
           hasRowDelete: false,
-          noWidthFields: 'C3_446938797056',
+          
           baseURL: 'http://10.108.2.66:9091/',
           downloadBaseURL: 'http://10.108.2.66:80/',
           advSearch: {
@@ -614,17 +624,6 @@ const config = {
           }
         }
       }
-    }
-  },
-  {
-    name: 'TableData', 
-    title: '请假加班审批记录',
-    class:14,
-    id:40,
-    props: {
-      resid: 549048498204,
-      baseURL: 'http://10.108.2.66:9091/',
-      downloadBaseURL: 'http://10.108.2.66:80/',
     }
   },
   {
@@ -659,7 +658,7 @@ const config = {
         hasRowView: true,
         hasRowDelete: true,
         backendButtonPopConfirmProps: { placement: 'bottom' },
-  
+        isWrap:true,
         formProps: {
           // height: 500
         },
@@ -678,6 +677,17 @@ const config = {
         }
       }
   },
+  // {
+  //   name: 'TableData', 
+  //   title: '微信请假加班审批记录',
+  //   class:14,
+  //   id:40,
+  //   props: {
+  //     resid: 549048498204,
+  //     baseURL: 'http://10.108.2.66:9091/',
+  //     downloadBaseURL: 'http://10.108.2.66:80/',
+  //   }
+  // },
   {
     name: 'TableData', 
     title: '合同审批记录（上海+无锡老合同）',
@@ -822,7 +832,7 @@ const config = {
           hasRowView: false,
           hasRowModify: false,
           hasRowDelete: false,
-          noWidthFields: 'C3_446938797056',
+          
           baseURL: 'http://10.108.2.66:9091/',
           downloadBaseURL: 'http://10.108.2.66:80/',
           advSearch: {
@@ -872,7 +882,7 @@ const config = {
           hasRowView: false,
           hasRowModify: false,
           hasRowDelete: false,
-          noWidthFields: 'C3_446938797056',
+          
           baseURL: 'http://10.108.2.66:9091/',
           downloadBaseURL: 'http://10.108.2.66:80/',
           advSearch: {
@@ -922,7 +932,7 @@ const config = {
           hasRowView: false,
           hasRowModify: false,
           hasRowDelete: false,
-          noWidthFields: 'C3_446938797056',
+          
           baseURL: 'http://10.108.2.66:1001/',
           downloadBaseURL: 'http://10.108.2.66:1000/',
           advSearch: {
@@ -1196,14 +1206,14 @@ const config = {
     id:75,
     src:"/fnmodule?resid=592305842055&recid=619608412213&type=纪律管理系统&title=奖惩-统计分析"
   },
-  {
-    name: 'custom', 
-    title: '违纪管理',
-    hideShg:true,
-    class:25,
-    id:76,
-    src:"/fnmodule?resid=590765309983&recid=619608230380&type=纪律管理系统&title=违纪管理"
-  },
+  // {
+  //   name: 'custom', 
+  //   title: '违纪管理',
+  //   hideShg:true,
+  //   class:25,
+  //   id:76,
+  //   src:"/fnmodule?resid=590765309983&recid=619608230380&type=纪律管理系统&title=违纪管理"
+  // },
   {
     name: 'TableData', 
     title: 'DL入职培训统计',
